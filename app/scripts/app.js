@@ -15,7 +15,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'LocalStorageModule',
-    'ngToast'
+    'toaster'
   ])
   .config(function ($routeProvider) {
     $routeProvider

@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
-  'TokensManagerCtrl', ['$scope', 'tokensManagerService', 'ngToast',
-    function($scope, tokensManagerService, ngToast) {
+  'TokensManagerCtrl', ['$scope', 'tokensManagerService', 'toaster',
+    function($scope, tokensManagerService, toaster) {
       'use strict';
 
       $scope.refreshTokens = [];
@@ -10,7 +10,7 @@ angular.module('webApp').controller(
           $scope.refreshTokens = results.data;
         },
         function(error) {
-          ngToast.create({ content: error.data.message, class: 'danger' });
+          toaster.pop('error', 'Error', error.data.message);
         });
 
       $scope.deleteRefreshTokens = function(index, tokenid) {
@@ -20,7 +20,7 @@ angular.module('webApp').controller(
             $scope.refreshTokens.splice(index, 1);
           }, 
           function(error) {
-            ngToast.create({ content: error.data.message, class: 'danger' });
+            toaster.pop('error', 'Error', error.data.message);
           });
       };
     }
