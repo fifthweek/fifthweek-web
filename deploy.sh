@@ -69,7 +69,7 @@ fi
 
 selectNodeVersion () {
   if [[ -n "$KUDU_SELECT_NODE_VERSION_CMD" ]]; then
-    SELECT_NODE_VERSION="$KUDU_SELECT_NODE_VERSION_CMD \"$DEPLOYMENT_SOURCE\" \"$DEPLOYMENT_TARGET\" \"$DEPLOYMENT_TEMP\""
+    SELECT_NODE_VERSION="$KUDU_SELECT_NODE_VERSION_CMD \"$DEPLOYMENT_SOURCE/app\" \"$DEPLOYMENT_TARGET\" \"$DEPLOYMENT_TEMP\""
     eval $SELECT_NODE_VERSION
     exitWithMessageOnError "select node version failed"
 
@@ -128,6 +128,7 @@ fi
 # 5. KuduSync to Target
 "$KUDU_SYNC_CMD" -v 500 -f "$DEPLOYMENT_SOURCE/dist" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh"
 exitWithMessageOnError "Kudu Sync to Target failed"
+
 
 ##################################################################################################################################
 
