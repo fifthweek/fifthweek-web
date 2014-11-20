@@ -11,14 +11,14 @@ describe('Controller: TokensmanagerCtrl', function() {
   var tokensManagerService;
   var $q;
   var $controller;
-  var ngToast;
+  var toaster;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function(_$controller_, _$rootScope_, _$q_, _ngToast_) {
+  beforeEach(inject(function(_$controller_, _$rootScope_, _$q_, _toaster_) {
     $controller = _$controller_;
     $rootScope = _$rootScope_;
     $q = _$q_;
-    ngToast = _ngToast_;
+    toaster = _toaster_;
 
     scope = $rootScope.$new();
 
@@ -54,13 +54,13 @@ describe('Controller: TokensmanagerCtrl', function() {
       return deferred.promise;
     };
 
-    spyOn(ngToast, 'create');
+    spyOn(toaster, 'pop');
 
     createController();
     $rootScope.$apply();
 
     expect(scope.refreshTokens.length).toBe(0);
-    expect(ngToast.create).toHaveBeenCalled();
+    expect(toaster.pop).toHaveBeenCalled();
   });
 
   describe('Controller: TokensmanagerCtrl Created', function() {
@@ -111,7 +111,7 @@ describe('Controller: TokensmanagerCtrl', function() {
       };
 
       spyOn(tokensManagerService, 'deleteRefreshTokens').and.callThrough();
-      spyOn(ngToast, 'create');
+      spyOn(toaster, 'pop');
 
       expect(scope.refreshTokens.length).toBe(3);
 
@@ -119,7 +119,7 @@ describe('Controller: TokensmanagerCtrl', function() {
       $rootScope.$apply();
 
       expect(tokensManagerService.deleteRefreshTokens).toHaveBeenCalledWith('Two');
-      expect(ngToast.create).toHaveBeenCalled();
+      expect(toaster.pop).toHaveBeenCalled();
       expect(scope.refreshTokens.length).toBe(3);
     });
   });
@@ -128,7 +128,7 @@ describe('Controller: TokensmanagerCtrl', function() {
     TokensmanagerCtrl = $controller('TokensManagerCtrl', {
       $scope: scope,
       tokensManagerService: tokensManagerService,
-      ngToast: ngToast
+      toaster: toaster
     });
   };
 });

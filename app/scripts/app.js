@@ -52,7 +52,7 @@ angular
       });
   })
   .constant('webSettings', {
-    apiBaseUri: 'https://10.211.55.3:44301/',
+    apiBaseUri: 'http://fifthweek-api.azurewebsites.net/',
     clientId: 'fifthweek.web.1',
     successfulSignInPath: '/orders'
   });

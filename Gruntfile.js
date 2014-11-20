@@ -388,7 +388,7 @@ module.exports = function (grunt) {
 
     protractor: {
       options: {
-        configFile: "test/protractor.conf.js",
+        configFile: 'test/protractor.conf.js',
         keepAlive: true,
         args: {
           seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.42.2.jar',
@@ -425,8 +425,7 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma',
-    'protractor:run'
+    'karma'
   ]);
 
   grunt.registerTask('build', [
