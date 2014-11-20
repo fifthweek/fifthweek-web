@@ -69,7 +69,7 @@ fi
 
 selectNodeVersion () {
   if [[ -n "$KUDU_SELECT_NODE_VERSION_CMD" ]]; then
-    SELECT_NODE_VERSION="$KUDU_SELECT_NODE_VERSION_CMD \"$DEPLOYMENT_SOURCE/app\" \"$DEPLOYMENT_TARGET\" \"$DEPLOYMENT_TEMP\""
+    SELECT_NODE_VERSION="$KUDU_SELECT_NODE_VERSION_CMD \"$DEPLOYMENT_SOURCE/app/scripts\" \"$DEPLOYMENT_TARGET\" \"$DEPLOYMENT_TEMP\""
     eval $SELECT_NODE_VERSION
     exitWithMessageOnError "select node version failed"
 
@@ -104,12 +104,14 @@ echo Handling node.js grunt deployment.
 selectNodeVersion
 
 # 2. Install npm packages
+echo Installing npm packages.
 if [ -e "$DEPLOYMENT_SOURCE/package.json" ]; then
   eval $NPM_CMD install
   exitWithMessageOnError "npm failed"
 fi
 
 # 3. Install bower packages
+echo Installing bower packages.
 if [ -e "$DEPLOYMENT_SOURCE/bower.json" ]; then
   eval $NPM_CMD install bower
   exitWithMessageOnError "installing bower failed"
@@ -118,6 +120,7 @@ if [ -e "$DEPLOYMENT_SOURCE/bower.json" ]; then
 fi
 
 # 4. Run grunt
+echo Running grunt.
 if [ -e "$DEPLOYMENT_SOURCE/Gruntfile.js" ]; then
   eval $NPM_CMD install grunt-cli
   exitWithMessageOnError "installing grunt failed"
@@ -126,6 +129,7 @@ if [ -e "$DEPLOYMENT_SOURCE/Gruntfile.js" ]; then
 fi
 
 # 5. KuduSync to Target
+echo Syncing to target.
 "$KUDU_SYNC_CMD" -v 500 -f "$DEPLOYMENT_SOURCE/dist" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh"
 exitWithMessageOnError "Kudu Sync to Target failed"
 
