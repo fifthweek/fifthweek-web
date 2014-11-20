@@ -98,9 +98,6 @@ selectNodeVersion () {
 # Deployment
 # ----------
 
-echo Removing node modules.
-rm -r ./node_modules
-
 echo Handling node.js grunt deployment.
 
 # 1. Select node version
