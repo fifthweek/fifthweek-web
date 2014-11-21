@@ -18,5 +18,5 @@ after_success:
   - eval `ssh-agent -s`
   - ssh-add .travis/deploy_key
   - cd dist
-  - git remote add deploy https://github.com/fifthweek/fifthweek-web-dist.git
+  - git remote add deploy git@github.com:fifthweek/fifthweek-web-dist.git
   - git push deploy
