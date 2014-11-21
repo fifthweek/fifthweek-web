@@ -124,7 +124,7 @@ echo Running grunt.
 if [ -e "$DEPLOYMENT_SOURCE/Gruntfile.js" ]; then
   eval $NPM_CMD install grunt-cli
   exitWithMessageOnError "installing grunt failed"
-  ./node_modules/.bin/grunt --no-color test build
+  ./node_modules/.bin/grunt --no-color build
   exitWithMessageOnError "grunt failed"
 fi
 
