@@ -57,6 +57,7 @@ module.exports = function(config) {
       'karma-phantomjs-launcher',
       'karma-chrome-launcher',
       'karma-safari-launcher',
+      'karma-ie-launcher',
       'karma-jasmine'
     ],
 
