@@ -3,4 +3,5 @@ dist
 .tmp
 .sass-cache
 bower_components
-.travis/deploy_key.pem
+.travis/deploy_key
+.travis/deploy_key.pub
