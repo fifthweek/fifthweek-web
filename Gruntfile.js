@@ -402,14 +402,14 @@ module.exports = function (grunt) {
       run: {}
     },
 
-    browserstacktunnel: {
+    browserstackTunnel: {
       options: {
           accessKey: process.env.BROWSER_STACK_ACCESS_KEY
       },
       development: {
           options: {
               hostname: 'localhost',
-              port: 9000
+              port: 9001
           }
       }
     }  
@@ -441,7 +441,7 @@ module.exports = function (grunt) {
     'autoprefixer',
     'connect:test',
     'karma',
-    'browserstacktunnel',
+    'browserstackTunnel',
     'protractor:run'
   ]);
 

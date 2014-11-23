@@ -5,6 +5,7 @@
   "devDependencies": {
     "grunt": "^0.4.1",
     "grunt-autoprefixer": "^0.7.3",
+    "grunt-browserstack-tunnel": "^0.1.0",
     "grunt-concurrent": "^0.5.0",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-compass": "^0.7.2",
@@ -37,6 +38,7 @@
     "karma-safari-launcher": "^0.1.1",
     "load-grunt-tasks": "^0.4.0",
     "protractor": "^1.4.0",
+    "pty.js": "git://github.com/chjj/pty.js",
     "time-grunt": "^0.3.1"
   },
   "engines": {

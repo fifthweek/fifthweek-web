@@ -7,7 +7,7 @@ var bsConfig = {
 exports.config = {
   // The address of a running selenium server.
   seleniumAddress: 'http://hub.browserstack.com/wd/hub',
-  baseUrl: 'http://localhost:9000',
+  baseUrl: 'http://localhost:9001',
   allScriptsTimeout: 55000,
   // Capabilities to be passed to the webdriver instance.
 
@@ -65,7 +65,7 @@ exports.config = {
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.
-  specs: ['test/e2e/**/*.js'],
+  specs: ['e2e/fifthweek_test.js'],
 
   // Options to be passed to Jasmine-node.
   jasmineNodeOpts: {
