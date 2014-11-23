@@ -391,15 +391,28 @@ module.exports = function (grunt) {
 
     protractor: {
       options: {
-        configFile: 'test/protractor.conf.js',
-        keepAlive: true,
+        configFile: "test/protractor.conf.js",
+        keepAlive: true, // If false, the grunt process stops when the test fails.
+        noColor: false,
         args: {
-          seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.42.2.jar',
-          chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
+          // seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.42.2.jar',
+          // chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
         }
       },
       run: {}
-    }    
+    },
+
+    browserstackTunnel: {
+      options: {
+          accessKey: process.env.BROWSER_STACK_ACCESS_KEY
+      },
+      development: {
+          options: {
+              hostname: 'localhost',
+              port: 9000
+          }
+      }
+    },    
   });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
@@ -427,7 +440,9 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    'karma',
+    'browserstackTunnel',
+    'protractor:run'
   ]);
 
   grunt.registerTask('build', [
