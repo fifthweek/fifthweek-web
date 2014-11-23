@@ -412,7 +412,7 @@ module.exports = function (grunt) {
               port: 9000
           }
       }
-    },    
+    }  
   });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
