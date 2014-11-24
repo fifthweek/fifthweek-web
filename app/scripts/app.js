@@ -15,7 +15,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'LocalStorageModule',
-    'toaster'
+    'toaster',
+    'angular-loading-bar'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -52,7 +53,7 @@ angular
       });
   })
   .constant('webSettings', {
-    apiBaseUri: 'https://localhost:9000/',
+    apiBaseUri: 'https://10.211.55.3:44301/',
     clientId: 'fifthweek.web.1',
     successfulSignInPath: '/orders'
   });
