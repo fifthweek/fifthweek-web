@@ -9,6 +9,7 @@ exports.config = {
   seleniumAddress: 'http://hub.browserstack.com/wd/hub',
   baseUrl: 'http://localhost:9001',
   allScriptsTimeout: 55000,
+  maxSessions: 1,
   // Capabilities to be passed to the webdriver instance.
 
   multiCapabilities: [{
