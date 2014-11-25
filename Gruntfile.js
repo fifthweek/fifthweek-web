@@ -393,7 +393,7 @@ module.exports = function (grunt) {
     protractor: {
       options: {
         configFile: 'test/protractor.conf.js',
-        keepAlive: true, // If false, the grunt process stops when the test fails.
+        keepAlive: false, // If false, the grunt process stops when the test fails.
         noColor: false,
         args: {
           // seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.42.2.jar',
