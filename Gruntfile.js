@@ -44,9 +44,9 @@ module.exports = function (grunt) {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },
-      sass: {
+      compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['sass:server', 'autoprefixer']
+        tasks: ['compass:server', 'autoprefixer']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -173,31 +173,34 @@ module.exports = function (grunt) {
     },
 
     // Compiles Sass to CSS and generates necessary files if requested
-    sass: {
+    compass: {
+      options: {
+        sassDir: '<%= yeoman.app %>/styles',
+        cssDir: '.tmp/styles',
+        generatedImagesDir: '.tmp/images/generated',
+        imagesDir: '<%= yeoman.app %>/images',
+        javascriptsDir: '<%= yeoman.app %>/scripts',
+        fontsDir: '<%= yeoman.app %>/styles/fonts',
+        importPath: './bower_components',
+        httpImagesPath: '/images',
+        httpGeneratedImagesPath: '/images/generated',
+        httpFontsPath: '/styles/fonts',
+        relativeAssets: false,
+        assetCacheBuster: false,
+        raw: 'Sass::Script::Number.precision = 10\n'
+      },
+      dist: {
         options: {
-            includePaths: [
-                'bower_components'
-            ]
-        },
-        dist: {
-            files: [{
-                expand: true,
-                cwd: '<%= yeoman.app %>/styles',
-                src: ['*.scss'],
-                dest: '.tmp/styles',
-                ext: '.css'
-            }]
-        },
-        server: {
-            files: [{
-                expand: true,
-                cwd: '<%= yeoman.app %>/styles',
-                src: ['*.scss'],
-                dest: '.tmp/styles',
-                ext: '.css'
-            }]
+          generatedImagesDir: '<%= yeoman.dist %>/images/generated'
         }
+      },
+      server: {
+        options: {
+          debugInfo: true
+        }
+      }
     },
+
 
     // Renames files for browser caching purposes
     filerev: {
@@ -364,15 +367,13 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'sass:server',
-        'copy:styles'
+        'compass:server'
       ],
       test: [
-        'copy:styles'
+        'compass'
       ],
       dist: [
-        'sass',
-        'copy:styles',
+        'compass:dist',
         'imagemin',
         'svgmin'
       ]
