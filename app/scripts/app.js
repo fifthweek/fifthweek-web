@@ -32,22 +32,6 @@ angular
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl'
       })
-      .when('/orders', {
-        templateUrl: 'views/orders.html',
-        controller: 'OrdersCtrl'
-      })
-      .when('/refresh', {
-        templateUrl: 'views/refresh.html',
-        controller: 'RefreshCtrl'
-      })
-      .when('/tokens', {
-        templateUrl: 'views/tokens.html',
-        controller: 'TokensManagerCtrl'
-      })
-      .when('/associate', {
-        templateUrl: 'views/associate.html',
-        controller: 'AssociateCtrl'
-      })
       .when('/help', {
         templateUrl: 'views/help.html',
         controller: 'HelpCtrl'
