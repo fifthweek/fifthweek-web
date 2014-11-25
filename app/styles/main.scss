@@ -1,4 +1,11 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+
+$brand-primary: #3d3936;
+$gray-base: darken($brand-primary, 13.5%);
+$navbar-inverse-bg: $brand-primary;
+$text-color: $brand-primary;
+$link-color: lighten($brand-primary, 27%);
+
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
@@ -21,16 +28,18 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 #loading-bar-spinner {
   top: 20px;
   left: 1px;
+
+  .spinner-icon {
+    border-top-color: #DDDDDD;
+    border-left-color: #DDDDDD;
+  }
 }
 @media (min-width: $screen-sm-min) {
   #loading-bar-spinner {
     left: 6px;
   }
 }
-#loading-bar-spinner .spinner-icon {
-  border-top-color: #DDDDDD;
-  border-left-color: #DDDDDD;
-}
+
 
 /*
  * Navbar overrides
@@ -87,10 +96,10 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 .fifthweek-video{
   @include size(400px, 240px);
   line-height: 240px;
-  background: #555;
+  background: $gray;
   text-align: center;
   vertical-align: middle;
-  border-color: black;
+  border-color: $gray-dark;
   border-width: 1px;
   border-style: solid;
 }

@@ -48,6 +48,10 @@ angular
         templateUrl: 'views/associate.html',
         controller: 'AssociateCtrl'
       })
+      .when('/help', {
+        templateUrl: 'views/help.html',
+        controller: 'HelpCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
