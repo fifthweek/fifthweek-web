@@ -85,12 +85,9 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
  * Misc
  */
 .fifthweek-video{
-  width: 400px;
-  height: 240px;
+  @include size(400px, 240px);
   line-height: 240px;
   background: #555;
-  margin-left: auto;
-  margin-right: auto;
   text-align: center;
   vertical-align: middle;
   border-color: black;
@@ -106,8 +103,13 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 }
 @media (min-width: $screen-sm-min) {
   .fifthweek-video{
-    width: 800px;
-    height: 480px;
-    line-height: 480px;
+    @include size(800px * 0.75, 480px * 0.75);
+    line-height: 480px * 0.75;
+  }
+}
+@media (min-width: $screen-lg-min) {
+  .fifthweek-video{
+    @include size(800px * 0.9, 480px * 0.9);
+    line-height: 480px * 0.9;
   }
 }

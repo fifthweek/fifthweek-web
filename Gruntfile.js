@@ -400,7 +400,12 @@ module.exports = function (grunt) {
           // chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
         }
       },
-      run: {}
+      run: {},
+      runFast:{
+        options:{
+          configFile: 'test/protractor_fast.conf.js',
+        }
+      }
     },
 
     browserstackTunnel: {
@@ -444,6 +449,15 @@ module.exports = function (grunt) {
     'karma',
     'browserstackTunnel',
     'protractor:run'
+  ]);
+
+  grunt.registerTask('ptest', [
+    'clean:server',
+    'concurrent:test',
+    'autoprefixer',
+    'connect:test',
+    'browserstackTunnel',
+    'protractor:runFast'
   ]);
 
   grunt.registerTask('build', [

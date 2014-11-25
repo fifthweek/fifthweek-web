@@ -11,9 +11,9 @@ describe('fifthweek', function() {
     browser.get('/');
   });
 
-  it('should have a sign in link', function() {
-    expect(signInLink.getText()).toContain('Sign In');
-  });
+  //it('should have a sign in link', function() {
+  //  expect(signInLink.getText()).toContain('Sign In');
+  //});
 
   it('should have a register link', function() {
     expect(registerLink.getText()).toContain('Register');
