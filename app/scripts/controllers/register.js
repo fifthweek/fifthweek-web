@@ -1,15 +1,15 @@
 angular.module('webApp').controller(
-  'RegisterCtrl', ['$scope', '$location', '$timeout', 'authService',
-    function($scope, $location, $timeout, authService) {
+  'RegisterCtrl', ['$scope', '$location', 'authService',
+    function($scope, $location, authService) {
       'use strict';
 
       $scope.savedSuccessfully = false;
       $scope.message = '';
 
       $scope.registrationData = {
+        email: '',
         username: '',
-        password: '',
-        confirmPassword: ''
+        password: ''
       };
 
       $scope.register = function() {
@@ -17,8 +17,7 @@ angular.module('webApp').controller(
         authService.registerInternalUser($scope.registrationData).then(
           function() {
             $scope.savedSuccessfully = true;
-            $scope.message = 'User has been registered successfully, you will be redicted to the sign in page in 2 seconds.';
-            startTimer();
+            $scope.message = 'You have been successfully registered. We will let you know as soon as you can sign in with your account.';
           },
           function(response) {
             var errors = [];
@@ -30,13 +29,5 @@ angular.module('webApp').controller(
             $scope.message = errors.join('<br/>');
           });
       };
-
-      var startTimer = function() {
-        var timer = $timeout(function() {
-          $timeout.cancel(timer);
-          $location.path('/signin');
-        }, 2000);
-      };
-
     }
   ]);
