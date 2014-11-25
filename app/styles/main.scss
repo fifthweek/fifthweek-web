@@ -37,7 +37,34 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
  */
 .navbar {
   border-radius: 0px;
-} 
+}
+.navbar-inverse .navbar-nav{
+  font-size: 21px;
+}
+.nav > li > a{
+  padding: 14px;
+}
+.nav-small-text {
+  font-size: 16px;
+  padding-left: 0px;
+  vertical-align: top;
+}
+/* 
+ * These styles stop the navbar links staying white after being clicked
+ * due to the default styles setting focused buttons to white.
+ */
+.navbar-inverse .navbar-brand:focus {
+  color: #9d9d9d;
+}
+.navbar-inverse .navbar-brand:hover {
+  color: #fff;
+}
+.navbar-inverse .navbar-nav li a:focus{
+  color: #9d9d9d;
+}
+.navbar-inverse .navbar-nav li a:hover{
+  color: #fff;
+}
 
 /*
  * Fifthweek logo
@@ -51,5 +78,36 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @media (min-width: 768px) {
   .header-logo{
     padding-left: 24px;
+  }
+}
+
+/*
+ * Misc
+ */
+.fifthweek-video{
+  width: 400px;
+  height: 240px;
+  line-height: 240px;
+  background: #555;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  vertical-align: middle;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+}
+.fifthweek-video-content{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal; 
+  font-size: 32px;
+  color: white;
+}
+@media (min-width: 768px) {
+  .fifthweek-video{
+    width: 800px;
+    height: 480px;
+    line-height: 480px;
   }
 }
