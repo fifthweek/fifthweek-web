@@ -6,6 +6,6 @@
 
         npm install
         bower install
-        gem update --system
-        gem install compass
+        sudo gem update --system
+        sudo gem install compass
         grunt build
