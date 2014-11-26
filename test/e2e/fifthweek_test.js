@@ -20,9 +20,9 @@ describe('fifthweek', function() {
   });
 
   describe('register page', function() {
+    var emailTextBox = element(by.model('registrationData.email'));
     var usernameTextBox = element(by.model('registrationData.username'));
     var passwordTextBox = element(by.model('registrationData.password'));
-    var confirmPasswordTextBox = element(by.model('registrationData.confirmPassword'));
     var registerButton = element(by.id('registerButton'));
 
     beforeEach(function() {
@@ -30,9 +30,9 @@ describe('fifthweek', function() {
     });
 
     it('should allow a new user to register', function(){
+      emailTextBox.sendKeys("email@mailinator.com");
       usernameTextBox.sendKeys(username);
-      passwordTextBox.sendKeys('terriblepassword');
-      confirmPasswordTextBox.sendKeys('terriblepassword');
+      passwordTextBox.sendKeys('password1');
       registerButton.click();
     });
   });

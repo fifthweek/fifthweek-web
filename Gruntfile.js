@@ -394,16 +394,20 @@ module.exports = function (grunt) {
       options: {
         configFile: 'test/protractor.conf.js',
         keepAlive: false, // If false, the grunt process stops when the test fails.
-        noColor: false,
-        args: {
-          // seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.42.2.jar',
-          // chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
-        }
+        noColor: false
       },
       run: {},
       runFast:{
         options:{
           configFile: 'test/protractor_fast.conf.js',
+        }
+      },
+      runLocal:{
+        options:{
+          configFile: 'test/protractor_local.conf.js',
+          args: {
+            chromeDriver: 'node_modules/protractor/selenium/chromedriver'
+          }
         }
       }
     },
@@ -458,6 +462,14 @@ module.exports = function (grunt) {
     'connect:test',
     'browserstackTunnel',
     'protractor:runFast'
+  ]);
+
+  grunt.registerTask('pltest', [
+    'clean:server',
+    'concurrent:test',
+    'autoprefixer',
+    'connect:test',
+    'protractor:runLocal'
   ]);
 
   grunt.registerTask('build', [
