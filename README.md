@@ -2,7 +2,9 @@
 
 ## Development setup
 
-1.  Standard NPM/Bower/Grunt stack:
+1.  Install Fifefox. Required for Travis CI.
+
+2.  Standard NPM/Bower/Grunt stack:
 
         npm install
         bower install
