@@ -1,5 +1,6 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
+$body-bg: rgb(245, 240, 233);
 $brand-primary: #3d3936;
 $gray-base: darken($brand-primary, 13.5%);
 $navbar-inverse-bg: $brand-primary;
@@ -122,3 +123,4 @@ $link-color: lighten($brand-primary, 27%);
     line-height: 480px * 0.9;
   }
 }
+
