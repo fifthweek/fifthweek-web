@@ -51,10 +51,7 @@ describe('Controller: RegisterCtrl', function() {
         var deferred = $q.defer();
         deferred.reject({
           data: {
-            modelState: {
-              M1: ['Message1'],
-              M2: ['Message2']
-            }
+            message: 'TestMessage'
           }
         });
         return deferred.promise;
@@ -63,8 +60,7 @@ describe('Controller: RegisterCtrl', function() {
       scope.register();
       $rootScope.$apply();
 
-      expect(scope.message).toContain('Message1');
-      expect(scope.message).toContain('Message2');
+      expect(scope.message).toContain('TestMessage');
       expect(scope.savedSuccessfully).toBe(false);
     });
   });

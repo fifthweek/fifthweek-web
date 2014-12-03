@@ -42,7 +42,7 @@ describe('Service: authService', function() {
 
       setupSignOutExpectations();
 
-      $httpBackend.expectPOST(webSettings.apiBaseUri + 'api/account/registerInternalUser').respond(200, 'Success');
+      $httpBackend.expectPOST(webSettings.apiBaseUri + 'account/registerInternalUser').respond(200, 'Success');
 
       var result;
       authService.registerInternalUser({username: 'user'}).then(function(response) { result = response; });
@@ -268,50 +268,5 @@ describe('Service: authService', function() {
       expect(localStorageService.set).not.toHaveBeenCalled();
       expect(result).toBe('Bad');
     };
-
-    describe('obtainAccessToken', function(){
-
-      it('should request an access token and store it locally if successful', function(){
-        testSuccess(
-          function(){
-            return $httpBackend.expectGET(webSettings.apiBaseUri + 'api/account/obtainAccessTokenForExternalUser?externalAccessToken=ABC&provider=PROVIDER');
-          },
-          function(){
-            return authService.obtainAccessToken({provider: 'PROVIDER', externalAccessToken: 'ABC'});
-          });
-      });
-
-      it('should request an access token and sign out if unsuccessful', function(){
-        testFailure(
-          function(){
-            return $httpBackend.expectGET(webSettings.apiBaseUri + 'api/account/obtainAccessTokenForExternalUser?externalAccessToken=ABC&provider=PROVIDER');
-          },
-          function(){
-            return authService.obtainAccessToken({provider: 'PROVIDER', externalAccessToken: 'ABC'});
-          });
-      });
-    });
-
-    describe('registerExternalUser', function(){
-      it('should register the external user and store authentication locally if successful', function(){
-        testSuccess(
-          function(){
-            return $httpBackend.expectPOST(webSettings.apiBaseUri + 'api/account/registerExternalUser');
-          },
-          function(){
-            return authService.registerExternalUser();
-          });
-      });
-
-      it('should register the external user and sign out if unsuccessful', function(){
-        testFailure(
-          function(){
-            return $httpBackend.expectPOST(webSettings.apiBaseUri + 'api/account/registerExternalUser');
-          },
-          function(){
-            return authService.registerExternalUser();
-          });
-      });
-    });
   });
 });

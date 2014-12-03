@@ -20,7 +20,7 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
 
     authService.registerInternalUser = function(internalRegistrationData) {
       authService.signOut();
-      return $http.post(apiBaseUri + 'api/account/registerInternalUser', internalRegistrationData);
+      return $http.post(apiBaseUri + 'account/registerInternalUser', internalRegistrationData);
     };
 
     authService.signIn = function(signInData) {
@@ -136,7 +136,7 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
 
     authService.obtainAccessToken = function(externalData) {
       return extractAccessToken(externalData, function(externalData){
-          return $http.get(apiBaseUri + 'api/account/obtainAccessTokenForExternalUser', {
+          return $http.get(apiBaseUri + 'account/obtainAccessTokenForExternalUser', {
             params: {
               provider: externalData.provider,
               externalAccessToken: externalData.externalAccessToken
@@ -147,7 +147,7 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
 
     authService.registerExternalUser = function(externalRegistrationData) {
       return extractAccessToken(externalRegistrationData, function(externalData){
-          return $http.post(apiBaseUri + 'api/account/registerExternalUser', externalData);
+          return $http.post(apiBaseUri + 'account/registerExternalUser', externalData);
       });
     };
 
