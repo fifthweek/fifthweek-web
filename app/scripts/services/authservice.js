@@ -24,6 +24,7 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
     };
 
     authService.signIn = function(signInData) {
+      authService.signOut();
 
       var data = 
        'grant_type=password&username=' + signInData.username + 
@@ -107,48 +108,6 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
       }
 
       return deferred.promise;
-    };
-
-    var extractAccessToken = function(externalData, apiCall)
-    {
-      var deferred = $q.defer();
-
-      apiCall(externalData)
-        .success(function(response) {
-          localStorageService.set('authenticationData', {
-            token: response.access_token,
-            username: response.username,
-            refreshToken: response.refresh_token,
-          });
-
-          authService.authentication.isAuth = true;
-          authService.authentication.username = response.username;
-
-          deferred.resolve(response);
-        })
-        .error(function(err) {
-          authService.signOut();
-          deferred.reject(err);
-        });
-
-      return deferred.promise;
-    };
-
-    authService.obtainAccessToken = function(externalData) {
-      return extractAccessToken(externalData, function(externalData){
-          return $http.get(apiBaseUri + 'account/obtainAccessTokenForExternalUser', {
-            params: {
-              provider: externalData.provider,
-              externalAccessToken: externalData.externalAccessToken
-            }
-          });
-      });
-    };
-
-    authService.registerExternalUser = function(externalRegistrationData) {
-      return extractAccessToken(externalRegistrationData, function(externalData){
-          return $http.post(apiBaseUri + 'account/registerExternalUser', externalData);
-      });
     };
 
     return authService;
