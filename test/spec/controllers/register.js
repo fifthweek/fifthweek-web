@@ -10,12 +10,16 @@ describe('Controller: RegisterCtrl', function() {
   var $rootScope;
   var authService;
   var $q;
+  var $location;
+  var webSettings;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($controller, _$rootScope_, _$q_) {
+  beforeEach(inject(function($controller, _$rootScope_, _$q_, _$location_, _webSettings_) {
     $rootScope = _$rootScope_;
     $q = _$q_;
     scope = $rootScope.$new();
+    $location = _$location_;
+    webSettings = _webSettings_;
 
     authService = {};
 
@@ -39,11 +43,21 @@ describe('Controller: RegisterCtrl', function() {
         return deferred.promise;
       };
 
+      authService.signIn = function() {
+        var deferred = $q.defer();
+        deferred.resolve();
+        return deferred.promise;
+      };
+
+      spyOn($location, 'path').and.callThrough();
+
       scope.register();
       $rootScope.$apply();
 
-      expect(scope.message).toContain('success');
+      expect(scope.message).toContain('Signing in...');
       expect(scope.savedSuccessfully).toBe(true);
+    
+      expect($location.path).toHaveBeenCalledWith(webSettings.successfulSignInPath);
     });
 
     it('should display an error on unsuccessful registration', function() {

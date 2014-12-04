@@ -62,6 +62,8 @@ describe('Service: authService', function() {
         password: 'PASSWORD'
       };
 
+      setupSignOutExpectations();
+
       $httpBackend.expectPOST(webSettings.apiBaseUri + 'token').respond(
         200,
         {
@@ -76,6 +78,8 @@ describe('Service: authService', function() {
       authService.signIn(signInData).then(function(response){
         result = response;
       });
+
+      executeSignOutExpectations();
 
       $httpBackend.flush();
       $rootScope.$apply();
