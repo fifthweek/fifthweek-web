@@ -17,7 +17,7 @@ angular.module('webApp').controller(
         authService.registerInternalUser($scope.registrationData).then(
           function() {
             $scope.savedSuccessfully = true;
-            $scope.message = 'Account Created! Signing in...';
+            $scope.message = 'Signing in...';
 
             var signInData = {
               username: $scope.registrationData.username,

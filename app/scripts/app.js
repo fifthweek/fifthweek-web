@@ -36,6 +36,14 @@ angular
         templateUrl: 'views/help.html',
         controller: 'HelpCtrl'
       })
+      .when('/account', {
+        templateUrl: 'views/account.html',
+        controller: 'AccountCtrl'
+      })
+      .when('/signout', {
+        templateUrl: 'views/signout.html',
+        controller: 'SignOutCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -43,5 +51,6 @@ angular
   .constant('webSettings', {
     apiBaseUri: 'https://10.211.55.3:44301/',
     clientId: 'fifthweek.web.1',
-    successfulSignInPath: '/orders'
+    successfulSignInPath: '/account',
+    successfulSignOutPath: '/signin'
   });
