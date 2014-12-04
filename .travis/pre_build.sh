@@ -1,6 +1,6 @@
 
 echo Replacing API uri
-replace "https://localhost:9000" "https://fifthweek-api.azurewebsites.net" -- app/scripts/app.js
+replace "https://10.211.55.3:44301" "https://fifthweek-api.azurewebsites.net" -- app/scripts/app.js
 
 echo Browser Stack Username:
 echo $BROWSER_STACK_USERNAME
