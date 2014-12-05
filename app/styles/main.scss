@@ -64,7 +64,7 @@ h1 {
  */
 .fifthweek-video{
   border-radius: $border-radius-base;
-  padding:20px;
+  padding:30px 18px;
   margin:20px 0 30px 0;
   background-color: $gray-lighter;
 }
@@ -72,9 +72,15 @@ h1 {
   margin-bottom: 20px;
 } 
 
-@media (min-width: $screen-md-min) and (max-width: $screen-md-max) { 
+@media (min-width: $screen-md-min) { 
+  .fifthweek-video h4:first-child {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: $screen-sm-max) { 
   .fifthweek-video .embed-responsive {
-    margin-top: 15px;
+    margin-bottom: 20px;
   }
 }
 
