@@ -14,7 +14,7 @@ exports.config = {
 
   multiCapabilities: [{
       'browserName': 'firefox',
-      'os': 'Windows',
+      'os': 'OS X',
       'build': bsConfig.build,
       'project': bsConfig.project,
       'browserstack.debug': bsConfig.debug,
