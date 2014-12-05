@@ -16,7 +16,7 @@ describe('fifthweek', function() {
   //});
 
   it('should have a register link', function() {
-    expect(registerLink.getText()).toContain('Register');
+    expect(registerLink.getText()).toContain('Become a creator');
   });
 
   describe('register page', function() {

@@ -1,12 +1,5 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
-$body-bg: rgb(245, 240, 233);
-$brand-primary: #3d3936;
-$gray-base: darken($brand-primary, 13.5%);
-$navbar-inverse-bg: $brand-primary;
-$text-color: $brand-primary;
-$link-color: lighten($brand-primary, 27%);
-
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
@@ -19,6 +12,16 @@ $link-color: lighten($brand-primary, 27%);
   text-align: center;
 }
 
+/*
+ * Required to clear fixed navbar.
+ */
+body { 
+  padding-top: 70px; 
+}
+h1 {
+  font-weight: 200;
+  margin:10px 0 30px 0;
+}
 
 /*
  * override the default Loading Bar CSS
@@ -41,41 +44,6 @@ $link-color: lighten($brand-primary, 27%);
   }
 }
 
-
-/*
- * Navbar overrides
- */
-.navbar {
-  border-radius: 0px;
-}
-.navbar-inverse .navbar-nav{
-  font-size: 21px;
-}
-.nav > li > a{
-  padding: 14px;
-}
-.nav-small-text {
-  font-size: 16px;
-  padding-left: 0px;
-  vertical-align: top;
-}
-/* 
- * These styles stop the navbar links staying white after being clicked
- * due to the default styles setting focused buttons to white.
- */
-.navbar-inverse .navbar-brand:focus {
-  color: #9d9d9d;
-}
-.navbar-inverse .navbar-brand:hover {
-  color: #fff;
-}
-.navbar-inverse .navbar-nav li a:focus{
-  color: #9d9d9d;
-}
-.navbar-inverse .navbar-nav li a:hover{
-  color: #fff;
-}
-
 /*
  * Fifthweek logo
  */
@@ -92,35 +60,28 @@ $link-color: lighten($brand-primary, 27%);
 }
 
 /*
- * Misc
+ * Fifthweek video
  */
 .fifthweek-video{
-  @include size(400px, 240px);
-  line-height: 240px;
-  background: $gray;
-  text-align: center;
-  vertical-align: middle;
-  border-color: $gray-dark;
-  border-width: 1px;
-  border-style: solid;
+  border-radius: $border-radius-base;
+  padding:20px;
+  margin:20px 0 30px 0;
+  background-color: $gray-lighter;
 }
-.fifthweek-video-content{
-  display: inline-block;
-  vertical-align: middle;
-  line-height: normal; 
-  font-size: 32px;
-  color: white;
-}
-@media (min-width: $screen-sm-min) {
-  .fifthweek-video{
-    @include size(800px * 0.75, 480px * 0.75);
-    line-height: 480px * 0.75;
-  }
-}
-@media (min-width: $screen-lg-min) {
-  .fifthweek-video{
-    @include size(800px * 0.9, 480px * 0.9);
-    line-height: 480px * 0.9;
+.fifthweek-video p {
+  margin-bottom: 20px;
+} 
+
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) { 
+  .fifthweek-video .embed-responsive {
+    margin-top: 15px;
   }
 }
 
+
+/*
+ * Misc
+ */
+.vcenter {
+    vertical-align: middle;
+}
