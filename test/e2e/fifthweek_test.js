@@ -30,7 +30,7 @@ describe('fifthweek', function() {
     });
 
     it('should allow a new user to register', function(){
-      emailTextBox.sendKeys("email@mailinator.com");
+      emailTextBox.sendKeys(username + '@mailinator.com');
       usernameTextBox.sendKeys(username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
