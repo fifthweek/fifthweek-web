@@ -7,6 +7,7 @@ angular.module('webApp').controller(
       $scope.message = '';
 
       $scope.registrationData = {
+        exampleWork: '',
         email: '',
         username: '',
         password: ''
