@@ -456,6 +456,15 @@ module.exports = function (grunt) {
     'protractor:run'
   ]);
 
+  grunt.registerTask('ftest', [
+    'clean:server',
+    'concurrent:test',
+    'autoprefixer',
+    'connect:test',
+    'karma',
+    'protractor:runLocal'
+  ]);
+
   grunt.registerTask('ptest', [
     'clean:server',
     'concurrent:test',

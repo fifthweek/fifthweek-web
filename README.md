@@ -14,20 +14,29 @@
 
 ## Running tests
 
-- Karma tests with a fast refresh:
+-   Karma tests and Protractor on local webdriver server:
+
+        grunt ftest
+
+-   Karma tests with a fast refresh:
 
         cd test
         ../node_modules/karma/bin/karma start
 
-- Protractor on 5 BrowserStack VMs:
+-   Protractor on 5 BrowserStack VMs:
 
         grunt test
 
-- Protractor on 1 BrowserStack VM:
+-   Protractor on 1 BrowserStack VM:
 
         grunt ptest
 
-- Protractor on local webdriver server:
+-   Protractor on local webdriver server:
 
-        node node_modules/protractor/bin/webdriver-manager start
         grunt pltest
+
+## Check-in procedure
+
+The following must succeed locally before any changes are pushed:
+
+    grunt ftest
