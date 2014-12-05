@@ -400,12 +400,12 @@ module.exports = function (grunt) {
       run: {},
       runFast:{
         options:{
-          configFile: 'test/protractor_fast.conf.js',
+          configFile: 'test/protractor-fast.conf.js',
         }
       },
       runLocal:{
         options:{
-          configFile: 'test/protractor_local.conf.js',
+          configFile: 'test/protractor-local.conf.js',
           args: {
             chromeDriver: 'node_modules/protractor/selenium/chromedriver'
           }
@@ -423,7 +423,7 @@ module.exports = function (grunt) {
               port: 9001
           }
       }
-    }  
+    }
   });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
