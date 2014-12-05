@@ -38,7 +38,12 @@ angular
       })
       .when('/account', {
         templateUrl: 'views/account.html',
-        controller: 'AccountCtrl'
+        controller: 'AccountCtrl',
+        access: {
+          loginRequired: true/*,
+          requiredPermissions: [],
+          permissionCheckType: AtLeastOne*/
+        }
       })
       .when('/signout', {
         templateUrl: 'views/signout.html',

@@ -224,4 +224,96 @@ describe('Service: authService', function() {
       expect(result).toBe('No authentication data available');
     });
   });
+
+  describe('authorize', function(){
+    it('should return authorized for a public page with no permissions', function(){
+      var result = authService.authorize(false);
+      expect(result).toBe(authService.enums.authorizationResult.authorized);
+
+      authService.authentication.isAuth = true;
+      result = authService.authorize(false);
+      expect(result).toBe(authService.enums.authorizationResult.authorized);
+    });
+
+    it('should return notAuthorized for a public page that requires permissions when not logged in', function(){
+      var result = authService.authorize(false, ['Test']);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+
+      result = authService.authorize(false, ['Test', 'Test2'], authService.enums.permissionCheckType.atLeastOne);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+
+      result = authService.authorize(false, ['Test', 'Test2'], authService.enums.permissionCheckType.all);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+    });
+
+    it('should return loginRequired for a page that requires authentication when not logged in', function(){
+      var result = authService.authorize(true);
+      expect(result).toBe(authService.enums.authorizationResult.loginRequired);
+
+      result = authService.authorize(true, ['Test', 'Test2'], authService.enums.permissionCheckType.atLeastOne);
+      expect(result).toBe(authService.enums.authorizationResult.loginRequired);
+
+      result = authService.authorize(true, ['Test', 'Test2'], authService.enums.permissionCheckType.all);
+      expect(result).toBe(authService.enums.authorizationResult.loginRequired);
+    });
+
+    it('should return authorized for a page that requires authentication and no permissions when logged in', function(){
+      authService.authentication.isAuth = true;
+
+      authService.authentication.permissions = undefined;
+      var result = authService.authorize(true);
+      expect(result).toBe(authService.enums.authorizationResult.authorized);
+
+      authService.authentication.permissions = [];
+      result = authService.authorize(true);
+      expect(result).toBe(authService.enums.authorizationResult.authorized);
+    });
+
+    it('should return authorized for a page that requires authentication and no permissions when logged in with no permissions', function(){
+      authService.authentication.isAuth = true;
+
+      var result = authService.authorize(false, ['Test']);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+
+      result = authService.authorize(true, ['Test', 'Test2'], authService.enums.permissionCheckType.atLeastOne);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+
+      result = authService.authorize(true, ['Test', 'Test2'], authService.enums.permissionCheckType.all);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+    });
+
+    it('should return authorized for a page that requires permissions when logged in with those permissions', function(){
+      authService.authentication.isAuth = true;
+      authService.authentication.permissions = ['Test'];
+
+      var result = authService.authorize(false, ['Test']);
+      expect(result).toBe(authService.enums.authorizationResult.authorized);
+
+      var result = authService.authorize(true, ['Test']);
+      expect(result).toBe(authService.enums.authorizationResult.authorized);
+
+      result = authService.authorize(true, ['Test', 'Test2'], authService.enums.permissionCheckType.atLeastOne);
+      expect(result).toBe(authService.enums.authorizationResult.authorized);
+
+      result = authService.authorize(true, ['Test', 'Test2'], authService.enums.permissionCheckType.all);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+
+      result = authService.authorize(true, ['Test2', 'Test3'], authService.enums.permissionCheckType.atLeastOne);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+
+      result = authService.authorize(true, ['Test2']);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+
+      result = authService.authorize(false, ['Test2']);
+      expect(result).toBe(authService.enums.authorizationResult.notAuthorized);
+
+      authService.authentication.permissions = ['Test', 'Test2'];
+
+      result = authService.authorize(true, ['Test', 'Test2'], authService.enums.permissionCheckType.all);
+      expect(result).toBe(authService.enums.authorizationResult.authorized);
+
+      result = authService.authorize(true, ['Test2']);
+      expect(result).toBe(authService.enums.authorizationResult.authorized);
+    });
+  });
 });

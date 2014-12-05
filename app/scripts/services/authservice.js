@@ -7,15 +7,22 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
     var apiBaseUri = webSettings.apiBaseUri;
     var authService = {};
 
+    authService.enums = {
+      authorizationResult: {
+        authorized: 'authorized',
+        loginRequired: 'loginRequired',
+        notAuthorized: 'notAuthorized'
+      },
+      permissionCheckType: {
+        atLeastOne: 'atLeastOne',
+        all: 'all'
+      }
+    };
+
     authService.authentication = {
       isAuth: false,
       username: '',
-    };
-
-    authService.externalAuthData = {
-      provider: '',
-      username: '',
-      externalAccessToken: ''
+      permissions: []
     };
 
     authService.registerInternalUser = function(internalRegistrationData) {
@@ -26,10 +33,10 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
     authService.signIn = function(signInData) {
       authService.signOut();
 
-      var data = 
-       'grant_type=password&username=' + signInData.username + 
-       '&password=' + signInData.password +
-       '&client_id=' + webSettings.clientId;
+      var data =
+        'grant_type=password&username=' + signInData.username +
+        '&password=' + signInData.password +
+        '&client_id=' + webSettings.clientId;
 
       var deferred = $q.defer();
 
@@ -103,13 +110,62 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
           authService.signOut();
           deferred.reject(err);
         });
-      } else {
+      }
+      else {
         deferred.reject('No authentication data available');
       }
 
       return deferred.promise;
     };
 
+    authService.authorize = function(loginRequired, requiredPermissions, permissionCheckType) {
+      var result = authService.enums.authorizationResult.authorized;
+      var hasPermission = true;
+
+      permissionCheckType = permissionCheckType || authService.enums.permissionCheckType.atLeastOne;
+      if (loginRequired === true && authService.authentication.isAuth === false) {
+        result = authService.enums.authorizationResult.loginRequired;
+      }
+      else if ((loginRequired === true && authService.authentication.isAuth !== false) &&
+        (requiredPermissions === undefined || requiredPermissions.length === 0)) {
+        // Login is required but no specific permissions are specified.
+        result = authService.enums.authorizationResult.authorized;
+      }
+      else if (requiredPermissions) {
+        var loweredPermissions = [];
+
+        angular.forEach(authService.authentication.permissions, function(permission) {
+          loweredPermissions.push(permission.toLowerCase());
+        });
+
+        for (var i = 0; i < requiredPermissions.length; i += 1) {
+          var permission = requiredPermissions[i].toLowerCase();
+
+          if (permissionCheckType === authService.enums.permissionCheckType.all) {
+            hasPermission = hasPermission && loweredPermissions.indexOf(permission) > -1;
+            // if all the permissions are required and hasPermission is false there is no point carrying on
+            if (hasPermission === false) {
+              break;
+            }
+          }
+          else if (permissionCheckType === authService.enums.permissionCheckType.atLeastOne) {
+            hasPermission = loweredPermissions.indexOf(permission) > -1;
+            // if we only need one of the permissions and we have it there is no point carrying on
+            if (hasPermission) {
+              break;
+            }
+          }
+        }
+
+      result = hasPermission ?
+        authService.enums.authorizationResult.authorized :
+        authService.enums.authorizationResult.notAuthorized;
+    }
+
+      return result;
+    };
+
     return authService;
   }
 ]);
+

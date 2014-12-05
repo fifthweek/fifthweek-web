@@ -27,7 +27,7 @@ describe('Controller: SignInCtrl', function() {
       $scope: scope,
       $location: $location,
       authService: authService,
-      webSettings: webSettings,
+      webSettings: webSettings
     });
   }));
 

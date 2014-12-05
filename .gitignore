@@ -5,3 +5,4 @@ dist
 bower_components
 .travis/deploy_key
 .travis/deploy_key.pub
+.idea
