@@ -35,9 +35,9 @@ describe('Controller: RegisterCtrl', function() {
     expect(scope.registrationData.password).toBe('');
   });
 
-  describe('registerInternalUser', function(){
+  describe('registerUser', function(){
     it('should redirect on successful registration', function() {
-      authService.registerInternalUser = function() {
+      authService.registerUser = function() {
         var deferred = $q.defer();
         deferred.resolve();
         return deferred.promise;
@@ -56,12 +56,12 @@ describe('Controller: RegisterCtrl', function() {
 
       expect(scope.message).toContain('Signing in...');
       expect(scope.savedSuccessfully).toBe(true);
-    
+
       expect($location.path).toHaveBeenCalledWith(webSettings.successfulSignInPath);
     });
 
     it('should display an error on unsuccessful registration', function() {
-      authService.registerInternalUser = function() {
+      authService.registerUser = function() {
         var deferred = $q.defer();
         deferred.reject({
           data: {

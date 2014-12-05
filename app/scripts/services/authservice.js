@@ -18,16 +18,16 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
       externalAccessToken: ''
     };
 
-    authService.registerInternalUser = function(internalRegistrationData) {
+    authService.registerUser = function(internalRegistrationData) {
       authService.signOut();
-      return $http.post(apiBaseUri + 'account/registerInternalUser', internalRegistrationData);
+      return $http.post(apiBaseUri + 'account/registerUser', internalRegistrationData);
     };
 
     authService.signIn = function(signInData) {
       authService.signOut();
 
-      var data = 
-       'grant_type=password&username=' + signInData.username + 
+      var data =
+       'grant_type=password&username=' + signInData.username +
        '&password=' + signInData.password +
        '&client_id=' + webSettings.clientId;
 

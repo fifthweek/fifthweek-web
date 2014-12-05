@@ -37,15 +37,15 @@ describe('Service: authService', function() {
     expect(authService.authentication.username).toBeFalsy();
   };
 
-  describe('registerInternalUser', function(){
+  describe('registerUser', function(){
     it('should ensure the user is logged out and call the register API', function() {
 
       setupSignOutExpectations();
 
-      $httpBackend.expectPOST(webSettings.apiBaseUri + 'account/registerInternalUser').respond(200, 'Success');
+      $httpBackend.expectPOST(webSettings.apiBaseUri + 'account/registerUser').respond(200, 'Success');
 
       var result;
-      authService.registerInternalUser({username: 'user'}).then(function(response) { result = response; });
+      authService.registerUser({username: 'user'}).then(function(response) { result = response; });
 
       executeSignOutExpectations();
 
