@@ -451,9 +451,7 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma',
-    'browserstackTunnel',
-    'protractor:run'
+    'karma'
   ]);
 
   grunt.registerTask('ftest', [
