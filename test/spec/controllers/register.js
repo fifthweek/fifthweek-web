@@ -28,15 +28,16 @@ describe('Controller: RegisterCtrl', function() {
       authService: authService
     });
   }));
-
+  
   it('should contain empty registration data on creation', function() {
+    expect(scope.registrationData.exampleWork).toBe('');
     expect(scope.registrationData.email).toBe('');
     expect(scope.registrationData.username).toBe('');
     expect(scope.registrationData.password).toBe('');
   });
 
   describe('registerUser', function(){
-    it('should redirect on successful registration', function() {
+    it('should navigate to dashboard on successful registration', function() {
       authService.registerUser = function() {
         var deferred = $q.defer();
         deferred.resolve();
@@ -57,7 +58,7 @@ describe('Controller: RegisterCtrl', function() {
       expect(scope.message).toContain('Signing in...');
       expect(scope.savedSuccessfully).toBe(true);
 
-      expect($location.path).toHaveBeenCalledWith(webSettings.successfulSignInPath);
+      expect($location.path).toHaveBeenCalledWith('/dashboard');
     });
 
     it('should display an error on unsuccessful registration', function() {
