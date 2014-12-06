@@ -33,12 +33,16 @@ angular
         controller: 'RegisterCtrl'
       })
       .when('/help', {
-        templateUrl: 'views/help.html',
+        templateUrl: 'views/dashboard.html',
         controller: 'HelpCtrl'
       })
       .when('/account', {
         templateUrl: 'views/account.html',
         controller: 'AccountCtrl'
+      })
+      .when('/dashboard', {
+        templateUrl: 'views/dashboard.html',
+        controller: 'DashboardCtrl'
       })
       .when('/signout', {
         templateUrl: 'views/signout.html',
@@ -51,6 +55,6 @@ angular
   .constant('webSettings', {
     apiBaseUri: 'https://10.211.55.3:44301/',
     clientId: 'fifthweek.web.1',
-    successfulSignInPath: '/account',
+    successfulSignInPath: '/dashboard',
     successfulSignOutPath: '/signin'
   });
