@@ -28,7 +28,7 @@ describe('Controller: RegisterCtrl', function() {
       authService: authService
     });
   }));
-  
+
   it('should contain empty registration data on creation', function() {
     expect(scope.registrationData.exampleWork).toBe('');
     expect(scope.registrationData.email).toBe('');

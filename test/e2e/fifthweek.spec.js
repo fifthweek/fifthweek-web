@@ -20,6 +20,7 @@ describe('fifthweek', function() {
   });
 
   describe('register page', function() {
+    var exampleWorkTextBox = element(by.model('registrationData.exampleWork'));
     var emailTextBox = element(by.model('registrationData.email'));
     var usernameTextBox = element(by.model('registrationData.username'));
     var passwordTextBox = element(by.model('registrationData.password'));
@@ -30,10 +31,44 @@ describe('fifthweek', function() {
     });
 
     it('should allow a new user to register', function(){
+      exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(username + '@mailinator.com');
       usernameTextBox.sendKeys(username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
+      // Todo: assert check for success
+    });
+
+    it('requires example work', function(){
+      emailTextBox.sendKeys(username + '@mailinator.com');
+      usernameTextBox.sendKeys(username);
+      passwordTextBox.sendKeys('password1');
+      registerButton.click();
+      // Todo: assert failure
+    });
+
+    it('requires email address', function(){
+      exampleWorkTextBox.sendKeys(username);
+      usernameTextBox.sendKeys(username);
+      passwordTextBox.sendKeys('password1');
+      registerButton.click();
+      // Todo: assert failure
+    });
+
+    it('requires username', function(){
+      exampleWorkTextBox.sendKeys(username);
+      emailTextBox.sendKeys(username + '@mailinator.com');
+      passwordTextBox.sendKeys('password1');
+      registerButton.click();
+      // Todo: assert failure
+    });
+
+    it('requires password', function(){
+      exampleWorkTextBox.sendKeys(username);
+      emailTextBox.sendKeys(username + '@mailinator.com');
+      usernameTextBox.sendKeys(username);
+      registerButton.click();
+      // Todo: assert failure
     });
   });
 });
