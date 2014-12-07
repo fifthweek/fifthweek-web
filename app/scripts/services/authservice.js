@@ -25,9 +25,9 @@ angular.module('webApp').factory('authService', ['$http', '$q', 'localStorageSer
       permissions: []
     };
 
-    authService.registerInternalUser = function(internalRegistrationData) {
+    authService.registerUser = function(internalRegistrationData) {
       authService.signOut();
-      return $http.post(apiBaseUri + 'account/registerInternalUser', internalRegistrationData);
+      return $http.post(apiBaseUri + 'account/registerUser', internalRegistrationData);
     };
 
     authService.signIn = function(signInData) {

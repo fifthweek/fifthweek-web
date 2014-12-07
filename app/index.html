@@ -24,41 +24,51 @@
 
     <!-- Add your site or application content here -->
     <toaster-container></toaster-container>
-    
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand fifthweek-logo header-logo" href="#/">fifthweek</a>
-        </div>
+    <header data-ng-controller="IndexCtrl">
+      <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand fifthweek-logo header-logo"
+               href="#/{{authentication.isAuth ? 'dashboard' : ''}}">fifthweek</a>
+          </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#/" aria-label="Home">Home</a></li>
-            <li data-ng-hide="authentication.isAuth"><a href="#/register" aria-label="Register">Register</a></li>
-            <li data-ng-hide="authentication.isAuth"><a href="#/signin" aria-label="Register">Sign In</a></li>
-            <li data-ng-hide="!authentication.isAuth"><a href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text">{{authentication.username}}</span></a></li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li data-ng-hide="authentication.isAuth"><a href="#/" aria-label="Home">Home</a></li>
+              <li data-ng-hide="authentication.isAuth"><a href="#/register" aria-label="Register">Register</a></li>
+              <li data-ng-hide="authentication.isAuth"><a href="#/signin" aria-label="Sign in">Sign In</a></li>
+              <li data-ng-hide="!authentication.isAuth"><a href="#/dashboard">Dashboard</a></li>
+              <li data-ng-hide="!authentication.isAuth"><a href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text">{{authentication.username}}</span></a></li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+    </header>
 
     <div class="container">
-        <div data-ng-view="">
-        </div>
+      <div data-ng-view="">
+      </div>
 
-        <hr>
+      <hr>
 
-        <footer>
+      <footer>
+        <div class="row">
+          <div class="col-xs-6">
             <p>&copy; Fifthweek 2014</p>
-        </footer>
+          </div>
+          <div class="col-xs-6">
+            <p id="browserStackMention" class="text-right">Tested on <a href="http://www.browserstack.com/">BrowserStack</a></p>
+          </div>
+        </div>
+      </footer>
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -107,7 +117,7 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/help.js"></script>
+        <script src="scripts/controllers/dashboard.js"></script>
         <script src="scripts/controllers/signin.js"></script>
         <script src="scripts/controllers/home.js"></script>
         <script src="scripts/controllers/index.js"></script>

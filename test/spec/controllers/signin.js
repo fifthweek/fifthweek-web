@@ -31,7 +31,7 @@ describe('Controller: SignInCtrl', function() {
     });
   }));
 
-  it('should navigate to the orders screen on successful sign in', function() {
+  it('should navigate to the dashboard on successful sign in', function() {
 
     authService.signIn = function() {
       var deferred = $q.defer();
@@ -44,7 +44,7 @@ describe('Controller: SignInCtrl', function() {
     scope.signIn();
     $rootScope.$apply();
 
-    expect($location.path).toHaveBeenCalledWith(webSettings.successfulSignInPath);
+    expect($location.path).toHaveBeenCalledWith("/dashboard");
   });
 
   it('should display a message on unsuccessful sign in', function() {

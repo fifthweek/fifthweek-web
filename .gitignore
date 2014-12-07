@@ -1,8 +1,8 @@
 node_modules
 dist
+.idea
 .tmp
 .sass-cache
 bower_components
 .travis/deploy_key
 .travis/deploy_key.pub
-.idea
