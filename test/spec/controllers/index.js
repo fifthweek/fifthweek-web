@@ -9,11 +9,13 @@ describe('Controller: IndexCtrl', function() {
   var scope;
   var $location;
   var authenticationService;
+  var fifthweekConstants;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($controller, $rootScope, _$location_) {
+  beforeEach(inject(function($controller, $rootScope, _$location_, _fifthweekConstants_) {
     scope = $rootScope.$new();
     $location = _$location_;
+    fifthweekConstants = _fifthweekConstants_;
 
     authenticationService = function() {};
     authenticationService.currentUser = 'ABCD';
@@ -34,7 +36,7 @@ describe('Controller: IndexCtrl', function() {
     scope.signOut();
 
     expect(authenticationService.signOut).toHaveBeenCalled();
-    expect($location.path).toHaveBeenCalledWith('/home');
+    expect($location.path).toHaveBeenCalledWith(fifthweekConstants.homePage);
   });
 
   it('should add the authentication information to the scope', function() {

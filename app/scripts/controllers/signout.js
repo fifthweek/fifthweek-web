@@ -1,9 +1,9 @@
 
 angular.module('webApp')
-  .controller('SignOutCtrl', ['$location', 'authenticationService', 'webSettings',
-  	function($location, authenticationService, webSettings) {
+  .controller('SignOutCtrl', ['$location', 'authenticationService', 'fifthweekConstants',
+  	function($location, authenticationService, fifthweekConstants) {
 		'use strict';
 			authenticationService.signOut();
-			$location.path(webSettings.successfulSignOutPath);
+			$location.path(fifthweekConstants.signInPage);
   	}
   ]);

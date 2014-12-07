@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
-  'SignInCtrl', ['$scope', '$location', 'authenticationService', 'webSettings',
-    function($scope, $location, authenticationService, webSettings) {
+  'SignInCtrl', ['$scope', '$location', 'authenticationService', 'fifthweekConstants',
+    function($scope, $location, authenticationService, fifthweekConstants) {
       'use strict';
 
       $scope.signInData = {
@@ -13,7 +13,7 @@ angular.module('webApp').controller(
       $scope.signIn = function() {
         return authenticationService.signIn($scope.signInData).then(
           function() {
-            $location.path(webSettings.successfulSignInPath);
+            $location.path(fifthweekConstants.dashboardPage);
           },
           function(err) {
             $scope.message = err.error_description;

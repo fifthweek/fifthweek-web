@@ -1,7 +1,7 @@
 /// <reference path='../angular.module('webApp')js' />
 
-angular.module('webApp').factory('routeChangeAuthorizationHandler', ['authorizationService', 'authorizationServiceConstants', '$rootScope', '$location', 'webSettings',
-  function(authorizationService, authorizationServiceConstants, $rootScope, $location, webSettings) {
+angular.module('webApp').factory('routeChangeAuthorizationHandler', ['authorizationService', 'authorizationServiceConstants', '$rootScope', '$location', 'fifthweekConstants',
+  function(authorizationService, authorizationServiceConstants, $rootScope, $location, fifthweekConstants) {
     'use strict';
 
     var service = {};
@@ -11,7 +11,7 @@ angular.module('webApp').factory('routeChangeAuthorizationHandler', ['authorizat
 
     service.handleRouteChangeStart = function(next){
 
-      if (routeChangeRequiredAfterLogin && next.originalPath !== webSettings.signInPage) {
+      if (routeChangeRequiredAfterLogin && next.originalPath !== fifthweekConstants.signInPage) {
         routeChangeRequiredAfterLogin = false;
         $location.path(loginRedirectUrl).replace();
       }
@@ -24,10 +24,10 @@ angular.module('webApp').factory('routeChangeAuthorizationHandler', ['authorizat
         if (authorised === authorizationServiceConstants.authorizationResult.loginRequired) {
           routeChangeRequiredAfterLogin = true;
           loginRedirectUrl = next.originalPath;
-          $location.path(webSettings.signInPage).replace();
+          $location.path(fifthweekConstants.signInPage).replace();
         }
         else if (authorised === authorizationServiceConstants.authorizationResult.notAuthorized) {
-          $location.path(webSettings.notAuthorizedPage).replace();
+          $location.path(fifthweekConstants.notAuthorizedPage).replace();
         }
       }
     };

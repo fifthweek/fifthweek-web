@@ -9,7 +9,7 @@ describe('Service: routeChangeAuthorizationHandler', function () {
   var routeChangeAuthorizationHandler;
   var $location;
   var $rootScope;
-  var webSettings;
+  var fifthweekConstants;
   var authorizationServiceConstants;
 
   beforeEach(function() {
@@ -24,7 +24,7 @@ describe('Service: routeChangeAuthorizationHandler', function () {
     routeChangeAuthorizationHandler = $injector.get('routeChangeAuthorizationHandler');
     $location = $injector.get('$location');
     $rootScope = $injector.get('$rootScope');
-    webSettings = $injector.get('webSettings');
+    fifthweekConstants = $injector.get('fifthweekConstants');
     authorizationServiceConstants = $injector.get('authorizationServiceConstants');
   }));
 
@@ -56,7 +56,7 @@ describe('Service: routeChangeAuthorizationHandler', function () {
       };
       routeChangeAuthorizationHandler.handleRouteChangeStart(next);
 
-      expect($location.path).toHaveBeenCalledWith(webSettings.signInPage);
+      expect($location.path).toHaveBeenCalledWith(fifthweekConstants.signInPage);
 
       routeChangeAuthorizationHandler.handleRouteChangeStart(next);
 
@@ -72,7 +72,7 @@ describe('Service: routeChangeAuthorizationHandler', function () {
       };
       routeChangeAuthorizationHandler.handleRouteChangeStart(next);
 
-      expect($location.path).toHaveBeenCalledWith(webSettings.notAuthorizedPage);
+      expect($location.path).toHaveBeenCalledWith(fifthweekConstants.notAuthorizedPage);
     });
   });
 });

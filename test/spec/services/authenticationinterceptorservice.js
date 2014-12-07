@@ -12,6 +12,7 @@ describe('Service: authenticationInterceptorService', function() {
   var authenticationInterceptorService;
   var localStorageService;
   var authenticationService;
+  var fifthweekConstants;
 
   beforeEach(function() {
     localStorageService = {};
@@ -28,6 +29,7 @@ describe('Service: authenticationInterceptorService', function() {
     $location = $injector.get('$location');
     $httpBackend = $injector.get('$httpBackend');
     authenticationInterceptorService = $injector.get('authenticationInterceptorService');
+    fifthweekConstants = $injector.get('fifthweekConstants');
   }));
 
   describe('request', function() {
@@ -44,13 +46,14 @@ describe('Service: authenticationInterceptorService', function() {
 
   describe('responseError', function() {
     var rejection;
+    var testUrl = '/testUrl';
 
     beforeEach(function(){
       rejection = {
         status: 401,
         config: {
           method: 'GET',
-          url: '/testUrl'
+          url: testUrl
         }
       };
     });
@@ -78,7 +81,7 @@ describe('Service: authenticationInterceptorService', function() {
         return deferred.promise;
       };
 
-      $httpBackend.expectGET('/testUrl').respond(200, 'Success');
+      $httpBackend.expectGET(testUrl).respond(200, 'Success');
 
       var result;
       authenticationInterceptorService.responseError(rejection).then(
@@ -104,7 +107,7 @@ describe('Service: authenticationInterceptorService', function() {
         return deferred.promise;
       };
 
-      $httpBackend.expectGET('/testUrl').respond(401, 'Forbidden');
+      $httpBackend.expectGET(testUrl).respond(401, 'Forbidden');
 
       var result;
       authenticationInterceptorService.responseError(rejection).catch(
@@ -140,7 +143,7 @@ describe('Service: authenticationInterceptorService', function() {
       expect(result).toBeDefined();
       expect(result.status).toBe(401);
 
-      expect($location.path).toHaveBeenCalledWith('/signin');
+      expect($location.path).toHaveBeenCalledWith(fifthweekConstants.signInPage);
     });
   });
 });

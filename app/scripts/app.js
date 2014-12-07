@@ -18,50 +18,54 @@ angular
     'toaster',
     'angular-loading-bar'
   ])
-  .config(function ($routeProvider) {
+  .constant('fifthweekConstants', {
+    apiBaseUri: 'https://10.211.55.3:44301/',
+    clientId: 'fifthweek.web.1',
+    homePage: '/',
+    signInPage: '/signin',
+    signOutPage: '/signout',
+    registerPage: '/register',
+    accountPage: '/account',
+    dashboardPage: '/dashboard',
+    notAuthorizedPage: '/notauthorized'
+  })
+  .config(['$routeProvider', 'fifthweekConstants',
+    function ($routeProvider, fifthweekConstants) {
     $routeProvider
-      .when('/', {
+      .when(fifthweekConstants.homePage, {
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl'
       })
-      .when('/signin', {
+      .when(fifthweekConstants.signInPage, {
         templateUrl: 'views/signin.html',
         controller: 'SignInCtrl'
       })
-      .when('/register', {
+      .when(fifthweekConstants.registerPage, {
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl'
       })
-      .when('/help', {
-        templateUrl: 'views/dashboard.html',
-        controller: 'HelpCtrl'
-      })
-      .when('/account', {
+      .when(fifthweekConstants.accountPage, {
         templateUrl: 'views/account.html',
         controller: 'AccountCtrl',
         access: {
-          loginRequired: true/*,
-          requiredPermissions: [],
-          permissionCheckType: AtLeastOne*/
+          loginRequired: true
         }
       })
-      .when('/dashboard', {
+      .when(fifthweekConstants.dashboardPage, {
         templateUrl: 'views/dashboard.html',
-        controller: 'DashboardCtrl'
+        controller: 'DashboardCtrl',
+        access: {
+          loginRequired: true
+        }
       })
-      .when('/signout', {
+      .when(fifthweekConstants.signOutPage, {
         templateUrl: 'views/signout.html',
         controller: 'SignOutCtrl'
       })
+      .when(fifthweekConstants.notAuthorizedPage, {
+        redirectTo: fifthweekConstants.homePage
+      })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: fifthweekConstants.homePage
       });
-  })
-  .constant('webSettings', {
-    apiBaseUri: 'https://10.211.55.3:44301/',
-    clientId: 'fifthweek.web.1',
-    successfulSignInPath: '/dashboard',
-    successfulSignOutPath: '/signin',
-    signInPage: '/signin',
-    notAuthorizedPage: '/notauthorized'
-  });
+  }]);

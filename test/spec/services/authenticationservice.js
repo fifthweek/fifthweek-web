@@ -9,7 +9,7 @@ describe('Service: authenticationService', function() {
   var $rootScope;
   var authenticationService;
   var localStorageService;
-  var webSettings;
+  var fifthweekConstants;
 
   beforeEach(function() {
     localStorageService = {};
@@ -23,7 +23,7 @@ describe('Service: authenticationService', function() {
     authenticationService = $injector.get('authenticationService');
     $httpBackend = $injector.get('$httpBackend');
     $rootScope = $injector.get('$rootScope');
-    webSettings = $injector.get('webSettings');
+    fifthweekConstants = $injector.get('fifthweekConstants');
   }));
 
   var setupSignOutExpectations = function(){
@@ -42,7 +42,7 @@ describe('Service: authenticationService', function() {
 
       setupSignOutExpectations();
 
-      $httpBackend.expectPOST(webSettings.apiBaseUri + 'account/registerUser').respond(200, 'Success');
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'account/registerUser').respond(200, 'Success');
 
       var result;
       authenticationService.registerUser({username: 'user'}).then(function(response) { result = response; });
@@ -64,7 +64,7 @@ describe('Service: authenticationService', function() {
 
       setupSignOutExpectations();
 
-      $httpBackend.expectPOST(webSettings.apiBaseUri + 'token').respond(
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
         200,
         {
           access_token: 'ACCESSTOKEN',
@@ -102,7 +102,7 @@ describe('Service: authenticationService', function() {
         password: 'PASSWORD'
       };
 
-      $httpBackend.expectPOST(webSettings.apiBaseUri + 'token').respond(500, 'Bad');
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(500, 'Bad');
 
       setupSignOutExpectations();
 
@@ -170,7 +170,7 @@ describe('Service: authenticationService', function() {
         refresh_token: 'REFRESHTOKEN'
       };
 
-      $httpBackend.expectPOST(webSettings.apiBaseUri + 'token').respond(200, mockResponse);
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, mockResponse);
 
       var result;
       authenticationService.refreshToken().then(function(response){
@@ -191,7 +191,7 @@ describe('Service: authenticationService', function() {
 
       localStorageService.set = jasmine.createSpy();
 
-      $httpBackend.expectPOST(webSettings.apiBaseUri + 'token').respond(500, 'Bad');
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(500, 'Bad');
 
       setupSignOutExpectations();
 

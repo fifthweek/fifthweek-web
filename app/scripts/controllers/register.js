@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
-  'RegisterCtrl', ['$scope', '$location', 'authenticationService', 'webSettings',
-    function($scope, $location, authenticationService, webSettings) {
+  'RegisterCtrl', ['$scope', '$location', 'authenticationService', 'fifthweekConstants',
+    function($scope, $location, authenticationService, fifthweekConstants) {
       'use strict';
 
       $scope.savedSuccessfully = false;
@@ -27,7 +27,7 @@ angular.module('webApp').controller(
 
             authenticationService.signIn(signInData).then(
               function() {
-                $location.path(webSettings.successfulSignInPath);
+                $location.path(fifthweekConstants.dashboardPage);
               },
               function(err) {
                 $scope.message = err.error_description;

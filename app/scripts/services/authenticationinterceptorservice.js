@@ -1,5 +1,6 @@
-angular.module('webApp').factory('authenticationInterceptorService', ['$q', '$injector', '$location', 'localStorageService',
-  function($q, $injector, $location, localStorageService) {
+angular.module('webApp').factory('authenticationInterceptorService',
+  ['$q', '$injector', '$location', 'localStorageService', 'fifthweekConstants',
+  function($q, $injector, $location, localStorageService, fifthweekConstants) {
     'use strict';
 
     var factory = {
@@ -32,7 +33,7 @@ angular.module('webApp').factory('authenticationInterceptorService', ['$q', '$in
             return deferred.promise;
           },
           function() {
-            $location.path('/signin');
+            $location.path(fifthweekConstants.signInPage);
             return $q.reject(rejection);
           });
       }

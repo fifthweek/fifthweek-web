@@ -1,10 +1,10 @@
 /// <reference path='../angular.module('webApp')js' />
 
-angular.module('webApp').factory('authenticationService', ['$http', '$q', 'localStorageService', 'webSettings',
-  function($http, $q, localStorageService, webSettings) {
+angular.module('webApp').factory('authenticationService', ['$http', '$q', 'localStorageService', 'fifthweekConstants',
+  function($http, $q, localStorageService, fifthweekConstants) {
     'use strict';
 
-    var apiBaseUri = webSettings.apiBaseUri;
+    var apiBaseUri = fifthweekConstants.apiBaseUri;
     var service = {};
 
     service.currentUser = {
@@ -24,7 +24,7 @@ angular.module('webApp').factory('authenticationService', ['$http', '$q', 'local
       var data =
         'grant_type=password&username=' + signInData.username +
         '&password=' + signInData.password +
-        '&client_id=' + webSettings.clientId;
+        '&client_id=' + fifthweekConstants.clientId;
 
       var deferred = $q.defer();
 
@@ -78,7 +78,7 @@ angular.module('webApp').factory('authenticationService', ['$http', '$q', 'local
 
       if (authData) {
 
-        var data = 'grant_type=refresh_token&refresh_token=' + authData.refreshToken + '&client_id=' + webSettings.clientId;
+        var data = 'grant_type=refresh_token&refresh_token=' + authData.refreshToken + '&client_id=' + fifthweekConstants.clientId;
 
         $http.post(apiBaseUri + 'token', data, {
           headers: {

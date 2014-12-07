@@ -11,15 +11,15 @@ describe('Controller: RegisterCtrl', function() {
   var authenticationService;
   var $q;
   var $location;
-  var webSettings;
+  var fifthweekConstants;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($controller, _$rootScope_, _$q_, _$location_, _webSettings_) {
+  beforeEach(inject(function($controller, _$rootScope_, _$q_, _$location_, _fifthweekConstants_) {
     $rootScope = _$rootScope_;
     $q = _$q_;
     scope = $rootScope.$new();
     $location = _$location_;
-    webSettings = _webSettings_;
+    fifthweekConstants = _fifthweekConstants_;
 
     authenticationService = {};
 

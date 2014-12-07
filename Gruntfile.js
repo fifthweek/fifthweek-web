@@ -455,6 +455,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('ftest', [
+    'jshint',
     'clean:server',
     'concurrent:test',
     'autoprefixer',

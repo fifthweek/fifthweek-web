@@ -11,15 +11,15 @@ describe('Controller: SignInCtrl', function() {
   var $location;
   var $q;
   var authenticationService;
-  var webSettings;
+  var fifthweekConstants;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($controller, _$rootScope_, _$q_, _$location_, _webSettings_) {
+  beforeEach(inject(function($controller, _$rootScope_, _$q_, _$location_, _fifthweekConstants_) {
     $rootScope = _$rootScope_;
     scope = $rootScope.$new();
     $location = _$location_;
     $q = _$q_;
-    webSettings = _webSettings_;
+    fifthweekConstants = _fifthweekConstants_;
 
     authenticationService = function() {};
 
@@ -27,7 +27,7 @@ describe('Controller: SignInCtrl', function() {
       $scope: scope,
       $location: $location,
       authenticationService: authenticationService,
-      webSettings: webSettings
+      fifthweekConstants: fifthweekConstants
     });
   }));
 
@@ -44,7 +44,7 @@ describe('Controller: SignInCtrl', function() {
     scope.signIn();
     $rootScope.$apply();
 
-    expect($location.path).toHaveBeenCalledWith("/dashboard");
+    expect($location.path).toHaveBeenCalledWith('/dashboard');
   });
 
   it('should display a message on unsuccessful sign in', function() {
