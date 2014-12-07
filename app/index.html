@@ -36,17 +36,17 @@
               <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand fifthweek-logo header-logo"
-               href="#/{{authentication.isAuth ? 'dashboard' : ''}}">fifthweek</a>
+               href="#/{{currentUser.authenticated ? 'dashboard' : ''}}">fifthweek</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-              <li data-ng-hide="authentication.isAuth"><a href="#/" aria-label="Home">Home</a></li>
-              <li data-ng-hide="authentication.isAuth"><a href="#/register" aria-label="Register">Register</a></li>
-              <li data-ng-hide="authentication.isAuth"><a href="#/signin" aria-label="Sign in">Sign In</a></li>
-              <li data-ng-hide="!authentication.isAuth"><a href="#/dashboard">Dashboard</a></li>
-              <li data-ng-hide="!authentication.isAuth"><a href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text">{{authentication.username}}</span></a></li>
+              <li data-ng-hide="currentUser.authenticated"><a href="#/" aria-label="Home">Home</a></li>
+              <li data-ng-hide="currentUser.authenticated"><a href="#/register" aria-label="Register">Register</a></li>
+              <li data-ng-hide="currentUser.authenticated"><a href="#/signin" aria-label="Sign in">Sign In</a></li>
+              <li data-ng-hide="!currentUser.authenticated"><a href="#/dashboard">Dashboard</a></li>
+              <li data-ng-hide="!currentUser.authenticated"><a href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text">{{currentUser.username}}</span></a></li>
             </ul>
           </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -122,13 +122,14 @@
         <script src="scripts/controllers/home.js"></script>
         <script src="scripts/controllers/index.js"></script>
         <script src="scripts/controllers/register.js"></script>
-        <script src="scripts/services/authinterceptorservice.js"></script>
-        <script src="scripts/services/authservice.js"></script>
+    <script src="scripts/services/authenticationinterceptorservice.js"></script>
+    <script src="scripts/services/authenticationservice.js"></script>
+    <script src="scripts/services/authorizationservice.js"></script>
         <script src="scripts/startup.js"></script>
         <script src="scripts/controllers/account.js"></script>
         <script src="scripts/controllers/signout.js"></script>
         <script src="scripts/directives/access.js"></script>
-        <script src="scripts/services/routeChangeAuthHandler.js"></script>
+    <script src="scripts/services/routechangeauthorizationhandler.js"></script>
         <!-- endbuild -->
 </body>
 </html>

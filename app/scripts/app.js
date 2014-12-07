@@ -61,5 +61,7 @@ angular
     apiBaseUri: 'https://10.211.55.3:44301/',
     clientId: 'fifthweek.web.1',
     successfulSignInPath: '/dashboard',
-    successfulSignOutPath: '/signin'
+    successfulSignOutPath: '/signin',
+    signInPage: '/signin',
+    notAuthorizedPage: '/notauthorized'
   });

@@ -8,7 +8,7 @@ describe('Controller: RegisterCtrl', function() {
   var RegisterCtrl;
   var scope;
   var $rootScope;
-  var authService;
+  var authenticationService;
   var $q;
   var $location;
   var webSettings;
@@ -21,11 +21,11 @@ describe('Controller: RegisterCtrl', function() {
     $location = _$location_;
     webSettings = _webSettings_;
 
-    authService = {};
+    authenticationService = {};
 
     RegisterCtrl = $controller('RegisterCtrl', {
       $scope: scope,
-      authService: authService
+      authenticationService: authenticationService
     });
   }));
 
@@ -38,13 +38,13 @@ describe('Controller: RegisterCtrl', function() {
 
   describe('registerUser', function(){
     it('should navigate to dashboard on successful registration', function() {
-      authService.registerUser = function() {
+      authenticationService.registerUser = function() {
         var deferred = $q.defer();
         deferred.resolve();
         return deferred.promise;
       };
 
-      authService.signIn = function() {
+      authenticationService.signIn = function() {
         var deferred = $q.defer();
         deferred.resolve();
         return deferred.promise;
@@ -62,7 +62,7 @@ describe('Controller: RegisterCtrl', function() {
     });
 
     it('should display an error on unsuccessful registration', function() {
-      authService.registerUser = function() {
+      authenticationService.registerUser = function() {
         var deferred = $q.defer();
         deferred.reject({
           data: {

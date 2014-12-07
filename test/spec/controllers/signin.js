@@ -10,7 +10,7 @@ describe('Controller: SignInCtrl', function() {
   var scope;
   var $location;
   var $q;
-  var authService;
+  var authenticationService;
   var webSettings;
 
   // Initialize the controller and a mock scope
@@ -21,19 +21,19 @@ describe('Controller: SignInCtrl', function() {
     $q = _$q_;
     webSettings = _webSettings_;
 
-    authService = function() {};
+    authenticationService = function() {};
 
     SignInCtrl = $controller('SignInCtrl', {
       $scope: scope,
       $location: $location,
-      authService: authService,
+      authenticationService: authenticationService,
       webSettings: webSettings
     });
   }));
 
   it('should navigate to the dashboard on successful sign in', function() {
 
-    authService.signIn = function() {
+    authenticationService.signIn = function() {
       var deferred = $q.defer();
       deferred.resolve('success');
       return deferred.promise;
@@ -49,7 +49,7 @@ describe('Controller: SignInCtrl', function() {
 
   it('should display a message on unsuccessful sign in', function() {
 
-    authService.signIn = function() {
+    authenticationService.signIn = function() {
       var deferred = $q.defer();
       var error = {
         error_description: 'bad'

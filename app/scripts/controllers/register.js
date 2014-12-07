@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
-  'RegisterCtrl', ['$scope', '$location', 'authService', 'webSettings',
-    function($scope, $location, authService, webSettings) {
+  'RegisterCtrl', ['$scope', '$location', 'authenticationService', 'webSettings',
+    function($scope, $location, authenticationService, webSettings) {
       'use strict';
 
       $scope.savedSuccessfully = false;
@@ -15,7 +15,7 @@ angular.module('webApp').controller(
 
       $scope.register = function() {
 
-        authService.registerUser($scope.registrationData).then(
+        authenticationService.registerUser($scope.registrationData).then(
           function() {
             $scope.savedSuccessfully = true;
             $scope.message = 'Signing in...';
@@ -25,7 +25,7 @@ angular.module('webApp').controller(
               password: $scope.registrationData.password
             };
 
-            authService.signIn(signInData).then(
+            authenticationService.signIn(signInData).then(
               function() {
                 $location.path(webSettings.successfulSignInPath);
               },

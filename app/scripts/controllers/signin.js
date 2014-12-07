@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
-  'SignInCtrl', ['$scope', '$location', 'authService', 'webSettings',
-    function($scope, $location, authService, webSettings) {
+  'SignInCtrl', ['$scope', '$location', 'authenticationService', 'webSettings',
+    function($scope, $location, authenticationService, webSettings) {
       'use strict';
 
       $scope.signInData = {
@@ -11,7 +11,7 @@ angular.module('webApp').controller(
       $scope.message = '';
 
       $scope.signIn = function() {
-        return authService.signIn($scope.signInData).then(
+        return authenticationService.signIn($scope.signInData).then(
           function() {
             $location.path(webSettings.successfulSignInPath);
           },

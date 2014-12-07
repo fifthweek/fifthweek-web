@@ -1,13 +1,13 @@
-angular.module('webApp').factory('authInterceptorService', ['$q', '$injector', '$location', 'localStorageService',
+angular.module('webApp').factory('authenticationInterceptorService', ['$q', '$injector', '$location', 'localStorageService',
   function($q, $injector, $location, localStorageService) {
     'use strict';
 
-    var authInterceptorServiceFactory = {
+    var factory = {
       unauthorizedCount: 0
     };
     var $http;
 
-    authInterceptorServiceFactory.request = function(config) {
+    factory.request = function(config) {
 
       config.headers = config.headers || {};
 
@@ -19,13 +19,13 @@ angular.module('webApp').factory('authInterceptorService', ['$q', '$injector', '
       return config;
     };
 
-    authInterceptorServiceFactory.responseError = function(rejection) {
+    factory.responseError = function(rejection) {
       if (rejection.status === 401 && !rejection.config.hasRetried) {
         rejection.config.hasRetried = true;
 
-        var authService = $injector.get('authService');
+        var authenticationService = $injector.get('authenticationService');
 
-        return authService.refreshToken().then(
+        return authenticationService.refreshToken().then(
           function() {
             var deferred = $q.defer();
             retryHttpRequest(rejection.config, deferred);
@@ -52,6 +52,6 @@ angular.module('webApp').factory('authInterceptorService', ['$q', '$injector', '
         });
     };
 
-    return authInterceptorServiceFactory;
+    return factory;
   }
 ]);

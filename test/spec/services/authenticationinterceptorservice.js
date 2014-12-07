@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: authInterceptorService', function() {
+describe('Service: authenticationInterceptorService', function() {
 
   // load the service's module
   beforeEach(module('webApp'));
@@ -9,16 +9,16 @@ describe('Service: authInterceptorService', function() {
   var $location;
   var $httpBackend;
   var $q;
-  var authInterceptorService;
+  var authenticationInterceptorService;
   var localStorageService;
-  var authService;
+  var authenticationService;
 
   beforeEach(function() {
     localStorageService = {};
-    authService = {};
+    authenticationService = {};
     module(function($provide) {
       $provide.value('localStorageService', localStorageService);
-      $provide.value('authService', authService);
+      $provide.value('authenticationService', authenticationService);
     });
   });
 
@@ -27,7 +27,7 @@ describe('Service: authInterceptorService', function() {
     $rootScope = $injector.get('$rootScope');
     $location = $injector.get('$location');
     $httpBackend = $injector.get('$httpBackend');
-    authInterceptorService = $injector.get('authInterceptorService');
+    authenticationInterceptorService = $injector.get('authenticationInterceptorService');
   }));
 
   describe('request', function() {
@@ -35,7 +35,7 @@ describe('Service: authInterceptorService', function() {
       localStorageService.get = function() { return { token: 'ABC' }; };
 
       var config = {};
-      var newConfig = authInterceptorService.request(config);
+      var newConfig = authenticationInterceptorService.request(config);
 
       expect(newConfig).toBe(config);
       expect(newConfig.headers.Authorization).toBe('Bearer ABC');
@@ -59,7 +59,7 @@ describe('Service: authInterceptorService', function() {
       rejection.status = 400;
 
       var result;
-      authInterceptorService.responseError(rejection).catch(
+      authenticationInterceptorService.responseError(rejection).catch(
         function(promiseResult) {
           result = promiseResult;
         });
@@ -71,8 +71,8 @@ describe('Service: authInterceptorService', function() {
 
     it('should request a new bearer token and retry the request if the status code is 401', function() {
       localStorageService.get = function() { return { token: 'ABC' }; };
-     
-      authService.refreshToken = function() {
+
+      authenticationService.refreshToken = function() {
         var deferred = $q.defer();
         deferred.resolve();
         return deferred.promise;
@@ -81,7 +81,7 @@ describe('Service: authInterceptorService', function() {
       $httpBackend.expectGET('/testUrl').respond(200, 'Success');
 
       var result;
-      authInterceptorService.responseError(rejection).then(
+      authenticationInterceptorService.responseError(rejection).then(
         function(promiseResult) {
           result = promiseResult;
         });
@@ -93,12 +93,12 @@ describe('Service: authInterceptorService', function() {
       expect(result).toBeDefined();
       expect(result.status).toBe(200);
     });
-    
+
     it('should request a new bearer token if the status code is 401 and retry, and if the retry still says 401 it should give up', function() {
 
       localStorageService.get = function() { return { token: 'ABC' }; };
-     
-      authService.refreshToken = function() {
+
+      authenticationService.refreshToken = function() {
         var deferred = $q.defer();
         deferred.resolve();
         return deferred.promise;
@@ -107,7 +107,7 @@ describe('Service: authInterceptorService', function() {
       $httpBackend.expectGET('/testUrl').respond(401, 'Forbidden');
 
       var result;
-      authInterceptorService.responseError(rejection).catch(
+      authenticationInterceptorService.responseError(rejection).catch(
         function(promiseResult) {
           result = promiseResult;
         });
@@ -117,11 +117,11 @@ describe('Service: authInterceptorService', function() {
       $rootScope.$apply();
 
       expect(result).toBeDefined();
-      expect(result.status).toBe(401);    
+      expect(result.status).toBe(401);
     });
 
     it('should request a new bearer token if the status code is 401 and redirect to sign in if fetching a bearer token fails', function() {
-      authService.refreshToken = function() {
+      authenticationService.refreshToken = function() {
         var deferred = $q.defer();
         deferred.reject();
         return deferred.promise;
@@ -130,7 +130,7 @@ describe('Service: authInterceptorService', function() {
       spyOn($location, 'path').and.callThrough();
 
       var result;
-      authInterceptorService.responseError(rejection).catch(
+      authenticationInterceptorService.responseError(rejection).catch(
         function(promiseResult) {
           result = promiseResult;
         });

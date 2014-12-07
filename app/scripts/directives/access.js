@@ -1,6 +1,6 @@
 angular.module('webApp').directive('access', [
-  'authService',
-  function(authService) {
+  'authorizationService', 'authorizationServiceConstants',
+  function(authorizationService, authorizationServiceConstants) {
     'use strict';
 
     return {
@@ -20,8 +20,8 @@ angular.module('webApp').directive('access', [
             makeVisible();
           }
 
-          result = authService.authorize(true, roles, attrs.accessPermissionType);
-          if (result === authService.enums.authorizationResult.authorized) {
+          result = authorizationService.authorize(true, roles, attrs.accessPermissionType);
+          if (result === authorizationServiceConstants.authorizationResult.authorized) {
             makeVisible();
           }
           else {

@@ -1,13 +1,13 @@
 angular.module('webApp').controller(
-  'IndexCtrl', ['$scope', '$location', 'authService',
-  function($scope, $location, authService) {
+  'IndexCtrl', ['$scope', '$location', 'authenticationService',
+  function($scope, $location, authenticationService) {
     'use strict';
 
     $scope.signOut = function() {
-      authService.signOut();
+      authenticationService.signOut();
       $location.path('/home');
     };
 
-    $scope.authentication = authService.authentication;
+    $scope.currentUser = authenticationService.currentUser;
   }
 ]);
