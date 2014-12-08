@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: AccountCtrl', function () {
+describe('account controller', function () {
 
   // load the controller's module
   beforeEach(module('webApp'));

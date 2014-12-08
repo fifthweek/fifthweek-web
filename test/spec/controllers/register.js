@@ -1,6 +1,55 @@
 'use strict';
 
-describe('Controller: RegisterCtrl', function() {
+describe('registration controller', function() {
+
+  it('should contain empty registration data on creation', function() {
+    expect(scope.registrationData.exampleWork).toBe('');
+    expect(scope.registrationData.email).toBe('');
+    expect(scope.registrationData.username).toBe('');
+    expect(scope.registrationData.password).toBe('');
+  });
+
+  it('should navigate to dashboard on successful registration', function() {
+    authenticationService.registerUser = function() {
+      var deferred = $q.defer();
+      deferred.resolve();
+      return deferred.promise;
+    };
+
+    authenticationService.signIn = function() {
+      var deferred = $q.defer();
+      deferred.resolve();
+      return deferred.promise;
+    };
+
+    spyOn($location, 'path').and.callThrough();
+
+    scope.register();
+    $rootScope.$apply();
+
+    expect(scope.message).toContain('Signing in...');
+    expect(scope.savedSuccessfully).toBe(true);
+
+    expect($location.path).toHaveBeenCalledWith(dashboardPage.path);
+  });
+
+  it('should display an error on unsuccessful registration', function() {
+    authenticationService.registerUser = function() {
+      var deferred = $q.defer();
+      deferred.reject({
+        data: {
+          message: 'TestMessage'
+        }
+      });
+      return deferred.promise;
+    };
+
+    scope.register();
+    $rootScope.$apply();
+
+    expect(scope.message).toContain('TestMessage');
+    expect(scope.savedSuccessfully).toBe(false);
+  });
 
   // load the controller's module
   beforeEach(module('webApp'));
@@ -30,55 +79,4 @@ describe('Controller: RegisterCtrl', function() {
       authenticationService: authenticationService
     });
   }));
-
-  it('should contain empty registration data on creation', function() {
-    expect(scope.registrationData.exampleWork).toBe('');
-    expect(scope.registrationData.email).toBe('');
-    expect(scope.registrationData.username).toBe('');
-    expect(scope.registrationData.password).toBe('');
-  });
-
-  describe('registerUser', function(){
-    it('should navigate to dashboard on successful registration', function() {
-      authenticationService.registerUser = function() {
-        var deferred = $q.defer();
-        deferred.resolve();
-        return deferred.promise;
-      };
-
-      authenticationService.signIn = function() {
-        var deferred = $q.defer();
-        deferred.resolve();
-        return deferred.promise;
-      };
-
-      spyOn($location, 'path').and.callThrough();
-
-      scope.register();
-      $rootScope.$apply();
-
-      expect(scope.message).toContain('Signing in...');
-      expect(scope.savedSuccessfully).toBe(true);
-
-      expect($location.path).toHaveBeenCalledWith(dashboardPage.path);
-    });
-
-    it('should display an error on unsuccessful registration', function() {
-      authenticationService.registerUser = function() {
-        var deferred = $q.defer();
-        deferred.reject({
-          data: {
-            message: 'TestMessage'
-          }
-        });
-        return deferred.promise;
-      };
-
-      scope.register();
-      $rootScope.$apply();
-
-      expect(scope.message).toContain('TestMessage');
-      expect(scope.savedSuccessfully).toBe(false);
-    });
-  });
 });

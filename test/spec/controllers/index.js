@@ -1,6 +1,21 @@
 'use strict';
 
-describe('Controller: IndexCtrl', function() {
+describe('index controller', function() {
+
+  it('should log the user out and redirect home when a sign out is requested', function() {
+    authenticationService.signOut = function(){};
+    spyOn(authenticationService, 'signOut');
+    spyOn($location, 'path');
+
+    scope.signOut();
+
+    expect(authenticationService.signOut).toHaveBeenCalled();
+    expect($location.path).toHaveBeenCalledWith(fifthweekConstants.homePage);
+  });
+
+  it('should add the authentication information to the scope', function() {
+    expect(scope.currentUser).toBe(authenticationService.currentUser);
+  });
 
   // load the controller's module
   beforeEach(module('webApp'));
@@ -26,20 +41,4 @@ describe('Controller: IndexCtrl', function() {
       authenticationService: authenticationService
     });
   }));
-
-  it('should log the user out and redirect home when a sign out is requested', function() {
-
-    authenticationService.signOut = function(){};
-    spyOn(authenticationService, 'signOut');
-    spyOn($location, 'path');
-
-    scope.signOut();
-
-    expect(authenticationService.signOut).toHaveBeenCalled();
-    expect($location.path).toHaveBeenCalledWith(fifthweekConstants.homePage);
-  });
-
-  it('should add the authentication information to the scope', function() {
-    expect(scope.currentUser).toBe(authenticationService.currentUser);
-  });
 });

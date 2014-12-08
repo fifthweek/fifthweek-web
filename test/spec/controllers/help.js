@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: HelpCtrl', function () {
+describe('help controller', function () {
 
   // load the controller's module
   beforeEach(module('webApp'));

@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: SignOutCtrl', function () {
+describe('sign out control', function () {
 
   // load the controller's module
   beforeEach(module('webApp'));
