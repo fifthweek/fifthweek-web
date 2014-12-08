@@ -2,41 +2,6 @@
 
 describe('Service: authenticationService', function() {
 
-  // load the service's module
-  beforeEach(module('webApp'));
-
-  var $httpBackend;
-  var $rootScope;
-  var authenticationService;
-  var localStorageService;
-  var fifthweekConstants;
-
-  beforeEach(function() {
-    localStorageService = {};
-
-    module(function($provide) {
-      $provide.value('localStorageService', localStorageService);
-    });
-  });
-
-  beforeEach(inject(function($injector) {
-    authenticationService = $injector.get('authenticationService');
-    $httpBackend = $injector.get('$httpBackend');
-    $rootScope = $injector.get('$rootScope');
-    fifthweekConstants = $injector.get('fifthweekConstants');
-  }));
-
-  var setupSignOutExpectations = function(){
-    localStorageService.remove = function(){};
-    spyOn(localStorageService, 'remove');
-  };
-
-  var executeSignOutExpectations = function(){
-    expect(localStorageService.remove).toHaveBeenCalledWith('authenticationData');
-    expect(authenticationService.currentUser.authenticated).toBeFalsy();
-    expect(authenticationService.currentUser.username).toBeFalsy();
-  };
-
   describe('registerUser', function(){
     it('should ensure the user is logged out and call the register API', function() {
 
@@ -224,4 +189,39 @@ describe('Service: authenticationService', function() {
       expect(result).toBe('No authentication data available');
     });
   });
+
+  // load the service's module
+  beforeEach(module('webApp'));
+
+  var $httpBackend;
+  var $rootScope;
+  var authenticationService;
+  var localStorageService;
+  var fifthweekConstants;
+
+  beforeEach(function() {
+    localStorageService = {};
+
+    module(function($provide) {
+      $provide.value('localStorageService', localStorageService);
+    });
+  });
+
+  beforeEach(inject(function($injector) {
+    authenticationService = $injector.get('authenticationService');
+    $httpBackend = $injector.get('$httpBackend');
+    $rootScope = $injector.get('$rootScope');
+    fifthweekConstants = $injector.get('fifthweekConstants');
+  }));
+
+  var setupSignOutExpectations = function(){
+    localStorageService.remove = function(){};
+    spyOn(localStorageService, 'remove');
+  };
+
+  var executeSignOutExpectations = function(){
+    expect(localStorageService.remove).toHaveBeenCalledWith('authenticationData');
+    expect(authenticationService.currentUser.authenticated).toBeFalsy();
+    expect(authenticationService.currentUser.username).toBeFalsy();
+  };
 });

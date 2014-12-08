@@ -1,7 +1,7 @@
-describe('authentication interceptor service', function() {
+describe('authentication interceptor', function() {
   'use strict';
 
-  describe('when sending a request', function() {
+  describe('when intercepting a request', function() {
 
     it('should add authentication data to the request headers', function() {
       localStorageService.get = function() { return { token: 'ABC' }; };
@@ -14,7 +14,7 @@ describe('authentication interceptor service', function() {
     });
   });
 
-  describe('when receiving a response', function() {
+  describe('when intercepting a response', function() {
 
     it('should ignore status codes other than 401', function() {
       rejection.status = 400;
