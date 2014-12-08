@@ -1,34 +1,8 @@
-'use strict';
+describe('authorization service', function() {
+  'use strict';
 
-describe('Service: authorizationService', function() {
+  describe('when authorizing the user against a page', function(){
 
-  // load the service's module
-  beforeEach(module('webApp'));
-
-  var authorizationService;
-  var authorizationServiceConstants;
-  var authenticationService;
-
-  beforeEach(function() {
-    authenticationService = {
-      currentUser: {
-        authenticated: false,
-        username: undefined,
-        roles: undefined
-      }
-    };
-
-    module(function($provide) {
-      $provide.value('authenticationService', authenticationService);
-    });
-  });
-
-  beforeEach(inject(function($injector) {
-    authorizationService = $injector.get('authorizationService');
-    authorizationServiceConstants = $injector.get('authorizationServiceConstants');
-  }));
-
-  describe('authorize', function(){
     it('should return authorized for a public page with no roles', function(){
       var result = authorizationService.authorize(false);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.authorized);
@@ -119,4 +93,30 @@ describe('Service: authorizationService', function() {
       expect(result).toBe(authorizationServiceConstants.authorizationResult.authorized);
     });
   });
+
+  // load the service's module
+  beforeEach(module('webApp'));
+
+  var authorizationService;
+  var authorizationServiceConstants;
+  var authenticationService;
+
+  beforeEach(function() {
+    authenticationService = {
+      currentUser: {
+        authenticated: false,
+        username: undefined,
+        roles: undefined
+      }
+    };
+
+    module(function($provide) {
+      $provide.value('authenticationService', authenticationService);
+    });
+  });
+
+  beforeEach(inject(function($injector) {
+    authorizationService = $injector.get('authorizationService');
+    authorizationServiceConstants = $injector.get('authorizationServiceConstants');
+  }));
 });
