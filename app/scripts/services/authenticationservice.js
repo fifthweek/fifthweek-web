@@ -23,7 +23,7 @@ angular.module('webApp').factory('authenticationService', ['$http', '$q', 'local
 
     service.registerUser = function(internalRegistrationData) {
       service.signOut();
-      return $http.post(apiBaseUri + 'account/registerUser', internalRegistrationData);
+      return $http.post(apiBaseUri + 'membership/registrations', internalRegistrationData);
     };
 
     service.signIn = function(signInData) {
