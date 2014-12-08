@@ -1,4 +1,4 @@
-angular.module('webApp').factory('authenticationInterceptorService',
+angular.module('webApp').factory('authenticationInterceptor',
   ['$q', '$injector', '$location', 'localStorageService', 'fifthweekConstants',
   function($q, $injector, $location, localStorageService, fifthweekConstants) {
     'use strict';

@@ -7,7 +7,7 @@ describe('authentication interceptor service', function() {
       localStorageService.get = function() { return { token: 'ABC' }; };
 
       var config = {};
-      var newConfig = authenticationInterceptorService.request(config);
+      var newConfig = authenticationInterceptor.request(config);
 
       expect(newConfig).toBe(config);
       expect(newConfig.headers.Authorization).toBe('Bearer ABC');
@@ -20,7 +20,7 @@ describe('authentication interceptor service', function() {
       rejection.status = 400;
 
       var result;
-      authenticationInterceptorService.responseError(rejection).catch(
+      authenticationInterceptor.responseError(rejection).catch(
         function(promiseResult) {
           result = promiseResult;
         });
@@ -42,7 +42,7 @@ describe('authentication interceptor service', function() {
       $httpBackend.expectGET(testUrl).respond(200, 'Success');
 
       var result;
-      authenticationInterceptorService.responseError(rejection).then(
+      authenticationInterceptor.responseError(rejection).then(
         function(promiseResult) {
           result = promiseResult;
         });
@@ -68,7 +68,7 @@ describe('authentication interceptor service', function() {
       $httpBackend.expectGET(testUrl).respond(401, 'Forbidden');
 
       var result;
-      authenticationInterceptorService.responseError(rejection).catch(
+      authenticationInterceptor.responseError(rejection).catch(
         function(promiseResult) {
           result = promiseResult;
         });
@@ -91,7 +91,7 @@ describe('authentication interceptor service', function() {
       spyOn($location, 'path').and.callThrough();
 
       var result;
-      authenticationInterceptorService.responseError(rejection).catch(
+      authenticationInterceptor.responseError(rejection).catch(
         function(promiseResult) {
           result = promiseResult;
         });
@@ -125,7 +125,7 @@ describe('authentication interceptor service', function() {
   var $location;
   var $httpBackend;
   var $q;
-  var authenticationInterceptorService;
+  var authenticationInterceptor;
   var localStorageService;
   var authenticationService;
   var fifthweekConstants;
@@ -144,7 +144,7 @@ describe('authentication interceptor service', function() {
     $rootScope = $injector.get('$rootScope');
     $location = $injector.get('$location');
     $httpBackend = $injector.get('$httpBackend');
-    authenticationInterceptorService = $injector.get('authenticationInterceptorService');
+    authenticationInterceptor = $injector.get('authenticationInterceptor');
     fifthweekConstants = $injector.get('fifthweekConstants');
   }));
 });

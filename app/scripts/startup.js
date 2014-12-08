@@ -3,7 +3,7 @@ angular.module('webApp')
     function($httpProvider) {
       'use strict';
 
-      $httpProvider.interceptors.push('authenticationInterceptorService');
+      $httpProvider.interceptors.push('authenticationInterceptor');
     }
   ])
   .run(['$rootScope', 'authenticationService', 'routeChangeAuthorizationHandler',
