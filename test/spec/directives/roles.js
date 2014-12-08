@@ -90,7 +90,7 @@ describe('Directive: roles', function(){
       });
     });
 
-    it('should display the button', function(){
+    it('should not display the button', function(){
       expect(element.hasClass('hidden')).toBeTruthy();
     });
   });
@@ -114,7 +114,7 @@ describe('Directive: roles', function(){
       });
     });
 
-    it('should display the button', function(){
+    it('should not display the button', function(){
       expect(element.hasClass('hidden')).toBeTruthy();
     });
   });
