@@ -18,8 +18,8 @@ angular.module('webApp').factory('routeChangeAuthorizationHandler', ['authorizat
       else if (next.access !== undefined) {
         var authorised = authorizationService.authorize(
           next.access.loginRequired,
-          next.access.permissions,
-          next.access.permissionCheckType);
+          next.access.roles,
+          next.access.roleCheckType);
 
         if (authorised === authorizationServiceConstants.authorizationResult.loginRequired) {
           routeChangeRequiredAfterLogin = true;

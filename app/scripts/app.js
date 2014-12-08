@@ -63,7 +63,7 @@ angular
         controller: 'SignOutCtrl'
       })
       .when(fifthweekConstants.notAuthorizedPage, {
-        redirectTo: fifthweekConstants.homePage
+        redirectTo: fifthweekConstants.homePage  // TODO: Create a "Not Authorized" page.
       })
       .otherwise({
         redirectTo: fifthweekConstants.homePage

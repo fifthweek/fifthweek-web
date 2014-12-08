@@ -6,7 +6,7 @@ angular.module('webApp').constant('authorizationServiceConstants', {
     loginRequired: 'loginRequired',
     notAuthorized: 'notAuthorized'
   },
-  permissionCheckType: {
+  roleCheckType: {
     atLeastOne: 'atLeastOne',
     all: 'all'
   }
@@ -16,46 +16,46 @@ angular.module('webApp').constant('authorizationServiceConstants', {
 
     var service = {};
 
-    service.authorize = function(loginRequired, requiredPermissions, permissionCheckType) {
+    service.authorize = function(loginRequired, requiredRoles, roleCheckType) {
       var result = constants.authorizationResult.authorized;
-      var hasPermission = true;
+      var hasRole = true;
 
-      permissionCheckType = permissionCheckType || constants.permissionCheckType.atLeastOne;
+      roleCheckType = roleCheckType || constants.roleCheckType.atLeastOne;
       if (loginRequired === true && authenticationService.currentUser.authenticated === false) {
         result = constants.authorizationResult.loginRequired;
       }
       else if ((loginRequired === true && authenticationService.currentUser.authenticated !== false) &&
-        (requiredPermissions === undefined || requiredPermissions.length === 0)) {
-        // Login is required but no specific permissions are specified.
+        (requiredRoles === undefined || requiredRoles.length === 0)) {
+        // Login is required but no specific roles are specified.
         result = constants.authorizationResult.authorized;
       }
-      else if (requiredPermissions) {
-        var loweredPermissions = [];
+      else if (requiredRoles) {
+        var loweredRoles = [];
 
-        angular.forEach(authenticationService.currentUser.permissions, function(permission) {
-          loweredPermissions.push(permission.toLowerCase());
+        angular.forEach(authenticationService.currentUser.roles, function(role) {
+          loweredRoles.push(role.toLowerCase());
         });
 
-        for (var i = 0; i < requiredPermissions.length; i += 1) {
-          var permission = requiredPermissions[i].toLowerCase();
+        for (var i = 0; i < requiredRoles.length; i += 1) {
+          var role = requiredRoles[i].toLowerCase();
 
-          if (permissionCheckType === constants.permissionCheckType.all) {
-            hasPermission = hasPermission && loweredPermissions.indexOf(permission) > -1;
-            // if all the permissions are required and hasPermission is false there is no point carrying on
-            if (hasPermission === false) {
+          if (roleCheckType === constants.roleCheckType.all) {
+            hasRole = hasRole && loweredRoles.indexOf(role) > -1;
+            // if all the roles are required and hasRole is false there is no point carrying on
+            if (hasRole === false) {
               break;
             }
           }
-          else if (permissionCheckType === constants.permissionCheckType.atLeastOne) {
-            hasPermission = loweredPermissions.indexOf(permission) > -1;
-            // if we only need one of the permissions and we have it there is no point carrying on
-            if (hasPermission) {
+          else if (roleCheckType === constants.roleCheckType.atLeastOne) {
+            hasRole = loweredRoles.indexOf(role) > -1;
+            // if we only need one of the roles and we have it there is no point carrying on
+            if (hasRole) {
               break;
             }
           }
         }
 
-        result = hasPermission ?
+        result = hasRole ?
           constants.authorizationResult.authorized :
           constants.authorizationResult.notAuthorized;
       }

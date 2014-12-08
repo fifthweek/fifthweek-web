@@ -1,4 +1,4 @@
-angular.module('webApp').directive('access', [
+angular.module('webApp').directive('roles', [
   'authorizationService', 'authorizationServiceConstants',
   function(authorizationService, authorizationServiceConstants) {
     'use strict';
@@ -20,7 +20,7 @@ angular.module('webApp').directive('access', [
             makeVisible();
           }
 
-          result = authorizationService.authorize(true, roles, attrs.accessPermissionType);
+          result = authorizationService.authorize(true, roles, attrs.roleCheckType);
           if (result === authorizationServiceConstants.authorizationResult.authorized) {
             makeVisible();
           }
@@ -29,7 +29,7 @@ angular.module('webApp').directive('access', [
           }
         };
 
-        var roles = attrs.access.split(',');
+        var roles = attrs.roles.split(/[\s,]+/);
 
         if (roles.length > 0) {
           determineVisibility(true);

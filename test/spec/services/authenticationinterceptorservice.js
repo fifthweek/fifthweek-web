@@ -1,6 +1,5 @@
-'use strict';
-
 describe('Service: authenticationInterceptorService', function() {
+  'use strict';
 
   // load the service's module
   beforeEach(module('webApp'));
