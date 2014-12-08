@@ -29,6 +29,7 @@ module.exports = function(config) {
       'bower_components/angular-loading-bar/build/loading-bar.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
+      'test/pages/**/*.js',
       'test/spec/**/*.js'
     ],
 

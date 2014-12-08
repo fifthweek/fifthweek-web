@@ -12,14 +12,16 @@ describe('Controller: RegisterCtrl', function() {
   var $q;
   var $location;
   var fifthweekConstants;
+  var dashboardPage;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($controller, _$rootScope_, _$q_, _$location_, _fifthweekConstants_) {
+  beforeEach(inject(function($controller, _$rootScope_, _$q_, _$location_, _fifthweekConstants_, _dashboardPage_) {
     $rootScope = _$rootScope_;
-    $q = _$q_;
     scope = $rootScope.$new();
+    $q = _$q_;
     $location = _$location_;
     fifthweekConstants = _fifthweekConstants_;
+    dashboardPage = _dashboardPage_;
 
     authenticationService = {};
 
@@ -58,7 +60,7 @@ describe('Controller: RegisterCtrl', function() {
       expect(scope.message).toContain('Signing in...');
       expect(scope.savedSuccessfully).toBe(true);
 
-      expect($location.path).toHaveBeenCalledWith('/dashboard');
+      expect($location.path).toHaveBeenCalledWith(dashboardPage.path);
     });
 
     it('should display an error on unsuccessful registration', function() {
