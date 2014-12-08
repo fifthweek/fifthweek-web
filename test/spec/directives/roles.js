@@ -2,6 +2,7 @@ describe('roles directive', function(){
   'use strict';
 
   describe('when roles are passed in', function() {
+
     it('should call authorize with specified roles and role check type', function(){
       expect(authorizationService.authorize).toHaveBeenCalled();
       expect(authorizationService.authorize.calls.argsFor(0)).toEqual([true, ['Test1', 'Test2'], 'all']);
@@ -28,6 +29,7 @@ describe('roles directive', function(){
   });
 
   describe('when authorized', function() {
+
     it('should display the button', function(){
       expect(element.hasClass('hidden')).toBeFalsy();
     });
@@ -51,6 +53,7 @@ describe('roles directive', function(){
   });
 
   describe('when not authorized', function() {
+
     it('should not display the button', function(){
       expect(element.hasClass('hidden')).toBeTruthy();
     });
@@ -74,6 +77,7 @@ describe('roles directive', function(){
   });
 
   describe('when login required', function() {
+
     it('should not display the button', function(){
       expect(element.hasClass('hidden')).toBeTruthy();
     });

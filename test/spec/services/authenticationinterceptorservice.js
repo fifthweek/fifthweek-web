@@ -1,37 +1,8 @@
-describe('Service: authenticationInterceptorService', function() {
+describe('authentication interceptor service', function() {
   'use strict';
 
-  // load the service's module
-  beforeEach(module('webApp'));
+  describe('when sending a request', function() {
 
-  var $rootScope;
-  var $location;
-  var $httpBackend;
-  var $q;
-  var authenticationInterceptorService;
-  var localStorageService;
-  var authenticationService;
-  var fifthweekConstants;
-
-  beforeEach(function() {
-    localStorageService = {};
-    authenticationService = {};
-    module(function($provide) {
-      $provide.value('localStorageService', localStorageService);
-      $provide.value('authenticationService', authenticationService);
-    });
-  });
-
-  beforeEach(inject(function($injector) {
-    $q = $injector.get('$q');
-    $rootScope = $injector.get('$rootScope');
-    $location = $injector.get('$location');
-    $httpBackend = $injector.get('$httpBackend');
-    authenticationInterceptorService = $injector.get('authenticationInterceptorService');
-    fifthweekConstants = $injector.get('fifthweekConstants');
-  }));
-
-  describe('request', function() {
     it('should add authentication data to the request headers', function() {
       localStorageService.get = function() { return { token: 'ABC' }; };
 
@@ -43,19 +14,7 @@ describe('Service: authenticationInterceptorService', function() {
     });
   });
 
-  describe('responseError', function() {
-    var rejection;
-    var testUrl = '/testUrl';
-
-    beforeEach(function(){
-      rejection = {
-        status: 401,
-        config: {
-          method: 'GET',
-          url: testUrl
-        }
-      };
-    });
+  describe('when receiving a response', function() {
 
     it('should ignore status codes other than 401', function() {
       rejection.status = 400;
@@ -144,5 +103,48 @@ describe('Service: authenticationInterceptorService', function() {
 
       expect($location.path).toHaveBeenCalledWith(fifthweekConstants.signInPage);
     });
+
+    var rejection;
+    var testUrl = '/testUrl';
+
+    beforeEach(function(){
+      rejection = {
+        status: 401,
+        config: {
+          method: 'GET',
+          url: testUrl
+        }
+      };
+    });
   });
+
+  // load the service's module
+  beforeEach(module('webApp'));
+
+  var $rootScope;
+  var $location;
+  var $httpBackend;
+  var $q;
+  var authenticationInterceptorService;
+  var localStorageService;
+  var authenticationService;
+  var fifthweekConstants;
+
+  beforeEach(function() {
+    localStorageService = {};
+    authenticationService = {};
+    module(function($provide) {
+      $provide.value('localStorageService', localStorageService);
+      $provide.value('authenticationService', authenticationService);
+    });
+  });
+
+  beforeEach(inject(function($injector) {
+    $q = $injector.get('$q');
+    $rootScope = $injector.get('$rootScope');
+    $location = $injector.get('$location');
+    $httpBackend = $injector.get('$httpBackend');
+    authenticationInterceptorService = $injector.get('authenticationInterceptorService');
+    fifthweekConstants = $injector.get('fifthweekConstants');
+  }));
 });
