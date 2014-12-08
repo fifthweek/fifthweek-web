@@ -1,42 +1,7 @@
-describe('Service: routeChangeAuthorizationHandler', function () {
+describe('route change authorization handler', function () {
   'use strict';
 
-  // load the controller's module
-  beforeEach(module('webApp'));
-
-  var authorizationService;
-  var routeChangeAuthorizationHandler;
-  var $location;
-  var $rootScope;
-  var fifthweekConstants;
-  var authorizationServiceConstants;
-
-  beforeEach(function() {
-    authorizationService = {};
-
-    module(function($provide) {
-      $provide.value('authorizationService', authorizationService);
-    });
-  });
-
-  beforeEach(inject(function($injector) {
-    routeChangeAuthorizationHandler = $injector.get('routeChangeAuthorizationHandler');
-    $location = $injector.get('$location');
-    $rootScope = $injector.get('$rootScope');
-    fifthweekConstants = $injector.get('fifthweekConstants');
-    authorizationServiceConstants = $injector.get('authorizationServiceConstants');
-  }));
-
-  describe('handleRouteChangeStart', function() {
-
-    var next;
-    var testPath = '/test';
-
-    beforeEach(function(){
-      next = {
-        originalPath: testPath
-      };
-    });
+  describe('when routing', function() {
 
     it('should not alter the path if the page has no access requirements', function(){
       spyOn($location, 'path').and.callThrough();
@@ -73,5 +38,40 @@ describe('Service: routeChangeAuthorizationHandler', function () {
 
       expect($location.path).toHaveBeenCalledWith(fifthweekConstants.notAuthorizedPage);
     });
+
+    var next;
+    var testPath = '/test';
+
+    beforeEach(function(){
+      next = {
+        originalPath: testPath
+      };
+    });
   });
+
+  // load the controller's module
+  beforeEach(module('webApp'));
+
+  var authorizationService;
+  var routeChangeAuthorizationHandler;
+  var $location;
+  var $rootScope;
+  var fifthweekConstants;
+  var authorizationServiceConstants;
+
+  beforeEach(function() {
+    authorizationService = {};
+
+    module(function($provide) {
+      $provide.value('authorizationService', authorizationService);
+    });
+  });
+
+  beforeEach(inject(function($injector) {
+    routeChangeAuthorizationHandler = $injector.get('routeChangeAuthorizationHandler');
+    $location = $injector.get('$location');
+    $rootScope = $injector.get('$rootScope');
+    fifthweekConstants = $injector.get('fifthweekConstants');
+    authorizationServiceConstants = $injector.get('authorizationServiceConstants');
+  }));
 });
