@@ -34,8 +34,13 @@
           <div class="form-group" data-ng-class="{ 'has-error' : form.username.$invalid && !form.username.$pristine }">
             <input type="text" class="form-control" name="username" placeholder="Create a username"
                    data-ng-model="registrationData.username"
-                   required>
-            <p ng-show="form.username.$invalid && !form.username.$pristine" class="help-block">A username is required.</p>
+                   ng-model-options="{ debounce: 500 }"
+                   ng-pattern="/^[a-zA-Z0-9-_]+$/"
+                   required username>
+            <p ng-show="form.username.$error.pattern" class="help-block">Only allowed: alphanumeric characters, underscores and hyphens.</p>
+            <p ng-show="form.username.$error.required && !form.username.$pristine" class="help-block">A username is required.</p>
+            <p ng-show="form.username.$pending.username" class="help-block">Checking if available...</p>
+            <p ng-show="form.username.$error.username" class="help-block">This username is already taken!</p>
           </div>
 
           <div class="form-group" data-ng-class="{ 'has-error' : form.password.$invalid && !form.password.$pristine }">
@@ -49,7 +54,7 @@
             class="btn btn-lg btn-success btn-block"
             type="submit"
             data-ng-click="register()"
-            id="registerButton" ng-disabled="form.$invalid">
+            id="registerButton" ng-disabled="form.$invalid || form.$pending">
             Create Account
           </button>
         </div>
