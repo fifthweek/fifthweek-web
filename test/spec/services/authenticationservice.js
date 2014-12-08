@@ -1,8 +1,33 @@
-'use strict';
+describe('authentication service', function() {
+  'use strict';
 
-describe('Service: authenticationService', function() {
+  describe('when initializing', function(){
 
-  describe('registerUser', function(){
+    it('should become authenticated if user data exists in local storage', function(){
+      localStorageService.get = function(){
+        return {username: 'USERNAME'};
+      };
+
+      authenticationService.init();
+
+      expect(authenticationService.currentUser.authenticated).toBe(true);
+      expect(authenticationService.currentUser.username).toBe('USERNAME');
+    });
+
+    it('should become unauthenticated if user data absent from local storage', function(){
+      localStorageService.get = function(){
+        return null;
+      };
+
+      authenticationService.init();
+
+      expect(authenticationService.currentUser.authenticated).toBe(false);
+      expect(authenticationService.currentUser.username).toBeFalsy();
+    });
+  });
+
+  describe('when registering a user', function(){
+
     it('should ensure the user is logged out and call the register API', function() {
 
       setupSignOutExpectations();
@@ -19,7 +44,7 @@ describe('Service: authenticationService', function() {
     });
   });
 
-  describe('signIn', function(){
+  describe('when signing a user in', function(){
 
     it('should set authentication data on successful sign in', function(){
       var signInData = {
@@ -87,7 +112,8 @@ describe('Service: authenticationService', function() {
     });
   });
 
-  describe('signOut', function(){
+  describe('signing a user out', function(){
+
     it('should clear the local storage and set the user to unauthenticated', function(){
       setupSignOutExpectations();
 
@@ -97,31 +123,8 @@ describe('Service: authenticationService', function() {
     });
   });
 
-  describe('fillAuthData', function(){
-    it('should set authentication dtata into the service if the data exists', function(){
-      localStorageService.get = function(){
-        return {username: 'USERNAME'};
-      };
+  describe('when refreshing', function(){
 
-      authenticationService.fillAuthData();
-
-      expect(authenticationService.currentUser.authenticated).toBe(true);
-      expect(authenticationService.currentUser.username).toBe('USERNAME');
-    });
-
-    it('should set authentication data into the service if the data exists', function(){
-      localStorageService.get = function(){
-        return null;
-      };
-
-      authenticationService.fillAuthData();
-
-      expect(authenticationService.currentUser.authenticated).toBe(false);
-      expect(authenticationService.currentUser.username).toBeFalsy();
-    });
-  });
-
-  describe('refreshToken', function(){
     it('should request a new refresh token and persist it if successful', function(){
       localStorageService.get = function(){
         return {username: 'USERNAME'};

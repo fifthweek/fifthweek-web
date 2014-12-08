@@ -13,6 +13,14 @@ angular.module('webApp').factory('authenticationService', ['$http', '$q', 'local
       permissions: []
     };
 
+    service.init = function() {
+      var authData = localStorageService.get('authenticationData');
+      if (authData) {
+        service.currentUser.authenticated = true;
+        service.currentUser.username = authData.username;
+      }
+    };
+
     service.registerUser = function(internalRegistrationData) {
       service.signOut();
       return $http.post(apiBaseUri + 'account/registerUser', internalRegistrationData);
@@ -59,16 +67,6 @@ angular.module('webApp').factory('authenticationService', ['$http', '$q', 'local
 
       service.currentUser.authenticated = false;
       service.currentUser.username = '';
-    };
-
-    service.fillAuthData = function() {
-
-      var authData = localStorageService.get('authenticationData');
-      if (authData) {
-        service.currentUser.authenticated = true;
-        service.currentUser.username = authData.username;
-      }
-
     };
 
     service.refreshToken = function() {

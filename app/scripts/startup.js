@@ -10,7 +10,7 @@ angular.module('webApp')
     function($rootScope, authenticationService, routeChangeAuthHandler) {
       'use strict';
 
-      authenticationService.fillAuthData();
+      authenticationService.init();
 
       $rootScope.$on('$routeChangeStart', function(event, next) {
           routeChangeAuthHandler.handleRouteChangeStart(next);
