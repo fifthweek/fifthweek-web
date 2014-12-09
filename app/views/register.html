@@ -38,9 +38,9 @@
             <input type="text" class="form-control" name="username" placeholder="Create a username"
                    data-ng-model="registrationData.username"
                    ng-model-options="{ debounce: 500 }"
-                   ng-pattern="/^[a-zA-Z0-9-_]+$/"
+                   ng-pattern="/^[a-zA-Z0-9_]+$/"
                    required username>
-            <p ng-show="form.username.$error.pattern" class="help-block">Only allowed: alphanumeric characters, underscores and hyphens.</p>
+            <p ng-show="form.username.$error.pattern" class="help-block">Only allowed: alphanumeric characters and underscores.</p>
             <p ng-show="form.username.$error.required && !form.username.$pristine" class="help-block">A username is required.</p>
             <p ng-show="form.username.$pending.username" class="help-block">Checking if available...</p>
             <p ng-show="form.username.$error.username" class="help-block">This username is already taken!</p>
@@ -64,7 +64,7 @@
       </div>
 		</form>
 
-    <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+    <div id="messageBox" data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
       {{message}}
     </div>
 

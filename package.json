@@ -28,6 +28,7 @@
     "grunt-usemin": "^2.1.1",
     "grunt-wiredep": "^1.7.0",
     "jasmine-core": "^2.1.2",
+    "jasmine-reporters": "^1.0.1",
     "jshint-stylish": "^0.2.0",
     "karma": "^0.12.25",
     "karma-chrome-launcher": "^0.1.5",
@@ -36,7 +37,9 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-safari-launcher": "^0.1.1",
     "load-grunt-tasks": "^0.4.0",
+    "path": "^0.4.9",
     "protractor": "^1.4.0",
+    "protractor-html-screenshot-reporter": "0.0.17",
     "pty.js": "git://github.com/chjj/pty.js",
     "time-grunt": "^0.3.1"
   },

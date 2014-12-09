@@ -13,97 +13,114 @@ describe('fifthweek', function() {
 
     it('should allow a new user to register', function(){
       exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(username + '@mailinator.com');
+      emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys(username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
-      // Todo: assert check for success
+      browser.waitForAngular();
+      expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
     it('requires example work', function(){
-      emailTextBox.sendKeys(username + '@mailinator.com');
+      emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys(username);
       passwordTextBox.sendKeys('password1');
-      registerButton.click();
-      // Todo: assert failure
+      browser.waitForAngular();
+      expect(registerButton.isEnabled()).toBeFalsy();
     });
 
     it('requires email address', function(){
       exampleWorkTextBox.sendKeys(username);
       usernameTextBox.sendKeys(username);
       passwordTextBox.sendKeys('password1');
-      registerButton.click();
-      // Todo: assert failure
+      browser.waitForAngular();
+      expect(registerButton.isEnabled()).toBeFalsy();
     });
 
     it('requires username', function(){
       exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(username + '@mailinator.com');
+      emailTextBox.sendKeys(email);
       passwordTextBox.sendKeys('password1');
-      registerButton.click();
-      // Todo: assert failure
+      browser.waitForAngular();
+      expect(registerButton.isEnabled()).toBeFalsy();
     });
 
     it('requires password', function(){
       exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(username + '@mailinator.com');
+      emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys(username);
-      registerButton.click();
-      // Todo: assert failure
+      browser.waitForAngular();
+      expect(registerButton.isEnabled()).toBeFalsy();
     });
 
     it('should allow lowercase and uppercase characters in username', function(){
       exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(username + '@mailinator.com');
-      usernameTextBox.sendKeys("abcABC");
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys('abcABC' + username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
-      // Todo: assert check for success
+      browser.waitForAngular();
+      expect(browser.getCurrentUrl()).toContain('/dashboard');
+    });
+
+    it('should not allow usernames with fewer than six characters', function(){
+      exampleWorkTextBox.sendKeys(username);
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys('abc');
+      passwordTextBox.sendKeys('password1');
+      registerButton.click();
+      browser.waitForAngular();
+      expect(messageBox.getText()).toContain('minimum length of 6');
     });
 
     it('should allow numbers in username', function(){
       exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(username + '@mailinator.com');
-      usernameTextBox.sendKeys("123");
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys('123456' + username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
-      // Todo: assert check for success
+      browser.waitForAngular();
+      expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
     it('should allow hypens and underscores in username', function(){
       exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(username + '@mailinator.com');
-      usernameTextBox.sendKeys("abc_ABC-123");
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys('abc_ABC' + username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
-      // Todo: assert check for success
+      browser.waitForAngular();
+      expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
     it('should allow leading and trailing spaces in username', function(){
       exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(username + '@mailinator.com');
-      usernameTextBox.sendKeys(" abc ");
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys(' ' + username + ' ');
       passwordTextBox.sendKeys('password1');
       registerButton.click();
-      // Todo: assert check for success
+      browser.waitForAngular();
+      expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
     it('should not allow spaces in username', function(){
       exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(username + '@mailinator.com');
-      usernameTextBox.sendKeys("abc ABC");
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys('abc ' + username);
       passwordTextBox.sendKeys('password1');
-      registerButton.click();
-      // Todo: assert check for failure
+      browser.waitForAngular();
+      expect(registerButton.isEnabled()).toBeFalsy();
+      // Todo: Check for error message
     });
 
     it('should not allow forbidden characters in username', function(){
       exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(username + '@mailinator.com');
-      usernameTextBox.sendKeys("abc!");
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys('abc!' + username);
       passwordTextBox.sendKeys('password1');
-      registerButton.click();
-      // Todo: assert check for failure
+      browser.waitForAngular();
+      expect(registerButton.isEnabled()).toBeFalsy();
+      // Todo: Check for error message
       // Todo: Repeat with several different characters...
     });
 
@@ -112,18 +129,22 @@ describe('fifthweek', function() {
     var usernameTextBox = element(by.model('registrationData.username'));
     var passwordTextBox = element(by.model('registrationData.password'));
     var registerButton = element(by.id('registerButton'));
+    var messageBox = element(by.id('messageBox'));
 
     beforeEach(function() {
       registerLink.click();
     });
   });
 
-  var username = 'webdriver_' + Date.now();
+  var username;
+  var email;
 
   var signInLink = element(by.id('signInLink'));
   var registerLink = element(by.id('registerLink'));
 
   beforeEach(function() {
+    username = 'webdriver_' + Date.now();
+    email = username + '@mailinator.com';
     browser.get('/');
   });
 });
