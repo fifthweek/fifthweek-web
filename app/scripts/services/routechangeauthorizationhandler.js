@@ -11,9 +11,15 @@ angular.module('webApp').factory('routeChangeAuthorizationHandler', ['authorizat
 
     service.handleRouteChangeStart = function(next){
 
-      if (routeChangeRequiredAfterLogin && next.originalPath !== fifthweekConstants.signInPage) {
+      if (routeChangeRequiredAfterLogin
+        && next.originalPath !== fifthweekConstants.signInPage) {
+
         routeChangeRequiredAfterLogin = false;
-        $location.path(loginRedirectUrl).replace();
+
+        if(next.access !== undefined
+          && next.access.loginRequired) {
+          $location.path(loginRedirectUrl).replace();
+        }
       }
       else if (next.access !== undefined) {
         var authorised = authorizationService.authorize(
