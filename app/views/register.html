@@ -24,7 +24,6 @@
                data-ng-class="{ 'has-error' : form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted) }">
             <input type="text" class="form-control" name="exampleWork" placeholder="Website URL (example of work)"
                    data-ng-model="registrationData.exampleWork"
-                   ng-model-options="{ debounce: 500 }"
                    required autofocus>
             <p ng-if="form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted)" class="help-block">A valid URL is required.</p>
           </div>
@@ -33,7 +32,6 @@
                data-ng-class="{ 'has-error' : form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted) }">
             <input type="email" class="form-control" name="email" placeholder="Enter email"
                    data-ng-model="registrationData.email"
-                   ng-model-options="{ debounce: 500 }"
                    required>
             <p ng-if="form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted)" class="help-block">A valid email address is required.</p>
           </div>
