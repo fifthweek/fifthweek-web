@@ -14,7 +14,7 @@ describe('route change authorization handler', function () {
     it('should redirect to the sign in page if login is required and then return to the original page', function(){
       spyOn($location, 'path').and.callThrough();
 
-      next.access = {};
+      next.access = { loginRequired: true };
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.loginRequired;
       };
@@ -30,7 +30,7 @@ describe('route change authorization handler', function () {
     it('should redirect to the not authorized page if the user is not authorized', function(){
       spyOn($location, 'path').and.callThrough();
 
-      next.access = {};
+      next.access = { loginRequired: true };
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.notAuthorized;
       };
