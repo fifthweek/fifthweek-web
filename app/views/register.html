@@ -14,7 +14,7 @@
     </div>
   </div>
 	<div class="col-md-4">
-		<form novalidate role="form" name="form" ng-hide="savedSuccessfully">
+		<form novalidate role="form" name="form" ng-hide="savedSuccessfully" id="registrationForm">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Register as a creator</h3>
@@ -26,7 +26,7 @@
                    data-ng-model="registrationData.exampleWork"
                    ng-model-options="{ debounce: 500 }"
                    required autofocus>
-            <p ng-show="form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted)" class="help-block">A valid URL is required.</p>
+            <p ng-if="form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted)" class="help-block">A valid URL is required.</p>
           </div>
 
           <div class="form-group"
@@ -35,7 +35,7 @@
                    data-ng-model="registrationData.email"
                    ng-model-options="{ debounce: 500 }"
                    required>
-            <p ng-show="form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted)" class="help-block">A valid email address is required.</p>
+            <p ng-if="form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted)" class="help-block">A valid email address is required.</p>
           </div>
 
           <div class="form-group"
@@ -45,10 +45,10 @@
                    ng-model-options="{ debounce: 500 }"
                    ng-pattern="/^[a-zA-Z0-9_]+$/"
                    required username>
-            <p ng-show="form.username.$error.pattern && ((form.username.$touched && form.username.$dirty) || form.$submitted)" class="help-block">Only allowed: alphanumeric characters and underscores.</p>
-            <p ng-show="form.username.$error.required && ((form.username.$touched && form.username.$dirty) || form.$submitted)" class="help-block">A username is required.</p>
-            <p ng-show="form.username.$pending.username" class="help-block">Checking if available...</p>
-            <p ng-show="form.username.$error.username" class="help-block">This username is already taken!</p>
+            <p ng-if="form.username.$error.pattern && ((form.username.$touched && form.username.$dirty) || form.$submitted)" class="help-block">Only allowed: alphanumeric characters and underscores.</p>
+            <p ng-if="form.username.$error.required && ((form.username.$touched && form.username.$dirty) || form.$submitted)" class="help-block">A username is required.</p>
+            <p ng-if="form.username.$pending.username" class="help-block">Checking if available...</p>
+            <p ng-if="form.username.$error.username" class="help-block">This username is already taken!</p>
           </div>
 
           <div class="form-group"
@@ -56,7 +56,7 @@
             <input type="password" class="form-control" name="password" placeholder="Create a password"
                    data-ng-model="registrationData.password"
                    required>
-            <p ng-show="form.password.$invalid && ((form.password.$touched && form.password.$dirty) || form.$submitted)" class="help-block">A password is required.</p>
+            <p ng-if="form.password.$invalid && ((form.password.$touched && form.password.$dirty) || form.$submitted)" class="help-block">A password is required.</p>
           </div>
 
           <button

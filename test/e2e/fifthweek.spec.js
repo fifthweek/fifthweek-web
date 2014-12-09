@@ -25,32 +25,81 @@ describe('fifthweek', function() {
       emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys(username);
       passwordTextBox.sendKeys('password1');
+
+      registerButton.click();
       browser.waitForAngular();
-      expect(registerButton.isEnabled()).toBeFalsy();
+
+      var messages = element.all(by.css('#registrationForm .help-block'));
+
+      expect(messages.count()).toBe(1);
+      expect(messages.get(0).getText()).toContain('A valid URL is required.')
     });
 
     it('requires email address', function(){
       exampleWorkTextBox.sendKeys(username);
       usernameTextBox.sendKeys(username);
       passwordTextBox.sendKeys('password1');
+      registerButton.click();
       browser.waitForAngular();
-      expect(registerButton.isEnabled()).toBeFalsy();
+
+      var messages = element.all(by.css('#registrationForm .help-block'));
+
+      expect(messages.count()).toBe(1);
+      expect(messages.get(0).getText()).toContain('A valid email address is required.')
     });
 
     it('requires username', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
       passwordTextBox.sendKeys('password1');
+      registerButton.click();
       browser.waitForAngular();
-      expect(registerButton.isEnabled()).toBeFalsy();
+
+      var messages = element.all(by.css('#registrationForm .help-block'));
+
+      expect(messages.count()).toBe(1);
+      expect(messages.get(0).getText()).toContain('A username is required.')
     });
 
     it('requires password', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys(username);
+      registerButton.click();
       browser.waitForAngular();
-      expect(registerButton.isEnabled()).toBeFalsy();
+
+      var messages = element.all(by.css('#registrationForm .help-block'));
+
+      expect(messages.count()).toBe(1);
+      expect(messages.get(0).getText()).toContain('A password is required.')
+    });
+
+    it('should not allow spaces in username', function(){
+      exampleWorkTextBox.sendKeys(username);
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys('abc ' + username);
+      passwordTextBox.sendKeys('password1');
+      registerButton.click();
+      browser.waitForAngular();
+
+      var messages = element.all(by.css('#registrationForm .help-block'));
+
+      expect(messages.count()).toBe(1);
+      expect(messages.get(0).getText()).toContain('Only allowed: alphanumeric characters and underscores.')
+    });
+
+    it('should not allow forbidden characters in username', function(){
+      exampleWorkTextBox.sendKeys(username);
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys('abc!' + username);
+      passwordTextBox.sendKeys('password1');
+      registerButton.click();
+      browser.waitForAngular();
+
+      var messages = element.all(by.css('#registrationForm .help-block'));
+
+      expect(messages.count()).toBe(1);
+      expect(messages.get(0).getText()).toContain('Only allowed: alphanumeric characters and underscores.')
     });
 
     it('should allow lowercase and uppercase characters in username', function(){
@@ -83,7 +132,7 @@ describe('fifthweek', function() {
       expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
-    it('should allow hypens and underscores in username', function(){
+    it('should allow underscores in username', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys('abc_ABC' + username);
@@ -101,27 +150,6 @@ describe('fifthweek', function() {
       registerButton.click();
       browser.waitForAngular();
       expect(browser.getCurrentUrl()).toContain('/dashboard');
-    });
-
-    it('should not allow spaces in username', function(){
-      exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(email);
-      usernameTextBox.sendKeys('abc ' + username);
-      passwordTextBox.sendKeys('password1');
-      browser.waitForAngular();
-      expect(registerButton.isEnabled()).toBeFalsy();
-      // Todo: Check for error message
-    });
-
-    it('should not allow forbidden characters in username', function(){
-      exampleWorkTextBox.sendKeys(username);
-      emailTextBox.sendKeys(email);
-      usernameTextBox.sendKeys('abc!' + username);
-      passwordTextBox.sendKeys('password1');
-      browser.waitForAngular();
-      expect(registerButton.isEnabled()).toBeFalsy();
-      // Todo: Check for error message
-      // Todo: Repeat with several different characters...
     });
 
     var exampleWorkTextBox = element(by.model('registrationData.exampleWork'));
