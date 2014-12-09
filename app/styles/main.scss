@@ -84,11 +84,19 @@ h2 {
 }
 
 @media (max-width: $screen-sm-max) {
+  .fifthweek-video{
+    padding:20px 8px;
+  }
   .fifthweek-video .embed-responsive {
     margin-bottom: 20px;
   }
 }
 
+@media (max-width: $screen-xs-max) {
+  .fifthweek-video {
+    padding: 12px 0;
+  }
+}
 
 /*
  * Misc
