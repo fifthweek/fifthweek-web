@@ -73,6 +73,9 @@ h2 {
 .fifthweek-video p {
   margin-bottom: 20px;
 }
+.fifthweek-video .embed-responsive {
+  border: 1px solid #555;
+}
 
 @media (min-width: $screen-md-min) {
   .fifthweek-video h4:first-child {
