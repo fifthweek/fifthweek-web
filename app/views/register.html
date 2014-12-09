@@ -20,44 +20,49 @@
           <h3 class="panel-title">Register as a creator</h3>
         </div>
         <div class="panel-body">
-          <div class="form-group" data-ng-class="{ 'has-error' : form.exampleWork.$touched && form.exampleWork.$invalid && !form.exampleWork.$pristine }">
+          <div class="form-group"
+               data-ng-class="{ 'has-error' : form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted) }">
             <input type="text" class="form-control" name="exampleWork" placeholder="Website URL (example of work)"
                    data-ng-model="registrationData.exampleWork"
+                   ng-model-options="{ debounce: 500 }"
                    required autofocus>
-            <p ng-show="form.exampleWork.$touched && form.exampleWork.$invalid && !form.exampleWork.$pristine" class="help-block">A valid URL is required.</p>
+            <p ng-show="form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted)" class="help-block">A valid URL is required.</p>
           </div>
 
-          <div class="form-group" data-ng-class="{ 'has-error' : form.email.$touched && form.email.$invalid && !form.email.$pristine }">
+          <div class="form-group"
+               data-ng-class="{ 'has-error' : form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted) }">
             <input type="email" class="form-control" name="email" placeholder="Enter email"
                    data-ng-model="registrationData.email"
+                   ng-model-options="{ debounce: 500 }"
                    required>
-            <p ng-show="form.email.$touched && form.email.$invalid && !form.email.$pristine" class="help-block">A valid email address is required.</p>
+            <p ng-show="form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted)" class="help-block">A valid email address is required.</p>
           </div>
 
-          <div class="form-group" data-ng-class="{ 'has-error' : form.username.$invalid && !form.username.$pristine }">
+          <div class="form-group"
+               data-ng-class="{ 'has-error' : form.username.$invalid && ((form.username.$touched && form.username.$dirty) || form.$submitted) }">
             <input type="text" class="form-control" name="username" placeholder="Create a username"
                    data-ng-model="registrationData.username"
                    ng-model-options="{ debounce: 500 }"
                    ng-pattern="/^[a-zA-Z0-9_]+$/"
                    required username>
-            <p ng-show="form.username.$error.pattern" class="help-block">Only allowed: alphanumeric characters and underscores.</p>
-            <p ng-show="form.username.$error.required && !form.username.$pristine" class="help-block">A username is required.</p>
+            <p ng-show="form.username.$error.pattern && ((form.username.$touched && form.username.$dirty) || form.$submitted)" class="help-block">Only allowed: alphanumeric characters and underscores.</p>
+            <p ng-show="form.username.$error.required && ((form.username.$touched && form.username.$dirty) || form.$submitted)" class="help-block">A username is required.</p>
             <p ng-show="form.username.$pending.username" class="help-block">Checking if available...</p>
             <p ng-show="form.username.$error.username" class="help-block">This username is already taken!</p>
           </div>
 
-          <div class="form-group" data-ng-class="{ 'has-error' : form.password.$touched && form.password.$invalid && !form.password.$pristine }">
+          <div class="form-group"
+               data-ng-class="{ 'has-error' : form.password.$invalid && ((form.password.$touched && form.password.$dirty) || form.$submitted) }">
             <input type="password" class="form-control" name="password" placeholder="Create a password"
                    data-ng-model="registrationData.password"
                    required>
-            <p ng-show="form.password.$touched && form.password.$invalid && !form.password.$pristine" class="help-block">A password is required.</p>
+            <p ng-show="form.password.$invalid && ((form.password.$touched && form.password.$dirty) || form.$submitted)" class="help-block">A password is required.</p>
           </div>
 
           <button
             class="btn btn-lg btn-success btn-block"
             type="submit"
-            data-ng-click="register()"
-            id="registerButton" ng-disabled="form.$invalid || form.$pending">
+            id="registerButton" ng-click="form.$valid && form.$dirty ? register() : false">
             Create Account
           </button>
         </div>
