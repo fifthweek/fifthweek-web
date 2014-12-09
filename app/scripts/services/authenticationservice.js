@@ -42,14 +42,17 @@ angular.module('webApp').factory('authenticationService', ['$http', '$q', 'local
         }
       }).success(function(response) {
 
+        // Performed server-side. Repeated here to make UI consistent with API rules.
+        var normalizedUsername = normalizeUsername(signInData.username);
+
         localStorageService.set('authenticationData', {
           token: response.access_token,
-          username: signInData.username,
+          username: normalizedUsername,
           refreshToken: response.refresh_token
         });
 
         service.currentUser.authenticated = true;
-        service.currentUser.username = signInData.username;
+        service.currentUser.username = normalizedUsername;
 
         deferred.resolve(response);
 
@@ -102,6 +105,10 @@ angular.module('webApp').factory('authenticationService', ['$http', '$q', 'local
       }
 
       return deferred.promise;
+    };
+
+    var normalizeUsername = function(username) {
+      return username.trim().toLowerCase();
     };
 
     return service;
