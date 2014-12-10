@@ -40,7 +40,23 @@
 The following must succeed locally before any changes are pushed:
 
     grunt ftest
+    
+### Cross-repository changes
+
+*Extra care must be taken until we have [full continuous integration][full-ci-issue].*
+
+Components must be deployed in their dependency order. You must wait until a dependency has passed through CI / been 
+deployed before pushing any dependent components to master. Example:
+ 
+> `fifthweek-web` depends on `fifthweek-api`, 
+> Changes are made to API that are required by Web.
+> The API must be pushed *and become live* before pushing Web to master.
+
+Dependencies must not introduce breaking changes. This means older versions of Web must work with newer versions of API.
 
 ## Credits
 
 Tested on [BrowserStack](http://www.browserstack.com).
+
+
+[full-ci-issue]: https://github.com/fifthweek/fifthweek-web/issues/40 "Issue #40: Full Continuous Integration"
