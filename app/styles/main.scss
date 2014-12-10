@@ -83,6 +83,12 @@ h2 {
   }
 }
 
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max){
+  .fifthweek-video .embed-responsive {
+    margin-top: 32px;
+  }
+}
+
 @media (max-width: $screen-sm-max) {
   .fifthweek-video{
     padding:20px 8px;
