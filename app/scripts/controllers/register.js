@@ -25,7 +25,7 @@ angular.module('webApp').controller(
               password: $scope.registrationData.password
             };
 
-            authenticationService.signIn(signInData).then(
+            return authenticationService.signIn(signInData).then(
               function() {
                 $location.path(fifthweekConstants.dashboardPage);
               },
