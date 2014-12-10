@@ -52,7 +52,7 @@ deployed before pushing any dependent components to master. Example:
 
 > Let's assume changes are made to API that are required by Web.
 
-> The API must be pushed *and become live* before pushing Web to master.
+> `fifthweek-api` must be pushed *and become live* before pushing `fifthweek-web` to `master`.
 
 #### Breaking changes
 
