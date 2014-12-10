@@ -32,6 +32,10 @@ $well-border: $gray-light;
   }
 }
 
+.sub-form-alert {
+  margin: ($grid-gutter-width / 2) 0 0 0;
+}
+
 /*
  * Required to clear fixed navbar.
  */

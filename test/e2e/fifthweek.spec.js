@@ -119,7 +119,25 @@ describe('fifthweek', function() {
       passwordTextBox.sendKeys('password1');
       registerButton.click();
       browser.waitForAngular();
-      expect(messageBox.getText()).toContain('minimum length of 6');
+
+      var messages = element.all(by.css('#registrationForm .help-block'));
+
+      expect(messages.count()).toBe(1);
+      expect(messages.get(0).getText()).toContain('Username must be at least 6 characters.')
+    });
+
+    it('should not allow passwords with fewer than six characters', function(){
+      exampleWorkTextBox.sendKeys(username);
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys(username);
+      passwordTextBox.sendKeys('pass');
+      registerButton.click();
+      browser.waitForAngular();
+
+      var messages = element.all(by.css('#registrationForm .help-block'));
+
+      expect(messages.count()).toBe(1);
+      expect(messages.get(0).getText()).toContain('Password must be at least 6 characters.')
     });
 
     it('should allow numbers in username', function(){
