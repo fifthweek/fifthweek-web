@@ -40,3 +40,7 @@
 The following must succeed locally before any changes are pushed:
 
     grunt ftest
+
+## Credits
+
+Tested on [BrowserStack](http://www.browserstack.com).
