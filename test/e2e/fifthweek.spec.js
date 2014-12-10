@@ -112,7 +112,7 @@ describe('fifthweek', function() {
       expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
-    it('should not allow usernames with fewer than six characters', function(){
+    it('should not allow usernames with fewer than 6 characters', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys('abc');
@@ -126,7 +126,18 @@ describe('fifthweek', function() {
       expect(messages.get(0).getText()).toContain('Username must be at least 6 characters.')
     });
 
-    it('should not allow passwords with fewer than six characters', function(){
+    iit('should not allow usernames with over than 20 characters', function(){
+      exampleWorkTextBox.sendKeys(username);
+      emailTextBox.sendKeys(email);
+      usernameTextBox.sendKeys('12345678901234567890ThisIsTooLong');
+      passwordTextBox.sendKeys('password1');
+      registerButton.click();
+      browser.waitForAngular();
+
+      expect(usernameTextBox.getAttribute('value')).toEqual('12345678901234567890')
+    });
+
+    it('should not allow passwords with fewer than 6 characters', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys(username);

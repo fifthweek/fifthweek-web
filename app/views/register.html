@@ -52,6 +52,7 @@
                ng-model-options="{ debounce: 500 }"
                ng-pattern="/^[a-zA-Z0-9_]+$/"
                ng-minlength="6"
+               maxlength="20"
                required username>
         <span ng-if="form.username.$valid && form.username.$touched" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
         <span ng-if="form.username.$invalid && ((form.username.$touched && form.username.$dirty) || form.$submitted)" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
