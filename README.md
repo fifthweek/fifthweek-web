@@ -49,7 +49,9 @@ Components must be deployed in their dependency order. You must wait until a dep
 deployed before pushing any dependent components to master. Example:
  
 > `fifthweek-web` depends on `fifthweek-api`, 
-> Changes are made to API that are required by Web.
+
+> Let's assume changes are made to API that are required by Web.
+
 > The API must be pushed *and become live* before pushing Web to master.
 
 Dependencies must not introduce breaking changes. This means older versions of Web must work with newer versions of API.
