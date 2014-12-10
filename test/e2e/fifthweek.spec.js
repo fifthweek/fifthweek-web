@@ -85,7 +85,7 @@ describe('fifthweek', function() {
       var messages = element.all(by.css('#registrationForm .help-block'));
 
       expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('Only allowed: alphanumeric characters and underscores.')
+      expect(messages.get(0).getText()).toContain('Letters, numbers and underscores only.')
     });
 
     it('should not allow forbidden characters in username', function(){
@@ -99,7 +99,7 @@ describe('fifthweek', function() {
       var messages = element.all(by.css('#registrationForm .help-block'));
 
       expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('Only allowed: alphanumeric characters and underscores.')
+      expect(messages.get(0).getText()).toContain('Letters, numbers and underscores only.')
     });
 
     it('should allow lowercase and uppercase characters in username', function(){
@@ -123,10 +123,10 @@ describe('fifthweek', function() {
       var messages = element.all(by.css('#registrationForm .help-block'));
 
       expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('Username must be at least 6 characters.')
+      expect(messages.get(0).getText()).toContain('Must be at least 6 characters.')
     });
 
-    iit('should not allow usernames with over than 20 characters', function(){
+    it('should not allow usernames with over than 20 characters', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys('12345678901234567890ThisIsTooLong');
@@ -148,7 +148,7 @@ describe('fifthweek', function() {
       var messages = element.all(by.css('#registrationForm .help-block'));
 
       expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('Password must be at least 6 characters.')
+      expect(messages.get(0).getText()).toContain('Must be at least 6 characters.')
     });
 
     it('should allow numbers in username', function(){

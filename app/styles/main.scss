@@ -22,16 +22,6 @@ $well-border: $gray-light;
   text-align: center;
 }
 
-@media (min-width: $screen-sm-min) {
-  .jumbo-panel {
-    padding: $grid-gutter-width;
-  }
-}
-
-.sub-form-alert {
-  margin: ($grid-gutter-width / 2) 0 0 0;
-}
-
 /*
  * Required to clear fixed navbar.
  */
@@ -40,19 +30,38 @@ body {
 }
 h1 {
   font-weight: 200;
-  margin:10px 0 18px 0;
+  margin:10px 0 20px 0;
 }
 h2 {
   font-weight: 200;
-  margin:10px 0 18px 0;
+  margin:10px 0 20px 0;
 }
 
-.well h2:first-child {
+.panel h2:first-child {
   margin-top: 0;
 }
 
 div h3:first-child {
   margin-top: 0;
+}
+
+@media (min-width: $screen-sm-min) {
+  .jumbo-panel {
+    padding: $grid-gutter-width;
+  }
+}
+
+.help-block {
+  margin-bottom:9px;
+}
+.sub-form-alert {
+  margin: ($grid-gutter-width / 2) 0 0 0;
+}
+
+@media (min-width: $screen-md-min) {
+  .fullscreen-validated-form h2 {
+    text-align: center;
+  }
 }
 
 /*
