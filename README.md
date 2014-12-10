@@ -54,7 +54,12 @@ deployed before pushing any dependent components to master. Example:
 
 > The API must be pushed *and become live* before pushing Web to master.
 
+#### Breaking changes
+
 Dependencies must not introduce breaking changes. This means older versions of Web must work with newer versions of API.
+
+There is no procedure for when you *absolutely must* implement a breaking change. Just remember there's 15 minutes 
+between builds on Travis CI!
 
 ## Credits
 
