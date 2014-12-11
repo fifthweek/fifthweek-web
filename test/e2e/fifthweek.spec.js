@@ -200,7 +200,7 @@ describe('fifthweek', function() {
 
   beforeEach(function() {
     username = 'wd_' + Date.now().toString().split('').reverse().join('');
-    email = username + '@mailinator.com';
+    email = username + '@testing.fifthweek.com';
     browser.get('/');
   });
 });
