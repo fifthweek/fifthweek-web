@@ -452,8 +452,7 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma',
-    'protractor:runLocal'
+    'karma'
   ]);
 
   grunt.registerTask('ftest', [
