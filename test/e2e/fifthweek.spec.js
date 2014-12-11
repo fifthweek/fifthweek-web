@@ -77,7 +77,7 @@ describe('fifthweek', function() {
     it('should not allow spaces in username', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
-      usernameTextBox.sendKeys('abc ' + username);
+      usernameTextBox.sendKeys('a ' + username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
       browser.waitForAngular();
@@ -91,7 +91,7 @@ describe('fifthweek', function() {
     it('should not allow forbidden characters in username', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
-      usernameTextBox.sendKeys('abc!' + username);
+      usernameTextBox.sendKeys('a!' + username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
       browser.waitForAngular();
@@ -105,7 +105,7 @@ describe('fifthweek', function() {
     it('should allow lowercase and uppercase characters in username', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
-      usernameTextBox.sendKeys('abcABC' + username);
+      usernameTextBox.sendKeys('aA' + username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
       browser.waitForAngular();
@@ -131,7 +131,6 @@ describe('fifthweek', function() {
       emailTextBox.sendKeys(email);
       usernameTextBox.sendKeys('12345678901234567890ThisIsTooLong');
       passwordTextBox.sendKeys('password1');
-      registerButton.click();
       browser.waitForAngular();
 
       expect(usernameTextBox.getAttribute('value')).toEqual('12345678901234567890')
@@ -154,7 +153,7 @@ describe('fifthweek', function() {
     it('should allow numbers in username', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
-      usernameTextBox.sendKeys('123456' + username);
+      usernameTextBox.sendKeys('1' + username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
       browser.waitForAngular();
@@ -164,7 +163,7 @@ describe('fifthweek', function() {
     it('should allow underscores in username', function(){
       exampleWorkTextBox.sendKeys(username);
       emailTextBox.sendKeys(email);
-      usernameTextBox.sendKeys('abc_ABC' + username);
+      usernameTextBox.sendKeys('a_A' + username);
       passwordTextBox.sendKeys('password1');
       registerButton.click();
       browser.waitForAngular();
@@ -200,7 +199,7 @@ describe('fifthweek', function() {
   var registerLink = element(by.id('registerLink'));
 
   beforeEach(function() {
-    username = 'webdriver_' + Date.now();
+    username = 'wd_' + Date.now().toString().split('').reverse().join('');
     email = username + '@mailinator.com';
     browser.get('/');
   });
