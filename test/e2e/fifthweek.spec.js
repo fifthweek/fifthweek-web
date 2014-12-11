@@ -5,8 +5,19 @@ describe('fifthweek', function() {
   //  expect(signInLink.getText()).toContain('Sign In');
   //});
 
+  it('should have a "Become a creator" link', function() {
+    var becomeACreatorLink = element(by.id('becomeACreatorLink'));
+    expect(becomeACreatorLink.getText()).toContain('Become a creator');
+    becomeACreatorLink.click();
+    browser.waitForAngular();
+    expect(browser.getCurrentUrl()).toContain('/register');
+  });
+
   it('should have a register link', function() {
-    expect(registerLink.getText()).toContain('Become a creator');
+    expect(registerLink.getText()).toContain('Register');
+    registerLink.click();
+    browser.waitForAngular();
+    expect(browser.getCurrentUrl()).toContain('/register');
   });
 
   describe('register page', function() {
@@ -190,19 +201,19 @@ describe('fifthweek', function() {
     var username;
     var email;
 
-
     beforeEach(function() {
       username = 'wd_' + Date.now().toString().split('').reverse().join('');
       email = username + '@testing.fifthweek.com';
 
-      browser.get('/#/signout');
-
-      var registerLink = element(by.id('registerLink'));
       registerLink.click();
     });
   });
 
+  var registerLink;
+
   beforeEach(function() {
+    browser.get('/#/signout');
     browser.get('/');
+    registerLink = element(by.id('registerLink'));
   });
 });
