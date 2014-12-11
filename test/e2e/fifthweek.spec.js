@@ -187,20 +187,22 @@ describe('fifthweek', function() {
     var registerButton = element(by.id('registerButton'));
     var messageBox = element(by.id('messageBox'));
 
+    var username;
+    var email;
+
+
     beforeEach(function() {
+      username = 'wd_' + Date.now().toString().split('').reverse().join('');
+      email = username + '@testing.fifthweek.com';
+
+      browser.get('/#/signout');
+
+      var registerLink = element(by.id('registerLink'));
       registerLink.click();
     });
   });
 
-  var username;
-  var email;
-
-  var signInLink = element(by.id('signInLink'));
-  var registerLink = element(by.id('registerLink'));
-
   beforeEach(function() {
-    username = 'wd_' + Date.now().toString().split('').reverse().join('');
-    email = username + '@testing.fifthweek.com';
     browser.get('/');
   });
 });
