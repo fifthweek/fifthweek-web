@@ -2,16 +2,25 @@
 
 describe('dashboard controller', function () {
 
+  it('should have the correct url', function()
+  {
+    expect(fifthweekConstants.dashboardPage).toEqual(dashboardPage.path);
+  });
+
   // load the controller's module
   beforeEach(module('webApp'));
 
-  var DashboardCtrl,
-    scope;
+  var dashboardCtrl;
+  var scope;
+  var fifthweekConstants;
+  var dashboardPage;
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, _fifthweekConstants_, _dashboardPage_) {
     scope = $rootScope.$new();
-    DashboardCtrl = $controller('DashboardCtrl', {
+    fifthweekConstants = _fifthweekConstants_;
+    dashboardPage = _dashboardPage_;
+
+    dashboardCtrl = $controller('DashboardCtrl', {
       $scope: scope
     });
   }));

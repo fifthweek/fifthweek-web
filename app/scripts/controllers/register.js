@@ -3,6 +3,10 @@ angular.module('webApp').controller(
     function($scope, $location, authenticationService, fifthweekConstants) {
       'use strict';
 
+      if(authenticationService.currentUser.authenticated === true){
+        $location.path(fifthweekConstants.dashboardPage);
+      }
+
       $scope.savedSuccessfully = false;
       $scope.message = '';
 
