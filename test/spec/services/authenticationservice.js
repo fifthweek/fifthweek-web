@@ -32,10 +32,12 @@ describe('authentication service', function() {
 
       setupSignOutExpectations();
 
-      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations').respond(200, 'Success');
+      var registrationData = {username: 'user'};
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(200, 'Success');
 
       var result;
-      authenticationService.registerUser({username: 'user'}).then(function(response) { result = response; });
+      authenticationService.registerUser(registrationData).then(function(response) { result = response; });
 
       executeSignOutExpectations();
 
