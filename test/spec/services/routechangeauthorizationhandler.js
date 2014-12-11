@@ -39,6 +39,26 @@ describe('route change authorization handler', function () {
       expect($location.path).toHaveBeenCalledWith(fifthweekConstants.notAuthorizedPage);
     });
 
+    it('should not redirect if the user navigates to a non-secure page after initial redirection to sign in page', function(){
+      spyOn($location, 'path').and.callThrough();
+
+      next.access = { loginRequired: true };
+      authorizationService.authorize = function(){
+        return authorizationServiceConstants.authorizationResult.loginRequired;
+      };
+      routeChangeAuthorizationHandler.handleRouteChangeStart(next);
+
+      expect($location.path).toHaveBeenCalledWith(fifthweekConstants.signInPage);
+
+      next.access = { loginRequired: false };
+      next.originalPath = testPath;
+
+      $location.path.calls.reset();
+      routeChangeAuthorizationHandler.handleRouteChangeStart(next);
+
+      expect($location.path).not.toHaveBeenCalled();
+    });
+
     var next;
     var testPath = '/test';
 

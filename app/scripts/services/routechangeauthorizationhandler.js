@@ -15,7 +15,7 @@ angular.module('webApp').factory('routeChangeAuthorizationHandler', ['authorizat
 
         routeChangeRequiredAfterLogin = false;
 
-        if(next.access !== undefined && next.access.loginRequired) {
+        if(next.access !== undefined && next.access.loginRequired === true) {
           $location.path(loginRedirectUrl).replace();
         }
       }
