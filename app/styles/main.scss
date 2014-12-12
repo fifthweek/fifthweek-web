@@ -41,15 +41,20 @@ h2 {
   margin-top: 0;
 }
 
-div h3:first-child {
-  margin-top: 0;
+.jumbo-panel-starts-with-header {
+  padding-top: 0;
 }
 
 @media (min-width: $screen-sm-min) {
   .jumbo-panel {
     padding: $grid-gutter-width;
   }
+
+  .jumbo-panel-starts-with-header {
+    padding-top: ($grid-gutter-width - 20px);
+  }
 }
+
 
 .help-block {
   margin-bottom:9px;
@@ -110,12 +115,6 @@ div h3:first-child {
 @media (min-width: $screen-md-min) {
   .fifthweek-video h4:first-child {
     margin-top: 0;
-  }
-}
-
-@media (min-width: $screen-md-min) and (max-width: $screen-md-max){
-  .fifthweek-video .embed-responsive {
-    margin-top: 32px;
   }
 }
 
