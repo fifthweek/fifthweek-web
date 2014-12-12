@@ -28,6 +28,7 @@ angular
     registerPage: '/register',
     accountPage: '/account',
     dashboardPage: '/dashboard',
+    feedbackPage: '/dashboard/feedback',
     notAuthorizedPage: '/notauthorized'
   })
   .config(['$routeProvider', 'fifthweekConstants',
@@ -53,8 +54,13 @@ angular
         }
       })
       .when(fifthweekConstants.dashboardPage, {
-        templateUrl: 'views/dashboard.html',
-        controller: 'DashboardCtrl',
+        templateUrl: 'views/dashboard/demonstration.html',
+        access: {
+          loginRequired: true
+        }
+      })
+      .when(fifthweekConstants.feedbackPage, {
+        templateUrl: 'views/dashboard/feedback.html',
         access: {
           loginRequired: true
         }

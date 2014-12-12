@@ -14,8 +14,8 @@
                 <input type="password" class="form-control" placeholder="Password" data-ng-model="signInData.password" required>
             </div>
 
-            <button class="btn btn-md btn-primary btn-block" type="submit" data-ng-click="signIn()">Sign In</button>
-            
+            <button id="signInButton" class="btn btn-md btn-primary btn-block" type="submit" data-ng-click="signIn()">Sign In</button>
+
             <div data-ng-hide="message == ''" class="alert alert-danger">
                 {{message}}
             </div>
