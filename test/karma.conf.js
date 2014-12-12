@@ -24,6 +24,8 @@ module.exports = function(config) {
       'bower_components/angular-resource/angular-resource.js',
       'bower_components/angular-route/angular-route.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-strap/dist/angular-strap.js',
+      'bower_components/angular-strap/dist/angular-strap.tpl.js',
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
       'bower_components/AngularJS-Toaster/toaster.js',
       'bower_components/angular-loading-bar/build/loading-bar.js',

@@ -10,6 +10,7 @@
  */
 angular
   .module('webApp', [
+    'mgcrea.ngStrap',
     'ngAnimate',
     'ngResource',
     'ngRoute',

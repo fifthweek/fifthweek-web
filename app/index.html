@@ -10,6 +10,8 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/AngularJS-Toaster/toaster.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -25,7 +27,7 @@
     <!-- Add your site or application content here -->
     <toaster-container></toaster-container>
     <header data-ng-controller="IndexCtrl">
-      <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <nav class="navbar navbar-default navbar-fixed-top" role="navigation" bs-navbar>
         <div class="container">
           <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
@@ -41,14 +43,13 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-              <li data-ng-hide="currentUser.authenticated"><a href="#/" aria-label="Home">Home</a></li>
-              <li data-ng-hide="currentUser.authenticated"><a href="#/register" aria-label="Register" id="registerLink">Register</a></li>
-              <li data-ng-hide="currentUser.authenticated"><a href="#/signin" aria-label="Sign in">Sign In</a></li>
-              <li data-ng-hide="!currentUser.authenticated"><a href="#/dashboard">Dashboard</a></li>
-              <li data-ng-hide="!currentUser.authenticated"><a href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text">{{currentUser.username}}</span></a></li>
+              <li data-ng-hide="currentUser.authenticated" data-match-route="/register*"><a href="#/register" aria-label="Register" id="registerLink">Register</a></li>
+              <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*"><a href="#/signin" aria-label="Sign in">Sign In</a></li>
+              <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a href="#/dashboard">Dashboard</a></li>
+              <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*"><a href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text">{{currentUser.username}}</span></a></li>
             </ul>
-          </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+          </div>
+        </div>
       </nav>
     </header>
 
@@ -108,9 +109,12 @@
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="bower_components/AngularJS-Toaster/toaster.js"></script>
     <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
