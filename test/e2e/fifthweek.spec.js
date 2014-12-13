@@ -247,9 +247,6 @@ describe('fifthweek', function() {
     });
   });
 
-
-  // describe('feedback')...
-
   var header = new HeaderPage();
 
   beforeEach(function() {
