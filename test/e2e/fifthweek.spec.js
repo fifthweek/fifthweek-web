@@ -1,6 +1,9 @@
 var DashboardSidebarSpec = require('./shared/dashboardsidebar.spec.js');
 var HeaderPage = require('./pages/header.page.js');
 var RegisterPage = require('./pages/register.page.js');
+var SidebarPage = require('./pages/sidebar.page.js');
+var DemonstrationPage = require('./pages/demonstration.page.js');
+var FeedbackPage = require('./pages/feedback.page.js');
 
 describe('fifthweek', function() {
   'use strict';
@@ -215,24 +218,35 @@ describe('fifthweek', function() {
   });
 
   describe('dashboard', function() {
-    //it('should contain the mockup demonstration video', function() {
-    //
-    //});
+    it('should contain the mockup demonstration video', function() {
+      expect(page.video.getAttribute('src')).toMatch(urlRegex(page.videoUrl));
+    });
 
     new DashboardSidebarSpec().includeTests();
 
+    var page = new DemonstrationPage();
+
     beforeEach(function() {
-      var registerPage = new RegisterPage();
-      var username = newUsername();
-      var email = newEmailAddress(username);
-      header.registerLink.click();
-      registerPage.exampleWorkTextBox.sendKeys(username);
-      registerPage.usernameTextBox.sendKeys(username);
-      registerPage.passwordTextBox.sendKeys('password1');
-      registerPage.emailTextBox.sendKeys(email);
-      registerPage.registerButton.click();
+      registerSuccessfully();
     });
   });
+
+  describe('feedback page', function() {
+    it('should contain a link to email Fifthweek', function() {
+      expect(page.emailLink.getAttribute('href')).toContain('mailto:hello@fifthweek.com')
+    });
+
+    new DashboardSidebarSpec().includeTests();
+
+    var page = new FeedbackPage();
+    var sidebar = new SidebarPage();
+
+    beforeEach(function() {
+      registerSuccessfully();
+      sidebar.feedbackLink.click();
+    });
+  });
+
 
   // describe('feedback')...
 
@@ -243,6 +257,21 @@ describe('fifthweek', function() {
     browser.get('/');
   });
 
+  function registerSuccessfully() {
+    var registerPage = new RegisterPage();
+    var username = newUsername();
+    var email = newEmailAddress(username);
+    header.registerLink.click();
+    registerPage.exampleWorkTextBox.sendKeys(username);
+    registerPage.usernameTextBox.sendKeys(username);
+    registerPage.passwordTextBox.sendKeys('password1');
+    registerPage.emailTextBox.sendKeys(email);
+    registerPage.registerButton.click();
+  }
+
+  function urlRegex(path) {
+    return new RegExp(path.replace('.', '\\.') + '$')
+  }
   function newUsername() {
     return 'wd_' + Date.now().toString().split('').reverse().join('');
   }

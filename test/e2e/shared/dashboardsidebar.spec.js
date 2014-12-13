@@ -10,22 +10,22 @@ DashboardSidebarSpec.prototype = {
     describe('sidebar', function() {
 
       it('should link to dashboard pages', function() {
-        sidebar.navigationLinks.then(function(actualLinks) {
+        sidebar.links.then(function(actualLinks) {
 
-          expect(actualLinks.length).toBe(expectedLinks.length);
+          expect(actualLinks.length).toBe(sidebar.linkedPages.length);
 
           for (var i = 0; i < actualLinks.length; i++) {
-            var expectedLink = expectedLinks[i];
+            var expectedLink = sidebar.linkedPages[i];
             var actualLink = actualLinks[i];
 
             expect(actualLink.getText()).toEqual(expectedLink.title);
-            expect(actualLink.getAttribute('href')).toMatch(new RegExp(expectedLink.href + "$"));
+            expect(actualLink.getAttribute('href')).toMatch(new RegExp(expectedLink.pageUrl + "$"));
           }
         });
       });
 
       it('should highlight the current page only', function() {
-        sidebar.navigationLinks.then(function(actualLinks) {
+        sidebar.links.then(function(actualLinks) {
           for (var i = 0; i < actualLinks.length; i++) {
             (function(){
               var actualLink = actualLinks[i];
@@ -47,10 +47,6 @@ DashboardSidebarSpec.prototype = {
       });
 
       var sidebar = new SidebarPage();
-
-      var expectedLinks = [
-        {title: 'Quick demo', href: '/dashboard'},
-        {title: 'Provide feedback', href: '/dashboard/feedback'}]
     });
 
   }

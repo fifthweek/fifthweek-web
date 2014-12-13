@@ -2,9 +2,9 @@
 
 var HeaderPage = function() {};
 
-HeaderPage.prototype = {
-  get registerLink() { return element(by.id('registerLink')) },
-  get signInLink() { return element(by.id('signInLink')) }
-};
+HeaderPage.prototype = Object.create({}, {
+  registerLink: { get: function () { return element(by.id('registerLink')); }},
+  signInLink: { get: function () { return element(by.id('signInLink')); }}
+});
 
 module.exports = HeaderPage;

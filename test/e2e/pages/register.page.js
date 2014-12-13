@@ -2,13 +2,13 @@
 
 var RegisterPage = function() {};
 
-RegisterPage.prototype = {
-  get exampleWorkTextBox() { return element(by.model('registrationData.exampleWork')) },
-  get emailTextBox() { return element(by.model('registrationData.email')) },
-  get usernameTextBox() { return element(by.model('registrationData.username')) },
-  get passwordTextBox() { return element(by.model('registrationData.password')) },
-  get registerButton() { return element(by.id('registerButton')) },
-  get helpMessages() { return element.all(by.css('#registrationForm .help-block')) }
-};
+RegisterPage.prototype = Object.create({}, {
+  exampleWorkTextBox: { get: function () { return element(by.model('registrationData.exampleWork')); }},
+  emailTextBox: { get: function () { return element(by.model('registrationData.email')); }},
+  usernameTextBox: { get: function () { return element(by.model('registrationData.username')); }},
+  passwordTextBox: { get: function () { return element(by.model('registrationData.password')); }},
+  registerButton: { get: function () { return element(by.id('registerButton')); }},
+  helpMessages: { get: function () { return element.all(by.css('#registrationForm .help-block')); }}
+});
 
 module.exports = RegisterPage;
