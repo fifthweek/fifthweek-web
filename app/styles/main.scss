@@ -157,18 +157,31 @@ h2 {
 .snap-content {
   background:$body-bg;
 }
-.snap-drawer-left {
-  background:#ebebeb;
+.snap-drawer-right {
+  background:#111;
+  color:#EEE;
 }
 
 //active snap-drawer
-.snapjs-left {
-  .snap-drawer-left {
-    //z-index:1032;
+.snapjs-right {
+  .snap-drawers {
+    background:rgba(0, 0, 0, 0.75);
   }
-  .navbar-fixed-top {
-    //left:265px;
-    //transition:all 0.2s ease;
+  .snap-content {
+    overflow-y:hidden;
+  }
+  .snap-overlay {
+    position:absolute;
+    width:100%;
+    height:100%;
+    &::before {
+      content:'';
+      position:fixed;
+      height:100%;
+      width:100%;
+      background:rgba(0, 0, 0, 0.75);
+      z-index:1040;
+    }
   }
 }
 
@@ -184,3 +197,8 @@ h2 {
   //match header height
   margin-top:70px;
 }
+
+.sidebar {
+  padding:15px;
+}
+
