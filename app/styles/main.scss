@@ -171,3 +171,16 @@ h2 {
     //transition:all 0.2s ease;
   }
 }
+
+
+.header-wrapper {
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:1030;
+}
+
+.main-container {
+  //match header height
+  margin-top:70px;
+}
