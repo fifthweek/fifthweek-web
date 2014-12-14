@@ -1,3 +1,8 @@
 <div class="sidebar">
-  <p>I'm a drawer! I maybe I've got some sweet navigation links.</p>
+  <ul>
+    <li data-ng-hide="currentUser.authenticated" data-match-route="/register*"><a href="#/register" aria-label="Register" >Register</a></li>
+    <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*"><a href="#/signin" aria-label="Sign in">Sign In</a></li>
+    <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a href="#/dashboard">Dashboard</a></li>
+    <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*"><a href="#/account">{{currentUser.username}}</a></li>
+  </ul>
 </div>
