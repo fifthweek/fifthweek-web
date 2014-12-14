@@ -152,3 +152,22 @@ h2 {
 .x-ng-cloak {
   display: none !important;
 }
+
+//temp for sidebar
+.snap-content {
+  background:$body-bg;
+}
+.snap-drawer-left {
+  background:#ebebeb;
+}
+
+//active snap-drawer
+.snapjs-left {
+  .snap-drawer-left {
+    //z-index:1032;
+  }
+  .navbar-fixed-top {
+    //left:265px;
+    //transition:all 0.2s ease;
+  }
+}

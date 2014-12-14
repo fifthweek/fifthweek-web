@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css" />
+    <link rel="stylesheet" href="bower_components/angular-snap/angular-snap.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -53,19 +54,13 @@
 
     <!-- Add your site or application content here -->
     <toaster-container></toaster-container>
-    <header data-ng-controller="IndexCtrl">
-      <nav class="navbar navbar-default navbar-fixed-top" role="navigation" bs-navbar>
-        <div class="container">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand fifthweek-logo header-logo" href="#/">fifthweek</a>
-          </div>
+    <div snap-drawer>
+      <div class="sidebar">
+        <a class="navbar-brand fifthweek-logo header-logo" href="#/">fifthweek</a>
+        <br/>
+        <p>I'm a drawer! I maybe I've got some sweet navigation links.</p>
+      </div>
+    </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
@@ -75,27 +70,54 @@
               <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a href="#/dashboard" ng-cloak>Dashboard</a></li>
               <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*"><a href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text" ng-cloak>{{currentUser.username}}</span></a></li>
             </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+    <div snap-content>
+      <header data-ng-controller="IndexCtrl">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" bs-navbar>
+          <div class="container">
+            <button snap-toggle="left">Toggle Snap</button>
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand fifthweek-logo header-logo" href="#/">fifthweek</a>
+            </div>
 
-    <div class="container">
-      <div data-ng-view="">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                <li data-ng-hide="currentUser.authenticated" data-match-route="/register*"><a href="#/register" aria-label="Register" id="registerLink">Register</a></li>
+                <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*"><a href="#/signin" aria-label="Sign in" id="signInLink">Sign In</a></li>
+                <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a href="#/dashboard">Dashboard</a></li>
+                <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*"><a href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text">{{currentUser.username}}</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <div class="container">
+        <div data-ng-view="">
+        </div>
+
+        <hr>
+
+        <!--<footer>
+          <div class="row">
+            <div class="col-xs-6">
+              <p>&copy; Fifthweek 2014</p>
+            </div>
+            <div class="col-xs-6">
+              <p id="browserStackMention" class="text-right">Tested on <a href="http://www.browserstack.com/">BrowserStack</a></p>
+            </div>
+          </div>
+        </footer>
+
+      -->
       </div>
-
-      <hr>
-
-      <footer>
-        <div class="row">
-          <div class="col-xs-6">
-            <p>&copy; Fifthweek 2014</p>
-          </div>
-          <div class="col-xs-6">
-            <p id="browserStackMention" class="text-right">Tested on <a href="http://www.browserstack.com/">BrowserStack</a></p>
-          </div>
-        </div>
-      </footer>
     </div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
@@ -133,6 +155,8 @@
     <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
     <script src="bower_components/jquery-waypoints/waypoints.js"></script>
     <script src="bower_components/SHA-1/sha1.js"></script>
+    <script src="bower_components/snapjs/snap.js"></script>
+    <script src="bower_components/angular-snap/angular-snap.js"></script>
     <script src="bower_components/angulartics/src/angulartics.js"></script>
     <script src="bower_components/angulartics/src/angulartics-ga.js"></script>
     <script src="bower_components/froogaloop/froogaloop.js"></script>

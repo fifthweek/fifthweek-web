@@ -14,6 +14,7 @@
     "AngularJS-Toaster": "~0.4.8",
     "angular-loading-bar": "~0.6.0",
     "angular-strap": "~2.1.4",
+    "angular-snap": "~1.6.0",
     "angulartics": "~0.17.1",
     "froogaloop": "~0.1.0",
     "ng-focus": "~0.0.1"

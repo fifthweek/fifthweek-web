@@ -11,6 +11,7 @@ angular
     'ng-focus',
     'toaster',
     'angular-loading-bar',
+    'snap',
     'angulartics',
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',
@@ -34,8 +35,8 @@ angular
     feedbackPage: '/dashboard/feedback',
     notAuthorizedPage: '/notauthorized',
   })
-  .config(['$routeProvider', 'fifthweekConstants',
-    function ($routeProvider, fifthweekConstants) {
+  .config(['$routeProvider', 'fifthweekConstants', 'snapRemoteProvider',
+    function ($routeProvider, fifthweekConstants, snapRemoteProvider) {
     $routeProvider
       .when(fifthweekConstants.homePage, {
         templateUrl: 'views/home.html',
@@ -78,4 +79,10 @@ angular
       .otherwise({
         redirectTo: fifthweekConstants.homePage
       });
+
+    snapRemoteProvider. globalOptions = {
+      disable: 'right',
+      // ... others options
+    };
+
   }]);
