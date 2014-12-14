@@ -1,6 +1,7 @@
 var DashboardSidebarSpec = require('./shared/dashboardsidebar.spec.js');
 var HeaderPage = require('./pages/header.page.js');
 var RegisterPage = require('./pages/register.page.js');
+var SignInPage = require('./pages/signin.page.js');
 var SidebarPage = require('./pages/sidebar.page.js');
 var DemonstrationPage = require('./pages/demonstration.page.js');
 var FeedbackPage = require('./pages/feedback.page.js');
@@ -217,6 +218,95 @@ describe('fifthweek', function() {
     });
   });
 
+  describe('sign-in page', function(){
+
+    describe('when a user is registered', function(){
+
+      it('should allow the existing user to sign in', function(){
+        page.usernameTextBox.sendKeys(username);
+        page.passwordTextBox.sendKeys(password);
+        page.signInButton.click();
+        browser.waitForAngular();
+        expect(browser.getCurrentUrl()).toContain('/dashboard');
+      });
+
+      it('should require a valid password', function(){
+        page.usernameTextBox.sendKeys(username);
+        page.passwordTextBox.sendKeys(password + 'X');
+        page.signInButton.click();
+        browser.waitForAngular();
+        expect(page.message.getText()).toContain('Invalid username or password');
+      });
+
+      it('should require a valid username', function(){
+        page.usernameTextBox.sendKeys(username + 'X');
+        page.passwordTextBox.sendKeys(password);
+        page.signInButton.click();
+        browser.waitForAngular();
+        expect(page.message.getText()).toContain('Invalid username or password');
+      });
+
+      it('should be case insensitive for the username', function(){
+        // Change the first letter to upper case, and check the result.
+        var username2 = username.charAt(0).toUpperCase() + username.substring(1);
+        expect(username.length === username2.length).toBeTruthy();
+        expect(username !== username2).toBeTruthy();
+
+        page.usernameTextBox.sendKeys(username2);
+        page.passwordTextBox.sendKeys(password);
+        page.signInButton.click();
+        browser.waitForAngular();
+        expect(browser.getCurrentUrl()).toContain('/dashboard');
+      });
+
+      it('should case sensitive for the password', function(){
+        // Change the first letter to upper case, and check the result.
+        var password2 = password.charAt(0).toUpperCase() + password.substring(1);
+        expect(password.length === password2.length).toBeTruthy();
+        expect(password !== password2).toBeTruthy();
+
+        page.usernameTextBox.sendKeys(username);
+        page.passwordTextBox.sendKeys(password2);
+        page.signInButton.click();
+        browser.waitForAngular();
+        expect(page.message.getText()).toContain('Invalid username or password');
+      });
+
+      var username;
+      var password;
+
+      beforeEach(function() {
+        var signInData = registerSuccessfully();
+        username = signInData.username;
+        password = signInData.password;
+
+        reset();
+
+        header.signInLink.click();
+      });
+    });
+
+    describe('when a user is not registered', function() {
+
+      it('should not allow the existing user to sign in', function(){
+        var username = newUsername();
+        var password = username + '123';
+
+        page.usernameTextBox.sendKeys(username);
+        page.passwordTextBox.sendKeys(password);
+        page.signInButton.click();
+        browser.waitForAngular();
+        expect(page.message.getText()).toContain('Invalid username or password');
+      });
+
+      beforeEach(function() {
+        header.signInLink.click();
+      });
+    });
+
+    var page = new SignInPage();
+  });
+
   describe('dashboard', function() {
     it('should contain the mockup demonstration video', function() {
       expect(page.video.getAttribute('src')).toMatch(urlRegex(page.videoUrl));
@@ -250,20 +340,35 @@ describe('fifthweek', function() {
   var header = new HeaderPage();
 
   beforeEach(function() {
+    reset();
+  });
+
+  function reset(){
     browser.get('/#/signout');
     browser.get('/');
-  });
+  };
 
   function registerSuccessfully() {
     var registerPage = new RegisterPage();
     var username = newUsername();
     var email = newEmailAddress(username);
+    var password = 'password1';
+
     header.registerLink.click();
     registerPage.exampleWorkTextBox.sendKeys(username);
     registerPage.usernameTextBox.sendKeys(username);
-    registerPage.passwordTextBox.sendKeys('password1');
+    registerPage.passwordTextBox.sendKeys(password);
     registerPage.emailTextBox.sendKeys(email);
+
     registerPage.registerButton.click();
+    browser.waitForAngular();
+
+    var result = {
+      username: username,
+      password: password
+    };
+
+    return result;
   }
 
   function urlRegex(path) {
