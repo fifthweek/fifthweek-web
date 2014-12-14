@@ -82,7 +82,7 @@ angular
 
     snapRemoteProvider. globalOptions = {
       disable: 'left',
-      // ... others options
+      touchToDrag: false
     };
 
   }]);
