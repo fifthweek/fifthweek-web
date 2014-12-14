@@ -29,6 +29,7 @@ describe('registration controller', function() {
       scope.register();
       $rootScope.$apply();
 
+      expect(false).toBeTruthy();
       expect(scope.message).toContain('Signing in...');
       expect(scope.savedSuccessfully).toBe(true);
 
