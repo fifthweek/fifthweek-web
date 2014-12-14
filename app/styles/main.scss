@@ -200,5 +200,25 @@ h2 {
 
 .sidebar {
   padding:15px;
+  ul {
+    margin:0;
+    padding:0;
+  }
+  li {
+    list-style-type:none;
+    a {
+      display:inline-block;
+      width:100%;
+      padding:7px 15px;
+      color:$gray-light;
+      &:hover,
+      &:focus {
+        text-decoration:none;
+      }
+    }
+    &:first-child a {
+      padding-top:15px;
+    }
+  }
 }
 
