@@ -69,7 +69,7 @@
       <div class="snap-overlay"></div>
       
       <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
-    <div class="wrapper">
+    <div class="wrapper" ng-class="{'secondary-nav-visible': secondaryNav}">
 
         <div snap-drawer="left">
           <div ng-include="'views/partials/sidebar.html'"></div>
