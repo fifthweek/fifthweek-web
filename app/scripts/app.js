@@ -17,7 +17,9 @@ angular
     'ngSanitize',
     'LocalStorageModule',
     'toaster',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'angulartics',
+    'angulartics.google.analytics'
   ])
   .constant('fifthweekConstants', {
     apiBaseUri: 'https://10.211.55.3:44301/',
