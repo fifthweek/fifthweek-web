@@ -69,14 +69,25 @@
       <div class="snap-overlay"></div>
       
       <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
+    <div class="wrapper">
 
-      <div class="container main-container">
-        <div data-ng-view="">
+        <div snap-drawer="left">
+          <div ng-include="'views/partials/sidebar.html'"></div>
         </div>
 
-        <div ng-include="'views/partials/footer.html'"></div>
+        <div snap-content>
+          <div class="snap-overlay"></div>
+          
+          <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
 
-      </div>
+          <div class="container main-container">
+            <div data-ng-view="">
+            </div>
+
+            <div ng-include="'views/partials/footer.html'"></div>
+
+          </div>
+        </div>
     </div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
