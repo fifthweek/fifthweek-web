@@ -153,11 +153,11 @@ h2 {
   display: none !important;
 }
 
+//header elements
 .navbar .container {
   padding-left:0;
 }
 
-//temp for sidebar
 .navbar-toggle {
   float:left;
   margin-right:0;
@@ -174,7 +174,46 @@ h2 {
   padding-left:0;
 }
 
+.navbar > .container .navbar-brand {
+  @media (min-width:768px) {
+    margin-left:15px;
+  }
+}
 
+//duplicate bootstrap styles to render at a lower breakpoint
+.navbar-collapse {
+  @media (min-width:500px) {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    padding-bottom: 0;
+    overflow: visible !important;
+  }
+}
+
+//duplicate bootstrap styles to render at a lower breakpoint
+.navbar-right {
+  @media (min-width:500px) {
+    float:right !important
+  }
+}
+
+//duplicate bootstrap styles to render at a lower breakpoint
+.navbar-nav {
+  margin:0;
+  > li {
+    @media (min-width:500px) {
+      float:left;
+    }
+    > a {
+      @media (min-width:500px) {
+        padding:15px;
+      }
+    }
+  }
+}
+
+//sidebar specifics
 .snap-content {
   background:$body-bg;
 }
