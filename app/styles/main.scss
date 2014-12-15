@@ -164,22 +164,27 @@ h2 {
   padding-left:15px;
   background:none;
   border:0 none;
+  &:hover,
+  &:focus {
+    background:none;
+  }
 }
 
 .navbar-brand {
   padding-left:0;
 }
 
+
 .snap-content {
   background:$body-bg;
 }
-.snap-drawer-right {
+.snap-drawer-left {
   background:#111;
   color:#EEE;
 }
 
 //active snap-drawer
-.snapjs-right {
+.snapjs-left {
   .snap-drawers {
     background:rgba(0, 0, 0, 0.75);
   }
