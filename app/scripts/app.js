@@ -19,7 +19,8 @@ angular
     'toaster',
     'angular-loading-bar',
     'angulartics',
-    'angulartics.google.analytics'
+    'angulartics.google.analytics',
+    'angulartics.kissmetrics'
   ])
   .constant('fifthweekConstants', {
     apiBaseUri: 'https://10.211.55.3:44301/',
