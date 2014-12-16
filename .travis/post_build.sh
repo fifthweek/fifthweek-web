@@ -1,6 +1,6 @@
 
 git config --global user.email "services@fifthweek.com"
-git config --global user.name "TravisCI"
+git config --global user.name "$TRAVIS_COMMIT_AUTHOR"
 
 mkdir $HOME/temp_dist
 
@@ -26,5 +26,5 @@ pwd
 
 echo Pushing new files to fifthweek-web-dist
 git add -A
-git commit -m "Travis build $TRAVIS_BUILD_NUMBER from fithweek-web"
-git push git@github.com:fifthweek/fifthweek-web-dist.git $TRAVIS_COMMIT
+git commit -m "$TRAVIS_COMMIT_MSG - $TRAVIS_BUILD_NUMBER"
+git push git@github.com:fifthweek/fifthweek-web-dist.git $TRAVIS_BRANCH
