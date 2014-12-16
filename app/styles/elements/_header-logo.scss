@@ -1,0 +1,14 @@
+@import '_base';
+
+.fifthweek-logo{
+  font-family:'Oleo Script', cursive;
+}
+.navbar-default .header-logo {
+  font-size:32px;
+  color:$brand-primary;
+
+  &:hover,
+  &:focus {
+    color:$navbar-default-link-hover-color;
+  }
+}

@@ -1,0 +1,19 @@
+@import '_base';
+
+#loading-bar .bar {
+  background: #DDDDDD;
+}
+#loading-bar-spinner {
+  top: 20px;
+  left: 1px;
+
+  .spinner-icon {
+    border-top-color: #DDDDDD;
+    border-left-color: #DDDDDD;
+  }
+}
+@media (min-width: $screen-sm-min) {
+  #loading-bar-spinner {
+    left: 6px;
+  }
+}

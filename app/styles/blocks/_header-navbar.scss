@@ -1,0 +1,102 @@
+@import '_base';
+
+.header-wrapper {
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:1030;
+}
+
+.navbar-fixed-top {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.22);
+  border: none;
+}
+
+.navbar .container {
+  padding-left:0;
+  @media (min-width:500px) {
+    padding-left:15px;
+  }
+
+}
+
+.navbar-default {
+  background:$navbar-default-bg;
+  .navbar-toggle {
+    float:left;
+    margin-right:0;
+    padding-left:15px;
+    background:none;
+    border:0 none;
+    &:hover,
+    &:focus {
+      background:none;
+    }
+    @media (min-width:500px) {
+      display:none;
+    }
+  }
+
+}
+
+.navbar-brand {
+  padding-left:0;
+}
+
+.navbar > .container .navbar-brand {
+  @media (min-width:768px) {
+    float:left;
+    margin-left:0;
+  }
+}
+
+//duplicate bootstrap styles to render at a lower breakpoint
+.navbar-collapse {
+  @media (min-width:500px) {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    padding-bottom: 0;
+    overflow: visible !important;
+  }
+}
+
+//duplicate bootstrap styles to render at a lower breakpoint
+.navbar-right {
+  @media (min-width:500px) {
+    float:right !important
+  }
+}
+
+//duplicate bootstrap styles to render at a lower breakpoint
+.navbar-default .navbar-nav {
+  margin:0;
+  > li {
+    @media (min-width:500px) {
+      float:left;
+    }
+    > a {
+      color:$brand-primary;
+      &:hover,
+      &:focus {
+        color:$navbar-default-link-hover-color;
+      }
+      @media (min-width:500px) {
+        padding:15px;
+      }
+    }
+  }
+}
+
+//display sidebar and toggle on medium+ breakpoint 
+//only if visible class is declared for the view
+.secondary-nav-visible {
+  .navbar-toggle {
+    @media (min-width:500px) {
+      display:block;
+    }
+    @media (min-width:992px) {
+      display:none;
+    }
+  }
+}

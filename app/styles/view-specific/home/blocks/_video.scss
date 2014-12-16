@@ -1,0 +1,23 @@
+@import '_base';
+
+$html-name-space:'.fifthweek-video';
+
+#{$html-name-space} {
+
+  h4:first-child {
+    @media (min-width: $screen-md-min) {
+      margin-top: 0;
+    }
+  }
+
+  p {
+    margin-bottom:20px;
+  }
+
+  .embed-responsive {
+    @media (max-width: $screen-sm-max) {
+      margin-bottom: 20px;
+    }
+  }
+
+}
