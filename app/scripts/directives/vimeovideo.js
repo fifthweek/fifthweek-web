@@ -1,4 +1,4 @@
-angular.module('webApp').directive('vimeoVideo', function() {
+angular.module('webApp').directive('vimeoVideo', function($analytics) {
   'use strict';
 
   return {
@@ -7,11 +7,20 @@ angular.module('webApp').directive('vimeoVideo', function() {
 
       player.addEvent('ready', function() {
         player.addEvent('play', function(){
-          _kmq.push(['record', 'Played video "' + attrs.title + '"']); });
+          $analytics.eventTrack('Played video', {
+            'video title': attrs.title
+          });
+        });
         player.addEvent('pause', function(){
-          _kmq.push(['record', 'Paused video "' + attrs.title + '"']); });
+          $analytics.eventTrack('Paused video', {
+            'video title': attrs.title
+          });
+        });
         player.addEvent('finish', function(){
-          _kmq.push(['record', 'Finished video "' + attrs.title + '"']); });
+          $analytics.eventTrack('Finished video', {
+            'video title': attrs.title
+          });
+        });
       });
     }
   };
