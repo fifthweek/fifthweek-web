@@ -44,6 +44,24 @@ describe('authentication service', function() {
       $httpBackend.flush();
       $rootScope.$apply();
     });
+
+    it('should track the user details against the analytics providers', function() {
+
+      setupSignOutExpectations();
+
+      var registrationData = {username: 'user'};
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(200, 'Success');
+
+      var result;
+      authenticationService.registerUser(registrationData).then(function(response) { result = response; });
+
+      executeSignOutExpectations();
+
+      $httpBackend.flush();
+      $rootScope.$apply();
+    });
+
   });
 
   describe('when signing a user in', function(){
