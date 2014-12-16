@@ -12,5 +12,13 @@
     <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*">
       <a ng-href="#/account" snap-close>{{currentUser.username}}</a>
     </li>
+
+    <!-- temp for dev -->
+    <li ng-show="secondaryNav">
+      <a ng-href>link test 1</a></li>
+    </li>
+    <li ng-show="secondaryNav">
+      <a ng-href>link test 2</a></li>
+    </li>
   </ul>
 </div>
