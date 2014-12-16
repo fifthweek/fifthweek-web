@@ -27,6 +27,7 @@ module.exports = function(config) {
       'bower_components/angular-strap/dist/angular-strap.js',
       'bower_components/angular-strap/dist/angular-strap.tpl.js',
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
+      'bower_components/ng-focus/ng-focus.js',
       'bower_components/AngularJS-Toaster/toaster.js',
       'bower_components/angular-loading-bar/build/loading-bar.js',
       'app/scripts/**/*.js',
