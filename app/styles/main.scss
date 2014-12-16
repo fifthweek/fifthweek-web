@@ -277,6 +277,10 @@ h2 {
 .main-container {
   //match header height
   margin-top:70px;
+
+  //ensure vimeo embeds do not overlay header nav
+  position: relative;
+  z-index: -1;
 }
 
 .sidebar {
