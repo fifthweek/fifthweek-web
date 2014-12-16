@@ -22,7 +22,7 @@ angular.module('webApp').controller('RegisterCtrl', function($scope, $location, 
     var analyticalData = function() {
       return {
         'example work': $scope.registrationData.exampleWork,
-        'email': $scope.registrationData.email,
+        'email address': $scope.registrationData.email,
         'username': $scope.registrationData.username
       };
     };

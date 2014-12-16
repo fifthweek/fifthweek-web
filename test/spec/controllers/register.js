@@ -140,7 +140,7 @@ describe('registration controller', function() {
 
       var analyticsData = {
         'example work': 'www.fifthweek.com',
-        'email': 'lawrence@fifthweek.com',
+        'email address': 'lawrence@fifthweek.com',
         'username': 'lawrence'
       };
 
