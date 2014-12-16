@@ -16,6 +16,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'LocalStorageModule',
+    'ng-focus',
     'toaster',
     'angular-loading-bar',
     'angulartics',

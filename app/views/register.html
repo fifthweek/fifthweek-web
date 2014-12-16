@@ -21,7 +21,7 @@
                     <div class="has-feedback">
                       <input type="text" class="form-control" name="exampleWork" placeholder="Website URL (example of work)"
                              data-ng-model="registrationData.exampleWork"
-                             required autofocus>
+                             required focus=true>
                       <span ng-if="form.exampleWork.$valid && form.exampleWork.$touched" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
                       <span ng-if="form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted)" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                     </div>
