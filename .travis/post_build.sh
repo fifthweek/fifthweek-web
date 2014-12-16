@@ -1,6 +1,6 @@
 
 git config --global user.email "services@fifthweek.com"
-git config --global user.name "TravisCI"
+git config --global user.name "$TRAVIS_COMMIT_AUTHOR"
 
 mkdir $HOME/temp_dist
 
