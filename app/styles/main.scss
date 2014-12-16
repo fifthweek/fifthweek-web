@@ -156,9 +156,13 @@ h2 {
 //header elements
 .navbar .container {
   padding-left:0;
+  @media (min-width:500px) {
+    padding-left:15px;
+  }
+
 }
 
-.navbar-toggle {
+.navbar-default .navbar-toggle {
   float:left;
   margin-right:0;
   padding-left:15px;
@@ -179,7 +183,8 @@ h2 {
 
 .navbar > .container .navbar-brand {
   @media (min-width:768px) {
-    margin-left:15px;
+    float:left;
+    margin-left:0;
   }
 }
 
