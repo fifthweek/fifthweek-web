@@ -27,7 +27,7 @@
       "main": [
         "src/angulartics.js",
         "src/angulartics-ga.js",
-        "src/angulartics-kissmetrics.js"
+        "../../app/scripts/forks/angulartics-kissmetrics.js"
       ]
     }
   }

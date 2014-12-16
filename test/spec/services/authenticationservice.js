@@ -63,6 +63,7 @@ describe('authentication service', function() {
           refresh_token: 'REFRESHTOKEN'
         });
 
+      analytics.setUsername = function(){};
       localStorageService.set = function(){};
       spyOn(localStorageService, 'set');
 
@@ -100,6 +101,7 @@ describe('authentication service', function() {
 
       $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, {});
 
+      analytics.setUsername = function(){};
       localStorageService.set = function(){};
       spyOn(localStorageService, 'set');
 
@@ -138,6 +140,26 @@ describe('authentication service', function() {
       expect(authenticationService.currentUser.authenticated).toBe(false);
 
       expect(result).toBe('Bad');
+    });
+
+    it('should track the username against the analytics providers', function () {
+      var someUUID = 'fbb6ccee-822b-423f-b8cf-e08677f82c1f';
+      var signInData = {
+        username: 'username',
+        password: 'PASSWORD'
+      };
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, {'user_id': someUUID});
+      localStorageService.remove = function(){};
+      localStorageService.set = function(){};
+      analytics.setUsername = function(){};
+      spyOn(analytics, 'setUsername');
+
+      authenticationService.signIn(signInData);
+      $httpBackend.flush();
+      $rootScope.$apply();
+
+      expect(analytics.setUsername).toHaveBeenCalledWith(someUUID);
     });
   });
 
@@ -229,13 +251,16 @@ describe('authentication service', function() {
   var $rootScope;
   var authenticationService;
   var localStorageService;
+  var analytics;
   var fifthweekConstants;
 
   beforeEach(function() {
     localStorageService = {};
+    analytics = {};
 
     module(function($provide) {
       $provide.value('localStorageService', localStorageService);
+      $provide.value('$analytics', analytics);
     });
   });
 
