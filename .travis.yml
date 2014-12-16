@@ -1,29 +1,33 @@
 language: node_js
 node_js:
-  - 0.10
+- 0.1
 branches:
   only:
-    - master
+  - master
 env:
   global:
-    - secure: "d74TeeWKxyF3U6y0+G+P4qF+D+TGtpT1GfG1ruZe+dog8ESesSLJBiigua81DPwMOlRatFAecF/hGOFQjw7L/xEvKFu65zHrD6RNUIE/A4gi7ohnbl8UW6q8grX89GzhqLeH0s93c8VhWPMRXgDrG+dK5SQ0SbcTxCldurB3ZD0="
-    - secure: "Ru6FxbtxL48nS69L1hMqeM6uJCMuVJOhurHmcYZQtEUx5b5VLxtTV1BVQZ1zLkgT4FMM9rvthOCjl+zzeJj0/cCSwXtwtz/cVnVP7gTkQ+MVWHsNosR3M8atXppXJpTxEHL32lHf1sECFHlkzT1ebocjIltOhCeTSSloYbqlTYw="
+  - secure: d74TeeWKxyF3U6y0+G+P4qF+D+TGtpT1GfG1ruZe+dog8ESesSLJBiigua81DPwMOlRatFAecF/hGOFQjw7L/xEvKFu65zHrD6RNUIE/A4gi7ohnbl8UW6q8grX89GzhqLeH0s93c8VhWPMRXgDrG+dK5SQ0SbcTxCldurB3ZD0=
+  - secure: Ru6FxbtxL48nS69L1hMqeM6uJCMuVJOhurHmcYZQtEUx5b5VLxtTV1BVQZ1zLkgT4FMM9rvthOCjl+zzeJj0/cCSwXtwtz/cVnVP7gTkQ+MVWHsNosR3M8atXppXJpTxEHL32lHf1sECFHlkzT1ebocjIltOhCeTSSloYbqlTYw=
 before_install:
-  - openssl aes-256-cbc -K $encrypted_f5a6d6d93a89_key -iv $encrypted_f5a6d6d93a89_iv -in .travis/deploy_key.enc -out .travis/deploy_key -d
-  - gem install compass
-  - npm install -g npm@2
-  - npm --version
-  - npm install -g bower grunt-cli
+- openssl aes-256-cbc -K $encrypted_f5a6d6d93a89_key -iv $encrypted_f5a6d6d93a89_iv
+  -in .travis/deploy_key.enc -out .travis/deploy_key -d
+- gem install compass
+- npm install -g npm@2
+- npm --version
+- npm install -g bower grunt-cli
 install:
-  - bower install
-  - npm install
+- bower install
+- npm install
 before_script:
-  - bash .travis/pre_build.sh
-  - grunt replaceforlive build
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- bash .travis/pre_build.sh
+- grunt replaceforlive build
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 after_success:
-  - chmod 600 .travis/deploy_key
-  - eval `ssh-agent -s`
-  - ssh-add .travis/deploy_key
-  - bash .travis/post_build.sh
+- chmod 600 .travis/deploy_key
+- eval `ssh-agent -s`
+- ssh-add .travis/deploy_key
+- bash .travis/post_build.sh
+notifications:
+  slack:
+    secure: C4lpGafT13ZfC7Gf2h40/jJ6/7i853QrcMfDVt8WPRN5PG9Ezjr6FTZWHyWETeHmtNeFGS1sPaU9Yog0sdcJmFjwRGMvXv1NnKnSbWjRvcgovGAUt4hGhwO+tWUG1HFSdlogLwfg/jMMvPXMwRJUrLoWfKg1x5WtgVZmv5zvE8g=
