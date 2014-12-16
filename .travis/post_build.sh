@@ -27,4 +27,4 @@ pwd
 echo Pushing new files to fifthweek-web-dist
 git add -A
 git commit -m "Travis build $TRAVIS_BUILD_NUMBER from fithweek-web"
-git push git@github.com:fifthweek/fifthweek-web-dist.git $TRAVIS_BRANCH
+git push git@github.com:fifthweek/fifthweek-web-dist.git $TRAVIS_COMMIT
