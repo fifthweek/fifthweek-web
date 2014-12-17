@@ -35,8 +35,7 @@ angular.module('webApp').run(function($analytics) {
       utmCampaign + '/' +
       utmSource + '/' +
       utmMedium + '/' +
-      utmContent + '/' +
-      '"',
+      utmContent + '"',
       eventCategory());
   }
 });
