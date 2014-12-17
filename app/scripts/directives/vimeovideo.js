@@ -8,13 +8,13 @@ angular.module('webApp').directive('vimeoVideo', function($analytics) {
       elm.load(function() {
         player.addEvent('ready', function() {
           player.addEvent('play', function(){
-            $analytics.eventTrack('Played video "' + attrs.title + '"');
+            $analytics.eventTrack('Played video "' + attrs.title + '"', {category: 'Video'});
           });
           player.addEvent('pause', function(){
-            $analytics.eventTrack('Paused video "' + attrs.title + '"');
+            $analytics.eventTrack('Paused video "' + attrs.title + '"', {category: 'Video'});
           });
           player.addEvent('finish', function(){
-            $analytics.eventTrack('Finished video "' + attrs.title + '"');
+            $analytics.eventTrack('Finished video "' + attrs.title + '"', {category: 'Video'});
           });
         });
       });
