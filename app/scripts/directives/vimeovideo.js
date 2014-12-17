@@ -7,19 +7,13 @@ angular.module('webApp').directive('vimeoVideo', function($analytics) {
 
       player.addEvent('ready', function() {
         player.addEvent('play', function(){
-          $analytics.eventTrack('Played video', {
-            'video title': attrs.title
-          });
+          $analytics.eventTrack('Played video: ' + attrs.title);
         });
         player.addEvent('pause', function(){
-          $analytics.eventTrack('Paused video', {
-            'video title': attrs.title
-          });
+          $analytics.eventTrack('Paused video: ' + attrs.title);
         });
         player.addEvent('finish', function(){
-          $analytics.eventTrack('Finished video', {
-            'video title': attrs.title
-          });
+          $analytics.eventTrack('Finished video: ' + attrs.title);
         });
       });
     }
