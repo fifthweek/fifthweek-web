@@ -23,6 +23,17 @@ angular
     'angulartics.google.analytics',
     'angulartics.kissmetrics'
   ])
+  .config(function($provide){
+    $provide.decorator('$exceptionHandler', function($delegate, logService) {
+      return function (exception, cause) {
+        $delegate(exception, cause);
+        logService.log('error', {
+          cause: cause,
+          exception: exception
+        });
+      };
+    });
+  })
   .constant('fifthweekConstants', {
     apiBaseUri: 'https://10.211.55.3:44301/',
     clientId: 'fifthweek.web.1',
