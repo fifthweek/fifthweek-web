@@ -52,7 +52,7 @@ angular.module('webApp').controller('RegisterCtrl', function($scope, $location, 
         return authenticationService.signIn(signInData).then(
           function() {
             $analytics.setUserProperties(profileData());
-            $analytics.eventTrack('Registration successful', applyCategory({}));
+            $analytics.eventTrack('Registration succeeded', applyCategory({}));
             $location.path(fifthweekConstants.dashboardPage);
           },
           function(err) {

@@ -76,7 +76,7 @@ describe('registration controller', function() {
           ['analytics.eventTrack', 'Submitted registration', submissionData],
           'authenticationService.registerUser',
           'analytics.setUserProperties',
-          ['analytics.eventTrack', 'Registration successful', {category: 'Registration'}]
+          ['analytics.eventTrack', 'Registration succeeded', {category: 'Registration'}]
         ]);
       });
 
@@ -136,7 +136,7 @@ describe('registration controller', function() {
           ['analytics.eventTrack', 'Submitted registration'],
           'authenticationService.registerUser',
           ['analytics.setUserProperties', profileData],
-          ['analytics.eventTrack', 'Registration successful']
+          ['analytics.eventTrack', 'Registration succeeded']
         ]);
       });
 
