@@ -27,7 +27,7 @@
       }
 
       $analyticsProvider.registerPageTrack(function (path) {
-        window._kmq.push(['record', 'Viewed page "' + path] + '"');
+        window._kmq.push(['record', 'Viewed page "' + path + '"']);
       });
 
       $analyticsProvider.registerEventTrack(function (action, properties) {
