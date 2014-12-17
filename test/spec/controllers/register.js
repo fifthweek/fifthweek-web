@@ -75,7 +75,8 @@ describe('registration controller', function() {
         expect(callSequence).toEqual([
           ['analytics.eventTrack', 'Submitted registration', analyticsData],
           'authenticationService.registerUser',
-          'analytics.setUserProperties'
+          'analytics.setUserProperties',
+          ['analytics.eventTrack', 'Registration successful', undefined]
         ]);
       });
 
@@ -109,7 +110,37 @@ describe('registration controller', function() {
         ]);
       });
 
-      it('track successful registrations by setting the form data as user properties', function() {
+      it('track successful registrations with an explicit success event', function() {
+        var callSequence = [];
+
+        authenticationService.signIn = function() {
+          return resolvedPromise();
+        };
+        analytics.eventTrack = function(key){
+          callSequence.push(['analytics.eventTrack', key]);
+        };
+        analytics.setUserProperties = function(userProperties){
+          callSequence.push(['analytics.setUserProperties', userProperties]);
+        };
+        authenticationService.registerUser = function() {
+          callSequence.push('authenticationService.registerUser');
+          return resolvedPromise();
+        };
+
+        spyOn(analytics, 'setUserProperties').and.callThrough();
+
+        scope.register();
+        $rootScope.$apply();
+
+        expect(callSequence).toEqual([
+          ['analytics.eventTrack', 'Submitted registration'],
+          'authenticationService.registerUser',
+          ['analytics.setUserProperties', analyticsData],
+          ['analytics.eventTrack', 'Registration successful']
+        ]);
+      });
+
+      it('associate form data against the user on successful registrations', function() {
         var callSequence = [];
 
         authenticationService.signIn = function() {
@@ -135,6 +166,7 @@ describe('registration controller', function() {
           'analytics.eventTrack',
           'authenticationService.registerUser',
           ['analytics.setUserProperties', analyticsData],
+          'analytics.eventTrack'
         ]);
       });
 

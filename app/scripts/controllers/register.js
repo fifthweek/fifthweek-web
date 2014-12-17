@@ -49,6 +49,7 @@ angular.module('webApp').controller('RegisterCtrl', function($scope, $location, 
         return authenticationService.signIn(signInData).then(
           function() {
             $analytics.setUserProperties(analyticalData());
+            $analytics.eventTrack('Registration successful');
             $location.path(fifthweekConstants.dashboardPage);
           },
           function(err) {
