@@ -17,11 +17,10 @@ angular.module('webApp')
         $log.warn('Failed to log to server: ' + err);
       });
     };
-
     service.shouldLog = function(payload)
     {
       return payload !== undefined && !jQuery.isEmptyObject(payload);
-    }
+    };
 
     return service;
   }

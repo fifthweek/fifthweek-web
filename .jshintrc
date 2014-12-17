@@ -22,6 +22,7 @@
     "_kmq": false,
     "$f": false,
     "angular": false,
-    "alert": false
+    "alert": false,
+    "jQuery": false
   }
 }

@@ -1,4 +1,4 @@
-angular.module('webApp').controller('RegisterCtrl', function($scope, $location, $analytics, authenticationService, fifthweekConstants, logService) {
+angular.module('webApp').controller('RegisterCtrl', function($scope, $location, $analytics, authenticationService, fifthweekConstants) {
   'use strict';
 
   if(authenticationService.currentUser.authenticated === true){
