@@ -73,7 +73,7 @@ describe('registration controller', function() {
         $rootScope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Submitted registration', submissionData],
+          ['analytics.eventTrack', 'Registration submitted', submissionData],
           'authenticationService.registerUser',
           'analytics.setUserProperties',
           ['analytics.eventTrack', 'Registration succeeded', {category: 'Registration'}]
@@ -104,7 +104,7 @@ describe('registration controller', function() {
         $rootScope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Submitted registration', submissionData],
+          ['analytics.eventTrack', 'Registration submitted', submissionData],
           'authenticationService.registerUser',
           ['analytics.eventTrack', 'Registration failed', failureData]
         ]);
@@ -133,7 +133,7 @@ describe('registration controller', function() {
         $rootScope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Submitted registration'],
+          ['analytics.eventTrack', 'Registration submitted'],
           'authenticationService.registerUser',
           ['analytics.setUserProperties', profileData],
           ['analytics.eventTrack', 'Registration succeeded']

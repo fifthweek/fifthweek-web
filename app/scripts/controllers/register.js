@@ -37,7 +37,7 @@ angular.module('webApp').controller('RegisterCtrl', function($scope, $location, 
       $scope.message = errorMessage;
     };
 
-    $analytics.eventTrack('Submitted registration', applyCategory(profileData()));
+    $analytics.eventTrack('Registration submitted', applyCategory(profileData()));
 
     authenticationService.registerUser($scope.registrationData).then(
       function() {
