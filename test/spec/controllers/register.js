@@ -73,16 +73,16 @@ describe('registration controller', function() {
         $rootScope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Submitted registration', analyticsData],
+          ['analytics.eventTrack', 'Submitted registration', submissionData],
           'authenticationService.registerUser',
           'analytics.setUserProperties',
-          ['analytics.eventTrack', 'Registration successful', undefined]
+          ['analytics.eventTrack', 'Registration successful', {category: 'Registration'}]
         ]);
       });
 
       it('track unsuccessful registrations', function() {
         var callSequence = [];
-        var failureData = {'error message': 'Bad' };
+        var failureData = {'error message': 'Bad', category: 'Registration' };
         authenticationService.signIn = function() {
           return resolvedPromise();
         };
@@ -104,7 +104,7 @@ describe('registration controller', function() {
         $rootScope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Submitted registration', analyticsData],
+          ['analytics.eventTrack', 'Submitted registration', submissionData],
           'authenticationService.registerUser',
           ['analytics.eventTrack', 'Registration failed', failureData]
         ]);
@@ -135,7 +135,7 @@ describe('registration controller', function() {
         expect(callSequence).toEqual([
           ['analytics.eventTrack', 'Submitted registration'],
           'authenticationService.registerUser',
-          ['analytics.setUserProperties', analyticsData],
+          ['analytics.setUserProperties', profileData],
           ['analytics.eventTrack', 'Registration successful']
         ]);
       });
@@ -165,15 +165,22 @@ describe('registration controller', function() {
         expect(callSequence).toEqual([
           'analytics.eventTrack',
           'authenticationService.registerUser',
-          ['analytics.setUserProperties', analyticsData],
+          ['analytics.setUserProperties', profileData],
           'analytics.eventTrack'
         ]);
       });
 
-      var analyticsData = {
+      var profileData = {
         'example work': 'www.fifthweek.com',
         'email address': 'lawrence@fifthweek.com',
         'username': 'lawrence'
+      };
+
+      var submissionData = {
+        'example work': 'www.fifthweek.com',
+        'email address': 'lawrence@fifthweek.com',
+        'username': 'lawrence',
+        'category': 'Registration'
       };
 
       beforeEach(function() {
