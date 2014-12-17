@@ -27,10 +27,14 @@ angular
     $provide.decorator('$exceptionHandler', function($delegate, logService) {
       return function (exception, cause) {
         $delegate(exception, cause);
-        logService.log('error', {
-          cause: cause,
-          exception: exception
-        });
+
+        if(logService.shouldLog(exception) || logService.shouldLog(cause))
+        {
+          logService.log('error', {
+            cause: cause,
+            exception: exception
+          });
+        }
       };
     });
   })

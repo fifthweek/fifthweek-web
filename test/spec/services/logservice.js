@@ -31,6 +31,21 @@ describe('log service', function() {
     expect(log.warn).toHaveBeenCalled();
   });
 
+  it('should return false from shouldLog if the payload is undefined', function()
+  {
+    expect(logService.shouldLog(undefined)).toBeFalsy();
+  });
+
+  it('should return false from shouldLog if the payload is empty', function()
+  {
+    expect(logService.shouldLog({})).toBeFalsy();
+  });
+
+  it('should return true from shouldLog if the payload is not empty or undefined', function()
+  {
+    expect(logService.shouldLog({ x: 1 })).toBeTruthy();
+  });
+
   // load the service's module
   beforeEach(module('webApp'));
 

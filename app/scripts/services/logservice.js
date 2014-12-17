@@ -18,6 +18,11 @@ angular.module('webApp')
       });
     };
 
+    service.shouldLog = function(payload)
+    {
+      return payload !== undefined && !jQuery.isEmptyObject(payload);
+    }
+
     return service;
   }
 );
