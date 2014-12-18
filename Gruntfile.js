@@ -404,18 +404,14 @@ module.exports = function (grunt) {
         keepAlive: false, // If false, the grunt process stops when the test fails.
         noColor: false
       },
-      run: {},
-      runFast:{
-        options:{
-          configFile: 'test/protractor-fast.conf.js'
+      local: {
+        args: {
+          chromeDriver: 'node_modules/protractor/selenium/chromedriver'
         }
       },
-      runLocal:{
+      browserstack:{
         options:{
-          configFile: 'test/protractor-local.conf.js',
-          args: {
-            chromeDriver: 'node_modules/protractor/selenium/chromedriver'
-          }
+          configFile: 'test/protractor-browserstack.conf.js'
         }
       }
     },
@@ -479,6 +475,60 @@ module.exports = function (grunt) {
     grunt.task.run(['update:' + targetApi]);
   }
 
+  function runTests(targetApi, targetBase, browserLocation, protractorOnly) {
+
+    if(targetApi === undefined) {
+      return;
+    }
+
+    if(targetBase === undefined) {
+      targetBase = 'app';
+    }
+
+    if(browserLocation === undefined){
+      browserLocation = 'local';
+    }
+
+    runApiUpdate(targetApi);
+
+    var tasks = [];
+
+    if (!protractorOnly){
+      tasks.push(
+        'jshint');
+    }
+
+    if (isDist(targetBase)) {
+      tasks.push(
+        'build',
+        'clean:server',
+        'connect:testdist');
+    }
+    else if(isApp(targetBase))
+    {
+      tasks.push(
+        'clean:server',
+        'concurrent:test',
+        'autoprefixer',
+        'connect:test');
+    }
+
+    if (!protractorOnly){
+      tasks.push(
+        'karma');
+    }
+
+    if(browserLocation === 'browserstack'){
+      tasks.push(
+        'browserstackTunnel');
+    }
+
+    tasks.push(
+      'protractor:' + browserLocation);
+
+    grunt.task.run(tasks);
+  }
+
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
@@ -527,56 +577,12 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('test', '', function(targetApi, targetBase) {
-
-    if(targetApi === undefined) {
-      return;
-    }
-
-    if(targetBase === undefined) {
-      targetBase = 'app';
-    }
-
-    runApiUpdate(targetApi);
-
-    if (isDist(targetBase)) {
-      grunt.task.run([
-        'build',
-        'clean:server',
-        'connect:testdist',
-        'protractor:runLocal'
-      ]);
-    }
-    else if(isApp(targetBase))
-    {
-      grunt.task.run([
-        'jshint',
-        'clean:server',
-        'concurrent:test',
-        'autoprefixer',
-        'connect:test',
-        'karma',
-        'protractor:runLocal'
-      ]);
-    }
+  grunt.registerTask('test', '', function(targetApi, targetBase, browserLocation) {
+    runTests(targetApi, targetBase, browserLocation, false);
   });
 
-  grunt.registerTask('ptest', 'protractor tests', function(targetApi){
-
-    if(targetApi === undefined)
-    {
-      return;
-    }
-
-    runApiUpdate(targetApi);
-
-    grunt.task.run([
-      'clean:server',
-      'concurrent:test',
-      'autoprefixer',
-      'connect:test',
-      'protractor:runLocal'
-    ]);
+  grunt.registerTask('ptest', 'protractor tests', function(targetApi, targetBase, browserLocation){
+    runTests(targetApi, targetBase, browserLocation, true);
   });
 
   grunt.registerTask('update', 'updates source files for different scenarios', function(scenario){

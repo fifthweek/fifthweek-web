@@ -15,11 +15,11 @@
 -   Serve site against local API:
 
         grunt serve:local
-        
+       
 -   Serve site against live API:
 
         grunt serve:live
-
+    
 -   Serve site against local API and dist folder:
 
         grunt serve:local:dist
@@ -30,6 +30,12 @@
    
 
 ## Running tests
+
+The general format with the test command (and the serve command above) is:
+
+    grunt test:[targetApi]:[targetBase]:[browserLocation]
+
+The `targetBase` parameter defaults to `app` and the `browserLocation` parameter defaults to `local`.
 
 -   JSHint, Karma tests and Protractor tests against local API:
 
@@ -47,6 +53,10 @@
 
         grunt test:live:dist
 
+-   JSHint, Karma tests and Protractor tests against live API and BrowserStack:
+
+        grunt test:live:app:browserstack
+
 -   Karma tests with a fast refresh:
 
         cd test
@@ -59,6 +69,9 @@
 -   Protractor tests against live API:
 
         grunt ptest:live
+
+
+
 
 
 ## Check-in procedure
