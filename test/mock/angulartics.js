@@ -3,3 +3,4 @@
 angular.module('angulartics', []);
 angular.module('angulartics.kissmetrics', []);
 angular.module('angulartics.google.analytics', []);
+angular.module('angulartics.google.analytics.userid', []);
