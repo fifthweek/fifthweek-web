@@ -12,34 +12,67 @@
         sudo gem install compass
         grunt build
 
+-   Serve site against local API:
+
+        grunt serve:local
+        
+-   Serve site against live API:
+
+        grunt serve:live
+
+-   Serve site against local API and dist folder:
+
+        grunt serve:local:dist
+        
+-   Serve site against live API and dist folder:
+
+        grunt serve:live:dist
+   
+
 ## Running tests
 
--   Karma tests and Protractor on local webdriver server:
+-   JSHint, Karma tests and Protractor tests against local API:
 
-        grunt ftest
+        grunt test:local
+
+-   JSHint, Karma tests and Protractor tests against live API:
+
+        grunt test:live
+
+-   JSHint, Karma tests and Protractor tests against local API and dist folder:
+
+        grunt test:local:dist
+
+-   JSHint, Karma tests and Protractor tests against live API and dist folder:
+
+        grunt test:live:dist
 
 -   Karma tests with a fast refresh:
 
         cd test
         ../node_modules/karma/bin/karma start
 
--   Protractor on 5 BrowserStack VMs:
+-   Protractor tests against local API:
 
-        grunt test
+        grunt ptest:local
 
--   Protractor on 1 BrowserStack VM:
+-   Protractor tests against live API:
 
-        grunt ptest
+        grunt ptest:live
 
--   Protractor on local webdriver server:
-
-        grunt pltest
 
 ## Check-in procedure
 
 The following must succeed locally before any changes are pushed:
 
-    grunt ftest
+    grunt test:local
+
+or
+
+    grunt test:live
+
+Use live only if you don't need to test local API changes.
+
     
 ### Cross-repository changes
 
