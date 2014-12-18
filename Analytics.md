@@ -37,9 +37,14 @@ Any data that is unique to a specific user. This is used to identify individual 
 
 Unique data is sent to:
 
--   KISSmetrics
+-   Google Analytics (user ID only)
 
-**For authenticated users** unique data must never be tracked through analytics providers, other than the initial call 
-to `setUsername` to correlate the user ID. Unique data must instead remain on our servers.
+-   KISSmetrics (user ID & anonymous profile data)
 
-**For unauthenticated users** unique data must be tracked using `setUserProperties`.
+**For authenticated users** the only unique data that must be tracked is the user ID to correlate data in our system
+with the analytics. User ID tracking is achieved through `setUsername`. No analysis can be performed on unique data so
+there is no benefit in sending it to the analytics platforms. Doing so would needlessly compromise the security of our 
+users' data.
+
+**For unauthenticated users** unique data must be tracked using `setUserProperties`. This is to allow communication with 
+users that do not register, and to validate those individual experiences before communicating with them.
