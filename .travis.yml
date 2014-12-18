@@ -22,10 +22,10 @@ install:
 - npm install
 before_script:
 - bash .travis/pre_build.sh
-- grunt replaceforlive build
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 after_success:
+- grunt update:dist
 - chmod 600 .travis/deploy_key
 - eval `ssh-agent -s`
 - ssh-add .travis/deploy_key

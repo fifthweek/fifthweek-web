@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name webApp
- * @description
- * # webApp
- *
- * Main module of the application.
- */
 angular
   .module('webApp', [
     'mgcrea.ngStrap',
@@ -40,7 +32,7 @@ angular
     });
   })
   .constant('fifthweekConstants', {
-    apiBaseUri: 'https://10.211.55.3:44301/',
+    apiBaseUri: window.configuredApiBaseUri,
     clientId: 'fifthweek.web.1',
     homePage: '/',
     signInPage: '/signin',
