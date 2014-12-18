@@ -81,7 +81,7 @@ angular
       });
 
     snapRemoteProvider. globalOptions = {
-      disable: 'right',
+      disable: 'left',
       touchToDrag: false
     };
 

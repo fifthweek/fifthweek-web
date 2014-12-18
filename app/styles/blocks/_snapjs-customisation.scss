@@ -3,13 +3,13 @@
 .snap-content {
   background:$body-bg;
 }
-.snap-drawer-left {
-  background:#111;
+.snap-drawer-right {
+  background:#2A3541;
   color:#EEE;
 }
 
 //active snap-drawer
-.snapjs-left {
+.snapjs-right {
   .navbar-default {
     background:rgba(0, 0, 0, 0.75);
   }
