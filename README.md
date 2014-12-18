@@ -65,14 +65,11 @@
 
 The following must succeed locally before any changes are pushed:
 
-    grunt test:local
+    grunt test:local:dist
+    
+Or:
 
-or
-
-    grunt test:live
-
-Use live only if you don't need to test local API changes.
-
+    grunt test:live:dist
     
 ### Cross-repository changes
 
