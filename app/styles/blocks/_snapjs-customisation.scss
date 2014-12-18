@@ -10,8 +10,11 @@
 
 //active snap-drawer
 .snapjs-left {
-  .snap-drawers {
+  .navbar-default {
     background:rgba(0, 0, 0, 0.75);
+  }
+  .snap-drawers {
+    background:#111;
   }
   .snap-content {
     overflow-y:hidden;
