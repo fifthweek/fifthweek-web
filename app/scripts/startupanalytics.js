@@ -18,11 +18,6 @@ angular.module('webApp').run(function($analytics) {
     $analytics.setUserProperties({
       'last opened email from': emailAddress
     });
-
-    // Do not discriminate event titles with email addresses as these cannot be aggregated / do not represent a cohort.
-    var eventData = eventCategory();
-    eventData['email address'] = emailAddress;
-    $analytics.eventTrack('Arrived from email', eventData);
   }
 
   var utmCampaign = getParameterByName('utm_campaign');
