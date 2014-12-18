@@ -21,6 +21,7 @@ angular
     'angular-loading-bar',
     'angulartics',
     'angulartics.google.analytics',
+    'angulartics.google.analytics.userid',
     'angulartics.kissmetrics'
   ])
   .config(function($provide){

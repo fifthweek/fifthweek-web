@@ -5,7 +5,7 @@
     .config(['$analyticsProvider', function ($analyticsProvider) {
 
       $analyticsProvider.registerSetUsername(function (uuid) {
-        window.ga('set', '&uid', uuid);
+        ga('set', '&uid', uuid);
       });
     }]);
 

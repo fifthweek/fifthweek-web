@@ -20,6 +20,7 @@
   "smarttabs": true,
   "globals": {
     "_kmq": false,
+    "ga": false,
     "$f": false,
     "angular": false,
     "alert": false,
