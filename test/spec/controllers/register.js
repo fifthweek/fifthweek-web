@@ -73,16 +73,14 @@ describe('registration controller', function() {
         $rootScope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Registration submitted', submissionData],
+          ['analytics.eventTrack', 'Registration submitted', eventCategory],
           'authenticationService.registerUser',
-          'analytics.setUserProperties',
-          ['analytics.eventTrack', 'Registration succeeded', {category: 'Registration'}]
+          ['analytics.eventTrack', 'Registration succeeded', eventCategory]
         ]);
       });
 
       it('track unsuccessful registrations', function() {
         var callSequence = [];
-        var failureData = {'error message': 'Bad', category: 'Registration' };
         authenticationService.signIn = function() {
           return resolvedPromise();
         };
@@ -104,20 +102,20 @@ describe('registration controller', function() {
         $rootScope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Registration submitted', submissionData],
+          ['analytics.eventTrack', 'Registration submitted', eventCategory],
           'authenticationService.registerUser',
-          ['analytics.eventTrack', 'Registration failed', failureData]
+          ['analytics.eventTrack', 'Registration failed', eventCategory]
         ]);
       });
 
-      it('track successful registrations with an explicit success event', function() {
+      it('track successful registrations', function() {
         var callSequence = [];
 
         authenticationService.signIn = function() {
           return resolvedPromise();
         };
-        analytics.eventTrack = function(key){
-          callSequence.push(['analytics.eventTrack', key]);
+        analytics.eventTrack = function(key, properties){
+          callSequence.push(['analytics.eventTrack', key, properties]);
         };
         analytics.setUserProperties = function(userProperties){
           callSequence.push(['analytics.setUserProperties', userProperties]);
@@ -133,53 +131,13 @@ describe('registration controller', function() {
         $rootScope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Registration submitted'],
+          ['analytics.eventTrack', 'Registration submitted', eventCategory],
           'authenticationService.registerUser',
-          ['analytics.setUserProperties', profileData],
-          ['analytics.eventTrack', 'Registration succeeded']
+          ['analytics.eventTrack', 'Registration succeeded', eventCategory]
         ]);
       });
 
-      it('associate form data against the user on successful registrations', function() {
-        var callSequence = [];
-
-        authenticationService.signIn = function() {
-          return resolvedPromise();
-        };
-        analytics.eventTrack = function(){
-          callSequence.push('analytics.eventTrack');
-        };
-        analytics.setUserProperties = function(userProperties){
-          callSequence.push(['analytics.setUserProperties', userProperties]);
-        };
-        authenticationService.registerUser = function() {
-          callSequence.push('authenticationService.registerUser');
-          return resolvedPromise();
-        };
-
-        spyOn(analytics, 'setUserProperties').and.callThrough();
-
-        scope.register();
-        $rootScope.$apply();
-
-        expect(callSequence).toEqual([
-          'analytics.eventTrack',
-          'authenticationService.registerUser',
-          ['analytics.setUserProperties', profileData],
-          'analytics.eventTrack'
-        ]);
-      });
-
-      var profileData = {
-        'example work': 'www.fifthweek.com',
-        'email address': 'lawrence@fifthweek.com',
-        'username': 'lawrence'
-      };
-
-      var submissionData = {
-        'example work': 'www.fifthweek.com',
-        'email address': 'lawrence@fifthweek.com',
-        'username': 'lawrence',
+      var eventCategory = {
         'category': 'Registration'
       };
 

@@ -16,28 +16,13 @@ angular.module('webApp').controller('RegisterCtrl', function($scope, $location, 
   };
 
   $scope.register = function() {
-
-    // Angulartics mutates property bags you pass to it (ooh-err), so instantiating new instances
-    // is vital, otherwise 'submission events' get sent as 'user data', which would be a bug.
-    var profileData = function() {
-      return {
-        'example work': $scope.registrationData.exampleWork,
-        'email address': $scope.registrationData.email,
-        'username': $scope.registrationData.username
-      };
-    };
-
-    var applyCategory = function(analyticsEvent) {
-      analyticsEvent.category = 'Registration';
-      return analyticsEvent;
-    };
+    var eventCategory = function() { return {category: 'Registration'}; };
     var handleSubmissionError = function(errorMessage){
-      var failureEvent = { 'error message': errorMessage };
-      $analytics.eventTrack('Registration failed', applyCategory(failureEvent));
+      $analytics.eventTrack('Registration failed', eventCategory());
       $scope.message = errorMessage;
     };
 
-    $analytics.eventTrack('Registration submitted', applyCategory(profileData()));
+    $analytics.eventTrack('Registration submitted', eventCategory());
 
     authenticationService.registerUser($scope.registrationData).then(
       function() {
@@ -51,8 +36,7 @@ angular.module('webApp').controller('RegisterCtrl', function($scope, $location, 
 
         return authenticationService.signIn(signInData).then(
           function() {
-            $analytics.setUserProperties(profileData());
-            $analytics.eventTrack('Registration succeeded', applyCategory({}));
+            $analytics.eventTrack('Registration succeeded', eventCategory());
             $location.path(fifthweekConstants.dashboardPage);
           },
           function(err) {

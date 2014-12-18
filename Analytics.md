@@ -21,11 +21,11 @@ Tracking methods:
 
     -   Correct: `eventTrack('Registration submitted', { category: 'Registration'})`
 
+    -   Incorrect: `eventTrack('Registration submitted', { category: '*Registrations*'})`
+    
     -   Incorrect: `eventTrack('Registration *submission*', { category: 'Registration'})`
 
     -   Incorrect: `eventTrack('*Submitted registration*', { category: 'Registration'})`
-
-    -   Incorrect: `eventTrack('Submitted registration', { category: '*Registrations*'})`
 
 **Do not** introduce additional properties into the final parameter of `eventTrack`. Google Analytics only supports a
 specific set of properties (including `category`). Furthermore, KISSmetrics makes it difficult to query against
