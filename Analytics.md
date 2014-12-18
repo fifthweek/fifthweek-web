@@ -39,7 +39,7 @@ Unique data is sent to:
 
 -   Google Analytics (user ID only)
 
--   KISSmetrics (user ID & anonymous profile data)
+-   KISSmetrics (user ID & profiles for unauthenticated users)
 
 **For authenticated users** the only unique data that must be tracked is the user ID to correlate data in our system
 with the analytics. User ID tracking is achieved through `setUsername`. No analysis can be performed on unique data so
