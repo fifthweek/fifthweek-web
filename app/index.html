@@ -51,18 +51,17 @@
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an outdated browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+    <div class="wrapper" ng-class="{'secondary-nav-visible': secondaryNav}">
 
-    <toaster-container></toaster-container>
-    <div snap-drawer="right">
-      <div ng-include="'views/partials/sidebar.html'"></div>
-    </div>
+      <toaster-container></toaster-container>
+      <div snap-drawer="right">
+        <div ng-include="'views/partials/sidebar.html'"></div>
+      </div>
 
-    <div snap-content>
-      <div class="snap-overlay"></div>
+      <div snap-content>
+        <div class="snap-overlay"></div>
 
-      <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
-
-      <div class="wrapper" ng-class="{'secondary-nav-visible': secondaryNav}">
+        <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
 
           <div snap-drawer="right">
             <div ng-include="'views/partials/sidebar.html'"></div>
@@ -81,7 +80,8 @@
 
             </div>
           </div>
-      </div>
+        </div>
+    </div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>

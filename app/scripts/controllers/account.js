@@ -1,6 +1,5 @@
 angular.module('webApp')
-  .controller('AccountCtrl', function ($scope, $rootScope) {
+  .controller('AccountCtrl', function ($scope) {
 		'use strict';
-    $rootScope.secondaryNav = true;
     $scope.test = 1;
   });
