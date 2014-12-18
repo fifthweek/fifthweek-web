@@ -57,38 +57,31 @@
       <div ng-include="'views/partials/sidebar.html'"></div>
     </div>
 
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-              <li data-ng-hide="currentUser.authenticated" data-match-route="/register*"><a href="#/register" aria-label="Register" id="registerLink" ng-cloak>Register</a></li>
-              <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*"><a href="#/signin" aria-label="Sign in" id="signInLink" ng-cloak>Sign In</a></li>
-              <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a href="#/dashboard" ng-cloak>Dashboard</a></li>
-              <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*"><a href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text" ng-cloak>{{currentUser.username}}</span></a></li>
-            </ul>
     <div snap-content>
       <div class="snap-overlay"></div>
-      
+
       <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
-    <div class="wrapper" ng-class="{'secondary-nav-visible': secondaryNav}">
 
-        <div snap-drawer="left">
-          <div ng-include="'views/partials/sidebar.html'"></div>
-        </div>
+      <div class="wrapper" ng-class="{'secondary-nav-visible': secondaryNav}">
 
-        <div snap-content>
-          <div class="snap-overlay"></div>
-          
-          <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
-
-          <div class="container main-container">
-            <div data-ng-view="">
-            </div>
-
-            <div ng-include="'views/partials/footer.html'"></div>
-
+          <div snap-drawer="left">
+            <div ng-include="'views/partials/sidebar.html'"></div>
           </div>
-        </div>
-    </div>
+
+          <div snap-content>
+            <div class="snap-overlay"></div>
+            
+            <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
+
+            <div class="container main-container">
+              <div data-ng-view="">
+              </div>
+
+              <div ng-include="'views/partials/footer.html'"></div>
+
+            </div>
+          </div>
+      </div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>

@@ -11,10 +11,10 @@
 
       <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-          <li data-ng-hide="currentUser.authenticated" data-match-route="/register*"><a ng-href="#/register" aria-label="Register" id="registerLink">Register</a></li>
-          <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*"><a ng-href="#/signin" aria-label="Sign in" id="signInLink">Sign In</a></li>
-          <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a ng-href="#/dashboard">Dashboard</a></li>
-          <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*"><a ng-href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text">{{currentUser.username}}</span></a></li>
+          <li data-ng-hide="currentUser.authenticated" data-match-route="/register*"><a ng-href="#/register" aria-label="Register" id="registerLink" ng-cloak>Register</a></li>
+          <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*"><a ng-href="#/signin" aria-label="Sign in" id="signInLink" ng-cloak>Sign In</a></li>
+          <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a ng-href="#/dashboard" ng-cloak>Dashboard</a></li>
+          <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*"><a ng-href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text" ng-cloak>{{currentUser.username}}</span></a></li>
         </ul>
       </div>
     </div>
