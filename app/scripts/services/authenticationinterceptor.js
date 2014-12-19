@@ -28,9 +28,7 @@ angular.module('webApp').factory('authenticationInterceptor',
 
         return authenticationService.refreshToken().then(
           function() {
-            var deferred = $q.defer();
-            retryHttpRequest(rejection.config, deferred);
-            return deferred.promise;
+            return retryHttpRequest(rejection.config);
           },
           function() {
             $location.path(fifthweekConstants.signInPage);
@@ -41,16 +39,9 @@ angular.module('webApp').factory('authenticationInterceptor',
       return $q.reject(rejection);
     };
 
-    var retryHttpRequest = function(config, deferred) {
+    var retryHttpRequest = function(config) {
       $http = $http || $injector.get('$http');
-
-      $http(config).then(
-        function(response) {
-          deferred.resolve(response);
-        },
-        function(response) {
-          deferred.reject(response);
-        });
+      return $http(config);
     };
 
     return factory;

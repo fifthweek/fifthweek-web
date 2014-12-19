@@ -24,6 +24,8 @@
     "$f": false,
     "angular": false,
     "alert": false,
-    "jQuery": false
+    "jQuery": false,
+    "ApiError": false,
+    "FifthweekError": false
   }
 }

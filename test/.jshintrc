@@ -38,7 +38,9 @@
     "runs": false,
     "waitsFor": false,
     "element": false,
-    "by": false
+    "by": false,
+    "ApiError": false,
+    "FifthweekError": false
   }
 }
 

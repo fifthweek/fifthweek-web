@@ -1,11 +1,11 @@
 angular.module('webApp').controller(
-  'SignInCtrl', ['$scope', '$location', 'authenticationService', 'fifthweekConstants',
-    function($scope, $location, authenticationService, fifthweekConstants) {
+  'SignInCtrl',
+    function($scope, $location, authenticationService, fifthweekConstants, logService) {
       'use strict';
 
       $scope.signInData = {
         username: '',
-        password: '',
+        password: ''
       };
 
       $scope.message = '';
@@ -14,10 +14,17 @@ angular.module('webApp').controller(
         return authenticationService.signIn($scope.signInData).then(
           function() {
             $location.path(fifthweekConstants.dashboardPage);
-          },
-          function(err) {
-            $scope.message = err.error_description;
+          }).catch(function(err) {
+            if(err instanceof ApiError)
+            {
+              $scope.message = err.message;
+            }
+            else
+            {
+              $scope.message = fifthweekConstants.unexpectedErrorText;
+              return logService.log('error', err);
+            }
           });
       };
     }
-  ]);
+  );

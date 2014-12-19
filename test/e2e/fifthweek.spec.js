@@ -14,14 +14,14 @@ describe('fifthweek', function() {
     it('should have a register link', function() {
       expect(header.registerLink.getText()).toContain('Register');
       header.registerLink.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
       expect(browser.getCurrentUrl()).toContain('/register');
     });
 
     it('should have a sign-in link', function() {
       expect(header.signInLink.getText()).toContain('Sign In');
       header.signInLink.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
       expect(browser.getCurrentUrl()).toContain('/signin');
     });
   });
@@ -32,7 +32,7 @@ describe('fifthweek', function() {
       var becomeACreatorLink = element(by.id('becomeACreatorLink'));
       expect(becomeACreatorLink.getText()).toContain('Become a creator');
       becomeACreatorLink.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
       expect(browser.getCurrentUrl()).toContain('/register');
     });
   });
@@ -45,7 +45,7 @@ describe('fifthweek', function() {
       page.passwordTextBox.sendKeys('password1');
       page.emailTextBox.sendKeys(email);
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
       expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
@@ -54,7 +54,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys(username);
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
 
       var messages = page.helpMessages;
 
@@ -67,7 +67,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys(username);
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
 
       var messages = page.helpMessages;
 
@@ -80,7 +80,7 @@ describe('fifthweek', function() {
       page.emailTextBox.sendKeys(email);
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
 
       var messages = page.helpMessages;
 
@@ -107,7 +107,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys('a ' + username);
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
 
       var messages = page.helpMessages;
 
@@ -121,7 +121,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys('a!' + username);
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
 
       var messages = page.helpMessages;
 
@@ -135,7 +135,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys('aA' + username);
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
       expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
@@ -145,7 +145,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys('abc');
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
 
       var messages = page.helpMessages;
 
@@ -158,7 +158,7 @@ describe('fifthweek', function() {
       page.emailTextBox.sendKeys(email);
       page.usernameTextBox.sendKeys('12345678901234567890ThisIsTooLong');
       page.passwordTextBox.sendKeys('password1');
-      browser.waitForAngular();
+      //browser.waitForAngular();
 
       expect(page.usernameTextBox.getAttribute('value')).toEqual('12345678901234567890')
     });
@@ -169,7 +169,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys(username);
       page.passwordTextBox.sendKeys('pass');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
 
       var messages = page.helpMessages;
 
@@ -183,7 +183,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys('1' + username);
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
       expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
@@ -193,7 +193,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys('a_A' + username);
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
       expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
@@ -203,7 +203,7 @@ describe('fifthweek', function() {
       page.usernameTextBox.sendKeys(' ' + username + ' ');
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
-      browser.waitForAngular();
+      //browser.waitForAngular();
       expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
@@ -215,6 +215,7 @@ describe('fifthweek', function() {
       username = newUsername();
       email = newEmailAddress(username);
       header.registerLink.click();
+      //browser.waitForAngular();
     });
   });
 
@@ -226,7 +227,7 @@ describe('fifthweek', function() {
         page.usernameTextBox.sendKeys(username);
         page.passwordTextBox.sendKeys(password);
         page.signInButton.click();
-        browser.waitForAngular();
+        //browser.waitForAngular();
         expect(browser.getCurrentUrl()).toContain('/dashboard');
       });
 
@@ -234,7 +235,7 @@ describe('fifthweek', function() {
         page.usernameTextBox.sendKeys(username);
         page.passwordTextBox.sendKeys(password + 'X');
         page.signInButton.click();
-        browser.waitForAngular();
+        //browser.waitForAngular();
         expect(page.message.getText()).toContain('Invalid username or password');
       });
 
@@ -242,11 +243,11 @@ describe('fifthweek', function() {
         page.usernameTextBox.sendKeys(username + 'X');
         page.passwordTextBox.sendKeys(password);
         page.signInButton.click();
-        browser.waitForAngular();
+        //browser.waitForAngular();
         expect(page.message.getText()).toContain('Invalid username or password');
       });
 
-      it('should be case insensitive for the username', function(){
+      iit('should be case insensitive for the username', function(){
         // Change the first letter to upper case, and check the result.
         var username2 = username.charAt(0).toUpperCase() + username.substring(1);
         expect(username.length === username2.length).toBeTruthy();
@@ -255,7 +256,7 @@ describe('fifthweek', function() {
         page.usernameTextBox.sendKeys(username2);
         page.passwordTextBox.sendKeys(password);
         page.signInButton.click();
-        browser.waitForAngular();
+        //browser.waitForAngular();
         expect(browser.getCurrentUrl()).toContain('/dashboard');
       });
 
@@ -268,7 +269,7 @@ describe('fifthweek', function() {
         page.usernameTextBox.sendKeys(username);
         page.passwordTextBox.sendKeys(password2);
         page.signInButton.click();
-        browser.waitForAngular();
+        //browser.waitForAngular();
         expect(page.message.getText()).toContain('Invalid username or password');
       });
 
@@ -283,6 +284,7 @@ describe('fifthweek', function() {
         reset();
 
         header.signInLink.click();
+        //browser.waitForAngular();
       });
     });
 
@@ -295,12 +297,13 @@ describe('fifthweek', function() {
         page.usernameTextBox.sendKeys(username);
         page.passwordTextBox.sendKeys(password);
         page.signInButton.click();
-        browser.waitForAngular();
+        //browser.waitForAngular();
         expect(page.message.getText()).toContain('Invalid username or password');
       });
 
       beforeEach(function() {
         header.signInLink.click();
+        //browser.waitForAngular();
       });
     });
 
@@ -334,6 +337,7 @@ describe('fifthweek', function() {
     beforeEach(function() {
       registerSuccessfully();
       sidebar.feedbackLink.click();
+      //browser.waitForAngular();
     });
   });
 
@@ -345,7 +349,9 @@ describe('fifthweek', function() {
 
   function reset(){
     browser.get('/#/signout');
+    browser.waitForAngular();
     browser.get('/');
+    browser.waitForAngular();
   };
 
   function registerSuccessfully() {
@@ -355,13 +361,14 @@ describe('fifthweek', function() {
     var password = 'password1';
 
     header.registerLink.click();
+    //browser.waitForAngular();
     registerPage.exampleWorkTextBox.sendKeys(username);
     registerPage.usernameTextBox.sendKeys(username);
     registerPage.passwordTextBox.sendKeys(password);
     registerPage.emailTextBox.sendKeys(email);
 
     registerPage.registerButton.click();
-    browser.waitForAngular();
+    //browser.waitForAngular();
 
     var result = {
       username: username,

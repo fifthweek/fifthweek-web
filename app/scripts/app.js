@@ -34,6 +34,7 @@ angular
   .constant('fifthweekConstants', {
     apiBaseUri: window.configuredApiBaseUri,
     clientId: 'fifthweek.web.1',
+    unexpectedErrorText: 'An unexpected error occured.',
     homePage: '/',
     signInPage: '/signin',
     signOutPage: '/signout',

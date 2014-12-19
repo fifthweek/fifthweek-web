@@ -34,7 +34,7 @@ describe('authentication service', function() {
 
       var registrationData = {username: 'user'};
 
-      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(200, 'Success');
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(200, {});
 
       var result;
       authenticationService.registerUser(registrationData).then(function(response) { result = response; });
@@ -51,7 +51,7 @@ describe('authentication service', function() {
 
       var registrationData = {username: 'user'};
 
-      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(200, 'Success');
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(200, {});
 
       var result;
       authenticationService.registerUser(registrationData).then(function(response) { result = response; });
@@ -60,6 +60,26 @@ describe('authentication service', function() {
 
       $httpBackend.flush();
       $rootScope.$apply();
+    });
+
+    it('should return an ApiError on an unexpected response', function() {
+
+      setupSignOutExpectations();
+
+      var registrationData = {username: 'user'};
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(500, { message: 'Bad' });
+
+      var result;
+      authenticationService.registerUser(registrationData).catch(function(response) { result = response; });
+
+      executeSignOutExpectations();
+
+      $httpBackend.flush();
+      $rootScope.$apply();
+
+      expect(result instanceof ApiError).toBeTruthy();
+      expect(result.message).toBe('Bad');
     });
 
   });
@@ -103,8 +123,7 @@ describe('authentication service', function() {
       expect(authenticationService.currentUser.authenticated).toBe(true);
       expect(authenticationService.currentUser.username).toBe('username');
 
-      expect(result.access_token).toBe('ACCESSTOKEN');
-      expect(result.refresh_token).toBe('REFRESHTOKEN');
+      expect(result).toBeUndefined();
     });
 
     it('should normalise username using same rules as API', function() {
@@ -141,7 +160,7 @@ describe('authentication service', function() {
         password: 'PASSWORD'
       };
 
-      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(500, 'Bad');
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(500, { error_description: 'Bad' });
 
       setupSignOutExpectations();
 
@@ -157,7 +176,8 @@ describe('authentication service', function() {
 
       expect(authenticationService.currentUser.authenticated).toBe(false);
 
-      expect(result).toBe('Bad');
+      expect(result instanceof ApiError).toBeTruthy();
+      expect(result.message).toBe('Bad');
     });
 
     it('should track the username against the analytics providers', function () {
@@ -218,7 +238,7 @@ describe('authentication service', function() {
       $rootScope.$apply();
 
       expect(localStorageService.set).toHaveBeenCalled();
-      expect(result).toEqual(mockResponse);
+      expect(result).toBeUndefined();
     });
 
     it('should request a new refresh token and sign out if unsuccessful', function(){
@@ -228,7 +248,7 @@ describe('authentication service', function() {
 
       localStorageService.set = jasmine.createSpy();
 
-      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(500, 'Bad');
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(500, { error_description: 'Bad' });
 
       setupSignOutExpectations();
 
@@ -243,7 +263,9 @@ describe('authentication service', function() {
       executeSignOutExpectations();
 
       expect(localStorageService.set).not.toHaveBeenCalled();
-      expect(result).toBe('Bad');
+
+      expect(result instanceof ApiError).toBeTruthy();
+      expect(result.message).toBe('Bad');
     });
 
     it('should error if the user is logged out', function(){
@@ -258,7 +280,8 @@ describe('authentication service', function() {
 
       $rootScope.$apply();
 
-      expect(result).toBe('No authentication data available');
+      expect(result instanceof FifthweekError).toBeTruthy();
+      expect(result.message).toBe('No local authentication data available.');
     });
   });
 

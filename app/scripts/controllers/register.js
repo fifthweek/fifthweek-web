@@ -1,4 +1,4 @@
-angular.module('webApp').controller('RegisterCtrl', function($scope, $location, $analytics, authenticationService, fifthweekConstants) {
+angular.module('webApp').controller('RegisterCtrl', function($scope, $location, $analytics, authenticationService, fifthweekConstants, logService) {
   'use strict';
 
   if(authenticationService.currentUser.authenticated === true){
@@ -16,7 +16,11 @@ angular.module('webApp').controller('RegisterCtrl', function($scope, $location, 
   };
 
   $scope.register = function() {
-    var eventCategory = function() { return {category: 'Registration'}; };
+
+    var eventCategory = function() {
+      return {category: 'Registration'};
+    };
+
     var handleSubmissionError = function(errorMessage){
       $analytics.eventTrack('Registration failed', eventCategory());
       $scope.message = errorMessage;
@@ -24,28 +28,29 @@ angular.module('webApp').controller('RegisterCtrl', function($scope, $location, 
 
     $analytics.eventTrack('Registration submitted', eventCategory());
 
-    authenticationService.registerUser($scope.registrationData).then(
-      function() {
-        $scope.savedSuccessfully = true;
-        $scope.message = 'Signing in...';
+    return authenticationService.registerUser($scope.registrationData).then(function() {
+      $scope.savedSuccessfully = true;
+      $scope.message = 'Signing in...';
 
-        var signInData = {
-          username: $scope.registrationData.username,
-          password: $scope.registrationData.password
-        };
+      var signInData = {
+        username: $scope.registrationData.username,
+        password: $scope.registrationData.password
+      };
 
-        return authenticationService.signIn(signInData).then(
-          function() {
-            $analytics.eventTrack('Registration succeeded', eventCategory());
-            $location.path(fifthweekConstants.dashboardPage);
-          },
-          function(err) {
-            handleSubmissionError(err.error_description);
-          }
-        );
-      },
-      function(response) {
-        handleSubmissionError(response.data.message);
+      return authenticationService.signIn(signInData).then(function() {
+        $analytics.eventTrack('Registration succeeded', eventCategory());
+        $location.path(fifthweekConstants.dashboardPage);
       });
+    }).catch(function(err) {
+      if(err instanceof ApiError)
+      {
+        handleSubmissionError(err.message);
+      }
+      else
+      {
+        handleSubmissionError(fifthweekConstants.unexpectedErrorText);
+        return logService.log('error', err);
+      }
+    });
   };
 });

@@ -33,11 +33,7 @@ describe('registration controller', function() {
       it('should display an error on unsuccessful registration', function() {
         authenticationService.registerUser = function() {
           var deferred = $q.defer();
-          deferred.reject({
-            data: {
-              message: 'TestMessage'
-            }
-          });
+          deferred.reject(new ApiError('TestMessage'));
           return deferred.promise;
         };
 
@@ -47,6 +43,24 @@ describe('registration controller', function() {
         $rootScope.$apply();
 
         expect(scope.message).toContain('TestMessage');
+        expect(scope.savedSuccessfully).toBe(false);
+      });
+
+      it('should display a generic error and log the actual error on unexpected error', function() {
+        authenticationService.registerUser = function() {
+          var deferred = $q.defer();
+          deferred.reject('Bad');
+          return deferred.promise;
+        };
+
+        analytics.eventTrack = function(){};
+
+        $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'log', { level: 'error', payload: 'Bad' }).respond(200, {});
+
+        scope.register();
+        $rootScope.$apply();
+
+        expect(scope.message).toEqual(fifthweekConstants.unexpectedErrorText);
         expect(scope.savedSuccessfully).toBe(false);
       });
 
@@ -89,11 +103,7 @@ describe('registration controller', function() {
         };
         authenticationService.registerUser = function() {
           callSequence.push('authenticationService.registerUser');
-          return $q.reject({
-            data: {
-              message : 'Bad'
-            }
-          });
+          return $q.reject(new ApiError('bad'));
         };
 
         spyOn(analytics, 'eventTrack').and.callThrough();
@@ -192,6 +202,7 @@ describe('registration controller', function() {
   var fifthweekConstants;
   var $controller;
   var analytics;
+  var $httpBackend;
 
   beforeEach(function() {
     analytics = {};
@@ -202,12 +213,13 @@ describe('registration controller', function() {
   });
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function(_$controller_, _$rootScope_, _$q_, _$location_, _fifthweekConstants_) {
+  beforeEach(inject(function(_$controller_, _$rootScope_, _$q_, _$location_, _$httpBackend_, _fifthweekConstants_) {
     $controller = _$controller_;
     $rootScope = _$rootScope_;
     scope = $rootScope.$new();
     $q = _$q_;
     $location = _$location_;
+    $httpBackend = _$httpBackend_;
     fifthweekConstants = _fifthweekConstants_;
   }));
 

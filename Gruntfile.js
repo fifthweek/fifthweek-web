@@ -402,7 +402,8 @@ module.exports = function (grunt) {
       options: {
         configFile: 'test/protractor.conf.js',
         keepAlive: false, // If false, the grunt process stops when the test fails.
-        noColor: false
+        noColor: false,
+        debug: false
       },
       local: {
         args: {

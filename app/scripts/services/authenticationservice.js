@@ -22,7 +22,10 @@ angular.module('webApp').factory('authenticationService', function($http, $q, $a
 
   service.registerUser = function(internalRegistrationData) {
     service.signOut();
-    return $http.post(apiBaseUri + 'membership/registrations', internalRegistrationData);
+    return $http.post(apiBaseUri + 'membership/registrations', internalRegistrationData).catch(function(response){
+     //return $q.reject(new ApiError(response));
+      return $q.reject(new ApiError(response.data.message));
+    });
   };
 
   service.signIn = function(signInData) {
@@ -33,79 +36,63 @@ angular.module('webApp').factory('authenticationService', function($http, $q, $a
       '&password=' + signInData.password +
       '&client_id=' + fifthweekConstants.clientId;
 
-    var deferred = $q.defer();
-
-    $http.post(apiBaseUri + 'token', data, {
+    return $http.post(apiBaseUri + 'token', data, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
-    }).success(function(response) {
+    }).then(function(response) {
 
       // Performed server-side. Repeated here to make UI consistent with API rules.
       var normalizedUsername = normalizeUsername(signInData.username);
 
       localStorageService.set('authenticationData', {
-        token: response.access_token,
+        token: response.data.access_token,
         username: normalizedUsername,
-        refreshToken: response.refresh_token
+        refreshToken: response.data.refresh_token
       });
 
       service.currentUser.authenticated = true;
       service.currentUser.username = normalizedUsername;
 
-      $analytics.setUsername(response.user_id);
-
-      deferred.resolve(response);
-
-    }).error(function(err) {
-      service.signOut();
-      deferred.reject(err);
+      $analytics.setUsername(response.data.user_id);
+    }, function(response){
+      return $q.reject(new ApiError(response.data.error_description));
     });
-
-    return deferred.promise;
   };
 
   service.signOut = function() {
-
     localStorageService.remove('authenticationData');
-
     service.currentUser.authenticated = false;
     service.currentUser.username = '';
+    service.currentUser.permissions = [];
   };
 
   service.refreshToken = function() {
-    var deferred = $q.defer();
-
     var authData = localStorageService.get('authenticationData');
 
-    if (authData) {
+    if (!authData) {
+      return $q.reject(new FifthweekError('No local authentication data available.'));
+    }
+    var data = 'grant_type=refresh_token&refresh_token=' + authData.refreshToken + '&client_id=' + fifthweekConstants.clientId;
 
-      var data = 'grant_type=refresh_token&refresh_token=' + authData.refreshToken + '&client_id=' + fifthweekConstants.clientId;
+    return $http.post(apiBaseUri + 'token', data, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(function(response) {
 
-      $http.post(apiBaseUri + 'token', data, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).success(function(response) {
-
-        localStorageService.set('authenticationData', {
-          token: response.access_token,
-          username: response.username,
-          refreshToken: response.refresh_token,
-        });
-
-        deferred.resolve(response);
-
-      }).error(function(err) {
-        service.signOut();
-        deferred.reject(err);
+      localStorageService.set('authenticationData', {
+        token: response.data.access_token,
+        username: response.data.username,
+        refreshToken: response.data.refresh_token
       });
-    }
-    else {
-      deferred.reject('No authentication data available');
-    }
 
-    return deferred.promise;
+    }, function(response) {
+      return $q.reject(new ApiError(response.data.error_description));
+    }).catch(function(error){
+      service.signOut();
+      return $q.reject(error);
+    });
   };
 
   var normalizeUsername = function(username) {
