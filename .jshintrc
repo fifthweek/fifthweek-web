@@ -26,6 +26,7 @@
     "alert": false,
     "jQuery": false,
     "ApiError": false,
-    "FifthweekError": false
+    "FifthweekError": false,
+    "ActiveXObject": false
   }
 }

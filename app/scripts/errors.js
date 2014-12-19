@@ -23,11 +23,11 @@ window.onerror = function(message, source, line, column) {
   //try {
     var escape = function(x) { return x.replace('\\', '\\\\').replace('\"', '\\"'); };
     var XHR = window.XMLHttpRequest || function() {
-        try { return new ActiveXObject("Msxml3.XMLHTTP"); } catch (e0) {}
-        try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e1) {}
-        try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); } catch (e2) {}
-        try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e3) {}
-        try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e4) {}
+        try { return new ActiveXObject('Msxml3.XMLHTTP'); } catch (e0) {}
+        try { return new ActiveXObject('Msxml2.XMLHTTP.6.0'); } catch (e1) {}
+        try { return new ActiveXObject('Msxml2.XMLHTTP.3.0'); } catch (e2) {}
+        try { return new ActiveXObject('Msxml2.XMLHTTP'); } catch (e3) {}
+        try { return new ActiveXObject('Microsoft.XMLHTTP'); } catch (e4) {}
       };
     var xhr = new XHR();
     xhr.open('POST', window.configuredApiBaseUri + '/log', true);
@@ -39,6 +39,7 @@ window.onerror = function(message, source, line, column) {
     '"line": "' + (line || 0) + '",' +
     '"column": "' + (column || 0) + '"' +
     '}}');
+  
   //}
   //finally {
   //  window.onload = function() {
