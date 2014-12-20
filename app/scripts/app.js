@@ -36,67 +36,62 @@ angular
     feedbackPage: '/dashboard/feedback',
     notAuthorizedPage: '/notauthorized',
   })
-  /*
-  .config(['$routeProvider', 'fifthweekConstants', 'snapRemoteProvider',
-    function ($routeProvider, fifthweekConstants, snapRemoteProvider) {
-    $routeProvider
-      .when(fifthweekConstants.homePage, {
+
+  .config(function($stateProvider, fifthweekConstants, $urlRouterProvider, snapRemoteProvider) {
+
+    //for any unmatched url, redirect to home page
+    $urlRouterProvider.otherwise(fifthweekConstants.homePage);
+
+    $stateProvider
+
+      .state(fifthweekConstants.homePage, {
+        url: fifthweekConstants.homePage,
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl'
       })
-      .when(fifthweekConstants.signInPage, {
+      .state(fifthweekConstants.signInPage, {
+        url: fifthweekConstants.signInPage,
         templateUrl: 'views/signin.html',
         controller: 'SignInCtrl'
       })
-      .when(fifthweekConstants.registerPage, {
+      .state(fifthweekConstants.registerPage, {
+        url: fifthweekConstants.registerPage,
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl'
       })
-      .when(fifthweekConstants.accountPage, {
+      .state(fifthweekConstants.accountPage, {
+        url: fifthweekConstants.accountPage,
         templateUrl: 'views/account.html',
         controller: 'AccountCtrl',
         access: {
           loginRequired: true
         }
       })
-      .when(fifthweekConstants.dashboardPage, {
+      .state(fifthweekConstants.dashboardPage, {
+        url: fifthweekConstants.dashboardPage,
         templateUrl: 'views/dashboard/demonstration.html',
         access: {
           loginRequired: true
         }
       })
-      .when(fifthweekConstants.feedbackPage, {
+      .state(fifthweekConstants.feedbackPage, {
+        url: fifthweekConstants.feedbackPage,
         templateUrl: 'views/dashboard/feedback.html',
         access: {
           loginRequired: true
         }
       })
-      .when(fifthweekConstants.signOutPage, {
+      .state(fifthweekConstants.signOutPage, {
+        url: fifthweekConstants.signOutPage,
         templateUrl: 'views/signout.html',
         controller: 'SignOutCtrl'
       })
-      .when(fifthweekConstants.notAuthorizedPage, {
+      .state(fifthweekConstants.notAuthorizedPage, {
+        url: fifthweekConstants.notAuthorizedPage,
         redirectTo: fifthweekConstants.homePage  // TODO: Create a "Not Authorized" page.
-      })
-      .otherwise({
-        redirectTo: fifthweekConstants.homePage
       });
 
-    snapRemoteProvider. globalOptions = {
-      disable: 'left',
-      touchToDrag: false
-    };
-
-  }]);
-*/
-
-.config(function($stateProvider, $urlRouterProvider) {
-  //
-  // For any unmatched url, redirect to /state1
-  $urlRouterProvider.otherwise('/state1');
-  //
-  // Now set up the states
-  $stateProvider
+    /*
     .state('state1', {
       url: '/state1',
       templateUrl: 'views/state1.html'
@@ -120,3 +115,12 @@ angular
       }
     });
 });
+    */
+
+    snapRemoteProvider. globalOptions = {
+      disable: 'left',
+      touchToDrag: false
+    };
+
+});
+

@@ -53,14 +53,9 @@
     <![endif]-->
     <div class="wrapper" ng-class="{'secondary-nav-visible': secondaryNav}">
 
-      <div ui-view></div>
-
-
-      <a ui-sref="state1">State 1</a>
-      <a ui-sref="state2">State 2</a>
-
       <toaster-container></toaster-container>
-      <!--<div snap-drawer="right">
+      
+      <div snap-drawer="right">
         <div ng-include="'views/partials/sidebar.html'"></div>
       </div>
 
@@ -79,15 +74,19 @@
             <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
 
             <div class="container main-container">
-              <div data-ng-view="">
-              </div>
+              <!--
+              <div data-ng-view=""></div>
+              -->
+              <div ui-view></div>
+
+              <a ui-sref="state1">State 1</a>
+              <a ui-sref="state2">State 2</a>
 
               <div ng-include="'views/partials/footer.html'"></div>
 
             </div>
           </div>
-        </div>
-      -->
+      </div>
     </div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
