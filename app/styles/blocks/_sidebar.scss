@@ -1,6 +1,12 @@
 @import '_base';
 
 .sidebar {
+  @media (min-width:992px) {
+    position:fixed;
+    top:0;
+    left:0;
+    width:200px;
+  }
   ul {
     margin:0;
     padding:0;

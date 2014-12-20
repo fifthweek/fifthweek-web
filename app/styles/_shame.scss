@@ -33,7 +33,6 @@
   vertical-align:middle;
 }
 
-
 [ng\:cloak],
 [ng-cloak],
 [data-ng-cloak],
@@ -41,4 +40,13 @@
 .ng-cloak,
 .x-ng-cloak {
   display: none !important;
+}
+
+
+
+//for new left/right containers
+.navbar-fixed-top {
+  @media (min-width:992px) {
+    left:200px;
+  }
 }

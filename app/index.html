@@ -54,23 +54,25 @@
 
       <toaster-container></toaster-container>
 
-      <div ui-view="sidebar"></div>
+      <div class="left-right-container-wrap">
+        <div class="left-container" ui-view="sidebar"></div>
 
-      <div snap-content>
-        <!--<div class="snap-overlay"></div>-->
+        <div class="right-container" snap-content>
+          <!--<div class="snap-overlay"></div>-->
 
-          <div snap-content>
-            <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
-            <div class="snap-overlay"></div>
+          <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
+          <div class="snap-overlay"></div>
 
-            <div class="container main-container">
+          <div class="main-container">
 
-              <div ui-view></div>
+            <div ui-view></div>
 
-              <div ng-include="'views/partials/footer.html'"></div>
+            <!--
+            <div ng-include="'views/partials/footer.html'"></div>
+            -->
 
-            </div>
           </div>
+        </div>
       </div>
     </div>
 
