@@ -16,19 +16,19 @@ describe('log service', function() {
   };
 
   it('should call the fifthweek API with debug level when requested to log debug', function(){
-    testLogToServer('debug', function(message) { logService.debug(message) });
+    testLogToServer('debug', function(message) { logService.debug(message); });
   });
 
   it('should call the fifthweek API with info level when requested to log info', function(){
-    testLogToServer('info', function(message) { logService.info(message) });
+    testLogToServer('info', function(message) { logService.info(message); });
   });
 
   it('should call the fifthweek API with warn level when requested to log warn', function(){
-    testLogToServer('warn', function(message) { logService.warn(message) });
+    testLogToServer('warn', function(message) { logService.warn(message); });
   });
 
   it('should call the fifthweek API with error level when requested to log error', function(){
-    testLogToServer('error', function(message) { logService.error(message) });
+    testLogToServer('error', function(message) { logService.error(message); });
   });
 
   it('should not call the fifthweek API when requested to log an API error', function(){
@@ -49,6 +49,48 @@ describe('log service', function() {
     $rootScope.$apply();
 
     expect(log.warn).toHaveBeenCalled();
+  });
+
+  it('should call the fifthweek API with error level when an unhandled error occurs with an exception', function(){
+    var exception = 'exception';
+    var logMessage = { level: 'error', payload: { url: '/test', message: { exception: exception } } };
+
+    $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'log', logMessage).respond(200, 'Success');
+
+    logService.logUnhandledError(exception, undefined);
+
+    $httpBackend.flush();
+    $rootScope.$apply();
+  });
+
+  it('should call the fifthweek API with error level when an unhandled error occurs with an exception and cause', function(){
+    var exception = 'exception';
+    var cause = 'cause';
+    var logMessage = { level: 'error', payload: { url: '/test', message: { exception: exception, cause: cause } } };
+
+    $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'log', logMessage).respond(200, 'Success');
+
+    logService.logUnhandledError(exception, cause);
+
+    $httpBackend.flush();
+    $rootScope.$apply();
+  });
+
+  it('should call the fifthweek API with error level when an unhandled error occurs with a cause', function(){
+    var cause = 'cause';
+    var logMessage = { level: 'error', payload: { url: '/test', message: { cause: cause } } };
+
+    $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'log', logMessage).respond(200, 'Success');
+
+    logService.logUnhandledError(undefined, cause);
+
+    $httpBackend.flush();
+    $rootScope.$apply();
+  });
+
+  it('should not call the fifthweek API when an unhandled error occurs with no exception or cause', function(){
+    logService.logUnhandledError(undefined, undefined);
+    $rootScope.$apply();
   });
 
   it('should return false from shouldLog if the payload is undefined', function()
@@ -87,7 +129,7 @@ describe('log service', function() {
       location:{
         href: '/test'
       }
-    }
+    };
 
     module(function($provide) {
       $provide.value('$log', log);

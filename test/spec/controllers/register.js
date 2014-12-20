@@ -154,7 +154,7 @@ describe('registration controller', function() {
     beforeEach(function() {
       authenticationService = { currentUser: { authenticated: false }};
       logService = { error: function(){} };
-      utilities = { getFriendlyErrorMessage: function(){ return errorMessage; } }
+      utilities = { getFriendlyErrorMessage: function(){ return errorMessage; } };
 
       RegisterCtrl = $controller('RegisterCtrl', {
         $scope: scope,

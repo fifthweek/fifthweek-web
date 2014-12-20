@@ -30,7 +30,7 @@ angular.module('webApp')
       // We have to do this here to avoid an Angular circular dependency.
       var $http = $injector.get('$http');
       return $http.post(loggingUrl, data).catch(function(response) {
-        $log.warn("Server-side logging failed");
+        $log.warn('Server-side logging failed');
         $log.warn(response);
       });
     };
@@ -38,17 +38,17 @@ angular.module('webApp')
     service.debug = function(message){
       $log.debug(message);
       return logToServer('debug', message);
-    }
+    };
 
     service.info = function(message){
       $log.info(message);
       return logToServer('info', message);
-    }
+    };
 
     service.warn = function(message){
       $log.warn(message);
       return logToServer('warn', message);
-    }
+    };
 
     service.error = function(error){
       if(error instanceof ApiError)
@@ -62,10 +62,10 @@ angular.module('webApp')
         $log.error(error);
         return logToServer('error', error);
       }
-    }
+    };
 
     service.logUnhandledError = function(exception, cause) {
-      if(logService.shouldLog(exception) || logService.shouldLog(cause))
+      if(service.shouldLog(exception) || service.shouldLog(cause))
       {
         var message = {
           cause: cause,

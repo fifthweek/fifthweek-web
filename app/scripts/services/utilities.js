@@ -13,11 +13,11 @@ angular.module('webApp')
       }
       else{
         if(response.data !== undefined) {
-          if (response.data.message != undefined) {
-            return new ApiError(response.data.message)
+          if (response.data.message !== undefined) {
+            return new ApiError(response.data.message);
           }
           if(response.data.error_description !== undefined){
-            return new ApiError(response.data.error_description)
+            return new ApiError(response.data.error_description);
           }
         }
         return new ApiError(fifthweekConstants.unexpectedErrorText);
@@ -36,7 +36,7 @@ angular.module('webApp')
         // An unknown error.  Try to log it and return a generic message.
         return fifthweekConstants.unexpectedErrorText;
       }
-    }
+    };
 
     return service;
   }

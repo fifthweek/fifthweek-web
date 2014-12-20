@@ -59,7 +59,7 @@ describe('sign in controller', function() {
 
     authenticationService = {};
     logService = { error: function(){} };
-    utilities = { getFriendlyErrorMessage: function(){ return errorMessage; } }
+    utilities = { getFriendlyErrorMessage: function(){ return errorMessage; } };
 
     SignInCtrl = $controller('SignInCtrl', {
       $scope: scope,

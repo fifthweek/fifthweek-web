@@ -56,11 +56,6 @@ describe('utilities', function() {
   var fifthweekConstants;
   var utilities;
 
-  beforeEach(function() {
-    module(function($provide) {
-    });
-  });
-
   beforeEach(inject(function($injector) {
     fifthweekConstants = $injector.get('fifthweekConstants');
     utilities = $injector.get('utilities');
