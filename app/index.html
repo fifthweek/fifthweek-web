@@ -53,8 +53,14 @@
     <![endif]-->
     <div class="wrapper" ng-class="{'secondary-nav-visible': secondaryNav}">
 
+      <div ui-view></div>
+
+
+      <a ui-sref="state1">State 1</a>
+      <a ui-sref="state2">State 2</a>
+
       <toaster-container></toaster-container>
-      <div snap-drawer="right">
+      <!--<div snap-drawer="right">
         <div ng-include="'views/partials/sidebar.html'"></div>
       </div>
 
@@ -81,6 +87,7 @@
             </div>
           </div>
         </div>
+      -->
     </div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
@@ -124,6 +131,7 @@
     <script src="bower_components/angulartics/src/angulartics-ga.js"></script>
     <script src="bower_components/froogaloop/froogaloop.js"></script>
     <script src="bower_components/ng-focus/ng-focus.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

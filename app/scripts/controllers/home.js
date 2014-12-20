@@ -1,11 +1,11 @@
 angular.module('webApp').controller(
-  'HomeCtrl', [ '$rootScope',
-    function ($rootScope) {
+  'HomeCtrl', [
+    function () {
       'use strict';
-      $rootScope.secondaryNav = true;
+      //$rootScope.secondaryNav = true;
 
       //temp for dev
-      $scope.homeSecondaryNav = true;
+      //$scope.homeSecondaryNav = true;
 
     }
   ]);
