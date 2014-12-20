@@ -47,7 +47,15 @@ angular
       .state(fifthweekConstants.homePage, {
         url: fifthweekConstants.homePage,
         templateUrl: 'views/home.html',
-        controller: 'HomeCtrl'
+        views: {
+          '': {
+            templateUrl: 'views/home.html',
+            controller: 'HomeCtrl'
+          },
+          'sidebar': {
+            templateUrl: 'views/partials/sidebar.html'
+          }
+        },
       })
       .state(fifthweekConstants.signInPage, {
         url: fifthweekConstants.signInPage,
@@ -69,7 +77,14 @@ angular
       })
       .state(fifthweekConstants.dashboardPage, {
         url: fifthweekConstants.dashboardPage,
-        templateUrl: 'views/dashboard/demonstration.html',
+        views: {
+          '': {
+            templateUrl: 'views/dashboard/demonstration.html'
+          },
+          'sidebar': {
+            templateUrl: 'views/dashboard/partials/sidebar.html'
+          }
+        },
         access: {
           loginRequired: true
         }
