@@ -17,7 +17,6 @@
   @media (min-width:500px) {
     padding-left:15px;
   }
-
 }
 
 .navbar-default {
@@ -32,11 +31,11 @@
     &:focus {
       background:none;
     }
-    @media (min-width:500px) {
-      display:none;
+    //overide bootstrap default
+    @media (min-width:768px) {
+      display:block;
     }
   }
-
 }
 
 .navbar-brand {
@@ -90,6 +89,7 @@
 
 //display sidebar and toggle on medium+ breakpoint 
 //only if visible class is declared for the view
+/*
 .secondary-nav-visible {
   .navbar-toggle {
     @media (min-width:500px) {
@@ -100,3 +100,4 @@
     }
   }
 }
+*/

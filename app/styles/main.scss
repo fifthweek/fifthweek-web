@@ -2,6 +2,8 @@
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+@import 'lib/_angular-snap';
+
 @import '_typography';
 @import 'blocks/_layout-containers';
 @import 'blocks/_snapjs-customisation';
