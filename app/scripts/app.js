@@ -16,25 +16,11 @@ angular
     'angulartics.google.analytics.userid',
     'angulartics.kissmetrics'
   ])
-  .config(function($provide){
-    $provide.decorator('$exceptionHandler', function($delegate, logService) {
-      return function (exception, cause) {
-        $delegate(exception, cause);
-
-        if(logService.shouldLog(exception) || logService.shouldLog(cause))
-        {
-          logService.log('error', {
-            cause: cause,
-            exception: exception
-          });
-        }
-      };
-    });
-  })
   .constant('fifthweekConstants', {
     apiBaseUri: window.configuredApiBaseUri,
     clientId: 'fifthweek.web.1',
-    unexpectedErrorText: 'An unexpected error occured.',
+    unexpectedErrorText: 'An error has occured.',
+    connectionErrorText: 'Unable to communicate with the server. Make sure you are connected to the internet and try again.',
     homePage: '/',
     signInPage: '/signin',
     signOutPage: '/signout',

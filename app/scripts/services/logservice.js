@@ -2,29 +2,78 @@
 
 angular.module('webApp')
   .factory('logService',
-  function($injector, $log, fifthweekConstants) {
+  function($injector, $log, $window, fifthweekConstants) {
     'use strict';
 
     var service = {};
+
+    var loggingUrl = fifthweekConstants.apiBaseUri + 'log';
 
     service.shouldLog = function(payload)
     {
       return payload !== undefined && !jQuery.isEmptyObject(payload);
     };
 
-    service.log = function(level, payload) {
-      if(!service.shouldLog(payload)){
+    var logToServer = function(level, message) {
+      if(!service.shouldLog(message)){
         return;
       }
 
+      var data = {
+        level: level,
+        payload: {
+          url: $window.location.href,
+          message: message
+        }
+      };
+
       // We have to do this here to avoid an Angular circular dependency.
       var $http = $injector.get('$http');
-      return $http.post(fifthweekConstants.apiBaseUri + 'log', {
-        level: level,
-        payload: payload
-      }).catch(function(response) {
-        $log.warn('Failed to log to server: ' + response);
+      return $http.post(loggingUrl, data).catch(function(response) {
+        $log.warn("Server-side logging failed");
+        $log.warn(response);
       });
+    };
+
+    service.debug = function(message){
+      $log.debug(message);
+      return logToServer('debug', message);
+    }
+
+    service.info = function(message){
+      $log.info(message);
+      return logToServer('info', message);
+    }
+
+    service.warn = function(message){
+      $log.warn(message);
+      return logToServer('warn', message);
+    }
+
+    service.error = function(error){
+      if(error instanceof ApiError)
+      {
+        // We don't log API errors to the server (as they have already been logged).
+        $log.info(error.message);
+      }
+      else
+      {
+        // An unknown error.  Try to log it and return a generic message.
+        $log.error(error);
+        return logToServer('error', error);
+      }
+    }
+
+    service.logUnhandledError = function(exception, cause) {
+      if(logService.shouldLog(exception) || logService.shouldLog(cause))
+      {
+        var message = {
+          cause: cause,
+          exception: exception
+        };
+
+        return logToServer('error', message);
+      }
     };
 
     return service;

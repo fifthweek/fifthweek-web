@@ -1,4 +1,5 @@
-angular.module('webApp').controller('RegisterCtrl', function($scope, $location, $analytics, authenticationService, fifthweekConstants, logService) {
+angular.module('webApp').controller('RegisterCtrl',
+  function($scope, $location, $analytics, authenticationService, fifthweekConstants, logService, utilities) {
   'use strict';
 
   if(authenticationService.currentUser.authenticated === true){
@@ -41,16 +42,9 @@ angular.module('webApp').controller('RegisterCtrl', function($scope, $location, 
         $analytics.eventTrack('Registration succeeded', eventCategory());
         $location.path(fifthweekConstants.dashboardPage);
       });
-    }).catch(function(err) {
-      if(err instanceof ApiError)
-      {
-        handleSubmissionError(err.message);
-      }
-      else
-      {
-        handleSubmissionError(fifthweekConstants.unexpectedErrorText);
-        return logService.log('error', err);
-      }
+    }).catch(function(error) {
+      handleSubmissionError(utilities.getFriendlyErrorMessage(error));
+      return logService.error(error);
     });
   };
 });

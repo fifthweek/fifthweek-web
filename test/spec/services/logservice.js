@@ -1,29 +1,49 @@
 describe('log service', function() {
   'use strict';
 
-  it('should call the fifthweek API when requested to log', function(){
 
-    var payload = { test: 'test' };
-    var logMessage = { level: 'info', payload: payload };
+  var testLogToServer = function(level, call){
+
+    var message = { test: 'test' };
+    var logMessage = { level: level, payload: { url: '/test', message: message } };
 
     $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'log', logMessage).respond(200, 'Success');
 
-    logService.log('info', payload);
+    call(message);
 
     $httpBackend.flush();
     $rootScope.$apply();
+  };
+
+  it('should call the fifthweek API with debug level when requested to log debug', function(){
+    testLogToServer('debug', function(message) { logService.debug(message) });
+  });
+
+  it('should call the fifthweek API with info level when requested to log info', function(){
+    testLogToServer('info', function(message) { logService.info(message) });
+  });
+
+  it('should call the fifthweek API with warn level when requested to log warn', function(){
+    testLogToServer('warn', function(message) { logService.warn(message) });
+  });
+
+  it('should call the fifthweek API with error level when requested to log error', function(){
+    testLogToServer('error', function(message) { logService.error(message) });
+  });
+
+  it('should not call the fifthweek API when requested to log an API error', function(){
+    spyOn(log, 'info');
+    logService.error(new ApiError('Test'));
+    expect(log.info).toHaveBeenCalled();
   });
 
   it('should log an error if the fifthweek API call fails', function(){
 
-    var payload = { test: 'test' };
-    var logMessage = { level: 'warn', payload: payload };
-
-    $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'log', logMessage).respond(500, 'Failure');
+    $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'log').respond(500, 'Failure');
 
     spyOn(log, 'warn');
 
-    logService.log('warn', payload);
+    logService.warn('test');
 
     $httpBackend.flush();
     $rootScope.$apply();
@@ -56,10 +76,22 @@ describe('log service', function() {
   var logService;
 
   beforeEach(function() {
-    log = { warn: function(){} };
+    log = {
+      debug: function () {},
+      info: function () {},
+      warn: function () {},
+      error: function () {}
+    };
+
+    var $window = {
+      location:{
+        href: '/test'
+      }
+    }
 
     module(function($provide) {
       $provide.value('$log', log);
+      $provide.value('$window', $window);
     });
   });
 
@@ -69,4 +101,9 @@ describe('log service', function() {
     fifthweekConstants = $injector.get('fifthweekConstants');
     logService = $injector.get('logService');
   }));
+
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
 });

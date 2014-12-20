@@ -147,4 +147,9 @@ describe('authentication interceptor', function() {
     authenticationInterceptor = $injector.get('authenticationInterceptor');
     fifthweekConstants = $injector.get('fifthweekConstants');
   }));
+
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
 });

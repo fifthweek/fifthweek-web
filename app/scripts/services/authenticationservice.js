@@ -1,6 +1,7 @@
 /// <reference path='../angular.module('webApp')js' />
 
-angular.module('webApp').factory('authenticationService', function($http, $q, $analytics, localStorageService, fifthweekConstants) {
+angular.module('webApp').factory('authenticationService',
+  function($http, $q, $analytics, localStorageService, fifthweekConstants, utilities) {
   'use strict';
 
   var apiBaseUri = fifthweekConstants.apiBaseUri;
@@ -23,8 +24,7 @@ angular.module('webApp').factory('authenticationService', function($http, $q, $a
   service.registerUser = function(internalRegistrationData) {
     service.signOut();
     return $http.post(apiBaseUri + 'membership/registrations', internalRegistrationData).catch(function(response){
-     //return $q.reject(new ApiError(response));
-      return $q.reject(new ApiError(response.data.message));
+      return $q.reject(utilities.getHttpError(response));
     });
   };
 
@@ -56,7 +56,7 @@ angular.module('webApp').factory('authenticationService', function($http, $q, $a
 
       $analytics.setUsername(response.data.user_id);
     }, function(response){
-      return $q.reject(new ApiError(response.data.error_description));
+      return $q.reject(utilities.getHttpError(response));
     });
   };
 
@@ -88,7 +88,7 @@ angular.module('webApp').factory('authenticationService', function($http, $q, $a
       });
 
     }, function(response) {
-      return $q.reject(new ApiError(response.data.error_description));
+      return $q.reject(utilities.getHttpError(response));
     }).catch(function(error){
       service.signOut();
       return $q.reject(error);

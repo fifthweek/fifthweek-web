@@ -312,6 +312,11 @@ describe('authentication service', function() {
     fifthweekConstants = $injector.get('fifthweekConstants');
   }));
 
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
+
   var setupSignOutExpectations = function(){
     localStorageService.remove = function(){};
     spyOn(localStorageService, 'remove');

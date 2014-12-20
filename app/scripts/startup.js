@@ -6,6 +6,14 @@ angular.module('webApp')
       $httpProvider.interceptors.push('authenticationInterceptor');
     }
   ])
+  .config(function($provide){
+    $provide.decorator('$exceptionHandler', function($delegate, logService) {
+      return function (exception, cause) {
+        $delegate(exception, cause);
+        logService.logUnhandledError(exception, cause);
+      };
+    });
+  })
   .run(['$rootScope', 'authenticationService', 'routeChangeAuthorizationHandler',
     function($rootScope, authenticationService, routeChangeAuthHandler) {
       'use strict';
