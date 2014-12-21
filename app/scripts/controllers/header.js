@@ -1,5 +1,5 @@
 angular.module('webApp').controller(
-  'IndexCtrl', ['$scope', '$rootScope', '$location', 'authenticationService', 'fifthweekConstants',
+  'HeaderCtrl', ['$scope', '$rootScope', '$location', 'authenticationService', 'fifthweekConstants',
   function($scope, $rootScope, $location, authenticationService, fifthweekConstants) {
     'use strict';
 
