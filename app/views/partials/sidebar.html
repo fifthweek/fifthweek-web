@@ -1,16 +1,16 @@
 <div class="sidebar" snap-drawer="left" data-ng-controller="SidebarCtrl">
   <ul>
     <li data-ng-hide="currentUser.authenticated" data-match-route="/register*">
-      <a ng-href="#/register" aria-label="Register" snap-close>Register</a>
+      <a ui-sref="register" aria-label="Register">Register</a>
     </li>
     <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*">
-      <a ng-href="#/signin" aria-label="Sign in" snap-close>Sign In</a>
+      <a ui-sref="signin" aria-label="Sign in">Sign In</a>
     </li>
     <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*">
-      <a ng-href="#/dashboard" snap-close>Dashboard</a>
+      <a ui-sref="dashboard.demo">Dashboard</a>
     </li>
     <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*">
-      <a ng-href="#/account" snap-close>{{currentUser.username}}</a>
+      <a ui-sref="account">{{currentUser.username}}</a>
     </li>
 
   </ul>
