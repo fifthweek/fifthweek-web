@@ -332,7 +332,9 @@ describe('fifthweek', function() {
 
   function reset(){
     browser.get('/#/signout');
+    browser.waitForAngular();
     browser.get('/');
+    browser.waitForAngular();
   };
 
   function registerSuccessfully() {
