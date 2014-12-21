@@ -12,8 +12,8 @@
       <ul class="nav navbar-nav navbar-right">
         <li data-ng-hide="currentUser.authenticated" data-match-route="/register*"><a ng-href="#/register" aria-label="Register" id="registerLink" ng-cloak>Register</a></li>
         <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*"><a ng-href="#/signin" aria-label="Sign in" id="signInLink" ng-cloak>Sign In</a></li>
-        <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a ng-href="#/dashboard" ng-cloak>Dashboard</a></li>
-        <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*"><a ng-href="#/account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text" ng-cloak>{{currentUser.username}}</span></a></li>
+        <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a ui-sref="dashboard" ng-cloak>Dashboard</a></li>
+        <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*"><a ui-sref="account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text" ng-cloak>{{currentUser.username}}</span></a></li>
       </ul>
     </div>
   </nav>

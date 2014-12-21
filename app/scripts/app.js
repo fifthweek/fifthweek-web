@@ -32,19 +32,19 @@ angular
     signOutPage: '/signout',
     registerPage: '/register',
     accountPage: '/account',
-    dashboardPage: '/dashboard',
+    dashboardPage: '/dashboard/demo',
     feedbackPage: '/dashboard/feedback',
     notAuthorizedPage: '/notauthorized',
   })
 
-  .config(function($stateProvider, fifthweekConstants, $urlRouterProvider, snapRemoteProvider) {
+  .config(function($stateProvider, $urlRouterProvider, fifthweekConstants, snapRemoteProvider) {
 
     //for any unmatched url, redirect to home page
     $urlRouterProvider.otherwise(fifthweekConstants.homePage);
 
     $stateProvider
 
-      .state(fifthweekConstants.homePage, {
+      .state('home', {
         url: fifthweekConstants.homePage,
         templateUrl: 'views/home.html',
         views: {
@@ -57,17 +57,17 @@ angular
           }
         },
       })
-      .state(fifthweekConstants.signInPage, {
+      .state('signin', {
         url: fifthweekConstants.signInPage,
         templateUrl: 'views/signin.html',
         controller: 'SignInCtrl'
       })
-      .state(fifthweekConstants.registerPage, {
+      .state('register', {
         url: fifthweekConstants.registerPage,
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl'
       })
-      .state(fifthweekConstants.accountPage, {
+      .state('account', {
         url: fifthweekConstants.accountPage,
         templateUrl: 'views/account.html',
         controller: 'AccountCtrl',
@@ -75,7 +75,7 @@ angular
           loginRequired: true
         }
       })
-      .state(fifthweekConstants.dashboardPage, {
+      .state('dashboard', {
         url: fifthweekConstants.dashboardPage,
         views: {
           '': {
@@ -89,19 +89,26 @@ angular
           loginRequired: true
         }
       })
-      .state(fifthweekConstants.feedbackPage, {
+      .state('dashboard.feedback', {
         url: fifthweekConstants.feedbackPage,
-        templateUrl: 'views/dashboard/feedback.html',
+        views: {
+          '': {
+            templateUrl: 'views/dashboard/feedback.html'
+          },
+          'sidebar': {
+            templateUrl: 'views/dashboard/partials/sidebar.html'
+          }
+        },
         access: {
           loginRequired: true
         }
       })
-      .state(fifthweekConstants.signOutPage, {
+      .state('signout', {
         url: fifthweekConstants.signOutPage,
         templateUrl: 'views/signout.html',
         controller: 'SignOutCtrl'
       })
-      .state(fifthweekConstants.notAuthorizedPage, {
+      .state('notAuthorized', {
         url: fifthweekConstants.notAuthorizedPage,
         redirectTo: fifthweekConstants.homePage  // TODO: Create a "Not Authorized" page.
       });
