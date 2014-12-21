@@ -1,4 +1,5 @@
 <div class="sidebar" snap-drawer="left" data-ng-controller="SidebarCtrl">
+  <div ng-include="'views/partials/sidebar-logo.html'"></div>
   <ul>
     <li data-ng-hide="currentUser.authenticated" data-match-route="/register*">
       <a ui-sref="register" aria-label="Register">Register</a>
@@ -12,6 +13,5 @@
     <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*">
       <a ui-sref="account">{{currentUser.username}}</a>
     </li>
-
   </ul>
 </div>

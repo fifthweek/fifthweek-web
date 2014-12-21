@@ -28,7 +28,9 @@
 }
 
 .right-container {
-  padding-top:70px;
+  @media (min-width:992px) {
+    padding:70px 30px 0 30px;
+  }
 }
 
 .main-container {
