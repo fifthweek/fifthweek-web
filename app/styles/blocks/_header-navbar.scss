@@ -83,11 +83,16 @@
       color:$brand-primary;
       &:hover,
       &:focus {
-        color:$navbar-default-link-hover-color;
+        background:$navbar-default-link-hover-color;
+        color:#FFF;
       }
       @media (min-width:500px) {
         padding:15px;
       }
+    }
+    &.active a {
+      background:$navbar-default-link-hover-color;
+      color:#FFF;
     }
   }
 }
