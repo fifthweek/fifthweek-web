@@ -2,16 +2,16 @@
   <div ng-include="'views/partials/sidebar-logo.html'"></div>
   <ul>
     <li data-ng-hide="currentUser.authenticated" data-match-route="/register*">
-      <a ui-sref="register" aria-label="Register">Register</a>
+      <a ui-sref="register" aria-label="Register" snap-close>Register</a>
     </li>
     <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*">
-      <a ui-sref="signin" aria-label="Sign in">Sign In</a>
+      <a ui-sref="signin" aria-label="Sign in" snap-close>Sign In</a>
     </li>
     <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*">
-      <a ui-sref="account">{{currentUser.username}}</a>
+      <a ui-sref="account" snap-close>{{currentUser.username}}</a>
     </li>
     <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*">
-      <a ui-sref="dashboard.demo">Dashboard</a>
+      <a ui-sref="dashboard.demo" snap-close>Dashboard</a>
     </li>
   </ul>
 </div>
