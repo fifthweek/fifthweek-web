@@ -59,18 +59,39 @@ angular
       })
       .state('signin', {
         url: fifthweekConstants.signInPage,
-        templateUrl: 'views/signin.html',
-        controller: 'SignInCtrl'
+        views: {
+          '': {
+            templateUrl: 'views/signin.html',
+            controller: 'SignInCtrl'
+          },
+          'sidebar': {
+            templateUrl: 'views/partials/sidebar.html'
+          }
+        }
       })
       .state('register', {
         url: fifthweekConstants.registerPage,
-        templateUrl: 'views/register.html',
-        controller: 'RegisterCtrl'
+        views: {
+          '': {
+            templateUrl: 'views/register.html',
+            controller: 'RegisterCtrl'
+          },
+          'sidebar': {
+            templateUrl: 'views/partials/sidebar.html'
+          }
+        }
       })
       .state('account', {
         url: fifthweekConstants.accountPage,
-        templateUrl: 'views/account.html',
-        controller: 'AccountCtrl',
+        views: {
+          '': {
+            templateUrl: 'views/account.html',
+            controller: 'AccountCtrl'
+          },
+          'sidebar': {
+            templateUrl: 'views/partials/sidebar.html'
+          }
+        },
         access: {
           loginRequired: true
         }
