@@ -85,6 +85,9 @@ angular
           'sidebar': {
             templateUrl: 'views/dashboard/partials/sidebar.html'
           }
+        },
+        access: {
+          loginRequired: true
         }
       })
       .state('dashboard.demo', {
