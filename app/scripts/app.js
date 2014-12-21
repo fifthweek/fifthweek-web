@@ -32,9 +32,9 @@ angular
     signOutPage: '/signout',
     registerPage: '/register',
     accountPage: '/account',
-    dashboardPage: '/dashboard/demo',
-    feedbackPage: '/dashboard/feedback',
-    notAuthorizedPage: '/notauthorized',
+    dashboardPage: '^/dashboard/demo',
+    feedbackPage: '^/dashboard/feedback',
+    notAuthorizedPage: '/notauthorized'
   })
 
   .config(function($stateProvider, $urlRouterProvider, fifthweekConstants, snapRemoteProvider) {
@@ -76,32 +76,24 @@ angular
         }
       })
       .state('dashboard', {
-        url: fifthweekConstants.dashboardPage,
-        views: {
+        abstract: true,
+        url: 'dashboard',
+        views:{
           '': {
-            templateUrl: 'views/dashboard/demonstration.html'
+            templateUrl: 'views/dashboard/index.html'
           },
           'sidebar': {
             templateUrl: 'views/dashboard/partials/sidebar.html'
           }
-        },
-        access: {
-          loginRequired: true
         }
+      })
+      .state('dashboard.demo', {
+        url: fifthweekConstants.dashboardPage,
+        templateUrl: 'views/dashboard/demonstration.html'
       })
       .state('dashboard.feedback', {
         url: fifthweekConstants.feedbackPage,
-        views: {
-          '': {
-            templateUrl: 'views/dashboard/feedback.html'
-          },
-          'sidebar': {
-            templateUrl: 'views/dashboard/partials/sidebar.html'
-          }
-        },
-        access: {
-          loginRequired: true
-        }
+        templateUrl: 'views/dashboard/feedback.html'
       })
       .state('signout', {
         url: fifthweekConstants.signOutPage,
