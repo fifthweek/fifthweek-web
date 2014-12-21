@@ -26,6 +26,16 @@
   },
   "appPath": "app",
   "overrides": {
+    "snapjs": {
+      "main": [
+        "snap.js"
+      ]
+    },
+    "angular-snap": {
+      "main": [
+        "angular-snap.js"
+      ]
+    },
     "angulartics": {
       "main": [
         "src/angulartics.js",
