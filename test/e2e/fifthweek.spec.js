@@ -142,7 +142,7 @@ describe('fifthweek', function() {
       expect(messages.get(0).getText()).toContain('Must be at least 6 characters.')
     });
 
-    it('should not allow usernames with over than 20 characters', function(){
+    xit('should not allow usernames with over than 20 characters', function(){
       page.exampleWorkTextBox.sendKeys(username);
       page.emailTextBox.sendKeys(email);
       page.usernameTextBox.sendKeys('12345678901234567890ThisIsTooLong');

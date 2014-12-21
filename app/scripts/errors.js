@@ -26,6 +26,9 @@ ConnectionError.prototype.name = 'ConnectionError';
 // Taken from:
 // http://www.mikeobrien.net/blog/client-side-exception-logging-and-notification-in-angular/
 window.onerror = function(message, source, line, column) {
+  if(true){
+    return;
+  }
   var escape = function(x) { return x.replace('\\', '\\\\').replace('\"', '\\"'); };
   var XHR = window.XMLHttpRequest || function() {
       try { return new ActiveXObject('Msxml3.XMLHTTP'); } catch (e0) {}
