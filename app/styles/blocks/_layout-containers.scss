@@ -38,6 +38,9 @@
   margin-top:80px;
 
   //ensure vimeo embeds do not overlay header nav
-  //position: relative;
-  //z-index: -1;
+  position:relative;
+  z-index:-1;
+  @media(min-width:992px) {
+    z-index:1;
+  }
 }
