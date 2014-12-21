@@ -1,4 +1,3 @@
-
 angular.module('webApp')
   .controller('SignOutCtrl', ['$location', 'authenticationService', 'fifthweekConstants',
   	function($location, authenticationService, fifthweekConstants) {

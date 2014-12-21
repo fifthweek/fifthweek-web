@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
-  'HeaderCtrl', ['$scope', '$rootScope', '$location', 'authenticationService', 'fifthweekConstants',
-  function($scope, $rootScope, $location, authenticationService, fifthweekConstants) {
+  'HeaderCtrl', ['$scope', '$location', 'authenticationService', 'fifthweekConstants',
+  function($scope, $location, authenticationService, fifthweekConstants) {
     'use strict';
 
     $scope.signOut = function() {

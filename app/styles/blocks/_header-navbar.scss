@@ -91,18 +91,3 @@
     }
   }
 }
-
-//display sidebar and toggle on medium+ breakpoint 
-//only if visible class is declared for the view
-/*
-.secondary-nav-visible {
-  .navbar-toggle {
-    @media (min-width:500px) {
-      display:block;
-    }
-    @media (min-width:992px) {
-      display:none;
-    }
-  }
-}
-*/

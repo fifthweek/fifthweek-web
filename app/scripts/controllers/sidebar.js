@@ -1,13 +1,7 @@
 angular.module('webApp').controller(
-  'SidebarCtrl', ['$scope', '$location', 'authenticationService',
-  function($scope, $location, authenticationService) {
+  'SidebarCtrl', ['$scope', 'authenticationService',
+  function($scope, authenticationService) {
     'use strict';
-
-    /*$scope.signOut = function() {
-      authenticationService.signOut();
-      $location.path(fifthweekConstants.homePage);
-    };
-    */
 
     $scope.currentUser = authenticationService.currentUser;
   }
