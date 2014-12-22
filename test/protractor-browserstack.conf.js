@@ -12,7 +12,7 @@ exports.config = {
   maxSessions: 2,
   // Capabilities to be passed to the webdriver instance.
 
-  multiCapabilities: [{
+  multiCapabilities: [/*{
     'browserName': 'firefox',
     'os': 'OS X',
     'build': bsConfig.build,
@@ -22,7 +22,18 @@ exports.config = {
     'browserstack.tunnel': 'true',
     'browserstack.user': process.env.BROWSER_STACK_USERNAME,
     'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-  },
+  },*/
+  {
+    'browserName': 'firefox',
+    'os': 'Windows',
+    'build': bsConfig.build,
+    'project': bsConfig.project,
+    'resolution': '1280x1024',
+    'browserstack.debug': bsConfig.debug,
+    'browserstack.tunnel': 'true',
+    'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+    'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+  }/*,
   {
     'browserName': 'IE',
     'browser_version': '11.0',
@@ -68,7 +79,7 @@ exports.config = {
     'browserstack.tunnel': 'true',
     'browserstack.user': process.env.BROWSER_STACK_USERNAME,
     'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-  }],
+  }*/],
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.

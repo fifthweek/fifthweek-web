@@ -142,13 +142,23 @@ describe('fifthweek', function() {
       expect(messages.get(0).getText()).toContain('Must be at least 6 characters.')
     });
 
-    xit('should not allow usernames with over than 20 characters', function(){
+    it('should not allow usernames with over than 20 characters', function(){
       page.exampleWorkTextBox.sendKeys(username);
       page.emailTextBox.sendKeys(email);
       page.usernameTextBox.sendKeys('12345678901234567890ThisIsTooLong');
       page.passwordTextBox.sendKeys('password1');
 
-      expect(page.usernameTextBox.getAttribute('value')).toEqual('12345678901234567890')
+      // Some browsers don't honor maxlength attribute with protractor's sendKeys
+      // so we also check the ng-maxlength error as a backup.
+      var messages = page.helpMessages;
+      messages.count().then(function(count){
+        if(count){
+          expect(messages.get(0).getText()).toContain('Must be fewer than 20 characters.')
+        }
+        else{
+          expect(page.usernameTextBox.getAttribute('value')).toBe('12345678901234567890');
+        }
+      });
     });
 
     it('should not allow passwords with fewer than 6 characters', function(){
