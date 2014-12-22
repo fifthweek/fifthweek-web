@@ -1,6 +1,6 @@
 'use strict';
 
-describe('index controller', function() {
+describe('header controller', function() {
 
   it('should add the authentication information to the scope', function() {
     expect(scope.currentUser).toBe(authenticationService.currentUser);
@@ -9,7 +9,7 @@ describe('index controller', function() {
   // load the controller's module
   beforeEach(module('webApp'));
 
-  var IndexCtrl;
+  var HeaderCtrl;
   var scope;
   var authenticationService;
   var fifthweekConstants;
@@ -22,7 +22,7 @@ describe('index controller', function() {
     authenticationService = function() {};
     authenticationService.currentUser = 'ABCD';
 
-    IndexCtrl = $controller('IndexCtrl', {
+    HeaderCtrl = $controller('HeaderCtrl', {
       $scope: scope,
       authenticationService: authenticationService
     });
