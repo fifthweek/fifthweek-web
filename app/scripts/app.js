@@ -18,9 +18,13 @@ angular
   ])
   .constant('fifthweekConstants', {
     apiBaseUri: window.configuredApiBaseUri,
+    developerName: window.developerName,
+    developerNameHeader: 'Developer-Name',
     clientId: 'fifthweek.web.1',
     unexpectedErrorText: 'An error has occured.',
     connectionErrorText: 'Unable to communicate with the server. Make sure you are connected to the internet and try again.',
+    tokenPath: 'token',
+    logPath: 'log',
     homePage: '/',
     signInPage: '/signin',
     signOutPage: '/signout',
@@ -28,7 +32,7 @@ angular
     accountPage: '/account',
     dashboardPage: '/dashboard',
     feedbackPage: '/dashboard/feedback',
-    notAuthorizedPage: '/notauthorized'
+    notAuthorizedPage: '/notauthorized',
   })
   .config(['$routeProvider', 'fifthweekConstants',
     function ($routeProvider, fifthweekConstants) {

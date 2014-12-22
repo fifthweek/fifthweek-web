@@ -21,6 +21,17 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  var developerName;
+
+  function assignDeveloperName(err, stdout, stderr, cb) {
+    if(stdout && stdout !== ''){
+      var trimmed = stdout.trim();
+      console.log('Developer Name: ' + trimmed);
+      developerName = trimmed;
+    }
+    cb();
+  }
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -452,6 +463,33 @@ module.exports = function (grunt) {
           fs.writeSync(fd, 'window.configuredApiBaseUri = \'https://api.fifthweek.com/\';');
           done();
         }
+      },
+      app: {
+        'app/scripts/developer.js': function(fs, fd, done) {
+          if(developerName){
+            fs.writeSync(fd, 'window.developerName = \'' + developerName +  '\';');
+          }
+          else{
+            fs.writeSync(fd, '');
+          }
+          done();
+        }
+      },
+      dist:{
+        'app/scripts/developer.js': function(fs, fd, done) {
+          fs.writeSync(fd, '');
+          done();
+        }
+      }
+    },
+
+    shell: {
+      getDeveloperName: {
+        command: 'git config user.name',
+        options: {
+          callback: assignDeveloperName,
+          stdout: false
+        }
       }
     }
   });
@@ -472,8 +510,16 @@ module.exports = function (grunt) {
     return targetBase === 'dist';
   }
 
-  function runApiUpdate(targetApi) {
-    grunt.task.run(['update:' + targetApi]);
+  function isTravisSuccess(targetBase) {
+    return targetBase === 'travisSuccess';
+  }
+
+  function getDeveloperName() {
+    grunt.task.run(['shell:getDeveloperName']);
+  }
+
+  function runUpdate(scenario) {
+    grunt.task.run(['update:' + scenario]);
   }
 
   function runTests(targetApi, targetBase, browserLocation, protractorOnly) {
@@ -490,7 +536,10 @@ module.exports = function (grunt) {
       browserLocation = 'local';
     }
 
-    runApiUpdate(targetApi);
+    getDeveloperName();
+
+    runUpdate(targetApi);
+    runUpdate(targetBase);
 
     var tasks = [];
 
@@ -557,7 +606,10 @@ module.exports = function (grunt) {
       targetBase = 'app';
     }
 
-    runApiUpdate(targetApi);
+    getDeveloperName();
+
+    runUpdate(targetApi);
+    runUpdate(targetBase);
 
     if (isDist(targetBase)) {
       grunt.task.run([
@@ -603,7 +655,17 @@ module.exports = function (grunt) {
         'file-creator:live'
       ]);
     }
+    else if(isApp(scenario)){
+      grunt.task.run([
+        'file-creator:app'
+      ]);
+    }
     else if(isDist(scenario)){
+      grunt.task.run([
+        'file-creator:dist'
+      ]);
+    }
+    else if(isTravisSuccess(scenario)){
       grunt.task.run([
         'replace:newRelic'
       ]);

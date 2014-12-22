@@ -8,4 +8,5 @@ bower_components
 .travis/deploy_key
 .travis/deploy_key.pub
 app/scripts/api.js
+app/scripts/developer.js
 

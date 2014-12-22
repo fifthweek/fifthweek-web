@@ -25,7 +25,7 @@ before_script:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 after_success:
-- grunt update:dist
+- grunt update:travisSuccess
 - chmod 600 .travis/deploy_key
 - eval `ssh-agent -s`
 - ssh-add .travis/deploy_key

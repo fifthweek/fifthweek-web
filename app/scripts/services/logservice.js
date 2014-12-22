@@ -7,7 +7,7 @@ angular.module('webApp')
 
     var service = {};
 
-    var loggingUrl = fifthweekConstants.apiBaseUri + 'log';
+    var loggingUrl = fifthweekConstants.apiBaseUri + fifthweekConstants.logPath;
 
     service.shouldLog = function(payload)
     {

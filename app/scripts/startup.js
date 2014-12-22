@@ -5,6 +5,7 @@
     .config(['$httpProvider',
       function($httpProvider) {
         $httpProvider.interceptors.push('authenticationInterceptor');
+        $httpProvider.interceptors.push('developerRequestInterceptor');
       }
     ])
     .config(function($provide){
