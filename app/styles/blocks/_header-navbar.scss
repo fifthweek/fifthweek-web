@@ -81,6 +81,9 @@
     }
     > a {
       color:$brand-primary;
+      @media (min-width:992px) {
+        transition:all 0.2s ease;
+      }
       &:hover,
       &:focus {
         background:$navbar-default-link-hover-color;
@@ -93,6 +96,11 @@
     &.active a {
       background:$navbar-default-link-hover-color;
       color:#FFF;
+      &:hover,
+      &:focus {
+        background:$blue-dark-1;
+        color:#FFF;
+      }
     }
   }
 }
