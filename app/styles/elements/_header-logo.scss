@@ -1,18 +1,24 @@
 @import '_base';
 
-.fifthweek-logo{
+.fifthweek-logo {
   font-family:'Oleo Script', cursive;
+  font-size:26px;
+  a {
+    color:$brand-primary;
+    &:hover,
+    &:focus {
+      color:$navbar-default-link-hover-color;
+      text-decoration:none;
+    }
+  }
 }
 .navbar-default .fifthweek-logo {
-  font-size:32px;
-  color:$brand-primary;
-  padding:3px 15px 3px 3px;
+  padding:7px 15px 7px 3px;
   height:auto;
   line-height:initial;
   @media (min-width:992px) {
     display:none;
   }
-
   &:hover,
   &:focus {
     color:$navbar-default-link-hover-color;

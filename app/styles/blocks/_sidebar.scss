@@ -15,8 +15,8 @@
       display:inline-block;
       vertical-align:top;
       width:100%;
-      padding:7px 15px;
-      color:$gray-light;
+      padding:9px 21px;
+      background:$blue-dark-1;
     }
   }
   ul {
@@ -28,11 +28,13 @@
     a {
       display:inline-block;
       width:100%;
-      padding:7px 15px;
-      color:$gray-light;
+      padding:11px 21px;
+      color:$white-1;
+      border-bottom:solid 1px $grey-dark-1;
       &:hover,
       &:focus {
         text-decoration:none;
+        background:$blue-light-1;
       }
     }
   }
