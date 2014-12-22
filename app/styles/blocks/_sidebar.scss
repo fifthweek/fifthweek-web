@@ -45,8 +45,19 @@
       border-bottom:0 none;
     }
     .fa {
+      min-width:17px;
       margin-right:8px;
       color:#697789;
+    }
+    a {
+      @media (min-width:992px) {
+        &:hover,
+        &:focus {
+          .fa {
+            color:#2780f8;
+          }
+        }
+      }
     }
   }
 }
