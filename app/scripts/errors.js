@@ -26,9 +26,12 @@ ConnectionError.prototype.name = 'ConnectionError';
 // Taken from:
 // http://www.mikeobrien.net/blog/client-side-exception-logging-and-notification-in-angular/
 window.onerror = function(message, source, line, column) {
-  if(source && source.indexOf('froogaloop') !== -1){
-    // Skip froogaloop errors until the issue has been resolved.
-    return;
+  if(source){
+    if(source.indexOf('froogaloop') !== -1
+      || (source.indexOf('vendor') !== -1 && message.indexOf('contentWindow') !== -1)){
+      // Skip froogaloop errors until the issue has been resolved.
+      return;
+    }
   }
 
   var escape = function(x) { return x.replace('\\', '\\\\').replace('\"', '\\"'); };
