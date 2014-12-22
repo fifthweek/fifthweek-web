@@ -28,7 +28,7 @@ ConnectionError.prototype.name = 'ConnectionError';
 window.onerror = function(message, source, line, column) {
   if(source){
     if(source.indexOf('froogaloop') !== -1 ||
-      (source.indexOf('vendor') !== -1 && message.indexOf('contentWindow') !== -1)){
+      (source.indexOf('vendor') !== -1 && (message.indexOf('contentWindow') !== -1 || message.indexOf('postMessage') !== -1))){
       // Skip froogaloop errors until the issue has been resolved.
       return;
     }
