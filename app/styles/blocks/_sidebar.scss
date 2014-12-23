@@ -25,6 +25,11 @@
   }
   li {
     list-style-type:none;
+    .fa {
+      min-width:17px;
+      margin-right:8px;
+      color:#697789;
+    }
     a {
       display:inline-block;
       width:100%;
@@ -34,30 +39,19 @@
       @media (min-width:992px) {
         transition:all 0.2s ease;
       }
+      &.active,
       &:hover,
       &:focus {
         text-decoration:none;
         background:$blue-light-1;
         border-bottom-color:$blue-light-1;
+        .fa {
+          color:#2780F8;
+        }
       }
     }
     &:last-child a {
       border-bottom:0 none;
-    }
-    .fa {
-      min-width:17px;
-      margin-right:8px;
-      color:#697789;
-    }
-    a {
-      @media (min-width:992px) {
-        &:hover,
-        &:focus {
-          .fa {
-            color:#2780f8;
-          }
-        }
-      }
     }
   }
 }
