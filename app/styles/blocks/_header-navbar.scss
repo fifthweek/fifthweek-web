@@ -54,7 +54,7 @@
   }
 }
 
-//duplicate bootstrap styles to render at a lower breakpoint
+//overide bootstrap styles
 .navbar-collapse {
   @media (min-width:500px) {
     display: block !important;
@@ -62,6 +62,9 @@
     height: auto !important;
     padding-bottom: 0;
     overflow: visible !important;
+  }
+  @media (min-width:992px) {
+    max-width:1140px !important;
   }
 }
 
