@@ -8,9 +8,6 @@
   }
   a {
     color:$brand-primary;
-    @media (min-width:992px) {
-      transition:all 0.2s ease;
-    }
     &:hover,
     &:focus {
       color:$white-1;

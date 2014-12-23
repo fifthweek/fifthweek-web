@@ -84,9 +84,6 @@
     }
     > a {
       color:$blue-dark-1;
-      @media (min-width:992px) {
-        transition:all 0.2s ease;
-      }
       &:hover,
       &:focus {
         background:$navbar-default-link-hover-color;
