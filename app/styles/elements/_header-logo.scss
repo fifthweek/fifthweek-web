@@ -1,8 +1,11 @@
 @import '_base';
 
 .fifthweek-logo {
-  font-family:'Oleo Script', cursive;
-  font-size:26px;
+  font:{
+    family:'Lato', cursive;
+    size:26px;
+    weight:300;
+  }
   a {
     color:$brand-primary;
     @media (min-width:992px) {
