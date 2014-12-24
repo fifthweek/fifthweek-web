@@ -133,7 +133,7 @@ angular
         data : { 
           pageTitle: 'Demo',
           headTitle: ' - ' + 'Demo'
-        },
+        }
       })
       .state('dashboard.feedback', {
         url: fifthweekConstants.feedbackPage,
@@ -141,7 +141,7 @@ angular
         data : { 
           pageTitle: 'Feedback',
           headTitle: ' - ' + 'Feedback'
-        },
+        }
       })
       .state('signout', {
         url: fifthweekConstants.signOutPage,
@@ -150,7 +150,7 @@ angular
         data : { 
           pageTitle: 'Sign Out',
           headTitle: ' - ' + 'Sign Out'
-        },
+        }
       })
       .state('notAuthorized', {
         url: fifthweekConstants.notAuthorizedPage,
