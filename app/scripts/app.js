@@ -19,7 +19,6 @@ angular
     'angulartics.kissmetrics'
   ])
   .constant('fifthweekConstants', {
-    brandName: 'Fifthweek',
     apiBaseUri: window.configuredApiBaseUri,
     developerName: window.developerName,
     developerNameHeader: 'Developer-Name',
@@ -48,9 +47,6 @@ angular
       .state('home', {
         url: fifthweekConstants.homePage,
         templateUrl: 'views/home.html',
-        data : { 
-          pageTitle: fifthweekConstants.brandName 
-        },
         views: {
           '': {
             templateUrl: 'views/home.html',
@@ -64,7 +60,7 @@ angular
       .state('signin', {
         url: fifthweekConstants.signInPage,
         data : { 
-          pageTitle: fifthweekConstants.brandName + ' - ' + 'Sign In' 
+          pageTitle: ' - Sign In' 
         },
         views: {
           '': {
@@ -79,7 +75,7 @@ angular
       .state('register', {
         url: fifthweekConstants.registerPage,
         data : { 
-          pageTitle: fifthweekConstants.brandName + ' - ' + 'Register' 
+          pageTitle: ' - Register' 
         },
         views: {
           '': {
@@ -94,7 +90,7 @@ angular
       .state('account', {
         url: fifthweekConstants.accountPage,
         data : { 
-          pageTitle: fifthweekConstants.brandName + ' - ' + 'My Account' 
+          pageTitle: ' - My Account' 
         },
         views: {
           '': {
@@ -113,7 +109,7 @@ angular
         abstract: true,
         url: 'dashboard',
         data : { 
-          pageTitle: fifthweekConstants.brandName + ' - ' + 'Dashboard' 
+          pageTitle: ' - Dashboard' 
         },
         views:{
           '': {
@@ -131,14 +127,14 @@ angular
         url: fifthweekConstants.dashboardPage,
         templateUrl: 'views/dashboard/demonstration.html',
         data : { 
-          pageTitle: fifthweekConstants.brandName + ' - ' + 'Demo' 
+          pageTitle: ' - Demo' 
         },
       })
       .state('dashboard.feedback', {
         url: fifthweekConstants.feedbackPage,
         templateUrl: 'views/dashboard/feedback.html',
         data : { 
-          pageTitle: fifthweekConstants.brandName + ' - ' + 'Feedback' 
+          pageTitle: 'Feedback' 
         },
       })
       .state('signout', {
@@ -146,7 +142,7 @@ angular
         templateUrl: 'views/signout.html',
         controller: 'SignOutCtrl',
         data : { 
-          pageTitle: fifthweekConstants.brandName + ' - ' + 'Dashboard - Sign Out' 
+          pageTitle: ' - Sign Out' 
         },
       })
       .state('notAuthorized', {

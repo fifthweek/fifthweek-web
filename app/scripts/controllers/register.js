@@ -1,13 +1,6 @@
 angular.module('webApp').controller('RegisterCtrl',
-  function($rootScope, $scope, $location, $analytics, authenticationService, fifthweekConstants, logService, utilities) {
+  function($scope, $location, $analytics, authenticationService, fifthweekConstants, logService, utilities) {
   'use strict';
-
-  //temporary page title solution
-  //this should be coming from a service
-  var brandName = 'Fifthweek';
-  var pageTitle = 'Register';
-  $scope.pageTitle = pageTitle;
-  $rootScope.headTitle = brandName + ' - ' + pageTitle;
 
   if(authenticationService.currentUser.authenticated === true){
     $location.path(fifthweekConstants.dashboardPage);
