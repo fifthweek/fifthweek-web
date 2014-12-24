@@ -1,5 +1,5 @@
 angular.module('webApp')
-  .controller('SignOutCtrl', ['$rootScope', '$location', 'authenticationService', 'fifthweekConstants',
+  .controller('SignOutCtrl', ['$location', 'authenticationService', 'fifthweekConstants',
   	function( $location, authenticationService, fifthweekConstants) {
 		'use strict';
 

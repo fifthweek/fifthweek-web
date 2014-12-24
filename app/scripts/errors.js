@@ -45,6 +45,9 @@ window.onerror = function(message, source, line, column) {
   var xhr = new XHR();
   xhr.open('POST', window.configuredApiBaseUri + '/log', true);
   xhr.setRequestHeader('Content-type', 'application/json');
+  if(window.developerName){
+    xhr.setRequestHeader('Developer-Name', window.developerName);
+  }
   xhr.send('{ level: "error", payload: { ' +
   '"message": "' + escape(message || '') + '",' +
   '"source": "' + escape(source || '') + '",' +

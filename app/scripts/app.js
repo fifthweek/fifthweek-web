@@ -60,7 +60,8 @@ angular
       .state('signin', {
         url: fifthweekConstants.signInPage,
         data : { 
-          pageTitle: ' - Sign In' 
+          pageTitle: 'Sign In',
+          headTitle: ' - ' + 'Sign In'
         },
         views: {
           '': {
@@ -75,7 +76,8 @@ angular
       .state('register', {
         url: fifthweekConstants.registerPage,
         data : { 
-          pageTitle: ' - Register' 
+          pageTitle: 'Register',
+          headTitle: ' - ' + 'Register'
         },
         views: {
           '': {
@@ -90,7 +92,8 @@ angular
       .state('account', {
         url: fifthweekConstants.accountPage,
         data : { 
-          pageTitle: ' - My Account' 
+          pageTitle: 'My Account',
+          headTitle: ' - ' + 'My Account'
         },
         views: {
           '': {
@@ -109,7 +112,8 @@ angular
         abstract: true,
         url: 'dashboard',
         data : { 
-          pageTitle: ' - Dashboard' 
+          pageTitle: 'Dashboard',
+          headTitle: ' - ' + 'Dashboard'
         },
         views:{
           '': {
@@ -127,14 +131,16 @@ angular
         url: fifthweekConstants.dashboardPage,
         templateUrl: 'views/dashboard/demonstration.html',
         data : { 
-          pageTitle: ' - Demo' 
+          pageTitle: 'Demo',
+          headTitle: ' - ' + 'Demo'
         },
       })
       .state('dashboard.feedback', {
         url: fifthweekConstants.feedbackPage,
         templateUrl: 'views/dashboard/feedback.html',
         data : { 
-          pageTitle: 'Feedback' 
+          pageTitle: 'Feedback',
+          headTitle: ' - ' + 'Feedback'
         },
       })
       .state('signout', {
@@ -142,7 +148,8 @@ angular
         templateUrl: 'views/signout.html',
         controller: 'SignOutCtrl',
         data : { 
-          pageTitle: ' - Sign Out' 
+          pageTitle: 'Sign Out',
+          headTitle: ' - ' + 'Sign Out'
         },
       })
       .state('notAuthorized', {
