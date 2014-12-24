@@ -19,6 +19,7 @@ angular
     'angulartics.kissmetrics'
   ])
   .constant('fifthweekConstants', {
+    brandName: 'Fifthweek',
     apiBaseUri: window.configuredApiBaseUri,
     developerName: window.developerName,
     developerNameHeader: 'Developer-Name',
@@ -47,6 +48,9 @@ angular
       .state('home', {
         url: fifthweekConstants.homePage,
         templateUrl: 'views/home.html',
+        data : { 
+          pageTitle: fifthweekConstants.brandName 
+        },
         views: {
           '': {
             templateUrl: 'views/home.html',
@@ -59,6 +63,9 @@ angular
       })
       .state('signin', {
         url: fifthweekConstants.signInPage,
+        data : { 
+          pageTitle: fifthweekConstants.brandName + ' - ' + 'Sign In' 
+        },
         views: {
           '': {
             templateUrl: 'views/signin.html',
@@ -71,6 +78,9 @@ angular
       })
       .state('register', {
         url: fifthweekConstants.registerPage,
+        data : { 
+          pageTitle: fifthweekConstants.brandName + ' - ' + 'Register' 
+        },
         views: {
           '': {
             templateUrl: 'views/register.html',
@@ -83,6 +93,9 @@ angular
       })
       .state('account', {
         url: fifthweekConstants.accountPage,
+        data : { 
+          pageTitle: fifthweekConstants.brandName + ' - ' + 'My Account' 
+        },
         views: {
           '': {
             templateUrl: 'views/account.html',
@@ -99,6 +112,9 @@ angular
       .state('dashboard', {
         abstract: true,
         url: 'dashboard',
+        data : { 
+          pageTitle: fifthweekConstants.brandName + ' - ' + 'Dashboard' 
+        },
         views:{
           '': {
             templateUrl: 'views/dashboard/index.html'
@@ -113,16 +129,25 @@ angular
       })
       .state('dashboard.demo', {
         url: fifthweekConstants.dashboardPage,
-        templateUrl: 'views/dashboard/demonstration.html'
+        templateUrl: 'views/dashboard/demonstration.html',
+        data : { 
+          pageTitle: fifthweekConstants.brandName + ' - ' + 'Demo' 
+        },
       })
       .state('dashboard.feedback', {
         url: fifthweekConstants.feedbackPage,
-        templateUrl: 'views/dashboard/feedback.html'
+        templateUrl: 'views/dashboard/feedback.html',
+        data : { 
+          pageTitle: fifthweekConstants.brandName + ' - ' + 'Feedback' 
+        },
       })
       .state('signout', {
         url: fifthweekConstants.signOutPage,
         templateUrl: 'views/signout.html',
-        controller: 'SignOutCtrl'
+        controller: 'SignOutCtrl',
+        data : { 
+          pageTitle: fifthweekConstants.brandName + ' - ' + 'Dashboard - Sign Out' 
+        },
       })
       .state('notAuthorized', {
         url: fifthweekConstants.notAuthorizedPage,
@@ -134,4 +159,13 @@ angular
       touchToDrag: false
     };
 
-});
+})
+
+
+//defined in order to use page titles globally
+//see: http://stackoverflow.com/a/26086324/1257504
+.run([ '$rootScope', '$state', '$stateParams',
+  function ($rootScope, $state, $stateParams) {
+    $rootScope.$state = $state;
+    $rootScope.$stateParams = $stateParams;
+  }]);
