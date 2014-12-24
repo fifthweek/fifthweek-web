@@ -1,7 +1,14 @@
 angular.module('webApp').controller(
   'SignInCtrl',
-    function($scope, $location, authenticationService, fifthweekConstants, logService, utilities) {
+    function($rootScope, $scope, $location, authenticationService, fifthweekConstants, logService, utilities) {
       'use strict';
+
+      //temporary page title solution
+      //this should be coming from a service
+      var brandName = 'Fifthweek';
+      var pageTitle = 'Sign In';
+      $scope.pageTitle = pageTitle;
+      $rootScope.headTitle = brandName + ' - ' + pageTitle;
 
       $scope.signInData = {
         username: '',
