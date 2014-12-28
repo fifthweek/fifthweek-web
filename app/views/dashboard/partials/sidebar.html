@@ -1,6 +1,7 @@
 <div class="sidebar" snap-drawer="left" data-ng-controller="SidebarCtrl">
   <div ng-include="'views/partials/sidebar-logo.html'"></div>
   <ul>
+    <div ng-include="'views/partials/sidebar-user.html'"></div>
     <li class="parent-wrap"><a ui-sref="dashboard" snap-close><i class="fa fa-folder-open-o"></i>Dashboard</a>
       <ul>
         <li><a ui-sref="dashboard.demo" ui-sref-active="active" snap-close><i class="fa fa-youtube-play"></i>Quick Demo</a></li>
