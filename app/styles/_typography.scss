@@ -1,5 +1,14 @@
 @import '_base';
 
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  margin-top:0;
+}
+
 h1 {
   font-weight:400;
   margin:10px 0 20px 0;
@@ -7,4 +16,11 @@ h1 {
 h2 {
   font-weight:400;
   margin:10px 0 20px 0;
+}
+
+p {
+  font-size:15px;
+  &.last {
+    margin-bottom:0;
+  }
 }
