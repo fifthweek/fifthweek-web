@@ -131,7 +131,7 @@ angular
         url: fifthweekConstants.dashboardPage,
         templateUrl: 'views/dashboard/demo.html',
         data : { 
-          pageTitle: 'Demo',
+          pageTitle: 'Quick Demo',
           headTitle: ' - ' + 'Demo'
         }
       })
@@ -139,7 +139,7 @@ angular
         url: fifthweekConstants.feedbackPage,
         templateUrl: 'views/dashboard/feedback.html',
         data : { 
-          pageTitle: 'Feedback',
+          pageTitle: 'Provide Feedback',
           headTitle: ' - ' + 'Feedback'
         }
       })
