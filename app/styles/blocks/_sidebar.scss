@@ -40,15 +40,30 @@
       &:hover,
       &:focus {
         text-decoration:none;
-        background:$blue-light-1;
+        background:none;
         border-bottom-color:$blue-light-1;
         .fa {
           color:#2780F8;
         }
       }
     }
+    //force default state for parent items
+    //to avoid duplicate hover/active states
+    &.parent-wrap a {
+      &.active,
+      &:hover,
+      &:focus {
+        background:$blue-dark-1;
+        border-bottom:solid 1px $grey-dark-1;
+      }
+    }
     &:last-child a {
       border-bottom:0 none;
     }
+
+    ul a {
+      padding-left:42px;
+    }
+
   }
 }
