@@ -37,7 +37,8 @@ $icon-default-color:#697789;
       margin-right:8px;
       color:$icon-default-color;
     }
-    a {
+    a,
+    span.dummy {
       display:inline-block;
       width:100%;
       padding:$item-padding;
@@ -53,6 +54,9 @@ $icon-default-color:#697789;
           //color:#2780F8;
         }
       }
+    }
+    span.dummy {
+      cursor:pointer;
     }
     //force default state for parent items
     //to avoid duplicate hover/active states

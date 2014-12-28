@@ -5,8 +5,8 @@
   <a ui-sref="signin" ui-sref-active="active" aria-label="Sign in" snap-close><i class="fa fa-sign-in"></i>Sign In</a>
 </li>
 <li class="parent-wrap" data-ng-hide="!currentUser.authenticated" data-match-route="/account*">
-  <a ui-sref="account" ui-sref-active="active" snap-close><i class="fa fa-user"></i>{{currentUser.username}}</a>
-  <ul>
+  <span class="dummy" ng-click="menuAccount = ! menuAccount"><i class="fa fa-user"></i>{{currentUser.username}}</span>
+  <ul ng-show="menuAccount">
     <li><a ui-sref="account" ui-sref-active="active" snap-close><i class="fa fa-user"></i>Account Settings</a></li>
     <li><a ui-sref="signout" ui-sref-active="active" snap-close><i class="fa fa-sign-out"></i>Sign Out</a></li>
   </ul>
