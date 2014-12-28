@@ -129,7 +129,7 @@ angular
       })
       .state('dashboard.demo', {
         url: fifthweekConstants.dashboardPage,
-        templateUrl: 'views/dashboard/demonstration.html',
+        templateUrl: 'views/dashboard/demo.html',
         data : { 
           pageTitle: 'Demo',
           headTitle: ' - ' + 'Demo'
