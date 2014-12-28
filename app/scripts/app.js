@@ -165,7 +165,7 @@ angular
 })
 
 
-//defined in order to use page titles globally
+//global page titles
 //see: http://stackoverflow.com/a/26086324/1257504
 .run([ '$rootScope', '$state', '$stateParams',
   function ($rootScope, $state, $stateParams) {
