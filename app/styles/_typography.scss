@@ -18,13 +18,24 @@ h2 {
   margin:10px 0 20px 0;
 }
 
+//h4 styles maybe global for all headings
 h4 {
   margin-bottom:20px;
+  font-weight:700;
+  color:#2D3E50;
 }
 
 p {
   font-size:15px;
   &.last {
     margin-bottom:0;
+  }
+}
+
+a {
+  color:$blue-light-2;
+  &:hover,
+  &:focus {
+    color:$blue-light-2;
   }
 }

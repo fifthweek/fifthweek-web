@@ -65,3 +65,11 @@
   padding:11px;
   margin:0;
 }
+
+
+
+.jumbo-panel {
+  @media (min-width:768px) {
+    padding:20px;
+  }
+}
