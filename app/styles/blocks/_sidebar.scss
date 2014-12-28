@@ -40,7 +40,7 @@
       &:hover,
       &:focus {
         text-decoration:none;
-        background:none;
+        background:$blue-light-1;
         border-bottom-color:$blue-light-1;
         .fa {
           color:#2780F8;
@@ -53,7 +53,7 @@
       &.active,
       &:hover,
       &:focus {
-        background:$blue-dark-1;
+        background:none;
         border-bottom:solid 1px $grey-dark-1;
       }
     }
