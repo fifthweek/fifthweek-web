@@ -8,9 +8,9 @@
     </button>
     <a class="navbar-brand fifthweek-logo" ui-sref="home">fifthweek</a>
 
+    <h1 ng-bind="$state.current.data.pageTitle" class="visible-md visible-lg"></h1>
     <!--
     <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
-      <h1 ng-bind="$state.current.data.pageTitle" class="visible-md visible-lg"></h1>
       <ul class="nav navbar-nav navbar-right">
         <li data-ng-hide="currentUser.authenticated" data-match-route="/register*"><a ui-sref="register" aria-label="Register" id="registerLink" ng-cloak>Register</a></li>
         <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*"><a ui-sref="signin" aria-label="Sign in" id="signInLink" ng-cloak>Sign In</a></li>
