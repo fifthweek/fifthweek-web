@@ -1,0 +1,9 @@
+@import '_base';
+
+$html-name-space:'.page-provide.feedback';
+
+#{$html-name-space} {
+  .panel-body p {
+    margin-bottom:0;
+  }
+}
