@@ -1,5 +1,12 @@
 @import '_base';
 
+$logo-bg:$blue-dark-1;
+$item-padding-tb:14px;
+$item-padding-lr:21px;
+$item-padding:$item-padding-tb $item-padding-lr;
+$icon-default-color:#697789;
+//$icon-default-hover-color:#2780F8;
+
 .sidebar {
   @media (min-width:992px) {
     position:fixed;
@@ -15,8 +22,8 @@
       display:inline-block;
       vertical-align:top;
       width:100%;
-      padding:9px 21px;
-      background:$blue-dark-1;
+      padding:9px $item-padding-lr;
+      background:$logo-bg;
     }
   }
   ul {
@@ -28,12 +35,12 @@
     .fa {
       min-width:17px;
       margin-right:8px;
-      color:#697789;
+      color:$icon-default-color;
     }
     a {
       display:inline-block;
       width:100%;
-      padding:14px 21px;
+      padding:$item-padding;
       color:$white-1;
       border-bottom:solid 1px $grey-dark-1;
       &.active,
@@ -43,20 +50,20 @@
         background:$blue-light-1;
         border-bottom-color:$blue-light-1;
         .fa {
-          color:#2780F8;
+          //color:#2780F8;
         }
       }
     }
     //force default state for parent items
     //to avoid duplicate hover/active states
-    &.parent-wrap a {
+    &.parent-wrap > a {
       &.active,
       &:hover,
       &:focus {
         background:none;
         border-bottom:solid 1px $grey-dark-1;
         .fa {
-          color:#697789;
+          color:$icon-default-color;
         }
       }
     }
@@ -65,7 +72,7 @@
     }
 
     ul a {
-      padding-left:42px;
+      padding-left:$item-padding-lr * 2;
     }
 
   }
