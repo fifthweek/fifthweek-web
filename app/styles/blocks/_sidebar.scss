@@ -55,6 +55,9 @@
       &:focus {
         background:none;
         border-bottom:solid 1px $grey-dark-1;
+        .fa {
+          color:#697789;
+        }
       }
     }
     &:last-child a {

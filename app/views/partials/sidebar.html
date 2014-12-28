@@ -7,8 +7,12 @@
     <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*">
       <a ui-sref="signin" ui-sref-active="active" aria-label="Sign in" snap-close><i class="fa fa-sign-in"></i>Sign In</a>
     </li>
-    <li data-ng-hide="!currentUser.authenticated" data-match-route="/account*">
+    <li class="parent-wrap" data-ng-hide="!currentUser.authenticated" data-match-route="/account*">
       <a ui-sref="account" ui-sref-active="active" snap-close><i class="fa fa-user"></i>{{currentUser.username}}</a>
+      <ul>
+        <li><a ui-sref="account" ui-sref-active="active" snap-close><i class="fa fa-user"></i>Account Settings</a></li>
+        <li><a ui-sref="signout" ui-sref-active="active" snap-close><i class="fa fa-sign-out"></i>Sign Out</a></li>
+      </ul>
     </li>
     <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*">
       <a ui-sref="dashboard.demo" ui-sref-active="active" snap-close><i class="fa fa-home"></i>Dashboard</a>
