@@ -106,10 +106,10 @@ describe('fifthweek', function() {
       expect(messages.get(0).getText()).toContain('Letters, numbers and underscores only.')
     });
 
-    it('should not allow forbidden characters in username', function(){
+    iit('should not allow forbidden characters in username', function(){
       page.exampleWorkTextBox.sendKeys(username);
       page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys('a!' + username);
+      page.usernameTextBox.sendKeys('a!#' + username);
       page.passwordTextBox.sendKeys('password1');
       page.registerButton.click();
 
