@@ -28,7 +28,11 @@ ConnectionError.prototype.name = 'ConnectionError';
 window.onerror = function(message, source, line, column) {
   if(source){
     if(source.indexOf('froogaloop') !== -1 ||
-      (source.indexOf('vendor') !== -1 && (message.indexOf('contentWindow') !== -1 || message.indexOf('postMessage') !== -1))){
+       message.indexOf('Cannot read property \'postMessage\' of null') !== -1 ||
+       message.indexOf('Unable to get property \'postMessage\' of undefined or null reference') !== -1 ||
+       message.indexOf('contentWindow is null') !== -1 ||
+       message.indexOf('contentWindow.postMessage') !== -1){
+
       // Skip froogaloop errors until the issue has been resolved.
       return;
     }
@@ -45,6 +49,11 @@ window.onerror = function(message, source, line, column) {
   var xhr = new XHR();
   xhr.open('POST', window.configuredApiBaseUri + '/log', true);
   xhr.setRequestHeader('Content-type', 'application/json');
+
+  if(window.developerName){
+    xhr.setRequestHeader('Developer-Name', window.developerName);
+  }
+
   xhr.send('{ level: "error", payload: { ' +
   '"message": "' + escape(message || '') + '",' +
   '"source": "' + escape(source || '') + '",' +
