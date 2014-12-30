@@ -2,8 +2,14 @@
   <div ng-include="'views/partials/sidebar-logo.html'"></div>
   <ul>
     <div ng-include="'views/partials/sidebar-user.html'"></div>
-    <li data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*">
-      <a ui-sref="dashboard.demo" ui-sref-active="active" snap-close><i class="fa fa-home"></i>Dashboard</a>
+    <li class="parent-wrap" data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*">
+      <span class="dummy" ng-click="menuDashboard = ! menuDashboard"><i class="fa fa-folder-open-o"></i>Dashboard</span>
+      <ul ng-show="menuDashboard">
+        <li><a ui-sref="dashboard.demo" ui-sref-active="active" snap-close><i class="fa fa-youtube-play"></i>Quick Demo</a></li>
+        <li><a ui-sref="dashboard.feedback" ui-sref-active="active" snap-close><i class="fa fa-comment-o"></i>Provide Feedback</a></li>
+      </ul>
     </li>
+
+
   </ul>
 </div>
