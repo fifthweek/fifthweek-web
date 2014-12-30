@@ -47,6 +47,9 @@ angular
       .state('home', {
         url: fifthweekConstants.homePage,
         templateUrl: 'views/home.html',
+        data: { 
+          pageTitle: 'Home'
+        },
         views: {
           '': {
             templateUrl: 'views/home.html',

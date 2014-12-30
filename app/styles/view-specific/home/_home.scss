@@ -1,8 +1,11 @@
 @import '_base';
 
-//$html-name-space:'.amazing-page';
+$html-name-space:'.page-home';
 
-//#{$html-name-space} {
-//}
+#{$html-name-space} {
+  .navbar h1 {
+    display:none !important;
+  }
+}
 
 @import 'blocks/_video';
