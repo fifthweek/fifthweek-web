@@ -10,7 +10,6 @@
 .navbar-fixed-top {
   background:#FAFAFA;
   border:0 none;
-  //box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.22);
   @media (min-width:992px) {
     left:200px;
   }
@@ -48,8 +47,6 @@
     @media (min-width:768px) {
       display:block;
     }
-    //hide the toggle when sidebar is active on desktop
-    //temp until we can build a solution to optionally close the sidebar
     @media (min-width:992px) {
       display:none;
     }
@@ -66,55 +63,3 @@
     margin-left:0;
   }
 }
-/*
-//overide bootstrap styles
-.navbar-collapse {
-  @media (min-width:500px) {
-    display: block !important;
-    visibility: visible !important;
-    height: auto !important;
-    padding-bottom: 0;
-    overflow: visible !important;
-  }
-  @media (min-width:992px) {
-    max-width:1140px !important;
-  }
-}
-
-//duplicate bootstrap styles to render at a lower breakpoint
-.navbar-right {
-  @media (min-width:500px) {
-    float:right !important
-  }
-}
-
-//duplicate bootstrap styles to render at a lower breakpoint
-.navbar-default .navbar-nav {
-  margin:0;
-  > li {
-    @media (min-width:500px) {
-      float:left;
-    }
-    > a {
-      color:$blue-dark-1;
-      &:hover,
-      &:focus {
-        background:$navbar-default-link-hover-color;
-        color:#FFF;
-      }
-      @media (min-width:500px) {
-        padding:15px;
-      }
-    }
-    &.active a {
-      background:$navbar-default-link-hover-color;
-      color:#FFF;
-      &:hover,
-      &:focus {
-        background:$blue-dark-1;
-        color:#FFF;
-      }
-    }
-  }
-}
-*/
