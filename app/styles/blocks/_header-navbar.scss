@@ -39,8 +39,7 @@
     padding-left:15px;
     background:none;
     border:0 none;
-    &:hover,
-    &:focus {
+    #{$state-hover-focus} {
       background:none;
     }
     //overide bootstrap default

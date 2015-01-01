@@ -8,8 +8,7 @@
   }
   a {
     color:$brand-primary;
-    &:hover,
-    &:focus {
+    #{$state-hover-focus} {
       color:$white-1;
       text-decoration:none;
     }
@@ -22,8 +21,7 @@
   @media (min-width:992px) {
     display:none;
   }
-  &:hover,
-  &:focus {
+  #{$state-hover-focus} {
     color:$navbar-default-link-hover-color;
   }
 }

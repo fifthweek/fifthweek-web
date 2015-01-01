@@ -1,11 +1,11 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
-$gray-base: #000;
-$gray-lighter: #e0e0e0;
-$gray-light: #e0e0e0;
+$gray-base:#000;
+$gray-lighter:#e0e0e0;
+$gray-light:#e0e0e0;
 $grey-dark-1:#3B4550;
 $grey-dark-2:#B4B7BB;
-$body-bg: #F4F4F4;
+$body-bg:#F4F4F4;
 
 $white-1:#F8F9FA;
 $blue-dark-1:#27313C;
@@ -34,3 +34,4 @@ $well-border: $gray-light;
 
 
 $state-active-hover-focus:'&.active,&:hover,&:focus';
+$state-hover-focus:'&:hover,&:focus';
