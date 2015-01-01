@@ -12,7 +12,6 @@ $icon-green:$green-light-1;
 $icon-yellow:$yellow-light-1;
 $icon-pink:$pink-light-1;
 
-
 .sidebar {
   @media (min-width:992px) {
     position:fixed;
@@ -20,7 +19,7 @@ $icon-pink:$pink-light-1;
     left:0;
     width:200px;
   }
-  .fifthweek-logo {
+  #{$logo} {
     font-size:30px;
     margin:0;
     padding:0;

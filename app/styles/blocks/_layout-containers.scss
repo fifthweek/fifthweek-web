@@ -22,15 +22,15 @@ body {
     height:100vh;
   }
 }
-.left-container,
-.right-container {
+#{$left-container},
+#{$right-container} {
   @media (min-width:992px) {
     display:table-cell;
     vertical-align:top;
   }
 }
 
-.left-container {
+#{$left-container} {
   @media (min-width:992px) {
     background:$blue-dark-2;
     width:200px;
@@ -38,7 +38,7 @@ body {
   }
 }
 
-.right-container {
+#{$right-container} {
   padding:0;
   @media (min-width:768px) {
     padding:0 15px;

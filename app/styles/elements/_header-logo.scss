@@ -1,6 +1,6 @@
 @import '_base';
 
-.fifthweek-logo {
+#{$logo} {
   font:{
     family:'Oleo Script', cursive;
     size:26px;
@@ -14,7 +14,7 @@
     }
   }
 }
-.navbar-default .fifthweek-logo {
+.navbar-default #{$logo} {
   padding:7px 15px 7px 3px;
   height:auto;
   line-height:36px;
