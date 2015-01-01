@@ -7,6 +7,12 @@ $item-padding:$item-padding-tb $item-padding-lr;
 $icon-default-color:#697789;
 //$icon-default-hover-color:#2780F8;
 
+$icon-blue:#2780F8;
+$icon-green:$green-light-1;
+$icon-yellow:$yellow-light-1;
+$icon-pink:$pink-light-1;
+
+
 .sidebar {
   @media (min-width:992px) {
     position:fixed;
@@ -44,12 +50,38 @@ $icon-default-color:#697789;
       padding:$item-padding;
       color:$white-1;
       border-bottom:solid 1px $blue-dark-2;
-      &.active,
-      &:hover,
-      &:focus {
+      #{$state-active-hover-focus} {
         text-decoration:none;
         background:$blue-light-1;
         border-bottom-color:$blue-light-1;
+      }
+      &.blue {
+        #{$state-active-hover-focus} {
+          .fa {
+            color:$icon-blue;
+          }
+        }
+      }
+      &.green {
+        #{$state-active-hover-focus} {
+          .fa {
+            color:$icon-green;
+          }
+        }
+      }
+      &.yellow {
+        #{$state-active-hover-focus} {
+          .fa {
+            color:$icon-yellow;
+          }
+        }
+      }
+      &.pink {
+        #{$state-active-hover-focus} {
+          .fa {
+            color:$icon-pink;
+          }
+        }
       }
     }
     span.dummy {
