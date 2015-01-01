@@ -37,32 +37,26 @@ $icon-default-color:#697789;
       margin-right:8px;
       color:$icon-default-color;
     }
-    a,
+    > a,
     span.dummy {
       display:inline-block;
       width:100%;
       padding:$item-padding;
       color:$white-1;
-      border-bottom:solid 1px $grey-dark-1;
+      border-bottom:solid 1px $blue-dark-2;
       &.active,
       &:hover,
       &:focus {
         text-decoration:none;
         background:$blue-light-1;
         border-bottom-color:$blue-light-1;
-        .fa {
-          //color:#2780F8;
-        }
       }
     }
     span.dummy {
       cursor:pointer;
     }
-    //force default state for parent items
-    //to avoid duplicate hover/active states
-    &.parent-wrap > a {
+    &.parent-wrap > span {
       &.active,
-      &:hover,
       &:focus {
         background:none;
         border-bottom:solid 1px $grey-dark-1;
@@ -71,13 +65,16 @@ $icon-default-color:#697789;
         }
       }
     }
-    &:last-child a {
-      border-bottom:0 none;
-    }
 
     ul a {
       padding-left:$item-padding-lr * 2;
     }
 
+  }
+  ul > li.parent-wrap:last-child {
+    > span.dummy {
+      border-top:solid 1px $blue-light-1;
+      border-bottom:0 none;
+    }
   }
 }
