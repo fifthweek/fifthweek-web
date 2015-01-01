@@ -7,7 +7,7 @@
 <li class="parent-wrap" data-ng-hide="!currentUser.authenticated" data-match-route="/account*">
   <span class="dummy" ng-click="menuAccount = ! menuAccount"><i class="fa fa-user"></i>{{currentUser.username}}</span>
   <ul ng-show="menuAccount">
-    <li><a class="blue" ui-sref="account" ui-sref-active="active" snap-close><i class="fa fa-gear"></i>Account Settings</a></li>
+    <!--<li><a class="blue" ui-sref="account" ui-sref-active="active" snap-close><i class="fa fa-gear"></i>Account Settings</a></li>-->
     <li><a class="green" ui-sref="signout" ui-sref-active="active" snap-close><i class="fa fa-sign-out"></i>Sign Out</a></li>
   </ul>
 </li>
