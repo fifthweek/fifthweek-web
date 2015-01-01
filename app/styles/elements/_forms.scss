@@ -1,0 +1,11 @@
+@import '_base';
+
+.sub-form-alert {
+  margin: ($grid-gutter-width / 2) 0 0 0;
+}
+
+.fullscreen-validated-form h2 {
+  @media (min-width: $screen-md-min) {
+    text-align:center;
+  }
+}

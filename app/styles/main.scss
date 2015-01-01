@@ -9,12 +9,15 @@
 @import 'blocks/_snapjs-customisation';
 @import 'blocks/_header-navbar';
 @import 'blocks/_sidebar';
+@import 'blocks/_panel';
 @import 'blocks/_jumbo-panel';
 
 @import 'elements/_loading-bar';
 @import 'elements/_header-logo';
+@import 'elements/_forms';
 
 @import 'view-specific/home/_home';
 @import 'view-specific/dashboard/_dashboard';
 
+@import '_misc';
 @import '_shame';

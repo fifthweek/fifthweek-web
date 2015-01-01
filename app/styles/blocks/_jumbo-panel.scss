@@ -2,14 +2,16 @@
 
 .jumbo-panel-starts-with-header {
   padding-top: 0;
+  @media (min-width: $screen-sm-min) {
+    padding-top: ($grid-gutter-width - 20px);
+  }
 }
 
-@media (min-width: $screen-sm-min) {
-  .jumbo-panel {
-    padding: $grid-gutter-width;
+.jumbo-panel {
+  @media (min-width:768px) {
+    padding:20px;
   }
-
-  .jumbo-panel-starts-with-header {
-    padding-top: ($grid-gutter-width - 20px);
+  @media (min-width: $screen-sm-min) {
+    padding:$grid-gutter-width;
   }
 }

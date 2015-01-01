@@ -8,6 +8,13 @@ body {
   margin:0;
 }
 
+.panel-body,
+.footer {
+  .row {
+    margin:0 -15px;
+  }
+}
+
 .left-right-container-wrap {
   @media (min-width:992px) {
     display:table;
