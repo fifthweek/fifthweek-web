@@ -8,6 +8,7 @@ angular.module('webApp').controller('RegisterCtrl',
 
   $scope.savedSuccessfully = false;
   $scope.message = '';
+  $scope.isSubmitting = false;
 
   $scope.registrationData = {
     exampleWork: '',
@@ -17,14 +18,10 @@ angular.module('webApp').controller('RegisterCtrl',
   };
 
   $scope.register = function() {
+    $scope.isSubmitting = true;
 
     var eventCategory = function() {
       return {category: 'Registration'};
-    };
-
-    var handleSubmissionError = function(errorMessage){
-      $analytics.eventTrack('Registration failed', eventCategory());
-      $scope.message = errorMessage;
     };
 
     $analytics.eventTrack('Registration submitted', eventCategory());
@@ -43,7 +40,9 @@ angular.module('webApp').controller('RegisterCtrl',
         $location.path(fifthweekConstants.dashboardPage);
       });
     }).catch(function(error) {
-      handleSubmissionError(utilities.getFriendlyErrorMessage(error));
+      $analytics.eventTrack('Registration failed', eventCategory());
+      $scope.message = utilities.getFriendlyErrorMessage(error);
+      $scope.isSubmitting = false;
       return logService.error(error);
     });
   };

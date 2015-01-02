@@ -9,13 +9,17 @@ angular.module('webApp').controller(
       };
 
       $scope.message = '';
+      $scope.isSubmitting = false;
 
       $scope.signIn = function() {
+        $scope.isSubmitting = true;
+
         return authenticationService.signIn($scope.signInData).then(
           function() {
             $location.path(fifthweekConstants.dashboardPage);
           }).catch(function(error) {
             $scope.message = utilities.getFriendlyErrorMessage(error);
+            $scope.isSubmitting = false;
             return logService.error(error);
           });
       };

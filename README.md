@@ -70,10 +70,6 @@ The `targetBase` parameter defaults to `app` and the `browserLocation` parameter
 
         grunt ptest:live
 
-
-
-
-
 ## Check-in procedure
 
 The following must succeed locally before any changes are pushed:

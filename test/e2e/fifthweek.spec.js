@@ -45,6 +45,19 @@ describe('fifthweek', function() {
       expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
+    xit('should disable button after submission', function(){
+      page.exampleWorkTextBox.sendKeys(username);
+      page.usernameTextBox.sendKeys(username);
+      page.passwordTextBox.sendKeys('password1');
+      page.emailTextBox.sendKeys(email);
+      page.registerButton.click();
+
+      // Faulty assertion: http://stackoverflow.com/questions/27740867/assert-button-disabled-on-click-with-protractor-in-angular
+      expect(page.registerButton.getAttribute('disabled')).toContain('true');
+
+      expect(browser.getCurrentUrl()).toContain('/dashboard');
+    });
+
     it('requires example work', function(){
       page.emailTextBox.sendKeys(email);
       page.usernameTextBox.sendKeys(username);
@@ -223,6 +236,17 @@ describe('fifthweek', function() {
         page.usernameTextBox.sendKeys(username);
         page.passwordTextBox.sendKeys(password);
         page.signInButton.click();
+        expect(browser.getCurrentUrl()).toContain('/dashboard');
+      });
+
+      xit('should disable button after submission', function(){
+        page.usernameTextBox.sendKeys(username);
+        page.passwordTextBox.sendKeys(password);
+        page.signInButton.click();
+
+        // Faulty assertion: http://stackoverflow.com/questions/27740867/assert-button-disabled-on-click-with-protractor-in-angular
+        expect(page.signInButton.getAttribute('disabled')).toContain('true');
+
         expect(browser.getCurrentUrl()).toContain('/dashboard');
       });
 
