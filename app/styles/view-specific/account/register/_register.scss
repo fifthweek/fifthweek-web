@@ -6,11 +6,7 @@ $html-name-space:'.page-register';
   .register-form-wrapper {
     max-width:750px;
   }
-
   .btn-block {
     margin-top:15px;
-    @media (min-width:768px) {
-      width:auto;
-    }
   }
 }
