@@ -44,10 +44,20 @@
   }
   h1 {
     float:left;
-    color:#575E67;
-    font-size:21px;
-    padding:11px;
+    color:#777B80;
+    font-size:18px;
+    padding:15px 11px 11px 4px;
     margin:0;
+    @media (min-width:500px) {
+      font-size:21px;
+      padding-top:11px;
+    }
+    @media (min-width:768px) {
+      padding-left:45px;
+    }
+    @media (min-width:992px) {
+      padding-left:90px;
+    }
   }
 }
 
