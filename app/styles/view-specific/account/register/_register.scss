@@ -1,0 +1,9 @@
+@import '_base';
+
+$html-name-space:'.page-register';
+
+#{$html-name-space} {
+  .register-form-wrapper {
+    max-width:750px;
+  }
+}
