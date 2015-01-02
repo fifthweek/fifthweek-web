@@ -1,0 +1,9 @@
+@import '_base';
+
+$html-name-space:'.page-sign.in';
+
+#{$html-name-space} {
+  .col-md-6 {
+    max-width:450px;
+  }
+}
