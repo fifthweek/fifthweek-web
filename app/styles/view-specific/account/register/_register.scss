@@ -3,10 +3,10 @@
 $html-name-space:'.page-register';
 
 #{$html-name-space} {
-  .register-form-wrapper {
-    max-width:750px;
-  }
-  .btn-block {
-    margin-top:15px;
+  .col-lg-12 {
+    max-width:450px;
+    @media (min-width:768px) {
+      max-width:100%;
+    }
   }
 }

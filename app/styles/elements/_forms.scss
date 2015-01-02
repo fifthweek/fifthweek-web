@@ -5,6 +5,9 @@
 }
 
 .btn-block {
+  margin-top:15px;
+  display:inline-block;
+  vertical-align:top;
   @media (min-width:768px) {
     width:auto;
   }
