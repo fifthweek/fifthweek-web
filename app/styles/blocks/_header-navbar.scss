@@ -10,6 +10,7 @@
 .navbar-fixed-top {
   background:$navbar-default-bg;
   border:0 none;
+  box-shadow:0 1px 2px 0 #E2E2E2;
   @media (min-width:992px) {
     left:200px;
   }
@@ -38,6 +39,7 @@
     .fa {
       vertical-align:initial;
       color:#777B80;
+      font-size:1.5em;
     }
   }
   h1 {
