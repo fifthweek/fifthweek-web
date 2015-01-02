@@ -2,6 +2,7 @@
 
 body {
   font-family:'Lato', cursive;
+  color:$grey-dark;
 }
 
 .row {
@@ -22,6 +23,7 @@ body {
     height:100vh;
   }
 }
+
 #{$left-container},
 #{$right-container} {
   @media (min-width:992px) {

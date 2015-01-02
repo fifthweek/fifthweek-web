@@ -9,6 +9,15 @@ h6, .h6 {
   margin-top:0;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color:$blue-light-1;
+}
+
 h1 {
   font-weight:400;
   margin:10px 0 20px 0;
@@ -33,9 +42,9 @@ p {
 }
 
 a {
-  color:$blue-light-2;
+  color:$blue-light-3;
   &:hover,
   &:focus {
-    color:$blue-light-2;
+    color:$blue-light-3;
   }
 }
