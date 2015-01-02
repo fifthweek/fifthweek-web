@@ -286,10 +286,11 @@ describe('authentication service', function() {
   });
 
   // load the service's module
-  beforeEach(module('webApp'));
+  beforeEach(module('webApp', 'stateMock'));
 
   var $httpBackend;
   var $rootScope;
+  var $state;
   var authenticationService;
   var localStorageService;
   var analytics;
@@ -309,6 +310,7 @@ describe('authentication service', function() {
     authenticationService = $injector.get('authenticationService');
     $httpBackend = $injector.get('$httpBackend');
     $rootScope = $injector.get('$rootScope');
+    $state = $injector.get('$state');
     fifthweekConstants = $injector.get('fifthweekConstants');
   }));
 

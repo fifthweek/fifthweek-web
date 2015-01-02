@@ -109,9 +109,10 @@ describe('log service', function() {
   });
 
   // load the service's module
-  beforeEach(module('webApp'));
+  beforeEach(module('webApp', 'stateMock'));
 
   var $rootScope;
+  var $state;
   var $httpBackend;
   var fifthweekConstants;
   var log;
@@ -139,6 +140,7 @@ describe('log service', function() {
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
+    $state = $injector.get('$state');
     $httpBackend = $injector.get('$httpBackend');
     fifthweekConstants = $injector.get('fifthweekConstants');
     logService = $injector.get('logService');

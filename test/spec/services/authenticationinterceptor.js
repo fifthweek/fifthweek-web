@@ -119,9 +119,10 @@ describe('authentication interceptor', function() {
   });
 
   // load the service's module
-  beforeEach(module('webApp'));
+  beforeEach(module('webApp', 'stateMock'));
 
   var $rootScope;
+  var $state;
   var $location;
   var $httpBackend;
   var $q;
@@ -142,6 +143,7 @@ describe('authentication interceptor', function() {
   beforeEach(inject(function($injector) {
     $q = $injector.get('$q');
     $rootScope = $injector.get('$rootScope');
+    $state = $injector.get('$state');
     $location = $injector.get('$location');
     $httpBackend = $injector.get('$httpBackend');
     authenticationInterceptor = $injector.get('authenticationInterceptor');

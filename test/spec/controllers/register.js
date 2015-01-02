@@ -27,7 +27,7 @@ describe('registration controller', function() {
         expect(scope.message).toContain('Signing in...');
         expect(scope.savedSuccessfully).toBe(true);
 
-        expect($location.path).toHaveBeenCalledWith(fifthweekConstants.dashboardPage);
+        $state.expectTransitionTo('dashboardPage');
       });
 
       it('should display an error message and log the error on unsuccessful registration', function() {
@@ -184,11 +184,12 @@ describe('registration controller', function() {
   });
 
   // load the controller's module
-  beforeEach(module('webApp'));
+  beforeEach(module('webApp', 'stateMock'));
 
   var RegisterCtrl;
   var scope;
   var $rootScope;
+  var $state;
   var authenticationService;
   var $q;
   var $location;
@@ -205,9 +206,10 @@ describe('registration controller', function() {
   });
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function(_$controller_, _$rootScope_, _$q_, _$location_, _fifthweekConstants_) {
+  beforeEach(inject(function(_$controller_, _$rootScope_, _$state_, _$q_, _$location_, _fifthweekConstants_) {
     $controller = _$controller_;
     $rootScope = _$rootScope_;
+    $state = _$state_;
     scope = $rootScope.$new();
     $q = _$q_;
     $location = _$location_;
