@@ -11,27 +11,6 @@
 
               <div class="form-group"
                    data-ng-class="{
-                   'has-error' : form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted),
-                   'has-success' : form.exampleWork.$valid && form.exampleWork.$touched
-                   }">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="has-feedback">
-                      <input type="text" class="form-control" name="exampleWork" placeholder="Website URL (example of work)"
-                             data-ng-model="registrationData.exampleWork"
-                             required focus=true>
-                      <span ng-if="form.exampleWork.$valid && form.exampleWork.$touched" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                      <span ng-if="form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted)" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <p ng-if="form.exampleWork.$invalid && ((form.exampleWork.$touched && form.exampleWork.$dirty) || form.$submitted)" class="help-block">A valid URL is required.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group"
-                   data-ng-class="{
                    'has-error' : form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted),
                    'has-success' : form.email.$valid && form.email.$touched
                    }">
