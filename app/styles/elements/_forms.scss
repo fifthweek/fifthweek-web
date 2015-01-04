@@ -1,18 +1,40 @@
 @import '_base';
 
+$input-height-base:44px;
+
+.form-control {
+  height:$input-height-base;
+}
+
+.form-control-feedback {
+  line-height:$input-height-base;
+  height:$input-height-base;
+  width:$input-height-base;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
 .sub-form-alert {
   margin: ($grid-gutter-width / 2) 0 0 0;
 }
 
 .btn-block {
-  margin-top:15px;
   display:inline-block;
   vertical-align:top;
   @media (min-width:768px) {
     width:auto;
   }
+  @media (max-width:768px) {
+    height: $input-height-base;
+  }
 }
 
 .btn-success {
   background:$green-light-1;
+}
+
+.help-block {
+  margin: 11px 0 0 0;
 }
