@@ -32,12 +32,27 @@ $html-name-space:'.page-home';
   }
 
   .home-intro {
+    padding-top:5%;
     @media (min-width:768px) {
-      top:0;
+      padding-top:0;
+      top:26%;
     }
     h2,
     h3 {
       color:$white-1;
+      text-shadow:0 3px 8px rgba(0, 0, 0, 0.5);
+    }
+    h2 {
+      font:{
+        weight:bold;
+        size:40px;
+      }
+      @media (min-width:600px) {
+        font-size:45px;
+      }
+      @media (min-width:768px) {
+        font-size:55px;
+      }
     }
   }
 
