@@ -10,7 +10,78 @@ $html-name-space:'.page-home';
 
   #{$right-container} {
     text-align:center;
+    padding:0;
+    .main-container {
+      margin-top:0;
+      max-height:100vh;
+      overflow-y:hidden;
+
+    }
   }
+
+
+  .home-intro,
+  .home-footer {
+    position:absolute;
+    width:100%;
+    z-index:2;
+    background:#CCC;
+  }
+
+  .home-intro {
+    top:0;
+    border:solid 2px red;
+  }
+
+  .home-footer {
+    bottom:0;
+    border:solid 2px darkred;
+  }
+
+
+  img {
+    background: url(../images/home/bg/lighthouse.jpg) no-repeat 0 0;
+    background-size:contain;
+    display:block;
+    height:auto;
+    width:100%;
+    max-width:100%;
+  }
+
+  @media (min-width: 320px) {
+    img {
+      background-image: url(../images/home/bg/koala.jpg);
+    }
+  }
+
+  @media (min-width: 480px) {
+    img {
+      background-image: url(../images/home/bg/penguins.jpg);
+    }
+    
+  }
+
+  @media (min-width: 600px) {
+    img {
+      background-image: url(../images/home/bg/desert.jpg);
+    }
+    
+  }
+
+  @media (min-width: 768px) {
+    img {
+      background-image: url(../images/home/bg/jellyfish.jpg);
+    }
+
+  }
+
+  @media (min-width: 1024px) {
+    img {
+      background-image: url(../images/home/bg/tulips.jpg);
+    }
+  }
+
+
 
 
 
