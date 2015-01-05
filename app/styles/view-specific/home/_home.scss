@@ -61,9 +61,18 @@ $html-name-space:'.page-home';
       bottom:0;
       background:rgba(255, 255, 255, 0.2);
     }
+    .text-wrap,
+    .form-wrap {
+      margin:0 auto;
+      max-width:520px;
+    }
     p {
       color:$white-1;
     }
+    input[type="email"] {
+      width:100%;
+    }
+
   }
 
   img {
