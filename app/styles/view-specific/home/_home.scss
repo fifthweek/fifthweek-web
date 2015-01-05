@@ -2,6 +2,10 @@
 
 $html-name-space:'.page-home';
 
+@mixin text-shadow {
+  text-shadow:0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
 #{$html-name-space} {
   .navbar,
   footer {
@@ -39,8 +43,8 @@ $html-name-space:'.page-home';
     }
     h2,
     h3 {
+      @include text-shadow;
       color:$white-1;
-      text-shadow:0 3px 8px rgba(0, 0, 0, 0.5);
     }
     h2 {
       font:{
@@ -61,11 +65,34 @@ $html-name-space:'.page-home';
       bottom:0;
       background:rgba(255, 255, 255, 0.2);
     }
+    p {
+      @include text-shadow;
+      font-size:20px;
+      margin-bottom:25px;
+    }
     .text-wrap,
     .form-wrap {
       margin:0 auto;
-      max-width:520px;
+      max-width:670px;
     }
+    .text-wrap {
+      padding-top:20px;
+      @media (min-width:600px) {
+        padding-top:40px;
+      }
+    }
+    .form-wrap {
+      padding-bottom:20px;
+      @media (min-width:600px) {
+        padding-bottom:40px;
+      }
+      .col-sm-6 {
+        @media (min-width:768px) {
+          padding-right:0;
+        }
+      }
+    }
+
     p {
       color:$white-1;
     }
