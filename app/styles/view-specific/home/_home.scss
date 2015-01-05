@@ -14,70 +14,94 @@ $html-name-space:'.page-home';
     .main-container {
       margin-top:0;
       max-height:100vh;
-      overflow-y:hidden;
-
+      @media (min-width:768px) {
+        overflow-y:hidden;
+      }
     }
   }
 
 
   .home-intro,
   .home-footer {
-    position:absolute;
+    position:relative;
     width:100%;
     z-index:2;
-    background:#CCC;
+    @media (min-width:768px) {
+      position:absolute;
+    }
   }
 
   .home-intro {
-    top:0;
-    border:solid 2px red;
+    @media (min-width:768px) {
+      top:0;
+    }
+    h2,
+    h3 {
+      color:$white-1;
+    }
   }
 
   .home-footer {
-    bottom:0;
-    border:solid 2px darkred;
+    @media (min-width:768px) {
+      bottom:0;
+      background:rgba(255, 255, 255, 0.2);
+    }
+    p {
+      color:$white-1;
+    }
   }
 
-
   img {
-    background: url(../images/home/bg/lighthouse.jpg) no-repeat 0 0;
-    background-size:contain;
+    background:{
+      position:0 0;
+      size:cover;
+      repeat:no-repeat;
+    }
     display:block;
     height:auto;
     width:100%;
     max-width:100%;
+    position:absolute;
+    top:0;
+    height:100vh;
+    @media (min-width:768px) {
+      position:relative;
+      height:auto;
+      top:0;
+    }
   }
 
   @media (min-width: 320px) {
     img {
-      background-image: url(../images/home/bg/koala.jpg);
+      background-image:url(../images/home/bg/640.jpg);
     }
   }
 
   @media (min-width: 480px) {
     img {
-      background-image: url(../images/home/bg/penguins.jpg);
+      background-image:url(../images/home/bg/960.jpg);
     }
     
   }
 
   @media (min-width: 600px) {
     img {
-      background-image: url(../images/home/bg/desert.jpg);
+      background-image:url(../images/home/bg/1200.jpg);
     }
     
   }
 
   @media (min-width: 768px) {
     img {
-      background-image: url(../images/home/bg/jellyfish.jpg);
+      height:100vh;
+      background-image:url(../images/home/bg/1536.jpg);
     }
 
   }
 
   @media (min-width: 1024px) {
     img {
-      background-image: url(../images/home/bg/tulips.jpg);
+      background-image:url(../images/home/bg/2048.jpg);
     }
   }
 
