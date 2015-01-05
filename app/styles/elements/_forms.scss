@@ -1,6 +1,6 @@
 @import '_base';
 
-$input-height-base:44px;
+$input-height-base:42px;
 
 .form-control {
   height:$input-height-base;
@@ -13,7 +13,7 @@ $input-height-base:44px;
 }
 
 .form-group {
-  margin-bottom: 25px;
+  margin-bottom: 16px;
 }
 
 .sub-form-alert {
