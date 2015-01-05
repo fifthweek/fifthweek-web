@@ -3,9 +3,18 @@
 $html-name-space:'.page-home';
 
 #{$html-name-space} {
-  .navbar h1 {
+  .navbar,
+  footer {
     display:none !important;
   }
+
+  #{$right-container} {
+    text-align:center;
+  }
+
+
+
+
 }
 
 @import 'blocks/_video';
