@@ -68,8 +68,12 @@ $html-name-space:'.page-home';
     }
     p {
       @include text-shadow;
-      font-size:20px;
       margin-bottom:25px;
+      color:$white-1;
+      font:{
+        size:21px;
+        weight:300;
+      }
     }
     .text-wrap,
     .form-wrap {
@@ -77,26 +81,33 @@ $html-name-space:'.page-home';
     }
     .text-wrap {
       padding-top:20px;
-      max-width:670px;
+      max-width:710px;
       @media (min-width:600px) {
         padding-top:40px;
       }
     }
     .form-wrap {
       padding-bottom:20px;
-      max-width:480px;
+      max-width:420px;
       @media (min-width:600px) {
         padding-bottom:40px;
       }
-      .col-sm-8 {
-        @media (min-width:768px) {
-          padding-right:0;
+      form > div {
+        padding:{
+          right:0;
+          left:0;
         }
       }
-    }
-
-    p {
-      color:$white-1;
+      .col-sm-3 {
+        @media (min-width:768px) {
+          width:auto;
+          padding-left:15px;
+        }
+      }
+      .btn {
+        float:left;
+        padding:9.5px 14px;
+      }
     }
     input[type="email"] {
       width:100%;
