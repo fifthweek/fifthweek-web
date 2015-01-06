@@ -18,6 +18,7 @@ $html-name-space:'.page-home';
     .main-container {
       margin-top:0;
       max-height:100vh;
+      max-width:100%;
       @media (min-width:768px) {
         overflow-y:hidden;
       }
