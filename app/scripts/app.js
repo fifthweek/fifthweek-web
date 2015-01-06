@@ -12,6 +12,7 @@ angular
     'ng-focus',
     'toaster',
     'angular-loading-bar',
+    'ui.bootstrap',
     'snap',
     'angulartics',
     'angulartics.google.analytics',
