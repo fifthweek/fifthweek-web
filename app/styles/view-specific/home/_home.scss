@@ -25,7 +25,6 @@ $html-name-space:'.page-home';
     }
   }
 
-
   .home-intro,
   .home-footer {
     position:relative;
@@ -37,20 +36,28 @@ $html-name-space:'.page-home';
   }
 
   .home-intro {
-    padding-top:5%;
+    padding:{
+      top:5%;
+      bottom:15%;
+    }
     @media (min-width:768px) {
-      padding-top:0;
-      top:26%;
+      padding:0;
+      top:16%;
+    }
+    @media (min-width:1024px) {
+      top:22%;
     }
     h2,
     h3 {
       @include text-shadow;
-      color:$white-1;
+      margin:0;
     }
     h2 {
+      color:$white-1;
+      margin-bottom:20px;
       font:{
         weight:bold;
-        size:40px;
+        size:37px;
       }
       @media (min-width:600px) {
         font-size:45px;
@@ -58,6 +65,28 @@ $html-name-space:'.page-home';
       @media (min-width:768px) {
         font-size:55px;
       }
+      br {
+        @media (min-width:600px) {
+          display:none;
+        }
+      }
+    }
+    h3 {
+      font-size:19px;
+      color:#CECECE;
+      max-width:355px;
+      margin:0 auto 5% auto;
+      @media (min-width:600px) {
+        font-size:24px;
+        max-width:385px;
+      }
+      @media (min-width:768px) {
+        color:$white-1;
+        max-width:100%;
+      }
+    }
+    .btn {
+      margin:0 auto;
     }
   }
 
@@ -69,10 +98,22 @@ $html-name-space:'.page-home';
     p {
       @include text-shadow;
       margin-bottom:25px;
-      color:$white-1;
       font:{
-        size:21px;
+        size:16px;
         weight:300;
+      }
+      color:#CECECE;
+      @media (min-width:600px) {
+        font-size:21px;
+      }
+      @media (min-width:768px) {
+        color:$white-1;
+      }
+      span {
+        display:block;
+        @media (min-width:768px) {
+          display:inline;
+        }
       }
     }
     .text-wrap,
@@ -80,10 +121,13 @@ $html-name-space:'.page-home';
       margin:0 auto;
     }
     .text-wrap {
-      padding-top:20px;
-      max-width:710px;
+      max-width:420px;
       @media (min-width:600px) {
         padding-top:40px;
+        max-width:500px;
+      }
+      @media (min-width:768px) {
+        max-width:715px;
       }
     }
     .form-wrap {
@@ -111,13 +155,19 @@ $html-name-space:'.page-home';
     }
     input[type="email"] {
       width:100%;
+      margin-bottom:15px;
+      text-align:center;
+      @media (min-width:768px) {
+        margin-bottom:0;
+        text-align:left;
+      }
     }
 
   }
 
   img {
     background:{
-      position:0 0;
+      position:23% 0;
       size:cover;
       repeat:no-repeat;
     }
@@ -150,7 +200,10 @@ $html-name-space:'.page-home';
 
   @media (min-width: 600px) {
     img {
-      background-image:url(../images/home/bg/1200.jpg);
+      background:{
+        image:url(../images/home/bg/1200.jpg);
+        position:0 0;
+      }
     }
     
   }
