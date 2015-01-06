@@ -74,20 +74,21 @@ $html-name-space:'.page-home';
     .text-wrap,
     .form-wrap {
       margin:0 auto;
-      max-width:670px;
     }
     .text-wrap {
       padding-top:20px;
+      max-width:670px;
       @media (min-width:600px) {
         padding-top:40px;
       }
     }
     .form-wrap {
       padding-bottom:20px;
+      max-width:480px;
       @media (min-width:600px) {
         padding-bottom:40px;
       }
-      .col-sm-6 {
+      .col-sm-8 {
         @media (min-width:768px) {
           padding-right:0;
         }
