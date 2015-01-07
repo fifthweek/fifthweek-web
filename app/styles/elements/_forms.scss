@@ -35,6 +35,15 @@ $input-height-base:42px;
   background:$green-light-1;
 }
 
+.btn-plain {
+  background:none;
+  border-color:$white-full;
+  color:$white-full;
+  #{$state-active-hover-focus} {
+    background:none;
+  }
+}
+
 .help-block {
   margin: 11px 0 0 0;
 }
