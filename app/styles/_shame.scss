@@ -7,6 +7,13 @@
   text-align: center;
 }
 
+
+.modal-body {
+  padding:5px;
+}
+.modal-content {
+  background-color:$grey-dark;
+}
 .modal-backdrop.in {
   height:100%;
   opacity:0.6;
