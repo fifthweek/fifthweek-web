@@ -36,11 +36,13 @@ $input-height-base:42px;
 }
 
 .btn-plain {
+  @include text-shadow-black;
   background:none;
   border-color:$white-full;
   color:$white-full;
   #{$state-active-hover-focus} {
     background:none;
+    color:$white-full;
   }
 }
 

@@ -2,10 +2,6 @@
 
 $html-name-space:'.page-home';
 
-@mixin text-shadow {
-  text-shadow:0 3px 8px rgba(0, 0, 0, 0.5);
-}
-
 #{$html-name-space} {
   .navbar,
   footer {
@@ -49,7 +45,7 @@ $html-name-space:'.page-home';
     }
     h2,
     h3 {
-      @include text-shadow;
+      @include text-shadow-black;
       margin:0;
     }
     h2 {
@@ -96,7 +92,7 @@ $html-name-space:'.page-home';
       background:rgba(255, 255, 255, 0.2);
     }
     p {
-      @include text-shadow;
+      @include text-shadow-black;
       margin-bottom:25px;
       font:{
         size:16px;
