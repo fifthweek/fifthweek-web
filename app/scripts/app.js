@@ -53,7 +53,7 @@ angular
         },
         views: {
           '': {
-            templateUrl: 'views/home-v2.html',
+            templateUrl: 'views/home.html',
             controller: 'HomeCtrl'
           },
           'sidebar': {
