@@ -8,6 +8,10 @@ $html-name-space:'.page-home';
     display:none !important;
   }
 
+  .navbar-toggle .fa {
+    color:$white-1;
+  }
+
   #{$right-container} {
     text-align:center;
     padding:0;
