@@ -1,10 +1,7 @@
 ﻿<header data-ng-controller="HeaderCtrl">
   <nav class="navbar navbar-default navbar-fixed-top" role="navigation" bs-navbar>
     <div class="inner">
-      <button type="button" class="navbar-toggle" snap-toggle="left">
-        <i class="fa fa-navicon fa-lg"></i>
-      </button>
-      <!--<a class="navbar-brand fifthweek-logo" ui-sref="home">fifthweek</a>-->
+      <ng-include src="'views/partials/header-sidebar-toggle.html'" class="header-wrapper"></ng-include>
       <h1 ng-bind="$state.current.data.pageTitle" class=""></h1>
       <!--
       <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
