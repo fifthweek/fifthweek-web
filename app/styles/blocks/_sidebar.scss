@@ -109,3 +109,31 @@ $icon-pink:$pink-light-1;
     }
   }
 }
+
+.sidebar-footer {
+  position:absolute;
+  bottom:0;
+  z-index:1;
+  color:red;
+  width:265px;
+  text-align:center;
+  padding-bottom:20px;
+  @media (min-width:992px) {
+    width:200px;
+  }
+
+  p {
+    font-size:12px;
+    color:#848c94;
+    margin:0;
+    a {
+      color:#848c94;
+    }
+    &.version {
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+  }
+
+}
