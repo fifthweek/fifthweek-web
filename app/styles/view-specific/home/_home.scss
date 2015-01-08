@@ -17,9 +17,9 @@ $html-name-space:'.page-home';
     padding:0;
     .main-container {
       margin-top:0;
-      max-height:100vh;
       max-width:100%;
       @media (min-width:768px) {
+        max-height:100vh;
         overflow-y:hidden;
       }
     }
@@ -37,8 +37,11 @@ $html-name-space:'.page-home';
 
   .home-intro {
     padding:{
-      top:5%;
+      top:40px;
       bottom:15%;
+    }
+    @media (min-width:500px) {
+      padding-top:5%;
     }
     @media (min-width:768px) {
       padding:0;
@@ -172,12 +175,11 @@ $html-name-space:'.page-home';
       repeat:no-repeat;
     }
     display:block;
-    height:auto;
+    height:100%;
     width:100%;
     max-width:100%;
     position:absolute;
     top:0;
-    height:100vh;
     @media (min-width:768px) {
       position:relative;
       height:auto;
