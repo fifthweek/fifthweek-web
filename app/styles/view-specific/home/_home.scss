@@ -33,6 +33,12 @@ $html-name-space:'.page-home';
     @media (min-width:768px) {
       position:absolute;
     }
+    > .col-md-12 {
+      padding:0 37px;
+      @media (min-width:992px) {
+        padding:0 15px;
+      }
+    }
   }
 
   .home-intro {
