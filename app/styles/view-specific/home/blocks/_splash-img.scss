@@ -1,0 +1,57 @@
+@import '_base';
+
+img {
+  background:{
+    position:23% 0;
+    size:cover;
+    repeat:no-repeat;
+  }
+  display:block;
+  height:100%;
+  width:100%;
+  max-width:100%;
+  position:absolute;
+  top:0;
+  @media (min-width:768px) {
+    position:relative;
+    height:auto;
+    top:0;
+  }
+}
+
+@media (min-width:320px) {
+  img {
+    background-image:url(../images/home/bg/640.jpg);
+  }
+}
+
+@media (min-width:480px) {
+  img {
+    background-image:url(../images/home/bg/960.jpg);
+  }
+  
+}
+
+@media (min-width:600px) {
+  img {
+    background:{
+      image:url(../images/home/bg/1200.jpg);
+      position:0 0;
+    }
+  }
+  
+}
+
+@media (min-width:768px) {
+  img {
+    height:100vh;
+    background-image:url(../images/home/bg/1536.jpg);
+  }
+
+}
+
+@media (min-width:1024px) {
+  img {
+    background-image:url(../images/home/bg/2048.jpg);
+  }
+}

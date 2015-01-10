@@ -8,13 +8,16 @@
 }
 
 
+.modal-backdrop.in {
+  height:100%;
+  opacity:0.6;
+}
 .modal-body {
   padding:5px;
 }
 .modal-content {
   background-color:$grey-dark;
 }
-.modal-backdrop.in {
-  height:100%;
-  opacity:0.6;
+.modal iframe {
+  width:100%;
 }

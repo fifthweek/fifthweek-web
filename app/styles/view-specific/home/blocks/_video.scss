@@ -1,23 +1,25 @@
+//embed vimeo responsively with some recommended approaches
+//see: http://embedresponsively.com/
+
 @import '_base';
 
-$html-name-space:'.fifthweek-video';
+$html-name-space:'.vimeo-container';
 
 #{$html-name-space} {
+  position:relative;
+  padding-bottom:56.25%;
+  height:0;
+  overflow:hidden;
+  max-width:100%;
 
-  h4:first-child {
-    @media (min-width: $screen-md-min) {
-      margin-top: 0;
-    }
-  }
-
-  p {
-    margin-bottom:20px;
-  }
-
-  .embed-responsive {
-    @media (max-width: $screen-sm-max) {
-      margin-bottom: 20px;
-    }
+  iframe,
+  object,
+  embed {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
   }
 
 }
