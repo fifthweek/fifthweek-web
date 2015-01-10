@@ -50,6 +50,31 @@ a {
   }
 }
 
+#{$right-container} {
+  ul,
+  ol,
+  dl {
+    padding-left:30px;
+  }
+
+  li,
+  dd {
+    font-size:15px;
+    margin-bottom:20px;
+  }
+}
+
+hr {
+  clear:both;
+  display:inline-block;
+  width:100%;
+  margin:15px 0 20px 0;
+  border:{
+    width:2px;
+    color:#E8E8E8;
+  }
+}
+
 .form-control {
   font-size:17px;
 }

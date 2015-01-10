@@ -1,0 +1,17 @@
+@import '_base';
+
+$html-name-space:'.page-frequently.asked.questions';
+
+#{$html-name-space} {
+
+  .col-sm-4 {
+    padding-left:0;
+  }
+
+  .jumbo-panel:last-child {
+    p:first-child {
+      margin-bottom:20px;
+    }
+  }
+
+}
