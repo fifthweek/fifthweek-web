@@ -7,7 +7,11 @@
   text-align: center;
 }
 
-
+.modal-dialog {
+  @media (min-width:768px) {
+    margin:7% auto;
+  }
+}
 .modal-backdrop.in {
   height:100%;
   opacity:0.6;
