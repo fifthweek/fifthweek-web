@@ -35,6 +35,7 @@ angular
     accountPage: '/account',
     dashboardPage: '^/dashboard/demo',
     feedbackPage: '^/dashboard/feedback',
+    faqPage: '/faq',
     notAuthorizedPage: '/notauthorized'
   })
 
@@ -146,6 +147,22 @@ angular
           pageTitle: 'Provide Feedback',
           headTitle: ' - ' + 'Feedback'
         }
+      })
+      .state('faq', {
+        url:fifthweekConstants.faqPage,
+        data: {
+          pageTitle: 'Frequently Asked Questions',
+          headTitle: ' - ' + 'Frequently Asked Questions'
+        },
+        views: {
+          '': {
+            templateUrl: 'views/faq.html'
+          },
+          'sidebar': {
+            templateUrl: 'views/partials/sidebar.html'
+          }
+        }
+
       })
       .state('signout', {
         url: fifthweekConstants.signOutPage,
