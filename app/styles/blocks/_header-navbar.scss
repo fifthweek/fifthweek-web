@@ -7,6 +7,31 @@
   z-index:1030;
 }
 
+.navbar-toggle {
+  float:left;
+  z-index:3;
+  margin-right:0;
+  margin-bottom:0;
+  padding-left:15px;
+  background:none;
+  border:0 none;
+  #{$state-hover-focus} {
+    background:none !important;
+  }
+  //overide bootstrap default
+  @media (min-width:768px) {
+    display:block !important;
+  }
+  @media (min-width:992px) {
+    display:none !important;
+  }
+  .fa {
+    vertical-align:initial;
+    color:#777B80;
+    font-size:1.5em;
+  }
+}
+
 .navbar-fixed-top {
   background:$navbar-default-bg;
   border:0 none;
@@ -27,29 +52,6 @@
     padding-left:0;
     @media (min-width:500px) {
       padding-left:15px;
-    }
-  }
-  .navbar-toggle {
-    float:left;
-    margin-right:0;
-    margin-bottom:0;
-    padding-left:15px;
-    background:none;
-    border:0 none;
-    #{$state-hover-focus} {
-      background:none;
-    }
-    //overide bootstrap default
-    @media (min-width:768px) {
-      display:block;
-    }
-    @media (min-width:992px) {
-      display:none;
-    }
-    .fa {
-      vertical-align:initial;
-      color:#777B80;
-      font-size:1.5em;
     }
   }
   h1 {

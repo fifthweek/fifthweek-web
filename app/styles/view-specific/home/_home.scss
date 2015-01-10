@@ -8,8 +8,14 @@ $html-name-space:'.page-home';
     display:none !important;
   }
 
-  .navbar-toggle .fa {
-    color:$white-1;
+
+  .navbar-toggle {
+    .fa {
+      color:$white-1;
+    }
+    @media (min-width:768px) {
+      position:absolute;
+    }
   }
 
   #{$right-container} {
