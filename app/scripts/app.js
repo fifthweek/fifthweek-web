@@ -148,21 +148,32 @@ angular
           headTitle: ' - ' + 'Feedback'
         }
       })
-      .state('faq', {
-        url:fifthweekConstants.faqPage,
-        data: {
-          pageTitle: 'Frequently Asked Questions',
-          headTitle: ' - ' + 'Frequently Asked Questions'
+      .state('help', {
+        abstract: true,
+        url: 'help',
+        data : { 
+          pageTitle: 'Help',
+          headTitle: ' - ' + 'Help'
         },
-        views: {
+        views:{
           '': {
-            templateUrl: 'views/faq.html'
+            templateUrl: 'views/help/index.html'
           },
           'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
+            templateUrl: 'views/help/partials/sidebar.html'
           }
+        },
+        access: {
+          loginRequired: true
         }
-
+      })
+      .state('help.faq', {
+        url: fifthweekConstants.faqPage,
+        templateUrl: 'views/help/faq.html',
+        data : { 
+          pageTitle: 'Frequently Asked Questions',
+          headTitle: ' - ' + 'Frequently Asked Questions'
+        }
       })
       .state('signout', {
         url: fifthweekConstants.signOutPage,
