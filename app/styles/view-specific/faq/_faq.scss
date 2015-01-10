@@ -8,9 +8,12 @@ $html-name-space:'.page-frequently.asked.questions';
     padding-left:0;
   }
 
-  .jumbo-panel:last-child {
-    p:first-child {
+  .jumbo-panel  {
+    p.first {
       margin-bottom:20px;
+    }
+    .beyond p {
+      margin-bottom:0;
     }
   }
 
