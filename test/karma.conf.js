@@ -34,10 +34,13 @@ module.exports = function(config) {
       'bower_components/ng-focus/ng-focus.js',
       'bower_components/AngularJS-Toaster/toaster.js',
       'bower_components/angular-loading-bar/build/loading-bar.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'app/scripts/**/*.js',
       'test/mock/*.js',
       'test/pages/**/*.js',
       'test/spec/**/*.js'
+
     ],
 
     // list of files / patterns to exclude
