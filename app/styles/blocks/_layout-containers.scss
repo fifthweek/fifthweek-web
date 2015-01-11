@@ -35,8 +35,8 @@ body {
 #{$left-container} {
   @media (min-width:992px) {
     background:$blue-dark-2;
-    width:200px;
-    min-width:200px;
+    width:220px;
+    min-width:220px;
   }
 }
 
@@ -57,6 +57,6 @@ body {
     z-index:1;
   }
   @media(min-width:1100px) {
-    max-width:810px;
+    max-width:825px;
   }
 }
