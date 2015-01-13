@@ -5,7 +5,6 @@ describe('registration controller', function() {
   describe('when the user is not authenticated', function(){
 
     it('should contain empty registration data on creation', function() {
-      expect(scope.registrationData.exampleWork).toBe('');
       expect(scope.registrationData.email).toBe('');
       expect(scope.registrationData.username).toBe('');
       expect(scope.registrationData.password).toBe('');
@@ -139,7 +138,6 @@ describe('registration controller', function() {
 
       beforeEach(function() {
         scope.registrationData = {
-          exampleWork: 'www.fifthweek.com',
           email: 'lawrence@fifthweek.com',
           username: 'lawrence',
           password: 'password'
