@@ -36,6 +36,7 @@ angular
     dashboardPage: '^/dashboard/demo',
     feedbackPage: '^/dashboard/feedback',
     faqPage: '/faq',
+    faqPageLearnMore: '#learn-more',
     notAuthorizedPage: '/notauthorized'
   })
 
@@ -176,7 +177,7 @@ angular
         }
       })
       .state('help.faq.learnmore', {
-        url: '#learn-more',
+        url: fifthweekConstants.faqPageLearnMore,
         controller: 'faqCtrl'
       })
       .state('signout', {
