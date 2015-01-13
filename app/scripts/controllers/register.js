@@ -10,7 +10,6 @@ angular.module('webApp').controller('RegisterCtrl',
   $scope.message = '';
 
   $scope.registrationData = {
-    exampleWork: '',
     email: '',
     username: '',
     password: ''
