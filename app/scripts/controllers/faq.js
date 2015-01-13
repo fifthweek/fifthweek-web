@@ -3,11 +3,12 @@ angular.module('webApp').controller(
   function($scope, $location, $anchorScroll) {
     'use strict';
 
+    $scope.learnMore = 'learn-more';
+
     $scope.onEnter = function anchorScroll(){
-      $location.hash('learn-more');
+      $location.hash($scope.learnMore);
       $anchorScroll();
     };
 
   }
 ]);
-
