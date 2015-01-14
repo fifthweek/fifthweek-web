@@ -3,7 +3,7 @@ angular.module('webApp').controller('HomeCtrl',
   'use strict';
 
   if(authenticationService.currentUser.authenticated === true){
-    $scope.userAuthenticated = true;
+    $state.go('dashboard.demo');
   }
 
   $scope.savedSuccessfully = false;
