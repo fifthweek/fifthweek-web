@@ -1,9 +1,10 @@
 angular.module('webApp').controller('HomeCtrl',
-  function($scope, $location, $analytics, authenticationService, fifthweekConstants, logService, utilities) {
+  function($scope, $state, $location, $analytics, authenticationService, fifthweekConstants, logService, utilities) {
   'use strict';
 
+  
   if(authenticationService.currentUser.authenticated === true){
-    $location.path(fifthweekConstants.dashboardPage);
+    $state.go('dashboard.demo');
   }
 
   $scope.savedSuccessfully = false;
@@ -39,7 +40,7 @@ angular.module('webApp').controller('HomeCtrl',
 
       return authenticationService.signIn(signInData).then(function() {
         $analytics.eventTrack('Registration succeeded', eventCategory());
-        $location.path(fifthweekConstants.dashboardPage);
+        $state.go('dashboard.demo');
       });
     }).catch(function(error) {
       handleSubmissionError(utilities.getFriendlyErrorMessage(error));
