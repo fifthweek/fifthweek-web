@@ -6,8 +6,13 @@
     <h3>We allow creators to bring extra content to life, so you don't miss out.</h3>
 
 
-    <form novalidate role="form" name="form" ng-hide="savedSuccessfully" id="registrationForm"
-    style="background:#FFF;padding:1em;">
+    <form novalidate 
+          role="form" 
+          name="form" 
+          id="registrationForm"
+          ng-show="!userAuthenticated"
+          style="background:#FFF;padding:1em;">
+
         <div class="form-group"
              data-ng-class="{
              'has-error' : form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted),

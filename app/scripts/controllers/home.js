@@ -2,9 +2,8 @@ angular.module('webApp').controller('HomeCtrl',
   function($scope, $state, $location, $analytics, authenticationService, fifthweekConstants, logService, utilities) {
   'use strict';
 
-  
   if(authenticationService.currentUser.authenticated === true){
-    $state.go('dashboard.demo');
+    $scope.userAuthenticated = true;
   }
 
   $scope.savedSuccessfully = false;
