@@ -176,10 +176,6 @@ angular
           headTitle: ' - ' + 'Frequently Asked Questions'
         }
       })
-      .state('help.faq.learnmore', {
-        url: fifthweekConstants.faqPageLearnMore,
-        controller: 'faqCtrl'
-      })
       .state('signout', {
         url: fifthweekConstants.signOutPage,
         templateUrl: 'views/signout.html',

@@ -1,3 +1,6 @@
+//TB: leaving this for now - we hope to use in the future.
+
+/*
 'use strict';
 
 describe('faq controller', function () {
@@ -27,3 +30,4 @@ describe('faq controller', function () {
 
 
 });
+*/
