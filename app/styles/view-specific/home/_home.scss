@@ -8,7 +8,29 @@ $html-name-space:'.page-home';
     display:none !important;
   }
 
+  #{$logo} {
+    @include text-shadow-black;
+    position:absolute;
+    z-index:2;
+    top:0;
+    left:0;
+    width:100%;
+    font-size:35px;
+    opacity:0.5;
+    @media (min-width:768px) {
+      left:40px;
+      font-size:42px;
+      width:auto;
+      h1 {
+        margin-left:40px;
+      }
+    }
+    a {
+      color:$white-full;
+    }
+  }
 
+  /*
   .navbar-toggle {
     .fa {
       color:$white-1;
@@ -17,6 +39,7 @@ $html-name-space:'.page-home';
       position:absolute;
     }
   }
+  */
 
   #{$right-container} {
     text-align:center;

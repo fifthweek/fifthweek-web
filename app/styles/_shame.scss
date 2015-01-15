@@ -27,9 +27,6 @@
 }
 
 .sidebar-disabled {
-  .navbar-toggle {
-    display:none !important;
-  }
   #{$left-container} {
     display:none;
   }
