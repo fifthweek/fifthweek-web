@@ -58,7 +58,7 @@
     display:inline-block;
     font-size:18px;
     padding:15px 11px 11px 4px;
-    margin:0 0 0 -43px; //minus margin equals same width as navbar toggle
+    margin:0;
 
     @media (min-width:500px) {
       font-size:21px;
@@ -67,7 +67,7 @@
     @media (min-width:768px) {
       float:left;
       margin-left:0;
-      padding-left:45px;
+      padding-left:95px;
     }
     @media (min-width:992px) {
       padding-left:90px;
