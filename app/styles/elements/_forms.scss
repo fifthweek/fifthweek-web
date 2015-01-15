@@ -46,6 +46,11 @@ $input-height-base:42px;
   }
 }
 
+.btn-plain-text {
+  @extend .btn-plain;
+  border:0 none;
+}
+
 .help-block {
   margin: 11px 0 0 0;
 }
