@@ -1,0 +1,20 @@
+.form-wrap {
+  @media (min-width:767px) {
+    width:68%;
+    margin:0 32%;
+  }
+
+  .help-block,
+  .has-error .help-block {
+    background:$red-dark-1;
+    color:$white-full;
+    border-radius:3px;
+    margin:0;
+    padding:10px;
+  }
+
+  .btn {
+    width:100%;
+  }
+
+}
