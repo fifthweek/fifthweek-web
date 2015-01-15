@@ -42,7 +42,8 @@ body {
 
 #{$right-container} {
   padding:0;
-  @media (min-width:768px) {
+  //@media (min-width:768px) {
+  @media (min-width:600px) {
     padding:0 45px;
   }
 }

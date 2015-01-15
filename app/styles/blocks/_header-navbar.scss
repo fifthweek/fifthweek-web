@@ -57,17 +57,23 @@
   h1 {
     display:inline-block;
     font-size:18px;
-    padding:15px 11px 11px 4px;
+    //padding:15px 11px 11px 4px;
+    padding:15px 11px;
     margin:0;
 
     @media (min-width:500px) {
       font-size:21px;
       padding-top:11px;
     }
-    @media (min-width:768px) {
+    //@media (min-width:768px) {
+    @media (min-width:600px) {
       float:left;
       margin-left:0;
-      padding-left:95px;
+      //padding-left:93px;
+      padding-left:75px;
+    }
+    @media (min-width:768px) {
+      padding-left:89px;
     }
     @media (min-width:992px) {
       padding-left:90px;
