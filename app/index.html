@@ -47,7 +47,11 @@
       _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
     </script>
   </head>
-  <body class="page-{{$state.current.data.pageTitle | lowercase}}">
+  <body 
+    class="page-{{$state.current.data.pageTitle | lowercase}}" 
+    ng-class="{'sidebar-disabled': $state.current.data.disableSidebar == true}">
+
+
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an outdated browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->

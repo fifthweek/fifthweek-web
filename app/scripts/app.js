@@ -51,15 +51,13 @@ angular
         url: fifthweekConstants.homePage,
         templateUrl: 'views/home.html',
         data: { 
-          pageTitle: 'Home'
+          pageTitle: 'Home',
+          disableSidebar: true
         },
         views: {
           '': {
             templateUrl: 'views/home.html',
             controller: 'HomeCtrl'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
           }
         },
       })
