@@ -149,6 +149,53 @@ angular
           headTitle: ' - ' + 'Feedback'
         }
       })
+
+      .state('creators', {
+        abstract: true,
+        url: 'creators',
+        data : { 
+          pageTitle: 'Creators',
+          headTitle: ' - ' + 'Creators'
+        },
+        views:{
+          '': {
+            templateUrl: 'views/creators/index.html'
+          },
+          'sidebar': {
+            templateUrl: 'views/creators/partials/sidebar.html'
+          }
+        },
+        access: {
+          //loginRequired: true
+          //temp for dev
+          loginRequired: false
+        }
+      })
+      .state('creators.customize', {
+        //url: fifthweekConstants.dashboardPage,
+        url: 'creators/customize', 
+        data : {
+          pageTitle: 'Customize',
+          headTitle: ' - ' + 'Customize'
+        }
+      })
+      .state('creators.customize.landingpage', {
+        url: '^/creators/customize/landing-page', 
+        templateUrl: 'views/creators/customize/landing-page.html',
+        data : { 
+          pageTitle: 'Landing page',
+          headTitle: ' - ' + 'Landing page'
+        }
+      })
+      .state('creators.customize.collections', {
+        url: '^/creators/customize/collections', 
+        templateUrl: 'views/creators/customize/collections.html',
+        data : { 
+          pageTitle: 'Collections',
+          headTitle: ' - ' + 'Collections'
+        }
+      })
+
       .state('help', {
         abstract: true,
         url: 'help',
