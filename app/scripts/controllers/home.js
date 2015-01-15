@@ -1,5 +1,5 @@
 angular.module('webApp').controller('HomeCtrl',
-  function($scope, $state, $location, $analytics, authenticationService, fifthweekConstants, logService, utilities) {
+  function($scope, $state, $location, $modal, $analytics, authenticationService, fifthweekConstants, logService, utilities) {
   'use strict';
 
   if(authenticationService.currentUser.authenticated === true){
@@ -46,4 +46,11 @@ angular.module('webApp').controller('HomeCtrl',
       return logService.error(error);
     });
   };
+
+  $scope.openModal = function(){
+    $modal.open({
+      templateUrl: 'views/home-modal.html'
+    });
+  };
+
 });
