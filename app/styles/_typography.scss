@@ -54,7 +54,10 @@ a {
   ul,
   ol,
   dl {
-    padding-left:30px;
+    padding-left:20px;
+    @media (min-width:600px) {
+      padding-left:30px;
+    }
   }
 
   li,

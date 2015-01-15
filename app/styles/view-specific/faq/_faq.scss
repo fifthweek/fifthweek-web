@@ -4,16 +4,15 @@ $html-name-space:'.page-frequently.asked.questions';
 
 #{$html-name-space} {
 
-  .col-sm-4 {
-    padding-left:0;
-  }
-
   .jumbo-panel  {
+    > div {
+      padding:{
+        right:0;
+        left:0;
+      }
+    }
     p.first {
       margin-bottom:20px;
-    }
-    .beyond p {
-      margin-bottom:0;
     }
   }
 
