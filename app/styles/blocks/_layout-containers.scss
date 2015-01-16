@@ -52,11 +52,13 @@ body {
   margin-top:66px;
 
   //ensure vimeo embeds do not overlay header nav
+  /*
   position:relative;
   z-index:-1;
   @media(min-width:992px) {
     z-index:1;
   }
+  */
   @media(min-width:1100px) {
     max-width:825px;
   }

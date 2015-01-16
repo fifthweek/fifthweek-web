@@ -10,17 +10,19 @@ $html-name-space:'.page-home';
 
   #{$logo} {
     @include text-shadow-black;
-    position:absolute;
+    //position:absolute;
+    position:relative;
     z-index:2;
     top:0;
     left:0;
     width:100%;
     font-size:35px;
+    margin-top:0;
     opacity:0.5;
     @media (min-width:768px) {
       left:40px;
       font-size:42px;
-      width:auto;
+      width:150px;
       h1 {
         margin-left:40px;
       }
@@ -41,15 +43,19 @@ $html-name-space:'.page-home';
   }
   */
 
+
   #{$right-container} {
+    position:relative; //overide snap-content default
+    overflow:visible; //overide snap-content default
     text-align:center;
     padding:0;
     .main-container {
       margin-top:0;
+      height:100%;
       max-width:100%;
       @media (min-width:768px) {
         max-height:100vh;
-        overflow-y:hidden;
+        //overflow-y:hidden;
       }
     }
   }
@@ -60,7 +66,7 @@ $html-name-space:'.page-home';
     width:100%;
     z-index:2;
     @media (min-width:768px) {
-      position:absolute;
+      //position:absolute;
     }
     > .col-md-12 {
       padding:0 37px;
