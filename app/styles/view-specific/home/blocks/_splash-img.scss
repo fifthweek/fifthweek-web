@@ -7,15 +7,16 @@ img {
     repeat:no-repeat;
   }
   display:block;
+  position:absolute;
   height:100%;
   width:100%;
   max-width:100%;
-  position:absolute;
   top:0;
+  left:0;
   @media (min-width:768px) {
-    position:relative;
+    //position:relative;
     height:auto;
-    top:0;
+    //top:0;
   }
 }
 
