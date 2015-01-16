@@ -57,7 +57,11 @@ img {
     height:115vh;
     background-image:url(../images/home/bg/1536.jpg);
   }
-
+}
+@media (min-width:768px) {
+  img {
+    height:100vh;
+  }
 }
 
 @media (min-width:1024px) {

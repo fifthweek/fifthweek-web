@@ -1,8 +1,9 @@
 .page-home .home-footer {
-  @media (min-width:768px) {
-    //position:absolute;
+  @media (min-width:992px) {
+    position:fixed;
     bottom:0;
-    background:rgba(255, 255, 255, 0.2);
+    //background:rgba(255, 255, 255, 0.2);
+    background:#111;
   }
   p {
     @include text-shadow-black;
