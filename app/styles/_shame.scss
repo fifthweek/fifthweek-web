@@ -31,3 +31,18 @@
     display:none;
   }
 }
+
+
+//full width pages (can be improved when there are multiples)
+.page-landing {
+  .main-container {
+    max-width:100%;
+  }
+}
+
+//pages with no top navbar (can be improved when there are multiples)
+.page-landing {
+  .navbar-fixed-top {
+    display:none;
+  }
+}
