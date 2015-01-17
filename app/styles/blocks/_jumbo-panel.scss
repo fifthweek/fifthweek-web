@@ -7,12 +7,12 @@
   @media (min-width: $screen-sm-min) {
     padding:$grid-gutter-width;
   }
-
+  p:last-child {
+    margin-bottom:0;
+  }
   .col-md-4 {
     padding-bottom:25px;
-    p:last-child {
-      margin-bottom:0;
-    }
+    
     &:last-child {
       padding-bottom:0;
     }
