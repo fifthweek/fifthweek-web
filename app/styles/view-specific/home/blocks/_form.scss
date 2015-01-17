@@ -8,11 +8,12 @@
   }
   .help-block,
   .has-error .help-block {
-    background:$red-dark-1;
+    background:rgba(0, 0, 0, 0.33);
+    text-align:left;
     color:$white-full;
     border-radius:3px;
     margin:0;
-    padding:10px;
+    padding:10px 13px;
   }
 
   .btn {
