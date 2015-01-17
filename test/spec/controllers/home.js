@@ -184,6 +184,21 @@ describe('home controller', function() {
     });
   });
 
+  describe('modal with video', function(){
+
+    it('should contain an openModal function', function(){
+      expect(scope.openModal).toBeDefined();
+
+    });
+
+    beforeEach(function() {
+      HomeCtrl = $controller('HomeCtrl', {
+        $scope: scope
+      });
+    });
+
+  });
+
   // load the controller's module
   beforeEach(module('webApp', 'stateMock'));
 
