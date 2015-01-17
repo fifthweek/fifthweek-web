@@ -10,7 +10,6 @@ $html-name-space:'.page-home';
 
   #{$logo} {
     @include text-shadow-black;
-    //position:absolute;
     position:relative;
     z-index:2;
     top:0;
@@ -33,16 +32,12 @@ $html-name-space:'.page-home';
     }
   }
 
-  /*
-  .navbar-toggle {
-    .fa {
-      color:$white-1;
-    }
-    @media (min-width:768px) {
-      position:absolute;
-    }
+  .wrapper,
+  .left-right-container-wrap,
+  #{$right-container},
+  #{$right-container} .main-container > div {
+    height:100%;
   }
-  */
 
 
   #{$right-container} {
@@ -54,9 +49,8 @@ $html-name-space:'.page-home';
       margin-top:0;
       height:100%;
       max-width:100%;
-      @media (min-width:768px) {
-        max-height:100vh;
-        //overflow-y:hidden;
+      > div {
+        position:relative;
       }
     }
   }
@@ -66,9 +60,6 @@ $html-name-space:'.page-home';
     position:relative;
     width:100%;
     z-index:2;
-    @media (min-width:768px) {
-      //position:absolute;
-    }
     > .col-md-12 {
       padding:0 37px;
       @media (min-width:992px) {
@@ -84,3 +75,5 @@ $html-name-space:'.page-home';
 @import 'blocks/_footer';
 @import 'blocks/_splash-img';
 @import 'blocks/_video';
+
+

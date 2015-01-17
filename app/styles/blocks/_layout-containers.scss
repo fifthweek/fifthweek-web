@@ -1,5 +1,10 @@
 @import '_base';
 
+html,
+body {
+  height:100%;
+}
+
 body {
   font-family:'Lato', cursive;
   color:$grey-dark;
