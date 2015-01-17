@@ -169,20 +169,21 @@ angular
           loginRequired: false
         }
       })
+      .state('creators.landingpage', {
+        url: '^/creators/landing-page', 
+        templateUrl: 'views/creators/landing-page.html',
+        data : { 
+          pageTitle: 'Landing page',
+          headTitle: ' - ' + 'Landing page',
+          disableSidebar: true
+        }
+      })
       .state('creators.customize', {
         //url: fifthweekConstants.dashboardPage,
         url: 'creators/customize', 
         data : {
           pageTitle: 'Customize',
           headTitle: ' - ' + 'Customize'
-        }
-      })
-      .state('creators.customize.landingpage', {
-        url: '^/creators/customize/landing-page', 
-        templateUrl: 'views/creators/customize/landing-page.html',
-        data : { 
-          pageTitle: 'Landing page',
-          headTitle: ' - ' + 'Landing page'
         }
       })
       .state('creators.customize.collections', {
