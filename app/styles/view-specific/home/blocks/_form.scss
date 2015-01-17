@@ -1,10 +1,11 @@
 .form-wrap {
-  margin-bottom:0.8%;
-  @media (min-width:767px) {
-    width:68%;
-    margin:0 0 0 33%;
+  margin:0 auto 0.8% auto;
+  max-width:300px;
+  @media (min-width:992px) {
+    width:100%;
+    max-width:600px;
+    margin:0 0 0 36%;
   }
-
   .help-block,
   .has-error .help-block {
     background:$red-dark-1;

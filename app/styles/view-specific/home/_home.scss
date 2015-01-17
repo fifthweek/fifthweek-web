@@ -73,8 +73,6 @@ $html-name-space:'.page-home';
     }
   }
 
-
-
   #{$right-container} {
     overflow:visible; //overide snap-content default
     text-align:center;
@@ -91,7 +89,10 @@ $html-name-space:'.page-home';
   .home-footer {
     width:100%;
     > .col-md-12 {
-      padding:0 37px;
+      padding:0 15px;
+      @media (min-width:768px) { 
+        padding:0 37px;
+      }
       @media (min-width:992px) {
         padding:0 15px;
       }
