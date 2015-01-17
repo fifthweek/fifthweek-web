@@ -32,12 +32,16 @@ $html-name-space:'.page-home';
     }
   }
 
+  
   .wrapper,
   .left-right-container-wrap,
   #{$right-container},
   #{$right-container} .main-container > div {
-    height:100%;
+    @media (min-width:768px) {
+      height:100%;
+    }
   }
+
 
 
   #{$right-container} {
