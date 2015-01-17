@@ -1,9 +1,8 @@
-.page-home .home-footer {
-  @media (min-width:992px) {
+.home-footer {
+  @media (min-width:992px) and (min-height:450px) {
     position:fixed;
     bottom:0;
-    //background:rgba(255, 255, 255, 0.2);
-    background:#111;
+    background:rgba(255, 255, 255, 0.2);
   }
   p {
     @include text-shadow-black;
@@ -26,12 +25,20 @@
       }
     }
   }
+  a {
+    color:$white-full;
+    text-decoration:underline;
+    #{$state-active-hover-focus} {
+      text-decoration:none;
+    }
+
+  }
   .text-wrap {
     max-width:420px;
     margin:0 auto;
     padding:10px 0;
     @media (min-width:600px) {
-      padding:15px 0;
+      padding:25px 0;
       max-width:500px;
     }
     @media (min-width:768px) {

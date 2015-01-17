@@ -3,6 +3,19 @@
 $html-name-space:'.page-home';
 
 #{$html-name-space} {
+  background:{
+    image:url(../images/home/bg/960-1400.jpg);
+    repeat:repeat;
+    size:cover;
+    attachment:scroll;
+  }
+  @media (min-width:992px) {
+    background:{
+      repeat:no-repeat;
+      image:url(../images/home/bg/2048.jpg);
+    }
+  }
+
   .navbar,
   footer {
     display:none !important;
@@ -10,7 +23,6 @@ $html-name-space:'.page-home';
 
   #{$logo} {
     @include text-shadow-black;
-    position:relative;
     z-index:2;
     top:0;
     left:0;
@@ -20,12 +32,10 @@ $html-name-space:'.page-home';
     padding:10px 0 20px 0;
     opacity:0.5;
     @media (min-width:768px) {
-      left:40px;
       font-size:42px;
-      width:150px;
-      h1 {
-        margin-left:40px;
-      }
+      width:220px;
+      text-align:left;
+      padding-left:40px;
     }
     a {
       color:$white-full;
@@ -37,7 +47,8 @@ $html-name-space:'.page-home';
   .left-right-container-wrap,
   #{$right-container},
   #{$right-container} .main-container > div {
-    @media (min-width:768px) {
+    //561px to match logo and intro height
+    @media (min-width:768px) and (min-height:561px) {
       height:100%;
     }
   }
@@ -45,25 +56,20 @@ $html-name-space:'.page-home';
 
 
   #{$right-container} {
-    position:relative; //overide snap-content default
     overflow:visible; //overide snap-content default
     text-align:center;
     padding:0;
+    background:none;
     .main-container {
       margin-top:0;
       height:100%;
       max-width:100%;
-      > div {
-        position:relative;
-      }
     }
   }
 
   .home-intro,
   .home-footer {
-    position:relative;
     width:100%;
-    z-index:2;
     > .col-md-12 {
       padding:0 37px;
       @media (min-width:992px) {
@@ -72,12 +78,10 @@ $html-name-space:'.page-home';
     }
   }
 
+  @import 'blocks/_intro';
+  @import 'blocks/_form';
+  @import 'blocks/_footer';
+  @import 'blocks/_video';
+
 }
-
-@import 'blocks/_intro';
-@import 'blocks/_form';
-@import 'blocks/_footer';
-@import 'blocks/_splash-img';
-@import 'blocks/_video';
-
 
