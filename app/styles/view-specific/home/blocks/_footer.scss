@@ -2,7 +2,7 @@
   @media (min-width:768px) and (min-height:450px) {
     position:fixed;
     bottom:0;
-    background:rgba(119, 121, 122, 0.2);
+    background:rgba(255, 255, 255, 0.1);
   }
   p {
     @include text-shadow-black;
@@ -13,10 +13,10 @@
     color:#CECECE;
     margin:0;
     @media (min-width:600px) {
-      font-size:21px;
+      font-size:19px;
     }
     @media (min-width:768px) {
-      color:$white-1;
+      color:#ffffff;
     }
     span {
       display:block;
