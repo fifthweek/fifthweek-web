@@ -306,9 +306,6 @@ describe('fifthweek', function() {
     var email = newEmailAddress(username);
     var password = 'password1';
 
-    header.registerLink.click();
-
-    registerPage.exampleWorkTextBox.sendKeys(username);
     registerPage.usernameTextBox.sendKeys(username);
     registerPage.passwordTextBox.sendKeys(password);
     registerPage.emailTextBox.sendKeys(email);
