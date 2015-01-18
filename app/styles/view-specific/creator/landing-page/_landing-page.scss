@@ -4,7 +4,15 @@ $html-name-space:'.page-landing';
 
 #{$html-name-space} {
 
+  .main-container {
+    margin-top:0;
+  }
+
   .landing-header {
+    margin-bottom:15px;
+    @media (min-width:992px) {
+      margin-bottom:0;
+    }
 
     .img-wrap {
       position:relative;
@@ -15,7 +23,7 @@ $html-name-space:'.page-landing';
       .overlay {
         position:absolute;
         display:inline-block;
-        z-index:3;
+        z-index:2;
         width:100%;
         height:100%;
         top:0;
@@ -23,8 +31,62 @@ $html-name-space:'.page-landing';
         background:$black-full;
         opacity:0.6;
       }
+
+      .content {
+        position:absolute;
+        width:100%;
+        top:0;
+        left:0;
+        z-index:3;
+        text-align:center;
+      }
+
     }
 
+    .avatar {
+      width:17%;
+      margin:1.2em;
+      border:solid 3px $white-full;
+      border-radius:50%;
+      @media (min-width:768px) {
+        width:10%;
+      }
+    }
+    h2,
+    h3 {
+      color:red;
+      margin:0;
+      text-align:center;
+      @media (min-width:768px) {
+        color:$white-2;
+      }
+    }
+    h2 {
+      margin:0;
+      @media (min-width:768px) {
+        margin-bottom:0.25em;
+      }
+    }
+    h3 {
+      font-size:18px;
+    }
+
+  }
+  .btn-subscribe {
+    display:block;
+    margin:0 auto;
+    width:100%;
+    @media (min-width:500px) {
+      width:auto;
+    }
+    @media (min-width:992px) {
+      position:relative;
+      z-index:4;
+      margin:{
+        top:-20px;
+        bottom:60px;
+      }
+    }
   }
   
 }
