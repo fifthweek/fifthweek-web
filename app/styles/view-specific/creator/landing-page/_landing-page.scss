@@ -88,5 +88,19 @@ $html-name-space:'.page-landing';
       }
     }
   }
+
+
+
+  label {
+    display:block;
+  }
+  input[type="checkbox"] {
+    float:left;
+    margin:{
+      top:2px;
+      right:10px;
+    }
+  }
+
   
 }
