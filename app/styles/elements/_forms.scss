@@ -20,6 +20,11 @@ $input-height-base:42px;
   margin: ($grid-gutter-width / 2) 0 0 0;
 }
 
+textarea.form-control {
+  width:100%;
+  max-width:100%;
+}
+
 .btn-block {
   display:inline-block;
   vertical-align:top;
