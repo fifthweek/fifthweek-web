@@ -172,6 +172,7 @@ angular
       .state('creators.landingpage', {
         url: '^/creators/landing-page', 
         templateUrl: 'views/creators/landing-page.html',
+        controller: 'landingPageCtrl',
         data : { 
           pageTitle: 'Landing page',
           headTitle: ' - ' + 'Landing page',

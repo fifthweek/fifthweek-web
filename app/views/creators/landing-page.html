@@ -31,7 +31,9 @@
           <div class="col-sm-10">
             <form>
               <label>
-                <input type="checkbox" name="basicSubscription" checked />
+                <input type="checkbox" 
+                       ng-model="subscriptions.basic"
+                       ng-checked="subscriptions.basic">
                 <h5>Basic Subscription</h5>
               </label>
             </form>
@@ -55,7 +57,9 @@
           <div class="col-sm-10">
             <form>
               <label>
-                <input type="checkbox" name="basicSubscription" />
+                <input type="checkbox" 
+                       ng-model="subscriptions.extras"
+                       ng-checked="subscriptions.extras">
                 <h5>Extras Channel</h5>
               </label>
             </form>
