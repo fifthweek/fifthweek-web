@@ -51,3 +51,27 @@
 img {
   max-width:100%;
 }
+
+#{$right-container} .nav-tabs {
+  padding:0;
+  border-bottom:0 none;
+  > li {
+    margin-bottom:0;
+    > a {
+      padding:{
+        right:$main-cont-padding-small;
+        left:$main-cont-padding-small;
+      }
+      @media (min-width:768px) {
+        padding:{
+          right:$main-cont-padding-large;
+          left:$main-cont-padding-large;
+        }
+      }
+    }
+  }
+}
+
+.tab-content {
+  margin-top:-2px;
+}

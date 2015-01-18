@@ -1,0 +1,11 @@
+@import '_base';
+
+$html-name-space:'.page-customize-landing';
+
+#{$html-name-space} {
+
+  .panel:first-child {
+    margin-top:0;
+  }
+
+}

@@ -2,10 +2,7 @@
 
 .jumbo-panel {
   @media (min-width:768px) {
-    padding:20px;
-  }
-  @media (min-width: $screen-sm-min) {
-    padding:$grid-gutter-width;
+    padding:$main-cont-padding-large;
   }
   p:last-child {
     margin-bottom:0;
