@@ -24,6 +24,15 @@
         display:inline;
       }
     }
+    br {
+      display:none;
+      @media (min-width:420px) {
+        display:block;
+      }
+      @media (min-width:600px) {
+        display:none;
+      }
+    }
   }
   a {
     color:$white-full;
@@ -39,7 +48,7 @@
     padding:10px 0;
     @media (min-width:600px) {
       padding:25px 0;
-      max-width:500px;
+      max-width:535px;
     }
     @media (min-width:768px) {
       max-width:735px;
