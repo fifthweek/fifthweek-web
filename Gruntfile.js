@@ -184,6 +184,7 @@ module.exports = function (grunt) {
         ignorePath:  /\.\.\//,
         exclude: [
           'bower_components/bootstrap/dist/css/bootstrap.css',
+          'bower_components/fontawesome/css/font-awesome.css',
           'bower_components/bootstrap-sass-official/assets/javascripts/*'
         ]
       },
