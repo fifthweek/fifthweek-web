@@ -15,7 +15,7 @@
       <h3 class="visible-xs hidden-sm">Web Comics and more</h3>
     </div>
 
-    <button class="btn btn-lg btn-primary btn-subscribe">Subscribe &#36;0.50/week</button>
+    <button class="btn btn-lg btn-primary btn-subscribe">Subscribe &#36;{{totalPrice}}/week</button>
 
     <div class="panel panel-default">
       <div class="panel-body jumbo-panel">
@@ -32,14 +32,14 @@
             <form>
               <label>
                 <input type="checkbox" 
-                       ng-model="subscriptions.basic"
-                       ng-checked="subscriptions.basic">
+                       ng-model="subscriptions.basic.checked"
+                       ng-checked="subscriptions.basic.checked">
                 <h5>Basic Subscription</h5>
               </label>
             </form>
           </div>
           <div class="col-sm-3">
-            <p>&#36;0.50/week</p>
+            <p>&#36;{{subscriptions.basic.price}}/week</p>
           </div>
         </div>
         <div class="col-sm-8">
@@ -58,14 +58,14 @@
             <form>
               <label>
                 <input type="checkbox" 
-                       ng-model="subscriptions.extras"
-                       ng-checked="subscriptions.extras">
+                       ng-model="subscriptions.extras.checked"
+                       ng-checked="subscriptions.extras.checked">
                 <h5>Extras Channel</h5>
               </label>
             </form>
           </div>
           <div class="col-sm-3">
-            <p>&#36;0.75/week</p>
+            <p>&#36;{{subscriptions.extras.price}}/week</p>
           </div>
         </div>
         <div class="col-sm-8">
