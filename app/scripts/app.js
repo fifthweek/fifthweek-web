@@ -147,7 +147,23 @@ angular
           headTitle: ' - ' + 'Feedback'
         }
       })
-
+      .state('publiclandingpage', {
+        url: '/creators/landing-page', 
+        data : { 
+          pageTitle: 'Landing page',
+          headTitle: ' - ' + 'Landing page',
+          disableSidebar: true
+        },
+        views: {
+          '': {
+            templateUrl: 'views/creators/landing-page.html',
+            controller: 'landingPageCtrl'
+          }
+        },
+        access: {
+          loginRequired: true
+        }
+      })
       .state('creators', {
         abstract: true,
         url: 'creators',
@@ -169,22 +185,25 @@ angular
           loginRequired: false
         }
       })
-      .state('creators.landingpage', {
-        url: '^/creators/landing-page', 
-        templateUrl: 'views/creators/landing-page.html',
-        controller: 'landingPageCtrl',
-        data : { 
-          pageTitle: 'Landing page',
-          headTitle: ' - ' + 'Landing page',
-          disableSidebar: true
-        }
-      })
       .state('creators.customize', {
-        //url: fifthweekConstants.dashboardPage,
-        url: 'creators/customize', 
+        url: '^/creators/customize', 
         data : {
           pageTitle: 'Customize',
           headTitle: ' - ' + 'Customize'
+        },
+        views:{
+          '': {
+            templateUrl: 'views/creators/customize/index.html'
+          }
+        }
+      })
+      .state('creators.customize.landingpage', {
+        url: '^/creators/customize/landingpage', 
+        templateUrl: 'views/creators/customize/landingpage.html',
+        controller: 'customizeLandingPageCtrl',
+        data : { 
+          pageTitle: ' Landing page',
+          headTitle: ' -' + ' Landing page'
         }
       })
       .state('creators.customize.collections', {
@@ -195,7 +214,6 @@ angular
           headTitle: ' - ' + 'Collections'
         }
       })
-
       .state('help', {
         abstract: true,
         url: 'help',
