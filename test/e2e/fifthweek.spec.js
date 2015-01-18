@@ -9,209 +9,169 @@ var FeedbackPage = require('./pages/feedback.page.js');
 describe('fifthweek', function() {
   'use strict';
 
-  describe('header', function() {
-
-    it('should have a register link', function() {
-      expect(header.registerLink.getText()).toContain('Register');
-      header.registerLink.click();
-      expect(browser.getCurrentUrl()).toContain('/register');
-    });
+  describe("homepage", function() {
 
     it('should have a sign-in link', function() {
-      expect(header.signInLink.getText()).toContain('Sign In');
+      expect(header.signInLink.getText()).toContain('Sign in');
       header.signInLink.click();
       expect(browser.getCurrentUrl()).toContain('/signin');
     });
-  });
 
-  describe("homepage", function() {
+    describe("registration form", function() {
+      it('should allow a new user to register', function(){
+        page.usernameTextBox.sendKeys(username);
+        page.passwordTextBox.sendKeys('password1');
+        page.emailTextBox.sendKeys(email);
+        page.registerButton.click();
 
-    it('should have a "Become a creator" link', function() {
-      var becomeACreatorLink = element(by.id('becomeACreatorLink'));
-      expect(becomeACreatorLink.getText()).toContain('Become a creator');
-      becomeACreatorLink.click();
-      expect(browser.getCurrentUrl()).toContain('/register');
-    });
-  });
+        browser.waitForAngular();
 
-  describe('register page', function() {
-
-    it('should allow a new user to register', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys('password1');
-      page.emailTextBox.sendKeys(email);
-      page.registerButton.click();
-      expect(browser.getCurrentUrl()).toContain('/dashboard');
-    });
-
-    it('requires example work', function(){
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
-
-      var messages = page.helpMessages;
-
-      expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('A valid URL is required.')
-    });
-
-    it('requires email address', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
-
-      var messages = page.helpMessages;
-
-      expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('A valid email address is required.')
-    });
-
-    it('requires username', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
-
-      var messages = page.helpMessages;
-
-      expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('A username is required.')
-    });
-
-    it('requires password', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys(username);
-      page.registerButton.click();
-
-      var messages = page.helpMessages;
-
-      expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('A password is required.')
-    });
-
-    it('should not allow spaces in username', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys('a ' + username);
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
-
-      var messages = page.helpMessages;
-
-      expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('Letters, numbers and underscores only.')
-    });
-
-    it('should not allow forbidden characters in username', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys('a!' + username);
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
-
-      var messages = page.helpMessages;
-
-      expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('Letters, numbers and underscores only.')
-    });
-
-    it('should allow lowercase and uppercase characters in username', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys('aA' + username);
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
-
-      expect(browser.getCurrentUrl()).toContain('/dashboard');
-    });
-
-    it('should not allow usernames with fewer than 6 characters', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys('abc');
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
-
-      var messages = page.helpMessages;
-
-      expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('Must be at least 6 characters.')
-    });
-
-    it('should not allow usernames with over than 20 characters', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys('12345678901234567890ThisIsTooLong');
-      page.passwordTextBox.sendKeys('password1');
-
-      // Some browsers don't honor maxlength attribute with protractor's sendKeys
-      // so we also check the ng-maxlength error as a backup.
-      var messages = page.helpMessages;
-      messages.count().then(function(count){
-        if(count){
-          expect(messages.get(0).getText()).toContain('Must be fewer than 20 characters.')
-        }
-        else{
-          expect(page.usernameTextBox.getAttribute('value')).toBe('12345678901234567890');
-        }
+        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
       });
-    });
 
-    it('should not allow passwords with fewer than 6 characters', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys('pass');
-      page.registerButton.click();
+      it('requires email address', function(){
+        page.usernameTextBox.sendKeys(username);
+        page.passwordTextBox.sendKeys('password1');
+        page.registerButton.click();
 
-      var messages = page.helpMessages;
+        var messages = page.helpMessages;
 
-      expect(messages.count()).toBe(1);
-      expect(messages.get(0).getText()).toContain('Must be at least 6 characters.')
-    });
+        expect(messages.count()).toBe(1);
+        expect(messages.get(0).getText()).toContain('A valid email address is required.')
+      });
 
-    it('should allow numbers in username', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys('1' + username);
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
+      it('requires username', function(){
+        page.emailTextBox.sendKeys(email);
+        page.passwordTextBox.sendKeys('password1');
+        page.registerButton.click();
 
-      expect(browser.getCurrentUrl()).toContain('/dashboard');
-    });
+        var messages = page.helpMessages;
 
-    it('should allow underscores in username', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys('a_A' + username);
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
+        expect(messages.count()).toBe(1);
+        expect(messages.get(0).getText()).toContain('A username is required.')
+      });
 
-      expect(browser.getCurrentUrl()).toContain('/dashboard');
-    });
+      it('requires password', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys(username);
+        page.registerButton.click();
 
-    it('should allow leading and trailing spaces in username', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
-      page.usernameTextBox.sendKeys(' ' + username + ' ');
-      page.passwordTextBox.sendKeys('password1');
-      page.registerButton.click();
+        var messages = page.helpMessages;
 
-      expect(browser.getCurrentUrl()).toContain('/dashboard');
-    });
+        expect(messages.count()).toBe(1);
+        expect(messages.get(0).getText()).toContain('A password is required.')
+      });
 
-    var page = new RegisterPage();
-    var username;
-    var email;
+      it('should not allow spaces in username', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys('a ' + username);
+        page.passwordTextBox.sendKeys('password1');
+        page.registerButton.click();
 
-    beforeEach(function() {
-      username = newUsername();
-      email = newEmailAddress(username);
-      header.registerLink.click();
+        var messages = page.helpMessages;
+
+        expect(messages.count()).toBe(1);
+        expect(messages.get(0).getText()).toContain('Letters, numbers and underscores only.')
+      });
+
+      it('should not allow forbidden characters in username', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys('a!' + username);
+        page.passwordTextBox.sendKeys('password1');
+        page.registerButton.click();
+
+        var messages = page.helpMessages;
+
+        expect(messages.count()).toBe(1);
+        expect(messages.get(0).getText()).toContain('Letters, numbers and underscores only.')
+      });
+
+      it('should allow lowercase and uppercase characters in username', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys('aA' + username);
+        page.passwordTextBox.sendKeys('password1');
+        page.registerButton.click();
+
+        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+      });
+
+      it('should not allow usernames with fewer than 6 characters', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys('abc');
+        page.passwordTextBox.sendKeys('password1');
+        page.registerButton.click();
+
+        var messages = page.helpMessages;
+
+        expect(messages.count()).toBe(1);
+        expect(messages.get(0).getText()).toContain('Must be at least 6 characters.')
+      });
+
+      it('should not allow usernames with over than 20 characters', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys('12345678901234567890ThisIsTooLong');
+        page.passwordTextBox.sendKeys('password1');
+
+        // Some browsers don't honor maxlength attribute with protractor's sendKeys
+        // so we also check the ng-maxlength error as a backup.
+        var messages = page.helpMessages;
+        messages.count().then(function(count){
+          if(count){
+            expect(messages.get(0).getText()).toContain('Must be fewer than 20 characters.')
+          }
+          else{
+            expect(page.usernameTextBox.getAttribute('value')).toBe('12345678901234567890');
+          }
+        });
+      });
+
+      it('should not allow passwords with fewer than 6 characters', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys(username);
+        page.passwordTextBox.sendKeys('pass');
+        page.registerButton.click();
+
+        var messages = page.helpMessages;
+
+        expect(messages.count()).toBe(1);
+        expect(messages.get(0).getText()).toContain('Must be at least 6 characters.')
+      });
+
+      it('should allow numbers in username', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys('1' + username);
+        page.passwordTextBox.sendKeys('password1');
+        page.registerButton.click();
+
+        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+      });
+
+      it('should allow underscores in username', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys('a_A' + username);
+        page.passwordTextBox.sendKeys('password1');
+        page.registerButton.click();
+
+        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+      });
+
+      it('should allow leading and trailing spaces in username', function(){
+        page.emailTextBox.sendKeys(email);
+        page.usernameTextBox.sendKeys(' ' + username + ' ');
+        page.passwordTextBox.sendKeys('password1');
+        page.registerButton.click();
+
+        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+      });
+
+      var page = new RegisterPage();
+      var username;
+      var email;
+
+      beforeEach(function() {
+        username = newUsername();
+        email = newEmailAddress(username);
+      });
     });
   });
 
@@ -223,7 +183,7 @@ describe('fifthweek', function() {
         page.usernameTextBox.sendKeys(username);
         page.passwordTextBox.sendKeys(password);
         page.signInButton.click();
-        expect(browser.getCurrentUrl()).toContain('/dashboard');
+        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
       });
 
       it('should require a valid password', function(){
@@ -250,7 +210,7 @@ describe('fifthweek', function() {
         page.passwordTextBox.sendKeys(password);
         page.signInButton.click();
 
-        expect(browser.getCurrentUrl()).toContain('/dashboard');
+        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
       });
 
       it('should case sensitive for the password', function(){
