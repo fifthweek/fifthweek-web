@@ -214,6 +214,14 @@ angular
           headTitle: ' - ' + 'Collections'
         }
       })
+      .state('creators.customize.channels', {
+        url: '^/creators/customize/channels', 
+        templateUrl: 'views/creators/customize/channels.html',
+        data : { 
+          pageTitle: 'Channels',
+          headTitle: ' - ' + 'Channels'
+        }
+      })
       .state('help', {
         abstract: true,
         url: 'help',
