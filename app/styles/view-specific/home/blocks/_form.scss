@@ -3,8 +3,9 @@
   width:100%;
   max-width:320px;
   @media (min-width:992px) {
-    max-width:640px;
-    margin:0 0 0 36%;
+    max-width:960px;
+    margin:0 auto;
+    padding-left:290px;
   }
   .help-block,
   .has-error .help-block {
