@@ -1,4 +1,3 @@
-var DashboardSidebarSpec = require('./shared/dashboardsidebar.spec.js');
 var HeaderPage = require('./pages/header.page.js');
 var RegisterPage = require('./pages/register.page.js');
 var SignInPage = require('./pages/signin.page.js');
@@ -23,8 +22,6 @@ describe('fifthweek', function() {
         page.passwordTextBox.sendKeys('password1');
         page.emailTextBox.sendKeys(email);
         page.registerButton.click();
-
-        browser.waitForAngular();
 
         expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
       });
@@ -268,8 +265,6 @@ describe('fifthweek', function() {
       expect(page.video.getAttribute('src')).toMatch(urlRegex(page.videoUrl));
     });
 
-    new DashboardSidebarSpec().includeTests();
-
     var page = new DemonstrationPage();
 
     beforeEach(function() {
@@ -281,8 +276,6 @@ describe('fifthweek', function() {
     it('should contain a link to email Fifthweek', function() {
       expect(page.emailLink.getAttribute('href')).toContain('mailto:hello@fifthweek.com')
     });
-
-    new DashboardSidebarSpec().includeTests();
 
     var page = new FeedbackPage();
     var sidebar = new SidebarPage();
