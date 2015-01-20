@@ -124,7 +124,7 @@ angular
             templateUrl: 'views/dashboard/index.html'
           },
           'sidebar': {
-            templateUrl: 'views/dashboard/partials/sidebar.html'
+            templateUrl: 'views/partials/sidebar.html'
           }
         },
         access: {
@@ -176,7 +176,7 @@ angular
             templateUrl: 'views/creators/index.html'
           },
           'sidebar': {
-            templateUrl: 'views/creators/partials/sidebar.html'
+            templateUrl: 'views/partials/sidebar.html'
           }
         },
         access: {
@@ -234,7 +234,7 @@ angular
             templateUrl: 'views/help/index.html'
           },
           'sidebar': {
-            templateUrl: 'views/help/partials/sidebar.html'
+            templateUrl: 'views/partials/sidebar.html'
           }
         },
         access: {
