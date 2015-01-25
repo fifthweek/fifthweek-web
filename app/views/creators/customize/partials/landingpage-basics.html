@@ -4,26 +4,30 @@
     <div class="col-md-12">
       <div class="row">
         <h5>URL</h5>
-        <a ng-href>http://fifthweek.com/slackbot-comics</a>
+        <a ng-href="{{landingPageData.url}}">{{landingPageData.url}}</a>
       </div>
 
       <form>
         <div class="row">
           <div class="col-md-6">
             <label>Subscription name</label>
-            <input type="text" class="form-control" value="Slackbot comics" />
+            <input type="text" class="form-control" ng-model="landingPageData.subscriptionName" placeholder="Mark Holmes" />
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
             <label>Tagline</label>
-            <input type="text" class="form-control" value="Bots that slack" />
+            <input type="text" class="form-control" ng-model="landingPageData.tagline" placeholder="Web Comics and more"/>
           </div>
         </div>
 
         <div class="row">
           <label>Quick introduction</label>
-          <textarea class="form-control">Hi! I'm Slackbot. Right le derp in just drink hulk.facepalm amet really? Note sexy time sandwich lol a wodka avengers tank. Portfolio left that so close why facebook geek crying trolololo. T-rex nother to do here dummies i know that feel lose yao silent hill dog face.</textarea>
+          <textarea class="form-control" ng-modal="landingPageData.introduction" placeholder="Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here!"></textarea>
+        </div>
+
+        <div class="row">
+          <input type="submit" class="btn btn-success" value="Save Changes" />
         </div>
 
       </form>

@@ -6,13 +6,17 @@
         <div class="row">
           <div class="col-md-10">
             <label>Your Video</label>
-            <input type="url" class="form-control" placeholder="https://www.youtube.com/watch?v=vEQrP3bGX8k" />
+            <input type="url" class="form-control" ng-model="landingPageData.videoUrl" placeholder="https://www.youtube.com/watch?v=vEQrP3bGX8k" />
             <p><small>Creators with videos have a much higher success rate. <br/>Paste in the url of your video from Youtube, Vimeo, etc.</small></p>
           </div>
         </div>
         <div class="row">
           <label>About the subscription</label>
-          <textarea class="form-control" placeholder="Hi, I'm Marc. I do a web comic called Something. That's my job, and my income is generated entirely by selling Something books, doing commissions and subscriptions from people like you. By becoming a subscriber you can help me pay for business and living expenses, meaning that I'll be able to spend more time making comics and art for everyone to enjoy!"></textarea>
+          <textarea class="form-control" ng-model="landingPageData.subscriptionAbout" placeholder="Hi, I'm Marc. I do a web comic called Something. That's my job, and my income is generated entirely by selling Something books, doing commissions and subscriptions from people like you. By becoming a subscriber you can help me pay for business and living expenses, meaning that I'll be able to spend more time making comics and art for everyone to enjoy! 
+
+What your subscriptions will allow me to do: Right now I post a new Something strip 3 times a week (most of the time). Your money will go directly to paying my rent, food, insurance and business expenses, leaving me with more time to make comics, including stuff like my Something 24 hour comics, my super hero comic or weird stuff like my Turtles! I'll be creating comics and art full time, which means more cool stuff for you to read and enjoy! 
+
+**Will Something still be free to read?** Yes! Everyone will always be able to read Something for free on my site (and a whole bunch of other places on the internet)."></textarea>
           <p><small>Syntax: **bold** | *italic* | !(imageurl)</small></p>
         </div>
         <div class="row">
