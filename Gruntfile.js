@@ -224,6 +224,12 @@ module.exports = function (grunt) {
       }
     },
 
+    "ddescribe-iit": {
+      files: [
+        'test/**/*.js',
+        'test/**/**/*.js'
+      ]
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -681,5 +687,10 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'test:live:app',
     'build'
+  ]);
+
+  grunt.registerTask('ci-checks', [
+    'ddescribe-iit',
+    'test:live:dist:browserstack'
   ]);
 };

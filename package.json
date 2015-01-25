@@ -18,6 +18,7 @@
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.4.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-ddescribe-iit": "0.0.4",
     "grunt-file-creator": "^0.1.2",
     "grunt-filerev": "^0.2.1",
     "grunt-google-cdn": "^0.4.0",
@@ -50,7 +51,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "grunt test:live:dist:browserstack",
+    "test": "grunt ci-checks",
     "install": "node node_modules/protractor/bin/webdriver-manager update"
   }
 }
