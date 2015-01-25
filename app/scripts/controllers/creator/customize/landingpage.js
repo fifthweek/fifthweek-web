@@ -13,6 +13,5 @@ angular.module('webApp').controller(
       subscriptionAbout:''
     };
 
-
   }
 ]);

@@ -14,6 +14,7 @@ angular
     'angular-loading-bar',
     'ui.bootstrap',
     'snap',
+    'monospaced.elastic',
     'angulartics',
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',

@@ -32,6 +32,7 @@ module.exports = function(config) {
       'bower_components/angular-snap/angular-snap.js',
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
       'bower_components/ng-focus/ng-focus.js',
+      'bower_components/angular-elastic/elastic.js',
       'bower_components/AngularJS-Toaster/toaster.js',
       'bower_components/angular-loading-bar/build/loading-bar.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
