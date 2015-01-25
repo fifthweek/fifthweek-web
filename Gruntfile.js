@@ -224,7 +224,7 @@ module.exports = function (grunt) {
       }
     },
 
-    "ddescribe-iit": {
+    'ddescribe-iit': {
       files: [
         'test/**/*.js',
         'test/**/**/*.js'
