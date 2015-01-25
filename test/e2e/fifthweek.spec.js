@@ -45,18 +45,19 @@ describe('fifthweek', function() {
       expect(browser.getCurrentUrl()).toContain('/dashboard');
     });
 
-    xit('should disable button after submission', function(){
-      page.exampleWorkTextBox.sendKeys(username);
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys('password1');
-      page.emailTextBox.sendKeys(email);
-      page.registerButton.click();
+    // it('should disable button after submission', function(){
+    //   page.exampleWorkTextBox.sendKeys(username);
+    //   page.usernameTextBox.sendKeys(username);
+    //   page.passwordTextBox.sendKeys('password1');
+    //   page.emailTextBox.sendKeys(email);
+    //   page.registerButton.click();
 
-      // Faulty assertion: http://stackoverflow.com/questions/27740867/assert-button-disabled-on-click-with-protractor-in-angular
-      expect(page.registerButton.getAttribute('disabled')).toContain('true');
+    //   // Faulty assertion: http://stackoverflow.com/questions/27740867/assert-button-disabled-on-click-with-protractor-in-angular
+    //   // https://github.com/angular/protractor/issues/1752
+    //   expect(page.registerButton.getAttribute('disabled')).toContain('true');
 
-      expect(browser.getCurrentUrl()).toContain('/dashboard');
-    });
+    //   expect(browser.getCurrentUrl()).toContain('/dashboard');
+    // });
 
     it('requires example work', function(){
       page.emailTextBox.sendKeys(email);
@@ -239,16 +240,17 @@ describe('fifthweek', function() {
         expect(browser.getCurrentUrl()).toContain('/dashboard');
       });
 
-      xit('should disable button after submission', function(){
-        page.usernameTextBox.sendKeys(username);
-        page.passwordTextBox.sendKeys(password);
-        page.signInButton.click();
+      // it('should disable button after submission', function(){
+      //   page.usernameTextBox.sendKeys(username);
+      //   page.passwordTextBox.sendKeys(password);
+      //   page.signInButton.click();
 
-        // Faulty assertion: http://stackoverflow.com/questions/27740867/assert-button-disabled-on-click-with-protractor-in-angular
-        expect(page.signInButton.getAttribute('disabled')).toContain('true');
+      //   // Faulty assertion: http://stackoverflow.com/questions/27740867/assert-button-disabled-on-click-with-protractor-in-angular
+      //   // https://github.com/angular/protractor/issues/1752
+      //   expect(page.signInButton.getAttribute('disabled')).toContain('true');
 
-        expect(browser.getCurrentUrl()).toContain('/dashboard');
-      });
+      //   expect(browser.getCurrentUrl()).toContain('/dashboard');
+      // });
 
       it('should require a valid password', function(){
         page.usernameTextBox.sendKeys(username);
