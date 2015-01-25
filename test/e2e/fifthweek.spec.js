@@ -295,7 +295,14 @@ describe('fifthweek', function() {
 
   function reset(){
     browser.get('/#/signout');
-    browser.waitForAngular();
+
+    // `waitForAngular` is unreliable for the first test. We frequently receive a 0ms timeout with that approach.
+    // Instead, we wait for the sign-in page to be loaded, which is where we get redirected after signing out.
+    var signInPage = new SignInPage();
+    browser.wait(function(){
+      return signInPage.signInButton.isPresent();
+    });
+    
     browser.get('/');
     browser.waitForAngular();
   };
