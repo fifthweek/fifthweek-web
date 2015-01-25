@@ -35,8 +35,7 @@ angular
     accountPage: '/account',
     dashboardPage: '^/dashboard/demo',
     feedbackPage: '^/dashboard/feedback',
-    faqPage: '/faq',
-    faqPageLearnMore: '#learn-more',
+    faqPage: '^/help/faq',
     notAuthorizedPage: '/notauthorized'
   })
 
