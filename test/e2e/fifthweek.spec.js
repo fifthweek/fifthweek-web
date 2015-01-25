@@ -272,7 +272,7 @@ describe('fifthweek', function() {
     });
   });
 
-  ddescribe('feedback page', function() {
+  describe('feedback page', function() {
     it('should contain a link to email Fifthweek', function() {
       expect(page.mailtoLink.getAttribute('href')).toContain('mailto:hello@fifthweek.com');
     });
