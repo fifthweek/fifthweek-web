@@ -687,4 +687,9 @@ module.exports = function (grunt) {
     'ddescribe-iit',
     'test:live:dist:browserstack'
   ]);
+
+  grunt.registerTask('prepush', [
+    'ddescribe-iit',
+    'test:live'
+  ]);
 };
