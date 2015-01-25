@@ -2,7 +2,7 @@
   <a class="pink" ui-sref="home" ui-sref-active="home" aria-label="Register" snap-close><i class="fa fa-ticket"></i>Register</a>
 </li>
 <li data-ng-hide="currentUser.authenticated" data-match-route="/signin*">
-  <a class="green" ui-sref="signin" ui-sref-active="active" aria-label="Sign in" snap-close><i class="fa fa-sign-in"></i>Sign In</a>
+  <a class="green" id="signInLink" ui-sref="signin" ui-sref-active="active" aria-label="Sign in" snap-close><i class="fa fa-sign-in"></i>Sign in</a>
 </li>
 <li class="parent-wrap" data-ng-hide="!currentUser.authenticated" data-match-route="/account*">
   <span class="dummy" ng-click="menuAccount = ! menuAccount"><i class="fa fa-user"></i>{{currentUser.username}}</span>

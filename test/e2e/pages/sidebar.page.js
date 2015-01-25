@@ -7,7 +7,8 @@ var SidebarPage = function() {};
 
 SidebarPage.prototype = Object.create({}, {
   links: { get: function () { return element.all(by.css('#sidebar a')); }},
-  feedbackLink: { get: function () { return element(by.css('#sidebar')).element(by.linkText(new FeedbackPage().title)); }},
+  feedbackLink: { get: function () { return element(by.id('feedbackLink')); }},
+  sidebarRegisterButton: { get: function () { return element(by.id('registerButton')); }},
   linkedPages: { get: function () { return [new DemonstrationPage(), new FeedbackPage()]; }}
 });
 

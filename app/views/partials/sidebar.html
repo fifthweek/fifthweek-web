@@ -3,10 +3,15 @@
   <ul>
     <div ng-include="'views/partials/sidebar/user.html'"></div>
     <li class="parent-wrap" data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*">
-      <span class="dummy" ng-click="menuDashboard = ! menuDashboard"><i class="fa fa-folder-open-o"></i>Dashboard</span>
-      <ul ng-show="menuDashboard">
+      <!--
+      <span class="dummy" id="dashboardParent" ng-click="menuDashboard = ! menuDashboard"><i class="fa fa-folder-open-o"></i>Dashboard</span>
+      -->
+      <span class="dummy"><i class="fa fa-folder-open-o"></i>Dashboard</span>
+
+      <!--<ul ng-show="menuDashboard">-->
+      <ul>
         <li><a class="pink" ui-sref="dashboard.demo" ui-sref-active="active" snap-close><i class="fa fa-youtube-play"></i>Quick Demo</a></li>
-        <li><a class="yellow" ui-sref="dashboard.feedback" ui-sref-active="active" snap-close><i class="fa fa-comment-o"></i>Provide Feedback</a></li>
+        <li><a class="yellow" id="feedbackLink" ui-sref="dashboard.feedback" ui-sref-active="active" snap-close><i class="fa fa-comment-o"></i>Provide Feedback</a></li>
       </ul>
     </li>
 
