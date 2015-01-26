@@ -12,6 +12,14 @@ body {
 
 .row {
   margin:0;
+  &.cancel-col-widths {
+    > div {
+      padding:{
+        right:0;
+        left:0;
+      }
+    }
+  }
 }
 
 .panel-body,
