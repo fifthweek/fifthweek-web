@@ -30,6 +30,10 @@ textarea.form-control {
   max-width:100%;
 }
 
+.btn {
+  border:0 none;
+}
+
 .btn-block {
   display:inline-block;
   vertical-align:top;
@@ -48,7 +52,7 @@ textarea.form-control {
 .btn-plain {
   @include text-shadow-black;
   background:none;
-  border-color:$white-full;
+  border:solid 1px $white-full;
   color:$white-full;
   #{$state-active-hover-focus} {
     background:none;
