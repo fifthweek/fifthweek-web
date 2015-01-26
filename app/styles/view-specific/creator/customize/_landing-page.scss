@@ -8,9 +8,35 @@ $html-name-space:'.page-customize-landing';
     margin-top:0;
   }
 
-  .inner-row.url {
+  .url {
     a {
       font-size:17px;
     }
   }
+
+  .header-image {
+    .inner-row {
+      overflow-x:hidden;
+      > div {
+        &:first-child {
+          padding-bottom:15px;
+          @media (min-width:768px) {
+            padding:{
+              right:15px;
+              bottom:0;
+            }
+          }
+        }
+        &:last-child {
+          @media (min-width:768px) {
+            padding-left:15px;
+          }
+        }
+      }
+      img {
+        width:100%;
+      }
+    }
+  }
+
 }

@@ -9,6 +9,12 @@ label {
 }
 
 
+.file-upload {
+  input[type="submit"] {
+    margin-top:10px;
+  }
+}
+
 .form-control {
   height:$input-height-base;
 }
@@ -36,6 +42,9 @@ textarea.form-control {
   border:0 none;
 }
 
+input[type="submit"].btn-block, 
+input[type="reset"].btn-block, 
+input[type="button"].btn-block,
 .btn-block {
   display:inline-block;
   vertical-align:top;
@@ -49,6 +58,11 @@ textarea.form-control {
 
 .btn-success {
   background:$green-light-1;
+}
+
+.btn-grey {
+  background:$grey-light-2;
+  border:solid 1px $grey-dark-4;
 }
 
 .btn-plain {
