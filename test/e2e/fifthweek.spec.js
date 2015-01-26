@@ -243,6 +243,7 @@ describe('fifthweek', function() {
     describe('when a user is not registered', function() {
 
       it('should not allow the existing user to sign in', function(){
+        browser.waitForAngular();
         var username = newUsername();
         var password = username + '123';
 
