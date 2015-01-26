@@ -10,8 +10,8 @@ body {
   color:$grey-dark;
 }
 
-.row {
-  margin:0;
+.row,
+.inner-row {
   &.cancel-col-widths {
     > div {
       padding:{
@@ -19,6 +19,25 @@ body {
         left:0;
       }
     }
+  }
+}
+
+.row {
+  margin:0;
+}
+
+.inner-row {
+  clear:both;
+  margin:{
+    right:-15px;
+    bottom:20px;
+    left:-15px;
+  }
+  &:before, 
+  &:after {
+    content: " ";
+    display: table;
+    clear:both;
   }
 }
 

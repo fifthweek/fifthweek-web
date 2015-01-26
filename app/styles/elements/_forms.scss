@@ -2,6 +2,11 @@
 
 $input-height-base:42px;
 
+label {
+  display:block;
+}
+
+
 .form-control {
   height:$input-height-base;
 }
