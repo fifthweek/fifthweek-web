@@ -58,6 +58,10 @@ img {
   > li {
     margin-bottom:0;
     > a {
+      font:{
+        size:17px;
+        weight:bold;
+      }
       padding:{
         right:$main-cont-padding-small;
         left:$main-cont-padding-small;

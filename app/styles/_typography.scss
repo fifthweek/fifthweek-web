@@ -15,7 +15,8 @@ h3,
 h4,
 h5,
 h6 {
-  color:$blue-light-1;
+  //color:$blue-light-1;
+  color:$grey-dark;
 }
 
 h1 {
@@ -35,7 +36,10 @@ h4 {
   color:#2D3E50;
 }
 h5 {
-  font-weight:bold;
+  font:{
+    size:16px;
+    weight:bold;
+  }
 }
 
 p {

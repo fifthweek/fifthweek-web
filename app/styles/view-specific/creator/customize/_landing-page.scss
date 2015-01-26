@@ -7,4 +7,10 @@ $html-name-space:'.page-customize-landing';
   .panel:first-child {
     margin-top:0;
   }
+
+  .inner-row.url {
+    a {
+      font-size:17px;
+    }
+  }
 }
