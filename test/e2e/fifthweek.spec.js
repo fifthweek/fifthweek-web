@@ -4,6 +4,7 @@ var SignInPage = require('./pages/signin.page.js');
 var SidebarPage = require('./pages/sidebar.page.js');
 var DemonstrationPage = require('./pages/demonstration.page.js');
 var FeedbackPage = require('./pages/feedback.page.js');
+var LandingPagePage = require('./pages/creators/landing-page.page.js');
 var CustomizeLandingPagePage = require('./pages/creators/customize/landingpage.page.js');
 
 describe('fifthweek', function() {
