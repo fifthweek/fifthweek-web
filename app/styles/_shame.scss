@@ -59,12 +59,15 @@ img {
     margin-bottom:0;
     > a {
       font:{
-        size:17px;
+        size:14px;
         weight:bold;
       }
       padding:{
         right:$main-cont-padding-small;
         left:$main-cont-padding-small;
+      }
+      @media (min-width:500px) {
+        font-size:17px;
       }
       @media (min-width:768px) {
         padding:{
