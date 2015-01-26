@@ -93,7 +93,9 @@
             <button
               class="btn btn-success btn-lg btn-block"
               type="submit"
-              id="registerButton" ng-click="form.$valid && form.$dirty ? register() : false">Register as creator</button>
+              id="registerButton" 
+              ng-click="form.$valid && form.$dirty ? register() : false"
+              ng-disabled="isSubmitting">Register as creator</button>
           </div>
         </div>
       </form>

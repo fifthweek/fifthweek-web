@@ -8,6 +8,7 @@ angular.module('webApp').controller('HomeCtrl',
 
   $scope.savedSuccessfully = false;
   $scope.message = '';
+  $scope.isSubmitting = false;
 
   $scope.registrationData = {
     email: '',
@@ -16,14 +17,10 @@ angular.module('webApp').controller('HomeCtrl',
   };
 
   $scope.register = function() {
+    $scope.isSubmitting = true;
 
     var eventCategory = function() {
       return {category: 'Registration'};
-    };
-
-    var handleSubmissionError = function(errorMessage){
-      $analytics.eventTrack('Registration failed', eventCategory());
-      $scope.message = errorMessage;
     };
 
     $analytics.eventTrack('Registration submitted', eventCategory());
@@ -42,7 +39,9 @@ angular.module('webApp').controller('HomeCtrl',
         $state.go('dashboard.demo');
       });
     }).catch(function(error) {
-      handleSubmissionError(utilities.getFriendlyErrorMessage(error));
+      $analytics.eventTrack('Registration failed', eventCategory());
+      $scope.message = utilities.getFriendlyErrorMessage(error);
+      $scope.isSubmitting = false;
       return logService.error(error);
     });
   };
