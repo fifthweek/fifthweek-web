@@ -41,7 +41,10 @@
         <div class="row">
           <input type="submit" 
                  class="btn btn-block btn-success" 
-                 ng-disabled="landingPageBasics.$invalid || landingPageBasics.$pristine"
+                 ng-click="landingPageBasics.$valid && landingPageBasics.$dirty ? saveTheDataTempFunctionName() : false"
+                 ng-disabled="landingPageBasics.$invalid || 
+                              landingPageBasics.$pristine || 
+                              isSubmitting"
                  value="Save Changes" />
         </div>
 

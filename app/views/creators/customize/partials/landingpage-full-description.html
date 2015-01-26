@@ -28,7 +28,10 @@ What your subscriptions will allow me to do: Right now I post a new Something st
         <div class="row">
           <input type="submit" 
                  class="btn btn-block btn-success" 
-                 ng-disabled="landingPageFullDescription.$invalid || landingPageFullDescription.$pristine"
+                 ng-click="landingPageFullDescription.$valid && landingPageFullDescription.$dirty ? saveTheDataTempFunctionName() : false"
+                 ng-disabled="landingPageFullDescription.$invalid ||
+                              landingPageFullDescription.$pristine ||
+                              isSubmitting"
                  value="Save Changes" />
         </div>
       </form>
