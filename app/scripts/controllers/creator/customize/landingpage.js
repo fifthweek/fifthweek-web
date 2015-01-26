@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'customizeLandingPageCtrl', ['$scope',
-  function($scope) {
+  function($scope, $analytics) {
     'use strict';
 
     $scope.isSubmitting = false;
@@ -17,6 +17,16 @@ angular.module('webApp').controller(
 
     $scope.saveTheDataTempFunctionName = function() {
       $scope.isSubmitting = true;
+
+      /*
+      var eventCategory = function() {
+        return {category: 'Customize Landing Page'};
+      };
+
+      $analytics.eventTrack('Landing Page Form submitted', eventCategory());
+      */
+
+
     };
 
   }
