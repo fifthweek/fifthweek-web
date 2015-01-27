@@ -2,7 +2,7 @@
   <div ng-include="'views/partials/sidebar/logo.html'"></div>
   <ul>
     <div ng-include="'views/partials/sidebar/user.html'"></div>
-    <li class="parent-wrap" data-ng-hide="!currentUser.authenticated" data-match-route="/dashboard*">
+    <li class="parent-wrap" data-ng-hide="!currentUser.authenticated || $state.includes('help') || $state.includes('creators')" data-match-route="/dashboard*">
       
       <span class="dummy" id="dashboardParent" ng-click="menuDashboard = ! menuDashboard"><i class="fa fa-folder-open-o"></i>Dashboard</span>
       <ul ng-show="menuDashboard || $state.includes('dashboard')">
