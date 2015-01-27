@@ -20,15 +20,31 @@ describe('creator landing page controller', function () {
     expect(scope.subscriptions.extras.checked).toBe(false);
   });
 
+  it('should apply a total price when basic subscription is checked', function(){
+    scope.subscriptions.basic.checked === true;
+    scope.$digest();
+    expect(scope.totalPrice).toEqual(scope.subscriptions.basic.price);
+  });
+
+  ////////
+  //
+  //test watch with check switching
+  //
+  ////////
+
   // load the controller's module
   beforeEach(module('webApp'));
 
   var landingPageCtrl,
-      scope;
+      $rootScope,
+      scope,
+      $q;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function (_$rootScope_, $controller, _$q_) {
+    $rootScope = _$rootScope_;
     scope = $rootScope.$new();
+    $q = _$q_;
     landingPageCtrl = $controller('landingPageCtrl', {
       $scope: scope
     });
