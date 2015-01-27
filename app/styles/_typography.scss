@@ -42,8 +42,12 @@ h5 {
   }
 }
 
+.heading-light {
+  font-weight:normal;
+}
+
 p {
-  font-size:15px;
+  font-size:$p-font-size;
   &.last {
     margin-bottom:0;
   }
@@ -74,7 +78,7 @@ a {
 
   li,
   dd {
-    font-size:15px;
+    font-size:18px;
     margin-bottom:20px;
   }
 }
