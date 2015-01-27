@@ -159,9 +159,6 @@ angular
             templateUrl: 'views/creators/landing-page.html',
             controller: 'landingPageCtrl'
           }
-        },
-        access: {
-          loginRequired: true
         }
       })
       .state('creators', {
@@ -180,9 +177,7 @@ angular
           }
         },
         access: {
-          //loginRequired: true
-          //temp for dev
-          loginRequired: false
+          loginRequired: true
         }
       })
       .state('creators.customize', {
