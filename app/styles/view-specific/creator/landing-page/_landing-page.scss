@@ -23,6 +23,10 @@ $html-name-space:'.page-landing';
       display:inline-block;
       width:100%;
       z-index:1;
+      margin-bottom:15px;
+      @media (min-width:768px) {
+        margin-bottom:0;
+      }
 
       .overlay {
         position:absolute;
@@ -50,17 +54,19 @@ $html-name-space:'.page-landing';
 
     .avatar {
       width:17%;
+      max-width:140px;
       margin:5% 0;
-      border:solid 3px $white-full;
+      border:solid 2px $white-full;
       border-radius:50%;
       @media (min-width:768px) {
         width:10%;
         margin:1.2em;
+        border-width:3px;
       }
     }
     h2,
     h3 {
-      color:red;
+      color:$blue-dark-3;
       margin:0;
       text-align:center;
       @media (min-width:768px) {
@@ -82,6 +88,10 @@ $html-name-space:'.page-landing';
     display:block;
     margin:0 auto;
     width:100%;
+    //this could be global if btn-lg used elsewhere
+    padding:8px 21px;
+    font-size:18px;
+    box-shadow:0 2px 2px $grey-dark-5;
     @media (min-width:500px) {
       width:auto;
     }
@@ -89,19 +99,20 @@ $html-name-space:'.page-landing';
       position:relative;
       z-index:4;
       margin:{
-        top:-20px;
+        top:-32px;
         bottom:60px;
       }
+      //this could be global if btn-lg used elsewhere
+      padding:18px 31px;
     }
   }
   .btn-video .fa {
     margin-right:8px;
   }
 
-
-
   label {
     display:block;
+    cursor:pointer;
   }
   input[type="checkbox"] {
     float:left;
@@ -111,5 +122,5 @@ $html-name-space:'.page-landing';
     }
   }
 
-  
+
 }
