@@ -33,7 +33,8 @@
               <label>
                 <input type="checkbox" 
                        ng-model="subscriptions.basic.checked"
-                       ng-checked="subscriptions.basic.checked">
+                       ng-checked="subscriptions.basic.checked"
+                       ng-change="checkboxHandler()">
                 <h5>Basic Subscription</h5>
               </label>
             </form>

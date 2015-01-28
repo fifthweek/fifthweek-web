@@ -17,6 +17,13 @@ angular.module('webApp').controller(
         }
       }
 
+      $scope.checkboxHandler = function(){
+        console.log('handler called');
+        $scope.subscriptions.basic.checked = true;
+      };
+
+
+      /*
       $scope.$watch('subscriptions.basic.checked', function() {
         if($scope.subscriptions.basic.checked === true) {
           $scope.subscriptions.extras.checked = false;
@@ -30,6 +37,7 @@ angular.module('webApp').controller(
           $scope.totalPrice = $scope.subscriptions.extras.price;
         }
       });
+      */
 
     }());
 
