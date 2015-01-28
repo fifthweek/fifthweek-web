@@ -11,7 +11,6 @@ angular
     'LocalStorageModule',
     'ng-focus',
     'toaster',
-    'angular-loading-bar',
     'ui.bootstrap',
     'snap',
     'monospaced.elastic',
