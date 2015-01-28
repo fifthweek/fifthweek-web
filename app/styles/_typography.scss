@@ -78,7 +78,7 @@ a {
 
   li,
   dd {
-    font-size:17px;
+    font-size:$p-font-size;
     margin-bottom:20px;
   }
 }
@@ -95,7 +95,7 @@ hr {
 }
 
 .form-control {
-  font-size:17px;
+  font-size:$input-font-size;
 }
 
 .btn {
