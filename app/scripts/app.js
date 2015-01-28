@@ -10,7 +10,6 @@ angular
     'LocalStorageModule',
     'ng-focus',
     'toaster',
-    'angular-loading-bar',
     'angulartics',
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',
