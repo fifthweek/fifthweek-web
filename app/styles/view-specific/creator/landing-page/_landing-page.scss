@@ -54,16 +54,22 @@ $panel-margin-bottom:40px;
 
     }
 
-    .avatar {
+    .avatar-wrap {
+      display:inline-block;
+      vertical-align:top;
       width:17%;
       max-width:140px;
       margin:5% 0;
       border:solid 2px $white-full;
       border-radius:50%;
+      background:$white-full;
       @media (min-width:768px) {
         width:10%;
         margin:1.2em;
         border-width:3px;
+      }
+      img {
+        width:100%;
       }
     }
     h2,
