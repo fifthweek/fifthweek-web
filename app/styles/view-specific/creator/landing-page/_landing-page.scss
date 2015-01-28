@@ -14,7 +14,7 @@ $panel-margin-bottom:40px;
   }
 
   .landing-header {
-    margin-bottom:30px;
+    margin-bottom:25px;
     @media (min-width:992px) {
       margin-bottom:0;
     }
@@ -77,12 +77,22 @@ $panel-margin-bottom:40px;
     }
     h2 {
       margin:0;
+      font:{
+        family:"HelveticaNeue-CondensedBold", "Helvetica Neue";
+        size:34px;
+      }
+      @media (min-width:600px) {
+        font-size:40px;
+      }
       @media (min-width:768px) {
-        margin-bottom:0.25em;
+        margin-bottom:5px;
       }
     }
     h3 {
-      font-size:18px;
+      font-size:20px;
+      @media (min-width:600px) {
+        font-size:24px;
+      }
     }
   }
 
@@ -102,14 +112,16 @@ $panel-margin-bottom:40px;
     @media (min-width:500px) {
       width:auto;
     }
-    @media (min-width:850px) {
+    @media (min-width:768px) {
+      //this could be global if btn-lg used elsewhere
+      padding:18px 31px;
+    }
+    @media (min-width:935px) {
       position:relative;
       z-index:4;
       margin:{
         top:-60px;
       }
-      //this could be global if btn-lg used elsewhere
-      padding:18px 31px;
     }
     @media (min-width:992px) {
       margin-top:-32px;
