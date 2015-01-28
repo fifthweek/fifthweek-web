@@ -21,15 +21,16 @@ angular.module('webApp').controller(
         $scope.subscriptions.basic.checked = true;
       };
 
+      var totalAddition = +$scope.subscriptions.basic.price + +$scope.subscriptions.extras.price;
+
       $scope.$watch('subscriptions.extras.checked', function() {
         if($scope.subscriptions.extras.checked === true) {
-          $scope.totalPrice = +$scope.subscriptions.basic.price + +$scope.subscriptions.extras.price;
+          $scope.totalPrice = totalAddition;
         }
         
         if($scope.subscriptions.extras.checked === false) {
           $scope.totalPrice = $scope.subscriptions.basic.price;
         }
-        
       });
 
     }());
