@@ -1,20 +1,18 @@
 angular.module('webApp').factory('authenticationInterceptor',
-  ['$q', '$injector', '$location', 'localStorageService', 'fifthweekConstants',
-  function($q, $injector, $location, localStorageService, fifthweekConstants) {
+  function($q, $injector, $location, fifthweekConstants) {
     'use strict';
 
-    var factory = {
-      unauthorizedCount: 0
-    };
+    var factory = {};
     var $http;
+    var authenticationService;
 
     factory.request = function(config) {
 
       config.headers = config.headers || {};
+      authenticationService = authenticationService || $injector.get('authenticationService');
 
-      var authData = localStorageService.get('authenticationData');
-      if (authData) {
-        config.headers.Authorization = 'Bearer ' + authData.token;
+      if (authenticationService.currentUser.authenticated) {
+        config.headers.Authorization = 'Bearer ' + authenticationService.currentUser.accessToken;
       }
 
       return config;
@@ -24,7 +22,7 @@ angular.module('webApp').factory('authenticationInterceptor',
       if (rejection.status === 401 && !rejection.config.hasRetried) {
         rejection.config.hasRetried = true;
 
-        var authenticationService = $injector.get('authenticationService');
+        authenticationService = authenticationService || $injector.get('authenticationService');
 
         return authenticationService.refreshToken().then(
           function() {
@@ -46,4 +44,4 @@ angular.module('webApp').factory('authenticationInterceptor',
 
     return factory;
   }
-]);
+);

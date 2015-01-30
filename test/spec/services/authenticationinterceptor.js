@@ -4,7 +4,10 @@ describe('authentication interceptor', function() {
   describe('when intercepting a request', function() {
 
     it('should add authentication data to the request headers', function() {
-      localStorageService.get = function() { return { token: 'ABC' }; };
+      authenticationService.currentUser = {
+        authenticated: true,
+        accessToken: 'ABC'
+      };
 
       var config = {};
       var newConfig = authenticationInterceptor.request(config);
@@ -31,7 +34,6 @@ describe('authentication interceptor', function() {
     });
 
     it('should request a new bearer token and retry the request if the status code is 401', function() {
-      localStorageService.get = function() { return { token: 'ABC' }; };
 
       authenticationService.refreshToken = function() {
         var deferred = $q.defer();
@@ -56,8 +58,6 @@ describe('authentication interceptor', function() {
     });
 
     it('should request a new bearer token if the status code is 401 and retry, and if the retry still says 401 it should give up', function() {
-
-      localStorageService.get = function() { return { token: 'ABC' }; };
 
       authenticationService.refreshToken = function() {
         var deferred = $q.defer();
@@ -127,15 +127,12 @@ describe('authentication interceptor', function() {
   var $httpBackend;
   var $q;
   var authenticationInterceptor;
-  var localStorageService;
   var authenticationService;
   var fifthweekConstants;
 
   beforeEach(function() {
-    localStorageService = {};
     authenticationService = {};
     module(function($provide) {
-      $provide.value('localStorageService', localStorageService);
       $provide.value('authenticationService', authenticationService);
     });
   });

@@ -2,103 +2,139 @@
 
 angular.module('webApp').factory('authenticationService',
   function($http, $q, $analytics, localStorageService, fifthweekConstants, utilities) {
-  'use strict';
+    'use strict';
 
-  var apiBaseUri = fifthweekConstants.apiBaseUri;
-  var service = {};
+    var apiBaseUri = fifthweekConstants.apiBaseUri;
+    var service = {};
 
-  service.currentUser = {
-    authenticated: false,
-    username: '',
-    permissions: []
-  };
+    var localStorageName = 'currentUser';
 
-  service.init = function() {
-    var authData = localStorageService.get('authenticationData');
-    if (authData) {
+    service.currentUser = {};
+
+    var clearCurrentUserDetails = function(){
+      service.currentUser.authenticated = false;
+      service.currentUser.accessToken = undefined;
+      service.currentUser.refreshToken = undefined;
+      service.currentUser.userId = undefined;
+      service.currentUser.username = undefined;
+      service.currentUser.roles = undefined;
+
+      localStorageService.remove(localStorageName);
+    };
+
+    var setCurrentUserDetails = function(accessToken, refreshToken, userId, username, roles){
       service.currentUser.authenticated = true;
-      service.currentUser.username = authData.username;
-    }
-  };
+      service.currentUser.accessToken = accessToken;
+      service.currentUser.refreshToken = refreshToken;
+      service.currentUser.userId = userId;
+      service.currentUser.username = username;
+      service.currentUser.roles = roles;
 
-  service.registerUser = function(internalRegistrationData) {
-    service.signOut();
-    return $http.post(apiBaseUri + 'membership/registrations', internalRegistrationData).catch(function(response){
-      return $q.reject(utilities.getHttpError(response));
-    });
-  };
+      localStorageService.set(localStorageName, service.currentUser);
+    };
 
-  service.signIn = function(signInData) {
-    service.signOut();
-
-    var data =
-      'grant_type=password&username=' + signInData.username +
-      '&password=' + signInData.password +
-      '&client_id=' + fifthweekConstants.clientId;
-
-    return $http.post(apiBaseUri + 'token', data, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+    service.init = function() {
+      var storedUser = localStorageService.get(localStorageName);
+      if (storedUser) {
+        service.currentUser = storedUser;
+      } else {
+        clearCurrentUserDetails();
       }
-    }).then(function(response) {
+    };
 
-      // Performed server-side. Repeated here to make UI consistent with API rules.
-      var normalizedUsername = normalizeUsername(signInData.username);
-
-      localStorageService.set('authenticationData', {
-        token: response.data.access_token,
-        username: normalizedUsername,
-        refreshToken: response.data.refresh_token
-      });
-
-      service.currentUser.authenticated = true;
-      service.currentUser.username = normalizedUsername;
-
-      $analytics.setUsername(response.data.user_id);
-    }, function(response){
-      return $q.reject(utilities.getHttpError(response));
-    });
-  };
-
-  service.signOut = function() {
-    localStorageService.remove('authenticationData');
-    service.currentUser.authenticated = false;
-    service.currentUser.username = '';
-    service.currentUser.permissions = [];
-  };
-
-  service.refreshToken = function() {
-    var authData = localStorageService.get('authenticationData');
-
-    if (!authData) {
-      return $q.reject(new FifthweekError('No local authentication data available.'));
-    }
-    var data = 'grant_type=refresh_token&refresh_token=' + authData.refreshToken + '&client_id=' + fifthweekConstants.clientId;
-
-    return $http.post(apiBaseUri + 'token', data, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }).then(function(response) {
-
-      localStorageService.set('authenticationData', {
-        token: response.data.access_token,
-        username: response.data.username,
-        refreshToken: response.data.refresh_token
-      });
-
-    }, function(response) {
-      return $q.reject(utilities.getHttpError(response));
-    }).catch(function(error){
+    service.registerUser = function(internalRegistrationData) {
       service.signOut();
-      return $q.reject(error);
-    });
-  };
+      return $http.post(apiBaseUri + 'membership/registrations', internalRegistrationData).catch(function(response){
+        return $q.reject(utilities.getHttpError(response));
+      });
+    };
 
-  var normalizeUsername = function(username) {
-    return username.trim().toLowerCase();
-  };
+    service.signIn = function(signInData) {
+      service.signOut();
 
-  return service;
+      var data =
+        'grant_type=password&username=' + signInData.username +
+        '&password=' + signInData.password +
+        '&client_id=' + fifthweekConstants.clientId;
+
+      return $http.post(apiBaseUri + 'token', data, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then(function(response) {
+
+        return extractAuthenticationDataFromResponse(response).then(function(){
+          $analytics.setUsername(response.data.user_id);
+        });
+
+      }, function(response){
+        return $q.reject(utilities.getHttpError(response));
+      });
+    };
+
+    service.refreshToken = function() {
+
+      if (!service.currentUser.authenticated) {
+        return $q.reject(new FifthweekError('Cannot refresh the authentication token because the user is not authenticated.'));
+      }
+
+      var data = 'grant_type=refresh_token&refresh_token=' + service.currentUser.refreshToken +
+        '&client_id=' + fifthweekConstants.clientId;
+
+      return $http.post(apiBaseUri + 'token', data, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then(function(response) {
+        return extractAuthenticationDataFromResponse(response);
+      }, function(response) {
+        return $q.reject(utilities.getHttpError(response));
+      }).catch(function(error){
+        service.signOut();
+        return $q.reject(error);
+      });
+    };
+
+    service.signOut = function() {
+      clearCurrentUserDetails();
+    };
+
+    var extractAuthenticationDataFromResponse = function (response){
+      return $q(function(resolve, reject) {
+        var username = response.data.username;
+        if (!username ){
+          return reject(new FifthweekError('The username was not returned'));
+        }
+
+        var roles = [];
+        var rolesString = response.data.roles;
+        if (rolesString)
+        {
+          roles = response.data.roles.split(',');
+        }
+
+        var userId = response.data.user_id;
+        if (!userId){
+          return reject(new FifthweekError('The user ID was not returned'));
+        }
+
+        var accessToken = response.data.access_token;
+        if (!accessToken)
+        {
+          return reject(new FifthweekError('The access token was not returned'));
+        }
+
+        var refreshToken = response.data.refresh_token;
+        if (!refreshToken)
+        {
+          return reject(new FifthweekError('The refresh token was not returned'));
+        }
+
+        setCurrentUserDetails(accessToken, refreshToken, userId, username, roles);
+        return resolve();
+      });
+    };
+
+    return service;
 });
 

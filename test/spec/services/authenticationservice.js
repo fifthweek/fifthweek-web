@@ -5,7 +5,7 @@ describe('authentication service', function() {
 
     it('should become authenticated if user data exists in local storage', function(){
       localStorageService.get = function(){
-        return {username: 'username'};
+        return { authenticated: true, username: 'username' };
       };
 
       authenticationService.init();
@@ -15,6 +15,7 @@ describe('authentication service', function() {
     });
 
     it('should become unauthenticated if user data absent from local storage', function(){
+      localStorageService.remove = function(){};
       localStorageService.get = function(){
         return null;
       };
@@ -86,6 +87,42 @@ describe('authentication service', function() {
 
   describe('when signing a user in', function(){
 
+    it('should sign out before signing in', function(){
+      var signInData = {
+        username: 'username',
+        password: 'PASSWORD'
+      };
+
+      setupSignOutExpectations();
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
+        200,
+        {
+          access_token: 'ACCESSTOKEN',
+          refresh_token: 'REFRESHTOKEN',
+          username: 'username',
+          user_id: 'userId',
+          roles: 'admin,creator'
+        });
+
+      analytics.setUsername = function(){};
+      localStorageService.set = function(){};
+
+      var result;
+      authenticationService.signIn(signInData).then(function(response){
+        result = response;
+      });
+
+      executeSignOutExpectations();
+
+      $httpBackend.flush();
+      $rootScope.$apply();
+
+      expect(authenticationService.currentUser.authenticated).toBe(true);
+
+      expect(result).toBeUndefined();
+    });
+
     it('should set authentication data on successful sign in', function(){
       var signInData = {
         username: 'username',
@@ -98,7 +135,48 @@ describe('authentication service', function() {
         200,
         {
           access_token: 'ACCESSTOKEN',
-          refresh_token: 'REFRESHTOKEN'
+          refresh_token: 'REFRESHTOKEN',
+          username: 'username',
+          user_id: 'userId',
+          roles: 'admin,creator'
+        });
+
+      analytics.setUsername = function(){};
+      localStorageService.set = function(){};
+
+      var result;
+      authenticationService.signIn(signInData).then(function(response){
+        result = response;
+      });
+
+      $httpBackend.flush();
+      $rootScope.$apply();
+
+      expect(authenticationService.currentUser.authenticated).toBe(true);
+      expect(authenticationService.currentUser.accessToken).toBe('ACCESSTOKEN');
+      expect(authenticationService.currentUser.refreshToken).toBe('REFRESHTOKEN');
+      expect(authenticationService.currentUser.username).toBe('username');
+      expect(authenticationService.currentUser.userId).toBe('userId');
+      expect(authenticationService.currentUser.roles).toEqual(['admin', 'creator']);
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should save the current user on successful sign in', function(){
+      var signInData = {
+        username: 'username',
+        password: 'PASSWORD'
+      };
+
+      setupSignOutExpectations();
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
+        200,
+        {
+          access_token: 'ACCESSTOKEN',
+          refresh_token: 'REFRESHTOKEN',
+          username: 'username',
+          user_id: '123'
         });
 
       analytics.setUsername = function(){};
@@ -116,14 +194,133 @@ describe('authentication service', function() {
       $rootScope.$apply();
 
       expect(localStorageService.set).toHaveBeenCalled();
-      expect(localStorageService.set.calls.mostRecent().args[1].token).toBe('ACCESSTOKEN');
-      expect(localStorageService.set.calls.mostRecent().args[1].username).toBe('username');
-      expect(localStorageService.set.calls.mostRecent().args[1].refreshToken).toBe('REFRESHTOKEN');
-
-      expect(authenticationService.currentUser.authenticated).toBe(true);
-      expect(authenticationService.currentUser.username).toBe('username');
+      expect(localStorageService.set.calls.mostRecent().args[1]).toBe(authenticationService.currentUser);
 
       expect(result).toBeUndefined();
+    });
+
+    it('should require an access token to be returned', function(){
+      var signInData = {
+        username: 'username',
+        password: 'PASSWORD'
+      };
+
+      setupSignOutExpectations();
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
+        200,
+        {
+          refresh_token: 'REFRESHTOKEN',
+          username: 'username',
+          user_id: '123'
+        });
+
+      analytics.setUsername = function(){};
+      localStorageService.set = function(){};
+
+      var result;
+      authenticationService.signIn(signInData).catch(function(response){
+        result = response;
+      });
+
+      $httpBackend.flush();
+      $rootScope.$apply();
+
+      expect(result instanceof FifthweekError).toBeTruthy();
+      expect(result.message).toBe('The access token was not returned');
+    });
+
+    it('should require an refresh token to be returned', function(){
+      var signInData = {
+        username: 'username',
+        password: 'PASSWORD'
+      };
+
+      setupSignOutExpectations();
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
+        200,
+        {
+          access_token: 'ACCESSTOKEN',
+          username: 'username',
+          user_id: '123'
+        });
+
+      analytics.setUsername = function(){};
+      localStorageService.set = function(){};
+
+      var result;
+      authenticationService.signIn(signInData).catch(function(response){
+        result = response;
+      });
+
+      $httpBackend.flush();
+      $rootScope.$apply();
+
+      expect(result instanceof FifthweekError).toBeTruthy();
+      expect(result.message).toBe('The refresh token was not returned');
+    });
+
+    it('should require a user ID to be returned', function(){
+      var signInData = {
+        username: 'username',
+        password: 'PASSWORD'
+      };
+
+      setupSignOutExpectations();
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
+        200,
+        {
+          access_token: 'ACCESSTOKEN',
+          refresh_token: 'REFRESHTOKEN',
+          username: 'username'
+        });
+
+      analytics.setUsername = function(){};
+      localStorageService.set = function(){};
+
+      var result;
+      authenticationService.signIn(signInData).catch(function(response){
+        result = response;
+      });
+
+      $httpBackend.flush();
+      $rootScope.$apply();
+
+      expect(result instanceof FifthweekError).toBeTruthy();
+      expect(result.message).toBe('The user ID was not returned');
+    });
+
+    it('should require a username to be returned', function(){
+      var signInData = {
+        username: 'username',
+        password: 'PASSWORD'
+      };
+
+      setupSignOutExpectations();
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
+        200,
+        {
+          access_token: 'ACCESSTOKEN',
+          refresh_token: 'REFRESHTOKEN',
+          user_id: '123'
+        });
+
+      analytics.setUsername = function(){};
+      localStorageService.set = function(){};
+
+      var result;
+      authenticationService.signIn(signInData).catch(function(response){
+        result = response;
+      });
+
+      $httpBackend.flush();
+      $rootScope.$apply();
+
+      expect(result instanceof FifthweekError).toBeTruthy();
+      expect(result.message).toBe('The username was not returned');
     });
 
     it('should normalise username using same rules as API', function() {
@@ -136,7 +333,14 @@ describe('authentication service', function() {
 
       setupSignOutExpectations();
 
-      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, {});
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
+        200,
+        {
+          access_token: 'ACCESSTOKEN',
+          refresh_token: 'REFRESHTOKEN',
+          username: 'username',
+          user_id: '123'
+        });
 
       analytics.setUsername = function(){};
       localStorageService.set = function(){};
@@ -147,10 +351,6 @@ describe('authentication service', function() {
       $httpBackend.flush();
       $rootScope.$apply();
 
-      expect(localStorageService.set).toHaveBeenCalled();
-      expect(localStorageService.set.calls.mostRecent().args[1].username).toBe('username');
-
-      expect(authenticationService.currentUser.authenticated).toBe(true);
       expect(authenticationService.currentUser.username).toBe('username');
     });
 
@@ -187,7 +387,14 @@ describe('authentication service', function() {
         password: 'PASSWORD'
       };
 
-      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, {'user_id': someUUID});
+      var mockResponse = {
+        access_token: 'ACCESSTOKEN',
+        refresh_token: 'REFRESHTOKEN',
+        username: 'username',
+        user_id: someUUID
+      };
+
+      $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, mockResponse);
       localStorageService.remove = function(){};
       localStorageService.set = function(){};
       analytics.setUsername = function(){};
@@ -215,16 +422,15 @@ describe('authentication service', function() {
   describe('when refreshing', function(){
 
     it('should request a new refresh token and persist it if successful', function(){
-      localStorageService.get = function(){
-        return {username: 'username'};
-      };
+      authenticationService.currentUser = { authenticated: true };
 
       localStorageService.set = jasmine.createSpy();
 
       var mockResponse = {
         access_token: 'ACCESSTOKEN',
+        refresh_token: 'REFRESHTOKEN',
         username: 'username',
-        refresh_token: 'REFRESHTOKEN'
+        user_id: '123'
       };
 
       $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, mockResponse);
@@ -242,9 +448,7 @@ describe('authentication service', function() {
     });
 
     it('should request a new refresh token and sign out if unsuccessful', function(){
-      localStorageService.get = function(){
-        return {username: 'username'};
-      };
+      authenticationService.currentUser = { authenticated: true };
 
       localStorageService.set = jasmine.createSpy();
 
@@ -269,9 +473,8 @@ describe('authentication service', function() {
     });
 
     it('should error if the user is logged out', function(){
-      localStorageService.get = function(){
-        return null;
-      };
+
+      authenticationService.currentUser = { authenticated: false };
 
       var result;
       authenticationService.refreshToken().catch(function(response){
@@ -281,7 +484,7 @@ describe('authentication service', function() {
       $rootScope.$apply();
 
       expect(result instanceof FifthweekError).toBeTruthy();
-      expect(result.message).toBe('No local authentication data available.');
+      expect(result.message).toBe('Cannot refresh the authentication token because the user is not authenticated.');
     });
   });
 
@@ -325,7 +528,7 @@ describe('authentication service', function() {
   };
 
   var executeSignOutExpectations = function(){
-    expect(localStorageService.remove).toHaveBeenCalledWith('authenticationData');
+    expect(localStorageService.remove).toHaveBeenCalledWith('currentUser');
     expect(authenticationService.currentUser.authenticated).toBeFalsy();
     expect(authenticationService.currentUser.username).toBeFalsy();
   };
