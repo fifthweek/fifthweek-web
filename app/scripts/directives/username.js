@@ -22,7 +22,7 @@ angular.module('webApp').directive('username', function($q, $timeout) {
           //  def.reject();
           //}
 
-        }, 1000);
+        }, 100);
 
         return def.promise;
       };
