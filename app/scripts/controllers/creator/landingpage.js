@@ -5,15 +5,21 @@ angular.module('webApp').controller(
 
     (function subscriptions()  {
 
-      $scope.totalPrice = '';
-      $scope.subscriptions = {
+      $scope.channels = {
         basic: {
-          checked:true,
-          price:'0.50'
+          title:'Basic',
+          price:'0.50',
+          checked:true
         },
         extras: {
-          checked:false,
-          price:'0.75'
+          title:'Extras',
+          price:'0.75',
+          checked:false
+        },
+        superExtras: {
+          title:'Super Extras',
+          price:'9.25',
+          checked:false
         }
       }
 
@@ -21,17 +27,67 @@ angular.module('webApp').controller(
         $scope.subscriptions.basic.checked = true;
       };
 
-      var totalAddition = +$scope.subscriptions.basic.price + +$scope.subscriptions.extras.price;
 
-      $scope.$watch('subscriptions.extras.checked', function() {
-        if($scope.subscriptions.extras.checked === true) {
-          $scope.totalPrice = totalAddition;
+      //create a blank array to store prices
+      var arr = new Array();
+
+
+      $scope.$watch('channels', function() {
+
+        //iterate through each object
+        //if an object has a 'checked' property with true value/boolean
+        //add the object's price value to the array
+        for (var a in $scope.channels) {
+          var checked = $scope.channels[a]['checked'];
+          var price = $scope.channels[a]['price'];
+          if (checked == true)  {
+            console.info('Checked: ', a);
+            arr.push(price);
+
+            var totalPrice = 0;
+
+            //add up the array for a total price
+            var arrLength = arr.length;
+            while (arrLength--) {
+              totalPrice += parseFloat(arr[arrLength]);
+            }
+            totalPrice = totalPrice.toFixed(2);
+            $scope.totalPrice = totalPrice;
+
+
+          }
+          if (checked == false)  {
+            console.info('UNChecked: ', a);
+            /*
+            var arrayIndex = arr.indexOf(a);
+            if (arrayIndex > -1) {
+              arr.splice(arrayIndex, 1);
+            }
+            */
+          }
+
         }
+
         
-        if($scope.subscriptions.extras.checked === false) {
-          $scope.totalPrice = $scope.subscriptions.basic.price;
+
+        
+
+        /*
+        if($scope.channels.basic.checked === true) {
+          console.info('basic checked');
         }
-      });
+        if($scope.channels.extras.checked === true) {
+          console.info('extras checked');
+        }
+        if($scope.channels.superExtras.checked === true) {
+          console.info('another checked');
+        }
+        */
+
+        console.log('total amount of checked items', totalPrice);
+
+      }, true);
+
 
     }());
 

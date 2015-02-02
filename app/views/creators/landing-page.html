@@ -27,22 +27,22 @@
 
     <h4 class="heading-light">What you’ll get...</h4>
 
-    <div class="panel panel-default subscription-panel">
+    <div class="panel panel-default subscription-panel" ng-repeat="channel in channels">
       <div class="panel-body jumbo-panel">
         <div class="row">
           <div class="col-sm-8 name">
             <form>
               <label>
                 <input type="checkbox" 
-                       ng-model="subscriptions.basic.checked"
-                       ng-checked="subscriptions.basic.checked"
+                       ng-model="channel.checked"
+                       ng-checked="channel.checked"
                        ng-change="checkboxHandler()">
-                <h5>Basic Subscription</h5>
+                <h5>{{channel.title}} Subscription</h5>
               </label>
             </form>
           </div>
           <div class="col-sm-4 price">
-            <p>&#36;{{subscriptions.basic.price}}/week</p>
+            <p>&#36;{{channel.price}}/week</p>
           </div>
         </div>
         <div class="col-sm-8">
@@ -54,31 +54,7 @@
       </div>
     </div>
 
-    <div class="panel panel-default subscription-panel last">
-      <div class="panel-body jumbo-panel">
-        <div class="row">
-          <div class="col-sm-8 name">
-            <form>
-              <label>
-                <input type="checkbox" 
-                       ng-model="subscriptions.extras.checked"
-                       ng-checked="subscriptions.extras.checked">
-                <h5>Extras Channel</h5>
-              </label>
-            </form>
-          </div>
-          <div class="col-sm-4 price">
-            <p>&#36;{{subscriptions.extras.price}}/week</p>
-          </div>
-        </div>
-        <div class="col-sm-8">
-          <ul>
-            <li>Item 1</li>
-            <li>Item 2</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+
 
     <h4 class="heading-light">About the subscription...</h4>
 
