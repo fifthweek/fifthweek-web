@@ -24,13 +24,12 @@ angular.module('webApp').controller(
       }
 
       $scope.checkboxHandler = function(){
-        $scope.subscriptions.basic.checked = true;
+        $scope.channels.basic.checked = true;
       };
 
 
       //create a blank array to store prices
       var arr = new Array();
-
 
       $scope.$watch('channels', function() {
 
@@ -51,38 +50,15 @@ angular.module('webApp').controller(
             while (arrLength--) {
               totalPrice += parseFloat(arr[arrLength]);
             }
-            totalPrice = totalPrice.toFixed(2);
-            $scope.totalPrice = totalPrice;
-
-
           }
-          if (checked == false)  {
-            console.info('UNChecked: ', a);
-            /*
-            var arrayIndex = arr.indexOf(a);
-            if (arrayIndex > -1) {
-              arr.splice(arrayIndex, 1);
-            }
-            */
+          //remove price from array if unchecked
+          else if (checked == false)  {
+            console.info('UNChecked: ', price);
+            arr.splice(a);
           }
-
         }
-
-        
-
-        
-
-        /*
-        if($scope.channels.basic.checked === true) {
-          console.info('basic checked');
-        }
-        if($scope.channels.extras.checked === true) {
-          console.info('extras checked');
-        }
-        if($scope.channels.superExtras.checked === true) {
-          console.info('another checked');
-        }
-        */
+        totalPrice = totalPrice.toFixed(2);
+        $scope.totalPrice = totalPrice;
 
         console.log('total amount of checked items', totalPrice);
 
