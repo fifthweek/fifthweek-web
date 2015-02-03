@@ -179,6 +179,15 @@ angular
           loginRequired: true
         }
       })
+      .state('creators.createSubscription', {
+        url: '^/creators/create-subscription', 
+        templateUrl: 'views/creators/create-subscription.html',
+        controller: 'createSubscriptionCtrl',
+        data : { 
+          pageTitle: ' Create Your Subscription',
+          headTitle: ' -' + ' Create Your Subscription'
+        }
+      })
       .state('creators.customize', {
         url: '^/creators/customize', 
         data : {
