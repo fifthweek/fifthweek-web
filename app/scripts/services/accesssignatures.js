@@ -120,7 +120,7 @@ angular.module('webApp').constant('accessSignaturesConstants', {
       return $q.when(cache.lastResult.data);
     };
 
-    service.getSharedAccessInformation = function(creatorId){
+    service.getAccessInformation = function(creatorId){
       var userId = authenticationService.currentUser.userId;
 
       return getSignatures(userId).then(function(data){

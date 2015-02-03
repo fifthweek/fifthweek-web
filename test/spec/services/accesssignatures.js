@@ -6,7 +6,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var result;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result = response;
       });
 
@@ -18,7 +18,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(500);
 
       var error;
-      accessSignatures.getSharedAccessInformation().catch(function(response){
+      accessSignatures.getAccessInformation().catch(function(response){
         error = response;
       });
 
@@ -34,7 +34,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri + '/user1').respond(200, response);
 
       var result;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result = response;
       });
 
@@ -46,7 +46,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var result;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result = response;
       });
 
@@ -61,7 +61,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var result;
-      accessSignatures.getSharedAccessInformation('creator1').then(function(response){
+      accessSignatures.getAccessInformation('creator1').then(function(response){
         result = response;
       });
 
@@ -76,7 +76,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var error;
-      accessSignatures.getSharedAccessInformation('creatorX').catch(function(response){
+      accessSignatures.getAccessInformation('creatorX').catch(function(response){
         error = response;
       });
 
@@ -96,7 +96,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var result1;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result1 = response;
       });
 
@@ -104,7 +104,7 @@ describe('access signatures', function() {
       $rootScope.$apply();
 
       var result2;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result2 = response;
       });
 
@@ -124,7 +124,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var result1;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result1 = response;
       });
 
@@ -134,7 +134,7 @@ describe('access signatures', function() {
       jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesConstants.refreshMinimumExpiry);
 
       var result2;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result2 = response;
       });
 
@@ -154,7 +154,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var result1;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result1 = response;
       });
 
@@ -166,7 +166,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response2);
 
       var result2;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result2 = response;
       });
 
@@ -187,7 +187,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var result1;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result1 = response;
       });
 
@@ -199,7 +199,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response2);
 
       var result2;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result2 = response;
       });
 
@@ -220,7 +220,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var result1;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result1 = response;
       });
 
@@ -232,7 +232,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri + '/user1').respond(200, response2);
 
       var result2;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result2 = response;
       });
 
@@ -254,7 +254,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri+ '/user1').respond(200, response);
 
       var result1;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result1 = response;
       });
 
@@ -266,7 +266,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response2);
 
       var result2;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result2 = response;
       });
 
@@ -288,7 +288,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri+ '/user1').respond(200, response);
 
       var result1;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result1 = response;
       });
 
@@ -300,7 +300,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri + '/user2').respond(200, response2);
 
       var result2;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result2 = response;
       });
 
@@ -322,7 +322,7 @@ describe('access signatures', function() {
         $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
         var result1;
-        accessSignatures.getSharedAccessInformation().then(function(response){
+        accessSignatures.getAccessInformation().then(function(response){
           result1 = response;
         });
 
@@ -334,7 +334,7 @@ describe('access signatures', function() {
         $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(500);
 
         var result2;
-        accessSignatures.getSharedAccessInformation().then(function(response){
+        accessSignatures.getAccessInformation().then(function(response){
           result2 = response;
         });
 
@@ -355,7 +355,7 @@ describe('access signatures', function() {
         $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
         var result1;
-        accessSignatures.getSharedAccessInformation().then(function(response){
+        accessSignatures.getAccessInformation().then(function(response){
           result1 = response;
         });
 
@@ -367,7 +367,7 @@ describe('access signatures', function() {
         $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(500);
 
         var error;
-        accessSignatures.getSharedAccessInformation().catch(function(response){
+        accessSignatures.getAccessInformation().catch(function(response){
           error = response;
         });
 
@@ -393,14 +393,14 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri + '/user1').respond(200, response2);
 
       var result1;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result1 = response;
       });
 
       authenticationService.currentUser.userId = 'user1';
 
       var result2;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result2 = response;
       });
 
@@ -425,12 +425,12 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response);
 
       var result1;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result1 = response;
       });
 
       var result2;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result2 = response;
       });
 
@@ -454,7 +454,7 @@ describe('access signatures', function() {
       $rootScope.$apply();
 
       var result;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result = response;
       });
 
@@ -476,7 +476,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri + '/user1').respond(200, response2);
 
       var result;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result = response;
       });
 
@@ -500,7 +500,7 @@ describe('access signatures', function() {
       $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(200, response2);
 
       var result;
-      accessSignatures.getSharedAccessInformation().then(function(response){
+      accessSignatures.getAccessInformation().then(function(response){
         result = response;
       });
 
@@ -525,7 +525,7 @@ describe('access signatures', function() {
         $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesConstants.refreshUri).respond(500);
 
         var result;
-        accessSignatures.getSharedAccessInformation().then(function(response){
+        accessSignatures.getAccessInformation().then(function(response){
           result = response;
         });
 
