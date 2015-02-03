@@ -11,6 +11,11 @@
       </ul>
     </li>
 
+    <!--<li data-ng-hide="$state.includes('creators.customize')">-->
+    <li>
+      <a class="yellow" id="createSubscriptionLink" ui-sref="creators.createSubscription" ui-sref-active="active" snap-close><i class="fa fa-asterisk"></i>Create Your Subscription</a>
+    </li>
+
     <div ng-include="'views/partials/sidebar/creator-customize.html'"></div>
 
     <li class="parent-wrap">

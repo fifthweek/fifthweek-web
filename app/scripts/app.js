@@ -163,7 +163,7 @@ angular
       .state('creators', {
         abstract: true,
         url: 'creators',
-        data : { 
+        data : {
           pageTitle: 'Creators',
           headTitle: ' - ' + 'Creators'
         },
