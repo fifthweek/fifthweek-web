@@ -40,7 +40,7 @@ angular.module('webApp').controller(
           var checked = $scope.channels[a]['checked'];
           var price = $scope.channels[a]['price'];
           if (checked == true)  {
-            console.info('Checked: ', a);
+            //console.info('Checked: ', a);
             arr.push(price);
 
             var totalPrice = 0;
@@ -53,14 +53,12 @@ angular.module('webApp').controller(
           }
           //remove price from array if unchecked
           else if (checked == false)  {
-            console.info('UNChecked: ', price);
+            //console.info('unchecked: ', price);
             arr.splice(a);
           }
         }
         totalPrice = totalPrice.toFixed(2);
         $scope.totalPrice = totalPrice;
-
-        console.log('total amount of checked items', totalPrice);
 
       }, true);
 
