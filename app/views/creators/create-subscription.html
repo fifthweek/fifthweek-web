@@ -1,9 +1,56 @@
 <div class="row">
   <div class="col-md-12">
+    
     <div class="panel panel-default">
       <div class="panel-body jumbo-panel">
+        <div class="col-md-12">
+          <form name="createSubscription">
+            <div class="inner-row cancel-col-widths">
+              <div class="col-md-6">
+                <input type="text"
+                       class="form-control"
+                       name="subscriptionName"
+                       placeholder="Subscription name" required/>
+                <small>e.g. your name</small>
+              </div>
+            </div>
+            <div class="inner-row cancel-col-widths">
+              <div class="col-md-6">
+                <input type="text"
+                       class="form-control"
+                       name="subscriptionTagline"
+                       placeholder="Tagline" required/>
+                <small>e.g. &#34;Web Comics And More&#34;</small>
+              </div>
+            </div>
+            <div class="inner-row cancel-col-widths">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">&#36;</div>
+                    <input type="text" 
+                           class="form-control"
+                           name="subscriptionPrice"
+                           placeholder="1.00" required>
+                    <div class="input-group-addon">per week</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <input type="submit" 
+                     class="btn btn-block btn-success" 
+                     ng-click="createSubscription.$valid && createSubscription.$dirty ? saveTheDataTempFunctionName() : false"
+                     ng-disabled="createSubscription.$invalid || 
+                                  createSubscription.$pristine || 
+                                  isSubmitting"
+                     value="Save and Continue" />
+            </div>
 
+          </form>
+        </div>
       </div>
     </div>
+
   </div>
 </div>
