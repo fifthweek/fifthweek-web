@@ -617,7 +617,7 @@ describe('access signatures', function() {
       currentUser: { userId: undefined }
     };
     utilities = {};
-    utilities.getHttpError = function(){ return new ApiError() };
+    utilities.getHttpError = function(){ return new ApiError(); };
 
     module(function($provide) {
       $provide.value('authenticationService', authenticationService);
