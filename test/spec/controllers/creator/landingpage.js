@@ -1,28 +1,24 @@
-
 'use strict';
 
 describe('creator landing page controller', function () {
 
-  it('should have a default totalPrice of nothing', function(){
-    expect(scope.totalPrice).toEqual('');
-  });
-
   it('should contain subscription prices', function(){
-    expect(scope.subscriptions.basic.price).toEqual('0.50');
-    expect(scope.subscriptions.extras.price).toEqual('0.75');
+    expect(scope.channels.basic.price).toEqual('0.50');
+    expect(scope.channels.extras.price).toEqual('0.75');
+    //expect(scope.channels.superExtras.price).toEqual('9.25');
   });
 
   it('should have basic subscription checked by default', function(){
-    expect(scope.subscriptions.basic.checked).toBe(true);
+    expect(scope.channels.basic.checked).toBe(true);
   });
 
   it('should have extras subscription unchecked by default', function(){
-    expect(scope.subscriptions.extras.checked).toBe(false);
+    expect(scope.channels.extras.checked).toBe(false);
   });
 
-  it('should add basic and extras subscription correctly', function(){
-    var totalAddition = +scope.subscriptions.basic.price + +scope.subscriptions.extras.price;
-    expect(totalAddition).toEqual(1.25);
+  it('should add subscriptions correctly', function(){
+    var totalBasicExtras = +scope.channels.basic.price + +scope.channels.extras.price;
+    expect(totalBasicExtras).toEqual(1.25);
   });
 
 
@@ -32,6 +28,7 @@ describe('creator landing page controller', function () {
   //test watch with check switching
   //
   ////////
+
 
 
 
