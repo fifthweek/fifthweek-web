@@ -2,6 +2,12 @@
 
 describe('creator landing page controller', function () {
 
+  it('should contain subscription titles', function(){
+    expect(scope.channels.basic.title).toEqual('Basic');
+    expect(scope.channels.extras.title).toEqual('Extras');
+    expect(scope.channels.superExtras.title).toEqual('Super Extras');
+  });
+
   it('should contain subscription prices', function(){
     expect(scope.channels.basic.price).toEqual('0.50');
     expect(scope.channels.extras.price).toEqual('0.75');
