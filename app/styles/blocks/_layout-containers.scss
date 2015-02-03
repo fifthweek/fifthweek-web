@@ -70,8 +70,8 @@ body {
 #{$left-container} {
   @media (min-width:992px) {
     background:$blue-dark-2;
-    width:220px;
-    min-width:220px;
+    width:$sidebar-width;
+    min-width:$sidebar-width;
   }
 }
 

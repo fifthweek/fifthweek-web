@@ -34,7 +34,7 @@ $html-name-space:'.page-home';
     opacity:0.5;
     @media (min-width:768px) {
       font-size:42px;
-      width:220px;
+      width:$sidebar-width;
       text-align:left;
       padding-left:40px;
     }
