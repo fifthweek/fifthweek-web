@@ -27,7 +27,7 @@
 
     <h4 class="heading-light">What you’ll get...</h4>
 
-    <div class="panel panel-default subscription-panel" ng-repeat="channel in channels">
+    <div class="panel panel-default subscription-panel" ng-repeat="channel in channels" ng-class="{first:$first, last:$last}">
       <div class="panel-body jumbo-panel">
         <div class="row">
           <div class="col-sm-8 name">

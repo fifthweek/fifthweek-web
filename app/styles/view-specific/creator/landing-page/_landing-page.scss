@@ -145,8 +145,11 @@ $panel-margin-bottom:40px;
 
   .subscription-panel {
     margin:{
-      top:10px;
+      top:0;
       bottom:0;
+    }
+    &.first {
+      margin-top:10px;
     }
     &.last {
       margin:{
