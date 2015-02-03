@@ -35,6 +35,12 @@ angular
     accountPage: '/account',
     dashboardPage: '^/dashboard/demo',
     feedbackPage: '^/dashboard/feedback',
+    creatorsLandingPage: '/creators/landing-page',
+    creatorsCreateSubscription: '^/creators/create-subscription',
+    creatorsCustomize: '^/creators/customize',
+    creatorsCustomizeLandingPage: '^/creators/customize/landingpage',
+    creatorsCustomizeCollections: '^/creators/customize/collections',
+    creatorsCustomizeChannels: '^/creators/customize/channels',
     faqPage: '^/help/faq',
     notAuthorizedPage: '/notauthorized'
   })
@@ -133,7 +139,7 @@ angular
       .state('dashboard.demo', {
         url: fifthweekConstants.dashboardPage,
         templateUrl: 'views/dashboard/demo.html',
-        data : { 
+        data : {
           pageTitle: 'Quick Demo',
           headTitle: ' - ' + 'Demo'
         }
@@ -147,7 +153,7 @@ angular
         }
       })
       .state('publiclandingpage', {
-        url: '/creators/landing-page', 
+        url: fifthweekConstants.creatorsLandingPage,
         data : { 
           pageTitle: 'Landing page',
           headTitle: ' - ' + 'Landing page',
@@ -180,7 +186,7 @@ angular
         }
       })
       .state('creators.createSubscription', {
-        url: '^/creators/create-subscription', 
+        url: fifthweekConstants.creatorsCreateSubscription, 
         templateUrl: 'views/creators/create-subscription.html',
         controller: 'createSubscriptionCtrl',
         data : { 
@@ -189,7 +195,7 @@ angular
         }
       })
       .state('creators.customize', {
-        url: '^/creators/customize', 
+        url: fifthweekConstants.creatorsCustomize,
         data : {
           pageTitle: 'Customize',
           headTitle: ' - ' + 'Customize'
@@ -201,7 +207,7 @@ angular
         }
       })
       .state('creators.customize.landingpage', {
-        url: '^/creators/customize/landingpage', 
+        url: fifthweekConstants.creatorsCustomizeLandingPage,
         templateUrl: 'views/creators/customize/landingpage.html',
         controller: 'customizeLandingPageCtrl',
         data : { 
@@ -210,7 +216,7 @@ angular
         }
       })
       .state('creators.customize.collections', {
-        url: '^/creators/customize/collections', 
+        url: fifthweekConstants.creatorsCustomizeCollections,
         templateUrl: 'views/creators/customize/collections.html',
         data : { 
           pageTitle: 'Collections',
@@ -218,7 +224,7 @@ angular
         }
       })
       .state('creators.customize.channels', {
-        url: '^/creators/customize/channels', 
+        url: fifthweekConstants.creatorsCustomizeChannels, 
         templateUrl: 'views/creators/customize/channels.html',
         data : { 
           pageTitle: 'Channels',
@@ -239,9 +245,6 @@ angular
           'sidebar': {
             templateUrl: 'views/partials/sidebar.html'
           }
-        },
-        access: {
-          loginRequired: true
         }
       })
       .state('help.faq', {
