@@ -28,10 +28,10 @@ angular.module('webApp').controller(
       };
 
 
-      //create a blank array to store prices
-      var arr = new Array();
-
       $scope.$watch('channels', function() {
+
+        //create a blank array to store prices
+        var arr = new Array();
 
         //iterate through each object
         //if an object has a 'checked' property with true value/boolean
