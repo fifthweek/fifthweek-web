@@ -71,7 +71,7 @@ a {
   ol,
   dl {
     padding-left:20px;
-    @media (min-width:600px) {
+    @media (min-width:$bp-small) {
       padding-left:30px;
     }
   }

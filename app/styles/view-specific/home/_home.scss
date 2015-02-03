@@ -9,7 +9,7 @@ $html-name-space:'.page-home';
     size:cover;
     attachment:scroll;
   }
-  @media (min-width:992px) {
+  @media (min-width:$bp-m-large) {
     background:{
       repeat:no-repeat;
       image:url(../images/home/bg/2048.jpg);
@@ -32,7 +32,7 @@ $html-name-space:'.page-home';
     margin:0;
     padding:10px 0 20px 15px;
     opacity:0.5;
-    @media (min-width:768px) {
+    @media (min-width:$bp-medium) {
       font-size:42px;
       width:$sidebar-width;
       text-align:left;
@@ -49,7 +49,7 @@ $html-name-space:'.page-home';
     right:15px;
     z-index:1;
     opacity:0.8;
-    @media (min-width:768px) {
+    @media (min-width:$bp-medium) {
       position:relative;
       top:0;
       right:0;
@@ -68,7 +68,7 @@ $html-name-space:'.page-home';
   #{$right-container},
   #{$right-container} .main-container > div {
     //561px to match logo and intro height
-    @media (min-width:768px) and (min-height:561px) {
+    @media (min-width:$bp-medium) and (min-height:561px) {
       height:100%;
     }
   }
@@ -90,10 +90,10 @@ $html-name-space:'.page-home';
     width:100%;
     > .col-md-12 {
       padding:0 15px;
-      @media (min-width:768px) { 
+      @media (min-width:$bp-medium) { 
         padding:0 37px;
       }
-      @media (min-width:992px) {
+      @media (min-width:$bp-m-large) {
         padding:0 15px;
       }
     }

@@ -1,5 +1,5 @@
 .home-footer {
-  @media (min-width:768px) and (min-height:450px) {
+  @media (min-width:$bp-medium) and (min-height:$bp-x-small - 50px) {
     position:fixed;
     bottom:0;
     background:rgba(255, 255, 255, 0.1);
@@ -12,15 +12,15 @@
     }
     color:#CECECE;
     margin:0;
-    @media (min-width:600px) {
+    @media (min-width:$bp-small) {
       font-size:19px;
     }
-    @media (min-width:768px) {
+    @media (min-width:$bp-medium) {
       color:#ffffff;
     }
     span {
       display:block;
-      @media (min-width:768px) {
+      @media (min-width:$bp-medium) {
         display:inline;
       }
     }
@@ -29,7 +29,7 @@
       @media (min-width:420px) {
         display:block;
       }
-      @media (min-width:600px) {
+      @media (min-width:$bp-small) {
         display:none;
       }
     }
@@ -46,11 +46,11 @@
     max-width:420px;
     margin:0 auto;
     padding:10px 0;
-    @media (min-width:600px) {
+    @media (min-width:$bp-small) {
       padding:25px 0;
       max-width:535px;
     }
-    @media (min-width:768px) {
+    @media (min-width:$bp-medium) {
       max-width:735px;
     }
   }

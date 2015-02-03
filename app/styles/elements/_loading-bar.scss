@@ -12,7 +12,7 @@
     border-left-color: #DDDDDD;
   }
 }
-@media (min-width: $screen-sm-min) {
+@media (min-width:$bp-medium) {
   #loading-bar-spinner {
     left: 6px;
   }

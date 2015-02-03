@@ -13,7 +13,7 @@ $icon-yellow:$yellow-light-1;
 $icon-pink:$pink-light-1;
 
 .sidebar {
-  @media (min-width:992px) {
+  @media (min-width:$bp-m-large) {
     position:fixed;
     top:0;
     left:0;
@@ -118,7 +118,7 @@ $icon-pink:$pink-light-1;
   width:265px;
   text-align:center;
   padding-bottom:20px;
-  @media (min-width:992px) {
+  @media (min-width:$bp-m-large) {
     width:$sidebar-width;
   }
 

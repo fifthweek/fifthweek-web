@@ -2,7 +2,7 @@
   margin:0 auto 0.8% auto;
   width:100%;
   max-width:320px;
-  @media (min-width:992px) {
+  @media (min-width:$bp-m-large) {
     max-width:920px;
     margin:0 auto;
     padding-left:310px;

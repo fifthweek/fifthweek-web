@@ -6,7 +6,7 @@ $html-name-space:'.page-register';
   .col-lg-12 {
     max-width:450px;
     margin:0 auto;
-    @media (min-width:768px) {
+    @media (min-width:$bp-medium) {
       max-width:100%;
     }
   }

@@ -18,7 +18,7 @@
   padding:7px 15px 7px 3px;
   height:auto;
   line-height:36px;
-  @media (min-width:992px) {
+  @media (min-width:$bp-m-large) {
     display:none;
   }
   #{$state-hover-focus} {

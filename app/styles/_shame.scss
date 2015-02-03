@@ -8,7 +8,7 @@
 }
 
 .modal-dialog {
-  @media (min-width:768px) {
+  @media (min-width:$bp-medium) {
     margin:9.5% auto;
   }
 }
@@ -66,10 +66,10 @@ img {
         right:$main-cont-padding-small;
         left:$main-cont-padding-small;
       }
-      @media (min-width:500px) {
+      @media (min-width:$bp-x-small) {
         font-size:$p-font-size;
       }
-      @media (min-width:768px) {
+      @media (min-width:$bp-medium) {
         padding:{
           right:$main-cont-padding-large;
           left:$main-cont-padding-large;
