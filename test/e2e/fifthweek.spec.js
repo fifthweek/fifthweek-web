@@ -95,16 +95,16 @@ describe('fifthweek', function() {
         expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
       });
 
-      it('should not allow usernames with fewer than 6 characters', function(){
+      it('should not allow usernames with fewer than 2 characters', function(){
         page.emailTextBox.sendKeys(email);
-        page.usernameTextBox.sendKeys('abc');
+        page.usernameTextBox.sendKeys('a');
         page.passwordTextBox.sendKeys('password1');
         page.registerButton.click();
 
         var messages = page.helpMessages;
 
         expect(messages.count()).toBe(1);
-        expect(messages.get(0).getText()).toContain('Must be at least 6 characters.')
+        expect(messages.get(0).getText()).toContain('Must be at least 2 characters.')
       });
 
       it('should not allow usernames with over than 20 characters', function(){
@@ -306,7 +306,7 @@ describe('fifthweek', function() {
     browser.wait(function(){
       return signInPage.signInButton.isPresent();
     });
-    
+
     browser.get('/');
     browser.waitForAngular();
   };
