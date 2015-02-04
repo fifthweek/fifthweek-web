@@ -7,30 +7,29 @@ angular.module('webApp').factory('routeChangeAuthorizationHandler',
     var service = {};
 
     var routeChangeRequiredAfterLogin = false;
-    var loginRedirectState;
+    var cachedToState;
+    var cachedToParams;
 
-    service.handleStateChangeStart = function(event, toState/*, toParams, fromState, fromParams*/){
+    service.handleStateChangeStart = function(event, toState, toParams/*, fromState, fromParams*/){
 
-      var state = $state.get(toState);
-
-      if (routeChangeRequiredAfterLogin && toState !== states.signIn.name) {
-
+      if (routeChangeRequiredAfterLogin && toState.name !== states.signIn.name) {
         routeChangeRequiredAfterLogin = false;
 
-        if(state.access !== undefined && state.access.loginRequired === true) {
+        if(toState.data !== undefined && toState.data.access !== undefined && toState.data.access.loginRequired === true) {
           event.preventDefault();
-          $state.go(loginRedirectState);
+          $state.go(cachedToState, cachedToParams, { location: 'replace' });
         }
       }
-      else if (state.access !== undefined) {
+      else if (toState.data !== undefined && toState.data.access !== undefined) {
         var authorised = authorizationService.authorize(
-          state.access.loginRequired,
-          state.access.roles,
-          state.access.roleCheckType);
+          toState.data.access.loginRequired,
+          toState.data.access.roles,
+          toState.data.access.roleCheckType);
 
         if (authorised === authorizationServiceConstants.authorizationResult.loginRequired) {
           routeChangeRequiredAfterLogin = true;
-          loginRedirectState = toState;
+          cachedToState = toState.name;
+          cachedToParams =  toParams;
           event.preventDefault();
           $state.go(states.signIn.name);
         }

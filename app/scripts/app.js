@@ -154,7 +154,10 @@ angular
       url: '/account',
       data : {
         pageTitle: 'My Account',
-        headTitle: ' - ' + 'My Account'
+        headTitle: ' - ' + 'My Account',
+        access: {
+          loginRequired: true
+        }
       },
       views: {
         '': {
@@ -164,9 +167,6 @@ angular
         'sidebar': {
           templateUrl: 'views/partials/sidebar.html'
         }
-      },
-      access: {
-        loginRequired: true
       }
     })
     .state(states.dashboard.name, {
@@ -174,7 +174,10 @@ angular
       url: '/dashboard',
       data : {
         pageTitle: 'Dashboard',
-        headTitle: ' - ' + 'Dashboard'
+        headTitle: ' - ' + 'Dashboard',
+        access: {
+          loginRequired: true
+        }
       },
       views:{
         '': {
@@ -183,9 +186,6 @@ angular
         'sidebar': {
           templateUrl: 'views/partials/sidebar.html'
         }
-      },
-      access: {
-        loginRequired: true
       }
     })
     .state(states.dashboard.demo.name, {
@@ -243,14 +243,20 @@ angular
       controller: 'createSubscriptionCtrl',
       data : {
         pageTitle: 'Create Your Subscription',
-        headTitle: ' -' + ' Create Your Subscription'
+        headTitle: ' -' + ' Create Your Subscription',
+        access: {
+          loginRequired: true
+        }
       }
     })
     .state(states.creators.customize.name, {
       url: '/customize',
       data : {
         pageTitle: 'Customize',
-        headTitle: ' - ' + 'Customize'
+        headTitle: ' - ' + 'Customize',
+        access: {
+          loginRequired: true
+        }
       },
       views:{
         '': {

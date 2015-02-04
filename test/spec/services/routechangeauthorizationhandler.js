@@ -4,11 +4,26 @@ describe('route change authorization handler', function () {
   describe('when routing', function() {
 
     it('should not alter the path if the page has no access requirements', function(){
+      toState.data = undefined;
+      routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+    });
+
+    it('should not alter the path if the page has empty access requirements', function(){
+      stateData.access = undefined;
+      routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+    });
+
+    it('should not alter the path if the user is authorized', function(){
+      stateData.access.loginRequired = true;
+      authorizationService.authorize = function(){
+        return authorizationServiceConstants.authorizationResult.authorized;
+      };
+
       routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
     });
 
     it('should redirect to the sign in page if login is required and then return to the original page', function(){
-      stateData.access = { loginRequired: true };
+      stateData.access.loginRequired = true;
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.loginRequired;
       };
@@ -17,14 +32,14 @@ describe('route change authorization handler', function () {
       routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
 
       $state.verifyNoOutstandingTransitions();
-      $state.expectTransitionTo(toState);
+      $state.expectTransitionTo(toState.name);
 
       routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
     });
 
     it('should redirect to the not authorized page if the user is not authorized', function(){
 
-      stateData.access = { loginRequired: true };
+      stateData.access.loginRequired = true;
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.notAuthorized;
       };
@@ -35,7 +50,7 @@ describe('route change authorization handler', function () {
 
     it('should not redirect if the user navigates to a non-secure page after initial redirection to sign in page', function(){
 
-      stateData.access = { loginRequired: true };
+      stateData.access.loginRequired = true;
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.loginRequired;
       };
@@ -46,7 +61,7 @@ describe('route change authorization handler', function () {
 
       $state.verifyNoOutstandingTransitions();
 
-      stateData.access = { loginRequired: false };
+      stateData.access.loginRequired = false;
 
       routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
     });
@@ -56,14 +71,13 @@ describe('route change authorization handler', function () {
     var stateData;
 
     beforeEach(function(){
-      toState = 'testState';
+      stateData = { access: { loginRequired: false } };
+      toState = { name: 'testState', data: stateData };
 
       event = {
         preventDefault: function(){}
       };
 
-      stateData = {};
-      spyOn($state, 'get').and.returnValue(stateData);
     });
   });
 

@@ -4,6 +4,6 @@ angular.module('webApp')
 		'use strict';
 
 			authenticationService.signOut();
-			$state.go(states.signIn.name);
+			$state.go(states.signIn.name, {}, { location: 'replace' });
   	}
   );

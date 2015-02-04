@@ -22,8 +22,8 @@
         authenticationService.init();
         $rootScope.states = states;
 
-        $rootScope.$on('$stateChangeStart', function(event, toState) {
-          routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
+          routeChangeAuthorizationHandler.handleStateChangeStart(event, toState, toParams);
         });
       }
     ]);
