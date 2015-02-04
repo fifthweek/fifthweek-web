@@ -88,7 +88,7 @@ describe('authentication interceptor', function() {
         return deferred.promise;
       };
 
-      spyOn($location, 'path').and.callThrough();
+      $state.expectTransitionTo(states.signIn.name);
 
       var result;
       authenticationInterceptor.responseError(rejection).catch(
@@ -100,8 +100,6 @@ describe('authentication interceptor', function() {
 
       expect(result).toBeDefined();
       expect(result.status).toBe(401);
-
-      expect($location.path).toHaveBeenCalledWith(fifthweekConstants.signInPage);
     });
 
     var rejection;
@@ -123,12 +121,11 @@ describe('authentication interceptor', function() {
 
   var $rootScope;
   var $state;
-  var $location;
   var $httpBackend;
   var $q;
   var authenticationInterceptor;
   var authenticationService;
-  var fifthweekConstants;
+  var states;
 
   beforeEach(function() {
     authenticationService = {};
@@ -141,14 +138,14 @@ describe('authentication interceptor', function() {
     $q = $injector.get('$q');
     $rootScope = $injector.get('$rootScope');
     $state = $injector.get('$state');
-    $location = $injector.get('$location');
     $httpBackend = $injector.get('$httpBackend');
     authenticationInterceptor = $injector.get('authenticationInterceptor');
-    fifthweekConstants = $injector.get('fifthweekConstants');
+    states = $injector.get('states');
   }));
 
   afterEach(function() {
     $httpBackend.verifyNoOutstandingExpectation();
     $httpBackend.verifyNoOutstandingRequest();
+    $state.verifyNoOutstandingTransitions();
   });
 });

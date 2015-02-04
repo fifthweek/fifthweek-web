@@ -1,16 +1,17 @@
 angular.module('webApp').factory('authenticationInterceptor',
-  function($q, $injector, $location, fifthweekConstants) {
+  function($q, $injector, states) {
     'use strict';
 
     var factory = {};
     var $http;
+    var $state;
     var authenticationService;
 
     factory.request = function(config) {
 
       config.headers = config.headers || {};
-      authenticationService = authenticationService || $injector.get('authenticationService');
 
+      authenticationService = authenticationService || $injector.get('authenticationService');
       if (authenticationService.currentUser.authenticated) {
         config.headers.Authorization = 'Bearer ' + authenticationService.currentUser.accessToken;
       }
@@ -23,13 +24,13 @@ angular.module('webApp').factory('authenticationInterceptor',
         rejection.config.hasRetried = true;
 
         authenticationService = authenticationService || $injector.get('authenticationService');
-
         return authenticationService.refreshToken().then(
           function() {
             return retryHttpRequest(rejection.config);
           },
           function() {
-            $location.path(fifthweekConstants.signInPage);
+            $state = $state || $injector.get('$state');
+            $state.go(states.signIn.name);
             return $q.reject(rejection);
           });
       }

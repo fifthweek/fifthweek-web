@@ -9,12 +9,10 @@ describe('sign in controller', function() {
       return deferred.promise;
     };
 
-    spyOn($location, 'path').and.callThrough();
+    $state.expectTransitionTo(states.dashboard.demo.name);
 
     scope.signIn();
     $rootScope.$apply();
-
-    $state.expectTransitionTo('dashboardPage');
   });
 
   it('should display an error message and log the error on unsuccessful sign in', function() {
@@ -22,14 +20,12 @@ describe('sign in controller', function() {
       return $q.reject();
     };
 
-    spyOn($location, 'path');
     spyOn(logService, 'error');
     spyOn(utilities, 'getFriendlyErrorMessage').and.callThrough();
 
     scope.signIn();
     $rootScope.$apply();
 
-    expect($location.path).not.toHaveBeenCalled();
     expect(logService.error).toHaveBeenCalled();
     expect(utilities.getFriendlyErrorMessage).toHaveBeenCalled();
     expect(scope.message).toEqual(errorMessage);
@@ -42,22 +38,20 @@ describe('sign in controller', function() {
   var $rootScope;
   var $state;
   var scope;
-  var $location;
   var $q;
   var authenticationService;
-  var fifthweekConstants;
+  var states;
   var logService;
   var utilities;
   var errorMessage = '!';
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($controller, _$rootScope_, _$state_, _$q_, _$location_, _fifthweekConstants_) {
+  beforeEach(inject(function($controller, _$rootScope_, _$state_, _$q_, _states_) {
     $rootScope = _$rootScope_;
     scope = $rootScope.$new();
     $state = _$state_;
     $q = _$q_;
-    $location = _$location_;
-    fifthweekConstants = _fifthweekConstants_;
+    states = _states_;
 
     authenticationService = {};
     logService = { error: function(){} };
@@ -65,11 +59,15 @@ describe('sign in controller', function() {
 
     SignInCtrl = $controller('SignInCtrl', {
       $scope: scope,
-      $location: $location,
+      $state: $state,
+      states: states,
       authenticationService: authenticationService,
-      fifthweekConstants: fifthweekConstants,
       logService: logService,
       utilities: utilities
     });
   }));
+
+  afterEach(function(){
+    $state.verifyNoOutstandingTransitions();
+  });
 });

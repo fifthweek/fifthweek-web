@@ -12,22 +12,20 @@ describe('home controller', function() {
 
     describe('and submits the form', function() {
 
-      
+
       it('should navigate to dashboard on successful registration', function() {
         authenticationService.registerUser = function() { return resolvedPromise(); };
         authenticationService.signIn = function() { return resolvedPromise(); };
         analytics.eventTrack = function(){};
         analytics.setUserProperties = function(){};
 
-        spyOn($location, 'path').and.callThrough();
+        $state.expectTransitionTo(states.dashboard.demo.name);
 
         scope.register();
         $rootScope.$apply();
 
         expect(scope.message).toContain('Signing in...');
         expect(scope.savedSuccessfully).toBe(true);
-
-        //$state.expectTransitionTo('dashboardPage');
       });
 
 
@@ -51,7 +49,7 @@ describe('home controller', function() {
         expect(scope.savedSuccessfully).toBe(false);
       });
 
-      it('track registration attempts before communicating with the authentication service', function() {
+      it('should track registration attempts before communicating with the authentication service', function() {
         var callSequence = [];
 
         authenticationService.signIn = function() {
@@ -68,7 +66,7 @@ describe('home controller', function() {
           return resolvedPromise();
         };
 
-        spyOn(analytics, 'eventTrack').and.callThrough();
+        $state.expectTransitionTo(states.dashboard.demo.name);
 
         scope.register();
         $rootScope.$apply();
@@ -80,7 +78,7 @@ describe('home controller', function() {
         ]);
       });
 
-      it('track unsuccessful registrations', function() {
+      it('should track unsuccessful registrations', function() {
         var callSequence = [];
         authenticationService.signIn = function() {
           return resolvedPromise();
@@ -93,8 +91,6 @@ describe('home controller', function() {
           return $q.reject(new ApiError('bad'));
         };
 
-        spyOn(analytics, 'eventTrack').and.callThrough();
-
         scope.register();
         $rootScope.$apply();
 
@@ -105,7 +101,7 @@ describe('home controller', function() {
         ]);
       });
 
-      it('track successful registrations', function() {
+      it('should track successful registrations', function() {
         var callSequence = [];
 
         authenticationService.signIn = function() {
@@ -122,7 +118,7 @@ describe('home controller', function() {
           return resolvedPromise();
         };
 
-        spyOn(analytics, 'setUserProperties').and.callThrough();
+        $state.expectTransitionTo(states.dashboard.demo.name);
 
         scope.register();
         $rootScope.$apply();
@@ -168,15 +164,13 @@ describe('home controller', function() {
   describe('when the user is already authenticated', function(){
 
     it('should redirect to the dashboard page', function(){
-      spyOn($location, 'path').and.callThrough();
+
+      $state.expectTransitionTo(states.dashboard.demo.name);
 
       HomeCtrl = $controller('HomeCtrl', {
         $scope: scope,
         authenticationService: authenticationService
       });
-
-      //expect($location.path).toHaveBeenCalledWith(fifthweekConstants.dashboardPage);
-      $state.expectTransitionTo('dashboardPage');
     });
 
     beforeEach(function() {
@@ -208,8 +202,7 @@ describe('home controller', function() {
   var $state;
   var authenticationService;
   var $q;
-  var $location;
-  var fifthweekConstants;
+  var states;
   var $controller;
   var analytics;
 
@@ -222,15 +215,18 @@ describe('home controller', function() {
   });
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function(_$controller_, _$rootScope_, _$state_, _$q_, _$location_, _fifthweekConstants_) {
+  beforeEach(inject(function(_$controller_, _$rootScope_, _$state_, _$q_, _states_) {
     $controller = _$controller_;
     $rootScope = _$rootScope_;
     $state = _$state_;
     scope = $rootScope.$new();
     $q = _$q_;
-    $location = _$location_;
-    fifthweekConstants = _fifthweekConstants_;
+    states = _states_;
   }));
+
+  afterEach(function(){
+    $state.verifyNoOutstandingTransitions();
+  });
 
   function resolvedPromise() {
     var deferred = $q.defer();

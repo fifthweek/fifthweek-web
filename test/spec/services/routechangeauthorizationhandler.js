@@ -4,79 +4,77 @@ describe('route change authorization handler', function () {
   describe('when routing', function() {
 
     it('should not alter the path if the page has no access requirements', function(){
-      spyOn($location, 'path').and.callThrough();
-
-      routeChangeAuthorizationHandler.handleRouteChangeStart(next);
-
-      expect($location.path).not.toHaveBeenCalled();
+      routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
     });
 
     it('should redirect to the sign in page if login is required and then return to the original page', function(){
-      spyOn($location, 'path').and.callThrough();
-
-      next.access = { loginRequired: true };
+      stateData.access = { loginRequired: true };
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.loginRequired;
       };
-      routeChangeAuthorizationHandler.handleRouteChangeStart(next);
 
-      expect($location.path).toHaveBeenCalledWith(fifthweekConstants.signInPage);
+      $state.expectTransitionTo(states.signIn.name);
+      routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
 
-      routeChangeAuthorizationHandler.handleRouteChangeStart(next);
+      $state.verifyNoOutstandingTransitions();
+      $state.expectTransitionTo(toState);
 
-      expect($location.path).toHaveBeenCalledWith(testPath);
+      routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
     });
 
     it('should redirect to the not authorized page if the user is not authorized', function(){
-      spyOn($location, 'path').and.callThrough();
 
-      next.access = { loginRequired: true };
+      stateData.access = { loginRequired: true };
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.notAuthorized;
       };
-      routeChangeAuthorizationHandler.handleRouteChangeStart(next);
 
-      expect($location.path).toHaveBeenCalledWith(fifthweekConstants.notAuthorizedPage);
+      $state.expectTransitionTo(states.notAuthorized.name);
+      routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
     });
 
     it('should not redirect if the user navigates to a non-secure page after initial redirection to sign in page', function(){
-      spyOn($location, 'path').and.callThrough();
 
-      next.access = { loginRequired: true };
+      stateData.access = { loginRequired: true };
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.loginRequired;
       };
-      routeChangeAuthorizationHandler.handleRouteChangeStart(next);
 
-      expect($location.path).toHaveBeenCalledWith(fifthweekConstants.signInPage);
+      $state.expectTransitionTo(states.signIn.name);
 
-      next.access = { loginRequired: false };
-      next.originalPath = testPath;
+      routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
 
-      $location.path.calls.reset();
-      routeChangeAuthorizationHandler.handleRouteChangeStart(next);
+      $state.verifyNoOutstandingTransitions();
 
-      expect($location.path).not.toHaveBeenCalled();
+      stateData.access = { loginRequired: false };
+
+      routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
     });
 
-    var next;
-    var testPath = '/test';
+    var toState;
+    var event;
+    var stateData;
 
     beforeEach(function(){
-      next = {
-        originalPath: testPath
+      toState = 'testState';
+
+      event = {
+        preventDefault: function(){}
       };
+
+      stateData = {};
+      spyOn($state, 'get').and.returnValue(stateData);
     });
   });
 
   // load the controller's module
-  beforeEach(module('webApp'));
+  beforeEach(module('webApp', 'stateMock'));
 
   var authorizationService;
   var routeChangeAuthorizationHandler;
-  var $location;
   var $rootScope;
-  var fifthweekConstants;
+  var $state;
+  var states;
   var authorizationServiceConstants;
 
   beforeEach(function() {
@@ -89,9 +87,13 @@ describe('route change authorization handler', function () {
 
   beforeEach(inject(function($injector) {
     routeChangeAuthorizationHandler = $injector.get('routeChangeAuthorizationHandler');
-    $location = $injector.get('$location');
     $rootScope = $injector.get('$rootScope');
-    fifthweekConstants = $injector.get('fifthweekConstants');
+    $state = $injector.get('$state');
+    states = $injector.get('states');
     authorizationServiceConstants = $injector.get('authorizationServiceConstants');
   }));
+
+  afterEach(function(){
+    $state.verifyNoOutstandingTransitions();
+  });
 });

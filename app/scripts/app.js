@@ -24,258 +24,298 @@ angular
     developerName: window.developerName,
     developerNameHeader: 'Developer-Name',
     clientId: 'fifthweek.web.1',
-    unexpectedErrorText: 'An error has occured.',
+    unexpectedErrorText: 'An error has occurred.',
     connectionErrorText: 'Unable to communicate with the server. Make sure you are connected to the internet and try again.',
     tokenPath: 'token',
-    logPath: 'log',
-    homePage: '/',
-    signInPage: '/signin',
-    signOutPage: '/signout',
-    registerPage: '/register',
-    accountPage: '/account',
-    dashboardPage: '^/dashboard/demo',
-    feedbackPage: '^/dashboard/feedback',
-    creatorsLandingPage: '/creators/landing-page',
-    creatorsCreateSubscription: '^/creators/create-subscription',
-    creatorsCustomize: '^/creators/customize',
-    creatorsCustomizeLandingPage: '^/creators/customize/landingpage',
-    creatorsCustomizeCollections: '^/creators/customize/collections',
-    creatorsCustomizeChannels: '^/creators/customize/channels',
-    faqPage: '^/help/faq',
-    notAuthorizedPage: '/notauthorized'
+    logPath: 'log'
   })
+  .constant('states', {
+    home: {
+      name: 'home'
+    },
+    signIn: {
+      name: 'signIn'
+    },
+    signOut: {
+      name: 'signOut'
+    },
+    register: {
+      name: 'register'
+    },
+    account: {
+      name: 'account'
+    },
+    dashboard: {
+      name: 'dashboard',
+      demo: {
+        name: 'dashboard.demo'
+      },
+      feedback: {
+        name: 'dashboard.feedback'
+      }
+    },
+    creators: {
+      name: 'creators',
+      landingPage: {
+        name: 'creators.landingPage'
+      },
+      createSubscription: {
+        name: 'creators.createSubscription'
+      },
+      customize: {
+        name: 'creators.customize',
+        landingPage: {
+          name: 'creators.customize.landingPage'
+        },
+        collections: {
+          name: 'creators.customize.collections'
+        },
+        channels: {
+          name: 'creators.customize.channels'
+        }
+      }
+    },
+    help: {
+      name: 'help',
+      faq: {
+        name: 'help.faq'
+      }
+    },
+    notAuthorized: {
+      name: 'notAuthorized'
+    }
+  }
+)
+.config(function($stateProvider, $urlRouterProvider, snapRemoteProvider, states) {
 
-  .config(function($stateProvider, $urlRouterProvider, fifthweekConstants, snapRemoteProvider) {
+  //for any unmatched url, redirect to home page
+  $urlRouterProvider.otherwise('/');
 
-    //for any unmatched url, redirect to home page
-    $urlRouterProvider.otherwise(fifthweekConstants.homePage);
+  $urlRouterProvider.when('/not-authorized', '/');
 
-    $stateProvider
+  $stateProvider
 
-      .state('home', {
-        url: fifthweekConstants.homePage,
-        templateUrl: 'views/home.html',
-        data: { 
-          pageTitle: 'Home',
-          disableSidebar: true
+    .state(states.home.name, {
+      url: '/',
+      templateUrl: 'views/home.html',
+      data: {
+        pageTitle: 'Home',
+        disableSidebar: true
+      },
+      views: {
+        '': {
+          templateUrl: 'views/home.html',
+          controller: 'HomeCtrl'
+        }
+      }
+    })
+    .state(states.signIn.name, {
+      url: '/signin',
+      data : {
+        pageTitle: 'Sign In',
+        headTitle: ' - ' + 'Sign In'
+      },
+      views: {
+        '': {
+          templateUrl: 'views/signin.html',
+          controller: 'SignInCtrl'
         },
-        views: {
-          '': {
-            templateUrl: 'views/home.html',
-            controller: 'HomeCtrl'
-          }
+        'sidebar': {
+          templateUrl: 'views/partials/sidebar.html'
+        }
+      }
+    })
+    .state(states.signOut.name, {
+      url: '/signout',
+      templateUrl: 'views/signout.html',
+      controller: 'SignOutCtrl',
+      data : {
+        pageTitle: 'Sign Out',
+        headTitle: ' - ' + 'Sign Out'
+      }
+    })
+    .state(states.register.name, {
+      url: '/register',
+      data : {
+        pageTitle: 'Register',
+        headTitle: ' - ' + 'Register'
+      },
+      views: {
+        '': {
+          templateUrl: 'views/register.html',
+          controller: 'RegisterCtrl'
         },
-      })
-      .state('signin', {
-        url: fifthweekConstants.signInPage,
-        data : { 
-          pageTitle: 'Sign In',
-          headTitle: ' - ' + 'Sign In'
+        'sidebar': {
+          templateUrl: 'views/partials/sidebar.html'
+        }
+      }
+    })
+    .state(states.account.name, {
+      url: '/account',
+      data : {
+        pageTitle: 'My Account',
+        headTitle: ' - ' + 'My Account'
+      },
+      views: {
+        '': {
+          templateUrl: 'views/account.html',
+          controller: 'AccountCtrl'
         },
-        views: {
-          '': {
-            templateUrl: 'views/signin.html',
-            controller: 'SignInCtrl'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
+        'sidebar': {
+          templateUrl: 'views/partials/sidebar.html'
         }
-      })
-      .state('register', {
-        url: fifthweekConstants.registerPage,
-        data : { 
-          pageTitle: 'Register',
-          headTitle: ' - ' + 'Register'
+      },
+      access: {
+        loginRequired: true
+      }
+    })
+    .state(states.dashboard.name, {
+      abstract: true,
+      url: '/dashboard',
+      data : {
+        pageTitle: 'Dashboard',
+        headTitle: ' - ' + 'Dashboard'
+      },
+      views:{
+        '': {
+          templateUrl: 'views/dashboard/index.html'
         },
-        views: {
-          '': {
-            templateUrl: 'views/register.html',
-            controller: 'RegisterCtrl'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
+        'sidebar': {
+          templateUrl: 'views/partials/sidebar.html'
         }
-      })
-      .state('account', {
-        url: fifthweekConstants.accountPage,
-        data : { 
-          pageTitle: 'My Account',
-          headTitle: ' - ' + 'My Account'
+      },
+      access: {
+        loginRequired: true
+      }
+    })
+    .state(states.dashboard.demo.name, {
+      url: '/demo',
+      templateUrl: 'views/dashboard/demo.html',
+      data : {
+        pageTitle: 'Quick Demo',
+        headTitle: ' - ' + 'Demo'
+      }
+    })
+    .state(states.dashboard.feedback.name, {
+      url: '/feedback',
+      templateUrl: 'views/dashboard/feedback.html',
+      data : {
+        pageTitle: 'Provide Feedback',
+        headTitle: ' - ' + 'Feedback'
+      }
+    })
+    .state(states.creators.name, {
+      abstract: true,
+      url: '/creators',
+      data : {
+        pageTitle: 'Creators',
+        headTitle: ' - ' + 'Creators'
+      },
+      views:{
+        '': {
+          templateUrl: 'views/creators/index.html'
         },
-        views: {
-          '': {
-            templateUrl: 'views/account.html',
-            controller: 'AccountCtrl'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
+        'sidebar': {
+          templateUrl: 'views/partials/sidebar.html'
+        }
+      },
+      access: {
+        loginRequired: true
+      }
+    })
+    .state(states.creators.landingPage.name, {
+      url: '/landing-page',
+      data : {
+        pageTitle: 'Landing page',
+        headTitle: ' - ' + 'Landing page',
+        disableSidebar: true
+      },
+      views: {
+        '': {
+          templateUrl: 'views/creators/landing-page.html',
+          controller: 'landingPageCtrl'
+        }
+      }
+    })
+    .state(states.creators.createSubscription.name, {
+      url: '/create-subscription',
+      templateUrl: 'views/creators/create-subscription.html',
+      controller: 'createSubscriptionCtrl',
+      data : {
+        pageTitle: 'Create Your Subscription',
+        headTitle: ' -' + ' Create Your Subscription'
+      }
+    })
+    .state(states.creators.customize.name, {
+      url: '/customize',
+      data : {
+        pageTitle: 'Customize',
+        headTitle: ' - ' + 'Customize'
+      },
+      views:{
+        '': {
+          templateUrl: 'views/creators/customize/index.html'
+        }
+      }
+    })
+    .state(states.creators.customize.landingPage.name, {
+      url: '/landing-page',
+      templateUrl: 'views/creators/customize/landingpage.html',
+      controller: 'customizeLandingPageCtrl',
+      data : {
+        pageTitle: ' Landing page',
+        headTitle: ' -' + ' Landing page'
+      }
+    })
+    .state(states.creators.customize.collections.name, {
+      url: '/collections',
+      templateUrl: 'views/creators/customize/collections.html',
+      data : {
+        pageTitle: 'Collections',
+        headTitle: ' - ' + 'Collections'
+      }
+    })
+    .state(states.creators.customize.channels.name, {
+      url: '/channels',
+      templateUrl: 'views/creators/customize/channels.html',
+      data : {
+        pageTitle: 'Channels',
+        headTitle: ' - ' + 'Channels'
+      }
+    })
+    .state(states.help.name, {
+      abstract: true,
+      url: '/help',
+      data : {
+        pageTitle: 'Help',
+        headTitle: ' - ' + 'Help'
+      },
+      views:{
+        '': {
+          templateUrl: 'views/help/index.html'
         },
-        access: {
-          loginRequired: true
+        'sidebar': {
+          templateUrl: 'views/partials/sidebar.html'
         }
-      })
-      .state('dashboard', {
-        abstract: true,
-        url: 'dashboard',
-        data : { 
-          pageTitle: 'Dashboard',
-          headTitle: ' - ' + 'Dashboard'
-        },
-        views:{
-          '': {
-            templateUrl: 'views/dashboard/index.html'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
-        },
-        access: {
-          loginRequired: true
-        }
-      })
-      .state('dashboard.demo', {
-        url: fifthweekConstants.dashboardPage,
-        templateUrl: 'views/dashboard/demo.html',
-        data : {
-          pageTitle: 'Quick Demo',
-          headTitle: ' - ' + 'Demo'
-        }
-      })
-      .state('dashboard.feedback', {
-        url: fifthweekConstants.feedbackPage,
-        templateUrl: 'views/dashboard/feedback.html',
-        data : { 
-          pageTitle: 'Provide Feedback',
-          headTitle: ' - ' + 'Feedback'
-        }
-      })
-      .state('publiclandingpage', {
-        url: fifthweekConstants.creatorsLandingPage,
-        data : { 
-          pageTitle: 'Landing page',
-          headTitle: ' - ' + 'Landing page',
-          disableSidebar: true
-        },
-        views: {
-          '': {
-            templateUrl: 'views/creators/landing-page.html',
-            controller: 'landingPageCtrl'
-          }
-        }
-      })
-      .state('creators', {
-        abstract: true,
-        url: 'creators',
-        data : {
-          pageTitle: 'Creators',
-          headTitle: ' - ' + 'Creators'
-        },
-        views:{
-          '': {
-            templateUrl: 'views/creators/index.html'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
-        },
-        access: {
-          loginRequired: true
-        }
-      })
-      .state('creators.createSubscription', {
-        url: fifthweekConstants.creatorsCreateSubscription, 
-        templateUrl: 'views/creators/create-subscription.html',
-        controller: 'createSubscriptionCtrl',
-        data : { 
-          pageTitle: ' Create Your Subscription',
-          headTitle: ' -' + ' Create Your Subscription'
-        }
-      })
-      .state('creators.customize', {
-        url: fifthweekConstants.creatorsCustomize,
-        data : {
-          pageTitle: 'Customize',
-          headTitle: ' - ' + 'Customize'
-        },
-        views:{
-          '': {
-            templateUrl: 'views/creators/customize/index.html'
-          }
-        }
-      })
-      .state('creators.customize.landingpage', {
-        url: fifthweekConstants.creatorsCustomizeLandingPage,
-        templateUrl: 'views/creators/customize/landingpage.html',
-        controller: 'customizeLandingPageCtrl',
-        data : { 
-          pageTitle: ' Landing page',
-          headTitle: ' -' + ' Landing page'
-        }
-      })
-      .state('creators.customize.collections', {
-        url: fifthweekConstants.creatorsCustomizeCollections,
-        templateUrl: 'views/creators/customize/collections.html',
-        data : { 
-          pageTitle: 'Collections',
-          headTitle: ' - ' + 'Collections'
-        }
-      })
-      .state('creators.customize.channels', {
-        url: fifthweekConstants.creatorsCustomizeChannels, 
-        templateUrl: 'views/creators/customize/channels.html',
-        data : { 
-          pageTitle: 'Channels',
-          headTitle: ' - ' + 'Channels'
-        }
-      })
-      .state('help', {
-        abstract: true,
-        url: 'help',
-        data : { 
-          pageTitle: 'Help',
-          headTitle: ' - ' + 'Help'
-        },
-        views:{
-          '': {
-            templateUrl: 'views/help/index.html'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
-        }
-      })
-      .state('help.faq', {
-        url: fifthweekConstants.faqPage,
-        templateUrl: 'views/help/faq.html',
-        data : { 
-          pageTitle: 'Frequently Asked Questions',
-          headTitle: ' - ' + 'Frequently Asked Questions'
-        }
-      })
-      .state('signout', {
-        url: fifthweekConstants.signOutPage,
-        templateUrl: 'views/signout.html',
-        controller: 'SignOutCtrl',
-        data : { 
-          pageTitle: 'Sign Out',
-          headTitle: ' - ' + 'Sign Out'
-        }
-      })
-      .state('notAuthorized', {
-        url: fifthweekConstants.notAuthorizedPage,
-        redirectTo: fifthweekConstants.homePage  // TODO: Create a "Not Authorized" page.
-      });
+      }
+    })
+    .state(states.help.faq.name, {
+      url: '/faq',
+      templateUrl: 'views/help/faq.html',
+      data : {
+        pageTitle: 'Frequently Asked Questions',
+        headTitle: ' - ' + 'Frequently Asked Questions'
+      }
+    })
+    .state(states.notAuthorized.name, {
+      url: '/not-authorized'
+    });
 
-    snapRemoteProvider. globalOptions = {
-      disable: 'right',
-      touchToDrag: false
-    };
-
+  snapRemoteProvider. globalOptions = {
+    disable: 'right',
+    touchToDrag: false
+  };
 })
-
 
 //global page titles
 //see: http://stackoverflow.com/a/26086324/1257504

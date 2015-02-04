@@ -18,11 +18,12 @@
       });
     })
     .run(['$rootScope', 'authenticationService', 'routeChangeAuthorizationHandler',
-      function($rootScope, authenticationService, routeChangeAuthHandler) {
+      function($rootScope, authenticationService, routeChangeAuthorizationHandler, states) {
         authenticationService.init();
+        $rootScope.states = states;
 
-        $rootScope.$on('$routeChangeStart', function(event, next) {
-          routeChangeAuthHandler.handleRouteChangeStart(next);
+        $rootScope.$on('$stateChangeStart', function(event, toState) {
+          routeChangeAuthorizationHandler.handleStateChangeStart(event, toState);
         });
       }
     ]);

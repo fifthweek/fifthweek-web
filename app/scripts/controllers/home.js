@@ -1,9 +1,9 @@
 angular.module('webApp').controller('HomeCtrl',
-  function($scope, $state, $location, $modal, $analytics, authenticationService, fifthweekConstants, logService, utilities) {
+  function($scope, $state, states, $modal, $analytics, authenticationService, logService, utilities) {
   'use strict';
 
   if(authenticationService.currentUser.authenticated === true){
-    $state.go('dashboard.demo');
+    $state.go(states.dashboard.demo.name);
   }
 
   $scope.savedSuccessfully = false;
@@ -36,7 +36,7 @@ angular.module('webApp').controller('HomeCtrl',
 
       return authenticationService.signIn(signInData).then(function() {
         $analytics.eventTrack('Registration succeeded', eventCategory());
-        $state.go('dashboard.demo');
+        $state.go(states.dashboard.demo.name);
       });
     }).catch(function(error) {
       $analytics.eventTrack('Registration failed', eventCategory());
