@@ -209,7 +209,10 @@ angular
       url: '/creators',
       data : {
         pageTitle: 'Creators',
-        headTitle: ' - ' + 'Creators'
+        headTitle: ' - ' + 'Creators',
+        access: {
+          loginRequired: true
+        }
       },
       views:{
         '': {
@@ -218,9 +221,6 @@ angular
         'sidebar': {
           templateUrl: 'views/partials/sidebar.html'
         }
-      },
-      access: {
-        loginRequired: true
       }
     })
     .state(states.creators.landingPage.name, {
@@ -228,7 +228,10 @@ angular
       data : {
         pageTitle: 'Landing page',
         headTitle: ' - ' + 'Landing page',
-        disableSidebar: true
+        disableSidebar: true,
+        access: {
+          loginRequired: false // Disable the inherited access requirement.
+        }
       },
       views: {
         '': {
@@ -243,20 +246,14 @@ angular
       controller: 'createSubscriptionCtrl',
       data : {
         pageTitle: 'Create Your Subscription',
-        headTitle: ' -' + ' Create Your Subscription',
-        access: {
-          loginRequired: true
-        }
+        headTitle: ' -' + ' Create Your Subscription'
       }
     })
     .state(states.creators.customize.name, {
       url: '/customize',
       data : {
         pageTitle: 'Customize',
-        headTitle: ' - ' + 'Customize',
-        access: {
-          loginRequired: true
-        }
+        headTitle: ' - ' + 'Customize'
       },
       views:{
         '': {
