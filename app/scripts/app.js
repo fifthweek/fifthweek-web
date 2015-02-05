@@ -10,7 +10,6 @@ angular
     'ngSanitize',
     'LocalStorageModule',
     'ng-focus',
-    'toaster',
     'ui.bootstrap',
     'snap',
     'monospaced.elastic',
