@@ -66,4 +66,17 @@
   .btn-video {
     margin:12px auto 0 auto;
   }
+  .btn-video.ng-leave {
+    -webkit-transition:all 0.4s ease;
+    transition:all 0.4s ease;
+  }
+
+  .btn-video.ng-leave.ng-leave-active {
+    opacity:0;
+  }
+
+  .btn-video.ng-leave {
+    opacity:1;
+  }
 }
+
