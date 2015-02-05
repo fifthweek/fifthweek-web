@@ -3,6 +3,7 @@ angular.module('webApp').directive('buttonLoading',function () {
   'use strict';
 
   return {
+    restrict: 'A',
     link:function (scope, element, attrs) {
       scope.$watch(
         function () {
