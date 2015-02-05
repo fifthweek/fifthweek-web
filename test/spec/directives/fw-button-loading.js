@@ -18,7 +18,7 @@ describe('loading button directive', function(){
       var scope = $rootScope.$new();
       scope.isLoading = false;
 
-      element = angular.element('<button data-loading-text="loading" button-loading="isLoading">default</button>');
+      element = angular.element('<button data-loading-text="loading" fw-button-loading="isLoading">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -41,7 +41,7 @@ describe('loading button directive', function(){
       var scope = $rootScope.$new();
       scope.isLoading = true;
 
-      element = angular.element('<button data-loading-text="loading" button-loading="isLoading">default</button>');
+      element = angular.element('<button data-loading-text="loading" fw-button-loading="isLoading">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -79,7 +79,7 @@ describe('loading button directive', function(){
       scope.isLoading = false;
       scope.isDisabled = false;
 
-      element = angular.element('<button ng-disabled="isDisabled" data-loading-text="loading" button-loading="isLoading">default</button>');
+      element = angular.element('<button ng-disabled="isDisabled" data-loading-text="loading" fw-button-loading="isLoading">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -117,7 +117,7 @@ describe('loading button directive', function(){
       scope.isLoading = true;
       scope.isDisabled = false;
 
-      element = angular.element('<button ng-disabled="isDisabled" data-loading-text="loading" button-loading="isLoading">default</button>');
+      element = angular.element('<button ng-disabled="isDisabled" data-loading-text="loading" fw-button-loading="isLoading">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });

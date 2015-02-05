@@ -1,5 +1,5 @@
 // See: https://gist.github.com/thisboyiscrazy/5137781#comment-838257
-angular.module('webApp').directive('buttonLoading',function () {
+angular.module('webApp').directive('fwButtonLoading',function () {
   'use strict';
 
   return {
@@ -7,7 +7,7 @@ angular.module('webApp').directive('buttonLoading',function () {
     link:function (scope, element, attrs) {
       scope.$watch(
         function () {
-          return scope.$eval(attrs.buttonLoading);
+          return scope.$eval(attrs.fwButtonLoading);
         },
         function (value) {
           if(value) {

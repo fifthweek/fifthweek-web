@@ -1,4 +1,4 @@
-angular.module('webApp').directive('stateSidebarEnablement',
+angular.module('webApp').directive('fwSetSidebarEnabledFromState',
   function ($state) {
     'use strict';
 

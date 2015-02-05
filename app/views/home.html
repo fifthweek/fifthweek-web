@@ -49,7 +49,7 @@
                        ng-minlength="2"
                        ng-maxlength="20"
                        maxlength="20"
-                       required username>
+                       required fw-check-username-availability>
                 <span ng-if="form.username.$valid && form.username.$touched" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
                 <span ng-if="form.username.$invalid && ((form.username.$touched && form.username.$dirty) || form.$submitted)" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               </div>
@@ -96,7 +96,7 @@
               id="registerButton"
               ng-click="form.$valid && form.$dirty ? register() : false"
               data-loading-text="Registering..."
-              button-loading="isSubmitting">Register as creator</button>
+              fw-button-loading="isSubmitting">Register as creator</button>
           </div>
         </div>
       </form>

@@ -6,7 +6,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should check the current state and enable sidebar if required', function(){
       state.data.disableSidebar = false;
 
-      var element = angular.element('<span state-sidebar-enablement class="sidebar-disabled"/>');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state class="sidebar-disabled"/>');
       $compile(element)(scope);
       scope.$digest();
 
@@ -14,7 +14,7 @@ describe('state-sidebar-enablement directive', function(){
     });
 
     it('should check the current state and enable sidebar if not specified', function(){
-      var element = angular.element('<span state-sidebar-enablement class="sidebar-disabled"/>');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state class="sidebar-disabled"/>');
       $compile(element)(scope);
       scope.$digest();
 
@@ -24,7 +24,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should check the current state and disable the sidebar if required', function(){
       state.data.disableSidebar = true;
 
-      var element = angular.element('<span state-sidebar-enablement />');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -35,7 +35,7 @@ describe('state-sidebar-enablement directive', function(){
 
       spyOn(scope, '$on');
 
-      var element = angular.element('<span state-sidebar-enablement />');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -48,7 +48,7 @@ describe('state-sidebar-enablement directive', function(){
       var detached = false;
       spyOn(scope, '$on').and.returnValue(function(){detached = true;});
 
-      var element = angular.element('<span state-sidebar-enablement />');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
 
       $compile(element)(scope);
       scope.$digest();
@@ -75,7 +75,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should enable the sidebar if required', function(){
       state.data.disableSidebar = true;
 
-      var element = angular.element('<span state-sidebar-enablement />');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -91,7 +91,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should disable the sidebar if required', function(){
       state.data.disableSidebar = false;
 
-      var element = angular.element('<span state-sidebar-enablement />');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -107,7 +107,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should keep the sidebar enabled if required by both states', function(){
       state.data.disableSidebar = false;
 
-      var element = angular.element('<span state-sidebar-enablement />');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -123,7 +123,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should keep the sidebar disabled if required by both states', function(){
       state.data.disableSidebar = true;
 
-      var element = angular.element('<span state-sidebar-enablement />');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 

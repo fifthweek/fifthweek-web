@@ -45,7 +45,7 @@
                              ng-minlength="2"
                              ng-maxlength="20"
                              maxlength="20"
-                             required username>
+                             required fw-check-username-availability>
                       <span ng-if="form.username.$valid && form.username.$touched" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
                       <span ng-if="form.username.$invalid && ((form.username.$touched && form.username.$dirty) || form.$submitted)" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                     </div>

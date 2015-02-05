@@ -11,7 +11,7 @@ describe('roles directive', function(){
     var element;
 
     beforeEach(function(){
-      element = angular.element('<button roles="Test1, Test2" role-check-type="all"/>');
+      element = angular.element('<button fw-roles="Test1, Test2" fw-role-check-type="all"/>');
 
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.authorized;
@@ -37,7 +37,7 @@ describe('roles directive', function(){
     var element;
 
     beforeEach(function(){
-      element = angular.element('<button roles="" role-check-type=""/>');
+      element = angular.element('<button fw-roles="" fw-role-check-type=""/>');
 
       authorizationService.authorize = function() {
         return authorizationServiceConstants.authorizationResult.authorized;
@@ -61,7 +61,7 @@ describe('roles directive', function(){
     var element;
 
     beforeEach(function(){
-      element = angular.element('<button roles="" role-check-type=""/>');
+      element = angular.element('<button fw-roles="" fw-role-check-type=""/>');
 
       authorizationService.authorize = function() {
         return authorizationServiceConstants.authorizationResult.notAuthorized;
@@ -85,7 +85,7 @@ describe('roles directive', function(){
     var element;
 
     beforeEach(function(){
-      element = angular.element('<button roles="" role-check-type=""/>');
+      element = angular.element('<button fw-roles="" fw-role-check-type=""/>');
 
       authorizationService.authorize = function() {
         return authorizationServiceConstants.authorizationResult.loginRequired;

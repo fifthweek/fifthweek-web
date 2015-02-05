@@ -1,5 +1,9 @@
-angular.module('webApp').directive('username', function($q, $timeout) {
+angular.module('webApp').directive('fwCheckUsernameAvailability', function($q, $timeout) {
   'use strict';
+
+  //
+  // TODO: Implement jasmine test once finished.
+  //
 
   return {
     require: 'ngModel',

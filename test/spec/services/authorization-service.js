@@ -16,10 +16,10 @@ describe('authorization service', function() {
       var result = authorizationService.authorize(false, ['Test']);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
 
-      result = authorizationService.authorize(false, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.atLeastOne);
+      result = authorizationService.authorize(false, ['Test', 'Test2'], authorizationServiceConstants.fwRoleCheckType.atLeastOne);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
 
-      result = authorizationService.authorize(false, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.all);
+      result = authorizationService.authorize(false, ['Test', 'Test2'], authorizationServiceConstants.fwRoleCheckType.all);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
     });
 
@@ -27,10 +27,10 @@ describe('authorization service', function() {
       var result = authorizationService.authorize(true);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.loginRequired);
 
-      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.atLeastOne);
+      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.fwRoleCheckType.atLeastOne);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.loginRequired);
 
-      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.all);
+      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.fwRoleCheckType.all);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.loginRequired);
     });
 
@@ -52,10 +52,10 @@ describe('authorization service', function() {
       var result = authorizationService.authorize(false, ['Test']);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
 
-      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.atLeastOne);
+      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.fwRoleCheckType.atLeastOne);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
 
-      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.all);
+      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.fwRoleCheckType.all);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
     });
 
@@ -69,13 +69,13 @@ describe('authorization service', function() {
       result = authorizationService.authorize(true, ['Test']);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.authorized);
 
-      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.atLeastOne);
+      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.fwRoleCheckType.atLeastOne);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.authorized);
 
-      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.all);
+      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.fwRoleCheckType.all);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
 
-      result = authorizationService.authorize(true, ['Test2', 'Test3'], authorizationServiceConstants.roleCheckType.atLeastOne);
+      result = authorizationService.authorize(true, ['Test2', 'Test3'], authorizationServiceConstants.fwRoleCheckType.atLeastOne);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
 
       result = authorizationService.authorize(true, ['Test2']);
@@ -86,7 +86,7 @@ describe('authorization service', function() {
 
       authenticationService.currentUser.roles = ['Test', 'Test2'];
 
-      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.all);
+      result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.fwRoleCheckType.all);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.authorized);
 
       result = authorizationService.authorize(true, ['Test2']);

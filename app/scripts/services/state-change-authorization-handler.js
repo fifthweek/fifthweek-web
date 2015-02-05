@@ -24,7 +24,7 @@ angular.module('webApp').factory('stateChangeAuthorizationHandler',
         var authorised = authorizationService.authorize(
           toState.data.access.loginRequired,
           toState.data.access.roles,
-          toState.data.access.roleCheckType);
+          toState.data.access.fwRoleCheckType);
 
         if (authorised === authorizationServiceConstants.authorizationResult.loginRequired) {
           redirectAfterLogin = true;

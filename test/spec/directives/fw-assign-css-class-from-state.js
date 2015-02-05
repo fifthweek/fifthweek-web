@@ -1,4 +1,4 @@
-describe('state-body-class directive', function(){
+describe('fw-assign-css-class-from-state directive', function(){
   'use strict';
 
   describe('when created', function(){
@@ -6,7 +6,7 @@ describe('state-body-class directive', function(){
     it('should check the current state and add the body class if present', function(){
       state.data.bodyClass = 'page-test';
 
-      var element = angular.element('<span state-body-class />');
+      var element = angular.element('<span fw-assign-css-class-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -14,7 +14,7 @@ describe('state-body-class directive', function(){
     });
 
     it('should check the current state and add the body class if present', function(){
-      var element = angular.element('<span state-body-class />');
+      var element = angular.element('<span fw-assign-css-class-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -25,7 +25,7 @@ describe('state-body-class directive', function(){
 
       spyOn(scope, '$on');
 
-      var element = angular.element('<span state-body-class />');
+      var element = angular.element('<span fw-assign-css-class-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -38,7 +38,7 @@ describe('state-body-class directive', function(){
       var detached = false;
       spyOn(scope, '$on').and.returnValue(function(){detached = true;});
 
-      var element = angular.element('<span state-body-class />');
+      var element = angular.element('<span fw-assign-css-class-from-state />');
 
       $compile(element)(scope);
       scope.$digest();
@@ -63,7 +63,7 @@ describe('state-body-class directive', function(){
   describe('when state changes', function(){
 
     it('should add the new class if specified', function(){
-      var element = angular.element('<span state-body-class />');
+      var element = angular.element('<span fw-assign-css-class-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -77,7 +77,7 @@ describe('state-body-class directive', function(){
     it('should replace the existing class with new class if specified', function(){
       state.data.bodyClass = 'old-class';
 
-      var element = angular.element('<span state-body-class />');
+      var element = angular.element('<span fw-assign-css-class-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -95,7 +95,7 @@ describe('state-body-class directive', function(){
     it('should remove the existing class if no new class specified', function(){
       state.data.bodyClass = 'old-class';
 
-      var element = angular.element('<span state-body-class />');
+      var element = angular.element('<span fw-assign-css-class-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -110,7 +110,7 @@ describe('state-body-class directive', function(){
     });
 
     it('should do nothing if neither old nor new states specified a class', function(){
-      var element = angular.element('<span state-body-class />');
+      var element = angular.element('<span fw-assign-css-class-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -126,7 +126,7 @@ describe('state-body-class directive', function(){
     it('should do nothing if both new and old states specify the same class', function(){
       state.data.bodyClass = 'some-class';
 
-      var element = angular.element('<span state-body-class />');
+      var element = angular.element('<span fw-assign-css-class-from-state />');
       $compile(element)(scope);
       scope.$digest();
 

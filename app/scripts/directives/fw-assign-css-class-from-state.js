@@ -1,4 +1,4 @@
-angular.module('webApp').directive('stateBodyClass',
+angular.module('webApp').directive('fwAssignCssClassFromState',
   function ($state) {
   'use strict';
 
