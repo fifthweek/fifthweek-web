@@ -319,7 +319,7 @@ angular
       },
       views: {
         '': {
-          template: '<div class="row"><div class="col-lg-12"><div class="panel panel-default"><div class="panel-body jumbo-panel">You are not authorized to view this page.</div></div></div></div>'
+          templateUrl: 'views/not-authorized/not-authorized.html'
         },
         'sidebar': {
           templateUrl: 'views/partials/sidebar.html'
