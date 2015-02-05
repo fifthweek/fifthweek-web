@@ -48,7 +48,7 @@ module.exports = function(config) {
     exclude: [
       'app/scripts/authComplete.js',
       'app/scripts/startup.js',
-      'app/scripts/analytics/startupanalytics.js'
+      'app/scripts/analytics/startup-analytics.js'
     ],
 
     // web server port

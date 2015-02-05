@@ -40,7 +40,7 @@ exports.config = {
       }
     ).then(function setWindowSize(dimensions) {
         var windowWidth = 1280,
-          windowHeight = 800;
+          windowHeight = 850;
 
         return window.setSize(windowWidth, windowHeight);
       }
