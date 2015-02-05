@@ -53,9 +53,7 @@
       _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
     </script>
   </head>
-  <body
-    class="page-{{$state.current.data.pageTitle | lowercase}}"
-    ng-class="{'sidebar-disabled': $state.current.data.disableSidebar == true}">
+  <body state-body-class state-sidebar-enablement>
 
 
     <!--[if lt IE 7]>
@@ -139,6 +137,8 @@
     <script src="scripts/directives/username.js"></script>
     <script src="scripts/directives/vimeo-video.js"></script>
     <script src="scripts/directives/button-loading.js"></script>
+    <script src="scripts/directives/statesidebarenablement.js"></script>
+    <script src="scripts/directives/statebodyclass.js"></script>
     <script src="scripts/services/state-change-redirection-handler.js"></script>
     <script src="scripts/services/state-change-authorization-handler.js"></script>
     <script src="scripts/analytics/angulartics-kissmetrics.js"></script>

@@ -97,7 +97,8 @@ angular
       templateUrl: 'views/home.html',
       data: {
         pageTitle: 'Home',
-        disableSidebar: true
+        disableSidebar: true,
+        bodyClass: 'page-home'
       },
       views: {
         '': {
@@ -228,6 +229,7 @@ angular
         pageTitle: 'Landing page',
         headTitle: ' - ' + 'Landing page',
         disableSidebar: true,
+        bodyClass: 'page-landing',
         access: {
           loginRequired: false // Disable the inherited access requirement.
         }
