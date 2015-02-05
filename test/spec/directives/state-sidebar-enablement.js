@@ -1,4 +1,5 @@
 describe('state-sidebar-enablement directive', function(){
+  'use strict';
 
   describe('when created', function(){
 
@@ -149,6 +150,8 @@ describe('state-sidebar-enablement directive', function(){
   beforeEach(function() {
     module('webApp');
   });
+
+  var $state;
 
   beforeEach(function() {
     $state = {};

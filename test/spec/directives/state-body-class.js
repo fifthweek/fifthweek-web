@@ -1,4 +1,5 @@
 describe('state-body-class directive', function(){
+  'use strict';
 
   describe('when created', function(){
 
@@ -152,6 +153,8 @@ describe('state-body-class directive', function(){
   beforeEach(function() {
     module('webApp');
   });
+
+  var $state;
 
   beforeEach(function() {
     $state = {};
