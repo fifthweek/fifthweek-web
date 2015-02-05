@@ -12,6 +12,14 @@
         sudo gem install compass
         grunt build
 
+3.  If you receive an `npm install` error relating to `pty.js`, do the following:
+
+        mkdir /tmp/pty.js
+        git clone https://github.com/chjj/pty.js.git /tmp/pty.js
+        <open in editor /tmp/pty.js/src/unix/pty.cc>
+        <replace failing line with `#include "/usr/include/util.h"`>
+        npm install -g /tmp/pty.js
+
 -   Serve site against local API:
 
         grunt serve:local
@@ -27,7 +35,6 @@
 -   Serve site against live API and dist folder:
 
         grunt serve:live:dist
-   
 
 ## Running tests
 
