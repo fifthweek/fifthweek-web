@@ -17,13 +17,16 @@
         };
       });
     })
-    .run(['$rootScope', 'authenticationService', 'routeChangeAuthorizationHandler',
-      function($rootScope, authenticationService, routeChangeAuthorizationHandler, states) {
+    .run(['$rootScope', 'authenticationService', 'stateChangeAuthorizationHandler', 'stateChangeRedirectionHandler',
+      function($rootScope, authenticationService, stateChangeAuthorizationHandler, stateChangeRedirectionHandler) {
         authenticationService.init();
-        $rootScope.states = states;
 
+        // Order here is important: they are processed in reverse order.
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
-          routeChangeAuthorizationHandler.handleStateChangeStart(event, toState, toParams);
+          stateChangeAuthorizationHandler.handleStateChangeStart(event, toState, toParams);
+        });
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
+          stateChangeRedirectionHandler.handleStateChangeStart(event, toState, toParams);
         });
       }
     ]);

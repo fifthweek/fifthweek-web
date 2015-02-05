@@ -91,8 +91,6 @@ angular
   //for any unmatched url, redirect to home page
   $urlRouterProvider.otherwise('/');
 
-  $urlRouterProvider.when('/not-authorized', '/');
-
   $stateProvider
 
     .state(states.home.name, {
@@ -170,8 +168,9 @@ angular
       }
     })
     .state(states.dashboard.name, {
-      abstract: true,
+      abstract: false,
       url: '/dashboard',
+      redirectTo: states.dashboard.demo.name,
       data : {
         pageTitle: 'Dashboard',
         headTitle: ' - ' + 'Dashboard',
@@ -205,8 +204,9 @@ angular
       }
     })
     .state(states.creators.name, {
-      abstract: true,
+      abstract: false,
       url: '/creators',
+      redirectTo: states.creators.landingPage.name,
       data : {
         pageTitle: 'Creators',
         headTitle: ' - ' + 'Creators',
@@ -287,8 +287,9 @@ angular
       }
     })
     .state(states.help.name, {
-      abstract: true,
+      abstract: false,
       url: '/help',
+      redirectTo: states.help.faq.name,
       data : {
         pageTitle: 'Help',
         headTitle: ' - ' + 'Help'
@@ -311,7 +312,19 @@ angular
       }
     })
     .state(states.notAuthorized.name, {
-      url: '/not-authorized'
+      url: '/not-authorized',
+      data : {
+        pageTitle: 'Not Authorized',
+        headTitle: ' - ' + 'Not Authorized'
+      },
+      views: {
+        '': {
+          template: '<div class="row"><div class="col-lg-12"><div class="panel panel-default"><div class="panel-body jumbo-panel">You are not authorized to view this page.</div></div></div></div>'
+        },
+        'sidebar': {
+          templateUrl: 'views/partials/sidebar.html'
+        }
+      }
     });
 
   snapRemoteProvider. globalOptions = {

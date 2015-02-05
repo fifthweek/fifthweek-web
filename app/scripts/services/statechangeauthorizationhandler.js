@@ -1,19 +1,19 @@
 /// <reference path='../angular.module('webApp')js' />
 
-angular.module('webApp').factory('routeChangeAuthorizationHandler',
+angular.module('webApp').factory('stateChangeAuthorizationHandler',
   function(authorizationService, authorizationServiceConstants, $state, states) {
     'use strict';
 
     var service = {};
 
-    var routeChangeRequiredAfterLogin = false;
+    var redirectAfterLogin = false;
     var cachedToState;
     var cachedToParams;
 
     service.handleStateChangeStart = function(event, toState, toParams/*, fromState, fromParams*/){
 
-      if (routeChangeRequiredAfterLogin && toState.name !== states.signIn.name) {
-        routeChangeRequiredAfterLogin = false;
+      if (redirectAfterLogin && toState.name !== states.signIn.name) {
+        redirectAfterLogin = false;
 
         if(toState.data !== undefined && toState.data.access !== undefined && toState.data.access.loginRequired === true) {
           event.preventDefault();
@@ -27,7 +27,7 @@ angular.module('webApp').factory('routeChangeAuthorizationHandler',
           toState.data.access.roleCheckType);
 
         if (authorised === authorizationServiceConstants.authorizationResult.loginRequired) {
-          routeChangeRequiredAfterLogin = true;
+          redirectAfterLogin = true;
           cachedToState = toState.name;
           cachedToParams =  toParams;
           event.preventDefault();
