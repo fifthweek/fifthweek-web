@@ -95,7 +95,8 @@
               type="submit"
               id="registerButton"
               ng-click="form.$valid && form.$dirty ? register() : false"
-              ng-disabled="isSubmitting">Register as creator</button>
+              data-loading-text="Registering..."
+              button-loading="isSubmitting">Register as creator</button>
           </div>
         </div>
       </form>

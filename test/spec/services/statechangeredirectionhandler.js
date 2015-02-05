@@ -1,4 +1,5 @@
 describe('state change redirection handler', function(){
+  'use strict';
 
   it('should not do anything if the redirectTo field is not present', function(){
 

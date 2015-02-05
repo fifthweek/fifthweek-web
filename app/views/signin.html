@@ -13,12 +13,13 @@
             <input type="password" class="form-control" placeholder="Password" data-ng-model="signInData.password" required>
           </div>
 
-          <button 
-            id="signInButton" 
-            class="btn btn-success btn-block" 
-            type="submit" 
+          <button
+            id="signInButton"
+            class="btn btn-success btn-block"
+            type="submit"
             data-ng-click="signIn()"
-            ng-disabled="isSubmitting">Sign In</button>
+            data-loading-text="Signing in..."
+            button-loading="isSubmitting">Sign In</button>
 
           <div data-ng-hide="message == ''" class="alert alert-danger sub-form-alert" id="signInMessage">
             {{message}}
