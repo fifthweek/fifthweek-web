@@ -1,8 +1,81 @@
 'use strict';
 
 describe('home controller', function() {
+  var $q;
+  var $controller;
+
+  var scope;
+  var $state;
+  var states;
+  var utilities;
+  var $modal;
+  var analytics;
+  var authenticationService;
+  var logService;
+  var target;
+
+  beforeEach(module('webApp', 'stateMock'));
+
+  beforeEach(inject(function($injector) {
+    $q = $injector.get('$q');
+    $controller = $injector.get('$controller');
+
+    scope = $injector.get('$rootScope').$new();
+    $state = $injector.get('$state');
+    states = $injector.get('states');
+    utilities = $injector.get('utilities');
+    $modal = {};
+    analytics = {};
+    authenticationService = {};
+    logService = {};
+  }));
+
+  // Split out since we have logic running in the constructor.
+  function initializeTarget() {
+    target = $controller('HomeCtrl', {
+      $scope: scope,
+      $state: $state,
+      states: states,
+      utilities: utilities,
+      $modal: $modal,
+      analytics: analytics,
+      authenticationService: authenticationService,
+      logService: logService
+    });
+  }
+
+  afterEach(function(){
+    $state.verifyNoOutstandingTransitions();
+  });
+
+  describe('when the user is already authenticated', function(){
+    it('should redirect to the dashboard page', function(){
+      $state.expectTransitionTo(states.dashboard.demo.name);
+
+      authenticationService.currentUser = { authenticated: true };
+      initializeTarget();
+    });
+  });
+
+  describe('modal with video', function(){
+    beforeEach(function() {
+      authenticationService.currentUser = { authenticated: false };
+      initializeTarget();
+    });
+
+    it('should contain an openModal function', function(){
+      expect(scope.openModal).toBeDefined();
+    });
+  });
 
   describe('when the user is not authenticated', function(){
+    var errorMessage = '!';
+    beforeEach(function() {
+      authenticationService.currentUser = { authenticated: false };
+      logService.error = function(){};
+      utilities.getFriendlyErrorMessage = function(){ return errorMessage; };
+      initializeTarget();
+    });
 
     it('should contain empty registration data on creation', function() {
       expect(scope.registrationData.email).toBe('');
@@ -12,6 +85,13 @@ describe('home controller', function() {
 
     describe('and submits the form', function() {
 
+      beforeEach(function() {
+        scope.registrationData = {
+          email: 'lawrence@fifthweek.com',
+          username: 'lawrence',
+          password: 'password'
+        };
+      });
 
       it('should navigate to dashboard on successful registration', function() {
         authenticationService.registerUser = function() { return resolvedPromise(); };
@@ -22,12 +102,11 @@ describe('home controller', function() {
         $state.expectTransitionTo(states.dashboard.demo.name);
 
         scope.register();
-        $rootScope.$apply();
+        scope.$apply();
 
         expect(scope.message).toContain('Signing in...');
-        expect(scope.savedSuccessfully).toBe(true);
+        expect(scope.submissionSucceeded).toBe(true);
       });
-
 
       it('should display an error message and log the error on unsuccessful registration', function() {
         authenticationService.registerUser = function() {
@@ -41,12 +120,12 @@ describe('home controller', function() {
         spyOn(utilities, 'getFriendlyErrorMessage').and.callThrough();
 
         scope.register();
-        $rootScope.$apply();
+        scope.$apply();
 
         expect(logService.error).toHaveBeenCalled();
         expect(utilities.getFriendlyErrorMessage).toHaveBeenCalled();
         expect(scope.message).toEqual(errorMessage);
-        expect(scope.savedSuccessfully).toBe(false);
+        expect(scope.submissionSucceeded).toBe(false);
       });
 
       it('should track registration attempts before communicating with the authentication service', function() {
@@ -69,12 +148,12 @@ describe('home controller', function() {
         $state.expectTransitionTo(states.dashboard.demo.name);
 
         scope.register();
-        $rootScope.$apply();
+        scope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Registration submitted', eventCategory],
+          ['analytics.eventTrack', 'Registration submitted', 'Registration'],
           'authenticationService.registerUser',
-          ['analytics.eventTrack', 'Registration succeeded', eventCategory]
+          ['analytics.eventTrack', 'Registration succeeded', 'Registration']
         ]);
       });
 
@@ -92,12 +171,12 @@ describe('home controller', function() {
         };
 
         scope.register();
-        $rootScope.$apply();
+        scope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Registration submitted', eventCategory],
+          ['analytics.eventTrack', 'Registration submitted', 'Registration'],
           'authenticationService.registerUser',
-          ['analytics.eventTrack', 'Registration failed', eventCategory]
+          ['analytics.eventTrack', 'Registration failed', 'Registration']
         ]);
       });
 
@@ -121,111 +200,15 @@ describe('home controller', function() {
         $state.expectTransitionTo(states.dashboard.demo.name);
 
         scope.register();
-        $rootScope.$apply();
+        scope.$apply();
 
         expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Registration submitted', eventCategory],
+          ['analytics.eventTrack', 'Registration submitted', 'Registration'],
           'authenticationService.registerUser',
-          ['analytics.eventTrack', 'Registration succeeded', eventCategory]
+          ['analytics.eventTrack', 'Registration succeeded', 'Registration']
         ]);
       });
-
-      var eventCategory = {
-        'category': 'Registration'
-      };
-
-      beforeEach(function() {
-        scope.registrationData = {
-          email: 'lawrence@fifthweek.com',
-          username: 'lawrence',
-          password: 'password'
-        };
-      });
     });
-
-    var logService;
-    var utilities;
-    var errorMessage = '!';
-
-    beforeEach(function() {
-      authenticationService = { currentUser: { authenticated: false }};
-      logService = { error: function(){} };
-      utilities = { getFriendlyErrorMessage: function(){ return errorMessage; } };
-
-      HomeCtrl = $controller('HomeCtrl', {
-        $scope: scope,
-        authenticationService: authenticationService,
-        logService: logService,
-        utilities: utilities
-      });
-    });
-  });
-
-  describe('when the user is already authenticated', function(){
-
-    it('should redirect to the dashboard page', function(){
-
-      $state.expectTransitionTo(states.dashboard.demo.name);
-
-      HomeCtrl = $controller('HomeCtrl', {
-        $scope: scope,
-        authenticationService: authenticationService
-      });
-    });
-
-    beforeEach(function() {
-      authenticationService = { currentUser: { authenticated: true }};
-    });
-  });
-
-  describe('modal with video', function(){
-
-    it('should contain an openModal function', function(){
-      expect(scope.openModal).toBeDefined();
-
-    });
-
-    beforeEach(function() {
-      HomeCtrl = $controller('HomeCtrl', {
-        $scope: scope
-      });
-    });
-
-  });
-
-  // load the controller's module
-  beforeEach(module('webApp', 'stateMock'));
-
-  var HomeCtrl;
-  var scope;
-  var $rootScope;
-  var $state;
-  var authenticationService;
-  var $q;
-  var states;
-  var $controller;
-  var analytics;
-
-  beforeEach(function() {
-    analytics = {};
-
-    module(function($provide) {
-      $provide.value('$analytics', analytics);
-    });
-  });
-
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function(_$controller_, _$rootScope_, _$state_, _$q_, _states_) {
-    $controller = _$controller_;
-    $rootScope = _$rootScope_;
-    $state = _$state_;
-    scope = $rootScope.$new();
-    $q = _$q_;
-    states = _states_;
-  }));
-
-  afterEach(function(){
-    $state.verifyNoOutstandingTransitions();
   });
 
   function resolvedPromise() {

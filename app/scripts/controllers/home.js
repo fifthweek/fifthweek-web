@@ -1,14 +1,14 @@
 angular.module('webApp').controller('HomeCtrl',
-  function($scope, $state, states, $modal, analytics, authenticationService, logService, utilities) {
+  function($scope, $state, states, utilities, $modal, analytics, authenticationService, logService) {
   'use strict';
 
   if(authenticationService.currentUser.authenticated === true){
     $state.go(states.dashboard.demo.name);
   }
 
-  $scope.savedSuccessfully = false;
-  $scope.message = '';
   $scope.isSubmitting = false;
+  $scope.submissionSucceeded = false;
+  $scope.message = '';
 
   $scope.registrationData = {
     email: '',
@@ -17,14 +17,14 @@ angular.module('webApp').controller('HomeCtrl',
   };
 
   var eventCategory = 'Registration';
+  var eventPrefix = 'Registration';
 
   $scope.register = function() {
     $scope.isSubmitting = true;
-
-    analytics.eventTrack('Registration submitted', eventCategory);
+    analytics.eventTrack(eventPrefix + ' submitted', eventCategory);
 
     return authenticationService.registerUser($scope.registrationData).then(function() {
-      $scope.savedSuccessfully = true;
+      $scope.submissionSucceeded = true;
       $scope.message = 'Signing in...';
 
       var signInData = {
@@ -33,11 +33,11 @@ angular.module('webApp').controller('HomeCtrl',
       };
 
       return authenticationService.signIn(signInData).then(function() {
-        analytics.eventTrack('Registration succeeded', eventCategory);
+        analytics.eventTrack(eventPrefix + ' succeeded', eventCategory);
         $state.go(states.dashboard.demo.name);
       });
     }).catch(function(error) {
-      analytics.eventTrack('Registration failed', eventCategory);
+      analytics.eventTrack(eventPrefix + ' failed', eventCategory);
       $scope.message = utilities.getFriendlyErrorMessage(error);
       $scope.isSubmitting = false;
       return logService.error(error);

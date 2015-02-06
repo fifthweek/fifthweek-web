@@ -11,7 +11,7 @@
             role="form"
             name="form"
             id="registrationForm"
-            ng-show="!savedSuccessfully">
+            ng-show="!submissionSucceeded">
 
         <div class="form-group"
              data-ng-class="{
@@ -110,7 +110,7 @@
       </div>
       <div clas="row">
         <div class="col-md-6">
-          <div id="messageBox" class="sub-form-alert" data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+          <div id="messageBox" class="sub-form-alert" data-ng-hide="message == ''" data-ng-class="(submissionSucceeded) ? 'alert alert-success' : 'alert alert-danger'">
             {{message}}
           </div>
         </div>

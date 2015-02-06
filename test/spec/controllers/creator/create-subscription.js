@@ -1,24 +1,42 @@
 'use strict';
 
-describe('creator - create subscription page controller', function () {
+describe('creator - create subscription controller', function () {
 
+  var scope;
+  var $state;
+  var states;
+  var utilities;
+  var analytics;
+  var subscriptionStub;
+  var target;
 
-  // load the controller's module
-  beforeEach(module('webApp'));
+  beforeEach(module('webApp', 'stateMock'));
 
-  var createSubscriptionCtrl,
-      $rootScope,
-      scope,
-      $q;
+  beforeEach(inject(function ($injector) {
+    scope = $injector.get('$rootScope').$new();
+    $state = $injector.get('$state');
+    states = $injector.get('states');
+    utilities = $injector.get('utilities');
+    analytics = {};
+    subscriptionStub = {};
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$rootScope_, $controller, _$q_) {
-    $rootScope = _$rootScope_;
-    scope = $rootScope.$new();
-    $q = _$q_;
-    createSubscriptionCtrl = $controller('createSubscriptionCtrl', {
-      $scope: scope
+    target = $injector.get('$controller')('createSubscriptionCtrl', {
+      $scope: scope,
+      $state: $state,
+      states: states,
+      utilities: utilities,
+      analytics: analytics,
+      subscriptionStub: subscriptionStub
     });
   }));
 
+  afterEach(function(){
+    $state.verifyNoOutstandingTransitions();
+  });
+
+  it('should contain empty form data on creation', function() {
+    expect(scope.newSubscriptionData.subscriptionName).toBe('');
+    expect(scope.newSubscriptionData.tagline).toBe('');
+    expect(scope.newSubscriptionData.basePrice).toBe(1.00);
+  });
 });

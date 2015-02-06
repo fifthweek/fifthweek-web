@@ -1,6 +1,17 @@
 describe('utilities', function() {
   'use strict';
 
+  var fifthweekConstants;
+  var utilities;
+
+  // load the service's module
+  beforeEach(module('webApp'));
+
+  beforeEach(inject(function($injector) {
+    fifthweekConstants = $injector.get('fifthweekConstants');
+    utilities = $injector.get('utilities');
+  }));
+
   describe('when getting an HTTP error', function(){
 
     it('should return a connection error if the status code is zero', function(){
@@ -49,15 +60,4 @@ describe('utilities', function() {
       expect(result).toBe(fifthweekConstants.unexpectedErrorText);
     });
   });
-
-  // load the service's module
-  beforeEach(module('webApp'));
-
-  var fifthweekConstants;
-  var utilities;
-
-  beforeEach(inject(function($injector) {
-    fifthweekConstants = $injector.get('fifthweekConstants');
-    utilities = $injector.get('utilities');
-  }));
 });
