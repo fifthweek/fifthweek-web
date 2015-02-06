@@ -3,7 +3,7 @@
   <ul>
     <div ng-include="'views/partials/sidebar/user.html'"></div>
     <li class="parent-wrap" data-ng-hide="!currentUser.authenticated || $state.includes('help') || $state.includes('creators')" data-match-route="/dashboard*">
-      
+
       <span class="dummy" id="dashboardParent" ng-click="menuDashboard = ! menuDashboard"><i class="fa fa-folder-open-o"></i>Dashboard</span>
       <ul ng-show="menuDashboard || $state.includes('dashboard')">
         <li><a class="pink" ui-sref="dashboard.demo" ui-sref-active="active" snap-close><i class="fa fa-youtube-play"></i>Quick Demo</a></li>
@@ -30,5 +30,5 @@
 <div class="row sidebar-footer">
     <p class="version"><a ui-sref="help.faq" snap-close>Alpha Version</a></p>
     <p id="browserStackMention">Tested on <a ng-href="http://www.browserstack.com/" target="_blank">BrowserStack</a></p>
-    <p>&copy; Fifthweek 2014</p>
+    <p>&copy; Fifthweek 2015</p>
 </div>
