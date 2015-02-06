@@ -57,12 +57,12 @@ $html-name-space:'.page-home';
       float:right;
       margin:{
         top:15px;
-        right:15px;
+        right:40px;
       }
     }
   }
 
-  
+
   .wrapper,
   .left-right-container-wrap,
   #{$right-container},
@@ -90,7 +90,7 @@ $html-name-space:'.page-home';
     width:100%;
     > .col-md-12 {
       padding:0 15px;
-      @media (min-width:$bp-medium) { 
+      @media (min-width:$bp-medium) {
         padding:0 37px;
       }
       @media (min-width:$bp-m-large) {
