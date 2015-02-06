@@ -39,6 +39,16 @@ textarea.form-control {
   max-width:100%;
 }
 
+.input-group {
+  .form-control {
+    margin-bottom:0;
+  }
+}
+
+
+
+
+//buttons
 .btn {
   border:0 none;
 }
