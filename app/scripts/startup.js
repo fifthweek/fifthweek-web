@@ -17,16 +17,23 @@
       });
     })
     .run(function ($state, states) {
-      // This configures the default state '' to have the same data properties
-      // as the home state.  Because the site is in the default state briefly
+      // This configures the empty state '' to have similar properties
+      // to the home state.  Because the site is in the default state briefly
       // when the site loads, this ensure that the sidebar doesn't flicker on.
       var allStates = $state.get();
       var homeState = $state.get(states.home.name);
-      var defaultState = allStates[0];
-      if (defaultState.name !== '') {
-        throw new FifthweekError('Failed to find default state.');
+      var emptyState = allStates[0];
+      if (emptyState.name !== '') {
+        throw new FifthweekError('Failed to find empty state.');
       }
-      defaultState.data = homeState.data;
+
+      // We don't copy the entire data structure, because, for example,
+      // copying the page css class would cause the landing page background to be downloaded
+      // even if we were going directly to a deep link.
+      emptyState.data = {
+        disableSidebar: homeState.data.disableSidebar,
+        bodyClass: 'page-empty'
+      };
     })
     .run(function($rootScope, authenticationService, stateChangeAuthorizationHandler, stateChangeRedirectionHandler) {
         authenticationService.init();

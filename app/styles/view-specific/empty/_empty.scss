@@ -1,0 +1,21 @@
+@import '_base';
+
+// This is the CSS for what is displayed by UI router briefly before the first proper state
+// transition, when we are in the "empty" state.
+// We can't have no CSS for the empty state because that causes the home page to flicker
+// briefly with the default gray background on load.
+// We don't want the empty state to share the CSS with the home page, because that causes the
+// background image to be downloaded no matter what initial page you load in your browser.
+$html-name-space:'.page-empty';
+
+#{$html-name-space} {
+  .navbar,
+  footer {
+    display:none !important;
+  }
+
+  #{$right-container} {
+    background:none;
+  }
+}
+
