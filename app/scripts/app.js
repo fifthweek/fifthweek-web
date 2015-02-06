@@ -91,7 +91,6 @@ angular
   $urlRouterProvider.otherwise('/');
 
   $stateProvider
-
     .state(states.home.name, {
       url: '/',
       templateUrl: 'views/home.html',
@@ -333,11 +332,9 @@ angular
     touchToDrag: false
   };
 })
-
-//global page titles
-//see: http://stackoverflow.com/a/26086324/1257504
-.run([ '$rootScope', '$state', '$stateParams',
-  function ($rootScope, $state, $stateParams) {
-    $rootScope.$state = $state;
-    $rootScope.$stateParams = $stateParams;
-  }]);
+.run(function ($rootScope, $state, $stateParams) {
+  //global page titles
+  //see: http://stackoverflow.com/a/26086324/1257504
+  $rootScope.$state = $state;
+  $rootScope.$stateParams = $stateParams;
+});
