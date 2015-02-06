@@ -28,6 +28,12 @@ describe('home controller', function() {
     analytics = {};
     authenticationService = {};
     logService = {};
+
+    // Satisfy the 'construction precondition' by default. There only needs to be
+    // one test to ensure appropriate behaviour when this condition is not met.
+    authenticationService.currentUser = { authenticated: false };
+
+    initializeTarget();
   }));
 
   // Split out since we have logic running in the constructor.
@@ -57,24 +63,15 @@ describe('home controller', function() {
     });
   });
 
-  describe('modal with video', function(){
+  describe('when the user is not authenticated', function(){
+    var errorMessage = '!';
     beforeEach(function() {
-      authenticationService.currentUser = { authenticated: false };
-      initializeTarget();
+      logService.error = function(){};
+      utilities.getFriendlyErrorMessage = function(){ return errorMessage; };
     });
 
     it('should contain an openModal function', function(){
       expect(scope.openModal).toBeDefined();
-    });
-  });
-
-  describe('when the user is not authenticated', function(){
-    var errorMessage = '!';
-    beforeEach(function() {
-      authenticationService.currentUser = { authenticated: false };
-      logService.error = function(){};
-      utilities.getFriendlyErrorMessage = function(){ return errorMessage; };
-      initializeTarget();
     });
 
     it('should contain empty registration data on creation', function() {

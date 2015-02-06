@@ -12,7 +12,7 @@ describe('creator - create subscription controller', function () {
 
   beforeEach(module('webApp', 'stateMock'));
 
-  beforeEach(inject(function ($injector) {
+  beforeEach(inject(function ($injector, $controller) {
     scope = $injector.get('$rootScope').$new();
     $state = $injector.get('$state');
     states = $injector.get('states');
@@ -20,7 +20,7 @@ describe('creator - create subscription controller', function () {
     analytics = {};
     subscriptionStub = {};
 
-    target = $injector.get('$controller')('createSubscriptionCtrl', {
+    target = $controller('createSubscriptionCtrl', {
       $scope: scope,
       $state: $state,
       states: states,
