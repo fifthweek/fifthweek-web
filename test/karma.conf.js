@@ -35,6 +35,7 @@ module.exports = function(config) {
       'bower_components/angular-elastic/elastic.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'app/scripts/app.js',
       'app/scripts/**/*.js',
       'test/mock/*.js',
       'test/pages/**/*.js',

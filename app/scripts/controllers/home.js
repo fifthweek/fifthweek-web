@@ -1,5 +1,5 @@
 angular.module('webApp').controller('HomeCtrl',
-  function($scope, $state, states, $modal, $analytics, authenticationService, logService, utilities) {
+  function($scope, $state, states, $modal, analytics, authenticationService, logService, utilities) {
   'use strict';
 
   if(authenticationService.currentUser.authenticated === true){
@@ -16,14 +16,12 @@ angular.module('webApp').controller('HomeCtrl',
     password: ''
   };
 
+  var eventCategory = 'Registration';
+
   $scope.register = function() {
     $scope.isSubmitting = true;
 
-    var eventCategory = function() {
-      return {category: 'Registration'};
-    };
-
-    $analytics.eventTrack('Registration submitted', eventCategory());
+    analytics.eventTrack('Registration submitted', eventCategory);
 
     return authenticationService.registerUser($scope.registrationData).then(function() {
       $scope.savedSuccessfully = true;
@@ -35,11 +33,11 @@ angular.module('webApp').controller('HomeCtrl',
       };
 
       return authenticationService.signIn(signInData).then(function() {
-        $analytics.eventTrack('Registration succeeded', eventCategory());
+        analytics.eventTrack('Registration succeeded', eventCategory);
         $state.go(states.dashboard.demo.name);
       });
     }).catch(function(error) {
-      $analytics.eventTrack('Registration failed', eventCategory());
+      analytics.eventTrack('Registration failed', eventCategory);
       $scope.message = utilities.getFriendlyErrorMessage(error);
       $scope.isSubmitting = false;
       return logService.error(error);
@@ -51,5 +49,4 @@ angular.module('webApp').controller('HomeCtrl',
       templateUrl: 'views/home-modal.html'
     });
   };
-
 });

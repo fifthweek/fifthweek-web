@@ -67,7 +67,7 @@ The `targetBase` parameter defaults to `app` and the `browserLocation` parameter
 -   Karma tests with a fast refresh:
 
         cd test
-        ../node_modules/karma/bin/karma start
+        ../node_modules/karma/bin/karma start --reporters dots
 
 -   Protractor tests against local API:
 

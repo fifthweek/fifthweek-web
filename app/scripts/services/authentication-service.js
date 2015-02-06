@@ -1,7 +1,7 @@
 /// <reference path='../angular.module('webApp')js' />
 
 angular.module('webApp').factory('authenticationService',
-  function($http, $q, $analytics, localStorageService, fifthweekConstants, utilities) {
+  function($http, $q, analytics, localStorageService, fifthweekConstants, utilities) {
     'use strict';
 
     var apiBaseUri = fifthweekConstants.apiBaseUri;
@@ -64,7 +64,7 @@ angular.module('webApp').factory('authenticationService',
       }).then(function(response) {
 
         return extractAuthenticationDataFromResponse(response).then(function(){
-          $analytics.setUsername(response.data.user_id);
+          analytics.setUsername(response.data.user_id);
         });
 
       }, function(response){
