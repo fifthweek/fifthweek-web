@@ -10,7 +10,7 @@
             <form novalidate role="form" name="form" ng-hide="savedSuccessfully" id="registrationForm">
 
               <div class="form-group"
-                   data-ng-class="{
+                   ng-class="{
                    'has-error' : form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted),
                    'has-success' : form.email.$valid && form.email.$touched
                    }">
@@ -18,7 +18,7 @@
                   <div class="col-sm-6">
                     <div class="has-feedback">
                       <input type="email" class="form-control" name="email" placeholder="Enter email"
-                             data-ng-model="registrationData.email"
+                             ng-model="registrationData.email"
                              required focus=true>
                       <span ng-if="form.email.$valid && form.email.$touched" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
                       <span ng-if="form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted)" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
@@ -31,7 +31,7 @@
               </div>
 
               <div class="form-group"
-                   data-ng-class="{
+                   ng-class="{
                    'has-error' : form.username.$invalid && ((form.username.$touched && form.username.$dirty) || form.$submitted),
                    'has-success' : form.username.$valid && form.username.$touched
                    }">
@@ -39,7 +39,7 @@
                   <div class="col-sm-6">
                     <div class="has-feedback">
                       <input type="text" class="form-control" name="username" placeholder="Create a username"
-                             data-ng-model="registrationData.username"
+                             ng-model="registrationData.username"
                              ng-model-options="{ debounce: 500 }"
                              ng-pattern="/^[a-zA-Z0-9_]+$/"
                              ng-minlength="2"
@@ -62,7 +62,7 @@
               </div>
 
               <div class="form-group"
-                   data-ng-class="{
+                   ng-class="{
                    'has-error' : form.password.$invalid && ((form.password.$touched && form.password.$dirty) || form.$submitted),
                    'has-success' : form.password.$valid && form.password.$touched
                    }">
@@ -70,7 +70,7 @@
                   <div class="col-sm-6">
                     <div class="has-feedback">
                       <input type="password" class="form-control" name="password" placeholder="Create a password"
-                             data-ng-model="registrationData.password"
+                             ng-model="registrationData.password"
                              ng-minlength="6"
                              required>
                       <span ng-if="form.password.$valid && form.password.$touched" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
@@ -98,7 +98,7 @@
 
             <div class="row">
               <div class="col-sm-6">
-                <div id="messageBox" class="sub-form-alert" data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+                <div id="messageBox" class="sub-form-alert" ng-hide="message == ''" ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
                   {{message}}
                 </div>
               </div>

@@ -1,8 +1,8 @@
-<div id="sidebar" class="sidebar" snap-drawer="left" data-ng-controller="SidebarCtrl">
+<div id="sidebar" class="sidebar" snap-drawer="left" ng-controller="SidebarCtrl">
   <div ng-include="'views/partials/sidebar/logo.html'"></div>
   <ul>
     <div ng-include="'views/partials/sidebar/user.html'"></div>
-    <li class="parent-wrap" data-ng-hide="!currentUser.authenticated || $state.includes('help') || $state.includes('creators')" data-match-route="/dashboard*">
+    <li class="parent-wrap" ng-hide="!currentUser.authenticated || $state.includes('help') || $state.includes('creators')" data-match-route="/dashboard*">
 
       <span class="dummy" id="dashboardParent" ng-click="menuDashboard = ! menuDashboard"><i class="fa fa-folder-open-o"></i>Dashboard</span>
       <ul ng-show="menuDashboard || $state.includes('dashboard')">
@@ -11,7 +11,7 @@
       </ul>
     </li>
 
-    <!--<li data-ng-hide="$state.includes('creators.customize')">-->
+    <!--<li ng-hide="$state.includes('creators.customize')">-->
     <li>
       <a class="yellow" id="createSubscriptionLink" ui-sref="creators.createSubscription" ui-sref-active="active" snap-close><i class="fa fa-asterisk"></i>Create Your Subscription</a>
     </li>
