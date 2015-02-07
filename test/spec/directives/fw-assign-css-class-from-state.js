@@ -30,7 +30,7 @@ describe('fw-assign-css-class-from-state directive', function(){
       scope.$digest();
 
       expect(scope.$on.calls.count()).toBe(1);
-      expect(scope.$on.calls.first().args[0]).toBe('$stateChangeSuccess');
+      expect(scope.$on.calls.first().args[0]).toBe(uiRouterConstants.stateChangeSuccessEvent);
     });
 
     it('should detach from $stateChangeSuccess when destroyed', function(){
@@ -69,7 +69,7 @@ describe('fw-assign-css-class-from-state directive', function(){
 
       var toState = {data: {bodyClass: 'new-class'}};
       var fromState = state;
-      scope.$broadcast('$stateChangeSuccess', toState, undefined, fromState);
+      scope.$broadcast(uiRouterConstants.stateChangeSuccessEvent, toState, undefined, fromState);
 
       expect(element.hasClass('new-class')).toBeTruthy();
     });
@@ -86,7 +86,7 @@ describe('fw-assign-css-class-from-state directive', function(){
 
       var toState = {data: {bodyClass: 'new-class'}};
       var fromState = state;
-      scope.$broadcast('$stateChangeSuccess', toState, undefined, fromState);
+      scope.$broadcast(uiRouterConstants.stateChangeSuccessEvent, toState, undefined, fromState);
 
       expect(element.hasClass('old-class')).toBeFalsy();
       expect(element.hasClass('new-class')).toBeTruthy();
@@ -103,7 +103,7 @@ describe('fw-assign-css-class-from-state directive', function(){
 
       var toState = {data: {}};
       var fromState = state;
-      scope.$broadcast('$stateChangeSuccess', toState, undefined, fromState);
+      scope.$broadcast(uiRouterConstants.stateChangeSuccessEvent, toState, undefined, fromState);
 
       expect(element.hasClass('old-class')).toBeFalsy();
       expect(element.className).toBeUndefined();
@@ -118,7 +118,7 @@ describe('fw-assign-css-class-from-state directive', function(){
 
       var toState = {data: {}};
       var fromState = state;
-      scope.$broadcast('$stateChangeSuccess', toState, undefined, fromState);
+      scope.$broadcast(uiRouterConstants.stateChangeSuccessEvent, toState, undefined, fromState);
 
       expect(element.className).toBeUndefined();
     });
@@ -134,7 +134,7 @@ describe('fw-assign-css-class-from-state directive', function(){
 
       var toState = {data: {bodyClass: 'some-class'}};
       var fromState = state;
-      scope.$broadcast('$stateChangeSuccess', toState, undefined, fromState);
+      scope.$broadcast(uiRouterConstants.stateChangeSuccessEvent, toState, undefined, fromState);
 
       expect(element.hasClass('some-class')).toBeTruthy();
     });
@@ -166,9 +166,11 @@ describe('fw-assign-css-class-from-state directive', function(){
 
   var $rootScope;
   var $compile;
+  var uiRouterConstants;
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
+    uiRouterConstants = $injector.get('uiRouterConstants');
   }));
 });

@@ -35,17 +35,18 @@
         bodyClass: 'page-empty'
       };
     })
-    .run(function($rootScope, authenticationService, stateChangeAuthorizationHandler, stateChangeRedirectionHandler) {
-        authenticationService.init();
+    .run(function($rootScope, authenticationService, navigationOrchestrator, stateChangeAuthorizationHandler, stateChangeRedirectionHandler, uiRouterConstants) {
+      authenticationService.initialize();
+      navigationOrchestrator.initialize();
 
-        // Order here is important: they are processed in reverse order.
-        $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
-          stateChangeAuthorizationHandler.handleStateChangeStart(event, toState, toParams);
-        });
-        $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
-          stateChangeRedirectionHandler.handleStateChangeStart(event, toState, toParams);
-        });
-      }
-    );
+      // Order here is important: they are processed in reverse order.
+      $rootScope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
+        stateChangeAuthorizationHandler.handleStateChangeStart(event, toState, toParams);
+      });
+      $rootScope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
+        stateChangeRedirectionHandler.handleStateChangeStart(event, toState, toParams);
+      });
+    }
+  );
 })(angular);
 

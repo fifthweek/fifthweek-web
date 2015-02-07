@@ -1,5 +1,5 @@
 angular.module('webApp').directive('fwAssignCssClassFromState',
-  function ($state) {
+  function ($state, uiRouterConstants) {
   'use strict';
 
   return {
@@ -20,7 +20,7 @@ angular.module('webApp').directive('fwAssignCssClassFromState',
 
       addClass($state.current);
 
-      var removeListener = scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState/*, fromParams*/) {
+      var removeListener = scope.$on(uiRouterConstants.stateChangeSuccessEvent, function(event, toState, toParams, fromState/*, fromParams*/) {
         removeClass(fromState);
         addClass(toState);
       });

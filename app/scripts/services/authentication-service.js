@@ -1,7 +1,9 @@
 /// <reference path='../angular.module('webApp')js' />
 
-angular.module('webApp').factory('authenticationService',
-  function($http, $q, analytics, localStorageService, fifthweekConstants, utilities) {
+angular.module('webApp').constant('authenticationServiceConstants', {
+  currentUserChangedEvent: 'currentUserChanged'
+}).factory('authenticationService',
+  function($http, $q, $rootScope, analytics, localStorageService, fifthweekConstants, authenticationServiceConstants, utilities) {
     'use strict';
 
     var apiBaseUri = fifthweekConstants.apiBaseUri;
@@ -10,6 +12,10 @@ angular.module('webApp').factory('authenticationService',
     var localStorageName = 'currentUser';
 
     service.currentUser = {};
+
+    var broadcastCurrentUserChangedEvent = function(){
+      $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, service.currentUser);
+    };
 
     var clearCurrentUserDetails = function(){
       service.currentUser.authenticated = false;
@@ -20,6 +26,7 @@ angular.module('webApp').factory('authenticationService',
       service.currentUser.roles = undefined;
 
       localStorageService.remove(localStorageName);
+      broadcastCurrentUserChangedEvent();
     };
 
     var setCurrentUserDetails = function(accessToken, refreshToken, userId, username, roles){
@@ -31,9 +38,10 @@ angular.module('webApp').factory('authenticationService',
       service.currentUser.roles = roles;
 
       localStorageService.set(localStorageName, service.currentUser);
+      broadcastCurrentUserChangedEvent();
     };
 
-    service.init = function() {
+    service.initialize = function() {
       var storedUser = localStorageService.get(localStorageName);
       if (storedUser) {
         service.currentUser = storedUser;

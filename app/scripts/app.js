@@ -29,18 +29,15 @@ angular
     tokenPath: 'token',
     logPath: 'log'
   })
-  
-.config(function(snapRemoteProvider) {
-
-  snapRemoteProvider. globalOptions = {
-    disable: 'right',
-    touchToDrag: false
-  };
-
-})
-.run(function ($rootScope, $state, $stateParams) {
-  //global page titles
-  //see: http://stackoverflow.com/a/26086324/1257504
-  $rootScope.$state = $state;
-  $rootScope.$stateParams = $stateParams;
-});
+  .config(function(snapRemoteProvider) {
+    snapRemoteProvider. globalOptions = {
+      disable: 'right',
+      touchToDrag: false
+    };
+  })
+  .run(function ($rootScope, $state, $stateParams) {
+    //global page titles
+    //see: http://stackoverflow.com/a/26086324/1257504
+    $rootScope.$state = $state;
+    $rootScope.$stateParams = $stateParams;
+  });

@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('routes', ['ui.router'])
-
+  .constant('uiRouterConstants', {
+    stateChangeStartEvent: '$stateChangeStart',
+    stateChangeSuccessEvent: '$stateChangeSuccess'
+  })
   .constant('states', {
     home: {
       name: 'home'
@@ -58,7 +61,6 @@ angular.module('routes', ['ui.router'])
       name: 'notAuthorized'
     }
   })
-
   .config(function($stateProvider, $urlRouterProvider, states) {
 
     //for any unmatched url, redirect to home page
@@ -300,5 +302,4 @@ angular.module('routes', ['ui.router'])
           }
         }
       });
-
 });

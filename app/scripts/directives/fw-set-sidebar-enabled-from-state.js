@@ -1,5 +1,5 @@
 angular.module('webApp').directive('fwSetSidebarEnabledFromState',
-  function ($state) {
+  function ($state, uiRouterConstants) {
     'use strict';
 
     return {
@@ -16,7 +16,7 @@ angular.module('webApp').directive('fwSetSidebarEnabledFromState',
 
         apply($state.current);
 
-        var removeListener = scope.$on('$stateChangeSuccess', function(event, toState/*, toParams, fromState, fromParams*/) {
+        var removeListener = scope.$on(uiRouterConstants.stateChangeSuccessEvent, function(event, toState/*, toParams, fromState, fromParams*/) {
           apply(toState);
         });
 

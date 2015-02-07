@@ -8,7 +8,7 @@ describe('authentication service', function() {
         return { authenticated: true, username: 'username' };
       };
 
-      authenticationService.init();
+      authenticationService.initialize();
 
       expect(authenticationService.currentUser.authenticated).toBe(true);
       expect(authenticationService.currentUser.username).toBe('username');
@@ -20,7 +20,7 @@ describe('authentication service', function() {
         return null;
       };
 
-      authenticationService.init();
+      authenticationService.initialize();
 
       expect(authenticationService.currentUser.authenticated).toBe(false);
       expect(authenticationService.currentUser.username).toBeFalsy();
