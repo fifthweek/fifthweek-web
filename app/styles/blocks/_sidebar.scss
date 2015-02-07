@@ -19,6 +19,11 @@ $icon-pink:$pink-light-1;
     left:0;
     width:$sidebar-width;
   }
+  a {
+    &:focus {
+      outline:0 none !important;
+    }
+  }
   #{$logo} {
     font-size:30px;
     margin:0;
