@@ -67,32 +67,20 @@ angular.module('routes', ['ui.router'])
       .state(states.home.name, {
         url: '/',
         templateUrl: 'views/home.html',
+        controller: 'HomeCtrl',
         data: {
           pageTitle: 'Home',
           disableSidebar: true,
           bodyClass: 'page-home'
-        },
-        views: {
-          '': {
-            templateUrl: 'views/home.html',
-            controller: 'HomeCtrl'
-          }
         }
       })
       .state(states.signIn.name, {
         url: '/signin',
+        templateUrl: 'views/signin.html',
+        controller: 'SignInCtrl',
         data : {
           pageTitle: 'Sign In',
           headTitle: ' - ' + 'Sign In'
-        },
-        views: {
-          '': {
-            templateUrl: 'views/signin.html',
-            controller: 'SignInCtrl'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
         }
       })
       .state(states.signOut.name, {
@@ -106,40 +94,26 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.account.name, {
         url: '/account',
+        templateUrl: 'views/account.html',
+        controller: 'AccountCtrl',
         data : {
           pageTitle: 'My Account',
           headTitle: ' - ' + 'My Account',
           access: {
             loginRequired: true
           }
-        },
-        views: {
-          '': {
-            templateUrl: 'views/account.html',
-            controller: 'AccountCtrl'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
         }
       })
       .state(states.dashboard.name, {
         abstract: false,
         url: '/dashboard',
+        templateUrl: 'views/dashboard/index.html',
         redirectTo: states.dashboard.demo.name,
         data : {
           pageTitle: 'Dashboard',
           headTitle: ' - ' + 'Dashboard',
           access: {
             loginRequired: true
-          }
-        },
-        views:{
-          '': {
-            templateUrl: 'views/dashboard/index.html'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
           }
         }
       })
@@ -162,6 +136,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.name, {
         abstract: false,
         url: '/creators',
+        templateUrl: 'views/creators/index.html',
         redirectTo: states.creators.landingPage.name,
         data : {
           pageTitle: 'Creators',
@@ -169,18 +144,12 @@ angular.module('routes', ['ui.router'])
           access: {
             loginRequired: true
           }
-        },
-        views:{
-          '': {
-            templateUrl: 'views/creators/index.html'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
         }
       })
       .state(states.creators.landingPage.name, {
         url: '/landing-page',
+        templateUrl: 'views/creators/landing-page.html',
+        controller: 'landingPageCtrl',
         data : {
           pageTitle: 'Landing page',
           headTitle: ' - ' + 'Landing page',
@@ -188,12 +157,6 @@ angular.module('routes', ['ui.router'])
           bodyClass: 'page-landing',
           access: {
             loginRequired: false // Disable the inherited access requirement.
-          }
-        },
-        views: {
-          '': {
-            templateUrl: 'views/creators/landing-page.html',
-            controller: 'landingPageCtrl'
           }
         }
       })
@@ -208,14 +171,10 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.customize.name, {
         url: '/customize',
+        templateUrl: 'views/creators/customize/index.html',
         data : {
           pageTitle: 'Customize',
           headTitle: ' - ' + 'Customize'
-        },
-        views:{
-          '': {
-            templateUrl: 'views/creators/customize/index.html'
-          }
         }
       })
       .state(states.creators.customize.landingPage.name, {
@@ -246,18 +205,11 @@ angular.module('routes', ['ui.router'])
       .state(states.help.name, {
         abstract: false,
         url: '/help',
+        templateUrl: 'views/help/index.html',
         redirectTo: states.help.faq.name,
         data : {
           pageTitle: 'Help',
           headTitle: ' - ' + 'Help'
-        },
-        views:{
-          '': {
-            templateUrl: 'views/help/index.html'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
         }
       })
       .state(states.help.faq.name, {
@@ -270,17 +222,10 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.notAuthorized.name, {
         url: '/not-authorized',
+        templateUrl: 'views/not-authorized/not-authorized.html',
         data : {
           pageTitle: 'Not Authorized',
           headTitle: ' - ' + 'Not Authorized'
-        },
-        views: {
-          '': {
-            templateUrl: 'views/not-authorized/not-authorized.html'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
         }
       });
 });
