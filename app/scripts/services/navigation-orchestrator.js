@@ -4,19 +4,8 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
   function($rootScope, authenticationService, authenticationServiceConstants, $state, states, navigationOrchestratorConstants, uiRouterConstants) {
     'use strict';
 
-    var primaryNavigation = [];
-    var secondaryNavigation = [];
-
-    var selectedPrimaryNavigation = undefined;
-    var selectedSecondaryNavigation = undefined;
-
-    var service = {};
-
-    var getCurrentUserName = function(){
-      return authenticationService.currentUser.username;
-    };
-
-    var navigationMap = [
+    var navigationMap =
+    [
       {
         name: 'Register',
         state: states.register.name,
@@ -32,13 +21,14 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         showIf: function(data) { return !data.authenticated; }
       },
       {
-        name: getCurrentUserName,
+        name: function() { return authenticationService.currentUser.username; },
         id: 'Username',
         state: states.account.name,
         icon: 'fa fa-user',
         color: undefined,
         showIf: function(data) { return data.authenticated; },
-        secondary: [
+        secondary:
+        [
           {
             name: 'Account',
             state: states.account.name,
@@ -63,7 +53,8 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         icon: 'fa fa-folder-open-o',
         color: undefined,
         showIf: function(data) { return data.authenticated; },
-        secondary: [
+        secondary:
+        [
           {
             name: 'Quick Demo',
             state: states.dashboard.demo.name,
@@ -91,7 +82,8 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         icon: 'fa fa-eye',
         color: undefined,
         showIf: function(data) { return data.authenticated; },
-        secondary: [
+        secondary:
+        [
           {
             name: 'Landing Page',
             state: states.creators.customize.landingPage.name,
@@ -118,7 +110,8 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         state: states.help.faq.name,
         icon: 'fa fa-question-circle',
         color: undefined,
-        secondary: [
+        secondary:
+        [
           {
             name: 'FAQ',
             state: states.help.faq.name,
@@ -128,6 +121,14 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         ]
       }
     ];
+
+    var primaryNavigation = [];
+    var secondaryNavigation = [];
+
+    var selectedPrimaryNavigation = undefined;
+    var selectedSecondaryNavigation = undefined;
+
+    var service = {};
 
     var broadcastCurrentUserChangedEvent = function(){
       $rootScope.$broadcast(navigationOrchestratorConstants.navigationChangedEvent, primaryNavigation, secondaryNavigation);

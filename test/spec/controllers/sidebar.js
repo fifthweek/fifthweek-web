@@ -1,6 +1,6 @@
 'use strict';
 
-describe('header controller', function() {
+describe('sidebar controller', function() {
 
   // load the controller's module
   beforeEach(module('webApp', 'stateMock'));
@@ -15,12 +15,12 @@ describe('header controller', function() {
     scope = $rootScope.$new();
     navigationOrchestratorConstants = _navigationOrchestratorConstants_;
 
-    navigationOrchestrator = { getSecondaryNavigation: function(){ return undefined; }};
+    navigationOrchestrator = { getPrimaryNavigation: function(){ return undefined; }};
   }));
 
   // Initialize the controller and a mock scope
   var createController = function () {
-    $controller('HeaderCtrl', {
+    $controller('SidebarCtrl', {
       $scope: scope,
       navigationOrchestrator: navigationOrchestrator,
       navigationOrchestratorConstants: navigationOrchestratorConstants
@@ -36,12 +36,12 @@ describe('header controller', function() {
     expect(scope.$on.calls.first().args[0]).toBe(navigationOrchestratorConstants.navigationChangedEvent);
   });
 
-  it('should assign the current secondary navigation to the scope', function() {
-    spyOn(navigationOrchestrator, 'getSecondaryNavigation').and.returnValue('nav');
+  it('should assign the current primary navigation to the scope', function() {
+    spyOn(navigationOrchestrator, 'getPrimaryNavigation').and.returnValue('nav');
 
     createController();
 
-    expect(navigationOrchestrator.getSecondaryNavigation).toHaveBeenCalled();
+    expect(navigationOrchestrator.getPrimaryNavigation).toHaveBeenCalled();
     expect(scope.navigation).toBe('nav');
   });
 
@@ -50,10 +50,10 @@ describe('header controller', function() {
       createController();
     });
 
-    it('should assign the new secondary navigation to the scope', function(){
+    it('should assign the new primary navigation to the scope', function(){
       scope.$broadcast(navigationOrchestratorConstants.navigationChangedEvent, 'primary', 'secondary');
 
-      expect(scope.navigation).toBe('secondary');
+      expect(scope.navigation).toBe('primary');
     });
   });
 });

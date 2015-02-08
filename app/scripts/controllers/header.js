@@ -1,9 +1,7 @@
 angular.module('webApp').controller(
   'HeaderCtrl',
-  function($scope, authenticationService, navigationOrchestrator, navigationOrchestratorConstants) {
+  function($scope, navigationOrchestrator, navigationOrchestratorConstants) {
     'use strict';
-
-    $scope.currentUser = authenticationService.currentUser;
 
     $scope.$on(
       navigationOrchestratorConstants.navigationChangedEvent,

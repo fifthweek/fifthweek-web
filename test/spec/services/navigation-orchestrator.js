@@ -39,7 +39,7 @@ describe('navigation orchestrator', function(){
   beforeEach(function(){
     $state.current = {
       name: states.home.name
-    }
+    };
   });
 
   it('should attach to the $stateChangeSuccess and currentUserChanged events on initialization', function(){
@@ -367,7 +367,7 @@ describe('navigation orchestrator', function(){
 
     var setActive = function(menu, name){
       _.find(menu, { name: name }).isActive = true;
-    }
+    };
 
     var matches = function(target, test){
       if(test === undefined){
