@@ -1,7 +1,5 @@
 <div id="sidebar" class="sidebar" snap-drawer="left" data-ng-controller="SidebarCtrl">
-  <h1 class="fifthweek-logo">
-    <a ui-sref="home" snap-close>fifthweek</a>
-  </h1>
+  <div ng-include="'views/partials/logo.html'"></div>
   <ul>
     <li ng-repeat="item in navigation">
       <hr width="100px" ng-if="item.separator" />

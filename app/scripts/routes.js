@@ -15,9 +15,6 @@ angular.module('routes', ['ui.router'])
     signOut: {
       name: 'signOut'
     },
-    register: {
-      name: 'register'
-    },
     account: {
       name: 'account'
     },
@@ -105,22 +102,6 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Sign Out',
           headTitle: ' - ' + 'Sign Out'
-        }
-      })
-      .state(states.register.name, {
-        url: '/register',
-        data : {
-          pageTitle: 'Register',
-          headTitle: ' - ' + 'Register'
-        },
-        views: {
-          '': {
-            templateUrl: 'views/register.html',
-            controller: 'RegisterCtrl'
-          },
-          'sidebar': {
-            templateUrl: 'views/partials/sidebar.html'
-          }
         }
       })
       .state(states.account.name, {

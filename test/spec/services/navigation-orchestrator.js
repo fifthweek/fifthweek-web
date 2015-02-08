@@ -38,7 +38,7 @@ describe('navigation orchestrator', function(){
 
   beforeEach(function(){
     $state.current = {
-      name: states.home.name
+      name: 'unknown.state'
     };
   });
 
@@ -123,13 +123,13 @@ describe('navigation orchestrator', function(){
     });
 
     it('should have a primary navigation selected but no secondary navigation if the state is primary', function(){
-      $state.current.name = states.register.name;
+      $state.current.name = states.signIn.name;
 
       target.initialize();
 
       var primary = _.filter(primaryNavigation, 'isActive');
       expect(primary.length).toBe(1);
-      expect(primary[0].name).toBe('Register');
+      expect(primary[0].name).toBe('Sign In');
     });
 
     it('should have a primary and secondary navigation selected if the state is secondary', function(){
@@ -165,8 +165,8 @@ describe('navigation orchestrator', function(){
         expectMenu(primaryNavigation, expectedPrimaryMenu);
       });
 
-      it('should create the expected navigation in "register" state', function(){
-        $state.current.name = states.register.name;
+      it('should create the expected navigation in "home" state', function(){
+        $state.current.name = states.home.name;
         target.initialize();
 
         setActive(expectedPrimaryMenu, 'Register');

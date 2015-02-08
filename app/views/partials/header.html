@@ -2,10 +2,10 @@
   <nav class="navbar navbar-default navbar-fixed-top" role="navigation" bs-navbar>
     <div class="inner">
       <ng-include src="'views/partials/header-sidebar-toggle.html'" class="header-wrapper"></ng-include>
-      <h1 ng-if="navigation.length === 0" ng-bind="$state.current.data.pageTitle" class=""></h1>
+      <h1 ng-if="navigation.length <= 1" ng-bind="$state.current.data.pageTitle" class=""></h1>
 
       <!-- SORRY FOR THE CRAP INLINE STYLES, PLEASE REMOVE ALL style AND ng-style ATTRIBUTES -->
-      <ul ng-if="navigation.length > 0" style="list-style-type: none; margin: 10px 10px; padding: 0;">
+      <ul ng-if="navigation.length > 1" style="list-style-type: none; margin: 10px 10px; padding: 0;">
         <li ng-repeat="item in navigation" style="display: inline; margin: 0px 10px;">
           <a ng-if="!item.separator"
              class="{{item.color || 'dummy'}}"

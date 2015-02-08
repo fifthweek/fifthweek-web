@@ -8,7 +8,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
     [
       {
         name: 'Register',
-        state: states.register.name,
+        state: states.home.name,
         icon: 'fa fa-ticket',
         color: 'pink',
         showIf: function(data) { return !data.authenticated; }
@@ -32,8 +32,8 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
           {
             name: 'Account',
             state: states.account.name,
-            icon: undefined,
-            color: undefined
+            icon: 'fa fa-child',
+            color: 'green'
           },
           {
             name: 'Sign Out',
