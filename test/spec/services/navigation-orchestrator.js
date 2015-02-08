@@ -152,10 +152,10 @@ describe('navigation orchestrator', function(){
 
       beforeEach(function(){
         expectedPrimaryMenu = [
-          { name: 'Register' },
-          { name: 'Sign In' },
+          { name: 'Register', id: 'navigation-register' },
+          { name: 'Sign In', id: 'navigation-sign-in' },
           { separator: true },
-          { name: 'Help' }
+          { name: 'Help', id: 'navigation-help' }
         ];
       });
 
@@ -214,13 +214,13 @@ describe('navigation orchestrator', function(){
         authenticationService.currentUser.username = 'captain-phil';
 
         expectedPrimaryMenu = [
-          { name: authenticationService.currentUser.username },
+          { name: authenticationService.currentUser.username, id: 'navigation-username' },
           { separator: true },
-          { name: 'Dashboard' },
-          { name: 'Create Your Subscription' },
-          { name: 'Customize' },
+          { name: 'Dashboard', id: 'navigation-dashboard' },
+          { name: 'Create Your Subscription', id: 'navigation-create-your-subscription' },
+          { name: 'Customize', id: 'navigation-customize' },
           { separator: true },
-          { name: 'Help' }
+          { name: 'Help', id: 'navigation-help' }
         ];
       });
 
@@ -392,6 +392,8 @@ describe('navigation orchestrator', function(){
     };
 
     var expectMenu = function (menu, expected) {
+
+      expect(menu).toBeDefined();
 
       if(_.any(expected, 'isActive')){
         // If we expect any menu items to be active, then make sure only one is active.

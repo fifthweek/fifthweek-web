@@ -2,17 +2,22 @@
   <nav class="navbar navbar-default navbar-fixed-top" role="navigation" bs-navbar>
     <div class="inner">
       <ng-include src="'views/partials/header-sidebar-toggle.html'" class="header-wrapper"></ng-include>
-      <h1 ng-bind="$state.current.data.pageTitle" class=""></h1>
-      <!--
-      <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-          <li ng-hide="currentUser.authenticated" data-match-route="/register*"><a ui-sref="register" aria-label="Register" id="registerLink" ng-cloak>Register</a></li>
-          <li ng-hide="currentUser.authenticated" data-match-route="/signin*"><a ui-sref="signIn" aria-label="Sign in" id="signInLink" ng-cloak>Sign In</a></li>
-          <li ng-hide="!currentUser.authenticated" data-match-route="/dashboard*"><a ui-sref="dashboard.demo" ng-cloak>Dashboard</a></li>
-          <li ng-hide="!currentUser.authenticated" data-match-route="/account*"><a ui-sref="account"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="nav-small-text" ng-cloak>{{currentUser.username}}</span></a></li>
-        </ul>
-      </div>
-      -->
+      <h1 ng-if="navigation.length === 0" ng-bind="$state.current.data.pageTitle" class=""></h1>
+
+      <!-- SORRY FOR THE CRAP INLINE STYLES, PLEASE REMOVE ALL style AND ng-style ATTRIBUTES -->
+      <ul ng-if="navigation.length > 0" style="list-style-type: none; margin: 10px 10px; padding: 0;">
+        <li ng-repeat="item in navigation" style="display: inline; margin: 0px 10px;">
+          <a ng-if="!item.separator"
+             class="{{item.color || 'dummy'}}"
+             ng-class="{active: item.isActive}"
+             ng-style="item.isActive ? {'color' : 'red'} : {}"
+             id="{{item.id}}"
+             ui-sref="{{item.state}}"
+             snap-close>
+            <i ng-class="item.icon"></i>{{item.name}}
+          </a>
+        </li>
+      </ul>
     </div>
   </nav>
 </header>

@@ -1,12 +1,16 @@
 angular.module('webApp').controller(
   'HeaderCtrl',
-  function($scope, $state, states, authenticationService) {
+  function($scope, authenticationService, navigationOrchestrator, navigationOrchestratorConstants) {
     'use strict';
 
-    $scope.signOut = function() {
-      $state.go(states.signOut.name);
-    };
-
     $scope.currentUser = authenticationService.currentUser;
+
+    $scope.$on(
+      navigationOrchestratorConstants.navigationChangedEvent,
+      function(event, primaryNavigation, secondaryNavigation){
+        $scope.navigation = secondaryNavigation;
+      });
+
+    $scope.navigation = navigationOrchestrator.getSecondaryNavigation();
   }
 );

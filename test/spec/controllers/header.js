@@ -6,41 +6,31 @@ describe('header controller', function() {
     expect(scope.currentUser).toBe(authenticationService.currentUser);
   });
 
-  describe('when signOut called', function(){
-    it('should redirect to signout page', function(){
-      $state.expectTransitionTo(states.signOut.name);
-
-      scope.signOut();
-    });
-  });
-
   // load the controller's module
   beforeEach(module('webApp', 'stateMock'));
 
   var HeaderCtrl;
   var scope;
   var authenticationService;
-  var $state;
-  var states;
+  var navigationOrchestrator;
+  var navigationOrchestratorConstants;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($controller, $rootScope, _$state_, _states_) {
+  beforeEach(inject(function($controller, $rootScope, _navigationOrchestratorConstants_) {
     scope = $rootScope.$new();
-    $state = _$state_;
-    states = _states_;
+
+    navigationOrchestrator = { getSecondaryNavigation: function(){ return []; }};
+
+    navigationOrchestratorConstants = _navigationOrchestratorConstants_;
 
     authenticationService = function() {};
     authenticationService.currentUser = 'ABCD';
 
     HeaderCtrl = $controller('HeaderCtrl', {
       $scope: scope,
-      $state: $state,
-      states: states,
-      authenticationService: authenticationService
+      authenticationService: authenticationService,
+      navigationOrchestrator: navigationOrchestrator,
+      navigationOrchestratorConstants: navigationOrchestratorConstants
     });
   }));
-
-  afterEach(function(){
-    $state.verifyNoOutstandingTransitions();
-  });
 });

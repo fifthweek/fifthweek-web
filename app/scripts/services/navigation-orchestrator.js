@@ -33,6 +33,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
       },
       {
         name: getCurrentUserName,
+        id: 'Username',
         state: states.account.name,
         icon: 'fa fa-user',
         color: undefined,
@@ -153,23 +154,28 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
     };
 
     var createOutputNavigationItem = function(inputItem, isActive){
+      var name = executeOrReturn(inputItem.name);
+      var id = 'navigation-' + _.kebabCase(inputItem.id || name);
+
       /*
       var outputItem = Object.create({}, {
         separator: { value: inputItem.separator },
-        name: { value: executeOrReturn(inputItem.name) },
+        name: { value: name },
         state: { value: inputItem.state },
         icon: { value: inputItem.icon },
         color: { value: inputItem.color },
         isActive: { value: isActive }
+        id: { value: id }
       });
       */
       var outputItem = {
         separator: inputItem.separator,
-        name: executeOrReturn(inputItem.name),
+        name: name,
         state: inputItem.state,
         icon: inputItem.icon,
         color: inputItem.color,
-        isActive: isActive
+        isActive: isActive,
+        id: id
       };
 
       return outputItem;
@@ -179,7 +185,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
       if (values === undefined || values.length === 0) {
         selectedSecondaryNavigation = undefined;
         service.secondaryNavigation = [];
-        return;
+        return [];
       }
 
       var newSecondaryNavigation = [];
@@ -260,6 +266,14 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
 
       setSelectedNavigationFromState($state.current.name);
       updateNavigation();
+    };
+
+    service.getPrimaryNavigation = function(){
+      return primaryNavigation;
+    };
+
+    service.getSecondaryNavigation = function(){
+      return secondaryNavigation;
     };
 
     return service;
