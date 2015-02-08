@@ -82,7 +82,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         state: states.creators.createSubscription.name,
         icon: 'fa fa-asterisk',
         color: 'yellow',
-        showIf: function(data) { return data.hasSubscription; }
+        showIf: function(data) { return data.authenticated && !data.hasSubscription; }
       },
       {
         name: 'Customize',
@@ -153,6 +153,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
     };
 
     var createOutputNavigationItem = function(inputItem, isActive){
+      /*
       var outputItem = Object.create({}, {
         separator: { value: inputItem.separator },
         name: { value: executeOrReturn(inputItem.name) },
@@ -161,6 +162,15 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         color: { value: inputItem.color },
         isActive: { value: isActive }
       });
+      */
+      var outputItem = {
+        separator: inputItem.separator,
+        name: executeOrReturn(inputItem.name),
+        state: inputItem.state,
+        icon: inputItem.icon,
+        color: inputItem.color,
+        isActive: isActive
+      };
 
       return outputItem;
     };
@@ -201,7 +211,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
           newPrimaryNavigation.push(output);
 
           if(output.isActive){
-            newSecondaryNavigation = updateSecondaryNavigation(updateData, output.secondary);
+            newSecondaryNavigation = updateSecondaryNavigation(updateData, item.secondary);
           }
         }
       }
