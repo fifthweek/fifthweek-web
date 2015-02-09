@@ -2,6 +2,7 @@
 
 describe('sign in controller', function() {
 
+  var error = 'error';
   var errorMessage = 'errorMessage';
   var nextState = 'nextState';
 
@@ -11,37 +12,31 @@ describe('sign in controller', function() {
   var $q;
   var authenticationService;
   var calculatedStates;
-  var states;
   var logService;
   var utilities;
   var target;
 
   // Initialize the controller and a mock scope
   beforeEach(function() {
+    authenticationService = jasmine.createSpyObj('authenticationService', ['signIn']);
     calculatedStates = jasmine.createSpyObj('calculatedStates', ['getDefaultState']);
+    logService = jasmine.createSpyObj('logService', ['error']);
+    utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
 
     module('webApp', 'stateMock');
     module(function($provide) {
+      $provide.value('authenticationService', authenticationService);
       $provide.value('calculatedStates', calculatedStates);
+      $provide.value('logService', logService);
+      $provide.value('utilities', utilities);
     });
 
-    inject(function($controller, _$rootScope_, _$state_, _$q_) {
-      $rootScope = _$rootScope_;
+    inject(function($injector, $controller) {
+      $rootScope = $injector.get('$rootScope');
+      $state = $injector.get('$state');
+      $q = $injector.get('$q');
       scope = $rootScope.$new();
-      $state = _$state_;
-      $q = _$q_;
-
-      authenticationService = {};
-      logService = { error: function(){} };
-      utilities = { getFriendlyErrorMessage: function(){ return errorMessage; } };
-
-      target = $controller('SignInCtrl', {
-        $scope: scope,
-        $state: $state,
-        authenticationService: authenticationService,
-        logService: logService,
-        utilities: utilities
-      });
+      target = $controller('SignInCtrl', { $scope: scope });
     })
   });
 
@@ -50,12 +45,8 @@ describe('sign in controller', function() {
   });
 
   it('should navigate to the dashboard on successful sign in', function() {
+    authenticationService.signIn.and.returnValue($q.when());
     calculatedStates.getDefaultState.and.returnValue(nextState);
-    authenticationService.signIn = function() {
-      var deferred = $q.defer();
-      deferred.resolve('success');
-      return deferred.promise;
-    };
 
     $state.expectTransitionTo(nextState);
 
@@ -64,18 +55,14 @@ describe('sign in controller', function() {
   });
 
   it('should display an error message and log the error on unsuccessful sign in', function() {
-    authenticationService.signIn = function() {
-      return $q.reject();
-    };
-
-    spyOn(logService, 'error');
-    spyOn(utilities, 'getFriendlyErrorMessage').and.callThrough();
+    authenticationService.signIn.and.returnValue($q.reject(error));
+    utilities.getFriendlyErrorMessage.and.returnValue(errorMessage);
 
     scope.signIn();
     $rootScope.$apply();
 
-    expect(logService.error).toHaveBeenCalled();
-    expect(utilities.getFriendlyErrorMessage).toHaveBeenCalled();
+    expect(logService.error).toHaveBeenCalledWith(error);
+    expect(utilities.getFriendlyErrorMessage).toHaveBeenCalledWith(error);
     expect(scope.message).toEqual(errorMessage);
   });
 });
