@@ -35,6 +35,18 @@ angular.module('routes', ['ui.router'])
       createSubscription: {
         name: 'creators.createSubscription'
       },
+      compose: {
+        name: 'creators.compose',
+        note: {
+          name: 'creators.compose.note'
+        },
+        image: {
+          name: 'creators.compose.image'
+        },
+        file: {
+          name: 'creators.compose.file'
+        }
+      },
       customize: {
         name: 'creators.customize',
         landingPage: {
@@ -167,6 +179,40 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Create Your Subscription',
           headTitle: ' -' + ' Create Your Subscription'
+        }
+      })
+
+      .state(states.creators.compose.name, {
+        url: '/compose',
+        templateUrl: 'views/creators/compose/index.html',
+        data : {
+          pageTitle: 'Compose',
+          headTitle: ' - ' + 'Compose'
+        }
+      })
+      .state(states.creators.compose.note.name, {
+        url: '/note',
+        templateUrl: 'views/creators/compose/note.html',
+        controller: 'noteCtrl',
+        data : {
+          pageTitle: ' Note',
+          headTitle: ' -' + ' Note'
+        }
+      })
+      .state(states.creators.compose.image.name, {
+        url: '/image',
+        templateUrl: 'views/creators/compose/image.html',
+        data : {
+          pageTitle: ' Image',
+          headTitle: ' -' + ' Image'
+        }
+      })
+      .state(states.creators.compose.file.name, {
+        url: '/file',
+        templateUrl: 'views/creators/compose/file.html',
+        data : {
+          pageTitle: ' File',
+          headTitle: ' -' + ' file'
         }
       })
       .state(states.creators.customize.name, {

@@ -77,6 +77,34 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         showIf: function(data) { return data.authenticated && !data.hasSubscription; }
       },
       {
+        name: 'Compose',
+        state: states.creators.compose.name,
+        icon: 'fa fa-eye',
+        color: 'green',
+        showIf: function(data) { return data.authenticated; },
+        secondary:
+        [
+          {
+            name: 'Note',
+            state: states.creators.compose.note.name,
+            icon: 'fa fa-arrow-circle-down',
+            color: 'green'
+          },
+          {
+            name: 'Image',
+            state: states.creators.compose.image.name,
+            icon: 'fa fa-list-alt',
+            color: 'green'
+          },
+          {
+            name: 'File',
+            state: states.creators.compose.file.name,
+            icon: 'fa fa-th',
+            color: 'green'
+          }
+        ]
+      },
+      {
         name: 'Customize',
         state: states.creators.customize.landingPage.name,
         icon: 'fa fa-eye',
