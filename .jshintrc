@@ -28,6 +28,7 @@
     "ApiError": false,
     "FifthweekError": false,
     "ConnectionError": false,
-    "ActiveXObject": false
+    "ActiveXObject": false,
+    "_": false
   }
 }

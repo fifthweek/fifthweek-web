@@ -125,8 +125,8 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
     var primaryNavigation = [];
     var secondaryNavigation = [];
 
-    var selectedPrimaryNavigation = undefined;
-    var selectedSecondaryNavigation = undefined;
+    var selectedPrimaryNavigation;
+    var selectedSecondaryNavigation;
 
     var service = {};
 

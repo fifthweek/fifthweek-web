@@ -1,7 +1,7 @@
-var HeaderPage = require('./pages/header.page.js');
-var RegisterPage = require('./pages/register.page.js');
+var HomePage = require('./pages/home.page.js');
 var SignInPage = require('./pages/signin.page.js');
-var SidebarPage = require('./pages/sidebar.page.js');
+var RegisterPage = require('./pages/register.page.js');
+var NavigationPage = require('./pages/navigation.page.js');
 var DemonstrationPage = require('./pages/demonstration.page.js');
 var FeedbackPage = require('./pages/feedback.page.js');
 var CreateSubscriptionPage = require('./pages/creators/create-subscription.page.js');
@@ -14,8 +14,8 @@ describe('fifthweek', function() {
   describe("homepage", function() {
 
     it('should have a sign-in link', function() {
-      expect(header.signInLink.getText()).toContain('Sign in');
-      header.signInLink.click();
+      expect(homePage.signInLink.getText()).toContain('Sign In');
+      homePage.signInLink.click();
       expect(browser.getCurrentUrl()).toContain('/signin');
     });
 
@@ -238,7 +238,7 @@ describe('fifthweek', function() {
         browser.waitForAngular();
         reset();
 
-        header.signInLink.click();
+        homePage.signInLink.click();
       });
     });
 
@@ -257,7 +257,7 @@ describe('fifthweek', function() {
       });
 
       beforeEach(function() {
-        header.signInLink.click();
+        homePage.signInLink.click();
       });
     });
 
@@ -282,16 +282,16 @@ describe('fifthweek', function() {
     });
 
     var page = new FeedbackPage();
-    var sidebar = new SidebarPage();
+    var navigation = new NavigationPage();
 
     beforeEach(function() {
       registerSuccessfully();
 
-      sidebar.feedbackLink.click();
+      navigation.feedbackLink.click();
     });
   });
 
-  var header = new HeaderPage();
+  var homePage = new HomePage();
 
   beforeEach(function() {
     reset();
