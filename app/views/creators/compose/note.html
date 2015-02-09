@@ -16,29 +16,22 @@
             </div>
 
             <div class="inner-row cancel-col-widths">
-              <select>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select>
+              <select ng-model="sharePreferenceInit" ng-options="preference.name for preference in sharePreference"></select>
             </div>
 
             <div class="row">
-              <input type="submit" 
-                     class="btn btn-block btn-success" 
-                     ng-click="composeNote.$valid && composeNote.$dirty ? saveTheDataTempFunctionName() : false"
-                     ng-disabled="composeNote.$invalid ||
-                                  composeNote.$pristine ||
-                                  isSubmitting"
-                     value="Post Now" />
-              <button class="btn btn-plain"
+              <button type="submit" 
+                      class="btn btn-block btn-success"
+                      ng-click="postNow()"
+                      data-loading-text="Posting..."
+                      fw-button-loading="isSubmitting">Post Now</button>
+              <button class="btn btn-grey"
                       ng-click="postLater = true">Post Later</button>
             </div>
 
           </form>
 
           <form name="postNoteLater" ng-show="postLater === true">
-            
 
             <input type="radio"
                    class="form-control"
@@ -51,12 +44,14 @@
             <p>datepicker here</p>
 
             <input type="submit" 
-                     class="btn btn-block btn-success" 
-                     ng-click="postNoteLater.$valid && postNoteLater.$dirty ? saveTheDataTempFunctionName() : false"
-                     ng-disabled="postNoteLater.$invalid ||
-                                  postNoteLater.$pristine ||
-                                  isSubmitting"
-                     value="Post to Backlog" />
+                   class="btn btn-block btn-success" 
+                   value="Post to Backlog"
+                   ng-click="postNow()"
+                   data-loading-text="Posting to Backlog"
+                   fw-button-loading="isSubmitting"
+                   ng-disabled="postNoteLater.$invalid ||
+                                postNoteLater.$pristine ||
+                                isSubmitting" />
 
 
           </form>
