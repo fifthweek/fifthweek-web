@@ -45,8 +45,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
       border-color:$blue-dark-3;
       border-width: 2px;
     }
-    > a,
-    span.dummy {
+    > a {
       display:inline-block;
       width:100%;
       padding:$item-padding;
@@ -85,30 +84,6 @@ $item-padding:$item-padding-tb $item-padding-lr;
           }
         }
       }
-    }
-    span.dummy {
-      cursor:pointer;
-    }
-    &.parent-wrap > span {
-      &.active,
-      &:focus {
-        background:none;
-        border-bottom:solid 1px $grey-dark-1;
-        .fa {
-          color:$icon-default-color;
-        }
-      }
-    }
-
-    ul a {
-      padding-left:$item-padding-lr * 2;
-    }
-
-  }
-  ul > li.parent-wrap:last-child {
-    > span.dummy {
-      border-top:solid 1px $blue-light-1;
-      border-bottom:0 none;
     }
   }
 }
