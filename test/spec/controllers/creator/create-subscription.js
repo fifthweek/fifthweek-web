@@ -14,7 +14,7 @@ describe('creator - create subscription controller', function () {
   var utilities;
   var logService;
   var analytics;
-  var initialStateProvider;
+  var uiStateProvider;
   var subscriptionService;
   var target;
 
@@ -29,7 +29,7 @@ describe('creator - create subscription controller', function () {
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
     logService = jasmine.createSpyObj('logService', ['error']);
     analytics = jasmine.createSpyObj('analytics', ['eventTrack']);
-    initialStateProvider = jasmine.createSpyObj('initialStateProvider', ['getInitialState']);
+    uiStateProvider = jasmine.createSpyObj('uiStateProvider', ['getDefaultState']);
     subscriptionService = jasmine.createSpyObj('subscriptionService', ['createFirstSubscription']);
     subscriptionService.createFirstSubscription.and.returnValue($q.when());
   }));
@@ -41,7 +41,7 @@ describe('creator - create subscription controller', function () {
       utilities: utilities,
       logService: logService,
       analytics: analytics,
-      initialStateProvider: initialStateProvider,
+      uiStateProvider: uiStateProvider,
       subscriptionService: subscriptionService
     });
   }
@@ -50,7 +50,7 @@ describe('creator - create subscription controller', function () {
 
     it('should redirect user to initial state', function () {
       subscriptionService.hasSubscription = true;
-      initialStateProvider.getInitialState.and.returnValue(initialState);
+      uiStateProvider.getDefaultState.and.returnValue(initialState);
 
       initializeTarget();
 
@@ -159,7 +159,7 @@ describe('creator - create subscription controller', function () {
       });
 
       it('should redirect to new initial state', function() {
-        initialStateProvider.getInitialState.and.returnValue(nextState);
+        uiStateProvider.getDefaultState.and.returnValue(nextState);
 
         $scope.continue();
         $scope.$apply();

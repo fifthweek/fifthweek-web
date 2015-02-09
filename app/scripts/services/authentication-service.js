@@ -1,7 +1,12 @@
 /// <reference path='../angular.module('webApp')js' />
 
 angular.module('webApp').constant('authenticationServiceConstants', {
-  currentUserChangedEvent: 'currentUserChanged'
+  currentUserChangedEvent: 'currentUserChanged',
+  roles: {
+    creator: 'creator',
+    administrator: 'administrator',
+    psychic: 'psychic'
+  }
 }).factory('authenticationService',
   function($http, $q, $rootScope, analytics, localStorageService, fifthweekConstants, authenticationServiceConstants, utilities) {
     'use strict';

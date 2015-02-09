@@ -1,9 +1,9 @@
 angular.module('webApp').controller('createSubscriptionCtrl',
-  function($scope, $state, utilities, logService, analytics, initialStateProvider, subscriptionService) {
+  function($scope, $state, utilities, logService, analytics, uiStateProvider, subscriptionService) {
     'use strict';
 
     if(subscriptionService.hasSubscription === true){
-      $state.go(initialStateProvider.getInitialState());
+      $state.go(uiStateProvider.getDefaultState());
     }
 
     $scope.isSubmitting = false;
@@ -28,7 +28,7 @@ angular.module('webApp').controller('createSubscriptionCtrl',
       return subscriptionService.createFirstSubscription(buildDTO()).then(function() {
         $scope.submissionSucceeded = true;
         analytics.eventTrack('Subscription created', 'Registration');
-        $state.go(initialStateProvider.getInitialState());
+        $state.go(uiStateProvider.getDefaultState());
       }).catch(function(error) {
         $scope.message = utilities.getFriendlyErrorMessage(error);
         $scope.isSubmitting = false;
