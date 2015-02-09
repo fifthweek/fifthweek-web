@@ -22,7 +22,7 @@ describe('ui state provider', function() {
       $q = $injector.get('$q');
       states = $injector.get('states');
       authenticationServiceConstants = $injector.get('authenticationServiceConstants');
-      target = $injector.get('uiStateProvider');
+      target = $injector.get('calculatedStates');
     });
   });
 

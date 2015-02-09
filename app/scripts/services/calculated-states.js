@@ -1,4 +1,4 @@
-angular.module('webApp').factory('uiStateProvider',
+angular.module('webApp').factory('calculatedStates',
   function($q, states, subscriptionService, authenticationService, authenticationServiceConstants) {
     'use strict';
 
