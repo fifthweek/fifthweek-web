@@ -8,7 +8,16 @@ angular.module('webApp').constant('authenticationServiceConstants', {
     psychic: 'psychic'
   }
 }).factory('authenticationService',
-  function($http, $q, $rootScope, analytics, localStorageService, fifthweekConstants, authenticationServiceConstants, utilities) {
+  function(
+    $http,
+    $q,
+    $rootScope,
+    analytics,
+    localStorageService,
+    aggregateUserStateService,
+    fifthweekConstants,
+    authenticationServiceConstants,
+    utilities) {
     'use strict';
 
     var apiBaseUri = fifthweekConstants.apiBaseUri;
@@ -65,24 +74,28 @@ angular.module('webApp').constant('authenticationServiceConstants', {
     service.signIn = function(signInData) {
       service.signOut();
 
-      var data =
+      var body =
         'grant_type=password&username=' + signInData.username +
         '&password=' + signInData.password +
         '&client_id=' + fifthweekConstants.clientId;
 
-      return $http.post(apiBaseUri + 'token', data, {
+      var headers = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
-      }).then(function(response) {
+      };
 
-        return extractAuthenticationDataFromResponse(response).then(function(){
-          analytics.setUsername(response.data.user_id);
+      return $http.post(apiBaseUri + 'token', body, headers)
+        .then(function(response) {
+          return extractAuthenticationDataFromResponse(response).then(function(){
+            analytics.setUsername(service.currentUser.userId);
+          });
+        }, function(response){
+          return $q.reject(utilities.getHttpError(response));
+        })
+        .then(function() {
+          return aggregateUserStateService.refreshUserState(service.currentUser.userId);
         });
-
-      }, function(response){
-        return $q.reject(utilities.getHttpError(response));
-      });
     };
 
     service.refreshToken = function() {

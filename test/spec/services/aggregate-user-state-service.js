@@ -3,11 +3,13 @@ describe('aggregate user state service', function() {
 
   var newUserState = 'newUserState';
   var error = 'error';
+  var userId = 'userId';
 
   var $q;
 
   var $rootScope;
   var aggregateUserStateServiceConstants;
+  var authenticationService;
   var userStateStub;
   var target;
 
@@ -15,8 +17,10 @@ describe('aggregate user state service', function() {
     module('webApp');
     module(function($provide) {
       userStateStub = jasmine.createSpyObj('userStateStub', ['get']);
+      authenticationService = { currentUser:{} };
 
       $provide.value('userStateStub', userStateStub);
+      $provide.value('authenticationService', authenticationService);
     });
 
     inject(function($injector) {
@@ -34,12 +38,13 @@ describe('aggregate user state service', function() {
   describe('when refreshing user state', function() {
 
     it('should retain refreshed user state', function() {
+
       userStateStub.get.and.returnValue($q.when({ data: newUserState }));
 
-      target.refreshUserState();
+      target.refreshUserState(userId);
       $rootScope.$apply();
 
-      expect(userStateStub.get).toHaveBeenCalled();
+      expect(userStateStub.get).toHaveBeenCalledWith(userId);
       expect(target.userState).toBe(newUserState);
     });
 
@@ -47,13 +52,13 @@ describe('aggregate user state service', function() {
       userStateStub.get.and.returnValue($q.reject(error));
 
       var result = null;
-      target.refreshUserState().catch(function(error) {
+      target.refreshUserState(userId).catch(function(error) {
         result = error;
       });
       $rootScope.$apply();
 
       expect(result).toBe(error);
-      expect(userStateStub.get).toHaveBeenCalled();
+      expect(userStateStub.get).toHaveBeenCalledWith(userId);
       expect(target.userState).toBe(null);
     });
 
