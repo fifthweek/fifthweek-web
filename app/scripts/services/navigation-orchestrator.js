@@ -51,7 +51,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         name: 'Dashboard',
         state: states.dashboard.demo.name,
         icon: 'fa fa-folder-open-o',
-        color: undefined,
+        color: 'pink',
         showIf: function(data) { return data.authenticated; },
         secondary:
         [
@@ -65,7 +65,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
             name: 'Provide Feedback',
             state: states.dashboard.feedback.name,
             icon: 'fa fa-comment-o',
-            color: 'yellow'
+            color: 'pink'
           }
         ]
       },
@@ -80,7 +80,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         name: 'Customize',
         state: states.creators.customize.landingPage.name,
         icon: 'fa fa-eye',
-        color: undefined,
+        color: 'green',
         showIf: function(data) { return data.authenticated; },
         secondary:
         [
@@ -88,13 +88,13 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
             name: 'Landing Page',
             state: states.creators.customize.landingPage.name,
             icon: 'fa fa-arrow-circle-down',
-            color: 'yellow'
+            color: 'green'
           },
           {
             name: 'Channels',
             state: states.creators.customize.channels.name,
             icon: 'fa fa-list-alt',
-            color: 'blue'
+            color: 'green'
           },
           {
             name: 'Collections',
@@ -109,7 +109,7 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
         name: 'Help',
         state: states.help.faq.name,
         icon: 'fa fa-question-circle',
-        color: undefined,
+        color: 'blue',
         secondary:
         [
           {
