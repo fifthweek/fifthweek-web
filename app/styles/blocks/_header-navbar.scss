@@ -7,31 +7,6 @@
   z-index:1030;
 }
 
-.navbar-toggle {
-  float:left;
-  z-index:3;
-  margin-right:0;
-  margin-bottom:0;
-  padding-left:15px;
-  background:none;
-  border:0 none;
-  #{$state-hover-focus} {
-    background:none !important;
-  }
-  //overide bootstrap default
-  @media (min-width:$bp-medium) {
-    display:block !important;
-  }
-  @media (min-width:$bp-m-large) {
-    display:none !important;
-  }
-  .fa {
-    vertical-align:initial;
-    color:#777B80;
-    font-size:1.5em;
-  }
-}
-
 .navbar-fixed-top {
   background:$navbar-default-bg;
   border:0 none;
@@ -79,88 +54,8 @@
       padding-left:90px;
     }
   }
-  ul {
-    list-style-type: none;
-    display:inline-block;
-    padding:9px 11px;
-    margin:0;
-    white-space: nowrap;
-
-    li {
-      display: inline;
-      margin: 0px 40px 0px 0px;
-      font-size:20px;
-
-      a {
-        color: $grey-dark-2;
-        text-transform: uppercase;
-        padding-bottom: 11px;
-        &:hover{
-          text-decoration: none;
-          color: $grey-dark-3;
-        }
-        &.active{
-          border-bottom: 4px solid $grey-dark-3;
-          color: $grey-dark-3;
-        }
-        &.blue {
-          &.active{
-            border-color: $icon-blue;
-          }
-        }
-        &.green {
-          &.active{
-            border-color: $icon-green;
-          }
-        }
-        &.yellow {
-          &.active{
-            border-color: $icon-yellow;
-          }
-        }
-        &.pink {
-          &.active{
-            border-color: $icon-pink;
-          }
-        }
-
-        span{
-          vertical-align: middle;
-          height: 24px;
-          &:last-child{
-            font-size: 12px;
-          }
-          i {
-            margin-right: 6px;
-          }
-        }
-      }
-    }
-
-    @media (min-width:$bp-x-small) {
-      font-size:21px;
-      padding-top:11px;
-    }
-    //@media (min-width:768px) {
-    @media (min-width:$bp-small) {
-      float:left;
-      margin-left:0;
-      //padding-left:93px;
-      padding-left:60px;
-    }
-    @media (min-width:$bp-medium) {
-      padding-left:60px;
-    }
-    @media (min-width:$bp-m-large) {
-      padding-left:60px;
-    }
-  }
 }
 
-.navbar-brand {
-  padding-left:0;
-  @media (min-width:$bp-medium) {
-    float:left;
-    margin-left:0;
-  }
-}
+//@import '../elements/_header-navbar-brand';
+@import '../elements/_header-navbar-toggle';
+@import '../elements/_header-navbar-menu';

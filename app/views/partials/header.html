@@ -4,7 +4,7 @@
       <ng-include src="'views/partials/header-sidebar-toggle.html'" class="header-wrapper"></ng-include>
       <h1 ng-if="navigation.length <= 1" ng-bind="$state.current.data.pageTitle" class=""></h1>
 
-      <ul ng-if="navigation.length > 1">
+      <ul ng-if="navigation.length > 1" class="header-navbar-menu">
         <li ng-repeat="item in navigation">
           <a ng-if="!item.separator"
              class="{{item.color}}"

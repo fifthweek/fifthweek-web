@@ -1,0 +1,26 @@
+@import '_base';
+
+.navbar-toggle {
+  float:left;
+  z-index:3;
+  margin-right:0;
+  margin-bottom:0;
+  padding-left:15px;
+  background:none;
+  border:0 none;
+  #{$state-hover-focus} {
+    background:none !important;
+  }
+  //overide bootstrap default
+  @media (min-width:$bp-medium) {
+    display:block !important;
+  }
+  @media (min-width:$bp-m-large) {
+    display:none !important;
+  }
+  .fa {
+    vertical-align:initial;
+    color:#777B80;
+    font-size:1.5em;
+  }
+}
