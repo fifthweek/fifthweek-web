@@ -218,6 +218,7 @@ describe('navigation orchestrator', function(){
           { separator: true },
           { name: 'Dashboard', id: 'navigation-dashboard' },
           { name: 'Create Your Subscription', id: 'navigation-create-your-subscription' },
+          { name: 'Compose'},
           { name: 'Customize', id: 'navigation-customize' },
           { separator: true },
           { name: 'Help', id: 'navigation-help' }
