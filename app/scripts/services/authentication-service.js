@@ -126,7 +126,7 @@ angular.module('webApp').constant('authenticationServiceConstants', {
     service.signOut = function() {
       clearCurrentUserDetails();
 
-      return aggregateUserStateService.refreshUserState('');
+      return aggregateUserStateService.refreshUserState();
     };
 
     var extractAuthenticationDataFromResponse = function (response){

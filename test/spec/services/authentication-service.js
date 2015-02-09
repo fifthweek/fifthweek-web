@@ -405,7 +405,7 @@ describe('authentication service', function() {
       target.signOut();
       $rootScope.$apply();
 
-      expect(aggregateUserStateService.refreshUserState.calls.mostRecent().args).toEqual(['']);
+      expect(aggregateUserStateService.refreshUserState.calls.mostRecent().args).toEqual([ ]);
 
       executeSignOutExpectations();
     });
