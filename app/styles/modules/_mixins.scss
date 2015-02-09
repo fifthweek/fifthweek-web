@@ -4,3 +4,15 @@
 @mixin text-shadow-black-soft {
   text-shadow:0 1px 10px rgba(0, 0, 0, 0.5);
 }
+
+@mixin header-navbar-heading-spacing {
+  @media (min-width:$bp-x-small) {
+    padding-top:11px;
+  }
+  @media (min-width:$bp-small) {
+    padding-left:75px;
+  }
+  @media (min-width:$bp-medium) {
+    padding-left:90px;
+  }
+}
