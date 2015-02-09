@@ -5,10 +5,10 @@ describe('subscription service', function() {
   var subscriptionData = 'subscriptionData';
   var error = 'error';
 
-  var $q;
   var $rootScope;
-
+  var $q;
   var subscriptionStub;
+  var aggregateUserStateServiceConstants;
   var target;
 
   beforeEach(function() {
@@ -22,6 +22,7 @@ describe('subscription service', function() {
     inject(function($injector) {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
+      aggregateUserStateServiceConstants = $injector.get('aggregateUserStateServiceConstants');
       target = $injector.get('subscriptionService');
     });
 
@@ -39,6 +40,22 @@ describe('subscription service', function() {
 
     expect(target.subscriptionId).toBe(subscriptionId);
     expect(target.hasSubscription).toBe(true);
+  });
+
+  it('should auto-synchronize when user state refreshes', function() {
+    $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateRefreshedEvent, {
+      creatorStatus: {
+        subscriptionId: subscriptionId
+      }
+    });
+
+    expect(target.subscriptionId).toBe(subscriptionId);
+    expect(target.hasSubscription).toBe(true);
+
+    $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateRefreshedEvent, { });
+
+    expect(target.subscriptionId).toBe(null);
+    expect(target.hasSubscription).toBe(false);
   });
 
   it('should allow its state to be synchronized with same default values', function() {

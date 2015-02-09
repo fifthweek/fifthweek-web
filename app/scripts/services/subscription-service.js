@@ -1,5 +1,5 @@
 angular.module('webApp').factory('subscriptionService',
-  function($q, subscriptionStub) {
+  function($rootScope, $q, subscriptionStub, aggregateUserStateServiceConstants) {
     'use strict';
 
     var subscriptionId = null;
@@ -22,6 +22,15 @@ angular.module('webApp').factory('subscriptionService',
         subscriptionId = response.data;
       });
     };
+
+    $rootScope.$on(aggregateUserStateServiceConstants.userStateRefreshedEvent, function(event, userState) {
+      if (userState.creatorStatus) {
+        service.synchronize(userState.creatorStatus.subscriptionId);
+      }
+      else {
+        service.synchronize(null);
+      }
+    });
 
     return service;
   }
