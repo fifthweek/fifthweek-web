@@ -1,12 +1,15 @@
 'use strict';
 
 describe('home controller', function() {
+  var errorMessage = 'errorMessage';
+  var nextState = 'nextState';
+
   var $q;
   var $controller;
 
   var scope;
   var $state;
-  var states;
+  var calculatedStates;
   var utilities;
   var $modal;
   var analytics;
@@ -14,61 +17,56 @@ describe('home controller', function() {
   var logService;
   var target;
 
-  beforeEach(module('webApp', 'stateMock'));
-
-  beforeEach(inject(function($injector) {
-    $q = $injector.get('$q');
-    $controller = $injector.get('$controller');
-
-    scope = $injector.get('$rootScope').$new();
-    $state = $injector.get('$state');
-    states = $injector.get('states');
-    utilities = $injector.get('utilities');
+  beforeEach(function() {
+    calculatedStates = jasmine.createSpyObj('calculatedStates', [ 'getDefaultState' ]);
     $modal = {};
     analytics = {};
     authenticationService = {};
-    logService = {};
+    utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
+    logService = jasmine.createSpyObj('logService', ['error']);
+
+    module('webApp', 'stateMock');
+    module(function($provide) {
+      $provide.value('calculatedStates', calculatedStates);
+      $provide.value('$modal', $modal);
+      $provide.value('analytics', analytics);
+      $provide.value('authenticationService', authenticationService);
+      $provide.value('utilities', utilities);
+      $provide.value('logService', logService);
+    });
+
+    inject(function($injector) {
+      $q = $injector.get('$q');
+      $controller = $injector.get('$controller');
+      scope = $injector.get('$rootScope').$new();
+      $state = $injector.get('$state');
+    });
 
     // Satisfy the 'construction precondition' by default. There only needs to be
     // one test to ensure appropriate behaviour when this condition is not met.
     authenticationService.currentUser = { authenticated: false };
 
     initializeTarget();
-  }));
+  });
 
   // Split out since we have logic running in the constructor.
   function initializeTarget() {
-    target = $controller('HomeCtrl', {
-      $scope: scope,
-      $state: $state,
-      states: states,
-      utilities: utilities,
-      $modal: $modal,
-      analytics: analytics,
-      authenticationService: authenticationService,
-      logService: logService
-    });
+    target = $controller('HomeCtrl', { $scope: scope });
   }
-
-  afterEach(function(){
-    $state.verifyNoOutstandingTransitions();
-  });
 
   describe('when the user is already authenticated', function(){
     it('should redirect to the dashboard page', function(){
-      $state.expectTransitionTo(states.dashboard.demo.name);
-
       authenticationService.currentUser = { authenticated: true };
+      calculatedStates.getDefaultState.and.returnValue(nextState);
+      $state.expectTransitionTo(nextState);
+
       initializeTarget();
+
+      $state.verifyNoOutstandingTransitions();
     });
   });
 
   describe('when the user is not authenticated', function(){
-    var errorMessage = '!';
-    beforeEach(function() {
-      logService.error = function(){};
-      utilities.getFriendlyErrorMessage = function(){ return errorMessage; };
-    });
 
     it('should contain an openModal function', function(){
       expect(scope.openModal).toBeDefined();
@@ -90,13 +88,14 @@ describe('home controller', function() {
         };
       });
 
-      it('should navigate to dashboard on successful registration', function() {
+      it('should navigate to default state on successful registration', function() {
+        calculatedStates.getDefaultState.and.returnValue(nextState);
         authenticationService.registerUser = function() { return resolvedPromise(); };
         authenticationService.signIn = function() { return resolvedPromise(); };
         analytics.eventTrack = function(){};
         analytics.setUserProperties = function(){};
 
-        $state.expectTransitionTo(states.dashboard.demo.name);
+        $state.expectTransitionTo(nextState);
 
         scope.register();
         scope.$apply();
@@ -106,6 +105,7 @@ describe('home controller', function() {
       });
 
       it('should display an error message and log the error on unsuccessful registration', function() {
+        utilities.getFriendlyErrorMessage.and.returnValue(errorMessage);
         authenticationService.registerUser = function() {
           var deferred = $q.defer();
           deferred.reject('Bad');
@@ -113,8 +113,6 @@ describe('home controller', function() {
         };
 
         analytics.eventTrack = function(){};
-        spyOn(logService, 'error');
-        spyOn(utilities, 'getFriendlyErrorMessage').and.callThrough();
 
         scope.register();
         scope.$apply();
@@ -126,6 +124,7 @@ describe('home controller', function() {
       });
 
       it('should track registration attempts before communicating with the authentication service', function() {
+        calculatedStates.getDefaultState.and.returnValue(nextState);
         var callSequence = [];
 
         authenticationService.signIn = function() {
@@ -142,7 +141,7 @@ describe('home controller', function() {
           return resolvedPromise();
         };
 
-        $state.expectTransitionTo(states.dashboard.demo.name);
+        $state.expectTransitionTo(nextState);
 
         scope.register();
         scope.$apply();
@@ -178,6 +177,7 @@ describe('home controller', function() {
       });
 
       it('should track successful registrations', function() {
+        calculatedStates.getDefaultState.and.returnValue(nextState);
         var callSequence = [];
 
         authenticationService.signIn = function() {
@@ -194,7 +194,7 @@ describe('home controller', function() {
           return resolvedPromise();
         };
 
-        $state.expectTransitionTo(states.dashboard.demo.name);
+        $state.expectTransitionTo(nextState);
 
         scope.register();
         scope.$apply();

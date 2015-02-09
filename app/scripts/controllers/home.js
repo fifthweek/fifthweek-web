@@ -1,9 +1,9 @@
 angular.module('webApp').controller('HomeCtrl',
-  function($scope, $state, states, utilities, $modal, analytics, authenticationService, logService) {
+  function($scope, $state, calculatedStates, utilities, $modal, analytics, authenticationService, logService) {
   'use strict';
 
   if(authenticationService.currentUser.authenticated === true){
-    $state.go(states.dashboard.demo.name);
+    $state.go(calculatedStates.getDefaultState());
   }
 
   $scope.isSubmitting = false;
@@ -23,25 +23,27 @@ angular.module('webApp').controller('HomeCtrl',
     $scope.isSubmitting = true;
     analytics.eventTrack(eventPrefix + ' submitted', eventCategory);
 
-    return authenticationService.registerUser($scope.registrationData).then(function() {
-      $scope.submissionSucceeded = true;
-      $scope.message = 'Signing in...';
+    return authenticationService.registerUser($scope.registrationData)
+      .then(function() {
+        $scope.submissionSucceeded = true;
+        $scope.message = 'Signing in...';
 
-      var signInData = {
-        username: $scope.registrationData.username,
-        password: $scope.registrationData.password
-      };
+        var signInData = {
+          username: $scope.registrationData.username,
+          password: $scope.registrationData.password
+        };
 
-      return authenticationService.signIn(signInData).then(function() {
-        analytics.eventTrack(eventPrefix + ' succeeded', eventCategory);
-        $state.go(states.dashboard.demo.name);
+        return authenticationService.signIn(signInData).then(function() {
+          analytics.eventTrack(eventPrefix + ' succeeded', eventCategory);
+          $state.go(calculatedStates.getDefaultState());
+        });
+      })
+      .catch(function(error) {
+        analytics.eventTrack(eventPrefix + ' failed', eventCategory);
+        $scope.message = utilities.getFriendlyErrorMessage(error);
+        $scope.isSubmitting = false;
+        return logService.error(error);
       });
-    }).catch(function(error) {
-      analytics.eventTrack(eventPrefix + ' failed', eventCategory);
-      $scope.message = utilities.getFriendlyErrorMessage(error);
-      $scope.isSubmitting = false;
-      return logService.error(error);
-    });
   };
 
   $scope.openModal = function(){

@@ -37,7 +37,7 @@ describe('sign in controller', function() {
       $q = $injector.get('$q');
       scope = $rootScope.$new();
       target = $controller('SignInCtrl', { $scope: scope });
-    })
+    });
   });
 
   afterEach(function(){
