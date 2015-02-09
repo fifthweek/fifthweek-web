@@ -35,18 +35,32 @@
 
             <div class="radio">
               <label><input type="radio" 
-                           ng-model="postLaterDate" 
-                           ng-value="postsInFunnel" /> After other posts in funnel (will appear Wednesday 7th Jan)</label>
+                            ng-model="postLaterDate" 
+                            ng-value="postsInFunnel" /> After other posts in funnel (will appear Wednesday 7th Jan)</label>
             </div>
 
             <div class="radio">
               <label><input type="radio"  
-                           ng-model="postLaterDate" 
-                           value="specficDate" /> On specific date:</label>
+                            ng-model="postLaterDate" 
+                            value="specficDate" /> On specific date:</label>
             </div>
 
             <br/>
-            <p>datepicker here</p>
+            date picker here
+            <div class="row">
+              <div class="col-md-6">
+                  <p class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="{{format}}" 
+                    ng-model="shortDate"
+                    placeholder="dd-mm-yyyy" 
+                    is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                  </p>
+              </div>
+          </div>
+
 
             <button type="submit" 
                    class="btn btn-block btn-success"
