@@ -3,7 +3,7 @@ exports.config = {
   baseUrl: 'http://localhost:9001',
   specs: ['e2e/fifthweek.spec.js'],
   capabilities: {
-    browserName: 'chrome'
+    browserName: 'firefox'
   },
   onPrepare: function () {
     // The require statement must be down here, since jasmine-reporters
@@ -30,6 +30,8 @@ exports.config = {
        }*/
     }));
 
+    window.setSize(1280, 850);
+/*
     // set the window size
     browser.getCapabilities().then(function (capabilities) {
         browserName = capabilities.caps_.browserName;
@@ -51,6 +53,6 @@ exports.config = {
         console.log('Browser:', browserName, 'on', platform, 'at', dimensions.width + 'x' + dimensions.height);
         console.log('Running e2e tests...');
       }
-    );
+    );*/
   }
 };
