@@ -27,7 +27,7 @@ describe('fifthweek', function() {
         page.emailTextBox.sendKeys(email);
         page.registerButton.click();
 
-        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+        expect(browser.getCurrentUrl()).toContain(new CreateSubscriptionPage().pageUrl);
       });
 
       it('requires email address', function(){
@@ -93,7 +93,7 @@ describe('fifthweek', function() {
         page.passwordTextBox.sendKeys('password1');
         page.registerButton.click();
 
-        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+        expect(browser.getCurrentUrl()).toContain(new CreateSubscriptionPage().pageUrl);
       });
 
       it('should not allow usernames with fewer than 2 characters', function(){
@@ -144,7 +144,7 @@ describe('fifthweek', function() {
         page.passwordTextBox.sendKeys('password1');
         page.registerButton.click();
 
-        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+        expect(browser.getCurrentUrl()).toContain(new CreateSubscriptionPage().pageUrl);
       });
 
       it('should allow underscores in username', function(){
@@ -153,7 +153,7 @@ describe('fifthweek', function() {
         page.passwordTextBox.sendKeys('password1');
         page.registerButton.click();
 
-        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+        expect(browser.getCurrentUrl()).toContain(new CreateSubscriptionPage().pageUrl);
       });
 
       it('should allow leading and trailing spaces in username', function(){
@@ -162,7 +162,7 @@ describe('fifthweek', function() {
         page.passwordTextBox.sendKeys('password1');
         page.registerButton.click();
 
-        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+        expect(browser.getCurrentUrl()).toContain(new CreateSubscriptionPage().pageUrl);
       });
 
       var page = new RegisterPage();
@@ -184,7 +184,7 @@ describe('fifthweek', function() {
         page.usernameTextBox.sendKeys(username);
         page.passwordTextBox.sendKeys(password);
         page.signInButton.click();
-        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+        expect(browser.getCurrentUrl()).toContain(new CreateSubscriptionPage().pageUrl);
       });
 
       it('should require a valid password', function(){
@@ -211,7 +211,7 @@ describe('fifthweek', function() {
         page.passwordTextBox.sendKeys(password);
         page.signInButton.click();
 
-        expect(browser.getCurrentUrl()).toContain('/dashboard/demo');
+        expect(browser.getCurrentUrl()).toContain(new CreateSubscriptionPage().pageUrl);
       });
 
       it('should case sensitive for the password', function(){
@@ -271,9 +271,11 @@ describe('fifthweek', function() {
     });
 
     var page = new DemonstrationPage();
+    var navigation = new NavigationPage();
 
     beforeEach(function() {
       registerSuccessfully();
+      navigation.sidebarDashboardButton.click();
     });
   });
 
@@ -287,7 +289,7 @@ describe('fifthweek', function() {
 
     beforeEach(function() {
       registerSuccessfully();
-
+      navigation.sidebarDashboardButton.click();
       navigation.feedbackLink.click();
     });
   });
@@ -310,7 +312,7 @@ describe('fifthweek', function() {
 
     browser.get('/');
     browser.waitForAngular();
-  };
+  }
 
   function registerSuccessfully() {
     var registerPage = new RegisterPage();

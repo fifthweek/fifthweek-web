@@ -9,6 +9,7 @@ NavigationPage.prototype = Object.create({}, {
   links: { get: function () { return element.all(by.css('#sidebar a')); }},
   feedbackLink: { get: function () { return element(by.id('navigation-provide-feedback')); }},
   sidebarRegisterButton: { get: function () { return element(by.id('navigation-register')); }},
+  sidebarDashboardButton: { get: function () { return element(by.id('navigation-dashboard')); }},
   linkedPages: { get: function () { return [new DemonstrationPage(), new FeedbackPage()]; }}
 });
 
