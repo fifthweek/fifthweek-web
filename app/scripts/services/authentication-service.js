@@ -86,12 +86,14 @@ angular.module('webApp').constant('authenticationServiceConstants', {
       };
 
       return $http.post(apiBaseUri + 'token', body, headers)
-        .then(function(response) {
-          return extractAuthenticationDataFromResponse(response).then(function(){
-            analytics.setUsername(service.currentUser.userId);
-          });
-        }, function(response){
+        .catch(function(response){
           return $q.reject(utilities.getHttpError(response));
+        })
+        .then(function(response) {
+          return extractAuthenticationDataFromResponse(response);
+        })
+        .then(function(){
+          analytics.setUsername(service.currentUser.userId);
         })
         .then(function() {
           return aggregateUserStateService.refreshUserState(service.currentUser.userId);
