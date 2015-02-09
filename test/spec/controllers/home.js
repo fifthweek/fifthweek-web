@@ -1,6 +1,7 @@
 'use strict';
 
 describe('home controller', function() {
+  var error = 'error';
   var errorMessage = 'errorMessage';
   var nextState = 'nextState';
 
@@ -20,8 +21,8 @@ describe('home controller', function() {
   beforeEach(function() {
     calculatedStates = jasmine.createSpyObj('calculatedStates', [ 'getDefaultState' ]);
     $modal = {};
-    analytics = {};
-    authenticationService = {};
+    analytics = jasmine.createSpyObj('analytics', ['eventTrack', 'setUserProperties']);
+    authenticationService = jasmine.createSpyObj('utilities', ['signIn', 'registerUser']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
     logService = jasmine.createSpyObj('logService', ['error']);
 
@@ -90,10 +91,8 @@ describe('home controller', function() {
 
       it('should navigate to default state on successful registration', function() {
         calculatedStates.getDefaultState.and.returnValue(nextState);
-        authenticationService.registerUser = function() { return resolvedPromise(); };
-        authenticationService.signIn = function() { return resolvedPromise(); };
-        analytics.eventTrack = function(){};
-        analytics.setUserProperties = function(){};
+        authenticationService.registerUser.and.returnValue($q.when());
+        authenticationService.signIn.and.returnValue($q.when());
 
         $state.expectTransitionTo(nextState);
 
@@ -127,9 +126,7 @@ describe('home controller', function() {
         calculatedStates.getDefaultState.and.returnValue(nextState);
         var callSequence = [];
 
-        authenticationService.signIn = function() {
-          return resolvedPromise();
-        };
+        authenticationService.signIn.and.returnValue($q.when());
         analytics.eventTrack = function(key, properties){
           callSequence.push(['analytics.eventTrack', key, properties]);
         };
@@ -138,7 +135,7 @@ describe('home controller', function() {
         };
         authenticationService.registerUser = function() {
           callSequence.push('authenticationService.registerUser');
-          return resolvedPromise();
+          return $q.when();
         };
 
         $state.expectTransitionTo(nextState);
@@ -155,9 +152,7 @@ describe('home controller', function() {
 
       it('should track unsuccessful registrations', function() {
         var callSequence = [];
-        authenticationService.signIn = function() {
-          return resolvedPromise();
-        };
+        authenticationService.signIn.and.returnValue($q.when());
         analytics.eventTrack = function(key, properties){
           callSequence.push(['analytics.eventTrack', key, properties]);
         };
@@ -181,7 +176,7 @@ describe('home controller', function() {
         var callSequence = [];
 
         authenticationService.signIn = function() {
-          return resolvedPromise();
+          return $q.when();
         };
         analytics.eventTrack = function(key, properties){
           callSequence.push(['analytics.eventTrack', key, properties]);
@@ -191,7 +186,7 @@ describe('home controller', function() {
         };
         authenticationService.registerUser = function() {
           callSequence.push('authenticationService.registerUser');
-          return resolvedPromise();
+          return $q.when();
         };
 
         $state.expectTransitionTo(nextState);
@@ -207,10 +202,4 @@ describe('home controller', function() {
       });
     });
   });
-
-  function resolvedPromise() {
-    var deferred = $q.defer();
-    deferred.resolve();
-    return deferred.promise;
-  }
 });
