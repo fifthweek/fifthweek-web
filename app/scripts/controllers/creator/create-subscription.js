@@ -1,6 +1,10 @@
 angular.module('webApp').controller('createSubscriptionCtrl',
-  function($scope, $state, states, utilities, analytics, subscriptionStub) {
+  function($scope, $state, utilities, logService, analytics, initialStateProvider, subscriptionService) {
     'use strict';
+
+    if(subscriptionService.hasSubscription === true){
+      $state.go(initialStateProvider.getInitialState());
+    }
 
     $scope.isSubmitting = false;
     $scope.submissionSucceeded = false;
@@ -12,22 +16,20 @@ angular.module('webApp').controller('createSubscriptionCtrl',
        basePrice: 1.00
     };
 
-    var eventCategory = 'Registration';
-    var eventPrefix = 'Subscription creation';
+    var buildDTO = function() {
+      var newSubscriptionData = _.clone($scope.newSubscriptionData);
+      newSubscriptionData.basePrice = Math.round(newSubscriptionData.basePrice * 100);
+      return newSubscriptionData;
+    };
 
     $scope.continue = function() {
       $scope.isSubmitting = true;
-      analytics.eventTrack(eventPrefix + ' submitted', eventCategory);
 
-      var newSubscriptionData = _.clone($scope.newSubscriptionData);
-      newSubscriptionData.basePrice = Math.round(newSubscriptionData.basePrice * 100);
-
-      return subscriptionStub.postSubscription(newSubscriptionData).then(function() {
+      return subscriptionService.createFirstSubscription(buildDTO()).then(function() {
         $scope.submissionSucceeded = true;
-        analytics.eventTrack(eventPrefix + ' succeeded', eventCategory);
-
+        analytics.eventTrack('Subscription created', 'Registration');
+        $state.go(initialStateProvider.getInitialState());
       }).catch(function(error) {
-        analytics.eventTrack(eventPrefix + ' failed', eventCategory);
         $scope.message = utilities.getFriendlyErrorMessage(error);
         $scope.isSubmitting = false;
         return logService.error(error);
