@@ -1,5 +1,13 @@
 @import '_base';
 
+.browsehappy {
+  margin: 0px;
+  padding: 8px 24px;
+  background: #ccc;
+  color: #000;
+  text-align: center;
+}
+
 [ng\:cloak],
 [ng-cloak],
 [x-ng-cloak],
@@ -10,4 +18,12 @@
 
 .vcenter {
   vertical-align:middle;
+}
+
+img {
+  max-width:100%;
+}
+
+.tab-content {
+  margin-top:-2px;
 }

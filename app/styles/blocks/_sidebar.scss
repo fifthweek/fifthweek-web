@@ -111,7 +111,12 @@ $item-padding:$item-padding-tb $item-padding-lr;
       text-transform:uppercase;
       margin-bottom:10px;
     }
-
   }
-
 }
+
+.sidebar-disabled {
+  #{$left-container} {
+    display:none;
+  }
+}
+

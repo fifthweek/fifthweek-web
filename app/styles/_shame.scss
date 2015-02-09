@@ -1,86 +1,14 @@
 //shame/misc, temp styles - TBC
-.browsehappy {
-  margin: 0px;
-  padding: 8px 24px;
-  background: #ccc;
-  color: #000;
-  text-align: center;
-}
-
-.modal-dialog {
-  @media (min-width:$bp-medium) {
-    margin:9.5% auto;
-  }
-}
-.modal-backdrop.in {
-  position:fixed;
-  height:100%;
-  opacity:0.6;
-}
-.modal-body {
-  padding:5px;
-}
-.modal-content {
-  background-color:$grey-dark;
-}
-.modal iframe {
-  width:100%;
-}
-
-.sidebar-disabled {
-  #{$left-container} {
-    display:none;
-  }
-}
-
-
-//full width pages (can be improved when there are multiples)
+//full width pages (can be improved if/when there are multiples)
 .page-landing {
   .main-container {
     max-width:100%;
   }
 }
 
-//pages with no top navbar (can be improved when there are multiples)
+//pages with no top navbar (can be improved if/when there are multiples)
 .page-landing {
   .navbar-fixed-top {
     display:none;
   }
 }
-
-img {
-  max-width:100%;
-}
-
-#{$right-container} .nav-tabs {
-  padding:0;
-  border-bottom:0 none;
-  > li {
-    margin-bottom:0;
-    > a {
-      font:{
-        size:14px;
-        weight:bold;
-      }
-      padding:{
-        right:$main-cont-padding-small;
-        left:$main-cont-padding-small;
-      }
-      @media (min-width:$bp-x-small) {
-        font-size:$p-font-size;
-      }
-      @media (min-width:$bp-medium) {
-        padding:{
-          right:$main-cont-padding-large;
-          left:$main-cont-padding-large;
-        }
-      }
-    }
-  }
-}
-
-.tab-content {
-  margin-top:-2px;
-}
-
-
