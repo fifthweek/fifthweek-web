@@ -79,6 +79,82 @@
       padding-left:90px;
     }
   }
+  ul {
+    list-style-type: none;
+    display:inline-block;
+    padding:9px 11px;
+    margin:0;
+    white-space: nowrap;
+
+    li {
+      display: inline;
+      margin: 0px 40px 0px 0px;
+      font-size:20px;
+
+      a {
+        color: $grey-dark-2;
+        text-transform: uppercase;
+        padding-bottom: 11px;
+        &:hover{
+          text-decoration: none;
+          color: $grey-dark-3;
+        }
+        &.active{
+          border-bottom: 4px solid $grey-dark-3;
+          color: $grey-dark-3;
+        }
+        &.blue {
+          &.active{
+            border-color: $icon-blue;
+          }
+        }
+        &.green {
+          &.active{
+            border-color: $icon-green;
+          }
+        }
+        &.yellow {
+          &.active{
+            border-color: $icon-yellow;
+          }
+        }
+        &.pink {
+          &.active{
+            border-color: $icon-pink;
+          }
+        }
+
+        span{
+          vertical-align: middle;
+          height: 24px;
+          &:last-child{
+            font-size: 12px;
+          }
+          i {
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+
+    @media (min-width:$bp-x-small) {
+      font-size:21px;
+      padding-top:11px;
+    }
+    //@media (min-width:768px) {
+    @media (min-width:$bp-small) {
+      float:left;
+      margin-left:0;
+      //padding-left:93px;
+      padding-left:60px;
+    }
+    @media (min-width:$bp-medium) {
+      padding-left:60px;
+    }
+    @media (min-width:$bp-m-large) {
+      padding-left:60px;
+    }
+  }
 }
 
 .navbar-brand {

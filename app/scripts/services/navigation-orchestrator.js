@@ -88,19 +88,19 @@ angular.module('webApp').constant('navigationOrchestratorConstants', {
             name: 'Landing Page',
             state: states.creators.customize.landingPage.name,
             icon: 'fa fa-arrow-circle-down',
-            color: 'pink'
-          },
-          {
-            name: 'Collections',
-            state: states.creators.customize.collections.name,
-            icon: 'fa fa-th',
-            color: 'pink'
+            color: 'yellow'
           },
           {
             name: 'Channels',
             state: states.creators.customize.channels.name,
             icon: 'fa fa-list-alt',
-            color: 'pink'
+            color: 'blue'
+          },
+          {
+            name: 'Collections',
+            state: states.creators.customize.collections.name,
+            icon: 'fa fa-th',
+            color: 'green'
           }
         ]
       },

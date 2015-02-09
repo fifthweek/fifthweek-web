@@ -4,17 +4,16 @@
       <ng-include src="'views/partials/header-sidebar-toggle.html'" class="header-wrapper"></ng-include>
       <h1 ng-if="navigation.length <= 1" ng-bind="$state.current.data.pageTitle" class=""></h1>
 
-      <!-- SORRY FOR THE CRAP INLINE STYLES, PLEASE REMOVE ALL style AND ng-style ATTRIBUTES -->
-      <ul ng-if="navigation.length > 1" style="list-style-type: none; margin: 10px 10px; padding: 0;">
-        <li ng-repeat="item in navigation" style="display: inline; margin: 0px 10px;">
+      <ul ng-if="navigation.length > 1">
+        <li ng-repeat="item in navigation">
           <a ng-if="!item.separator"
              class="{{item.color || 'dummy'}}"
              ng-class="{active: item.isActive}"
-             ng-style="item.isActive ? {'color' : 'red'} : {}"
              id="{{item.id}}"
              ui-sref="{{item.state}}"
              snap-close>
-            <i ng-class="item.icon"></i>{{item.name}}
+            <span><i ng-class="item.icon"></i></span>
+            <span>{{item.name}}</span>
           </a>
         </li>
       </ul>

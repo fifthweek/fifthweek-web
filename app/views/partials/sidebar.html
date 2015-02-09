@@ -4,7 +4,7 @@
     <li ng-repeat="item in navigation">
       <hr width="100px" ng-if="item.separator" />
       <a ng-if="!item.separator"
-         class="{{item.color || 'dummy'}}"
+         class="{{item.color}}"
          ng-class="{active: item.isActive}"
          id="{{item.id}}"
          ui-sref="{{item.state}}"

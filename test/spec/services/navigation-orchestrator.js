@@ -313,24 +313,8 @@ describe('navigation orchestrator', function(){
           secondaryNavigation,
           [
             { name: 'Landing Page', isActive: true },
-            { name: 'Collections' },
-            { name: 'Channels' }
-          ]);
-      });
-
-      it('should create the expected navigation in "creators.customize.collections" state', function(){
-        $state.current.name = states.creators.customize.collections.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Customize');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'Landing Page' },
-            { name: 'Collections', isActive: true },
-            { name: 'Channels' }
+            { name: 'Channels' },
+            { name: 'Collections' }
           ]);
       });
 
@@ -345,8 +329,24 @@ describe('navigation orchestrator', function(){
           secondaryNavigation,
           [
             { name: 'Landing Page' },
-            { name: 'Collections' },
-            { name: 'Channels', isActive: true }
+            { name: 'Channels', isActive: true },
+            { name: 'Collections' }
+          ]);
+      });
+
+      it('should create the expected navigation in "creators.customize.collections" state', function(){
+        $state.current.name = states.creators.customize.collections.name;
+        target.initialize();
+
+        setActive(expectedPrimaryMenu, 'Customize');
+        expectMenu(primaryNavigation, expectedPrimaryMenu);
+
+        expectMenu(
+          secondaryNavigation,
+          [
+            { name: 'Landing Page' },
+            { name: 'Channels' },
+            { name: 'Collections', isActive: true }
           ]);
       });
 

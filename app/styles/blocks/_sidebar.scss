@@ -4,13 +4,6 @@ $logo-bg:$blue-dark-1;
 $item-padding-tb:14px;
 $item-padding-lr:21px;
 $item-padding:$item-padding-tb $item-padding-lr;
-$icon-default-color:#697789;
-//$icon-default-hover-color:#2780F8;
-
-$icon-blue:#2780F8;
-$icon-green:$green-light-1;
-$icon-yellow:$yellow-light-1;
-$icon-pink:$pink-light-1;
 
 .sidebar {
   @media (min-width:$bp-m-large) {
@@ -46,6 +39,11 @@ $icon-pink:$pink-light-1;
       min-width:17px;
       margin-right:8px;
       color:$icon-default-color;
+    }
+    hr{
+      margin: 2px 0px;
+      border-color:$blue-dark-3;
+      border-width: 2px;
     }
     > a,
     span.dummy {
