@@ -2,7 +2,66 @@
   <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-body jumbo-panel">
-        <p>note</p>
+        <div class="col-md-12">
+
+          <form name="composeNote" ng-show="!postLater">
+
+            
+            <div class="inner-row cancel-col-widths">
+              <textarea msd-elastic
+                        class="form-control"
+                        ng-model="composeNote.note"
+                        placeholder="Write your note here"
+                        required></textarea>
+            </div>
+
+            <div class="inner-row cancel-col-widths">
+              <select>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <input type="submit" 
+                     class="btn btn-block btn-success" 
+                     ng-click="composeNote.$valid && composeNote.$dirty ? saveTheDataTempFunctionName() : false"
+                     ng-disabled="composeNote.$invalid ||
+                                  composeNote.$pristine ||
+                                  isSubmitting"
+                     value="Post Now" />
+              <button class="btn btn-plain"
+                      ng-click="postLater = true">Post Later</button>
+            </div>
+
+          </form>
+
+          <form name="postNoteLater" ng-show="postLater === true">
+            
+
+            <input type="radio"
+                   class="form-control"
+                   value="postsInFunnel">After other posts in funnel (will appear Wednesday 7th Jan)</input>
+            <input type="radio"
+                   class="form-control"
+                   value="specificDate">On specific date:</input>
+
+            <br/>
+            <p>datepicker here</p>
+
+            <input type="submit" 
+                     class="btn btn-block btn-success" 
+                     ng-click="postNoteLater.$valid && postNoteLater.$dirty ? saveTheDataTempFunctionName() : false"
+                     ng-disabled="postNoteLater.$invalid ||
+                                  postNoteLater.$pristine ||
+                                  isSubmitting"
+                     value="Post to Backlog" />
+
+
+          </form>
+
+        </div>
       </div>
     </div>
   </div>

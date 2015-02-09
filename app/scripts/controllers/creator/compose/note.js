@@ -3,5 +3,7 @@ angular.module('webApp').controller(
   function($scope, $analytics) {
     'use strict';
 
+    $scope.postLater === false;
+
   }
 ]);
