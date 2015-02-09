@@ -33,25 +33,26 @@
 
           <form name="postNoteLater" ng-show="postLater === true">
 
-            <input type="radio"
-                   class="form-control"
-                   value="postsInFunnel">After other posts in funnel (will appear Wednesday 7th Jan)</input>
-            <input type="radio"
-                   class="form-control"
-                   value="specificDate">On specific date:</input>
+            <div class="radio">
+              <label><input type="radio" 
+                           ng-model="postLaterDate" 
+                           ng-value="postsInFunnel" /> After other posts in funnel (will appear Wednesday 7th Jan)</label>
+            </div>
+
+            <div class="radio">
+              <label><input type="radio"  
+                           ng-model="postLaterDate" 
+                           value="specficDate" /> On specific date:</label>
+            </div>
 
             <br/>
             <p>datepicker here</p>
 
-            <input type="submit" 
-                   class="btn btn-block btn-success" 
-                   value="Post to Backlog"
-                   ng-click="postNow()"
-                   data-loading-text="Posting to Backlog"
-                   fw-button-loading="isSubmitting"
-                   ng-disabled="postNoteLater.$invalid ||
-                                postNoteLater.$pristine ||
-                                isSubmitting" />
+            <button type="submit" 
+                   class="btn btn-block btn-success"
+                   ng-click="postToBacklog()"
+                   data-loading-text="Posting to Backlog..."
+                   fw-button-loading="isSubmitting">Post to Backlog</button>
 
 
           </form>

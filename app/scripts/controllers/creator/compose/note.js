@@ -24,5 +24,9 @@ angular.module('webApp').controller(
       $scope.isSubmitting = true;
     };
 
+    $scope.postToBacklog = function() {
+      $scope.isSubmitting = true;
+    };
+
   }
 ]);
