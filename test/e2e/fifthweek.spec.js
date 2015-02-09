@@ -7,6 +7,7 @@ var FeedbackPage = require('./pages/feedback.page.js');
 var CreateSubscriptionPage = require('./pages/creators/create-subscription.page.js');
 var LandingPagePage = require('./pages/creators/landing-page.page.js');
 var CustomizeLandingPagePage = require('./pages/creators/customize/landing-page.page.js');
+var composeNotePage = require('./pages/creators/compose/compose-note.page.js');
 
 describe('fifthweek', function() {
   'use strict';
