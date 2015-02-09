@@ -14,7 +14,14 @@ angular.module('webApp')
   service.userState = null;
 
   service.refreshUserState = function(userId) {
-    return userStateStub.get(userId).then(function(response) {
+    if (userId) {
+      return userStateStub.getUserState(userId).then(function(response) {
+        service.userState = response.data;
+        broadcastUserStateRefreshed();
+      });
+    }
+
+    return userStateStub.getVisitorState().then(function(response) {
       service.userState = response.data;
       broadcastUserStateRefreshed();
     });

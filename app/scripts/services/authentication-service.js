@@ -72,8 +72,6 @@ angular.module('webApp').constant('authenticationServiceConstants', {
     };
 
     service.signIn = function(signInData) {
-      service.signOut();
-
       var body =
         'grant_type=password&username=' + signInData.username +
         '&password=' + signInData.password +
@@ -85,9 +83,11 @@ angular.module('webApp').constant('authenticationServiceConstants', {
         }
       };
 
-      return $http.post(apiBaseUri + 'token', body, headers)
-        .catch(function(response){
-          return $q.reject(utilities.getHttpError(response));
+      return service.signOut()
+        .then(function() {
+          return $http.post(apiBaseUri + 'token', body, headers).catch(function(response){
+            return $q.reject(utilities.getHttpError(response));
+          });
         })
         .then(function(response) {
           return extractAuthenticationDataFromResponse(response);
@@ -125,6 +125,8 @@ angular.module('webApp').constant('authenticationServiceConstants', {
 
     service.signOut = function() {
       clearCurrentUserDetails();
+
+      return aggregateUserStateService.refreshUserState('');
     };
 
     var extractAuthenticationDataFromResponse = function (response){

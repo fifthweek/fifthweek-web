@@ -16,7 +16,7 @@ describe('aggregate user state service', function() {
   beforeEach(function() {
     module('webApp');
     module(function($provide) {
-      userStateStub = jasmine.createSpyObj('userStateStub', ['get']);
+      userStateStub = jasmine.createSpyObj('userStateStub', ['getUserState', 'getVisitorState']);
       authenticationService = { currentUser:{} };
 
       $provide.value('userStateStub', userStateStub);
@@ -39,17 +39,17 @@ describe('aggregate user state service', function() {
 
     it('should retain refreshed user state', function() {
 
-      userStateStub.get.and.returnValue($q.when({ data: newUserState }));
+      userStateStub.getUserState.and.returnValue($q.when({ data: newUserState }));
 
       target.refreshUserState(userId);
       $rootScope.$apply();
 
-      expect(userStateStub.get).toHaveBeenCalledWith(userId);
+      expect(userStateStub.getUserState).toHaveBeenCalledWith(userId);
       expect(target.userState).toBe(newUserState);
     });
 
     it('should propagate errors', function() {
-      userStateStub.get.and.returnValue($q.reject(error));
+      userStateStub.getUserState.and.returnValue($q.reject(error));
 
       var result = null;
       target.refreshUserState(userId).catch(function(error) {
@@ -58,12 +58,51 @@ describe('aggregate user state service', function() {
       $rootScope.$apply();
 
       expect(result).toBe(error);
-      expect(userStateStub.get).toHaveBeenCalledWith(userId);
+      expect(userStateStub.getUserState).toHaveBeenCalledWith(userId);
       expect(target.userState).toBe(null);
     });
 
     it('should raise event on success', function() {
-      userStateStub.get.and.returnValue($q.when({ data: newUserState }));
+      userStateStub.getUserState.and.returnValue($q.when({ data: newUserState }));
+      spyOn($rootScope, '$broadcast');
+
+      target.refreshUserState(userId);
+      $rootScope.$apply();
+
+      expect($rootScope.$broadcast)
+        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.userStateRefreshedEvent, newUserState);
+    });
+  });
+
+  describe('when refreshing user state (from no user ID)', function() {
+
+    it('should retain refreshed user state', function() {
+
+      userStateStub.getVisitorState.and.returnValue($q.when({ data: newUserState }));
+
+      target.refreshUserState();
+      $rootScope.$apply();
+
+      expect(userStateStub.getVisitorState).toHaveBeenCalled();
+      expect(target.userState).toBe(newUserState);
+    });
+
+    it('should propagate errors', function() {
+      userStateStub.getVisitorState.and.returnValue($q.reject(error));
+
+      var result = null;
+      target.refreshUserState().catch(function(error) {
+        result = error;
+      });
+      $rootScope.$apply();
+
+      expect(result).toBe(error);
+      expect(userStateStub.getVisitorState).toHaveBeenCalled();
+      expect(target.userState).toBe(null);
+    });
+
+    it('should raise event on success', function() {
+      userStateStub.getVisitorState.and.returnValue($q.when({ data: newUserState }));
       spyOn($rootScope, '$broadcast');
 
       target.refreshUserState();
@@ -73,4 +112,5 @@ describe('aggregate user state service', function() {
         .toHaveBeenCalledWith(aggregateUserStateServiceConstants.userStateRefreshedEvent, newUserState);
     });
   });
+
 });

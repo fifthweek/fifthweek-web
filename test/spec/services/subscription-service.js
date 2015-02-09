@@ -12,10 +12,10 @@ describe('subscription service', function() {
   var target;
 
   beforeEach(function() {
+    subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['postSubscription', 'putSubscription']);
+
     module('webApp');
     module(function($provide) {
-      subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['postSubscription', 'putSubscription']);
-
       $provide.value('subscriptionStub', subscriptionStub);
     });
 

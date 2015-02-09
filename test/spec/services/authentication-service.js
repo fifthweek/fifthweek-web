@@ -14,6 +14,7 @@ describe('authentication service', function() {
     roles: 'admin,creator'
   };
 
+  var $q;
   var $httpBackend;
   var $rootScope;
   var $state;
@@ -24,24 +25,27 @@ describe('authentication service', function() {
   var target;
 
   beforeEach(function() {
+    localStorageService = {};
+    analytics = jasmine.createSpyObj('analytics', ['setUsername']);
+    aggregateUserStateService = jasmine.createSpyObj('aggregateUserStateService', ['refreshUserState']);
+
     module('webApp', 'stateMock');
     module(function($provide) {
-      localStorageService = {};
-      analytics = jasmine.createSpyObj('analytics', ['setUsername']);
-      aggregateUserStateService = jasmine.createSpyObj('aggregateUserStateService', ['refreshUserState']);
-
       $provide.value('localStorageService', localStorageService);
       $provide.value('$analytics', analytics);
       $provide.value('aggregateUserStateService', aggregateUserStateService);
     });
 
     inject(function($injector) {
+      $q = $injector.get('$q');
       $httpBackend = $injector.get('$httpBackend');
       $rootScope = $injector.get('$rootScope');
       $state = $injector.get('$state');
       fifthweekConstants = $injector.get('fifthweekConstants');
       target = $injector.get('authenticationService');
     });
+
+    aggregateUserStateService.refreshUserState.and.returnValue($q.when());
   });
 
   afterEach(function() {
@@ -389,7 +393,7 @@ describe('authentication service', function() {
       $httpBackend.flush();
       $rootScope.$apply();
 
-      expect(aggregateUserStateService.refreshUserState).toHaveBeenCalledWith(userId);
+      expect(aggregateUserStateService.refreshUserState.calls.mostRecent().args).toEqual([userId]);
     });
   });
 
@@ -399,6 +403,9 @@ describe('authentication service', function() {
       setupSignOutExpectations();
 
       target.signOut();
+      $rootScope.$apply();
+
+      expect(aggregateUserStateService.refreshUserState.calls.mostRecent().args).toEqual(['']);
 
       executeSignOutExpectations();
     });
