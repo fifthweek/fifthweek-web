@@ -2,10 +2,6 @@ angular.module('webApp').controller('createSubscriptionCtrl',
   function($scope, $state, utilities, logService, analytics, calculatedStates, subscriptionService) {
     'use strict';
 
-    if(subscriptionService.hasSubscription === true){
-      $state.go(calculatedStates.getDefaultState());
-    }
-
     $scope.isSubmitting = false;
     $scope.submissionSucceeded = false;
     $scope.message = '';
