@@ -8,15 +8,18 @@ describe('subscription service', function() {
   var $rootScope;
   var $q;
   var subscriptionStub;
+  var aggregateUserStateService;
   var aggregateUserStateServiceConstants;
   var target;
 
   beforeEach(function() {
     subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['postSubscription', 'putSubscription']);
+    aggregateUserStateService = {};
 
     module('webApp');
     module(function($provide) {
       $provide.value('subscriptionStub', subscriptionStub);
+      $provide.value('aggregateUserStateService', aggregateUserStateService);
     });
 
     inject(function($injector) {
@@ -30,37 +33,40 @@ describe('subscription service', function() {
     subscriptionStub.putSubscription.and.returnValue($q.when());
   });
 
-  it('should have no subscription by default', function() {
+  it('should synchronize on initialization', function() {
+    aggregateUserStateService.userState = null;
+    target.initialize();
     expect(target.subscriptionId).toBe(null);
     expect(target.hasSubscription).toBe(false);
-  });
 
-  it('should allow its state to be synchronized', function() {
-    target.synchronize(subscriptionId);
+    aggregateUserStateService.userState = { };
+    target.initialize();
+    expect(target.subscriptionId).toBe(null);
+    expect(target.hasSubscription).toBe(false);
 
+    aggregateUserStateService.userState = { creatorStatus: null };
+    target.initialize();
+    expect(target.subscriptionId).toBe(null);
+    expect(target.hasSubscription).toBe(false);
+
+    aggregateUserStateService.userState = { creatorStatus: { subscriptionId: subscriptionId } };
+    target.initialize();
     expect(target.subscriptionId).toBe(subscriptionId);
     expect(target.hasSubscription).toBe(true);
   });
 
-  it('should auto-synchronize when user state refreshes', function() {
+  it('should synchronize with user state synchronization', function() {
+    target.initialize();
+
     $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateRefreshedEvent, {
       creatorStatus: {
         subscriptionId: subscriptionId
       }
     });
-
     expect(target.subscriptionId).toBe(subscriptionId);
     expect(target.hasSubscription).toBe(true);
 
     $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateRefreshedEvent, { });
-
-    expect(target.subscriptionId).toBe(null);
-    expect(target.hasSubscription).toBe(false);
-  });
-
-  it('should allow its state to be synchronized with same default values', function() {
-    target.synchronize(null);
-
     expect(target.subscriptionId).toBe(null);
     expect(target.hasSubscription).toBe(false);
   });
@@ -68,7 +74,8 @@ describe('subscription service', function() {
   describe('when creating first subscription', function() {
 
     it('should require user to not have a subscription', function() {
-      target.synchronize(subscriptionId);
+      aggregateUserStateService.userState = { creatorStatus: { subscriptionId: subscriptionId } };
+      target.initialize();
 
       var result = null;
       target.createFirstSubscription(subscriptionData).catch(function(error) {
@@ -80,6 +87,9 @@ describe('subscription service', function() {
     });
 
     it('should retain subscription ID', function() {
+      aggregateUserStateService.userState = { };
+      target.initialize();
+
       subscriptionStub.postSubscription.and.returnValue($q.when({ data: subscriptionId }));
 
       target.createFirstSubscription(subscriptionData);
@@ -91,6 +101,9 @@ describe('subscription service', function() {
     });
 
     it('should propagate errors', function() {
+      aggregateUserStateService.userState = { };
+      target.initialize();
+      
       subscriptionStub.postSubscription.and.returnValue($q.reject(error));
 
       var result = null;
