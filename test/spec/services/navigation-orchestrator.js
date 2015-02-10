@@ -41,21 +41,15 @@ describe('navigation orchestrator', function(){
   var stateChangeService;
   var authenticationServiceConstants;
   var navigationOrchestratorConstants;
-  var authenticationService;
   var uiRouterConstants;
 
-  beforeEach(function() {
+  var initializeTarget = function(navigationMap) {
     stateChangeService = jasmine.createSpyObj('stateChangeService', [ 'isPermitted' ]);
-    authenticationService = {
-      currentUser: {
-        authenticated: false,
-        username: undefined
-      }
-    };
 
     module('webApp', 'stateMock');
     module(function($provide) {
-      $provide.value('authenticationService', authenticationService);
+      $provide.value('navigationMap', navigationMap);
+      $provide.value('stateChangeService', stateChangeService);
     });
 
     inject(function($injector) {
@@ -71,9 +65,10 @@ describe('navigation orchestrator', function(){
     $state.current = {
       name: 'unknown.state'
     };
-  });
+  };
 
   it('should attach to the $stateChangeSuccess and currentUserChanged events on initialization', function(){
+    initializeTarget([]);
     spyOn($rootScope, '$on');
 
     target.initialize();
@@ -84,6 +79,7 @@ describe('navigation orchestrator', function(){
   });
 
   it('should update navigation on initialization', function(){
+    initializeTarget([]);
     spyOn($rootScope, '$broadcast');
 
     target.initialize();
@@ -97,6 +93,7 @@ describe('navigation orchestrator', function(){
   describe('when initialized', function(){
 
     beforeEach(function(){
+      initializeTarget([]);
       target.initialize();
     });
 
@@ -129,16 +126,73 @@ describe('navigation orchestrator', function(){
 
     var primaryNavigation;
     var secondaryNavigation;
+    var unknownState = 'unknownState';
+    var knownState = 'knownState';
+    var parentOnlyState = 'parentOnlyState';
+    var parentOnlyName = 'parentOnlyName';
+    var parentState = 'parentState';
+    var parentName = 'parentName';
+    var childState = 'childState';
+    var childName = 'childName';
+    var basicNavigationMap = [
+      {
+        name: 'Page',
+        state: knownState,
+        icon: 'fa fa-ticket',
+        color: 'pink'
+      },
+      {
+        name: parentOnlyName,
+        state: parentOnlyState,
+        icon: 'fa fa-ticket',
+        color: 'pink'
+      },
+      { separator: true },
+      {
+        name: 'Some Separated Page',
+        state: 'SeparatedPage',
+        icon: 'fa fa-ticket',
+        color: 'pink'
+      },
+      { separator: true },
+      {
+        name: parentName,
+        state: parentState,
+        icon: 'fa fa-user',
+        color: undefined,
+        secondary:
+          [
+            {
+              name: childName,
+              state: childState,
+              icon: 'fa fa-child',
+              color: 'green'
+            },
+            {
+              name: 'Secondary Page 2',
+              state: childState + '2',
+              icon: 'fa fa-ticket',
+              color: 'pink'
+            }
+          ]
+      }
+    ];
 
     beforeEach(function(){
+      initializeTarget(basicNavigationMap);
+
       spyOn($rootScope, '$broadcast').and.callFake(function(event, newPrimaryNavigation, newSecondaryNavigation) {
         primaryNavigation = newPrimaryNavigation;
         secondaryNavigation = newSecondaryNavigation;
       });
+
+      $state.get = function(stateName) {
+        return { name: stateName };
+      };
     });
 
     it('should have no primary navigation selected if the state is not recognised', function(){
-      $state.current.name = 'unknown.state';
+      $state.current.name = unknownState;
 
       target.initialize();
 
@@ -146,7 +200,10 @@ describe('navigation orchestrator', function(){
     });
 
     it('should have no primary navigation selected if the state is filtered out of results', function(){
-      $state.current.name = states.account.name;
+      stateChangeService.isPermitted = function(state) {
+        return state.name !== knownState;
+      };
+      $state.current.name = knownState;
 
       target.initialize();
 
@@ -154,295 +211,37 @@ describe('navigation orchestrator', function(){
     });
 
     it('should have a primary navigation selected but no secondary navigation if the state is primary', function(){
-      $state.current.name = states.signIn.name;
+      stateChangeService.isPermitted = function() {
+        return true;
+      };
+      $state.current.name = parentOnlyState;
 
       target.initialize();
 
       var primary = _.filter(primaryNavigation, 'isActive');
       expect(primary.length).toBe(1);
-      expect(primary[0].name).toBe('Sign In');
+      expect(primary[0].name).toBe(parentOnlyName);
+      expect(primary[0].isActive).toBe(true);
     });
 
     it('should have a primary and secondary navigation selected if the state is secondary', function(){
-      $state.current.name = states.help.faq.name;
+      stateChangeService.isPermitted = function() {
+        return true;
+      };
+      $state.current.name = childState;
 
       target.initialize();
 
       var primary = _.filter(primaryNavigation, 'isActive');
       expect(primary.length).toBe(1);
-      expect(primary[0].name).toBe('Help');
+      expect(primary[0].name).toBe(parentName);
+      expect(primary[0].isActive).toBe(true);
 
-      var secondary = _.filter(secondaryNavigation, 'isActive');
-      expect(secondary.length).toBe(1);
-      expect(secondary[0].name).toBe('FAQ');
+      var secondary = secondaryNavigation;
+      expect(secondary.length).toBe(2);
+      expect(secondary[0].name).toBe(childName);
+      expect(secondary[0].isActive).toBe(true);
+      expect(secondary[1].isActive).toBe(false);
     });
-
-    describe('when not authenticated', function(){
-
-      var expectedPrimaryMenu;
-
-      beforeEach(function(){
-        expectedPrimaryMenu = [
-          { name: 'Register', id: 'navigation-register' },
-          { name: 'Sign In', id: 'navigation-sign-in' },
-          { separator: true },
-          { name: 'Help', id: 'navigation-help' }
-        ];
-      });
-
-      it('should create the expected primary navigation when not authenticated without subscriptions', function(){
-        target.initialize();
-
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-      });
-
-      it('should create the expected navigation in "home" state', function(){
-        $state.current.name = states.home.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Register');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          []);
-      });
-
-      it('should create the expected navigation in "signIn" state', function(){
-        $state.current.name = states.signIn.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Sign In');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          []);
-      });
-
-      it('should create the expected navigation in "help.faq" state', function(){
-        $state.current.name = states.help.faq.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Help');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'FAQ', isActive: true}
-          ]);
-      });
-
-    });
-
-    describe('when authenticated', function(){
-
-      var expectedPrimaryMenu;
-
-      beforeEach(function(){
-        authenticationService.currentUser.authenticated = true;
-        authenticationService.currentUser.username = 'captain-phil';
-
-        expectedPrimaryMenu = [
-          { name: authenticationService.currentUser.username, id: 'navigation-username' },
-          { separator: true },
-          { name: 'Dashboard', id: 'navigation-dashboard' },
-          { name: 'Create Your Subscription', id: 'navigation-create-your-subscription' },
-          { name: 'Compose'},
-          { name: 'Customize', id: 'navigation-customize' },
-          { separator: true },
-          { name: 'Help', id: 'navigation-help' }
-        ];
-      });
-
-      it('should create the expected primary navigation when authenticated without subscriptions', function(){
-        target.initialize();
-
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-      });
-
-      it('should create the expected navigation in "account" state', function(){
-        $state.current.name = states.account.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, authenticationService.currentUser.username);
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'Account', isActive: true },
-            { name: 'Sign Out' }
-          ]);
-      });
-
-      it('should create the expected navigation in "signOut" state', function(){
-        $state.current.name = states.signOut.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, authenticationService.currentUser.username);
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'Account' },
-            { name: 'Sign Out', isActive: true }
-          ]);
-      });
-
-      it('should create the expected navigation in "dashboard.demo" state', function(){
-        $state.current.name = states.dashboard.demo.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Dashboard');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'Quick Demo', isActive: true },
-            { name: 'Provide Feedback' }
-          ]);
-      });
-
-      it('should create the expected navigation in "dashboard.feedback" state', function(){
-        $state.current.name = states.dashboard.feedback.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Dashboard');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'Quick Demo' },
-            { name: 'Provide Feedback', isActive: true }
-          ]);
-      });
-
-      it('should create the expected navigation in "creators.createSubscription" state', function(){
-        $state.current.name = states.creators.createSubscription.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Create Your Subscription');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          []);
-      });
-
-      it('should create the expected navigation in "creators.customize.landingPage" state', function(){
-        $state.current.name = states.creators.customize.landingPage.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Customize');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'Landing Page', isActive: true },
-            { name: 'Channels' },
-            { name: 'Collections' }
-          ]);
-      });
-
-      it('should create the expected navigation in "creators.customize.channels" state', function(){
-        $state.current.name = states.creators.customize.channels.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Customize');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'Landing Page' },
-            { name: 'Channels', isActive: true },
-            { name: 'Collections' }
-          ]);
-      });
-
-      it('should create the expected navigation in "creators.customize.collections" state', function(){
-        $state.current.name = states.creators.customize.collections.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Customize');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'Landing Page' },
-            { name: 'Channels' },
-            { name: 'Collections', isActive: true }
-          ]);
-      });
-
-      it('should create the expected navigation in "help.faq" state', function(){
-        $state.current.name = states.help.faq.name;
-        target.initialize();
-
-        setActive(expectedPrimaryMenu, 'Help');
-        expectMenu(primaryNavigation, expectedPrimaryMenu);
-
-        expectMenu(
-          secondaryNavigation,
-          [
-            { name: 'FAQ', isActive: true }
-          ]);
-      });
-    });
-
-    var setActive = function(menu, name){
-      _.find(menu, { name: name }).isActive = true;
-    };
-
-    var matches = function(target, test){
-      if(test === undefined){
-        return target === undefined;
-      }
-
-      var matched = true;
-      _.forIn(test,  function(value, key){
-        if (!_.has(target, key)){
-          matched = false;
-          return false;
-        }
-
-        if(_.result(target,  key) !== _.result(test,  key))
-        {
-          matched = false;
-          return false;
-        }
-      });
-
-      return matched;
-    };
-
-    var expectMenu = function (menu, expected) {
-
-      expect(menu).toBeDefined();
-
-      if(_.any(expected, 'isActive')){
-        // If we expect any menu items to be active, then make sure only one is active.
-        expect(_.filter(menu, 'isActive').length).toBe(1);
-      }
-      else{
-        // Otherwise ensure none are active.
-        expect(_.filter(menu, 'isActive').length).toBe(0);
-      }
-
-      var errors = [];
-      _.zip(menu, expected).forEach(function (value) {
-        if (!matches(value[0], value[1])) {
-          errors.push('MATCH FAILED. Expected "' + JSON.stringify(value[1]) + '" but got "' + JSON.stringify(value[0]) + '"');
-        }
-      });
-      expect(errors).toEqual([]);
-    };
   });
 });

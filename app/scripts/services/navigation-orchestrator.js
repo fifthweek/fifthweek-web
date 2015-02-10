@@ -8,154 +8,8 @@ angular.module('webApp')
     return navigationOrchestratorImpl;
   })
   .factory('navigationOrchestratorImpl',
-  function($rootScope, stateChangeService, authenticationService, authenticationServiceConstants, $state, states, navigationOrchestratorConstants, uiRouterConstants) {
+  function($rootScope, navigationMap, stateChangeService, authenticationServiceConstants, $state, states, navigationOrchestratorConstants, uiRouterConstants) {
     'use strict';
-
-    var navigationMap =
-    [
-      {
-        name: 'Register',
-        state: states.home.name,
-        icon: 'fa fa-ticket',
-        color: 'pink',
-        showIf: function(data) { return !data.authenticated; }
-      },
-      {
-        name: 'Sign In',
-        state: states.signIn.name,
-        icon: 'fa fa-sign-in',
-        color: 'green',
-        showIf: function(data) { return !data.authenticated; }
-      },
-      {
-        name: function() { return authenticationService.currentUser.username; },
-        id: 'Username',
-        state: states.account.name,
-        icon: 'fa fa-user',
-        color: undefined,
-        showIf: function(data) { return data.authenticated; },
-        secondary:
-        [
-          {
-            name: 'Account',
-            state: states.account.name,
-            icon: 'fa fa-child',
-            color: 'green'
-          },
-          {
-            name: 'Sign Out',
-            state: states.signOut.name,
-            icon: 'fa fa-ticket',
-            color: 'pink'
-          }
-        ]
-      },
-      {
-        separator: true,
-        showIf: function(data) { return data.authenticated; }
-      },
-      {
-        name: 'Dashboard',
-        state: states.dashboard.demo.name,
-        icon: 'fa fa-folder-open-o',
-        color: 'pink',
-        showIf: function(data) { return data.authenticated; },
-        secondary:
-        [
-          {
-            name: 'Quick Demo',
-            state: states.dashboard.demo.name,
-            icon: 'fa fa-youtube-play',
-            color: 'pink'
-          },
-          {
-            name: 'Provide Feedback',
-            state: states.dashboard.feedback.name,
-            icon: 'fa fa-comment-o',
-            color: 'pink'
-          }
-        ]
-      },
-      {
-        name: 'Create Your Subscription',
-        state: states.creators.createSubscription.name,
-        icon: 'fa fa-asterisk',
-        color: 'yellow',
-        showIf: function(data) { return data.authenticated && !data.hasSubscription; }
-      },
-      {
-        name: 'Compose',
-        state: states.creators.compose.name,
-        icon: 'fa fa-eye',
-        color: 'green',
-        showIf: function(data) { return data.authenticated; },
-        secondary:
-        [
-          {
-            name: 'Note',
-            state: states.creators.compose.note.name,
-            icon: 'fa fa-arrow-circle-down',
-            color: 'green'
-          },
-          {
-            name: 'Image',
-            state: states.creators.compose.image.name,
-            icon: 'fa fa-list-alt',
-            color: 'green'
-          },
-          {
-            name: 'File',
-            state: states.creators.compose.file.name,
-            icon: 'fa fa-th',
-            color: 'green'
-          }
-        ]
-      },
-      {
-        name: 'Customize',
-        state: states.creators.customize.landingPage.name,
-        icon: 'fa fa-eye',
-        color: 'green',
-        showIf: function(data) { return data.authenticated; },
-        secondary:
-        [
-          {
-            name: 'Landing Page',
-            state: states.creators.customize.landingPage.name,
-            icon: 'fa fa-arrow-circle-down',
-            color: 'green'
-          },
-          {
-            name: 'Channels',
-            state: states.creators.customize.channels.name,
-            icon: 'fa fa-list-alt',
-            color: 'green'
-          },
-          {
-            name: 'Collections',
-            state: states.creators.customize.collections.name,
-            icon: 'fa fa-th',
-            color: 'green'
-          }
-        ]
-      },
-      { separator: true },
-      {
-        name: 'Help',
-        state: states.help.faq.name,
-        icon: 'fa fa-question-circle',
-        color: 'blue',
-        secondary:
-        [
-          {
-            name: 'FAQ',
-            state: states.help.faq.name,
-            icon: 'fa fa-book',
-            color: 'blue'
-          }
-        ]
-      }
-    ];
 
     var primaryNavigation = [];
     var secondaryNavigation = [];
@@ -165,12 +19,8 @@ angular.module('webApp')
 
     var service = {};
 
-    var broadcastCurrentUserChangedEvent = function(){
+    var broadcastNavigationChanged = function(){
       $rootScope.$broadcast(navigationOrchestratorConstants.navigationChangedEvent, primaryNavigation, secondaryNavigation);
-    };
-
-    var functionExists = function(value){
-      return typeof value === 'function';
     };
 
     var executeOrReturn = function(value){
@@ -181,11 +31,13 @@ angular.module('webApp')
       return value;
     };
 
-    var shouldShow = function(updateData, item){
+    var shouldShow = function(item){
       var show = true;
-      if(functionExists(item.showIf)){
-        show = item.showIf(updateData);
+
+      if(item.state !== undefined){
+        return stateChangeService.isPermitted($state.get(item.state));
       }
+
       return show;
     };
 
@@ -193,18 +45,7 @@ angular.module('webApp')
       var name = executeOrReturn(inputItem.name);
       var id = 'navigation-' + _.kebabCase(inputItem.id || name);
 
-      /*
-      var outputItem = Object.create({}, {
-        separator: { value: inputItem.separator },
-        name: { value: name },
-        state: { value: inputItem.state },
-        icon: { value: inputItem.icon },
-        color: { value: inputItem.color },
-        isActive: { value: isActive }
-        id: { value: id }
-      });
-      */
-      var outputItem = {
+      return {
         separator: inputItem.separator,
         name: name,
         state: inputItem.state,
@@ -213,11 +54,9 @@ angular.module('webApp')
         isActive: isActive,
         id: id
       };
-
-      return outputItem;
     };
 
-    var updateSecondaryNavigation = function(updateData, values) {
+    var updateSecondaryNavigation = function(values) {
       if (values === undefined || values.length === 0) {
         selectedSecondaryNavigation = undefined;
         service.secondaryNavigation = [];
@@ -228,7 +67,7 @@ angular.module('webApp')
       for (var i = 0; i < values.length; i++) {
         var item = values[i];
 
-        if (shouldShow(updateData, item)) {
+        if (shouldShow(item)) {
           var output = createOutputNavigationItem(item, item === selectedSecondaryNavigation);
           newSecondaryNavigation.push(output);
         }
@@ -238,29 +77,38 @@ angular.module('webApp')
     };
 
     var updateNavigation = function(){
-      var updateData = {
-        authenticated: authenticationService.currentUser.authenticated,
-        hasSubscription: false
-      };
-
       var newPrimaryNavigation = [];
       var newSecondaryNavigation = [];
       for(var i = 0; i < navigationMap.length; i++){
         var item = navigationMap[i];
 
-        if(shouldShow(updateData, item)){
+        if(shouldShow(item)){
           var output = createOutputNavigationItem(item, item === selectedPrimaryNavigation);
-          newPrimaryNavigation.push(output);
+
+          if (output.separator) {
+            if (newPrimaryNavigation.length > 0 && !_.last(newPrimaryNavigation).separator) {
+              // Ensure we do not stack leading or multiple separators.
+              newPrimaryNavigation.push(output);
+            }
+          }
+          else {
+            newPrimaryNavigation.push(output);
+          }
 
           if(output.isActive){
-            newSecondaryNavigation = updateSecondaryNavigation(updateData, item.secondary);
+            newSecondaryNavigation = updateSecondaryNavigation(item.secondary);
           }
         }
       }
 
+      // Ensure we remove trailing separator
+      if (newPrimaryNavigation.length > 0 && _.last(newPrimaryNavigation).separator) {
+        newPrimaryNavigation.pop();
+      }
+
       primaryNavigation = newPrimaryNavigation;
       secondaryNavigation = newSecondaryNavigation;
-      broadcastCurrentUserChangedEvent();
+      broadcastNavigationChanged();
     };
 
     var setSelectedNavigationFromState = function (state) {
