@@ -1,7 +1,13 @@
 angular.module('webApp')
   .constant('aggregateUserStateServiceConstants', {
     synchronizedEvent: 'aggregateUserStateServiceSynchronized'
-  }).factory('aggregateUserStateService',
+  })
+  .factory('aggregateUserStateService', function(aggregateUserStateServiceImpl) {
+    'use strict';
+    aggregateUserStateServiceImpl.initialize();
+    return aggregateUserStateServiceImpl;
+  })
+  .factory('aggregateUserStateServiceImpl',
   function($rootScope, localStorageService, aggregateUserStateServiceConstants, userStateStub) {
   'use strict';
 
@@ -12,9 +18,7 @@ angular.module('webApp')
     };
 
     var handleServiceResponse = function(response) {
-      service.userState = response.data;
-      localStorageService.set(localStorageName, service.userState);
-      broadcastSynchronized();
+      service.synchronize(response.data);
     };
 
     var service = {};
@@ -26,6 +30,12 @@ angular.module('webApp')
       if (storedUserState) {
         service.userState = storedUserState;
       }
+    };
+
+    service.synchronize = function(newUserState) {
+      service.userState = newUserState;
+      localStorageService.set(localStorageName, service.userState);
+      broadcastSynchronized();
     };
 
     service.synchronizeWithServer = function(userId) {

@@ -1,3 +1,35 @@
+describe('subscription service factory', function(){
+  'use strict';
+
+  var subscriptionServiceImpl;
+  var $injector;
+
+  beforeEach(function(){
+    subscriptionServiceImpl = jasmine.createSpyObj('subscriptionServiceImpl', ['initialize']);
+
+    module('webApp');
+    module(function($provide) {
+      $provide.value('subscriptionServiceImpl', subscriptionServiceImpl);
+    });
+
+    inject(function(_$injector_) {
+      $injector = _$injector_;
+    });
+  });
+
+  it('should initialize the authentication service', function(){
+    var target = $injector.get('subscriptionService');
+
+    expect(target.initialize).toHaveBeenCalled();
+  });
+
+  it('should return the authentication service', function(){
+    var target = $injector.get('subscriptionService');
+
+    expect(target).toBe(subscriptionServiceImpl);
+  });
+});
+
 describe('subscription service', function() {
   'use strict';
 
@@ -28,7 +60,7 @@ describe('subscription service', function() {
       $rootScope = $injector.get('$rootScope');
       aggregateUserStateServiceConstants = $injector.get('aggregateUserStateServiceConstants');
       subscriptionServiceConstants = $injector.get('subscriptionServiceConstants');
-      target = $injector.get('subscriptionService');
+      target = $injector.get('subscriptionServiceImpl');
     });
 
     subscriptionStub.postSubscription.and.returnValue($q.when());

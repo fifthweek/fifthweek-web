@@ -1,6 +1,13 @@
-angular.module('webApp').constant('subscriptionServiceConstants', {
-  synchronizedEvent: 'subscriptionServiceSynchronized'
-  }).factory('subscriptionService',
+angular.module('webApp')
+  .constant('subscriptionServiceConstants', {
+    synchronizedEvent: 'subscriptionServiceSynchronized'
+  })
+  .factory('subscriptionService', function(subscriptionServiceImpl) {
+    'use strict';
+    subscriptionServiceImpl.initialize();
+    return subscriptionServiceImpl;
+  })
+  .factory('subscriptionServiceImpl',
   function($rootScope, $q, subscriptionServiceConstants, subscriptionStub, aggregateUserStateService, aggregateUserStateServiceConstants) {
     'use strict';
 
@@ -10,11 +17,6 @@ angular.module('webApp').constant('subscriptionServiceConstants', {
       $rootScope.$broadcast(subscriptionServiceConstants.synchronizedEvent, subscriptionId);
     };
 
-    var synchronize = function(existingSubscriptionId) {
-      subscriptionId = existingSubscriptionId;
-      broadcastSynchronized();
-    };
-
     var synchronizeFromUserState = function(userState) {
       if (userState && userState.creatorStatus) {
         synchronize(userState.creatorStatus.subscriptionId);
@@ -22,6 +24,11 @@ angular.module('webApp').constant('subscriptionServiceConstants', {
       else {
         synchronize(null);
       }
+    };
+
+    var synchronize = function(existingSubscriptionId) {
+      subscriptionId = existingSubscriptionId;
+      broadcastSynchronized();
     };
 
     var service = Object.create({}, {

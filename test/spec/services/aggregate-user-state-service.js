@@ -1,10 +1,42 @@
+describe('aggregate user state service factory', function() {
+  'use strict';
+
+  var aggregateUserStateServiceImpl;
+  var $injector;
+
+  beforeEach(function(){
+    aggregateUserStateServiceImpl = jasmine.createSpyObj('aggregateUserStateServiceImpl', ['initialize']);
+
+    module('webApp');
+    module(function($provide) {
+      $provide.value('aggregateUserStateServiceImpl', aggregateUserStateServiceImpl);
+    });
+
+    inject(function(_$injector_) {
+      $injector = _$injector_;
+    });
+  });
+
+  it('should initialize the authentication service', function(){
+    var target = $injector.get('aggregateUserStateService');
+
+    expect(target.initialize).toHaveBeenCalled();
+  });
+
+  it('should return the authentication service', function(){
+    var target = $injector.get('aggregateUserStateService');
+
+    expect(target).toBe(aggregateUserStateServiceImpl);
+  });
+});
+
 describe('aggregate user state service', function() {
   'use strict';
 
   var newUserState = 'newUserState';
   var error = 'error';
   var userId = 'userId';
-  var serviceName = 'aggregateUserStateService';
+  var localStorageKey = 'aggregateUserStateService';
 
   var $q;
 
@@ -24,14 +56,14 @@ describe('aggregate user state service', function() {
 
       $provide.value('localStorageService', localStorageService);
       $provide.value('userStateStub', userStateStub);
-      $provide.value('authenticationService', authenticationService);
+      $provide.value('authenticationService', 'aggregateUserStateServiceImpl');
     });
 
     inject(function($injector) {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
       aggregateUserStateServiceConstants = $injector.get('aggregateUserStateServiceConstants');
-      target = $injector.get(serviceName);
+      target = $injector.get(localStorageKey);
     });
   });
 
@@ -42,16 +74,37 @@ describe('aggregate user state service', function() {
   it('should initialize from local storage', function() {
     localStorageService.get.and.returnValue(null);
     target.initialize();
-    expect(localStorageService.get).toHaveBeenCalledWith(serviceName);
+    expect(localStorageService.get).toHaveBeenCalledWith(localStorageKey);
     expect(target.userState).toBeNull();
 
     localStorageService.get.and.returnValue(newUserState);
     target.initialize();
-    expect(localStorageService.get).toHaveBeenCalledWith(serviceName);
+    expect(localStorageService.get).toHaveBeenCalledWith(localStorageKey);
     expect(target.userState).toBe(newUserState);
   });
 
-  describe('when refreshing user state', function() {
+  describe('when synchronizing', function() {
+
+    it('should retain refreshed user state', function() {
+      target.synchronize(newUserState);
+      $rootScope.$apply();
+
+      expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, newUserState);
+      expect(target.userState).toBe(newUserState);
+    });
+
+    it('should raise and event', function() {
+      spyOn($rootScope, '$broadcast');
+
+      target.synchronize(newUserState);
+      $rootScope.$apply();
+
+      expect($rootScope.$broadcast)
+        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.synchronizedEvent, newUserState);
+    });
+  });
+
+  describe('when synchronizing with server', function() {
 
     it('should retain refreshed user state', function() {
 
@@ -61,7 +114,7 @@ describe('aggregate user state service', function() {
       $rootScope.$apply();
 
       expect(userStateStub.getUserState).toHaveBeenCalledWith(userId);
-      expect(localStorageService.set).toHaveBeenCalledWith(serviceName, newUserState);
+      expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, newUserState);
       expect(target.userState).toBe(newUserState);
     });
 
@@ -79,7 +132,7 @@ describe('aggregate user state service', function() {
       expect(target.userState).toBe(null);
     });
 
-    it('should raise event on success', function() {
+    it('should raise an event on success', function() {
       userStateStub.getUserState.and.returnValue($q.when({ data: newUserState }));
       spyOn($rootScope, '$broadcast');
 
@@ -91,7 +144,7 @@ describe('aggregate user state service', function() {
     });
   });
 
-  describe('when refreshing user state (from no user ID)', function() {
+  describe('when synchronizing with server (from no user ID)', function() {
 
     it('should retain refreshed user state', function() {
 
@@ -101,7 +154,7 @@ describe('aggregate user state service', function() {
       $rootScope.$apply();
 
       expect(userStateStub.getVisitorState).toHaveBeenCalled();
-      expect(localStorageService.set).toHaveBeenCalledWith(serviceName, newUserState);
+      expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, newUserState);
       expect(target.userState).toBe(newUserState);
     });
 
@@ -119,7 +172,7 @@ describe('aggregate user state service', function() {
       expect(target.userState).toBe(null);
     });
 
-    it('should raise event on success', function() {
+    it('should raise an event on success', function() {
       userStateStub.getVisitorState.and.returnValue($q.when({ data: newUserState }));
       spyOn($rootScope, '$broadcast');
 
