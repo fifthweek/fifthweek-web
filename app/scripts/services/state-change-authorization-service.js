@@ -21,6 +21,8 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
       if (toState.data !== undefined && toState.data.access !== undefined) {
         return getAuthorization(toState) === authorizationServiceConstants.authorizationResult.authorized;
       }
+
+      return true;
     };
 
     service.redirectAwayIfRequired = function(event, toState, toParams){

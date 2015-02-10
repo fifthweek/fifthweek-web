@@ -38,6 +38,55 @@ describe('state change authorization service', function () {
     $state.verifyNoOutstandingTransitions();
   });
 
+  describe('when determining access permission', function() {
+
+    it('should pass if the page has no access requirements', function() {
+      toState.data = undefined;
+
+      var result = target.isPermitted(toState);
+
+      expect(result).toBe(true);
+    });
+
+    it('should pass if the page has empty access requirements', function() {
+      stateData.access = undefined;
+
+      var result = target.isPermitted(toState);
+
+      expect(result).toBe(true);
+    });
+
+    it('should pass if the user is authorized', function() {
+      authorizationService.authorize = function(){
+        return authorizationServiceConstants.authorizationResult.authorized;
+      };
+
+      var result = target.isPermitted(toState);
+
+      expect(result).toBe(true);
+    });
+
+    it('should fail if the user is unauthorized', function() {
+      authorizationService.authorize = function(){
+        return authorizationServiceConstants.authorizationResult.notAuthorized;
+      };
+
+      var result = target.isPermitted(toState);
+
+      expect(result).toBe(false);
+    });
+
+    it('should fail if a login is required', function() {
+      authorizationService.authorize = function(){
+        return authorizationServiceConstants.authorizationResult.loginRequired;
+      };
+
+      var result = target.isPermitted(toState);
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe('when routing', function() {
 
     it('should not alter the path if the page has no access requirements', function(){
