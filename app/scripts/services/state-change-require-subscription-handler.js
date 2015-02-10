@@ -8,7 +8,7 @@ angular.module('webApp').factory('stateChangeRequireSubscriptionHandler',
 
     service.handleStateChangeStart = function(event, toState, toParams/*, fromState, fromParams*/){
       if (toState.requireSubscription !== undefined) {
-        if (toState.requireSubscription != subscriptionService.hasSubscription) {
+        if (toState.requireSubscription !== subscriptionService.hasSubscription) {
           event.preventDefault();
           $state.go(calculatedStates.getDefaultState(), toParams);
         }
