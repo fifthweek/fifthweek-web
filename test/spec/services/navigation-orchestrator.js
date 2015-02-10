@@ -1,22 +1,21 @@
 describe('navigation orchestrator factory', function(){
   'use strict';
 
-  beforeEach(module('webApp'));
-
   var navigationOrchestratorImpl;
   var $injector;
 
   beforeEach(function(){
     navigationOrchestratorImpl = jasmine.createSpyObj('navigationOrchestratorImpl', ['initialize']);
 
+    module('webApp');
     module(function($provide) {
       $provide.value('navigationOrchestratorImpl', navigationOrchestratorImpl);
     });
-  });
 
-  beforeEach(inject(function(_$injector_) {
-    $injector = _$injector_;
-  }));
+    inject(function(_$injector_) {
+      $injector = _$injector_;
+    });
+  });
 
   it('should initialize the authentication service', function(){
     var target = $injector.get('navigationOrchestrator');
@@ -34,19 +33,19 @@ describe('navigation orchestrator factory', function(){
 describe('navigation orchestrator', function(){
   'use strict';
 
-  beforeEach(module('webApp', 'stateMock'));
-
   var target;
 
   var $rootScope;
   var $state;
   var states;
+  var stateChangeService;
   var authenticationServiceConstants;
   var navigationOrchestratorConstants;
   var authenticationService;
   var uiRouterConstants;
 
   beforeEach(function() {
+    stateChangeService = jasmine.createSpyObj('stateChangeService', [ 'isPermitted' ]);
     authenticationService = {
       currentUser: {
         authenticated: false,
@@ -54,22 +53,21 @@ describe('navigation orchestrator', function(){
       }
     };
 
+    module('webApp', 'stateMock');
     module(function($provide) {
       $provide.value('authenticationService', authenticationService);
     });
-  });
 
-  beforeEach(inject(function($injector) {
-    target = $injector.get('navigationOrchestratorImpl');
-    $rootScope = $injector.get('$rootScope');
-    $state = $injector.get('$state');
-    states = $injector.get('states');
-    authenticationServiceConstants = $injector.get('authenticationServiceConstants');
-    navigationOrchestratorConstants = $injector.get('navigationOrchestratorConstants');
-    uiRouterConstants = $injector.get('uiRouterConstants');
-  }));
+    inject(function($injector) {
+      target = $injector.get('navigationOrchestratorImpl');
+      $rootScope = $injector.get('$rootScope');
+      $state = $injector.get('$state');
+      states = $injector.get('states');
+      authenticationServiceConstants = $injector.get('authenticationServiceConstants');
+      navigationOrchestratorConstants = $injector.get('navigationOrchestratorConstants');
+      uiRouterConstants = $injector.get('uiRouterConstants');
+    });
 
-  beforeEach(function(){
     $state.current = {
       name: 'unknown.state'
     };

@@ -12,7 +12,7 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
 
     var getAuthorization = function(toState) {
       return authorizationService.authorize(
-        toState.data.access.loginRequired,
+        toState.data.access.requireAuthenticated,
         toState.data.access.roles,
         toState.data.access.fwRoleCheckType);
     };
@@ -29,7 +29,7 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
       if (redirectAfterLogin && toState.name !== states.signIn.name) {
         redirectAfterLogin = false;
 
-        if(toState.data !== undefined && toState.data.access !== undefined && toState.data.access.loginRequired === true) {
+        if(toState.data !== undefined && toState.data.access !== undefined && toState.data.access.requireAuthenticated === true) {
           event.preventDefault();
           $state.go(cachedToState, cachedToParams, { location: 'replace' });
         }

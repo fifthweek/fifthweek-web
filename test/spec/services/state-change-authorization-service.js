@@ -100,7 +100,7 @@ describe('state change authorization service', function () {
     });
 
     it('should not alter the path if the user is authorized', function(){
-      stateData.access.loginRequired = true;
+      stateData.access.requireAuthenticated = true;
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.authorized;
       };
@@ -109,7 +109,7 @@ describe('state change authorization service', function () {
     });
 
     it('should redirect to the sign in page if login is required and then return to the original page', function(){
-      stateData.access.loginRequired = true;
+      stateData.access.requireAuthenticated = true;
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.loginRequired;
       };
@@ -125,7 +125,7 @@ describe('state change authorization service', function () {
 
     it('should redirect to the not authorized page if the user is not authorized', function(){
 
-      stateData.access.loginRequired = true;
+      stateData.access.requireAuthenticated = true;
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.notAuthorized;
       };
@@ -136,7 +136,7 @@ describe('state change authorization service', function () {
 
     it('should not redirect if the user navigates to a non-secure page after initial redirection to sign in page', function(){
 
-      stateData.access.loginRequired = true;
+      stateData.access.requireAuthenticated = true;
       authorizationService.authorize = function(){
         return authorizationServiceConstants.authorizationResult.loginRequired;
       };
@@ -147,7 +147,7 @@ describe('state change authorization service', function () {
 
       $state.verifyNoOutstandingTransitions();
 
-      stateData.access.loginRequired = false;
+      stateData.access.requireAuthenticated = false;
 
       target.redirectAwayIfRequired(event, toState);
     });

@@ -8,7 +8,7 @@ angular.module('webApp')
     return navigationOrchestratorImpl;
   })
   .factory('navigationOrchestratorImpl',
-  function($rootScope, authenticationService, authenticationServiceConstants, $state, states, navigationOrchestratorConstants, uiRouterConstants) {
+  function($rootScope, stateChangeService, authenticationService, authenticationServiceConstants, $state, states, navigationOrchestratorConstants, uiRouterConstants) {
     'use strict';
 
     var navigationMap =

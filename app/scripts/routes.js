@@ -112,7 +112,7 @@ angular.module('routes', ['ui.router'])
           pageTitle: 'My Account',
           headTitle: ' - ' + 'My Account',
           access: {
-            loginRequired: true
+            requireAuthenticated: true
           }
         }
       })
@@ -125,7 +125,7 @@ angular.module('routes', ['ui.router'])
           pageTitle: 'Dashboard',
           headTitle: ' - ' + 'Dashboard',
           access: {
-            loginRequired: true
+            requireAuthenticated: true
           }
         }
       })
@@ -154,7 +154,7 @@ angular.module('routes', ['ui.router'])
           pageTitle: 'Creators',
           headTitle: ' - ' + 'Creators',
           access: {
-            loginRequired: true
+            requireAuthenticated: true
           }
         }
       })
@@ -179,7 +179,7 @@ angular.module('routes', ['ui.router'])
           disableSidebar: true,
           bodyClass: 'page-landing',
           access: {
-            loginRequired: false // Disable the inherited access requirement.
+            requireAuthenticated: false // Disable the inherited access requirement.
           }
         }
       })
