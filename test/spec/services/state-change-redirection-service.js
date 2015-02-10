@@ -25,6 +25,12 @@ describe('state change redirection service', function(){
     $state.verifyNoOutstandingTransitions();
   });
 
+  it('should pass access permission', function() {
+    var result = target.isPermitted();
+
+    expect(result).toBe(true);
+  });
+
   it('should not do anything if the redirectTo field is not present', function(){
 
     spyOn(event, 'preventDefault');
