@@ -104,7 +104,7 @@ angular.module('webApp')
           analytics.setUsername(service.currentUser.userId);
         })
         .then(function() {
-          return aggregateUserStateService.synchronizeWithServer(service.currentUser.userId);
+          return aggregateUserStateService.updateFromServer(service.currentUser.userId);
         });
     };
 
@@ -134,7 +134,7 @@ angular.module('webApp')
     service.signOut = function() {
       clearCurrentUserDetails();
 
-      return aggregateUserStateService.synchronizeWithServer();
+      return aggregateUserStateService.updateFromServer();
     };
 
     var extractAuthenticationDataFromResponse = function (response){

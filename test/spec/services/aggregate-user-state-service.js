@@ -86,7 +86,7 @@ describe('aggregate user state service', function() {
   describe('when synchronizing', function() {
 
     it('should retain new user state if existing state is empty', function() {
-      target.synchronizeDelta(newUserState);
+      target.updateFromDelta(newUserState);
       $rootScope.$apply();
 
       expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, newUserState);
@@ -102,7 +102,7 @@ describe('aggregate user state service', function() {
       localStorageService.get.and.returnValue(existing);
       target.initialize();
 
-      target.synchronizeDelta(delta);
+      target.updateFromDelta(delta);
       $rootScope.$apply();
 
       expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, expected);
@@ -113,11 +113,11 @@ describe('aggregate user state service', function() {
     it('should raise and event', function() {
       spyOn($rootScope, '$broadcast');
 
-      target.synchronizeDelta(newUserState);
+      target.updateFromDelta(newUserState);
       $rootScope.$apply();
 
       expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.synchronizedEvent, newUserState);
+        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.updatedEvent, newUserState);
     });
   });
 
@@ -127,7 +127,7 @@ describe('aggregate user state service', function() {
 
       userStateStub.getUserState.and.returnValue($q.when({ data: newUserState }));
 
-      target.synchronizeWithServer(userId);
+      target.updateFromServer(userId);
       $rootScope.$apply();
 
       expect(userStateStub.getUserState).toHaveBeenCalledWith(userId);
@@ -139,7 +139,7 @@ describe('aggregate user state service', function() {
       userStateStub.getUserState.and.returnValue($q.reject(error));
 
       var result = null;
-      target.synchronizeWithServer(userId).catch(function(error) {
+      target.updateFromServer(userId).catch(function(error) {
         result = error;
       });
       $rootScope.$apply();
@@ -153,11 +153,11 @@ describe('aggregate user state service', function() {
       userStateStub.getUserState.and.returnValue($q.when({ data: newUserState }));
       spyOn($rootScope, '$broadcast');
 
-      target.synchronizeWithServer(userId);
+      target.updateFromServer(userId);
       $rootScope.$apply();
 
       expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.synchronizedEvent, newUserState);
+        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.updatedEvent, newUserState);
     });
   });
 
@@ -167,7 +167,7 @@ describe('aggregate user state service', function() {
 
       userStateStub.getVisitorState.and.returnValue($q.when({ data: newUserState }));
 
-      target.synchronizeWithServer();
+      target.updateFromServer();
       $rootScope.$apply();
 
       expect(userStateStub.getVisitorState).toHaveBeenCalled();
@@ -179,7 +179,7 @@ describe('aggregate user state service', function() {
       userStateStub.getVisitorState.and.returnValue($q.reject(error));
 
       var result = null;
-      target.synchronizeWithServer().catch(function(error) {
+      target.updateFromServer().catch(function(error) {
         result = error;
       });
       $rootScope.$apply();
@@ -193,11 +193,11 @@ describe('aggregate user state service', function() {
       userStateStub.getVisitorState.and.returnValue($q.when({ data: newUserState }));
       spyOn($rootScope, '$broadcast');
 
-      target.synchronizeWithServer();
+      target.updateFromServer();
       $rootScope.$apply();
 
       expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.synchronizedEvent, newUserState);
+        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.updatedEvent, newUserState);
     });
   });
 

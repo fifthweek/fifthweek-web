@@ -8,7 +8,15 @@ angular.module('webApp')
     return navigationOrchestratorImpl;
   })
   .factory('navigationOrchestratorImpl',
-  function($rootScope, navigationMap, stateChangeService, authenticationServiceConstants, $state, states, navigationOrchestratorConstants, uiRouterConstants) {
+  function(
+    $rootScope,
+    navigationMap,
+    stateChangeService,
+    authenticationServiceConstants,
+    aggregateUserStateServiceConstants,
+    navigationOrchestratorConstants,
+    uiRouterConstants,
+    $state) {
     'use strict';
 
     var primaryNavigation = [];
@@ -144,7 +152,15 @@ angular.module('webApp')
         setSelectedNavigationFromState(toState.name);
         updateNavigation();
       });
+
+      // We should really listen on some event raised by `stateChangeService` for this, as we're effectively
+      // monitoring changes to the behaviour of `stateChangeService.isPermitted`. However, these would just proxy the
+      // following events anyway, so it's far easier to just listen to these directly. Furthermore, given we use an
+      // aggregate state service, it's unlikely that many more state services will be added in future.
       $rootScope.$on(authenticationServiceConstants.currentUserChangedEvent, function() {
+        updateNavigation();
+      });
+      $rootScope.$on(aggregateUserStateServiceConstants.updatedEvent, function() {
         updateNavigation();
       });
 

@@ -26,7 +26,7 @@ angular.module('webApp')
 
     service.initialize = function() {
       synchronizeFromUserState(aggregateUserStateService.userState);
-      $rootScope.$on(aggregateUserStateServiceConstants.synchronizedEvent, function(event, userState) {
+      $rootScope.$on(aggregateUserStateServiceConstants.updatedEvent, function(event, userState) {
         synchronizeFromUserState(userState);
       });
     };
@@ -37,7 +37,7 @@ angular.module('webApp')
       }
 
       return subscriptionStub.postSubscription(subscriptionData).then(function(response) {
-        aggregateUserStateService.synchronizeDelta({
+        aggregateUserStateService.updateFromDelta({
           creatorStatus: {
             subscriptionId: response.data
           }

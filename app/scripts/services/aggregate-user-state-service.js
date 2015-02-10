@@ -1,6 +1,6 @@
 angular.module('webApp')
   .constant('aggregateUserStateServiceConstants', {
-    synchronizedEvent: 'aggregateUserStateServiceSynchronized'
+    updatedEvent: 'aggregateUserStateServiceUpdated'
   })
   .factory('aggregateUserStateService', function(aggregateUserStateServiceImpl) {
     'use strict';
@@ -14,11 +14,11 @@ angular.module('webApp')
     var localStorageName = 'aggregateUserStateService';
 
     var broadcastSynchronized = function(){
-      $rootScope.$broadcast(aggregateUserStateServiceConstants.synchronizedEvent, service.userState);
+      $rootScope.$broadcast(aggregateUserStateServiceConstants.updatedEvent, service.userState);
     };
 
     var handleServiceResponse = function(response) {
-      service.synchronizeDelta(response.data);
+      service.updateFromDelta(response.data);
     };
 
     var service = {};
@@ -32,7 +32,7 @@ angular.module('webApp')
       }
     };
 
-    service.synchronizeDelta = function(userStateDelta) {
+    service.updateFromDelta = function(userStateDelta) {
       if (service.userState) {
         // Do not mutate state, as other services may have reference to this object (they should also never mutate it!).
         var newUserState = _.cloneDeep(service.userState);
@@ -47,7 +47,7 @@ angular.module('webApp')
       broadcastSynchronized();
     };
 
-    service.synchronizeWithServer = function(userId) {
+    service.updateFromServer = function(userId) {
       if (userId) {
         return userStateStub.getUserState(userId).then(handleServiceResponse);
       }

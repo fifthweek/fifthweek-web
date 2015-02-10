@@ -61,7 +61,7 @@ describe('authentication service', function() {
   beforeEach(function() {
     localStorageService = {};
     analytics = jasmine.createSpyObj('analytics', ['setUsername']);
-    aggregateUserStateService = jasmine.createSpyObj('aggregateUserStateService', ['synchronizeWithServer']);
+    aggregateUserStateService = jasmine.createSpyObj('aggregateUserStateService', ['updateFromServer']);
 
     module('webApp', 'stateMock');
     module(function($provide) {
@@ -80,7 +80,7 @@ describe('authentication service', function() {
       target = $injector.get('authenticationServiceImpl');
     });
 
-    aggregateUserStateService.synchronizeWithServer.and.returnValue($q.when());
+    aggregateUserStateService.updateFromServer.and.returnValue($q.when());
   });
 
   afterEach(function() {
@@ -467,7 +467,7 @@ describe('authentication service', function() {
         $httpBackend.flush();
         $rootScope.$apply();
 
-        expect(aggregateUserStateService.synchronizeWithServer.calls.mostRecent().args).toEqual([userId]);
+        expect(aggregateUserStateService.updateFromServer.calls.mostRecent().args).toEqual([userId]);
       });
 
       it('should raise a current user changed event', function () {
@@ -494,7 +494,7 @@ describe('authentication service', function() {
         target.signOut();
         $rootScope.$apply();
 
-        expect(aggregateUserStateService.synchronizeWithServer.calls.mostRecent().args).toEqual([ ]);
+        expect(aggregateUserStateService.updateFromServer.calls.mostRecent().args).toEqual([ ]);
 
         executeSignOutExpectations();
       });

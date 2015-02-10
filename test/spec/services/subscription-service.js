@@ -46,7 +46,7 @@ describe('subscription service', function() {
 
   beforeEach(function() {
     subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['postSubscription', 'putSubscription']);
-    aggregateUserStateService = jasmine.createSpyObj('aggregateUserStateService', ['synchronizeDelta']);
+    aggregateUserStateService = jasmine.createSpyObj('aggregateUserStateService', ['updateFromDelta']);
 
     module('webApp');
     module(function($provide) {
@@ -90,7 +90,7 @@ describe('subscription service', function() {
   it('should synchronize with user state synchronization', function() {
     target.initialize();
 
-    $rootScope.$broadcast(aggregateUserStateServiceConstants.synchronizedEvent, {
+    $rootScope.$broadcast(aggregateUserStateServiceConstants.updatedEvent, {
       creatorStatus: {
         subscriptionId: subscriptionId
       }
@@ -98,7 +98,7 @@ describe('subscription service', function() {
     expect(target.subscriptionId).toBe(subscriptionId);
     expect(target.hasSubscription).toBe(true);
 
-    $rootScope.$broadcast(aggregateUserStateServiceConstants.synchronizedEvent, { });
+    $rootScope.$broadcast(aggregateUserStateServiceConstants.updatedEvent, { });
     expect(target.subscriptionId).toBe(null);
     expect(target.hasSubscription).toBe(false);
   });
@@ -128,7 +128,7 @@ describe('subscription service', function() {
       $rootScope.$apply();
 
       expect(subscriptionStub.postSubscription).toHaveBeenCalledWith(subscriptionData);
-      expect(aggregateUserStateService.synchronizeDelta).toHaveBeenCalledWith({
+      expect(aggregateUserStateService.updateFromDelta).toHaveBeenCalledWith({
         creatorStatus: {
           subscriptionId: subscriptionId
         }
@@ -149,7 +149,7 @@ describe('subscription service', function() {
 
       expect(result).toBe(error);
       expect(subscriptionStub.postSubscription).toHaveBeenCalledWith(subscriptionData);
-      expect(aggregateUserStateService.synchronizeDelta).not.toHaveBeenCalled();
+      expect(aggregateUserStateService.updateFromDelta).not.toHaveBeenCalled();
     });
   });
 });
