@@ -1,13 +1,19 @@
 /// <reference path='../angular.module('webApp')js' />
 
-angular.module('webApp').constant('authenticationServiceConstants', {
-  currentUserChangedEvent: 'currentUserChanged',
-  roles: {
-    creator: 'creator',
-    administrator: 'administrator',
-    psychic: 'psychic'
-  }
-}).factory('authenticationService',
+angular.module('webApp')
+  .constant('authenticationServiceConstants', {
+    currentUserChangedEvent: 'currentUserChanged',
+    roles: {
+      creator: 'creator',
+      administrator: 'administrator',
+      psychic: 'psychic'
+    }
+  })
+  .factory('authenticationService', function(authenticationServiceImpl){
+    authenticationServiceImpl.initialize();
+    return authenticationServiceImpl;
+  })
+  .factory('authenticationServiceImpl',
   function(
     $http,
     $q,
@@ -59,6 +65,7 @@ angular.module('webApp').constant('authenticationServiceConstants', {
       var storedUser = localStorageService.get(localStorageName);
       if (storedUser) {
         service.currentUser = storedUser;
+        broadcastCurrentUserChangedEvent();
       } else {
         clearCurrentUserDetails();
       }
