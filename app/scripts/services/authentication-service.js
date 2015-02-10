@@ -10,6 +10,7 @@ angular.module('webApp')
     }
   })
   .factory('authenticationService', function(authenticationServiceImpl){
+    'use strict';
     authenticationServiceImpl.initialize();
     return authenticationServiceImpl;
   })

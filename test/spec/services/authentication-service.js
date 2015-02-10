@@ -22,13 +22,13 @@ describe('authentication service factory', function(){
     var target = $injector.get('authenticationService');
 
     expect(target.initialize).toHaveBeenCalled();
-  })
+  });
 
   it('should return the authentication service', function(){
     var target = $injector.get('authenticationService');
 
     expect(target).toBe(authenticationServiceImpl);
-  })
+  });
 });
 
 describe('authentication service', function() {
