@@ -10,6 +10,7 @@ describe('subscription service', function() {
   var subscriptionStub;
   var aggregateUserStateService;
   var aggregateUserStateServiceConstants;
+  var subscriptionServiceConstants;
   var target;
 
   beforeEach(function() {
@@ -26,6 +27,7 @@ describe('subscription service', function() {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
       aggregateUserStateServiceConstants = $injector.get('aggregateUserStateServiceConstants');
+      subscriptionServiceConstants = $injector.get('subscriptionServiceConstants');
       target = $injector.get('subscriptionService');
     });
 
@@ -58,7 +60,7 @@ describe('subscription service', function() {
   it('should synchronize with user state synchronization', function() {
     target.initialize();
 
-    $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateSynchronizedEvent, {
+    $rootScope.$broadcast(aggregateUserStateServiceConstants.synchronizedEvent, {
       creatorStatus: {
         subscriptionId: subscriptionId
       }
@@ -66,9 +68,23 @@ describe('subscription service', function() {
     expect(target.subscriptionId).toBe(subscriptionId);
     expect(target.hasSubscription).toBe(true);
 
-    $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateSynchronizedEvent, { });
+    $rootScope.$broadcast(aggregateUserStateServiceConstants.synchronizedEvent, { });
     expect(target.subscriptionId).toBe(null);
     expect(target.hasSubscription).toBe(false);
+  });
+
+  it('should broadcast an event after synchronizing when subscription not present', function() {
+    spyOn($rootScope, '$broadcast');
+    aggregateUserStateService.userState = { };
+    target.initialize();
+    expect($rootScope.$broadcast).toHaveBeenCalledWith(subscriptionServiceConstants.synchronizedEvent, null);
+  });
+
+  it('should broadcast an event after synchronizing when subscription present', function() {
+    spyOn($rootScope, '$broadcast');
+    aggregateUserStateService.userState = { creatorStatus: { subscriptionId: subscriptionId } };
+    target.initialize();
+    expect($rootScope.$broadcast).toHaveBeenCalledWith(subscriptionServiceConstants.synchronizedEvent, subscriptionId);
   });
 
   describe('when creating first subscription', function() {

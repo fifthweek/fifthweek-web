@@ -1,8 +1,19 @@
-angular.module('webApp').factory('subscriptionService',
-  function($rootScope, $q, subscriptionStub, aggregateUserStateService, aggregateUserStateServiceConstants) {
+angular.module('webApp').constant('subscriptionServiceConstants', {
+  synchronizedEvent: 'subscriptionServiceSynchronized'
+  }).factory('subscriptionService',
+  function($rootScope, $q, subscriptionServiceConstants, subscriptionStub, aggregateUserStateService, aggregateUserStateServiceConstants) {
     'use strict';
 
     var subscriptionId = null;
+
+    var broadcastSynchronized = function(){
+      $rootScope.$broadcast(subscriptionServiceConstants.synchronizedEvent, subscriptionId);
+    };
+
+    var synchronize = function(existingSubscriptionId) {
+      subscriptionId = existingSubscriptionId;
+      broadcastSynchronized();
+    };
 
     var synchronizeFromUserState = function(userState) {
       if (userState && userState.creatorStatus) {
@@ -13,11 +24,6 @@ angular.module('webApp').factory('subscriptionService',
       }
     };
 
-    var synchronize = function(existingSubscriptionId) {
-      subscriptionId = existingSubscriptionId;
-      // broadcast 'on subscription changed'
-    };
-
     var service = Object.create({}, {
       subscriptionId: { get: function () { return subscriptionId; }},
       hasSubscription: { get: function () { return service.subscriptionId !== null; }}
@@ -25,7 +31,7 @@ angular.module('webApp').factory('subscriptionService',
 
     service.initialize = function() {
       synchronizeFromUserState(aggregateUserStateService.userState);
-      $rootScope.$on(aggregateUserStateServiceConstants.userStateSynchronizedEvent, function(event, userState) {
+      $rootScope.$on(aggregateUserStateServiceConstants.synchronizedEvent, function(event, userState) {
         synchronizeFromUserState(userState);
       });
     };

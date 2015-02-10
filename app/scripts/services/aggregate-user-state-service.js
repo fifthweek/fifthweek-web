@@ -1,20 +1,20 @@
 angular.module('webApp')
   .constant('aggregateUserStateServiceConstants', {
-    userStateSynchronizedEvent: 'userStateSynchronized'
+    synchronizedEvent: 'aggregateUserStateServiceSynchronized'
   }).factory('aggregateUserStateService',
   function($rootScope, localStorageService, aggregateUserStateServiceConstants, userStateStub) {
   'use strict';
 
     var localStorageName = 'aggregateUserStateService';
 
-    var broadcastUserStateSynchronized = function(){
-      $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateSynchronizedEvent, service.userState);
+    var broadcastSynchronized = function(){
+      $rootScope.$broadcast(aggregateUserStateServiceConstants.synchronizedEvent, service.userState);
     };
 
     var handleServiceResponse = function(response) {
       service.userState = response.data;
       localStorageService.set(localStorageName, service.userState);
-      broadcastUserStateSynchronized();
+      broadcastSynchronized();
     };
 
     var service = {};

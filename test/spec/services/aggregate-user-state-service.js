@@ -87,7 +87,7 @@ describe('aggregate user state service', function() {
       $rootScope.$apply();
 
       expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.userStateSynchronizedEvent, newUserState);
+        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.synchronizedEvent, newUserState);
     });
   });
 
@@ -127,7 +127,7 @@ describe('aggregate user state service', function() {
       $rootScope.$apply();
 
       expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.userStateSynchronizedEvent, newUserState);
+        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.synchronizedEvent, newUserState);
     });
   });
 
