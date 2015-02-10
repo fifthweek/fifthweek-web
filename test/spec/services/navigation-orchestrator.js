@@ -1,3 +1,36 @@
+describe('navigation orchestrator factory', function(){
+  'use strict';
+
+  beforeEach(module('webApp'));
+
+  var navigationOrchestratorImpl;
+  var $injector;
+
+  beforeEach(function(){
+    navigationOrchestratorImpl = jasmine.createSpyObj('navigationOrchestratorImpl', ['initialize']);
+
+    module(function($provide) {
+      $provide.value('navigationOrchestratorImpl', navigationOrchestratorImpl);
+    });
+  });
+
+  beforeEach(inject(function(_$injector_) {
+    $injector = _$injector_;
+  }));
+
+  it('should initialize the authentication service', function(){
+    var target = $injector.get('navigationOrchestrator');
+
+    expect(target.initialize).toHaveBeenCalled();
+  });
+
+  it('should return the authentication service', function(){
+    var target = $injector.get('navigationOrchestrator');
+
+    expect(target).toBe(navigationOrchestratorImpl);
+  });
+});
+
 describe('navigation orchestrator', function(){
   'use strict';
 
@@ -27,7 +60,7 @@ describe('navigation orchestrator', function(){
   });
 
   beforeEach(inject(function($injector) {
-    target = $injector.get('navigationOrchestrator');
+    target = $injector.get('navigationOrchestratorImpl');
     $rootScope = $injector.get('$rootScope');
     $state = $injector.get('$state');
     states = $injector.get('states');

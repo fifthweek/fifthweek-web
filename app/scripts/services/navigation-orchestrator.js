@@ -1,6 +1,13 @@
-angular.module('webApp').constant('navigationOrchestratorConstants', {
-  navigationChangedEvent: 'navigationChanged'
-}).factory('navigationOrchestrator',
+angular.module('webApp')
+  .constant('navigationOrchestratorConstants', {
+    navigationChangedEvent: 'navigationChanged'
+  })
+  .factory('navigationOrchestrator', function(navigationOrchestratorImpl){
+    'use strict';
+    navigationOrchestratorImpl.initialize();
+    return navigationOrchestratorImpl;
+  })
+  .factory('navigationOrchestratorImpl',
   function($rootScope, authenticationService, authenticationServiceConstants, $state, states, navigationOrchestratorConstants, uiRouterConstants) {
     'use strict';
 
