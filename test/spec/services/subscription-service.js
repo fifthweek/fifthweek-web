@@ -42,12 +42,11 @@ describe('subscription service', function() {
   var subscriptionStub;
   var aggregateUserStateService;
   var aggregateUserStateServiceConstants;
-  var subscriptionServiceConstants;
   var target;
 
   beforeEach(function() {
     subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['postSubscription', 'putSubscription']);
-    aggregateUserStateService = {};
+    aggregateUserStateService = jasmine.createSpyObj('aggregateUserStateService', ['synchronizeDelta']);
 
     module('webApp');
     module(function($provide) {
@@ -59,7 +58,6 @@ describe('subscription service', function() {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
       aggregateUserStateServiceConstants = $injector.get('aggregateUserStateServiceConstants');
-      subscriptionServiceConstants = $injector.get('subscriptionServiceConstants');
       target = $injector.get('subscriptionServiceImpl');
     });
 
@@ -105,20 +103,6 @@ describe('subscription service', function() {
     expect(target.hasSubscription).toBe(false);
   });
 
-  it('should broadcast an event after synchronizing when subscription not present', function() {
-    spyOn($rootScope, '$broadcast');
-    aggregateUserStateService.userState = { };
-    target.initialize();
-    expect($rootScope.$broadcast).toHaveBeenCalledWith(subscriptionServiceConstants.synchronizedEvent, null);
-  });
-
-  it('should broadcast an event after synchronizing when subscription present', function() {
-    spyOn($rootScope, '$broadcast');
-    aggregateUserStateService.userState = { creatorStatus: { subscriptionId: subscriptionId } };
-    target.initialize();
-    expect($rootScope.$broadcast).toHaveBeenCalledWith(subscriptionServiceConstants.synchronizedEvent, subscriptionId);
-  });
-
   describe('when creating first subscription', function() {
 
     it('should require user to not have a subscription', function() {
@@ -144,8 +128,11 @@ describe('subscription service', function() {
       $rootScope.$apply();
 
       expect(subscriptionStub.postSubscription).toHaveBeenCalledWith(subscriptionData);
-      expect(target.subscriptionId).toBe(subscriptionId);
-      expect(target.hasSubscription).toBe(true);
+      expect(aggregateUserStateService.synchronizeDelta).toHaveBeenCalledWith({
+        creatorStatus: {
+          subscriptionId: subscriptionId
+        }
+      });
     });
 
     it('should propagate errors', function() {
@@ -162,8 +149,7 @@ describe('subscription service', function() {
 
       expect(result).toBe(error);
       expect(subscriptionStub.postSubscription).toHaveBeenCalledWith(subscriptionData);
-      expect(target.subscriptionId).toBe(null);
-      expect(target.hasSubscription).toBe(false);
+      expect(aggregateUserStateService.synchronizeDelta).not.toHaveBeenCalled();
     });
   });
 });

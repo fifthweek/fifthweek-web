@@ -18,7 +18,7 @@ angular.module('webApp')
     };
 
     var handleServiceResponse = function(response) {
-      service.synchronize(response.data);
+      service.synchronizeDelta(response.data);
     };
 
     var service = {};
@@ -32,8 +32,17 @@ angular.module('webApp')
       }
     };
 
-    service.synchronize = function(newUserState) {
-      service.userState = newUserState;
+    service.synchronizeDelta = function(userStateDelta) {
+      if (service.userState) {
+        // Do not mutate state, as other services may have reference to this object (they should also never mutate it!).
+        var newUserState = _.cloneDeep(service.userState);
+        _.merge(newUserState, userStateDelta);
+        service.userState = newUserState;
+      }
+      else {
+        service.userState = userStateDelta;
+      }
+
       localStorageService.set(localStorageName, service.userState);
       broadcastSynchronized();
     };

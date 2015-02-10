@@ -85,18 +85,35 @@ describe('aggregate user state service', function() {
 
   describe('when synchronizing', function() {
 
-    it('should retain refreshed user state', function() {
-      target.synchronize(newUserState);
+    it('should retain new user state if existing state is empty', function() {
+      target.synchronizeDelta(newUserState);
       $rootScope.$apply();
 
       expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, newUserState);
       expect(target.userState).toBe(newUserState);
     });
 
+    it('should merge new user state if existing state exists', function() {
+      var existing = { some: { complex: 'object', unchanged: true }};
+      var existingCopy = { some: { complex: 'object', unchanged: true }};
+      var delta = { some: { complex: 'foo'}, bar: 5};
+      var expected = { some: { complex: 'foo', unchanged: true }, bar:5};
+
+      localStorageService.get.and.returnValue(existing);
+      target.initialize();
+
+      target.synchronizeDelta(delta);
+      $rootScope.$apply();
+
+      expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, expected);
+      expect(target.userState).toEqual(expected);
+      expect(existing).toEqual(existingCopy); // Ensure state not mutated internally.
+    });
+
     it('should raise and event', function() {
       spyOn($rootScope, '$broadcast');
 
-      target.synchronize(newUserState);
+      target.synchronizeDelta(newUserState);
       $rootScope.$apply();
 
       expect($rootScope.$broadcast)
