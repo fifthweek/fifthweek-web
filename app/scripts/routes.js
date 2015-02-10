@@ -83,7 +83,10 @@ angular.module('routes', ['ui.router'])
         data: {
           pageTitle: 'Home',
           disableSidebar: true,
-          bodyClass: 'page-home'
+          bodyClass: 'page-home',
+          access: {
+            requireUnauthenticated: true
+          }
         }
       })
       .state(states.signIn.name, {
@@ -92,7 +95,10 @@ angular.module('routes', ['ui.router'])
         controller: 'SignInCtrl',
         data : {
           pageTitle: 'Sign In',
-          headTitle: ' - ' + 'Sign In'
+          headTitle: ' - ' + 'Sign In',
+          access: {
+            requireUnauthenticated: true
+          }
         }
       })
       .state(states.signOut.name, {
@@ -101,7 +107,10 @@ angular.module('routes', ['ui.router'])
         controller: 'SignOutCtrl',
         data : {
           pageTitle: 'Sign Out',
-          headTitle: ' - ' + 'Sign Out'
+          headTitle: ' - ' + 'Sign Out',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.account.name, {
@@ -134,7 +143,10 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'views/dashboard/demo.html',
         data : {
           pageTitle: 'Quick Demo',
-          headTitle: ' - ' + 'Demo'
+          headTitle: ' - ' + 'Demo',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.dashboard.feedback.name, {
@@ -142,7 +154,10 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'views/dashboard/feedback.html',
         data : {
           pageTitle: 'Provide Feedback',
-          headTitle: ' - ' + 'Feedback'
+          headTitle: ' - ' + 'Feedback',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.creators.name, {
@@ -165,7 +180,10 @@ angular.module('routes', ['ui.router'])
         requireSubscription: false,
         data : {
           pageTitle: 'Create Your Subscription',
-          headTitle: ' -' + ' Create Your Subscription'
+          headTitle: ' -' + ' Create Your Subscription',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.creators.landingPage.name, {
@@ -189,7 +207,10 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: 'Compose',
-          headTitle: ' - ' + 'Compose'
+          headTitle: ' - ' + 'Compose',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.creators.compose.note.name, {
@@ -199,7 +220,10 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Note',
-          headTitle: ' -' + ' Note'
+          headTitle: ' -' + ' Note',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.creators.compose.image.name, {
@@ -208,7 +232,10 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Image',
-          headTitle: ' -' + ' Image'
+          headTitle: ' -' + ' Image',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.creators.compose.file.name, {
@@ -226,7 +253,10 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: 'Customize',
-          headTitle: ' - ' + 'Customize'
+          headTitle: ' - ' + 'Customize',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.creators.customize.landingPage.name, {
@@ -245,7 +275,10 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: 'Collections',
-          headTitle: ' - ' + 'Collections'
+          headTitle: ' - ' + 'Collections',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.creators.customize.channels.name, {
@@ -254,7 +287,10 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: 'Channels',
-          headTitle: ' - ' + 'Channels'
+          headTitle: ' - ' + 'Channels',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.help.name, {

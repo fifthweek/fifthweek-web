@@ -2,10 +2,6 @@ angular.module('webApp').controller('HomeCtrl',
   function($scope, $state, calculatedStates, utilities, $modal, analytics, authenticationService, logService) {
   'use strict';
 
-  if(authenticationService.currentUser.authenticated === true){
-    $state.go(calculatedStates.getDefaultState());
-  }
-
   $scope.isSubmitting = false;
   $scope.submissionSucceeded = false;
   $scope.message = '';

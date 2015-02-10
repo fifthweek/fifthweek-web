@@ -40,165 +40,140 @@ describe('home controller', function() {
       $controller = $injector.get('$controller');
       scope = $injector.get('$rootScope').$new();
       $state = $injector.get('$state');
+      target = $controller('HomeCtrl', { $scope: scope });
     });
-
-    // Satisfy the 'construction precondition' by default. There only needs to be
-    // one test to ensure appropriate behaviour when this condition is not met.
-    authenticationService.currentUser = { authenticated: false };
-
-    initializeTarget();
   });
 
-  // Split out since we have logic running in the constructor.
-  function initializeTarget() {
-    target = $controller('HomeCtrl', { $scope: scope });
-  }
+  it('should contain an openModal function', function(){
+    expect(scope.openModal).toBeDefined();
+  });
 
-  describe('when the user is already authenticated', function(){
-    it('should redirect to the dashboard page', function(){
-      authenticationService.currentUser = { authenticated: true };
+  it('should contain empty registration data on creation', function() {
+    expect(scope.registrationData.email).toBe('');
+    expect(scope.registrationData.username).toBe('');
+    expect(scope.registrationData.password).toBe('');
+  });
+
+  describe('and submits the form', function() {
+
+    beforeEach(function() {
+      scope.registrationData = {
+        email: 'lawrence@fifthweek.com',
+        username: 'lawrence',
+        password: 'password'
+      };
+    });
+
+    it('should navigate to default state on successful registration', function() {
       calculatedStates.getDefaultState.and.returnValue(nextState);
+      authenticationService.registerUser.and.returnValue($q.when());
+      authenticationService.signIn.and.returnValue($q.when());
+
       $state.expectTransitionTo(nextState);
 
-      initializeTarget();
+      scope.register();
+      scope.$apply();
 
-      $state.verifyNoOutstandingTransitions();
-    });
-  });
-
-  describe('when the user is not authenticated', function(){
-
-    it('should contain an openModal function', function(){
-      expect(scope.openModal).toBeDefined();
+      expect(scope.message).toContain('Signing in...');
+      expect(scope.submissionSucceeded).toBe(true);
     });
 
-    it('should contain empty registration data on creation', function() {
-      expect(scope.registrationData.email).toBe('');
-      expect(scope.registrationData.username).toBe('');
-      expect(scope.registrationData.password).toBe('');
+    it('should display an error message and log the error on unsuccessful registration', function() {
+      utilities.getFriendlyErrorMessage.and.returnValue(errorMessage);
+      authenticationService.registerUser = function() {
+        var deferred = $q.defer();
+        deferred.reject('Bad');
+        return deferred.promise;
+      };
+
+      analytics.eventTrack = function(){};
+
+      scope.register();
+      scope.$apply();
+
+      expect(logService.error).toHaveBeenCalled();
+      expect(utilities.getFriendlyErrorMessage).toHaveBeenCalled();
+      expect(scope.message).toEqual(errorMessage);
+      expect(scope.submissionSucceeded).toBe(false);
     });
 
-    describe('and submits the form', function() {
+    it('should track registration attempts before communicating with the authentication service', function() {
+      calculatedStates.getDefaultState.and.returnValue(nextState);
+      var callSequence = [];
 
-      beforeEach(function() {
-        scope.registrationData = {
-          email: 'lawrence@fifthweek.com',
-          username: 'lawrence',
-          password: 'password'
-        };
-      });
+      authenticationService.signIn.and.returnValue($q.when());
+      analytics.eventTrack = function(key, properties){
+        callSequence.push(['analytics.eventTrack', key, properties]);
+      };
+      analytics.setUserProperties = function(){
+        callSequence.push('analytics.setUserProperties');
+      };
+      authenticationService.registerUser = function() {
+        callSequence.push('authenticationService.registerUser');
+        return $q.when();
+      };
 
-      it('should navigate to default state on successful registration', function() {
-        calculatedStates.getDefaultState.and.returnValue(nextState);
-        authenticationService.registerUser.and.returnValue($q.when());
-        authenticationService.signIn.and.returnValue($q.when());
+      $state.expectTransitionTo(nextState);
 
-        $state.expectTransitionTo(nextState);
+      scope.register();
+      scope.$apply();
 
-        scope.register();
-        scope.$apply();
+      expect(callSequence).toEqual([
+        ['analytics.eventTrack', 'Registration submitted', 'Registration'],
+        'authenticationService.registerUser',
+        ['analytics.eventTrack', 'Registration succeeded', 'Registration']
+      ]);
+    });
 
-        expect(scope.message).toContain('Signing in...');
-        expect(scope.submissionSucceeded).toBe(true);
-      });
+    it('should track unsuccessful registrations', function() {
+      var callSequence = [];
+      authenticationService.signIn.and.returnValue($q.when());
+      analytics.eventTrack = function(key, properties){
+        callSequence.push(['analytics.eventTrack', key, properties]);
+      };
+      authenticationService.registerUser = function() {
+        callSequence.push('authenticationService.registerUser');
+        return $q.reject(new ApiError('bad'));
+      };
 
-      it('should display an error message and log the error on unsuccessful registration', function() {
-        utilities.getFriendlyErrorMessage.and.returnValue(errorMessage);
-        authenticationService.registerUser = function() {
-          var deferred = $q.defer();
-          deferred.reject('Bad');
-          return deferred.promise;
-        };
+      scope.register();
+      scope.$apply();
 
-        analytics.eventTrack = function(){};
+      expect(callSequence).toEqual([
+        ['analytics.eventTrack', 'Registration submitted', 'Registration'],
+        'authenticationService.registerUser',
+        ['analytics.eventTrack', 'Registration failed', 'Registration']
+      ]);
+    });
 
-        scope.register();
-        scope.$apply();
+    it('should track successful registrations', function() {
+      calculatedStates.getDefaultState.and.returnValue(nextState);
+      var callSequence = [];
 
-        expect(logService.error).toHaveBeenCalled();
-        expect(utilities.getFriendlyErrorMessage).toHaveBeenCalled();
-        expect(scope.message).toEqual(errorMessage);
-        expect(scope.submissionSucceeded).toBe(false);
-      });
+      authenticationService.signIn = function() {
+        return $q.when();
+      };
+      analytics.eventTrack = function(key, properties){
+        callSequence.push(['analytics.eventTrack', key, properties]);
+      };
+      analytics.setUserProperties = function(userProperties){
+        callSequence.push(['analytics.setUserProperties', userProperties]);
+      };
+      authenticationService.registerUser = function() {
+        callSequence.push('authenticationService.registerUser');
+        return $q.when();
+      };
 
-      it('should track registration attempts before communicating with the authentication service', function() {
-        calculatedStates.getDefaultState.and.returnValue(nextState);
-        var callSequence = [];
+      $state.expectTransitionTo(nextState);
 
-        authenticationService.signIn.and.returnValue($q.when());
-        analytics.eventTrack = function(key, properties){
-          callSequence.push(['analytics.eventTrack', key, properties]);
-        };
-        analytics.setUserProperties = function(){
-          callSequence.push('analytics.setUserProperties');
-        };
-        authenticationService.registerUser = function() {
-          callSequence.push('authenticationService.registerUser');
-          return $q.when();
-        };
+      scope.register();
+      scope.$apply();
 
-        $state.expectTransitionTo(nextState);
-
-        scope.register();
-        scope.$apply();
-
-        expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Registration submitted', 'Registration'],
-          'authenticationService.registerUser',
-          ['analytics.eventTrack', 'Registration succeeded', 'Registration']
-        ]);
-      });
-
-      it('should track unsuccessful registrations', function() {
-        var callSequence = [];
-        authenticationService.signIn.and.returnValue($q.when());
-        analytics.eventTrack = function(key, properties){
-          callSequence.push(['analytics.eventTrack', key, properties]);
-        };
-        authenticationService.registerUser = function() {
-          callSequence.push('authenticationService.registerUser');
-          return $q.reject(new ApiError('bad'));
-        };
-
-        scope.register();
-        scope.$apply();
-
-        expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Registration submitted', 'Registration'],
-          'authenticationService.registerUser',
-          ['analytics.eventTrack', 'Registration failed', 'Registration']
-        ]);
-      });
-
-      it('should track successful registrations', function() {
-        calculatedStates.getDefaultState.and.returnValue(nextState);
-        var callSequence = [];
-
-        authenticationService.signIn = function() {
-          return $q.when();
-        };
-        analytics.eventTrack = function(key, properties){
-          callSequence.push(['analytics.eventTrack', key, properties]);
-        };
-        analytics.setUserProperties = function(userProperties){
-          callSequence.push(['analytics.setUserProperties', userProperties]);
-        };
-        authenticationService.registerUser = function() {
-          callSequence.push('authenticationService.registerUser');
-          return $q.when();
-        };
-
-        $state.expectTransitionTo(nextState);
-
-        scope.register();
-        scope.$apply();
-
-        expect(callSequence).toEqual([
-          ['analytics.eventTrack', 'Registration submitted', 'Registration'],
-          'authenticationService.registerUser',
-          ['analytics.eventTrack', 'Registration succeeded', 'Registration']
-        ]);
-      });
+      expect(callSequence).toEqual([
+        ['analytics.eventTrack', 'Registration submitted', 'Registration'],
+        'authenticationService.registerUser',
+        ['analytics.eventTrack', 'Registration succeeded', 'Registration']
+      ]);
     });
   });
 });
