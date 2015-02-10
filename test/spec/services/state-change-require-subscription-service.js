@@ -36,33 +36,72 @@ describe('state change require subscription handler', function(){
     $state.verifyNoOutstandingTransitions();
   });
 
-  it('should not do anything if the "requireSubscription" field is not present', function(){
-    target.redirectAwayIfRequired(event, toState,  toParams);
+  describe('when determining access permission', function() {
 
-    expect(event.preventDefault).not.toHaveBeenCalled();
+    it('should pass if the "requireSubscription" field is not present', function () {
+      var result = target.isPermitted(toState);
+
+      expect(result).toBe(true);
+    });
+
+    it('should pass if the flag matches the service response', function () {
+      toState.requireSubscription = true;
+      subscriptionService.hasSubscription = true;
+
+      var result = target.isPermitted(toState);
+
+      expect(result).toBe(true);
+    });
+
+    it('should fail if the flag is true and service returns false', function () {
+      toState.requireSubscription = true;
+      subscriptionService.hasSubscription = false;
+
+      var result = target.isPermitted(toState);
+
+      expect(result).toBe(false);
+    });
+
+    it('should fail if the flag is false and service returns true', function () {
+      toState.requireSubscription = false;
+      subscriptionService.hasSubscription = true;
+
+      var result = target.isPermitted(toState);
+
+      expect(result).toBe(false);
+    });
   });
 
-  it('should redirect to the default state if the flag is true and service returns false', function(){
-    toState.requireSubscription = true;
-    subscriptionService.hasSubscription = false;
-    calculatedStates.getDefaultState.and.returnValue(nextState);
+  describe('when routing', function() {
 
-    $state.expectTransitionTo(nextState);
+    it('should not do anything if the "requireSubscription" field is not present', function () {
+      target.redirectAwayIfRequired(event, toState, toParams);
 
-    target.redirectAwayIfRequired(event, toState,  toParams);
+      expect(event.preventDefault).not.toHaveBeenCalled();
+    });
 
-    expect(event.preventDefault).toHaveBeenCalled();
-  });
+    it('should redirect to the default state if the flag is true and service returns false', function () {
+      toState.requireSubscription = true;
+      subscriptionService.hasSubscription = false;
+      calculatedStates.getDefaultState.and.returnValue(nextState);
 
-  it('should redirect to the default state if the flag is false and service returns true', function(){
-    toState.requireSubscription = false;
-    subscriptionService.hasSubscription = true;
-    calculatedStates.getDefaultState.and.returnValue(nextState);
+      $state.expectTransitionTo(nextState);
 
-    $state.expectTransitionTo(nextState);
+      target.redirectAwayIfRequired(event, toState, toParams);
 
-    target.redirectAwayIfRequired(event, toState,  toParams);
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
 
-    expect(event.preventDefault).toHaveBeenCalled();
+    it('should redirect to the default state if the flag is false and service returns true', function () {
+      toState.requireSubscription = false;
+      subscriptionService.hasSubscription = true;
+      calculatedStates.getDefaultState.and.returnValue(nextState);
+
+      $state.expectTransitionTo(nextState);
+
+      target.redirectAwayIfRequired(event, toState, toParams);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
   });
 });
