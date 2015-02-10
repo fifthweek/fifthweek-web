@@ -1,6 +1,6 @@
 /// <reference path='../angular.module('webApp')js' />
 
-angular.module('webApp').factory('stateChangeAuthorizationHandler',
+angular.module('webApp').factory('stateChangeAuthorizationService',
   function(authorizationService, authorizationServiceConstants, $state, states) {
     'use strict';
 
@@ -10,8 +10,20 @@ angular.module('webApp').factory('stateChangeAuthorizationHandler',
     var cachedToState;
     var cachedToParams;
 
-    service.handleStateChangeStart = function(event, toState, toParams/*, fromState, fromParams*/){
+    var getAuthorization = function(toState) {
+      return authorizationService.authorize(
+        toState.data.access.loginRequired,
+        toState.data.access.roles,
+        toState.data.access.fwRoleCheckType);
+    };
 
+    service.isPermitted = function(toState){
+      if (toState.data !== undefined && toState.data.access !== undefined) {
+        return getAuthorization(toState) === authorizationServiceConstants.authorizationResult.authorized;
+      }
+    };
+
+    service.redirectAwayIfRequired = function(event, toState, toParams){
       if (redirectAfterLogin && toState.name !== states.signIn.name) {
         redirectAfterLogin = false;
 
@@ -21,19 +33,16 @@ angular.module('webApp').factory('stateChangeAuthorizationHandler',
         }
       }
       else if (toState.data !== undefined && toState.data.access !== undefined) {
-        var authorised = authorizationService.authorize(
-          toState.data.access.loginRequired,
-          toState.data.access.roles,
-          toState.data.access.fwRoleCheckType);
+        var authorization = getAuthorization(toState);
 
-        if (authorised === authorizationServiceConstants.authorizationResult.loginRequired) {
+        if (authorization === authorizationServiceConstants.authorizationResult.loginRequired) {
           redirectAfterLogin = true;
           cachedToState = toState.name;
           cachedToParams =  toParams;
           event.preventDefault();
           $state.go(states.signIn.name);
         }
-        else if (authorised === authorizationServiceConstants.authorizationResult.notAuthorized) {
+        else if (authorization === authorizationServiceConstants.authorizationResult.notAuthorized) {
           event.preventDefault();
           $state.go(states.notAuthorized.name);
         }

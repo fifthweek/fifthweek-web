@@ -1,16 +1,53 @@
-describe('state change authorization handler', function () {
+describe('state change authorization service', function () {
   'use strict';
+
+  var toState;
+  var event;
+  var stateData;
+
+  var authorizationService;
+  var $rootScope;
+  var $state;
+  var states;
+  var authorizationServiceConstants;
+  var target;
+
+  beforeEach(function() {
+    authorizationService = {};
+    stateData = { access: { loginRequired: false } };
+    toState = { name: 'testState', data: stateData };
+    event = {
+      preventDefault: function(){}
+    };
+
+    module('webApp', 'stateMock');
+    module(function($provide) {
+      $provide.value('authorizationService', authorizationService);
+    });
+
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $state = $injector.get('$state');
+      states = $injector.get('states');
+      authorizationServiceConstants = $injector.get('authorizationServiceConstants');
+      target = $injector.get('stateChangeAuthorizationService');
+    });
+  });
+
+  afterEach(function(){
+    $state.verifyNoOutstandingTransitions();
+  });
 
   describe('when routing', function() {
 
     it('should not alter the path if the page has no access requirements', function(){
       toState.data = undefined;
-      stateChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+      target.redirectAwayIfRequired(event, toState);
     });
 
     it('should not alter the path if the page has empty access requirements', function(){
       stateData.access = undefined;
-      stateChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+      target.redirectAwayIfRequired(event, toState);
     });
 
     it('should not alter the path if the user is authorized', function(){
@@ -19,7 +56,7 @@ describe('state change authorization handler', function () {
         return authorizationServiceConstants.authorizationResult.authorized;
       };
 
-      stateChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+      target.redirectAwayIfRequired(event, toState);
     });
 
     it('should redirect to the sign in page if login is required and then return to the original page', function(){
@@ -29,12 +66,12 @@ describe('state change authorization handler', function () {
       };
 
       $state.expectTransitionTo(states.signIn.name);
-      stateChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+      target.redirectAwayIfRequired(event, toState);
 
       $state.verifyNoOutstandingTransitions();
       $state.expectTransitionTo(toState.name);
 
-      stateChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+      target.redirectAwayIfRequired(event, toState);
     });
 
     it('should redirect to the not authorized page if the user is not authorized', function(){
@@ -45,7 +82,7 @@ describe('state change authorization handler', function () {
       };
 
       $state.expectTransitionTo(states.notAuthorized.name);
-      stateChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+      target.redirectAwayIfRequired(event, toState);
     });
 
     it('should not redirect if the user navigates to a non-secure page after initial redirection to sign in page', function(){
@@ -57,57 +94,13 @@ describe('state change authorization handler', function () {
 
       $state.expectTransitionTo(states.signIn.name);
 
-      stateChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+      target.redirectAwayIfRequired(event, toState);
 
       $state.verifyNoOutstandingTransitions();
 
       stateData.access.loginRequired = false;
 
-      stateChangeAuthorizationHandler.handleStateChangeStart(event, toState);
+      target.redirectAwayIfRequired(event, toState);
     });
-
-    var toState;
-    var event;
-    var stateData;
-
-    beforeEach(function(){
-      stateData = { access: { loginRequired: false } };
-      toState = { name: 'testState', data: stateData };
-
-      event = {
-        preventDefault: function(){}
-      };
-
-    });
-  });
-
-  // load the controller's module
-  beforeEach(module('webApp', 'stateMock'));
-
-  var authorizationService;
-  var stateChangeAuthorizationHandler;
-  var $rootScope;
-  var $state;
-  var states;
-  var authorizationServiceConstants;
-
-  beforeEach(function() {
-    authorizationService = {};
-
-    module(function($provide) {
-      $provide.value('authorizationService', authorizationService);
-    });
-  });
-
-  beforeEach(inject(function($injector) {
-    stateChangeAuthorizationHandler = $injector.get('stateChangeAuthorizationHandler');
-    $rootScope = $injector.get('$rootScope');
-    $state = $injector.get('$state');
-    states = $injector.get('states');
-    authorizationServiceConstants = $injector.get('authorizationServiceConstants');
-  }));
-
-  afterEach(function(){
-    $state.verifyNoOutstandingTransitions();
   });
 });

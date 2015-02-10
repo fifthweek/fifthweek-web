@@ -28,7 +28,7 @@ describe('state change require subscription handler', function(){
 
     inject(function($injector) {
       $state = $injector.get('$state');
-      target = $injector.get('stateChangeRequireSubscriptionHandler');
+      target = $injector.get('stateChangeRequireSubscriptionService');
     });
   });
 
@@ -37,7 +37,7 @@ describe('state change require subscription handler', function(){
   });
 
   it('should not do anything if the "requireSubscription" field is not present', function(){
-    target.handleStateChangeStart(event, toState,  toParams);
+    target.redirectAwayIfRequired(event, toState,  toParams);
 
     expect(event.preventDefault).not.toHaveBeenCalled();
   });
@@ -49,7 +49,7 @@ describe('state change require subscription handler', function(){
 
     $state.expectTransitionTo(nextState);
 
-    target.handleStateChangeStart(event, toState,  toParams);
+    target.redirectAwayIfRequired(event, toState,  toParams);
 
     expect(event.preventDefault).toHaveBeenCalled();
   });
@@ -61,7 +61,7 @@ describe('state change require subscription handler', function(){
 
     $state.expectTransitionTo(nextState);
 
-    target.handleStateChangeStart(event, toState,  toParams);
+    target.redirectAwayIfRequired(event, toState,  toParams);
 
     expect(event.preventDefault).toHaveBeenCalled();
   });

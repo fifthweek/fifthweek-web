@@ -35,16 +35,9 @@
         bodyClass: 'page-empty'
       };
     })
-    .run(function($rootScope, authenticationService, navigationOrchestrator, stateChangeAuthorizationHandler, stateChangeRedirectionHandler, stateChangeRequireSubscriptionHandler, uiRouterConstants) {
-      // Order here is important: they are processed in reverse order.
+    .run(function($rootScope, uiRouterConstants, stateChangeService) {
       $rootScope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
-        stateChangeAuthorizationHandler.handleStateChangeStart(event, toState, toParams);
-      });
-      $rootScope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
-        stateChangeRedirectionHandler.handleStateChangeStart(event, toState, toParams);
-      });
-      $rootScope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
-        stateChangeRequireSubscriptionHandler.handleStateChangeStart(event, toState, toParams);
+        stateChangeService.redirectAwayIfRequired(event, toState, toParams);
       });
     }).run(function ($rootScope, $state, $stateParams) {
       //global page titles
