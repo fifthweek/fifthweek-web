@@ -57,7 +57,7 @@ describe('aggregate user state service', function() {
 
       userStateStub.getUserState.and.returnValue($q.when({ data: newUserState }));
 
-      target.refreshUserState(userId);
+      target.synchronizeWithServer(userId);
       $rootScope.$apply();
 
       expect(userStateStub.getUserState).toHaveBeenCalledWith(userId);
@@ -69,7 +69,7 @@ describe('aggregate user state service', function() {
       userStateStub.getUserState.and.returnValue($q.reject(error));
 
       var result = null;
-      target.refreshUserState(userId).catch(function(error) {
+      target.synchronizeWithServer(userId).catch(function(error) {
         result = error;
       });
       $rootScope.$apply();
@@ -83,11 +83,11 @@ describe('aggregate user state service', function() {
       userStateStub.getUserState.and.returnValue($q.when({ data: newUserState }));
       spyOn($rootScope, '$broadcast');
 
-      target.refreshUserState(userId);
+      target.synchronizeWithServer(userId);
       $rootScope.$apply();
 
       expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.userStateRefreshedEvent, newUserState);
+        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.userStateSynchronizedEvent, newUserState);
     });
   });
 
@@ -97,7 +97,7 @@ describe('aggregate user state service', function() {
 
       userStateStub.getVisitorState.and.returnValue($q.when({ data: newUserState }));
 
-      target.refreshUserState();
+      target.synchronizeWithServer();
       $rootScope.$apply();
 
       expect(userStateStub.getVisitorState).toHaveBeenCalled();
@@ -109,7 +109,7 @@ describe('aggregate user state service', function() {
       userStateStub.getVisitorState.and.returnValue($q.reject(error));
 
       var result = null;
-      target.refreshUserState().catch(function(error) {
+      target.synchronizeWithServer().catch(function(error) {
         result = error;
       });
       $rootScope.$apply();
@@ -123,11 +123,11 @@ describe('aggregate user state service', function() {
       userStateStub.getVisitorState.and.returnValue($q.when({ data: newUserState }));
       spyOn($rootScope, '$broadcast');
 
-      target.refreshUserState();
+      target.synchronizeWithServer();
       $rootScope.$apply();
 
       expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.userStateRefreshedEvent, newUserState);
+        .toHaveBeenCalledWith(aggregateUserStateServiceConstants.userStateSynchronizedEvent, newUserState);
     });
   });
 

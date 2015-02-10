@@ -96,7 +96,7 @@ angular.module('webApp').constant('authenticationServiceConstants', {
           analytics.setUsername(service.currentUser.userId);
         })
         .then(function() {
-          return aggregateUserStateService.refreshUserState(service.currentUser.userId);
+          return aggregateUserStateService.synchronizeWithServer(service.currentUser.userId);
         });
     };
 
@@ -126,7 +126,7 @@ angular.module('webApp').constant('authenticationServiceConstants', {
     service.signOut = function() {
       clearCurrentUserDetails();
 
-      return aggregateUserStateService.refreshUserState();
+      return aggregateUserStateService.synchronizeWithServer();
     };
 
     var extractAuthenticationDataFromResponse = function (response){

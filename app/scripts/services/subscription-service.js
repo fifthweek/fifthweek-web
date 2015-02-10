@@ -16,7 +16,6 @@ angular.module('webApp').factory('subscriptionService',
     var synchronize = function(existingSubscriptionId) {
       subscriptionId = existingSubscriptionId;
       // broadcast 'on subscription changed'
-      // userStateSynchronized
     };
 
     var service = Object.create({}, {
@@ -26,7 +25,7 @@ angular.module('webApp').factory('subscriptionService',
 
     service.initialize = function() {
       synchronizeFromUserState(aggregateUserStateService.userState);
-      $rootScope.$on(aggregateUserStateServiceConstants.userStateRefreshedEvent, function(event, userState) {
+      $rootScope.$on(aggregateUserStateServiceConstants.userStateSynchronizedEvent, function(event, userState) {
         synchronizeFromUserState(userState);
       });
     };

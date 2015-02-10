@@ -58,7 +58,7 @@ describe('subscription service', function() {
   it('should synchronize with user state synchronization', function() {
     target.initialize();
 
-    $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateRefreshedEvent, {
+    $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateSynchronizedEvent, {
       creatorStatus: {
         subscriptionId: subscriptionId
       }
@@ -66,7 +66,7 @@ describe('subscription service', function() {
     expect(target.subscriptionId).toBe(subscriptionId);
     expect(target.hasSubscription).toBe(true);
 
-    $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateRefreshedEvent, { });
+    $rootScope.$broadcast(aggregateUserStateServiceConstants.userStateSynchronizedEvent, { });
     expect(target.subscriptionId).toBe(null);
     expect(target.hasSubscription).toBe(false);
   });
@@ -103,7 +103,7 @@ describe('subscription service', function() {
     it('should propagate errors', function() {
       aggregateUserStateService.userState = { };
       target.initialize();
-      
+
       subscriptionStub.postSubscription.and.returnValue($q.reject(error));
 
       var result = null;
