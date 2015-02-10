@@ -1,4 +1,4 @@
-describe('state change require subscription handler', function(){
+describe('state change require subscription service', function(){
   'use strict';
 
   var nextState = 'nextState';
