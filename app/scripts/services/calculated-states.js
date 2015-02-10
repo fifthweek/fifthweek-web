@@ -17,7 +17,7 @@ angular.module('webApp').factory('calculatedStates',
           }
         }
         else {
-          return states.home.name;
+          return states.dashboard.demo.name;
         }
       }
       else {

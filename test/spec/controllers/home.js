@@ -1,7 +1,6 @@
 'use strict';
 
 describe('home controller', function() {
-  var error = 'error';
   var errorMessage = 'errorMessage';
   var nextState = 'nextState';
 
