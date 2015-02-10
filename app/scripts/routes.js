@@ -158,10 +158,21 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
+      .state(states.creators.createSubscription.name, {
+        url: '/create-subscription',
+        templateUrl: 'views/creators/create-subscription.html',
+        controller: 'createSubscriptionCtrl',
+        requireSubscription: false,
+        data : {
+          pageTitle: 'Create Your Subscription',
+          headTitle: ' -' + ' Create Your Subscription'
+        }
+      })
       .state(states.creators.landingPage.name, {
         url: '/landing-page',
         templateUrl: 'views/creators/landing-page.html',
         controller: 'landingPageCtrl',
+        requireSubscription: true,
         data : {
           pageTitle: 'Landing page',
           headTitle: ' - ' + 'Landing page',
@@ -172,19 +183,10 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.createSubscription.name, {
-        url: '/create-subscription',
-        templateUrl: 'views/creators/create-subscription.html',
-        controller: 'createSubscriptionCtrl',
-        data : {
-          pageTitle: 'Create Your Subscription',
-          headTitle: ' -' + ' Create Your Subscription'
-        }
-      })
-
       .state(states.creators.compose.name, {
         url: '/compose',
         templateUrl: 'views/creators/compose/index.html',
+        requireSubscription: true,
         data : {
           pageTitle: 'Compose',
           headTitle: ' - ' + 'Compose'
@@ -194,6 +196,7 @@ angular.module('routes', ['ui.router'])
         url: '/note',
         templateUrl: 'views/creators/compose/note.html',
         controller: 'noteCtrl',
+        requireSubscription: true,
         data : {
           pageTitle: ' Note',
           headTitle: ' -' + ' Note'
@@ -202,6 +205,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.compose.image.name, {
         url: '/image',
         templateUrl: 'views/creators/compose/image.html',
+        requireSubscription: true,
         data : {
           pageTitle: ' Image',
           headTitle: ' -' + ' Image'
@@ -210,6 +214,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.compose.file.name, {
         url: '/file',
         templateUrl: 'views/creators/compose/file.html',
+        requireSubscription: true,
         data : {
           pageTitle: ' File',
           headTitle: ' -' + ' file'
@@ -218,6 +223,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.customize.name, {
         url: '/customize',
         templateUrl: 'views/creators/customize/index.html',
+        requireSubscription: true,
         data : {
           pageTitle: 'Customize',
           headTitle: ' - ' + 'Customize'
@@ -227,6 +233,7 @@ angular.module('routes', ['ui.router'])
         url: '/landing-page',
         templateUrl: 'views/creators/customize/landingpage.html',
         controller: 'customizeLandingPageCtrl',
+        requireSubscription: true,
         data : {
           pageTitle: ' Landing page',
           headTitle: ' -' + ' Landing page'
@@ -235,6 +242,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.customize.collections.name, {
         url: '/collections',
         templateUrl: 'views/creators/customize/collections.html',
+        requireSubscription: true,
         data : {
           pageTitle: 'Collections',
           headTitle: ' - ' + 'Collections'
@@ -243,6 +251,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.customize.channels.name, {
         url: '/channels',
         templateUrl: 'views/creators/customize/channels.html',
+        requireSubscription: true,
         data : {
           pageTitle: 'Channels',
           headTitle: ' - ' + 'Channels'
