@@ -36,13 +36,13 @@ describe('ui state provider', function() {
       expect(result).toBe(states.home.name);
     });
 
-    it('it should return "home" for non-creators', function() {
+    it('it should return "dashboard demo" for non-creators', function() {
       authenticationService.currentUser.authenticated = true;
       authenticationService.currentUser.roles = [];
 
       var result = target.getDefaultState();
 
-      expect(result).toBe(states.home.name);
+      expect(result).toBe(states.dashboard.demo.name);
     });
 
     it('it should return "create your subscription" for creators without a subscription', function() {
