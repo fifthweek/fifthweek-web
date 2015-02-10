@@ -4,10 +4,12 @@ describe('aggregate user state service', function() {
   var newUserState = 'newUserState';
   var error = 'error';
   var userId = 'userId';
+  var serviceName = 'aggregateUserStateService';
 
   var $q;
 
   var $rootScope;
+  var localStorageService;
   var aggregateUserStateServiceConstants;
   var authenticationService;
   var userStateStub;
@@ -16,9 +18,11 @@ describe('aggregate user state service', function() {
   beforeEach(function() {
     module('webApp');
     module(function($provide) {
+      localStorageService = jasmine.createSpyObj('localStorageService', ['get', 'set']);
       userStateStub = jasmine.createSpyObj('userStateStub', ['getUserState', 'getVisitorState']);
       authenticationService = { currentUser:{} };
 
+      $provide.value('localStorageService', localStorageService);
       $provide.value('userStateStub', userStateStub);
       $provide.value('authenticationService', authenticationService);
     });
@@ -27,7 +31,7 @@ describe('aggregate user state service', function() {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
       aggregateUserStateServiceConstants = $injector.get('aggregateUserStateServiceConstants');
-      target = $injector.get('aggregateUserStateService');
+      target = $injector.get(serviceName);
     });
   });
 
@@ -45,6 +49,7 @@ describe('aggregate user state service', function() {
       $rootScope.$apply();
 
       expect(userStateStub.getUserState).toHaveBeenCalledWith(userId);
+      expect(localStorageService.set).toHaveBeenCalledWith(serviceName, newUserState);
       expect(target.userState).toBe(newUserState);
     });
 
@@ -84,6 +89,7 @@ describe('aggregate user state service', function() {
       $rootScope.$apply();
 
       expect(userStateStub.getVisitorState).toHaveBeenCalled();
+      expect(localStorageService.set).toHaveBeenCalledWith(serviceName, newUserState);
       expect(target.userState).toBe(newUserState);
     });
 
