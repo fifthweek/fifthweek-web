@@ -1,7 +1,7 @@
 /// <reference path='../angular.module('webApp')js' />
 
 angular.module('webApp').factory('stateChangeAuthorizationService',
-  function(authorizationService, authorizationServiceConstants, $state, states) {
+  function(authenticationService, authorizationService, authorizationServiceConstants, $state, states, calculatedStates) {
     'use strict';
 
     var service = {};
@@ -19,6 +19,10 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
 
     service.isPermitted = function(toState){
       if (toState.data !== undefined && toState.data.access !== undefined) {
+        if (toState.data.access.requireUnauthenticated) {
+          return authenticationService.currentUser.authenticated === false;
+        }
+
         return getAuthorization(toState) === authorizationServiceConstants.authorizationResult.authorized;
       }
 
@@ -35,18 +39,26 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
         }
       }
       else if (toState.data !== undefined && toState.data.access !== undefined) {
-        var authorization = getAuthorization(toState);
-
-        if (authorization === authorizationServiceConstants.authorizationResult.loginRequired) {
-          redirectAfterLogin = true;
-          cachedToState = toState.name;
-          cachedToParams =  toParams;
-          event.preventDefault();
-          $state.go(states.signIn.name);
+        if (toState.data.access.requireUnauthenticated) {
+          if (authenticationService.currentUser.authenticated === true) {
+            event.preventDefault();
+            $state.go(calculatedStates.getDefaultState());
+          }
         }
-        else if (authorization === authorizationServiceConstants.authorizationResult.notAuthorized) {
-          event.preventDefault();
-          $state.go(states.notAuthorized.name);
+        else {
+          var authorization = getAuthorization(toState);
+
+          if (authorization === authorizationServiceConstants.authorizationResult.loginRequired) {
+            redirectAfterLogin = true;
+            cachedToState = toState.name;
+            cachedToParams =  toParams;
+            event.preventDefault();
+            $state.go(states.signIn.name);
+          }
+          else if (authorization === authorizationServiceConstants.authorizationResult.notAuthorized) {
+            event.preventDefault();
+            $state.go(states.notAuthorized.name);
+          }
         }
       }
     };
