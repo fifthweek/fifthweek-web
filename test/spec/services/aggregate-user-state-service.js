@@ -39,6 +39,18 @@ describe('aggregate user state service', function() {
     expect(target.userState).toBeNull();
   });
 
+  it('should initialize from local storage', function() {
+    localStorageService.get.and.returnValue(null);
+    target.initialize();
+    expect(localStorageService.get).toHaveBeenCalledWith(serviceName);
+    expect(target.userState).toBeNull();
+
+    localStorageService.get.and.returnValue(newUserState);
+    target.initialize();
+    expect(localStorageService.get).toHaveBeenCalledWith(serviceName);
+    expect(target.userState).toBe(newUserState);
+  });
+
   describe('when refreshing user state', function() {
 
     it('should retain refreshed user state', function() {
