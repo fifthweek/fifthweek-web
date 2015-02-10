@@ -37,13 +37,13 @@ describe('creator - create subscription controller', function () {
   it('should initialize with appropriate default state', function() {
     expect($scope.newSubscriptionData.subscriptionName).toBe('');
     expect($scope.newSubscriptionData.tagline).toBe('');
-    expect($scope.newSubscriptionData.basePrice).toBe(1.00);
+    expect($scope.newSubscriptionData.basePrice).toBe('1.00');
   });
 
   it('should create first subscription', function() {
     var subscriptionName = 'subscriptionName';
     var tagline = 'tagline';
-    var basePrice = 2.59;
+    var basePrice = '2.59';
     $scope.newSubscriptionData.subscriptionName = subscriptionName;
     $scope.newSubscriptionData.tagline = tagline;
     $scope.newSubscriptionData.basePrice = basePrice;

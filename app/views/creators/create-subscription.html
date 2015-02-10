@@ -4,14 +4,19 @@
     <div class="panel panel-default">
       <div class="panel-body jumbo-panel">
         <div class="col-md-12">
-          <form name="createSubscription">
+          <form novalidate
+                role="form"
+                name="form"
+                id="createSubscriptionForm">
 
             <div class="inner-row cancel-col-widths">
               <div class="col-md-6">
                 <input type="text"
                        class="form-control"
                        name="subscriptionName"
-                       placeholder="Subscription name" required/>
+                       placeholder="Subscription name"
+                       ng-model="newSubscriptionData.subscriptionName"
+                       required/>
                 <small>e.g. your name</small>
               </div>
             </div>
@@ -21,7 +26,9 @@
                 <input type="text"
                        class="form-control"
                        name="subscriptionTagline"
-                       placeholder="Tagline" required/>
+                       placeholder="Tagline"
+                       ng-model="newSubscriptionData.tagline"
+                       required/>
                 <small>e.g. &#34;Web Comics And More&#34;</small>
               </div>
             </div>
@@ -34,7 +41,9 @@
                     <input type="text"
                            class="form-control"
                            name="subscriptionPrice"
-                           placeholder="1.00" required>
+                           placeholder="1.00"
+                           ng-model="newSubscriptionData.basePrice"
+                           required>
                     <div class="input-group-addon">per week</div>
                   </div>
                 </div>
@@ -42,17 +51,14 @@
             </div>
 
             <div class="row">
-              <input type="submit"
-                     class="btn btn-block btn-success"
-                     data-event-title="Subscription created"
-                     data-event-category="Registration"
-                     data-loading-text="Saving..."
-                     fw-can-submit-form="createSubscription.$valid && createSubscription.$dirty"
-                     fw-submit-form="saveTheDataTempFunctionName()"
-                     ng-disabled="createSubscription.$invalid ||
-                                  createSubscription.$pristine ||
-                                  isSubmitting"
-                     value="Save and Continue" />
+              <button
+                id="create-subscription-button"
+                class="btn btn-block btn-success"
+                data-loading-text="Saving..."
+                data-event-title="Subscription created"
+                data-event-category="Registration"
+                fw-can-submit-form="form.$valid && form.$dirty"
+                fw-submit-form="continue()">Save and Continue</button>
             </div>
 
           </form>

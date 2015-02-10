@@ -5,7 +5,7 @@ angular.module('webApp').controller('createSubscriptionCtrl',
     $scope.newSubscriptionData = {
        subscriptionName: '',
        tagline: '',
-       basePrice: 1.00
+       basePrice: '1.00'
     };
 
     var buildDTO = function() {
