@@ -570,4 +570,40 @@ describe('submit form directive', function(){
       expect(analytics.eventTrack).not.toHaveBeenCalled();
     });
   });
+
+  describe('when click event is triggered with fw-can-submit-form attribute', function() {
+
+    var scope;
+    var element;
+    var deferred;
+
+    beforeEach(function () {
+      scope = $rootScope.$new();
+      deferred = $q.defer();
+      scope.submit = function() { return deferred.promise; };
+      scope.canSubmitForm1 = true;
+      scope.canSubmitForm2 = true;
+
+      element = angular.element('<button fw-can-submit-form="canSubmitForm1 && canSubmitForm2" fw-submit-form="submit()">default</button>');
+      $compile(element)(scope);
+      scope.$digest();
+    });
+
+    it('should perform the submission if fw-can-submit-form evaluates to true', function(){
+      deferred.resolve();
+      element.click();
+      $rootScope.$apply();
+
+      expect(scope.hasSubmitted).toBe(true);
+    });
+
+    it('should not perform the submission if fw-can-submit-form evaluates to false', function(){
+      scope.canSubmitForm2 = false;
+      deferred.resolve();
+      element.click();
+      $rootScope.$apply();
+
+      expect(scope.hasSubmitted).toBe(false);
+    });
+  });
 });

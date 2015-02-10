@@ -11,7 +11,7 @@
             role="form"
             name="form"
             id="registrationForm"
-            ng-show="!submissionSucceeded">
+            ng-show="!registrationSucceeded">
 
         <div class="form-group"
              ng-class="{
@@ -94,9 +94,11 @@
               class="btn btn-success btn-lg btn-block"
               type="submit"
               id="register-button"
-              ng-click="form.$valid && form.$dirty ? register() : false"
               data-loading-text="Registering..."
-              fw-button-loading="isSubmitting">Register as creator</button>
+              data-event-title="Registration succeeded"
+              data-event-category="Registration"
+              fw-can-submit-form="form.$valid && form.$dirty"
+              fw-submit-form="register()">Register as creator</button>
           </div>
         </div>
       </form>
@@ -110,7 +112,7 @@
       </div>
       <div clas="row">
         <div class="col-md-6">
-          <div id="messageBox" class="sub-form-alert" ng-hide="message == ''" ng-class="(submissionSucceeded) ? 'alert alert-success' : 'alert alert-danger'">
+          <div id="messageBox" class="sub-form-alert" ng-show="message" ng-class="(submissionSucceeded) ? 'alert alert-success' : 'alert alert-danger'">
             {{message}}
           </div>
         </div>

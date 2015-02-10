@@ -1,10 +1,6 @@
 angular.module('webApp').controller('createSubscriptionCtrl',
-  function($scope, $state, utilities, logService, analytics, calculatedStates, subscriptionService) {
+  function($scope, $state, calculatedStates, subscriptionService) {
     'use strict';
-
-    $scope.isSubmitting = false;
-    $scope.submissionSucceeded = false;
-    $scope.message = '';
 
     $scope.newSubscriptionData = {
        subscriptionName: '',
@@ -19,17 +15,9 @@ angular.module('webApp').controller('createSubscriptionCtrl',
     };
 
     $scope.continue = function() {
-      $scope.isSubmitting = true;
-
       return subscriptionService.createFirstSubscription(buildDTO()).then(function() {
-        $scope.submissionSucceeded = true;
-        analytics.eventTrack('Subscription created', 'Registration');
         $state.go(calculatedStates.getDefaultState());
-      }).catch(function(error) {
-        $scope.message = utilities.getFriendlyErrorMessage(error);
-        $scope.isSubmitting = false;
-        return logService.error(error);
       });
-    }
+    };
   }
 );

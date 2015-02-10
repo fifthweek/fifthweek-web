@@ -14,6 +14,13 @@ angular.module('webApp').directive('fwSubmitForm',
 
       element.bind('click', function() {
 
+        if (attrs.hasOwnProperty('fwCanSubmitForm')) {
+          var canSubmitForm = scope.$apply(attrs.fwCanSubmitForm);
+          if(!canSubmitForm){
+            return $q.when();
+          }
+        }
+
         scope.isSubmitting = true;
         scope.submissionSucceeded = false;
         scope.message = '';

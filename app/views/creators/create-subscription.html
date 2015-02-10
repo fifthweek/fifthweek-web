@@ -44,7 +44,11 @@
             <div class="row">
               <input type="submit"
                      class="btn btn-block btn-success"
-                     ng-click="createSubscription.$valid && createSubscription.$dirty ? saveTheDataTempFunctionName() : false"
+                     data-event-title="Subscription created"
+                     data-event-category="Registration"
+                     data-loading-text="Saving..."
+                     fw-can-submit-form="createSubscription.$valid && createSubscription.$dirty"
+                     fw-submit-form="saveTheDataTempFunctionName()"
                      ng-disabled="createSubscription.$invalid ||
                                   createSubscription.$pristine ||
                                   isSubmitting"
