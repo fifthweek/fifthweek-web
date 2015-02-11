@@ -13,11 +13,7 @@
             id="registrationForm"
             ng-show="!registrationSucceeded">
 
-        <div class="form-group"
-             ng-class="{
-             'has-error' : form.email.$invalid && ((form.email.$touched && form.email.$dirty) || form.$submitted),
-             'has-success' : form.email.$valid && form.email.$touched
-             }">
+        <div class="form-group" fw-form-group-validity="email">
           <div class="row">
             <div class="col-md-6">
               <div class="has-feedback">
@@ -34,11 +30,7 @@
           </div>
         </div>
 
-        <div class="form-group"
-             ng-class="{
-             'has-error' : form.username.$invalid && ((form.username.$touched && form.username.$dirty) || form.$submitted),
-             'has-success' : form.username.$valid && form.username.$touched
-             }">
+        <div class="form-group" fw-form-group-validity="username">
           <div class="row">
             <div class="col-md-6">
               <div class="has-feedback">
@@ -65,11 +57,7 @@
           </div>
         </div>
 
-        <div class="form-group"
-             ng-class="{
-             'has-error' : form.password.$invalid && ((form.password.$touched && form.password.$dirty) || form.$submitted),
-             'has-success' : form.password.$valid && form.password.$touched
-             }">
+        <div class="form-group" fw-form-group-validity="password">
           <div class="row">
             <div class="col-md-6">
               <div class="has-feedback">

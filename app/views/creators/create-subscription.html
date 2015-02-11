@@ -8,11 +8,7 @@
                 name="form"
                 id="createSubscriptionForm">
 
-            <div class="form-group"
-                 ng-class="{
-                 'has-error' : form.subscriptionName.$invalid && ((form.subscriptionName.$touched && form.subscriptionName.$dirty) || form.$submitted),
-                 'has-success' : form.subscriptionName.$valid && form.subscriptionName.$touched
-                 }">
+            <div class="form-group" fw-form-group-validity="subscriptionName">
               <div class="inner-row">
                 <div class="col-md-6">
                   <input type="text"
@@ -26,11 +22,7 @@
               </div>
             </div>
 
-            <div class="form-group"
-                 ng-class="{
-                 'has-error' : form.subscriptionTagline.$invalid && ((form.subscriptionTagline.$touched && form.subscriptionTagline.$dirty) || form.$submitted),
-                 'has-success' : form.subscriptionTagline.$valid && form.subscriptionTagline.$touched
-                 }">
+            <div class="form-group" fw-form-group-validity="subscriptionTagline">
               <div class="inner-row">
                 <div class="col-md-6">
                   <input type="text"
@@ -44,11 +36,7 @@
               </div>
             </div>
 
-            <div class="form-group"
-                 ng-class="{
-                 'has-error' : form.subscriptionPrice.$invalid && ((form.subscriptionPrice.$touched && form.subscriptionPrice.$dirty) || form.$submitted),
-                 'has-success' : form.subscriptionPrice.$valid && form.subscriptionPrice.$touched
-                 }">
+            <div class="form-group" fw-form-group-validity="subscriptionPrice">
               <div class="inner-row">
                 <div class="col-md-6">
                   <div class="input-group">
