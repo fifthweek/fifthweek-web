@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwFormGroupValidity', function ($compile) {
+angular.module('webApp').directive('fwGroupValidation', function ($compile) {
   'use strict';
 
   return {
@@ -10,7 +10,7 @@ angular.module('webApp').directive('fwFormGroupValidity', function ($compile) {
       var ngClass = '{' +
         '\'has-error\' : form.' + inputName + '.$invalid && ((form.' + inputName + '.$touched && form.' + inputName + '.$dirty) || form.$submitted),' +
         '\'has-success\' : form.' + inputName + '.$valid && form.' + inputName + '.$touched}';
-      element.removeAttr('fw-form-group-validity'); // Remove self to avoid infinite compilation loop.
+      element.removeAttr('fw-group-validation'); // Remove self to avoid infinite compilation loop.
       element.attr('ng-class', ngClass);
       $compile(element)(scope);
     }
