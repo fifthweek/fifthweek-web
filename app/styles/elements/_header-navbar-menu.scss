@@ -1,21 +1,22 @@
 @import '_base';
 
-.header-navbar-menu {
+ul.header-navbar-menu {
   list-style-type: none;
   display:inline-block;
-  padding:9px 11px;
+  padding:11px 11px 9px 60px;
   margin:0;
   white-space: nowrap;
+  font-size:18px;
 
   li {
     display: inline;
     margin: 0px 40px 0px 0px;
-    font-size:20px;
+    font-size: 14px; /* This hack removes excess height */
 
     a {
       color: $grey-dark-2;
       text-transform: uppercase;
-      padding-bottom: 11px;
+      padding-bottom: 13px;
       &:hover{
         text-decoration: none;
         color: $grey-dark-3;
@@ -48,20 +49,19 @@
       span{
         vertical-align: middle;
         height: 24px;
-        &:last-child{
+        font-size: 16px; /* This hack removes excess height */
+        &:last-child {
           font-size: 12px;
+          line-height: 19px;
         }
         i {
-          margin-right: 6px;
+          margin-right: 4px;
+          font-size: 18px;
         }
       }
     }
   }
 
-  @media (min-width:$bp-x-small) {
-    font-size:21px;
-    padding-top:11px;
-  }
   @media (min-width:$bp-small) {
     float:left;
     margin-left:0;
