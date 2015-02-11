@@ -11,12 +11,14 @@
             <div class="form-group" fw-form-group-validation>
               <div class="inner-row">
                 <div class="col-md-6">
-                  <input type="text"
-                         class="form-control"
-                         name="subscriptionName"
-                         placeholder="Subscription name"
-                         ng-model="newSubscriptionData.subscriptionName"
-                         required/>
+                  <div fw-form-input-glyphs>
+                    <input type="text"
+                           class="form-control"
+                           name="subscriptionName"
+                           placeholder="Subscription name"
+                           ng-model="newSubscriptionData.subscriptionName"
+                           required/>
+                    </div>
                   <small>e.g. your name</small>
                 </div>
               </div>
@@ -25,12 +27,14 @@
             <div class="form-group" fw-form-group-validation>
               <div class="inner-row">
                 <div class="col-md-6">
-                  <input type="text"
-                         class="form-control"
-                         name="subscriptionTagline"
-                         placeholder="Tagline"
-                         ng-model="newSubscriptionData.tagline"
-                         required/>
+                  <div fw-form-input-glyphs>
+                    <input type="text"
+                           class="form-control"
+                           name="subscriptionTagline"
+                           placeholder="Tagline"
+                           ng-model="newSubscriptionData.tagline"
+                           required/>
+                  </div>
                   <small>e.g. &#34;Web Comics And More&#34;</small>
                 </div>
               </div>
@@ -41,14 +45,17 @@
                 <div class="col-md-6">
                   <div class="input-group">
                     <div class="input-group-addon">&#36;</div>
-                    <input type="text"
-                           class="form-control"
-                           name="subscriptionPrice"
-                           placeholder="1.00"
-                           ng-model="newSubscriptionData.basePrice"
-                           required>
+                      <input type="text"
+                             class="form-control"
+                             name="subscriptionPrice"
+                             placeholder="1.00"
+                             ng-model="newSubscriptionData.basePrice"
+                             required>
                     <div class="input-group-addon">per week</div>
                   </div>
+                  <!-- https://github.com/twbs/bootstrap/issues/12551 -->
+                  <span style="right: 98px;" fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                  <span style="right: 98px;" fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
               </div>
             </div>
