@@ -1,10 +1,7 @@
 angular.module('webApp').controller(
-  'noteCtrl', ['$scope', 'datepickerService',
-  function($scope, datepickerService, $analytics) {
+  'noteCtrl', ['$scope',
+  function($scope, $analytics) {
     'use strict';
-
-    $scope.date = datepickerService.date;
-    $scope.open = datepickerService.open;
 
     $scope.postLater === false;
 
