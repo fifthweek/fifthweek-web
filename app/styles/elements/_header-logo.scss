@@ -7,9 +7,8 @@
     weight:300;
   }
   a {
-    color:$brand-primary;
+    color:#ffffff;
     #{$state-hover-focus} {
-      color:$white-1;
       text-decoration:none;
     }
   }
