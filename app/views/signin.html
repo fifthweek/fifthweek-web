@@ -13,15 +13,17 @@
             <input type="password" class="form-control" placeholder="Password" ng-model="signInData.password" required>
           </div>
 
-          <button
-            id="sign-in-button"
-            class="btn btn-success btn-block"
-            type="submit"
-            ng-click="signIn()"
-            data-event-title="Sign-in succeeded"
-            data-event-category="Sign-in"
-            data-loading-text="Signing in..."
-            fw-submit-form="signIn()">Sign In</button>
+          <div class="row-btn">
+            <button
+              id="sign-in-button"
+              class="btn btn-success btn-block"
+              type="submit"
+              ng-click="signIn()"
+              data-event-title="Sign-in succeeded"
+              data-event-category="Sign-in"
+              data-loading-text="Signing in..."
+              fw-submit-form="signIn()">Sign In</button>
+          </div>
 
           <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
             <p>{{message}}</p>

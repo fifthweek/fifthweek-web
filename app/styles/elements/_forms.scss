@@ -54,8 +54,8 @@ textarea.form-control {
   border:0 none;
 }
 
-input[type="submit"].btn-block, 
-input[type="reset"].btn-block, 
+input[type="submit"].btn-block,
+input[type="reset"].btn-block,
 input[type="button"].btn-block,
 .btn-block {
   display:inline-block;
@@ -91,6 +91,10 @@ input[type="button"].btn-block,
 .btn-plain-text {
   @extend .btn-plain;
   border:0 none;
+}
+
+.row-btn {
+  padding-top:10px;
 }
 
 .help-block {
