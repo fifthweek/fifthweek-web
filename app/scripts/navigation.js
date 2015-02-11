@@ -52,12 +52,6 @@ angular.module('webApp')
             state: states.dashboard.demo.name,
             icon: 'fa fa-youtube-play',
             color: 'pink'
-          },
-          {
-            name: 'Provide Feedback',
-            state: states.dashboard.feedback.name,
-            icon: 'fa fa-comment-o',
-            color: 'pink'
           }
         ]
       },
@@ -133,6 +127,12 @@ angular.module('webApp')
             name: 'FAQ',
             state: states.help.faq.name,
             icon: 'fa fa-book',
+            color: 'blue'
+          },
+          {
+            name: 'Contact Us',
+            state: states.help.contact.name,
+            icon: 'fa fa-comment-o',
             color: 'blue'
           }
         ]

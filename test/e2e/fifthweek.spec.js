@@ -2,12 +2,10 @@ var HomePage = require('./pages/home.page.js');
 var SignInPage = require('./pages/signin.page.js');
 var RegisterPage = require('./pages/register.page.js');
 var NavigationPage = require('./pages/navigation.page.js');
+var NavigationHelpPage = require('./pages/navigation-help.page.js');
 var DemonstrationPage = require('./pages/demonstration.page.js');
 var FeedbackPage = require('./pages/feedback.page.js');
 var CreateSubscriptionPage = require('./pages/creators/create-subscription.page.js');
-var LandingPagePage = require('./pages/creators/landing-page.page.js');
-var CustomizeLandingPagePage = require('./pages/creators/customize/landing-page.page.js');
-var composeNotePage = require('./pages/creators/compose/compose-note.page.js');
 
 describe('fifthweek', function() {
   'use strict';
@@ -275,22 +273,22 @@ describe('fifthweek', function() {
 
     beforeEach(function() {
       registerSuccessfully();
-      navigation.sidebarDashboardButton.click();
+      navigation.dashboardButton.click();
     });
   });
 
-  describe('feedback page', function() {
+  describe('contact us', function() {
     it('should contain a link to email Fifthweek', function() {
       expect(page.mailtoLink.getAttribute('href')).toContain('mailto:hello@fifthweek.com');
     });
 
     var page = new FeedbackPage();
     var navigation = new NavigationPage();
+    var navigationHelp = new NavigationHelpPage();
 
     beforeEach(function() {
-      registerSuccessfully();
-      navigation.sidebarDashboardButton.click();
-      navigation.feedbackLink.click();
+      navigation.helpButton.click();
+      navigationHelp.contactButton.click();
     });
   });
 

@@ -22,9 +22,6 @@ angular.module('routes', ['ui.router'])
       name: 'dashboard',
       demo: {
         name: 'dashboard.demo'
-      },
-      feedback: {
-        name: 'dashboard.feedback'
       }
     },
     creators: {
@@ -64,6 +61,9 @@ angular.module('routes', ['ui.router'])
       name: 'help',
       faq: {
         name: 'help.faq'
+      },
+      contact: {
+        name: 'help.contact'
       }
     },
     notAuthorized: {
@@ -149,17 +149,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.dashboard.feedback.name, {
-        url: '/feedback',
-        templateUrl: 'views/dashboard/feedback.html',
-        data : {
-          pageTitle: 'Provide Feedback',
-          headTitle: ' - ' + 'Feedback',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
+
       .state(states.creators.name, {
         abstract: false,
         url: '/creators',
@@ -309,6 +299,14 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Frequently Asked Questions',
           headTitle: ' - ' + 'Frequently Asked Questions'
+        }
+      })
+      .state(states.help.contact.name, {
+        url: '/contact',
+        templateUrl: 'views/help/contact-us.html',
+        data : {
+          pageTitle: 'Contact Us',
+          headTitle: ' - ' + 'Contact Us'
         }
       })
       .state(states.notAuthorized.name, {
