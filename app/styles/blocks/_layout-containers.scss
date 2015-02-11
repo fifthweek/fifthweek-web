@@ -7,6 +7,7 @@ body {
 
 body {
   font-family:'Lato', cursive;
+  -webkit-font-smoothing: antialiased;
   color:$grey-dark;
 }
 
@@ -33,7 +34,7 @@ body {
     bottom:20px;
     left:-15px;
   }
-  &:before, 
+  &:before,
   &:after {
     content: " ";
     display: table;
