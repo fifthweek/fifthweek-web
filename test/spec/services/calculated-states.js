@@ -36,13 +36,13 @@ describe('ui state provider', function() {
       expect(result).toBe(states.home.name);
     });
 
-    it('it should return "dashboard demo" for non-creators', function() {
+    it('it should return "compose note" for non-creators', function() {
       authenticationService.currentUser.authenticated = true;
       authenticationService.currentUser.roles = [];
 
       var result = target.getDefaultState();
 
-      expect(result).toBe(states.dashboard.demo.name);
+      expect(result).toBe(states.creators.compose.note.name);
     });
 
     it('it should return "create your subscription" for creators without a subscription', function() {
@@ -55,14 +55,14 @@ describe('ui state provider', function() {
       expect(result).toBe(states.creators.createSubscription.name);
     });
 
-    it('it should return "dashboard demo" for creators with a subscription', function() {
+    it('it should return "compose note" for creators with a subscription', function() {
       authenticationService.currentUser.authenticated = true;
       authenticationService.currentUser.roles = [ authenticationServiceConstants.roles.creator ];
       subscriptionService.hasSubscription = true;
 
       var result = target.getDefaultState();
 
-      expect(result).toBe(states.dashboard.demo.name);
+      expect(result).toBe(states.creators.compose.note.name);
     });
   });
 });

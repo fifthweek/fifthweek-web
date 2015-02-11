@@ -3,7 +3,6 @@ var SignInPage = require('./pages/signin.page.js');
 var RegisterPage = require('./pages/register.page.js');
 var NavigationPage = require('./pages/navigation.page.js');
 var NavigationHelpPage = require('./pages/navigation-help.page.js');
-var DemonstrationPage = require('./pages/demonstration.page.js');
 var FeedbackPage = require('./pages/feedback.page.js');
 var CreateSubscriptionPage = require('./pages/creators/create-subscription.page.js');
 
@@ -263,20 +262,6 @@ describe('fifthweek', function() {
     var page = new SignInPage();
   });
 
-  describe('dashboard', function() {
-    it('should contain the mockup demonstration video', function() {
-      expect(page.video.getAttribute('src')).toMatch(urlRegex(page.videoUrl));
-    });
-
-    var page = new DemonstrationPage();
-    var navigation = new NavigationPage();
-
-    beforeEach(function() {
-      registerSuccessfully();
-      navigation.dashboardButton.click();
-    });
-  });
-
   describe('contact us', function() {
     it('should contain a link to email Fifthweek', function() {
       expect(page.mailtoLink.getAttribute('href')).toContain('mailto:hello@fifthweek.com');
@@ -287,6 +272,7 @@ describe('fifthweek', function() {
     var navigationHelp = new NavigationHelpPage();
 
     beforeEach(function() {
+      homePage.signInLink.click();
       navigation.helpButton.click();
       navigationHelp.contactButton.click();
     });

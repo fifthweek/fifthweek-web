@@ -18,12 +18,6 @@ angular.module('routes', ['ui.router'])
     account: {
       name: 'account'
     },
-    dashboard: {
-      name: 'dashboard',
-      demo: {
-        name: 'dashboard.demo'
-      }
-    },
     creators: {
       name: 'creators',
       landingPage: {
@@ -125,31 +119,6 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.dashboard.name, {
-        abstract: false,
-        url: '/dashboard',
-        templateUrl: 'views/dashboard/index.html',
-        redirectTo: states.dashboard.demo.name,
-        data : {
-          pageTitle: 'Dashboard',
-          headTitle: ' - ' + 'Dashboard',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.dashboard.demo.name, {
-        url: '/demo',
-        templateUrl: 'views/dashboard/demo.html',
-        data : {
-          pageTitle: 'Quick Demo',
-          headTitle: ' - ' + 'Demo',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-
       .state(states.creators.name, {
         abstract: false,
         url: '/creators',

@@ -10,14 +10,14 @@ angular.module('webApp').factory('calculatedStates',
       if (currentUser.authenticated === true) {
         if (_.includes(currentUser.roles, authenticationServiceConstants.roles.creator)) {
           if (subscriptionService.hasSubscription) {
-            return states.dashboard.demo.name;
+            return states.creators.compose.note.name;
           }
           else {
             return states.creators.createSubscription.name;
           }
         }
         else {
-          return states.dashboard.demo.name;
+          return states.creators.compose.note.name;
         }
       }
       else {

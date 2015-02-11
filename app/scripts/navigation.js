@@ -41,21 +41,6 @@ angular.module('webApp')
         separator: true
       },
       {
-        name: 'Dashboard',
-        state: states.dashboard.demo.name,
-        icon: 'fa fa-folder-open-o',
-        color: 'pink',
-        secondary:
-        [
-          {
-            name: 'Quick Demo',
-            state: states.dashboard.demo.name,
-            icon: 'fa fa-youtube-play',
-            color: 'pink'
-          }
-        ]
-      },
-      {
         name: 'Create Your Subscription',
         state: states.creators.createSubscription.name,
         icon: 'fa fa-asterisk',
