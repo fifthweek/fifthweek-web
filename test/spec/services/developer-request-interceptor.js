@@ -38,21 +38,6 @@ describe('authentication interceptor', function() {
       expect(newConfig.headers[fifthweekConstants.developerNameHeader]).toBeUndefined();
     });
 
-    it('should not add developer name data to the request headers if the url is /token', function() {
-
-      fifthweekConstants.developerName = 'XYZ';
-
-      var config = {
-        headers: {},
-        url: fifthweekConstants.apiBaseUri + fifthweekConstants.tokenPath
-      };
-
-      var newConfig = developerRequestInterceptor.request(config);
-
-      expect(newConfig).toBe(config);
-      expect(newConfig.headers[fifthweekConstants.developerNameHeader]).toBeUndefined();
-    });
-
   });
 
   // load the service's module
