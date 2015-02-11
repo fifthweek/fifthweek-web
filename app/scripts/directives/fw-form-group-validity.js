@@ -5,8 +5,8 @@ angular.module('webApp').directive('fwFormGroupValidity', function ($compile) {
     restrict: 'A',
     terminal: true, // http://stackoverflow.com/a/19228302/592768
     priority: 1000,
-    link: function(scope, element, attrs) {
-      var inputName = attrs.fwFormGroupValidity;
+    link: function(scope, element) {
+      var inputName = element.find('input').attr('name');
       var ngClass = '{' +
         '\'has-error\' : form.' + inputName + '.$invalid && ((form.' + inputName + '.$touched && form.' + inputName + '.$dirty) || form.$submitted),' +
         '\'has-success\' : form.' + inputName + '.$valid && form.' + inputName + '.$touched}';
