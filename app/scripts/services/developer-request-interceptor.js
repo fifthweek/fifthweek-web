@@ -2,8 +2,6 @@ angular.module('webApp').factory('developerRequestInterceptor',
     function(fifthweekConstants) {
       'use strict';
 
-      var tokenUrl = fifthweekConstants.apiBaseUri + fifthweekConstants.tokenPath;
-
       var factory = {};
 
       factory.request = function(config) {
