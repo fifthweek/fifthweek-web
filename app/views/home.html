@@ -16,12 +16,10 @@
         <div class="form-group" fw-form-group-validation>
           <div class="row">
             <div class="col-md-6">
-              <div class="has-feedback">
+              <div fw-form-input-glyphs>
                 <input type="email" class="form-control" name="email" placeholder="Email"
                        ng-model="registrationData.email"
                        required>
-                <span fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                <span fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               </div>
             </div>
             <div class="col-md-6">
@@ -33,7 +31,7 @@
         <div class="form-group" fw-form-group-validation>
           <div class="row">
             <div class="col-md-6">
-              <div class="has-feedback">
+              <div fw-form-input-glyphs>
                 <input type="text" class="form-control" name="username" placeholder="Username"
                        ng-model="registrationData.username"
                        ng-model-options="{ debounce: 500 }"
@@ -41,9 +39,8 @@
                        ng-minlength="2"
                        ng-maxlength="20"
                        maxlength="20"
-                       required fw-check-username-availability>
-                <span fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                <span fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                       required
+                       fw-check-username-availability>
               </div>
             </div>
             <div class="col-md-6">
@@ -60,13 +57,11 @@
         <div class="form-group" fw-form-group-validation>
           <div class="row">
             <div class="col-md-6">
-              <div class="has-feedback">
+              <div fw-form-input-glyphs>
                 <input type="password" class="form-control" name="password" placeholder="Password"
                        ng-model="registrationData.password"
                        ng-minlength="6"
                        required>
-                <span fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                <span fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               </div>
             </div>
             <div class="col-md-6">
