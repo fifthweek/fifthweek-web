@@ -16,7 +16,7 @@ angular.module('webApp')
       }
 
       var parent = element.parent();
-      var result = parent.find('input');
+      var result = parent.find(tag);
       if (result.length === 0) {
         return service.closest(tag, parent, searchDepth);
       }

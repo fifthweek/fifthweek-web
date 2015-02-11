@@ -5,21 +5,21 @@ function FifthweekError(message) {
   this.stack = Error().stack;
 }
 FifthweekError.prototype = Object.create(Error.prototype);
-FifthweekError.prototype.name = 'FifthweekError';
+FifthweekError.prototype.constructor = FifthweekError;
 
 function ApiError(message) {
   this.message = message;
   this.stack = Error().stack;
 }
 ApiError.prototype = Object.create(Error.prototype);
-ApiError.prototype.name = 'ApiError';
+ApiError.prototype.constructor = ApiError;
 
 function ConnectionError(message) {
   this.message = message;
   this.stack = Error().stack;
 }
 ConnectionError.prototype = Object.create(Error.prototype);
-ConnectionError.prototype.name = 'ConnectionError';
+ConnectionError.prototype.constructor = ConnectionError;
 
 // Error handler for non-angular errors.  Tries to post the message to the server without
 // any dependencies on third party libraries.
