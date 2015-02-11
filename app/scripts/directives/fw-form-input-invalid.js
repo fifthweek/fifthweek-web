@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwFormInputInvalid', function ($compile) {
+angular.module('webApp').directive('fwFormInputInvalid', function ($compile, domUtilities) {
   'use strict';
 
   return {
@@ -7,18 +7,8 @@ angular.module('webApp').directive('fwFormInputInvalid', function ($compile) {
     priority: 1000,
     link: function(scope, element, attrs) {
 
-      var closest = function(name, element) {
-        var parent = element.parent();
-        var result = parent.find('input');
-        if (result.length === 0) {
-          return closest(name, parent);
-        }
-
-        return result;
-      };
-
       var ngIf;
-      var inputName = closest('input', element).attr('name');
+      var inputName = domUtilities.closest('input', element, 2).attr('name');
       var ruleName = attrs.fwFormInputInvalid;
 
       if (ruleName) {
