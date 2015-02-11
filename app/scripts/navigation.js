@@ -48,7 +48,7 @@ angular.module('webApp')
       },
       {
         name: 'New Post',
-        state: states.creators.compose.name,
+        state: states.creators.compose.note.name,
         icon: 'fa fa-pencil-square-o',
         color: 'green',
         secondary:
