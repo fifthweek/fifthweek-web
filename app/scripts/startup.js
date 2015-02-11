@@ -39,7 +39,23 @@
       $rootScope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
         stateChangeService.redirectAwayIfRequired(event, toState, toParams);
       });
-    }).run(function ($rootScope, $state, $stateParams) {
+    })
+    .run(function($state, stateChangeService, authenticationService, aggregateUserState) {
+      aggregateUserState.updateFromServer(authenticationService.currentUser.userId)
+        .then(function() {
+          if (!stateChangeService.isPermitted($state.current)) {
+            stateChangeService.redirectAwayIfRequired({
+                preventDefault: function() {}
+              },
+              $state.current,
+              $state.params);
+          }
+        })
+        .catch(function() {
+          throw new FifthweekError('Failed to asynchronously update user state from server on startup.');
+        });
+    })
+    .run(function ($rootScope, $state, $stateParams) {
       //global page titles
       //see: http://stackoverflow.com/a/26086324/1257504
       $rootScope.$state = $state;
