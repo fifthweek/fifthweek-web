@@ -5,7 +5,7 @@ angular.module('webApp')
     return subscriptionServiceImpl;
   })
   .factory('subscriptionServiceImpl',
-  function($rootScope, $q, subscriptionStub, aggregateUserStateService, aggregateUserStateServiceConstants) {
+  function($rootScope, $q, subscriptionStub, aggregateUserState, aggregateUserStateConstants) {
     'use strict';
 
     var subscriptionId = null;
@@ -25,8 +25,8 @@ angular.module('webApp')
     });
 
     service.initialize = function() {
-      synchronizeFromUserState(aggregateUserStateService.userState);
-      $rootScope.$on(aggregateUserStateServiceConstants.updatedEvent, function(event, userState) {
+      synchronizeFromUserState(aggregateUserState.currentValue);
+      $rootScope.$on(aggregateUserStateConstants.updatedEvent, function(event, userState) {
         synchronizeFromUserState(userState);
       });
     };
@@ -37,7 +37,7 @@ angular.module('webApp')
       }
 
       return subscriptionStub.postSubscription(subscriptionData).then(function(response) {
-        aggregateUserStateService.updateFromDelta({
+        aggregateUserState.updateFromDelta({
           creatorStatus: {
             subscriptionId: response.data
           }

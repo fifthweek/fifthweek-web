@@ -1,20 +1,20 @@
 angular.module('webApp')
-  .constant('aggregateUserStateServiceConstants', {
-    updatedEvent: 'aggregateUserStateServiceUpdated'
+  .constant('aggregateUserStateConstants', {
+    updatedEvent: 'aggregateUserStateUpdated'
   })
-  .factory('aggregateUserStateService', function(aggregateUserStateServiceImpl) {
+  .factory('aggregateUserState', function(aggregateUserStateImpl) {
     'use strict';
-    aggregateUserStateServiceImpl.initialize();
-    return aggregateUserStateServiceImpl;
+    aggregateUserStateImpl.initialize();
+    return aggregateUserStateImpl;
   })
-  .factory('aggregateUserStateServiceImpl',
-  function($rootScope, localStorageService, aggregateUserStateServiceConstants, userStateStub) {
+  .factory('aggregateUserStateImpl',
+  function($rootScope, localStorageService, aggregateUserStateConstants, userStateStub) {
   'use strict';
 
-    var localStorageName = 'aggregateUserStateService';
+    var localStorageName = 'aggregateUserState';
 
     var broadcastSynchronized = function(){
-      $rootScope.$broadcast(aggregateUserStateServiceConstants.updatedEvent, service.userState);
+      $rootScope.$broadcast(aggregateUserStateConstants.updatedEvent, service.currentValue);
     };
 
     var handleServiceResponse = function(response) {
@@ -23,27 +23,27 @@ angular.module('webApp')
 
     var service = {};
 
-    service.userState = null;
+    service.currentValue = null;
 
     service.initialize = function() {
       var storedUserState = localStorageService.get(localStorageName);
       if (storedUserState) {
-        service.userState = storedUserState;
+        service.currentValue = storedUserState;
       }
     };
 
     service.updateFromDelta = function(userStateDelta) {
-      if (service.userState) {
+      if (service.currentValue) {
         // Do not mutate state, as other services may have reference to this object (they should also never mutate it!).
-        var newUserState = _.cloneDeep(service.userState);
+        var newUserState = _.cloneDeep(service.currentValue);
         _.merge(newUserState, userStateDelta);
-        service.userState = newUserState;
+        service.currentValue = newUserState;
       }
       else {
-        service.userState = userStateDelta;
+        service.currentValue = userStateDelta;
       }
 
-      localStorageService.set(localStorageName, service.userState);
+      localStorageService.set(localStorageName, service.currentValue);
       broadcastSynchronized();
     };
 

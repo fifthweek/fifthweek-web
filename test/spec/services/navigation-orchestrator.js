@@ -40,7 +40,7 @@ describe('navigation orchestrator', function(){
   var states;
   var stateChangeService;
   var authenticationServiceConstants;
-  var aggregateUserStateServiceConstants;
+  var aggregateUserStateConstants;
   var navigationOrchestratorConstants;
   var uiRouterConstants;
 
@@ -59,7 +59,7 @@ describe('navigation orchestrator', function(){
       $state = $injector.get('$state');
       states = $injector.get('states');
       authenticationServiceConstants = $injector.get('authenticationServiceConstants');
-      aggregateUserStateServiceConstants = $injector.get('aggregateUserStateServiceConstants');
+      aggregateUserStateConstants = $injector.get('aggregateUserStateConstants');
       navigationOrchestratorConstants = $injector.get('navigationOrchestratorConstants');
       uiRouterConstants = $injector.get('uiRouterConstants');
     });
@@ -78,7 +78,7 @@ describe('navigation orchestrator', function(){
     expect($rootScope.$on.calls.count()).toBe(3);
     expect($rootScope.$on.calls.argsFor(0)[0]).toBe(uiRouterConstants.stateChangeSuccessEvent);
     expect($rootScope.$on.calls.argsFor(1)[0]).toBe(authenticationServiceConstants.currentUserChangedEvent);
-    expect($rootScope.$on.calls.argsFor(2)[0]).toBe(aggregateUserStateServiceConstants.updatedEvent);
+    expect($rootScope.$on.calls.argsFor(2)[0]).toBe(aggregateUserStateConstants.updatedEvent);
   });
 
   it('should update navigation on initialization', function(){
@@ -115,10 +115,10 @@ describe('navigation orchestrator', function(){
     it('should update navigation when the aggregate user state changes', function(){
       spyOn($rootScope, '$broadcast').and.callThrough();
 
-      $rootScope.$broadcast(aggregateUserStateServiceConstants.updatedEvent, {});
+      $rootScope.$broadcast(aggregateUserStateConstants.updatedEvent, {});
 
       expect($rootScope.$broadcast.calls.count()).toBe(2);
-      expect($rootScope.$broadcast.calls.first().args[0]).toBe(aggregateUserStateServiceConstants.updatedEvent);
+      expect($rootScope.$broadcast.calls.first().args[0]).toBe(aggregateUserStateConstants.updatedEvent);
       expect($rootScope.$broadcast.calls.mostRecent().args[0]).toBe(navigationOrchestratorConstants.navigationChangedEvent);
       expect($rootScope.$broadcast.calls.mostRecent().args[1]).toBeDefined();
       expect($rootScope.$broadcast.calls.mostRecent().args[2]).toBeDefined();

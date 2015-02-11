@@ -13,7 +13,7 @@ angular.module('webApp')
     navigationMap,
     stateChangeService,
     authenticationServiceConstants,
-    aggregateUserStateServiceConstants,
+    aggregateUserStateConstants,
     navigationOrchestratorConstants,
     uiRouterConstants,
     $state) {
@@ -160,7 +160,7 @@ angular.module('webApp')
       $rootScope.$on(authenticationServiceConstants.currentUserChangedEvent, function() {
         updateNavigation();
       });
-      $rootScope.$on(aggregateUserStateServiceConstants.updatedEvent, function() {
+      $rootScope.$on(aggregateUserStateConstants.updatedEvent, function() {
         updateNavigation();
       });
 
