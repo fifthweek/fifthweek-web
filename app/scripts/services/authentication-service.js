@@ -73,13 +73,22 @@ angular.module('webApp')
     };
 
     service.registerUser = function(internalRegistrationData) {
-      service.signOut();
+
+      if(service.currentUser.authenticated){
+        return $q.reject(new FifthweekError('You must sign out before registering.'));
+      }
+
       return $http.post(apiBaseUri + 'membership/registrations', internalRegistrationData).catch(function(response){
         return $q.reject(utilities.getHttpError(response));
       });
     };
 
     service.signIn = function(signInData) {
+
+      if(service.currentUser.authenticated){
+        return $q.reject(new FifthweekError('You must sign out before signing in.'));
+      }
+
       var body =
         'grant_type=password&username=' + signInData.username +
         '&password=' + signInData.password +
@@ -91,11 +100,9 @@ angular.module('webApp')
         }
       };
 
-      return service.signOut()
-        .then(function() {
-          return $http.post(apiBaseUri + 'token', body, headers).catch(function(response){
-            return $q.reject(utilities.getHttpError(response));
-          });
+      return $http.post(apiBaseUri + 'token', body, headers)
+        .catch(function(response){
+          return $q.reject(utilities.getHttpError(response));
         })
         .then(function(response) {
           return extractAuthenticationDataFromResponse(response);
@@ -105,6 +112,10 @@ angular.module('webApp')
         })
         .then(function() {
           return aggregateUserState.updateFromServer(service.currentUser.userId);
+        })
+        .catch(function(error){
+          service.signOut();
+          return $q.reject(error);
         });
     };
 

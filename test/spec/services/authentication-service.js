@@ -165,45 +165,33 @@ describe('authentication service', function() {
 
     describe('when registering a user', function(){
 
-      it('should ensure the user is logged out and call the register API', function() {
+      it('should throw an error if the user is signed in', function() {
 
-        setupSignOutExpectations();
-
+        target.currentUser.authenticated = true;
         var registrationData = {username: 'user'};
 
-        $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(200, {});
-
         var result;
-        target.registerUser(registrationData).then(function(response) { result = response; });
-
-        executeSignOutExpectations();
-
-        $httpBackend.flush();
+        target.registerUser(registrationData).catch(function(response) { result = response; });
         $rootScope.$apply();
+
+        expect(result).toBeDefined();
+        expect(result instanceof FifthweekError).toBeTruthy();
       });
 
-      it('should raise a current user changed event if successful', function() {
-
-        setupSignOutExpectations();
+      it('should and call the register API', function() {
 
         var registrationData = {username: 'user'};
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(200, {});
-        spyOn($rootScope, '$broadcast');
 
         var result;
         target.registerUser(registrationData).then(function(response) { result = response; });
 
         $httpBackend.flush();
         $rootScope.$apply();
-
-        expect($rootScope.$broadcast).toHaveBeenCalled();
-        expect($rootScope.$broadcast.calls.first().args[0]).toBe(authenticationServiceConstants.currentUserChangedEvent);
       });
 
       it('should return an ApiError on an unexpected response', function() {
-
-        setupSignOutExpectations();
 
         var registrationData = {username: 'user'};
 
@@ -211,8 +199,6 @@ describe('authentication service', function() {
 
         var result;
         target.registerUser(registrationData).catch(function(response) { result = response; });
-
-        executeSignOutExpectations();
 
         $httpBackend.flush();
         $rootScope.$apply();
@@ -224,30 +210,21 @@ describe('authentication service', function() {
 
     describe('when signing a user in', function(){
 
-      it('should sign out before signing in', function(){
-        setupSignOutExpectations();
+      it('should throw an error if the user is signed in', function() {
 
-        $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, validResponse);
-
-        localStorageService.set = function(){};
+        target.currentUser.authenticated = true;
 
         var result;
-        target.signIn(validSignInData).then(function(response){
+        target.signIn(validSignInData).catch(function(response){
           result = response;
         });
-
-        executeSignOutExpectations();
-
-        $httpBackend.flush();
         $rootScope.$apply();
 
-        expect(target.currentUser.authenticated).toBe(true);
-
-        expect(result).toBeUndefined();
+        expect(result).toBeDefined();
+        expect(result instanceof FifthweekError).toBeTruthy();
       });
 
       it('should set authentication data on successful sign in', function(){
-        setupSignOutExpectations();
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, validResponse);
 
@@ -272,7 +249,6 @@ describe('authentication service', function() {
       });
 
       it('should save the current user on successful sign in', function(){
-        setupSignOutExpectations();
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, validResponse);
 
@@ -284,8 +260,6 @@ describe('authentication service', function() {
           result = response;
         });
 
-        executeSignOutExpectations();
-
         $httpBackend.flush();
         $rootScope.$apply();
 
@@ -296,7 +270,6 @@ describe('authentication service', function() {
       });
 
       it('should require an access token to be returned', function(){
-        setupSignOutExpectations();
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
           200,
@@ -321,7 +294,6 @@ describe('authentication service', function() {
       });
 
       it('should require an refresh token to be returned', function(){
-        setupSignOutExpectations();
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
           200,
@@ -346,7 +318,6 @@ describe('authentication service', function() {
       });
 
       it('should require a user ID to be returned', function(){
-        setupSignOutExpectations();
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
           200,
@@ -371,7 +342,6 @@ describe('authentication service', function() {
       });
 
       it('should require a username to be returned', function(){
-        setupSignOutExpectations();
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
           200,
@@ -402,8 +372,6 @@ describe('authentication service', function() {
           username: '  \t\nUSERNAME\t\n  ',
           password: 'PASSWORD'
         };
-
-        setupSignOutExpectations();
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
           200,
