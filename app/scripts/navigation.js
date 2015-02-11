@@ -47,9 +47,9 @@ angular.module('webApp')
         color: 'yellow'
       },
       {
-        name: 'Compose',
+        name: 'New Post',
         state: states.creators.compose.name,
-        icon: 'fa fa-eye',
+        icon: 'fa fa-pencil-square-o',
         color: 'green',
         secondary:
         [
