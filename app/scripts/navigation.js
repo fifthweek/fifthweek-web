@@ -20,19 +20,19 @@ angular.module('webApp')
         id: 'Username',
         state: states.account.name,
         icon: 'fa fa-user',
-        color: undefined,
+        color: 'pink',
         secondary:
         [
           {
             name: 'Account',
             state: states.account.name,
             icon: 'fa fa-child',
-            color: 'green'
+            color: 'pink'
           },
           {
             name: 'Sign Out',
             state: states.signOut.name,
-            icon: 'fa fa-ticket',
+            icon: 'fa fa-sign-out',
             color: 'pink'
           }
         ]
@@ -50,26 +50,26 @@ angular.module('webApp')
         name: 'New Post',
         state: states.creators.compose.note.name,
         icon: 'fa fa-pencil-square-o',
-        color: 'green',
+        color: 'yellow',
         secondary:
         [
           {
             name: 'Note',
             state: states.creators.compose.note.name,
-            icon: 'fa fa-arrow-circle-down',
-            color: 'green'
+            icon: 'fa fa-quote-left',
+            color: 'yellow'
           },
           {
             name: 'Image',
             state: states.creators.compose.image.name,
-            icon: 'fa fa-list-alt',
-            color: 'green'
+            icon: 'fa fa-image',
+            color: 'yellow'
           },
           {
             name: 'File',
             state: states.creators.compose.file.name,
-            icon: 'fa fa-th',
-            color: 'green'
+            icon: 'fa fa-file-o',
+            color: 'yellow'
           }
         ]
       },
