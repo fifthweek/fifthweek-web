@@ -13,24 +13,24 @@
             id="registrationForm"
             ng-show="!registrationSucceeded">
 
-        <div class="form-group" fw-group-validation>
+        <div class="form-group" fw-form-group-validation>
           <div class="row">
             <div class="col-md-6">
               <div class="has-feedback">
                 <input type="email" class="form-control" name="email" placeholder="Email"
                        ng-model="registrationData.email"
                        required>
-                <span fw-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                <span fw-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                <span fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                <span fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               </div>
             </div>
             <div class="col-md-6">
-              <p fw-invalid class="help-block">A valid email address is required.</p>
+              <p fw-form-input-invalid class="help-block">A valid email address is required.</p>
             </div>
           </div>
         </div>
 
-        <div class="form-group" fw-group-validation>
+        <div class="form-group" fw-form-group-validation>
           <div class="row">
             <div class="col-md-6">
               <div class="has-feedback">
@@ -42,22 +42,22 @@
                        ng-maxlength="20"
                        maxlength="20"
                        required fw-check-username-availability>
-                <span fw-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                <span fw-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                <span fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                <span fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               </div>
             </div>
             <div class="col-md-6">
-              <p fw-invalid="pattern" class="help-block">Letters, numbers and underscores only.</p>
-              <p fw-invalid="minlength" class="help-block">Must be at least 2 characters.</p>
-              <p fw-invalid="maxlength" class="help-block">Must be fewer than 20 characters.</p>
-              <p fw-invalid="required" class="help-block">A username is required.</p>
+              <p fw-form-input-invalid="pattern" class="help-block">Letters, numbers and underscores only.</p>
+              <p fw-form-input-invalid="minlength" class="help-block">Must be at least 2 characters.</p>
+              <p fw-form-input-invalid="maxlength" class="help-block">Must be fewer than 20 characters.</p>
+              <p fw-form-input-invalid="required" class="help-block">A username is required.</p>
               <p ng-if="form.username.$pending.username" class="help-block">Checking availability...</p>
               <p ng-if="form.username.$error.username" class="help-block">This username is already taken!</p>
             </div>
           </div>
         </div>
 
-        <div class="form-group" fw-group-validation>
+        <div class="form-group" fw-form-group-validation>
           <div class="row">
             <div class="col-md-6">
               <div class="has-feedback">
@@ -65,13 +65,13 @@
                        ng-model="registrationData.password"
                        ng-minlength="6"
                        required>
-                <span fw-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                <span fw-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                <span fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                <span fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               </div>
             </div>
             <div class="col-md-6">
-              <p fw-invalid="minlength" class="help-block">Must be at least 6 characters.</p>
-              <p fw-invalid="required" class="help-block">A password is required.</p>
+              <p fw-form-input-invalid="minlength" class="help-block">Must be at least 6 characters.</p>
+              <p fw-form-input-invalid="required" class="help-block">A password is required.</p>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@
               data-event-title="Registration succeeded"
               data-event-category="Registration"
               fw-can-submit-form="form.$valid && form.$dirty"
-              fw-submit-form="register()">Register as creator</button>
+              fw-form-submit="register()">Register as creator</button>
           </div>
         </div>
       </form>

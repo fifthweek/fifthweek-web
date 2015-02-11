@@ -1,5 +1,5 @@
 // See: https://gist.github.com/thisboyiscrazy/5137781#comment-838257
-angular.module('webApp').directive('fwSubmitForm',
+angular.module('webApp').directive('fwFormSubmit',
   function ($q, analytics, logService, utilities) {
   'use strict';
 
@@ -35,7 +35,7 @@ angular.module('webApp').directive('fwSubmitForm',
           element.html(loadingText);
         }
 
-        return $q.when(scope.$apply(attrs.fwSubmitForm)).then(
+        return $q.when(scope.$apply(attrs.fwFormSubmit)).then(
           function(){
             scope.submissionSucceeded = true;
             var eventTitle = element.data('event-title');

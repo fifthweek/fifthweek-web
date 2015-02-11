@@ -41,7 +41,7 @@ describe('submit form directive', function(){
       scope.submit = function(){};
       spyOn(scope, 'submit');
 
-      var element = angular.element('<button fw-submit-form="submit()">default</button>');
+      var element = angular.element('<button fw-form-submit="submit()">default</button>');
       $compile(element)(scope);
       scope.$digest();
 
@@ -64,7 +64,7 @@ describe('submit form directive', function(){
       deferred = $q.defer();
       scope.submit = function() { return deferred.promise; };
 
-      element = angular.element('<button fw-submit-form="submit()">default</button>');
+      element = angular.element('<button fw-form-submit="submit()">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -418,7 +418,7 @@ describe('submit form directive', function(){
       deferred = $q.defer();
       scope.submit = function() { return deferred.promise; };
 
-      element = angular.element('<button ng-disabled="something" fw-submit-form="submit()">default</button>');
+      element = angular.element('<button ng-disabled="something" fw-form-submit="submit()">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -452,7 +452,7 @@ describe('submit form directive', function(){
       deferred = $q.defer();
       scope.submit = function() { return deferred.promise; };
 
-      element = angular.element('<button data-loading-text="loading" fw-submit-form="submit()">default</button>');
+      element = angular.element('<button data-loading-text="loading" fw-form-submit="submit()">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -483,7 +483,7 @@ describe('submit form directive', function(){
       deferred = $q.defer();
       scope.submit = function() { return deferred.promise; };
 
-      element = angular.element('<button data-event-title="title" fw-submit-form="submit()">default</button>');
+      element = angular.element('<button data-event-title="title" fw-form-submit="submit()">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -516,7 +516,7 @@ describe('submit form directive', function(){
       deferred = $q.defer();
       scope.submit = function() { return deferred.promise; };
 
-      element = angular.element('<button data-event-category="category" fw-submit-form="submit()">default</button>');
+      element = angular.element('<button data-event-category="category" fw-form-submit="submit()">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -549,7 +549,7 @@ describe('submit form directive', function(){
       deferred = $q.defer();
       scope.submit = function() { return deferred.promise; };
 
-      element = angular.element('<button data-event-title="title" data-event-category="category" fw-submit-form="submit()">default</button>');
+      element = angular.element('<button data-event-title="title" data-event-category="category" fw-form-submit="submit()">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -584,7 +584,7 @@ describe('submit form directive', function(){
       scope.canSubmitForm1 = true;
       scope.canSubmitForm2 = true;
 
-      element = angular.element('<button fw-can-submit-form="canSubmitForm1 && canSubmitForm2" fw-submit-form="submit()">default</button>');
+      element = angular.element('<button fw-can-submit-form="canSubmitForm1 && canSubmitForm2" fw-form-submit="submit()">default</button>');
       $compile(element)(scope);
       scope.$digest();
     });

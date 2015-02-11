@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwValid', function ($compile) {
+angular.module('webApp').directive('fwFormInputValid', function ($compile) {
   'use strict';
 
   return {
@@ -20,7 +20,7 @@ angular.module('webApp').directive('fwValid', function ($compile) {
       var inputName = closest('input', element).attr('name');
       var ngIf = 'form.' + inputName + '.$valid && form.' + inputName + '.$touched';
 
-      element.removeAttr('fw-valid'); // Remove self to avoid infinite compilation loop.
+      element.removeAttr('fw-form-input-valid'); // Remove self to avoid infinite compilation loop.
       element.attr('ng-if', ngIf);
       $compile(element)(scope);
     }

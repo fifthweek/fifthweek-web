@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwInvalid', function ($compile) {
+angular.module('webApp').directive('fwFormInputInvalid', function ($compile) {
   'use strict';
 
   return {
@@ -19,7 +19,7 @@ angular.module('webApp').directive('fwInvalid', function ($compile) {
 
       var ngIf;
       var inputName = closest('input', element).attr('name');
-      var ruleName = attrs.fwInvalid;
+      var ruleName = attrs.fwFormInputInvalid;
 
       if (ruleName) {
         ngIf = 'form.' + inputName + '.$error.' + ruleName + ' && ((form.' + inputName + '.$touched && form.' + inputName + '.$dirty) || form.$submitted)';
@@ -28,7 +28,7 @@ angular.module('webApp').directive('fwInvalid', function ($compile) {
         ngIf = 'form.' + inputName + '.$invalid && ((form.' + inputName + '.$touched && form.' + inputName + '.$dirty) || form.$submitted)';
       }
 
-      element.removeAttr('fw-invalid'); // Remove self to avoid infinite compilation loop.
+      element.removeAttr('fw-form-input-invalid'); // Remove self to avoid infinite compilation loop.
       element.attr('ng-if', ngIf);
       $compile(element)(scope);
     }
