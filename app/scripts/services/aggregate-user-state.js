@@ -13,7 +13,7 @@ angular.module('webApp')
 
     var localStorageName = 'aggregateUserState';
 
-    var broadcastSynchronized = function(){
+    var broadcastUpdated = function(){
       $rootScope.$broadcast(aggregateUserStateConstants.updatedEvent, service.currentValue);
     };
 
@@ -44,7 +44,7 @@ angular.module('webApp')
       }
 
       localStorageService.set(localStorageName, service.currentValue);
-      broadcastSynchronized();
+      broadcastUpdated();
     };
 
     service.updateFromServer = function(userId) {
