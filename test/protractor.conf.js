@@ -3,7 +3,9 @@ exports.config = {
   baseUrl: 'http://localhost:9001',
   specs: ['e2e/*.spec.js'],
   capabilities: {
-    browserName: 'firefox'
+    browserName: 'firefox',
+    shardTestFiles: true,
+    maxInstances: 2
   },
   onPrepare: function () {
     // The require statement must be down here, since jasmine-reporters
