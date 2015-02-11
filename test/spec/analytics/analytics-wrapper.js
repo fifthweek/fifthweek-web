@@ -1,4 +1,5 @@
 describe('analytics wrapper', function(){
+  'use strict';
 
   beforeEach(module('webApp'));
 
@@ -33,10 +34,10 @@ describe('analytics wrapper', function(){
 
   it('should log and absorb thrown errors from the eventTrack method', function(){
 
-    $analytics.eventTrack = function() { throw 'error' };
+    $analytics.eventTrack = function() { throw 'error'; };
 
     var catchResult;
-    target.eventTrack('title', 'eventCategory').catch(function(error) { catchResult = error });
+    target.eventTrack('title', 'eventCategory').catch(function(error) { catchResult = error; });
 
     expect(logService.error).toHaveBeenCalledWith('error');
     expect(catchResult).toBeUndefined();
@@ -47,7 +48,7 @@ describe('analytics wrapper', function(){
     $analytics.eventTrack = function() { return $q.reject('error'); };
 
     var catchResult;
-    target.eventTrack('title', 'eventCategory').catch(function(error) { catchResult = error });
+    target.eventTrack('title', 'eventCategory').catch(function(error) { catchResult = error; });
 
     $rootScope.$apply();
 
@@ -64,10 +65,10 @@ describe('analytics wrapper', function(){
 
   it('should log and absorb thrown errors from the setUsername method', function(){
 
-    $analytics.setUsername = function() { throw 'error' };
+    $analytics.setUsername = function() { throw 'error'; };
 
     var catchResult;
-    target.setUsername('username').catch(function(error) { catchResult = error });
+    target.setUsername('username').catch(function(error) { catchResult = error; });
 
     expect(logService.error).toHaveBeenCalledWith('error');
     expect(catchResult).toBeUndefined();
@@ -78,7 +79,7 @@ describe('analytics wrapper', function(){
     $analytics.setUsername = function() { return $q.reject('error'); };
 
     var catchResult;
-    target.setUsername('username').catch(function(error) { catchResult = error });
+    target.setUsername('username').catch(function(error) { catchResult = error; });
 
     $rootScope.$apply();
 
