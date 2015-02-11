@@ -7,6 +7,7 @@ body {
 
 body {
   font-family:'Lato', cursive;
+  font-size:0; /* Anything other than 0 appears to add excess margin/padding to elements */
   -webkit-font-smoothing: antialiased;
   color:$grey-dark;
 }

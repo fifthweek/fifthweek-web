@@ -7,7 +7,7 @@
     weight:300;
   }
   a {
-    color:#ffffff;
+    color:$white-1;
     #{$state-hover-focus} {
       text-decoration:none;
     }

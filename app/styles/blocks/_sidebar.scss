@@ -41,13 +41,15 @@ $item-padding:$item-padding-tb $item-padding-lr;
       color:$icon-default-color;
     }
     hr{
-      margin: 2px 0px;
-      border-color:$blue-dark-3;
-      border-width: 2px;
+      margin: 3px 0px;
+      border-color:#323f4d;
+      border-width: 1px;
     }
     > a {
       display:inline-block;
       width:100%;
+      font-weight:bold;
+      font-size:15px;
       padding:$item-padding;
       color:$white-1;
       border-bottom:solid 1px $blue-dark-2;
