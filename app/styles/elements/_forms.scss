@@ -46,6 +46,14 @@ textarea.form-control {
   }
 }
 
+select {
+  font-size:16px;
+  width:100%;
+  @media (min-width:$bp-small) {
+    width:auto;
+  }
+}
+
 //buttons
 .btn {
   border:0 none;
