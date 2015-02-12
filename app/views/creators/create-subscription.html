@@ -19,7 +19,8 @@
                            ng-model="newSubscriptionData.subscriptionName"
                            ng-maxlength="25"
                            maxlength="25"
-                           required/>
+                           required
+                           focus=true />
                     </div>
                   <small>e.g. your name</small>
                 </div>
@@ -62,8 +63,9 @@
                       <input type="text"
                              class="form-control"
                              name="subscriptionPrice"
-                             placeholder="1.00"
                              ng-model="newSubscriptionData.basePrice"
+                             money
+                             min="0.01"
                              required>
                     <div class="input-group-addon">per week</div>
                   </div>
@@ -73,6 +75,7 @@
                   <span style="right: 98px;" fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-6">
+                  <p fw-form-input-invalid-p="min">Must be at least one cent.</p>
                   <p fw-form-input-invalid-p="required">A price is required.</p>
                 </div>
               </div>
@@ -89,10 +92,13 @@
                 fw-form-submit="continue()">Save and Continue</button>
             </div>
 
-            <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
-              <p>{{message}}</p>
+            <div class="row">
+              <div class="col-md-6">
+                <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
+                  <p>{{message}}</p>
+                </div>
+              </div>
             </div>
-
           </form>
       </div>
     </div>

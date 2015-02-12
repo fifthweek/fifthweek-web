@@ -1,5 +1,13 @@
 @import '_base';
 
+body {
+  font-family:'Lato', cursive;
+  font-size:0; /* Anything other than 0 appears to add excess margin/padding to elements */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color:$grey-dark;
+}
+
 h1, .h1,
 h2, .h2,
 h3, .h3,
@@ -103,9 +111,11 @@ hr {
   font-weight:bold;
 }
 
-form small {
-  font-size:14px;
-  color:#9e9ea6;
+.form-group {
+  small {
+    font-size:14px;
+    color:#9e9ea6;
+  }
 }
 
 .nav-tabs > li {
