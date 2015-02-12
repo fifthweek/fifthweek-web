@@ -10,7 +10,10 @@ angular.module('routes', ['ui.router'])
       name: 'home'
     },
     signIn: {
-      name: 'signIn'
+      name: 'signIn',
+      forgot: {
+        name: 'signIn.forgot'
+      }
     },
     signOut: {
       name: 'signOut'
@@ -90,6 +93,18 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Sign In',
           headTitle: ' - ' + 'Sign In',
+          access: {
+            requireUnauthenticated: true
+          }
+        }
+      })
+      .state(states.signIn.forgot.name, {
+        url: '/forgot',
+        templateUrl: 'views/signin-forgot.html',
+        controller: 'SignInForgotCtrl',
+        data : {
+          pageTitle: 'Forgot Details',
+          headTitle: ' - ' + 'Forgot Details',
           access: {
             requireUnauthenticated: true
           }
