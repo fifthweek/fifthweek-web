@@ -16,7 +16,9 @@
             </div>
 
             <div class="inner-row cancel-col-widths">
-              <select ng-model="sharePreferenceInit" ng-options="preference.name for preference in sharePreference"></select>
+              <div class="col-sm-5">
+                <select class="select-full-width" ng-model="sharePreferenceInit" ng-options="preference.name for preference in sharePreference"></select>
+              </div>
             </div>
 
             <div class="row">
