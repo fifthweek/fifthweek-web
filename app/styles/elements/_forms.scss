@@ -65,3 +65,12 @@ select {
 .help-block {
   margin: 11px 0 0 0;
 }
+
+.btn-alternate-action {
+  text-align: right;
+  margin-top: 8px;
+  @media (max-width:$screen-ss-max) {
+    margin-top: 15px;
+    text-align: center;
+  }
+}
