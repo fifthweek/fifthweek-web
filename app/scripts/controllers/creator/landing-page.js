@@ -25,35 +25,14 @@ angular.module('webApp').controller('landingPageCtrl', function($scope) {
 
   $scope.$watch('channels', function() {
 
-    //create a blank array to store prices
-    var selectedChannels = new Array();
-
-    //iterate through each object
-    //if an object has a 'checked' property with true value/boolean
-    //add the object's price value to the array
-    for (var channel in $scope.channels) {
-      var checked = $scope.channels[channel].checked;
-      var price = $scope.channels[channel].price;
-      if (checked === true)  {
-        //console.info('Checked: ', a);
-        selectedChannels.push(price);
-
-        var totalPrice = 0;
-
-        //add up the array for a total price
-        var arrLength = selectedChannels.length;
-        while (arrLength--) {
-          totalPrice += parseFloat(selectedChannels[arrLength]);
-        }
-      }
-      //remove price from array if unchecked
-      else if (checked === false)  {
-        //console.info('unchecked: ', price);
-        selectedChannels.splice(channel);
-      }
-    }
-    totalPrice = totalPrice.toFixed(2);
-    $scope.totalPrice = totalPrice;
+    $scope.totalPrice = _($scope.channels)
+      .filter(function(channel) {
+        return channel.checked === true;
+      })
+      .reduce(function(sum, channel) {
+        return sum + parseFloat(channel.price); },
+      0)
+      .toFixed(2);
 
   }, true);
 });
