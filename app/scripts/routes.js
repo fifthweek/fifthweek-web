@@ -116,8 +116,8 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'views/sign-in/forgot.html',
         controller: 'SignInForgotCtrl',
         data : {
-          pageTitle: 'Forgot Details',
-          headTitle: ' - ' + 'Forgot Details',
+          pageTitle: 'Forgot Your Details?',
+          headTitle: ' - ' + 'Forgot Your Details?',
           access: {
             requireUnauthenticated: true
           }
