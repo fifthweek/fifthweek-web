@@ -1,41 +1,30 @@
-﻿<div class="row">
-  <div class="
-    col-ss-offset-1 col-ss-10
-    col-s-offset-0 col-s-8
-    col-sm-7
-    col-md-6">
+﻿<fw-panel50>
 
-    <div class="panel panel-default top-of-page">
-      <div class="panel-body jumbo-panel">
-
-        <form role="form">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" ng-model="passwordResetRequestData.username" required focus=true>
-          </div>
-
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Email" ng-model="passwordResetRequestData.email" required>
-          </div>
-
-          <div class="row-btn">
-            <button
-              id="password-reset-request-button"
-              class="btn btn-success btn-block"
-              type="submit"
-              data-event-title="Password reset requested"
-              data-event-category="Sign-in"
-              data-loading-text="Sending request..."
-              fw-form-submit="requestPasswordReset()">Reset Password</button>
-          </div>
-
-          <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
-            <p>{{message}}</p>
-          </div>
-        </form>
-
-      </div>
+  <form role="form">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Username" ng-model="passwordResetRequestData.username" required focus=true>
     </div>
-  </div>
-</div>
+
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Email" ng-model="passwordResetRequestData.email" required>
+    </div>
+
+    <div class="row-btn">
+      <button
+        id="password-reset-request-button"
+        class="btn btn-success btn-block"
+        type="submit"
+        data-event-title="Password reset requested"
+        data-event-category="Sign-in"
+        data-loading-text="Sending request..."
+        fw-form-submit="requestPasswordReset()">Reset Password</button>
+    </div>
+
+    <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
+      <p>{{message}}</p>
+    </div>
+  </form>
+
+</fw-panel50>
 
 
