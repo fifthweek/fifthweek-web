@@ -1,4 +1,5 @@
 var SignOutPage = require('../../pages/sign-out.page.js');
+var RegisterPage = require('../../pages/register.page.js');
 var CreateSubscriptionPage = require('../../pages/creators/create-subscription.page.js');
 var HeaderPage = require('../../pages/header.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
@@ -9,14 +10,17 @@ describe('create subscription page', function() {
   var header = new HeaderPage();
   var sidebar = new SidebarPage();
   var signOutPage = new SignOutPage();
+  var registerPage = new RegisterPage();
   var page = new CreateSubscriptionPage();
 
-  signOutPage.signOutAndGoHome();
-  page.submitSuccessfully();
+  it('should run once before all', function() {
+    signOutPage.signOutAndGoHome();
+    registerPage.registerSuccessfully();
+  });
 
   describe('header', function() {
 
-    iit('should contain title', function() {
+    it('should contain title', function() {
       expect(header.title.getText()).toContain('Create Your Subscription');
     });
   });
@@ -28,15 +32,15 @@ describe('create subscription page', function() {
     });
 
     it('should contain current page, highlighted', function () {
-
+      expect(sidebar.createSubscriptionLink.getAttribute('class')).toContain('active');
     });
 
-    it('should contain "Settings"', function () {
-
+    it('should contain "Settings" page', function () {
+      expect(sidebar.settingsLink.isDisplayed()).toBe(true);
     });
 
-    it('should contain "Help"', function () {
-
+    it('should contain "Help" page', function () {
+      expect(sidebar.helpLink.isDisplayed()).toBe(true);
     });
   });
 });

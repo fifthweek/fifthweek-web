@@ -13,10 +13,12 @@ describe('contact us', function() {
   var sidebar = new SidebarPage();
   var header = new HeaderHelpPage();
 
-  signOutPage.signOutAndGoHome();
-  homePage.signInLink.click();
-  sidebar.helpLink.click();
-  header.contactLink.click();
+  it('should run once before all', function() {
+    signOutPage.signOutAndGoHome();
+    homePage.signInLink.click();
+    sidebar.helpLink.click();
+    header.contactLink.click();
+  });
 
   it('should contain a link to email Fifthweek', function() {
     expect(page.mailtoLink.getAttribute('href')).toContain('mailto:hello@fifthweek.com');

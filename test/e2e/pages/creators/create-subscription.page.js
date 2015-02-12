@@ -1,7 +1,5 @@
 'use strict';
 
-var RegisterPage = require('../register.page.js');
-
 var CreateSubscriptionPage = function() {};
 
 CreateSubscriptionPage.prototype = Object.create({}, {
@@ -22,8 +20,6 @@ CreateSubscriptionPage.prototype = Object.create({}, {
     return (Math.random() * 10).toFixed(2);
   }},
   submitSuccessfully: { value: function() {
-    var registerPage = new RegisterPage();
-    registerPage.registerSuccessfully();
     var name = this.newName();
     var tagline = this.newTagline();
     var basePrice = this.newBasePrice();

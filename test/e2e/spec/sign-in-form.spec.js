@@ -24,8 +24,6 @@ describe('sign-in form', function() {
       username = signInData.username;
       password = signInData.password;
 
-      // Wait for angular here because getting a new page doesn't wait.
-      browser.waitForAngular();
       signOutPage.signOutAndGoHome();
 
       homePage.signInLink.click();
