@@ -60,7 +60,7 @@ select {
 }
 
 .btn + .btn {
-  @media (min-width:$bp-medium) {
+  @media (min-width:$screen-sm-min) {
     margin-left:$main-cont-padding-small;
   }
 }
@@ -81,7 +81,7 @@ input[type="button"].btn-block,
 
 .btn-block + .btn-block {
   margin-top:$main-cont-padding-small;
-  @media (min-width:$bp-medium) {
+  @media (min-width:$screen-sm-min) {
     margin-top:0;
   }
 }
