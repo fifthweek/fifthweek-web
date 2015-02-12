@@ -1,5 +1,7 @@
 'use strict';
 
+var CreateSubscriptionPage = require('./creators/create-subscription.page.js');
+
 var RegisterPage = function() {};
 
 RegisterPage.prototype = Object.create({},
@@ -9,6 +11,7 @@ RegisterPage.prototype = Object.create({},
   passwordTextBox: { get: function () { return element(by.model('registrationData.password')); }},
   registerButton: { get: function () { return element(by.id('register-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#registrationForm .help-block')); }},
+  nextPageUrl: { get: function () { return new CreateSubscriptionPage().pageUrl; }},
   newUsername: { value: function() {
     return 'wd_' + Date.now().toString().split('').reverse().join('');
   }},

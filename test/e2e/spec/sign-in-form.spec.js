@@ -2,7 +2,6 @@ var HomePage = require('../pages/home.page.js');
 var SignOutPage = require('../pages/sign-out.page.js');
 var SignInPage = require('../pages/sign-in.page.js');
 var RegisterPage = require('../pages/register.page.js');
-var CreateSubscriptionPage = require('../pages/creators/create-subscription.page.js');
 
 describe('sign-in form', function() {
   'use strict';
@@ -36,7 +35,20 @@ describe('sign-in form', function() {
       page.usernameTextBox.sendKeys(username);
       page.passwordTextBox.sendKeys(password);
       page.signInButton.click();
-      expect(browser.getCurrentUrl()).toContain(new CreateSubscriptionPage().pageUrl);
+      expect(browser.getCurrentUrl()).toContain(page.nextPageUrl);
+    });
+
+    it('should be case insensitive for the username', function(){
+      // Change the first letter to upper case, and check the result.
+      var username2 = username.charAt(0).toUpperCase() + username.substring(1);
+      expect(username.length === username2.length).toBeTruthy();
+      expect(username !== username2).toBeTruthy();
+
+      page.usernameTextBox.sendKeys(username2);
+      page.passwordTextBox.sendKeys(password);
+      page.signInButton.click();
+
+      expect(browser.getCurrentUrl()).toContain(page.nextPageUrl);
     });
 
     it('should require a valid password', function(){
@@ -51,19 +63,6 @@ describe('sign-in form', function() {
       page.passwordTextBox.sendKeys(password);
       page.signInButton.click();
       expect(page.message.getText()).toContain('Invalid username or password');
-    });
-
-    it('should be case insensitive for the username', function(){
-      // Change the first letter to upper case, and check the result.
-      var username2 = username.charAt(0).toUpperCase() + username.substring(1);
-      expect(username.length === username2.length).toBeTruthy();
-      expect(username !== username2).toBeTruthy();
-
-      page.usernameTextBox.sendKeys(username2);
-      page.passwordTextBox.sendKeys(password);
-      page.signInButton.click();
-
-      expect(browser.getCurrentUrl()).toContain(new CreateSubscriptionPage().pageUrl);
     });
 
     it('should case sensitive for the password', function(){
