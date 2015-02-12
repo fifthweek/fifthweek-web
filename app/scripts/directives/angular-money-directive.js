@@ -22,7 +22,6 @@ angular.module('webApp').directive('money', function () {
       return ngModelCtrl.$isEmpty(value) ? '' : '' + value;
     }
 
-
     ngModelCtrl.$parsers.push(function (value) {
       if (angular.isUndefined(value)) {
         value = '';

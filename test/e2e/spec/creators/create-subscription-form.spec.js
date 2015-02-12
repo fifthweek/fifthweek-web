@@ -188,35 +188,15 @@ describe('create subscription form', function() {
 
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys('abc');
-      page.taglineTextBox.clear();
       expect(page.basePriceTextBox.getAttribute('value')).toBe('');
 
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys('123abc');
-      page.taglineTextBox.clear();
-      expect(page.basePriceTextBox.getAttribute('value')).toBe('123.00');
+      expect(page.basePriceTextBox.getAttribute('value')).toBe('123');
 
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys('1.2.3');
-      page.taglineTextBox.clear();
       expect(page.basePriceTextBox.getAttribute('value')).toBe('1.23');
-
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('1.2345');
-      page.taglineTextBox.clear();
-      expect(page.basePriceTextBox.getAttribute('value')).toBe('1.23');
-
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('1.23');
-      page.basePriceTextBox.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.BACK_SPACE);
-      page.taglineTextBox.clear();
-      expect(page.basePriceTextBox.getAttribute('value')).toBe('1.00');
-
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('1.23');
-      page.basePriceTextBox.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.BACK_SPACE + protractor.Key.BACK_SPACE);
-      page.taglineTextBox.clear();
-      expect(page.basePriceTextBox.getAttribute('value')).toBe('1.00');
     });
   });
 });
