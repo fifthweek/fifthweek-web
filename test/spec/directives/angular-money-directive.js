@@ -21,7 +21,7 @@ describe('angular-money-directive', function () {
     scope.$digest();
 
     form = scope.form;
-    inputEl = formEl.find('input')
+    inputEl = formEl.find('input');
   }
 
 
