@@ -1,107 +1,101 @@
-<div class="row">
-  <div class="col-md-12">
+<fw-panel100>
 
-    <div class="panel panel-default">
-      <div class="panel-body jumbo-panel">
-          <form novalidate
-                role="form"
-                name="form"
-                id="createSubscriptionForm">
+  <form novalidate
+        role="form"
+        name="form"
+        id="createSubscriptionForm">
 
-            <div class="form-group" fw-form-group-validation>
-              <div class="row">
-                <div class="col-md-6">
-                  <div fw-form-input-glyphs>
-                    <input type="text"
-                           class="form-control"
-                           name="subscriptionName"
-                           placeholder="Subscription name"
-                           ng-model="newSubscriptionData.subscriptionName"
-                           ng-maxlength="25"
-                           maxlength="25"
-                           required
-                           focus=true />
-                    </div>
-                  <small>e.g. your name</small>
-                </div>
-                <div class="col-md-6">
-                  <p fw-form-input-invalid-p="maxlength">Allowed 25 characters at most.</p>
-                  <p fw-form-input-invalid-p="required">A name is required.</p>
-                </div>
-              </div>
+    <div class="form-group" fw-form-group-validation>
+      <div class="row">
+        <div class="col-md-6">
+          <div fw-form-input-glyphs>
+            <input type="text"
+                   class="form-control"
+                   name="subscriptionName"
+                   placeholder="Subscription name"
+                   ng-model="newSubscriptionData.subscriptionName"
+                   ng-maxlength="25"
+                   maxlength="25"
+                   required
+                   focus=true />
             </div>
-
-            <div class="form-group" fw-form-group-validation>
-              <div class="row">
-                <div class="col-md-6">
-                  <div fw-form-input-glyphs>
-                    <input type="text"
-                           class="form-control"
-                           name="subscriptionTagline"
-                           placeholder="Tagline"
-                           ng-model="newSubscriptionData.tagline"
-                           ng-minlength="5"
-                           ng-maxlength="55"
-                           maxlength="55"
-                           required/>
-                  </div>
-                  <small>e.g. &#34;Web Comics And More&#34;</small>
-                </div>
-                <div class="col-md-6">
-                  <p fw-form-input-invalid-p="minlength">Must be at least 5 characters.</p>
-                  <p fw-form-input-invalid-p="maxlength">Allowed 55 characters at most.</p>
-                  <p fw-form-input-invalid-p="required">A tagline is required.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group" fw-form-group-validation>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="input-group">
-                    <div class="input-group-addon">&#36;</div>
-                      <input type="text"
-                             class="form-control"
-                             name="subscriptionPrice"
-                             ng-model="newSubscriptionData.basePrice"
-                             money
-                             min="0.01"
-                             required>
-                    <div class="input-group-addon">per week</div>
-                  </div>
-                  <small>i.e. the amount people will pay you</small>
-                  <!-- https://github.com/twbs/bootstrap/issues/12551 -->
-                  <span style="right: 98px;" fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                  <span style="right: 98px;" fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                </div>
-                <div class="col-md-6">
-                  <p fw-form-input-invalid-p="min">Must be at least one cent.</p>
-                  <p fw-form-input-invalid-p="required">A price is required.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="row-btn">
-              <button
-                id="create-subscription-button"
-                class="btn btn-block btn-success"
-                data-loading-text="Saving..."
-                data-event-title="Subscription created"
-                data-event-category="Registration"
-                fw-can-submit-form="form.$valid && form.$dirty"
-                fw-form-submit="continue()">Save and Continue</button>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
-                  <p>{{message}}</p>
-                </div>
-              </div>
-            </div>
-          </form>
+          <small>e.g. your name</small>
+        </div>
+        <div class="col-md-6">
+          <p fw-form-input-invalid-p="maxlength">Allowed 25 characters at most.</p>
+          <p fw-form-input-invalid-p="required">A name is required.</p>
+        </div>
       </div>
     </div>
 
-  </div>
-</div>
+    <div class="form-group" fw-form-group-validation>
+      <div class="row">
+        <div class="col-md-6">
+          <div fw-form-input-glyphs>
+            <input type="text"
+                   class="form-control"
+                   name="subscriptionTagline"
+                   placeholder="Tagline"
+                   ng-model="newSubscriptionData.tagline"
+                   ng-minlength="5"
+                   ng-maxlength="55"
+                   maxlength="55"
+                   required/>
+          </div>
+          <small>e.g. &#34;Web Comics And More&#34;</small>
+        </div>
+        <div class="col-md-6">
+          <p fw-form-input-invalid-p="minlength">Must be at least 5 characters.</p>
+          <p fw-form-input-invalid-p="maxlength">Allowed 55 characters at most.</p>
+          <p fw-form-input-invalid-p="required">A tagline is required.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" fw-form-group-validation>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">&#36;</div>
+              <input type="text"
+                     class="form-control"
+                     name="subscriptionPrice"
+                     ng-model="newSubscriptionData.basePrice"
+                     money
+                     min="0.01"
+                     required>
+            <div class="input-group-addon">per week</div>
+          </div>
+          <small>i.e. the amount people will pay you</small>
+          <!-- https://github.com/twbs/bootstrap/issues/12551 -->
+          <span style="right: 98px;" fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+          <span style="right: 98px;" fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+        </div>
+        <div class="col-md-6">
+          <p fw-form-input-invalid-p="min">Must be at least one cent.</p>
+          <p fw-form-input-invalid-p="required">A price is required.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-btn">
+      <button
+        id="create-subscription-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Saving..."
+        data-event-title="Subscription created"
+        data-event-category="Registration"
+        fw-can-submit-form="form.$valid && form.$dirty"
+        fw-form-submit="continue()">Save and Continue</button>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
+          <p>{{message}}</p>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</fw-panel100>
