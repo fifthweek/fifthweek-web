@@ -49,7 +49,7 @@ textarea.form-control {
 select {
   font-size:16px;
   width:100%;
-  @media (min-width:$bp-small) {
+  @media (min-width:$screen-s-min) {
     width:auto;
   }
 }
