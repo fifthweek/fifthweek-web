@@ -11,7 +11,7 @@ angular.module('webApp')
       },
       {
         name: 'Sign In',
-        state: states.signIn.name,
+        state: states.signIn.signIn.name,
         icon: 'fa fa-sign-in',
         color: 'green'
       },

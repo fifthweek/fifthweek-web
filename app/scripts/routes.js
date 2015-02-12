@@ -11,6 +11,9 @@ angular.module('routes', ['ui.router'])
     },
     signIn: {
       name: 'signIn',
+      signIn: {
+        name: 'signIn.signIn'
+      },
       forgot: {
         name: 'signIn.forgot'
       }
@@ -88,7 +91,17 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.signIn.name, {
         url: '/signin',
-        templateUrl: 'views/signin.html',
+        templateUrl: 'views/sign-in/index.html',
+        redirectTo: states.signIn.signIn.name,
+        data : {
+          access: {
+            requireUnauthenticated: true
+          }
+        }
+      })
+      .state(states.signIn.signIn.name, {
+        url: '/signin',
+        templateUrl: 'views/sign-in/sign-in.html',
         controller: 'SignInCtrl',
         data : {
           pageTitle: 'Sign In',
@@ -100,7 +113,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.signIn.forgot.name, {
         url: '/forgot',
-        templateUrl: 'views/signin-forgot.html',
+        templateUrl: 'views/sign-in/forgot.html',
         controller: 'SignInForgotCtrl',
         data : {
           pageTitle: 'Forgot Details',
