@@ -4,5 +4,6 @@ angular.module('webApp')
 
     $scope.date = datepickerService.date;
     $scope.open = datepickerService.open;
+    $scope.format = datepickerService.format;
 
   });

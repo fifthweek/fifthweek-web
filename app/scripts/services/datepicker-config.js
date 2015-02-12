@@ -12,6 +12,12 @@ angular.module('webApp').factory('datepickerService', function() {
       this.opened = true;
     };
 
+    //eg
+    //factory.formats = ['dd-MMMM', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'longDate', 'shortDate', 'fullDate'];
+
+    factory.formats = ['fullDate'];
+    factory.format = factory.formats[0];
+
     return factory;
 
   });
