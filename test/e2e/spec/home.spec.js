@@ -7,9 +7,7 @@ describe("homepage", function() {
   var homePage = new HomePage();
   var signOutPage = new SignOutPage();
 
-  beforeEach(function() {
-    signOutPage.signOutAndGoHome();
-  });
+  signOutPage.signOutAndGoHome();
 
   it('should have a sign-in link', function() {
     expect(homePage.signInLink.getText()).toContain('Sign In');

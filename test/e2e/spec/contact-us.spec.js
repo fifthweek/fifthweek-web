@@ -1,7 +1,7 @@
 var HomePage = require('../pages/home.page.js');
 var SignOutPage = require('../pages/sign-out.page.js');
-var NavigationPage = require('../pages/navigation.page.js');
-var NavigationHelpPage = require('../pages/navigation-help.page.js');
+var SidebarPage = require('../pages/sidebar.page.js');
+var HeaderHelpPage = require('../pages/header-help.page.js');
 var ContactUsPage = require('../pages/contact-us.page.js');
 
 describe('contact us', function() {
@@ -10,15 +10,13 @@ describe('contact us', function() {
   var page = new ContactUsPage();
   var homePage = new HomePage();
   var signOutPage = new SignOutPage();
-  var navigation = new NavigationPage();
-  var navigationHelp = new NavigationHelpPage();
+  var sidebar = new SidebarPage();
+  var header = new HeaderHelpPage();
 
-  beforeEach(function() {
-    signOutPage.signOutAndGoHome();
-    homePage.signInLink.click();
-    navigation.helpButton.click();
-    navigationHelp.contactButton.click();
-  });
+  signOutPage.signOutAndGoHome();
+  homePage.signInLink.click();
+  sidebar.helpLink.click();
+  header.contactLink.click();
 
   it('should contain a link to email Fifthweek', function() {
     expect(page.mailtoLink.getAttribute('href')).toContain('mailto:hello@fifthweek.com');

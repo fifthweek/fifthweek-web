@@ -195,6 +195,10 @@ describe('create subscription form', function() {
       expect(page.basePriceTextBox.getAttribute('value')).toBe('123');
 
       page.basePriceTextBox.clear();
+      page.basePriceTextBox.sendKeys('abc123abc');
+      expect(page.basePriceTextBox.getAttribute('value')).toBe('123');
+
+      page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys('1.2.3');
       expect(page.basePriceTextBox.getAttribute('value')).toBe('1.23');
     });
