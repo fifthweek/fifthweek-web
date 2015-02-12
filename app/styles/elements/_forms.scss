@@ -59,6 +59,12 @@ select {
   border:0 none;
 }
 
+.btn + .btn {
+  @media (min-width:$bp-medium) {
+    margin-left:$main-cont-padding-small;
+  }
+}
+
 input[type="submit"].btn-block,
 input[type="reset"].btn-block,
 input[type="button"].btn-block,
@@ -70,6 +76,13 @@ input[type="button"].btn-block,
   }
   @media (max-width:$screen-s-max) {
     height: $input-height-base;
+  }
+}
+
+.btn-block + .btn-block {
+  margin-top:$main-cont-padding-small;
+  @media (min-width:$bp-medium) {
+    margin-top:0;
   }
 }
 
