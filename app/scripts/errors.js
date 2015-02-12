@@ -14,6 +14,20 @@ function ApiError(message) {
 ApiError.prototype = Object.create(Error.prototype);
 ApiError.prototype.constructor = ApiError;
 
+function UnauthenticatedError(message) {
+  this.message = message;
+  this.stack = Error().stack;
+}
+UnauthenticatedError.prototype = Object.create(ApiError.prototype);
+UnauthenticatedError.prototype.constructor = UnauthenticatedError;
+
+function UnauthorizedError(message) {
+  this.message = message;
+  this.stack = Error().stack;
+}
+UnauthorizedError.prototype = Object.create(ApiError.prototype);
+UnauthorizedError.prototype.constructor = UnauthorizedError;
+
 function ConnectionError(message) {
   this.message = message;
   this.stack = Error().stack;

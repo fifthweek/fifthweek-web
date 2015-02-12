@@ -67,12 +67,19 @@ angular.module('webApp')
     service.logUnhandledError = function(exception, cause) {
       if(service.shouldLog(exception) || service.shouldLog(cause))
       {
-        var message = {
-          cause: cause,
-          exception: exception
-        };
+        if(exception instanceof ApiError)
+        {
+          // We don't log API errors to the server (as they have already been logged).
+          $log.info(exception.message);
+        }
+        else {
+          var message = {
+            cause: cause,
+            exception: exception
+          };
 
-        return logToServer('error', message);
+          return logToServer('error', message);
+        }
       }
     };
 

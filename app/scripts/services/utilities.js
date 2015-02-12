@@ -11,6 +11,12 @@ angular.module('webApp')
       if(response.status === 0){
         return new ConnectionError(response);
       }
+      else if(response.status === 401){
+        return new UnauthenticatedError('Not authenticated.');
+      }
+      else if(response.status === 403){
+        return new UnauthorizedError('Not authorized.');
+      }
       else{
         if(response.data !== undefined) {
           if (response.data.message !== undefined) {

@@ -27,6 +27,8 @@
     "jQuery": false,
     "ApiError": false,
     "FifthweekError": false,
+    "UnauthenticatedError": false,
+    "UnauthorizedError": false,
     "ConnectionError": false,
     "ActiveXObject": false,
     "_": false

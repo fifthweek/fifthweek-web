@@ -40,6 +40,8 @@
     "element": false,
     "by": false,
     "ApiError": false,
+    "UnauthenticatedError": false,
+    "UnauthorizedError": false,
     "FifthweekError": false,
     "ConnectionError": false,
     "_": false

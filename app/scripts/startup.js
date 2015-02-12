@@ -40,7 +40,7 @@
         stateChangeService.redirectAwayIfRequired(event, toState, toParams);
       });
     })
-    .run(function($state, stateChangeService, authenticationService, aggregateUserState) {
+    .run(function($state, stateChangeService, authenticationService, aggregateUserState, logService) {
       aggregateUserState.updateFromServer(authenticationService.currentUser.userId)
         .then(function() {
           if (!stateChangeService.isPermitted($state.current)) {
@@ -51,8 +51,8 @@
               $state.params);
           }
         })
-        .catch(function() {
-          throw new FifthweekError('Failed to asynchronously update user state from server on startup.');
+        .catch(function(error) {
+          logService.error(error);
         });
     })
     .run(function ($rootScope, $state, $stateParams) {
