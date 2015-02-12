@@ -1,14 +1,18 @@
-$screen-xs-max:500px;
-$screen-ss-min:500px;
+/* Define custom breakpoints */
+$screen-ss:500px;
+$screen-s:600px;
 
-$screen-ss-max:600px;
-$screen-s-min:600px;
+/* Redefine Bootstrap breakpoints */
+$screen-sm:768px;
+$screen-md:992px;
+$screen-lg:1100px;
 
-$screen-s-max:768px;
-$screen-sm-min:768px;
+/* Redefine Bootstrap XS max (incorrectly inferred from SM otherwise) */
+$screen-xs-max:($screen-ss - 1);
 
-$screen-sm-max:992px;
-$screen-md-min:992px;
+/* Define min/max for custom breakpoints */
+$screen-ss-min:$screen-ss;
+$screen-ss-max:($screen-s - 1);
+$screen-s-min:$screen-s;
+$screen-s-max:($screen-sm - 1);
 
-$screen-md-max:1100px;
-$screen-lg-min:1100px;

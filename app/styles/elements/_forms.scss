@@ -71,7 +71,7 @@ input[type="button"].btn-block,
 .btn-block {
   display:inline-block;
   vertical-align:top;
-  @media (min-width:$screen-sm-min) {
+  @media (min-width:$screen-s-min) {
     width:auto;
   }
   @media (max-width:$screen-s-max) {

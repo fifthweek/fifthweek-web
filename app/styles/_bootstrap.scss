@@ -1,3 +1,33 @@
 @import '_base';
-@import 'bootstrap-sass-official/assets/stylesheets/_bootstrap.scss';
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
 
+/* Define grid system for custom breakpoints */
+@media (min-width: $screen-ss-min) {
+  @include make-grid(ss);
+}
+
+@media (min-width: $screen-s-min) {
+  @include make-grid(s);
+}
+
+@mixin make-grid-columns-2($i: 1, $list: ".col-ss-#{$i}, .col-s-#{$i}") {
+  @for $i from (1 + 1) through $grid-columns {
+    $list: "#{$list}, .col-ss-#{$i}, .col-s-#{$i}";
+  }
+  #{$list} {
+    position: relative;
+    // Prevent columns from collapsing when empty
+    min-height: 1px;
+    // Inner gutter via padding
+    padding-left:  ($grid-gutter-width / 2);
+    padding-right: ($grid-gutter-width / 2);
+  }
+}
+
+/* IMPORTANT:
+ * Custom columns must be generated before Bootstrap, else our custom smaller columns
+ * will override default larger columns, which is defective behavior.
+ */
+@include make-grid-columns-2;
+@import 'bootstrap-sass-official/assets/stylesheets/_bootstrap.scss';
