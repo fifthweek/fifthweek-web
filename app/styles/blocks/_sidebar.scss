@@ -86,6 +86,13 @@ $item-padding:$item-padding-tb $item-padding-lr;
           }
         }
       }
+      &.indigo {
+        #{$state-active-hover-focus} {
+          .fa {
+            color:$icon-indigo;
+          }
+        }
+      }
     }
   }
 }
@@ -94,7 +101,6 @@ $item-padding:$item-padding-tb $item-padding-lr;
   position:fixed;
   bottom:0;
   z-index:1;
-  color:red;
   width:265px;
   text-align:center;
   padding-bottom:20px;

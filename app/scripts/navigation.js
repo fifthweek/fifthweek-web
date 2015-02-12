@@ -15,31 +15,16 @@ angular.module('webApp')
         icon: 'fa fa-sign-in',
         color: 'green'
       },
-      {
-        name: function() { return authenticationService.currentUser.username; },
-        id: 'Username',
-        state: states.account.name,
-        icon: 'fa fa-user',
-        color: 'pink',
-        secondary:
-        [
-          {
-            name: 'Account',
-            state: states.account.name,
-            icon: 'fa fa-child',
-            color: 'pink'
-          },
-          {
-            name: 'Sign Out',
-            state: states.signOut.name,
-            icon: 'fa fa-sign-out',
-            color: 'pink'
-          }
-        ]
-      },
-      {
-        separator: true
-      },
+      //{
+      //  name: function() { return authenticationService.currentUser.username; },
+      //  id: 'Username',
+      //  state: states.creators.newsfeed.name,
+      //  icon: 'fa fa-user',
+      //  color: 'pink'
+      //},
+      //{
+      //  separator: true
+      //},
       {
         name: 'Create Your Subscription',
         state: states.creators.createSubscription.name,
@@ -102,23 +87,44 @@ angular.module('webApp')
       },
       { separator: true },
       {
+        name: 'Settings',
+        state: states.account.name,
+        icon: 'fa fa-cog',
+        color: 'blue',
+        secondary:
+          [
+            {
+              name: 'Account',
+              state: states.account.name,
+              icon: 'fa fa-child',
+              color: 'blue'
+            },
+            {
+              name: 'Sign Out',
+              state: states.signOut.name,
+              icon: 'fa fa-sign-out',
+              color: 'blue'
+            }
+          ]
+      },
+      {
         name: 'Help',
         state: states.help.faq.name,
         icon: 'fa fa-question-circle',
-        color: 'blue',
+        color: 'indigo',
         secondary:
         [
           {
             name: 'FAQ',
             state: states.help.faq.name,
             icon: 'fa fa-book',
-            color: 'blue'
+            color: 'indigo'
           },
           {
             name: 'Contact Us',
             state: states.help.contact.name,
             icon: 'fa fa-comment-o',
-            color: 'blue'
+            color: 'indigo'
           }
         ]
       }

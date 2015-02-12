@@ -45,6 +45,11 @@ ul.header-navbar-menu {
           border-color: $icon-pink;
         }
       }
+      &.indigo {
+        &.active{
+          border-color: $icon-indigo;
+        }
+      }
 
       span{
         vertical-align: middle;

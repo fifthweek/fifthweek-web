@@ -6,8 +6,6 @@ var CreateSubscriptionPage = require('../../pages/creators/create-subscription.p
 describe('create subscription form', function() {
   'use strict';
 
-  var username;
-
   var testKit = new TestKit();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
@@ -15,8 +13,7 @@ describe('create subscription form', function() {
 
   beforeEach(function() {
     signOutPage.signOutAndGoHome();
-    var credentials = registerPage.registerSuccessfully();
-    username = credentials.username;
+    registerPage.registerSuccessfully();
   });
 
   describe('happy path', function () {
