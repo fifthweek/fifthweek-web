@@ -20,7 +20,7 @@ $html-name-space:'.page-customize-landing';
       > div {
         &:first-child {
           padding-bottom:15px;
-          @media (min-width:$bp-medium) {
+          @media (min-width:$screen-sm-min) {
             padding:{
               right:15px;
               bottom:0;
@@ -28,7 +28,7 @@ $html-name-space:'.page-customize-landing';
           }
         }
         &:last-child {
-          @media (min-width:$bp-medium) {
+          @media (min-width:$screen-sm-min) {
             padding-left:15px;
           }
         }

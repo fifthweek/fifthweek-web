@@ -12,10 +12,10 @@
     background:none !important;
   }
   //overide bootstrap default
-  @media (min-width:$bp-medium) {
+  @media (min-width:$screen-sm-min) {
     display:block !important;
   }
-  @media (min-width:$bp-m-large) {
+  @media (min-width:$screen-md-min) {
     display:none !important;
   }
   .fa {

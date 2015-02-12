@@ -1,7 +1,7 @@
 @import '_base';
 
 .jumbo-panel {
-  @media (min-width:$bp-medium) {
+  @media (min-width:$screen-sm-min) {
     padding:$main-cont-padding-large;
   }
   p:last-child {
@@ -9,11 +9,11 @@
   }
   .col-md-4 {
     padding-bottom:25px;
-    
+
     &:last-child {
       padding-bottom:0;
     }
-    @media (min-width:$bp-m-large) {
+    @media (min-width:$screen-md-min) {
       padding-bottom:0;
     }
   }

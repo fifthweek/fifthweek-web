@@ -6,13 +6,13 @@
 }
 
 @mixin header-navbar-heading-spacing {
-  @media (min-width:$bp-x-small) {
+  @media (min-width:$screen-ss-min) {
     padding-top:11px;
   }
-  @media (min-width:$bp-small) {
+  @media (min-width:$screen-s-min) {
     padding-left:75px;
   }
-  @media (min-width:$bp-medium) {
+  @media (min-width:$screen-sm-min) {
     padding-left:90px;
   }
 }

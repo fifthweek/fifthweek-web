@@ -68,7 +68,7 @@ ul.header-navbar-menu {
     }
   }
 
-  @media (min-width:$bp-small) {
+  @media (min-width:$screen-s-min) {
     float:left;
     margin-left:0;
   }

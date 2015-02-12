@@ -2,7 +2,7 @@
 
 .navbar-brand {
   padding-left:0;
-  @media (min-width:$bp-medium) {
+  @media (min-width:$screen-sm-min) {
     float:left;
     margin-left:0;
   }

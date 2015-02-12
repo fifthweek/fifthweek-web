@@ -83,7 +83,7 @@ a {
   ol,
   dl {
     padding-left:20px;
-    @media (min-width:$bp-small) {
+    @media (min-width:$screen-s-min) {
       padding-left:30px;
     }
   }

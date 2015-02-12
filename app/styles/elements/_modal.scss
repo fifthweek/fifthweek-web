@@ -1,7 +1,7 @@
 @import '_base';
 
 .modal-dialog {
-  @media (min-width:$bp-medium) {
+  @media (min-width:$screen-sm-min) {
     margin:9.5% auto;
   }
 }

@@ -1,9 +1,14 @@
-$bp-x-small:500px;
-$bp-small:600px;
-$bp-medium:768px;
-$bp-m-large:992px;
-$bp-large:1100px;
-//$bp-x-large:;
+$screen-xs-max:500px;
+$screen-ss-min:500px;
 
-$screen-xs-max:$bp-small;
-$screen-sm-min:$bp-small;
+$screen-ss-max:600px;
+$screen-s-min:600px;
+
+$screen-s-max:768px;
+$screen-sm-min:768px;
+
+$screen-sm-max:992px;
+$screen-md-min:992px;
+
+$screen-md-max:1100px;
+$screen-lg-min:1100px;
