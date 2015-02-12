@@ -61,6 +61,10 @@ p {
   }
 }
 
+p.small {
+  font-size:$p-font-size - 1;
+}
+
 a {
   color:$blue-light-3;
   &:hover,
