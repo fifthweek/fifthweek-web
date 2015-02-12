@@ -1,6 +1,6 @@
-var RegisterPage = require('./pages/register.page.js');
-var SignOutPage = require('./pages/sign-out.page.js');
-var CreateSubscriptionPage = require('./pages/creators/create-subscription.page.js');
+var RegisterPage = require('../pages/register.page.js');
+var SignOutPage = require('../pages/sign-out.page.js');
+var CreateSubscriptionPage = require('../pages/creators/create-subscription.page.js');
 
 describe("registration form", function() {
   'use strict';
@@ -113,7 +113,7 @@ describe("registration form", function() {
     var messages = page.helpMessages;
     messages.count().then(function(count){
       if(count){
-        expect(messages.get(0).getText()).toContain('Must be fewer than 20 characters.')
+        expect(messages.get(0).getText()).toContain('Allowed 20 characters at most.')
       }
       else{
         expect(page.usernameTextBox.getAttribute('value')).toBe('12345678901234567890');

@@ -1,8 +1,8 @@
-var HomePage = require('./pages/home.page.js');
-var SignOutPage = require('./pages/sign-out.page.js');
-var SignInPage = require('./pages/sign-in.page.js');
-var RegisterPage = require('./pages/register.page.js');
-var CreateSubscriptionPage = require('./pages/creators/create-subscription.page.js');
+var HomePage = require('../pages/home.page.js');
+var SignOutPage = require('../pages/sign-out.page.js');
+var SignInPage = require('../pages/sign-in.page.js');
+var RegisterPage = require('../pages/register.page.js');
+var CreateSubscriptionPage = require('../pages/creators/create-subscription.page.js');
 
 describe('sign-in form', function() {
   'use strict';

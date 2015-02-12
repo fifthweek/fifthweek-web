@@ -1,8 +1,8 @@
-var HomePage = require('./pages/home.page.js');
-var SignOutPage = require('./pages/sign-out.page.js');
-var NavigationPage = require('./pages/navigation.page.js');
-var NavigationHelpPage = require('./pages/navigation-help.page.js');
-var ContactUsPage = require('./pages/contact-us.page.js');
+var HomePage = require('../pages/home.page.js');
+var SignOutPage = require('../pages/sign-out.page.js');
+var NavigationPage = require('../pages/navigation.page.js');
+var NavigationHelpPage = require('../pages/navigation-help.page.js');
+var ContactUsPage = require('../pages/contact-us.page.js');
 
 describe('contact us', function() {
   'use strict';

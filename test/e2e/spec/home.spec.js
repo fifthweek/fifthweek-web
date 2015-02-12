@@ -1,5 +1,5 @@
-var HomePage = require('./pages/home.page.js');
-var SignOutPage = require('./pages/sign-out.page.js');
+var HomePage = require('../pages/home.page.js');
+var SignOutPage = require('../pages/sign-out.page.js');
 
 describe("homepage", function() {
   'use strict';
