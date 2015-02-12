@@ -17,11 +17,14 @@
                            name="subscriptionName"
                            placeholder="Subscription name"
                            ng-model="newSubscriptionData.subscriptionName"
+                           ng-maxlength="25"
+                           maxlength="25"
                            required/>
                     </div>
                   <small>e.g. your name</small>
                 </div>
                 <div class="col-md-6">
+                  <p fw-form-input-invalid-p="maxlength">Allowed 25 characters at most.</p>
                   <p fw-form-input-invalid-p="required">A name is required.</p>
                 </div>
               </div>
@@ -36,11 +39,16 @@
                            name="subscriptionTagline"
                            placeholder="Tagline"
                            ng-model="newSubscriptionData.tagline"
+                           ng-minlength="5"
+                           ng-maxlength="55"
+                           maxlength="55"
                            required/>
                   </div>
                   <small>e.g. &#34;Web Comics And More&#34;</small>
                 </div>
                 <div class="col-md-6">
+                  <p fw-form-input-invalid-p="minlength">Must be at least 5 characters.</p>
+                  <p fw-form-input-invalid-p="maxlength">Allowed 55 characters at most.</p>
                   <p fw-form-input-invalid-p="required">A tagline is required.</p>
                 </div>
               </div>
@@ -78,6 +86,10 @@
                 data-event-category="Registration"
                 fw-can-submit-form="form.$valid && form.$dirty"
                 fw-form-submit="continue()">Save and Continue</button>
+            </div>
+
+            <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
+              <p>{{message}}</p>
             </div>
 
           </form>
