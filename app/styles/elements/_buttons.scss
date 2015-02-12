@@ -1,0 +1,66 @@
+@import '_base';
+
+.btn {
+  border:0 none;
+}
+
+.btn + .btn {
+  @media (min-width:$screen-s-min) {
+    margin-left:$main-cont-padding-small;
+  }
+}
+
+input[type="submit"].btn-block,
+input[type="reset"].btn-block,
+input[type="button"].btn-block,
+.btn-block {
+  display:inline-block;
+  vertical-align:top;
+  @media (min-width:$screen-s-min) {
+    width:auto;
+  }
+  @media (max-width:$screen-s-max) {
+    height: $input-height-base;
+  }
+}
+
+.btn-block + .btn-block {
+  margin-top:$main-cont-padding-small;
+  @media (min-width:$screen-s-min) {
+    margin-top:0;
+  }
+}
+
+.btn-grey {
+  background:$grey-light-2;
+  border:solid 1px $grey-dark-4;
+}
+
+.btn-plain {
+  @include text-shadow-black;
+  background:none;
+  border:solid 1px $white-full;
+  color:$white-full;
+  #{$state-active-hover-focus} {
+    background:none;
+    color:$white-full;
+  }
+}
+
+.btn-plain-text {
+  @extend .btn-plain;
+  border:0 none;
+}
+
+.form-group small {
+  padding-top: 5px;
+  display: block;
+}
+
+.row-btn {
+  padding-top:10px;
+}
+
+.help-block {
+  margin: 11px 0 0 0;
+}
