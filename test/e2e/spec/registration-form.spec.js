@@ -11,13 +11,13 @@ describe("registration form", function() {
   var username;
   var email;
 
-  beforeEach(function() {
-    signOutPage.signOutAndGoHome();
-    username = page.newUsername();
-    email = page.newEmail(username);
-  });
-
   describe('happy path', function() {
+
+    beforeEach(function() {
+      signOutPage.signOutAndGoHome();
+      username = page.newUsername();
+      email = page.newEmail(username);
+    });
 
     afterEach(function() {
       page.registerButton.click();
@@ -62,6 +62,16 @@ describe("registration form", function() {
   });
 
   describe('sad path', function() {
+
+    it('should run once before all', function() {
+      signOutPage.signOutAndGoHome();
+    });
+
+    afterEach(function() {
+      // Reset form state.
+      browser.refresh();
+    });
+
     it('requires email address', function(){
       page.usernameTextBox.sendKeys(username);
       page.passwordTextBox.sendKeys('password1');
