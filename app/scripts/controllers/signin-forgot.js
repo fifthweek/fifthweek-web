@@ -8,10 +8,15 @@ angular.module('webApp').controller('SignInForgotCtrl',
     };
 
     $scope.requestPasswordReset = function() {
-      return authenticationService.signIn($scope.signInData)
-        .then(function() {
-          $state.go(calculatedStates.getDefaultState());
-        });
+      var data = $scope.passwordResetRequestData;
+      if (data.username.length + data.email.length === 0) {
+        $scope.message = 'Must provide username or email.';
+      }
+
+      //return authenticationService.signIn($scope.signInData)
+      //  .then(function() {
+      //    $state.go(calculatedStates.getDefaultState());
+      //  });
     };
   }
 );

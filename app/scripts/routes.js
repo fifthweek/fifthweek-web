@@ -100,7 +100,7 @@ angular.module('routes', ['ui.router'])
         }
       })
       .state(states.signIn.signIn.name, {
-        url: '/signin',
+        url: '',
         templateUrl: 'views/sign-in/sign-in.html',
         controller: 'SignInCtrl',
         data : {

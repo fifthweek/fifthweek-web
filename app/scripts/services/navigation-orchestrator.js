@@ -119,7 +119,7 @@ angular.module('webApp')
       broadcastNavigationChanged();
     };
 
-    var setSelectedNavigationFromState = function (state) {
+    var setSelectedNavigationFromState = function() {
       for (var primaryIndex = 0; primaryIndex < navigationMap.length; primaryIndex++) {
         var primaryItem = navigationMap[primaryIndex];
 
@@ -128,7 +128,7 @@ angular.module('webApp')
           for (var secondaryIndex = 0; secondaryIndex < secondaryItems.length; secondaryIndex++) {
             var secondaryItem = secondaryItems[secondaryIndex];
 
-            if (secondaryItem.state === state) {
+            if ($state.includes(secondaryItem.state)) {
               selectedPrimaryNavigation = primaryItem;
               selectedSecondaryNavigation = secondaryItem;
               return;
@@ -136,7 +136,7 @@ angular.module('webApp')
           }
         }
 
-        if(primaryItem.state === state){
+        if($state.includes(primaryItem.state)){
           selectedPrimaryNavigation = primaryItem;
           selectedSecondaryNavigation = undefined;
           return;
@@ -148,8 +148,8 @@ angular.module('webApp')
     };
 
     service.initialize = function(){
-      $rootScope.$on(uiRouterConstants.stateChangeSuccessEvent, function(event, toState) {
-        setSelectedNavigationFromState(toState.name);
+      $rootScope.$on(uiRouterConstants.stateChangeSuccessEvent, function() {
+        setSelectedNavigationFromState();
         updateNavigation();
       });
 
@@ -164,7 +164,7 @@ angular.module('webApp')
         updateNavigation();
       });
 
-      setSelectedNavigationFromState($state.current.name);
+      setSelectedNavigationFromState();
       updateNavigation();
     };
 
