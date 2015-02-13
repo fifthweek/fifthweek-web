@@ -126,7 +126,7 @@ angular.module('routes', ['ui.router'])
         controller: 'SignInForgotCtrl',
         data : {
           pageTitle: 'Forgot Your Details?',
-          headTitle: ': ' + 'Forgot Your Details?',
+          headTitle: ': ' + 'Forgot Details?',
           access: {
             requireUnauthenticated: true
           }
@@ -176,7 +176,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: false,
         data : {
           pageTitle: 'Create Your Subscription',
-          headTitle: ': ' + 'Create Your Subscription',
+          headTitle: ': ' + 'Create Subscription',
           access: {
             requireAuthenticated: true
           }
