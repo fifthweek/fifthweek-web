@@ -698,4 +698,9 @@ module.exports = function (grunt) {
     'ddescribe-iit',
     'test:live'
   ]);
+
+  grunt.registerTask('prepush:local', [
+    'ddescribe-iit',
+    'test:local'
+  ]);
 };

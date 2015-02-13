@@ -1,5 +1,5 @@
 angular.module('webApp').controller('SignInForgotCtrl',
-  function($scope, $state, calculatedStates, authenticationService) {
+  function($scope) {
     'use strict';
 
     $scope.passwordResetRequestData = {

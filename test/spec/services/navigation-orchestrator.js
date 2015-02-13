@@ -207,7 +207,7 @@ describe('navigation orchestrator', function(){
     });
 
     it('should have no primary navigation selected if the state is not recognised', function(){
-      $state.includes = function(stateName) { return stateName == unknownState; };
+      $state.includes = function(stateName) { return stateName === unknownState; };
 
       target.initialize();
 
@@ -218,7 +218,7 @@ describe('navigation orchestrator', function(){
       stateChangeService.isPermitted = function(state) {
         return state.name !== knownState;
       };
-      $state.includes = function(stateName) { return stateName == knownState; };
+      $state.includes = function(stateName) { return stateName === knownState; };
 
       target.initialize();
 
@@ -229,7 +229,7 @@ describe('navigation orchestrator', function(){
       stateChangeService.isPermitted = function() {
         return true;
       };
-      $state.includes = function(stateName) { return stateName == parentOnlyState; };
+      $state.includes = function(stateName) { return stateName === parentOnlyState; };
 
       target.initialize();
 
@@ -243,7 +243,7 @@ describe('navigation orchestrator', function(){
       stateChangeService.isPermitted = function() {
         return true;
       };
-      $state.includes = function(stateName) { return stateName == childState; };
+      $state.includes = function(stateName) { return stateName === childState; };
 
       target.initialize();
 
