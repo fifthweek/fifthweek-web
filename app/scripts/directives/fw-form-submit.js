@@ -14,7 +14,7 @@ angular.module('webApp').directive('fwFormSubmit',
       else {
         setMessage = function(message) {
           scope.message = message;
-        }
+        };
       }
 
       scope.isSubmitting = false;

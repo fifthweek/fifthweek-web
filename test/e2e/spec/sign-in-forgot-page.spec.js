@@ -1,27 +1,30 @@
 var HomePage = require('../pages/home.page.js');
 var SignOutPage = require('../pages/sign-out.page.js');
 var SignInPage = require('../pages/sign-in.page.js');
+var SignInForgotPage = require('../pages/sign-in-forgot.page.js');
 var HeaderPage = require('../pages/header.page.js');
 var SidebarPage = require('../pages/sidebar.page.js');
 
-describe('sign-in page', function() {
+describe('sign-in - forgot details page', function() {
   'use strict';
 
   var header = new HeaderPage();
   var sidebar = new SidebarPage();
   var signOutPage = new SignOutPage();
   var homePage = new HomePage();
-  var page = new SignInPage();
+  var signInPage = new SignInPage();
+  var page = new SignInForgotPage();
 
   it('should run once before all', function() {
     signOutPage.signOutAndGoHome();
     homePage.signInLink.click();
+    signInPage.forgotDetailsLink.click();
   });
 
   describe('header', function() {
 
     it('should contain title', function() {
-      expect(header.title.getText()).toContain('Sign In');
+      expect(header.title.getText()).toContain('Forgot Your Details?');
     });
   });
 
@@ -41,13 +44,6 @@ describe('sign-in page', function() {
 
     it('should contain "Help" link', function () {
       expect(sidebar.helpLink.isDisplayed()).toBe(true);
-    });
-  });
-
-  describe('body', function() {
-
-    it('should contain "forgot your details" link', function() {
-      expect(page.forgotDetailsLink.isDisplayed()).toBe(true);
     });
   });
 });

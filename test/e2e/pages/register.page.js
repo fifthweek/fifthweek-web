@@ -15,21 +15,26 @@ RegisterPage.prototype = Object.create({},
   newUsername: { value: function() {
     return 'wd_' + Date.now().toString().split('').reverse().join('');
   }},
-  newEmailAddress: { value: function(username) {
+  newEmail: { value: function(username) {
     return username + '@testing.fifthweek.com';
   }},
   registerSuccessfully: { value: function() {
     var username = this.newUsername();
-    var email = this.newEmailAddress(username);
+    var email = this.newEmail(username);
     var password = 'password1';
 
+    this.emailTextBox.sendKeys(email);
     this.usernameTextBox.sendKeys(username);
     this.passwordTextBox.sendKeys(password);
-    this.emailTextBox.sendKeys(email);
     this.registerButton.click();
+
+    // If the subsequent call is a `navigate` then the following is necessary to allow the
+    // registration to complete.
+    browser.waitForAngular();
 
     return {
       username: username,
+      email: email,
       password: password
     };
   }}

@@ -14,7 +14,7 @@ describe("registration form", function() {
   beforeEach(function() {
     signOutPage.signOutAndGoHome();
     username = page.newUsername();
-    email = page.newEmailAddress(username);
+    email = page.newEmail(username);
   });
 
   describe('happy path', function() {

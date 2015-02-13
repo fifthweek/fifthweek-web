@@ -11,12 +11,14 @@ describe('create subscription form', function() {
   var registerPage = new RegisterPage();
   var page = new CreateSubscriptionPage();
 
-  beforeEach(function() {
-    signOutPage.signOutAndGoHome();
-    registerPage.registerSuccessfully();
-  });
-
   describe('happy path', function () {
+
+    beforeEach(function() {
+      // New registration required as successfully completing the form means user
+      // will no longer be able to access it.
+      signOutPage.signOutAndGoHome();
+      registerPage.registerSuccessfully();
+    });
 
     afterEach(function() {
       page.submitButton.click();
@@ -100,6 +102,16 @@ describe('create subscription form', function() {
   });
 
   describe('sad path', function () {
+
+    it('should run once before all', function() {
+      signOutPage.signOutAndGoHome();
+      registerPage.registerSuccessfully();
+    });
+
+    afterEach(function() {
+      // Reset form state.
+      browser.refresh();
+    });
 
     it('requires subscription name', function(){
       page.taglineTextBox.sendKeys(page.newTagline());

@@ -11,23 +11,39 @@ describe('sign-in form', function() {
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
 
-  beforeEach(function() {
+  var navigateToPage = function() {
     signOutPage.signOutAndGoHome();
+    homePage.signInLink.click();
+  };
+
+  describe('when a user is not registered', function() {
+
+    it('should not allow the existing user to sign in', function(){
+      navigateToPage();
+
+      var username = registerPage.newUsername();
+      var password = username + '123';
+
+      page.usernameTextBox.sendKeys(username);
+      page.passwordTextBox.sendKeys(password);
+      page.signInButton.click();
+
+      expect(page.message.getText()).toContain('Invalid username or password');
+    });
   });
 
   describe('when a user is registered', function(){
     var username;
     var password;
 
-    beforeEach(function() {
+    it('should run once before all', function() {
+      signOutPage.signOutAndGoHome();
       var signInData = registerPage.registerSuccessfully();
       username = signInData.username;
       password = signInData.password;
-
-      signOutPage.signOutAndGoHome();
-
-      homePage.signInLink.click();
     });
+
+    afterEach(navigateToPage);
 
     it('should allow the existing user to sign in', function(){
       page.usernameTextBox.sendKeys(username);
@@ -71,23 +87,6 @@ describe('sign-in form', function() {
 
       page.usernameTextBox.sendKeys(username);
       page.passwordTextBox.sendKeys(password2);
-      page.signInButton.click();
-
-      expect(page.message.getText()).toContain('Invalid username or password');
-    });
-  });
-
-  describe('when a user is not registered', function() {
-
-    it('should not allow the existing user to sign in', function(){
-      homePage.signInLink.click();
-      browser.waitForAngular();
-
-      var username = registerPage.newUsername();
-      var password = username + '123';
-
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys(password);
       page.signInButton.click();
 
       expect(page.message.getText()).toContain('Invalid username or password');
