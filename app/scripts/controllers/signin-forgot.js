@@ -1,5 +1,5 @@
 angular.module('webApp').controller('SignInForgotCtrl',
-  function($scope) {
+  function($scope, membershipStub) {
     'use strict';
 
     $scope.passwordResetRequestData = {
@@ -20,11 +20,10 @@ angular.module('webApp').controller('SignInForgotCtrl',
         return;
       }
 
-      $scope.requestSucceeded = true;
-      //return authenticationService.signIn($scope.signInData)
-      //  .then(function() {
-      //    $state.go(calculatedStates.getDefaultState());
-      //  });
+      return membershipStub.postPasswordResetRequest($scope.passwordResetRequestData)
+        .then(function() {
+          $scope.requestSucceeded = true;
+        });
     };
   }
 );
