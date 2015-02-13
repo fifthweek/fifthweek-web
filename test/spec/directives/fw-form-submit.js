@@ -51,6 +51,20 @@ describe('submit form directive', function(){
       expect(scope.hasSubmitted).toBe(false);
       expect(scope.submissionSucceeded).toBe(false);
     });
+
+    it('bind message to setMessage on parent if present', function(){
+      $rootScope.setMessage = jasmine.createSpy('setMessage');
+
+      var scope = $rootScope.$new();
+      scope.submit = function(){};
+      spyOn(scope, 'submit');
+
+      var element = angular.element('<button fw-form-submit="submit()">default</button>');
+      $compile(element)(scope);
+      scope.$digest();
+
+      expect($rootScope.setMessage).toHaveBeenCalledWith('');
+    });
   });
 
   describe('when click event is triggered', function(){
