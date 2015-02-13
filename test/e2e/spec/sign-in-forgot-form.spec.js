@@ -3,6 +3,7 @@ var SignOutPage = require('../pages/sign-out.page.js');
 var SignInPage = require('../pages/sign-in.page.js');
 var SignInForgotPage = require('../pages/sign-in-forgot.page.js');
 var RegisterPage = require('../pages/register.page.js');
+var MailboxPage = require('../pages/mailbox.page.js');
 
 describe('sign-in - forgot details form', function() {
   'use strict';
@@ -10,6 +11,7 @@ describe('sign-in - forgot details form', function() {
   var homePage = new HomePage();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
+  var mailboxPage = new MailboxPage();
   var signInPage = new SignInPage();
   var page = new SignInForgotPage();
 
@@ -52,35 +54,56 @@ describe('sign-in - forgot details form', function() {
     });
   });
 
-  describe('when a user is registered', function(){
+  ddescribe('when a user is registered', function(){
     var username;
     var email;
+    var mailboxUrl;
 
     it('should run once before all', function() {
       signOutPage.signOutAndGoHome();
       var signInData = registerPage.registerSuccessfully();
       username = signInData.username;
       email = signInData.email;
+
+      mailboxPage.getMailboxUrl(username).then(function(result) {
+        mailboxUrl = result;
+      });
     });
 
     afterEach(navigateToPage);
 
     it('should display a success message when username is provided', function () {
       page.usernameTextBox.sendKeys(username);
-
-      page.resetPasswordButton.click();
-
-      expect(page.formPanel.isDisplayed()).toBe(false);
-      expect(page.successMessage.isDisplayed()).toBe(true);
+      assertSuccessMessage();
     });
 
     it('should display a success message when email is provided', function () {
       page.emailTextBox.sendKeys(email);
+      assertSuccessMessage();
+    });
 
+    it('should display a success message when username is provided', function () {
+      page.usernameTextBox.sendKeys(username);
+      assertEmailReceived();
+    });
+
+    it('should display a success message when email is provided', function () {
+      page.emailTextBox.sendKeys(email);
+      assertEmailReceived();
+    });
+
+    var assertSuccessMessage = function() {
       page.resetPasswordButton.click();
-
       expect(page.formPanel.isDisplayed()).toBe(false);
       expect(page.successMessage.isDisplayed()).toBe(true);
-    });
+    };
+
+    var assertEmailReceived = function() {
+      page.resetPasswordButton.click();
+
+      browser.waitForAngular(); // Not automatically awaited on get.
+      browser.get(mailboxUrl);
+      expect(mailboxPage.emailSubject.getText()).toContain('Reset Password');
+    };
   });
 });
