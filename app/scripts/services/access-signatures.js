@@ -1,9 +1,16 @@
-angular.module('webApp').constant('accessSignaturesConstants', {
-  refreshMinimumExpiry: 1000 * 60 * 10,
-  failMinimumExpiry: 1000 * 30,
-  refreshUri: 'userAccessSignatures'
-}).factory('accessSignatures',
-  function($http, $q, fifthweekConstants, authenticationService, utilities, accessSignaturesConstants) {
+angular.module('webApp')
+  .constant('accessSignaturesConstants', {
+    refreshMinimumExpiry: 1000 * 60 * 10,
+    failMinimumExpiry: 1000 * 30,
+    refreshUri: 'userAccessSignatures'
+  })
+  .factory('accessSignatures', function(accessSignaturesImpl){
+      'use strict';
+      accessSignaturesImpl.initialize();
+    return accessSignaturesImpl;
+  })
+  .factory('accessSignaturesImpl',
+  function($rootScope, $http, $q, fifthweekConstants, authenticationService, utilities, accessSignaturesConstants, fetchAggregateUserStateConstants) {
     'use strict';
 
     var service = {};
@@ -120,6 +127,10 @@ angular.module('webApp').constant('accessSignaturesConstants', {
       return $q.when(cache.lastResult.data);
     };
 
+    var handleAggregateUserStateFetched = function(event, userId, userState){
+      updateLastResult(userId, userState.accessSignatures);
+    };
+
     service.getAccessInformation = function(creatorId){
       var userId = authenticationService.currentUser.userId;
 
@@ -140,9 +151,8 @@ angular.module('webApp').constant('accessSignaturesConstants', {
       });
     };
 
-    // This should be called when the initial signatures are received with user state.
-    service.setAccessSignatures = function(userId, newSignatures){
-      updateLastResult(userId, newSignatures);
+    service.initialize = function(){
+      $rootScope.$on(fetchAggregateUserStateConstants.fetchedEvent, handleAggregateUserStateFetched);
     };
 
     return service;

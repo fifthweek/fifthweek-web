@@ -24,7 +24,7 @@ angular.module('webApp')
     };
 
     var performMerge = function(isFromServer, userId, userStateDelta){
-      var newUserState = undefined;
+      var newUserState;
 
       if (service.currentValue) {
         if(service.currentValue.userId === userId){
@@ -34,7 +34,7 @@ angular.module('webApp')
         }
         else if(isFromServer){
           // The data from the server trumps what we have, so replace our current user state.
-          var newUserState = _.cloneDeep(userStateDelta);
+          newUserState = _.cloneDeep(userStateDelta);
 
           // The access signatures are never read from this service, so don't store them.
           delete newUserState.currentAccessSignatures;
@@ -47,7 +47,7 @@ angular.module('webApp')
         // the cache to be cleared, or because the cache has never
         // been set.  In both cases we are only interested in the
         // next update being from the server.
-        var newUserState = _.cloneDeep(userStateDelta);
+        newUserState = _.cloneDeep(userStateDelta);
 
         // The access signatures are never read from this service, so don't store them.
         delete newUserState.currentAccessSignatures;
@@ -82,7 +82,7 @@ angular.module('webApp')
       }
 
       $rootScope.$on(fetchAggregateUserStateConstants.fetchedEvent, handleAggregateUserStateFetched);
-      $rootScope.$on(authenticationServiceConstants.currentUserChangedEvent, handleCurrentUserChanged)
+      $rootScope.$on(authenticationServiceConstants.currentUserChangedEvent, handleCurrentUserChanged);
     };
 
     service.updateFromDelta = function(userId, userStateDelta) {
