@@ -176,7 +176,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: false,
         data : {
           pageTitle: 'Create Your Subscription',
-          headTitle: ' - ' + 'Create Your Subscription',
+          headTitle: ': ' + 'Create Your Subscription',
           access: {
             requireAuthenticated: true
           }
@@ -216,7 +216,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Note',
-          headTitle: ' - ' + 'Note',
+          headTitle: ': ' + 'New Note',
           access: {
             requireAuthenticated: true
           }
@@ -228,7 +228,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Image',
-          headTitle: ' - ' + 'Image',
+          headTitle: ': ' + 'New Image',
           access: {
             requireAuthenticated: true
           }
@@ -240,7 +240,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' File',
-          headTitle: ' - ' + 'file'
+          headTitle: ': ' + 'New File'
         }
       })
       .state(states.creators.customize.name, {
@@ -262,7 +262,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Landing page',
-          headTitle: ' - ' + 'Landing page'
+          headTitle: ': ' + 'Landing page'
         }
       })
       .state(states.creators.customize.collections.name, {
