@@ -35,8 +35,7 @@ describe('aggregate user state', function() {
 
   var userId = 'userId';
   var userId2 = 'userId2';
-  var newUserState = { some: { complex: 'object', unchanged: true }};
-  var error = 'error';
+  var newUserState = { some: { complex: 'object', unchanged: true }, accessSignatures: { signature: 10 }};
   var localStorageKey = 'aggregateUserState';
 
   var $q;
@@ -69,9 +68,10 @@ describe('aggregate user state', function() {
     });
   });
 
-  var getWithUserId = function(newUserId, state){
+  var getExpectedState = function(newUserId, state){
     var newState = _.clone(state);
     newState.userId = newUserId;
+    delete newState.accessSignatures;
     return newState;
   };
 
@@ -122,7 +122,7 @@ describe('aggregate user state', function() {
       var expectedState;
       var newUserStateCopy;
       beforeEach(function(){
-        expectedState = getWithUserId(userId, newUserState);
+        expectedState = getExpectedState(userId, newUserState);
         newUserStateCopy = _.clone(newUserState);
         spyOn($rootScope, '$broadcast').and.callThrough();
         $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
@@ -131,6 +131,10 @@ describe('aggregate user state', function() {
 
       it('should apply an update', function(){
         expect(target.currentValue).toEqual(expectedState);
+      });
+
+      it('should not contain access signatures', function(){
+        expect(target.currentValue.hasOwnProperty('accessSignatures')).toBeFalsy();
       });
 
       it('should not mutate state', function(){
@@ -152,7 +156,7 @@ describe('aggregate user state', function() {
       var expectedState;
       var newUserStateCopy;
       beforeEach(function(){
-        expectedState = getWithUserId(undefined, newUserState);
+        expectedState = getExpectedState(undefined, newUserState);
         newUserStateCopy = _.clone(newUserState);
         spyOn($rootScope, '$broadcast').and.callThrough();
         $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, newUserState);
@@ -195,7 +199,7 @@ describe('aggregate user state', function() {
         $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, { userId: userId });
         $rootScope.$apply();
 
-        var expectedState = getWithUserId(userId, newUserState);
+        var expectedState = getExpectedState(userId, newUserState);
         expect(target.currentValue).toEqual(expectedState);
       });
 
@@ -247,7 +251,7 @@ describe('aggregate user state', function() {
         beforeEach(function(){
           spyOn($rootScope, '$broadcast').and.callThrough();
           var delta = { some: { complex: 'foo'}, bar: 5};
-          expected = getWithUserId(userId, { some: { complex: 'foo', unchanged: true }, bar:5});
+          expected = getExpectedState(userId, { some: { complex: 'foo', unchanged: true }, bar:5});
           $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, delta);
           $rootScope.$apply();
         });
@@ -271,7 +275,7 @@ describe('aggregate user state', function() {
         beforeEach(function(){
           spyOn($rootScope, '$broadcast').and.callThrough();
           var delta = { some: { complex: 'foo'}, bar: 5};
-          expected = getWithUserId(userId2, delta);
+          expected = getExpectedState(userId2, delta);
           $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId2, delta);
           $rootScope.$apply();
         });
@@ -300,7 +304,7 @@ describe('aggregate user state', function() {
         beforeEach(function(){
           existing = target.currentValue;
           delta = { some: { complex: 'foo'}, bar: 5};
-          expected = getWithUserId(userId, { some: { complex: 'foo', unchanged: true }, bar:5});
+          expected = getExpectedState(userId, { some: { complex: 'foo', unchanged: true }, bar:5});
           existingCopy = _.clone(target.currentValue);
           deltaCopy = _.clone(delta);
 
@@ -335,7 +339,7 @@ describe('aggregate user state', function() {
 
         beforeEach(function(){
           delta = { some: { complex: 'foo'}, bar: 5};
-          expected = getWithUserId(userId, newUserState);
+          expected = getExpectedState(userId, newUserState);
           spyOn($rootScope, '$broadcast').and.callThrough();
           target.updateFromDelta(userId2, delta);
           $rootScope.$apply();

@@ -35,25 +35,19 @@ angular.module('webApp')
         else if(isFromServer){
           // The data from the server trumps what we have, so replace our current user state.
           newUserState = _.cloneDeep(userStateDelta);
-
-          // The access signatures are never read from this service, so don't store them.
-          delete newUserState.currentAccessSignatures;
-
         }
       }
       else if(isFromServer) {
-        // If the data is not from the server then it is stale.
         // We could be here because the user ID changed, triggering
         // the cache to be cleared, or because the cache has never
         // been set.  In both cases we are only interested in the
         // next update being from the server.
         newUserState = _.cloneDeep(userStateDelta);
-
-        // The access signatures are never read from this service, so don't store them.
-        delete newUserState.currentAccessSignatures;
       }
 
       if(newUserState){
+        // The access signatures are never read from this service, so don't store them.
+        delete newUserState.accessSignatures;
         newUserState.userId = userId;
         setNewUserState(newUserState);
       }
