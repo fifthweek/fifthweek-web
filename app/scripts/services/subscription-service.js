@@ -5,7 +5,7 @@ angular.module('webApp')
     return subscriptionServiceImpl;
   })
   .factory('subscriptionServiceImpl',
-  function($rootScope, $q, subscriptionStub, aggregateUserState, aggregateUserStateConstants) {
+  function($rootScope, $q, subscriptionStub, aggregateUserState, aggregateUserStateConstants, authenticationService) {
     'use strict';
 
     var subscriptionId = null;
@@ -36,12 +36,17 @@ angular.module('webApp')
         return $q.reject(new FifthweekError('Subscription already created'));
       }
 
+      // We need to store the user ID before posting the new subscription data
+      // because it could change during the call.
+      var subscriptionUserId = authenticationService.currentUser.userId;
       return subscriptionStub.postSubscription(subscriptionData).then(function(response) {
-        aggregateUserState.updateFromDelta({
-          creatorStatus: {
-            subscriptionId: response.data
-          }
-        });
+        aggregateUserState.updateFromDelta(
+          subscriptionUserId,
+          {
+            creatorStatus: {
+              subscriptionId: response.data
+            }
+          });
       });
     };
 

@@ -40,8 +40,8 @@
         stateChangeService.redirectAwayIfRequired(event, toState, toParams);
       });
     })
-    .run(function($state, stateChangeService, authenticationService, aggregateUserState, logService) {
-      aggregateUserState.updateFromServer(authenticationService.currentUser.userId)
+    .run(function($state, stateChangeService, authenticationService, fetchAggregateUserState, logService) {
+      fetchAggregateUserState.updateFromServer(authenticationService.currentUser.userId)
         .then(function() {
           if (!stateChangeService.isPermitted($state.current)) {
             stateChangeService.redirectAwayIfRequired({

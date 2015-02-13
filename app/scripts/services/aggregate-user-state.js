@@ -8,7 +8,7 @@ angular.module('webApp')
     return aggregateUserStateImpl;
   })
   .factory('aggregateUserStateImpl',
-  function($rootScope, localStorageService, aggregateUserStateConstants, userStateStub) {
+  function($rootScope, localStorageService, aggregateUserStateConstants, fetchAggregateUserStateConstants, authenticationServiceConstants) {
   'use strict';
 
     var localStorageName = 'aggregateUserState';
@@ -17,42 +17,76 @@ angular.module('webApp')
       $rootScope.$broadcast(aggregateUserStateConstants.updatedEvent, service.currentValue);
     };
 
-    var handleServiceResponse = function(response) {
-      service.updateFromDelta(response.data);
+    var setNewUserState = function(newUserState){
+      service.currentValue = newUserState;
+      localStorageService.set(localStorageName, newUserState);
+      broadcastUpdated();
+    };
+
+    var performMerge = function(isFromServer, userId, userStateDelta){
+      var newUserState = undefined;
+
+      if (service.currentValue) {
+        if(service.currentValue.userId === userId){
+          // Do not mutate state, as other services may have reference to this object (they should also never mutate it!).
+          newUserState = _.cloneDeep(service.currentValue);
+          _.merge(newUserState, userStateDelta);
+        }
+        else if(isFromServer){
+          // The data from the server trumps what we have, so replace our current user state.
+          var newUserState = _.cloneDeep(userStateDelta);
+
+          // The access signatures are never read from this service, so don't store them.
+          delete newUserState.currentAccessSignatures;
+
+        }
+      }
+      else if(isFromServer) {
+        // If the data is not from the server then it is stale.
+        // We could be here because the user ID changed, triggering
+        // the cache to be cleared, or because the cache has never
+        // been set.  In both cases we are only interested in the
+        // next update being from the server.
+        var newUserState = _.cloneDeep(userStateDelta);
+
+        // The access signatures are never read from this service, so don't store them.
+        delete newUserState.currentAccessSignatures;
+      }
+
+      if(newUserState){
+        newUserState.userId = userId;
+        setNewUserState(newUserState);
+      }
+    };
+
+    var handleAggregateUserStateFetched = function(event, userId, userState){
+      performMerge(true, userId, userState);
+    };
+
+    var handleCurrentUserChanged = function(event, newUser){
+      if(service.currentValue && newUser.userId !== service.currentValue.userId){
+        // The cache is stale, so clear it. New data will be fetched
+        // from the server automatically.
+        setNewUserState(undefined);
+      }
     };
 
     var service = {};
 
-    service.currentValue = null;
+    service.currentValue = undefined;
 
     service.initialize = function() {
       var storedUserState = localStorageService.get(localStorageName);
       if (storedUserState) {
         service.currentValue = storedUserState;
       }
+
+      $rootScope.$on(fetchAggregateUserStateConstants.fetchedEvent, handleAggregateUserStateFetched);
+      $rootScope.$on(authenticationServiceConstants.currentUserChangedEvent, handleCurrentUserChanged)
     };
 
-    service.updateFromDelta = function(userStateDelta) {
-      if (service.currentValue) {
-        // Do not mutate state, as other services may have reference to this object (they should also never mutate it!).
-        var newUserState = _.cloneDeep(service.currentValue);
-        _.merge(newUserState, userStateDelta);
-        service.currentValue = newUserState;
-      }
-      else {
-        service.currentValue = userStateDelta;
-      }
-
-      localStorageService.set(localStorageName, service.currentValue);
-      broadcastUpdated();
-    };
-
-    service.updateFromServer = function(userId) {
-      if (userId) {
-        return userStateStub.getUserState(userId).then(handleServiceResponse);
-      }
-
-      return userStateStub.getVisitorState().then(handleServiceResponse);
+    service.updateFromDelta = function(userId, userStateDelta) {
+      performMerge(false, userId, userStateDelta);
     };
 
     return service;

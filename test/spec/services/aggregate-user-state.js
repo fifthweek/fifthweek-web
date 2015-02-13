@@ -33,9 +33,10 @@ describe('aggregate user state factory', function() {
 describe('aggregate user state', function() {
   'use strict';
 
-  var newUserState = 'newUserState';
-  var error = 'error';
   var userId = 'userId';
+  var userId2 = 'userId2';
+  var newUserState = { some: { complex: 'object', unchanged: true }};
+  var error = 'error';
   var localStorageKey = 'aggregateUserState';
 
   var $q;
@@ -43,162 +44,311 @@ describe('aggregate user state', function() {
   var $rootScope;
   var localStorageService;
   var aggregateUserStateConstants;
+  var fetchAggregateUserStateConstants;
+  var authenticationServiceConstants;
   var authenticationService;
-  var userStateStub;
   var target;
 
   beforeEach(function() {
     module('webApp');
     module(function($provide) {
       localStorageService = jasmine.createSpyObj('localStorageService', ['get', 'set']);
-      userStateStub = jasmine.createSpyObj('userStateStub', ['getUserState', 'getVisitorState']);
       authenticationService = { currentUser:{} };
 
       $provide.value('localStorageService', localStorageService);
-      $provide.value('userStateStub', userStateStub);
-      $provide.value('authenticationService', 'aggregateUserStateImpl');
+      $provide.value('authenticationService', authenticationService);
     });
 
     inject(function($injector) {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
       aggregateUserStateConstants = $injector.get('aggregateUserStateConstants');
-      target = $injector.get(localStorageKey);
+      fetchAggregateUserStateConstants = $injector.get('fetchAggregateUserStateConstants');
+      authenticationServiceConstants = $injector.get('authenticationServiceConstants');
+      target = $injector.get('aggregateUserStateImpl');
     });
   });
 
-  it('should contain null user state by default', function() {
-    expect(target.currentValue).toBeNull();
+  var getWithUserId = function(newUserId, state){
+    var newState = _.clone(state);
+    newState.userId = newUserId;
+    return newState;
+  };
+
+  it('should contain undefined user state by default', function() {
+    expect(target.currentValue).toBeUndefined();
   });
 
-  it('should initialize from local storage', function() {
-    localStorageService.get.and.returnValue(null);
-    target.initialize();
-    expect(localStorageService.get).toHaveBeenCalledWith(localStorageKey);
-    expect(target.currentValue).toBeNull();
+  describe('when initializing', function(){
+    it('should initialize from local storage', function() {
+      localStorageService.get.and.returnValue(undefined);
+      target.initialize();
+      expect(localStorageService.get).toHaveBeenCalledWith(localStorageKey);
+      expect(target.currentValue).toBeUndefined();
 
-    localStorageService.get.and.returnValue(newUserState);
-    target.initialize();
-    expect(localStorageService.get).toHaveBeenCalledWith(localStorageKey);
-    expect(target.currentValue).toBe(newUserState);
-  });
-
-  describe('when synchronizing', function() {
-
-    it('should retain new user state if existing state is empty', function() {
-      target.updateFromDelta(newUserState);
-      $rootScope.$apply();
-
-      expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, newUserState);
-      expect(target.currentValue).toBe(newUserState);
+      localStorageService.get.and.returnValue(newUserState);
+      target.initialize();
+      expect(localStorageService.get).toHaveBeenCalledWith(localStorageKey);
+      expect(target.currentValue).toEqual(newUserState);
     });
 
-    it('should merge new user state if existing state exists', function() {
-      var existing = { some: { complex: 'object', unchanged: true }};
-      var existingCopy = { some: { complex: 'object', unchanged: true }};
-      var delta = { some: { complex: 'foo'}, bar: 5};
-      var expected = { some: { complex: 'foo', unchanged: true }, bar:5};
+    it('should attach to events', function(){
+      spyOn($rootScope, '$on');
 
-      localStorageService.get.and.returnValue(existing);
       target.initialize();
 
-      target.updateFromDelta(delta);
-      $rootScope.$apply();
-
-      expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, expected);
-      expect(target.currentValue).toEqual(expected);
-      expect(existing).toEqual(existingCopy); // Ensure state not mutated internally.
-    });
-
-    it('should raise and event', function() {
-      spyOn($rootScope, '$broadcast');
-
-      target.updateFromDelta(newUserState);
-      $rootScope.$apply();
-
-      expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, newUserState);
+      expect($rootScope.$on.calls.count()).toBe(2);
+      expect($rootScope.$on.calls.argsFor(0)[0]).toBe(fetchAggregateUserStateConstants.fetchedEvent);
+      expect($rootScope.$on.calls.argsFor(1)[0]).toBe(authenticationServiceConstants.currentUserChangedEvent);
     });
   });
 
-  describe('when synchronizing with server', function() {
+  describe('when initialized', function(){
 
-    it('should retain refreshed user state', function() {
-
-      userStateStub.getUserState.and.returnValue($q.when({ data: newUserState }));
-
-      target.updateFromServer(userId);
-      $rootScope.$apply();
-
-      expect(userStateStub.getUserState).toHaveBeenCalledWith(userId);
-      expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, newUserState);
-      expect(target.currentValue).toBe(newUserState);
+    beforeEach(function(){
+      target.initialize();
     });
 
-    it('should propagate errors', function() {
-      userStateStub.getUserState.and.returnValue($q.reject(error));
+    it('should not accept updates from a delta', function(){
+      target.updateFromDelta(userId, newUserState);
+      $rootScope.$apply();
 
-      var result = null;
-      target.updateFromServer(userId).catch(function(error) {
-        result = error;
+      expect(target.currentValue).toBeUndefined();
+      expect(localStorageService.set).not.toHaveBeenCalled();
+    });
+
+    describe('when an update is broadcast from the API', function(){
+
+      var expectedState;
+      var newUserStateCopy;
+      beforeEach(function(){
+        expectedState = getWithUserId(userId, newUserState);
+        newUserStateCopy = _.clone(newUserState);
+        spyOn($rootScope, '$broadcast').and.callThrough();
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
+        $rootScope.$apply();
       });
-      $rootScope.$apply();
 
-      expect(result).toBe(error);
-      expect(userStateStub.getUserState).toHaveBeenCalledWith(userId);
-      expect(target.currentValue).toBe(null);
-    });
-
-    it('should raise an event on success', function() {
-      userStateStub.getUserState.and.returnValue($q.when({ data: newUserState }));
-      spyOn($rootScope, '$broadcast');
-
-      target.updateFromServer(userId);
-      $rootScope.$apply();
-
-      expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, newUserState);
-    });
-  });
-
-  describe('when synchronizing with server (from no user ID)', function() {
-
-    it('should retain refreshed user state', function() {
-
-      userStateStub.getVisitorState.and.returnValue($q.when({ data: newUserState }));
-
-      target.updateFromServer();
-      $rootScope.$apply();
-
-      expect(userStateStub.getVisitorState).toHaveBeenCalled();
-      expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, newUserState);
-      expect(target.currentValue).toBe(newUserState);
-    });
-
-    it('should propagate errors', function() {
-      userStateStub.getVisitorState.and.returnValue($q.reject(error));
-
-      var result = null;
-      target.updateFromServer().catch(function(error) {
-        result = error;
+      it('should apply an update', function(){
+        expect(target.currentValue).toEqual(expectedState);
       });
-      $rootScope.$apply();
 
-      expect(result).toBe(error);
-      expect(userStateStub.getVisitorState).toHaveBeenCalled();
-      expect(target.currentValue).toBe(null);
+      it('should not mutate state', function(){
+        expect(newUserState).toEqual(newUserStateCopy);
+        expect(expectedState).not.toEqual(newUserStateCopy);
+      });
+
+      it('should save updates to local storage', function(){
+        expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, expectedState);
+      });
+
+      it('should raise an event when updated', function(){
+        expect($rootScope.$broadcast).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, expectedState);
+      });
     });
 
-    it('should raise an event on success', function() {
-      userStateStub.getVisitorState.and.returnValue($q.when({ data: newUserState }));
-      spyOn($rootScope, '$broadcast');
+    describe('when an update is broadcast from the API with an undefined user', function(){
 
-      target.updateFromServer();
+      var expectedState;
+      var newUserStateCopy;
+      beforeEach(function(){
+        expectedState = getWithUserId(undefined, newUserState);
+        newUserStateCopy = _.clone(newUserState);
+        spyOn($rootScope, '$broadcast').and.callThrough();
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, newUserState);
+        $rootScope.$apply();
+      });
+
+      it('should apply an update', function(){
+        expect(target.currentValue).toEqual(expectedState);
+      });
+
+      it('should not mutate state', function(){
+        expect(newUserState).toEqual(newUserStateCopy);
+        expect(expectedState).not.toEqual(newUserStateCopy);
+      });
+
+      it('should save updates to local storage', function(){
+        expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, expectedState);
+      });
+
+      it('should raise an event when updated', function(){
+        expect($rootScope.$broadcast).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, expectedState);
+      });
+    });
+
+    it('should still be undefined if the current user changes', function(){
+      $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, { userId: userId });
       $rootScope.$apply();
 
-      expect($rootScope.$broadcast)
-        .toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, newUserState);
+      expect(target.currentValue).toBeUndefined();
+      expect(localStorageService.set).not.toHaveBeenCalled();
+    });
+
+    describe('when initial state is set', function(){
+      beforeEach(function(){
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
+        $rootScope.$apply();
+      });
+
+      it('should not change the state if the current user changed event is raised with the same user', function(){
+        $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, { userId: userId });
+        $rootScope.$apply();
+
+        var expectedState = getWithUserId(userId, newUserState);
+        expect(target.currentValue).toEqual(expectedState);
+      });
+
+      describe('when a current user change event is raised with a different user', function(){
+
+        beforeEach(function(){
+          spyOn($rootScope, '$broadcast').and.callThrough();
+          $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, { userId: userId2 });
+          $rootScope.$apply();
+        });
+
+        it('should clear the current value', function(){
+          expect(target.currentValue).toBeUndefined();
+        });
+
+        it('should update the local storage', function(){
+          expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, undefined);
+        });
+
+        it('should raise an event', function(){
+          expect($rootScope.$broadcast).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, undefined);
+        });
+      });
+
+      describe('when a current user change event is raised with an undefined user', function(){
+
+        beforeEach(function(){
+          spyOn($rootScope, '$broadcast').and.callThrough();
+          $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, { userId: undefined });
+          $rootScope.$apply();
+        });
+
+        it('should clear the current value', function(){
+          expect(target.currentValue).toBeUndefined();
+        });
+
+        it('should update the local storage', function(){
+          expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, undefined);
+        });
+
+        it('should raise an event', function(){
+          expect($rootScope.$broadcast).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, undefined);
+        });
+      });
+
+      describe('when new state is fetched from the API with the same user ID', function(){
+
+        var expected;
+        beforeEach(function(){
+          spyOn($rootScope, '$broadcast').and.callThrough();
+          var delta = { some: { complex: 'foo'}, bar: 5};
+          expected = getWithUserId(userId, { some: { complex: 'foo', unchanged: true }, bar:5});
+          $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, delta);
+          $rootScope.$apply();
+        });
+
+        it('should merge the new data', function(){
+          expect(target.currentValue).toEqual(expected);
+        });
+
+        it('should update the local storage', function(){
+          expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, expected);
+        });
+
+        it('should raise an event', function(){
+          expect($rootScope.$broadcast).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, expected);
+        });
+      });
+
+      describe('when new state is fetched from the API with a different same user ID', function(){
+
+        var expected;
+        beforeEach(function(){
+          spyOn($rootScope, '$broadcast').and.callThrough();
+          var delta = { some: { complex: 'foo'}, bar: 5};
+          expected = getWithUserId(userId2, delta);
+          $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId2, delta);
+          $rootScope.$apply();
+        });
+
+        it('should replace the old data', function(){
+          expect(target.currentValue).toEqual(expected);
+        });
+
+        it('should update the local storage', function(){
+          expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, expected);
+        });
+
+        it('should raise an event', function(){
+          expect($rootScope.$broadcast).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, expected);
+        });
+      });
+
+      describe('when merging from a delta for the same user ID', function(){
+
+        var existing;
+        var existingCopy;
+        var delta;
+        var deltaCopy;
+        var expected;
+
+        beforeEach(function(){
+          existing = target.currentValue;
+          delta = { some: { complex: 'foo'}, bar: 5};
+          expected = getWithUserId(userId, { some: { complex: 'foo', unchanged: true }, bar:5});
+          existingCopy = _.clone(target.currentValue);
+          deltaCopy = _.clone(delta);
+
+          spyOn($rootScope, '$broadcast').and.callThrough();
+
+          target.updateFromDelta(userId, delta);
+          $rootScope.$apply();
+        });
+
+        it('should update the current state', function() {
+          expect(target.currentValue).toEqual(expected);
+        });
+
+        it('should persist the new state to local storage', function() {
+          expect(localStorageService.set).toHaveBeenCalledWith(localStorageKey, expected);
+        });
+
+        it('should not mutate existing state', function() {
+          expect(existing).toEqual(existingCopy);
+          expect(delta).toEqual(deltaCopy);
+        });
+
+        it('should raise an event', function() {
+          expect($rootScope.$broadcast).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, expected);
+        });
+      });
+
+      describe('when merging from a delta for a different user ID', function(){
+
+        var delta;
+        var expected;
+
+        beforeEach(function(){
+          delta = { some: { complex: 'foo'}, bar: 5};
+          expected = getWithUserId(userId, newUserState);
+          spyOn($rootScope, '$broadcast').and.callThrough();
+          target.updateFromDelta(userId2, delta);
+          $rootScope.$apply();
+        });
+
+        it('should not update the current state', function() {
+          expect(target.currentValue).toEqual(expected);
+        });
+
+        it('should not raise an event', function() {
+          expect($rootScope.$broadcast).not.toHaveBeenCalled();
+        });
+      });
     });
   });
-
 });

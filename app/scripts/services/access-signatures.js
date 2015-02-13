@@ -100,12 +100,12 @@ angular.module('webApp').constant('accessSignaturesConstants', {
     };
 
     var refreshRequired = function(userId){
-      if(isExpired(accessSignaturesConstants.refreshMinimumExpiry)){
+      if (isExpired(accessSignaturesConstants.refreshMinimumExpiry)){
         return true;
       }
 
       // If the user has logged in or out, we need to refresh.
-      if(cache.lastResult.userId !== userId){
+      if (cache.lastResult.userId !== userId){
         return true;
       }
 

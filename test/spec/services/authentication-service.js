@@ -53,7 +53,7 @@ describe('authentication service', function() {
   var $state;
   var localStorageService;
   var analytics;
-  var aggregateUserState;
+  var fetchAggregateUserState;
   var fifthweekConstants;
   var target;
   var authenticationServiceConstants;
@@ -61,13 +61,13 @@ describe('authentication service', function() {
   beforeEach(function() {
     localStorageService = {};
     analytics = jasmine.createSpyObj('analytics', ['setUsername']);
-    aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['updateFromServer']);
+    fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateFromServer']);
 
     module('webApp', 'stateMock');
     module(function($provide) {
       $provide.value('localStorageService', localStorageService);
       $provide.value('$analytics', analytics);
-      $provide.value('aggregateUserState', aggregateUserState);
+      $provide.value('fetchAggregateUserState', fetchAggregateUserState);
     });
 
     inject(function($injector) {
@@ -80,7 +80,7 @@ describe('authentication service', function() {
       target = $injector.get('authenticationServiceImpl');
     });
 
-    aggregateUserState.updateFromServer.and.returnValue($q.when());
+    fetchAggregateUserState.updateFromServer.and.returnValue($q.when());
   });
 
   afterEach(function() {
@@ -435,7 +435,7 @@ describe('authentication service', function() {
         $httpBackend.flush();
         $rootScope.$apply();
 
-        expect(aggregateUserState.updateFromServer.calls.mostRecent().args).toEqual([userId]);
+        expect(fetchAggregateUserState.updateFromServer.calls.mostRecent().args).toEqual([userId]);
       });
 
       it('should raise a current user changed event', function () {
@@ -462,7 +462,7 @@ describe('authentication service', function() {
         target.signOut();
         $rootScope.$apply();
 
-        expect(aggregateUserState.updateFromServer.calls.mostRecent().args).toEqual([ ]);
+        expect(fetchAggregateUserState.updateFromServer.calls.mostRecent().args).toEqual([ ]);
 
         executeSignOutExpectations();
       });

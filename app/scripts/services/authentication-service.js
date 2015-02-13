@@ -21,7 +21,7 @@ angular.module('webApp')
     $rootScope,
     analytics,
     localStorageService,
-    aggregateUserState,
+    fetchAggregateUserState,
     fifthweekConstants,
     authenticationServiceConstants,
     utilities) {
@@ -111,7 +111,7 @@ angular.module('webApp')
           analytics.setUsername(service.currentUser.userId);
         })
         .then(function() {
-          return aggregateUserState.updateFromServer(service.currentUser.userId);
+          return fetchAggregateUserState.updateFromServer(service.currentUser.userId);
         })
         .catch(function(error){
           service.signOut();
@@ -145,7 +145,7 @@ angular.module('webApp')
     service.signOut = function() {
       clearCurrentUserDetails();
 
-      return aggregateUserState.updateFromServer();
+      return fetchAggregateUserState.updateFromServer();
     };
 
     var extractAuthenticationDataFromResponse = function (response){

@@ -36,22 +36,26 @@ describe('subscription service', function() {
   var subscriptionId = 'subscriptionId';
   var subscriptionData = 'subscriptionData';
   var error = 'error';
+  var userId = 'user_id';
 
   var $rootScope;
   var $q;
   var subscriptionStub;
   var aggregateUserState;
   var aggregateUserStateConstants;
+  var authenticationService;
   var target;
 
   beforeEach(function() {
     subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['postSubscription', 'putSubscription']);
     aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['updateFromDelta']);
+    authenticationService = { currentUser: { userId: userId }};
 
     module('webApp');
     module(function($provide) {
       $provide.value('subscriptionStub', subscriptionStub);
       $provide.value('aggregateUserState', aggregateUserState);
+      $provide.value('authenticationService', authenticationService);
     });
 
     inject(function($injector) {
@@ -128,11 +132,32 @@ describe('subscription service', function() {
       $rootScope.$apply();
 
       expect(subscriptionStub.postSubscription).toHaveBeenCalledWith(subscriptionData);
-      expect(aggregateUserState.updateFromDelta).toHaveBeenCalledWith({
-        creatorStatus: {
-          subscriptionId: subscriptionId
-        }
-      });
+      expect(aggregateUserState.updateFromDelta).toHaveBeenCalledWith(
+        userId,
+        {
+          creatorStatus: {
+            subscriptionId: subscriptionId
+          }
+        });
+    });
+
+    it('should retain read the current user ID before calling the API', function() {
+      aggregateUserState.currentValue = { };
+      target.initialize();
+
+      subscriptionStub.postSubscription.and.returnValue($q.when({ data: subscriptionId }));
+
+      target.createFirstSubscription(subscriptionData);
+      authenticationService.currentUser.userId = 'changed_user_id';
+      $rootScope.$apply();
+
+      expect(aggregateUserState.updateFromDelta).toHaveBeenCalledWith(
+        userId,
+        {
+          creatorStatus: {
+            subscriptionId: subscriptionId
+          }
+        });
     });
 
     it('should propagate errors', function() {
