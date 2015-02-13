@@ -114,7 +114,7 @@ angular.module('routes', ['ui.router'])
         controller: 'SignInCtrl',
         data : {
           pageTitle: 'Sign In',
-          headTitle: ' - ' + 'Sign In',
+          headTitle: ': ' + 'Sign In',
           access: {
             requireUnauthenticated: true
           }
@@ -126,7 +126,7 @@ angular.module('routes', ['ui.router'])
         controller: 'SignInForgotCtrl',
         data : {
           pageTitle: 'Forgot Your Details?',
-          headTitle: ' - ' + 'Forgot Your Details?',
+          headTitle: ': ' + 'Forgot Your Details?',
           access: {
             requireUnauthenticated: true
           }
@@ -138,7 +138,7 @@ angular.module('routes', ['ui.router'])
         controller: 'SignOutCtrl',
         data : {
           pageTitle: 'Sign Out',
-          headTitle: ' - ' + 'Sign Out',
+          headTitle: ': ' + 'Sign Out',
           access: {
             requireAuthenticated: true
           }
@@ -150,7 +150,7 @@ angular.module('routes', ['ui.router'])
         controller: 'AccountCtrl',
         data : {
           pageTitle: 'My Account',
-          headTitle: ' - ' + 'My Account',
+          headTitle: ': ' + 'My Account',
           access: {
             requireAuthenticated: true
           }
@@ -163,7 +163,7 @@ angular.module('routes', ['ui.router'])
         redirectTo: states.creators.landingPage.name,
         data : {
           pageTitle: 'Creators',
-          headTitle: ' - ' + 'Creators',
+          headTitle: ': ' + 'Creators',
           access: {
             requireAuthenticated: true
           }
@@ -176,7 +176,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: false,
         data : {
           pageTitle: 'Create Your Subscription',
-          headTitle: ' -' + ' Create Your Subscription',
+          headTitle: ' - ' + 'Create Your Subscription',
           access: {
             requireAuthenticated: true
           }
@@ -189,7 +189,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: 'Landing page',
-          headTitle: ' - ' + 'Landing page',
+          headTitle: ': ' + 'Landing page',
           disableSidebar: true,
           bodyClass: 'page-landing',
           access: {
@@ -203,7 +203,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: 'Compose',
-          headTitle: ' - ' + 'Compose',
+          headTitle: ': ' + 'Compose',
           access: {
             requireAuthenticated: true
           }
@@ -216,7 +216,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Note',
-          headTitle: ' -' + ' Note',
+          headTitle: ' - ' + 'Note',
           access: {
             requireAuthenticated: true
           }
@@ -228,7 +228,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Image',
-          headTitle: ' -' + ' Image',
+          headTitle: ' - ' + 'Image',
           access: {
             requireAuthenticated: true
           }
@@ -240,7 +240,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' File',
-          headTitle: ' -' + ' file'
+          headTitle: ' - ' + 'file'
         }
       })
       .state(states.creators.customize.name, {
@@ -249,7 +249,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: 'Customize',
-          headTitle: ' - ' + 'Customize',
+          headTitle: ': ' + 'Customize',
           access: {
             requireAuthenticated: true
           }
@@ -262,7 +262,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Landing page',
-          headTitle: ' -' + ' Landing page'
+          headTitle: ' - ' + 'Landing page'
         }
       })
       .state(states.creators.customize.collections.name, {
@@ -271,7 +271,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: 'Collections',
-          headTitle: ' - ' + 'Collections',
+          headTitle: ': ' + 'Collections',
           access: {
             requireAuthenticated: true
           }
@@ -283,7 +283,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: 'Channels',
-          headTitle: ' - ' + 'Channels',
+          headTitle: ': ' + 'Channels',
           access: {
             requireAuthenticated: true
           }
@@ -296,7 +296,7 @@ angular.module('routes', ['ui.router'])
         redirectTo: states.help.faq.name,
         data : {
           pageTitle: 'Help',
-          headTitle: ' - ' + 'Help'
+          headTitle: ': ' + 'Help'
         }
       })
       .state(states.help.faq.name, {
@@ -304,7 +304,7 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'views/help/faq.html',
         data : {
           pageTitle: 'Frequently Asked Questions',
-          headTitle: ' - ' + 'Frequently Asked Questions'
+          headTitle: ': ' + 'FAQ'
         }
       })
       .state(states.help.contact.name, {
@@ -312,7 +312,7 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'views/help/contact-us.html',
         data : {
           pageTitle: 'Contact Us',
-          headTitle: ' - ' + 'Contact Us'
+          headTitle: ': ' + 'Contact Us'
         }
       })
       .state(states.help.legal.name, {
@@ -322,7 +322,7 @@ angular.module('routes', ['ui.router'])
         redirectTo: states.help.legal.termsOfService.name,
         data : {
           pageTitle: 'Legal',
-          headTitle: ' - ' + 'Legal'
+          headTitle: ': ' + 'Legal'
         }
       })
       .state(states.help.legal.termsOfService.name, {
@@ -330,7 +330,7 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'views/help/legal/terms-of-service.html',
         data : {
           pageTitle: 'Terms of Service',
-          headTitle: ' - ' + 'Terms of Service'
+          headTitle: ': ' + 'Terms of Service'
         }
       })
       .state(states.help.legal.privacyPolicy.name, {
@@ -338,7 +338,7 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'views/help/legal/privacy-policy.html',
         data : {
           pageTitle: 'Privacy Policy',
-          headTitle: ' - ' + 'Privacy Policy'
+          headTitle: ': ' + 'Privacy Policy'
         }
       })
       .state(states.notAuthorized.name, {
@@ -346,7 +346,7 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'views/not-authorized/not-authorized.html',
         data : {
           pageTitle: 'Not Authorized',
-          headTitle: ' - ' + 'Not Authorized'
+          headTitle: ': ' + 'Not Authorized'
         }
       });
 });
