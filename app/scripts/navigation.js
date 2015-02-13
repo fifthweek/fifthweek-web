@@ -125,6 +125,12 @@ angular.module('webApp')
             state: states.help.contact.name,
             icon: 'fa fa-comment-o',
             color: 'indigo'
+          },
+          {
+            name: 'Legal',
+            state: states.help.legal.name,
+            icon: 'fa fa-files-o',
+            color: 'indigo'
           }
         ]
       }

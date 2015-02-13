@@ -64,6 +64,15 @@ angular.module('routes', ['ui.router'])
       },
       contact: {
         name: 'help.contact'
+      },
+      legal: {
+        name: 'help.legal',
+        termsOfService: {
+          name: 'help.legal.termsOfService'
+        },
+        privacyPolicy: {
+          name: 'help.legal.privacyPolicy'
+        }
       }
     },
     notAuthorized: {
@@ -304,6 +313,32 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Contact Us',
           headTitle: ' - ' + 'Contact Us'
+        }
+      })
+      .state(states.help.legal.name, {
+        abstract: false,
+        url: '/legal',
+        templateUrl: 'views/help/legal/index.html',
+        redirectTo: states.help.legal.termsOfService.name,
+        data : {
+          pageTitle: 'Legal',
+          headTitle: ' - ' + 'Legal'
+        }
+      })
+      .state(states.help.legal.termsOfService.name, {
+        url: '/terms-of-service',
+        templateUrl: 'views/help/legal/terms-of-service.html',
+        data : {
+          pageTitle: 'Terms of Service',
+          headTitle: ' - ' + 'Terms of Service'
+        }
+      })
+      .state(states.help.legal.privacyPolicy.name, {
+        url: '/privacy-policy',
+        templateUrl: 'views/help/legal/privacy-policy.html',
+        data : {
+          pageTitle: 'Privacy Policy',
+          headTitle: ' - ' + 'Privacy Policy'
         }
       })
       .state(states.notAuthorized.name, {
