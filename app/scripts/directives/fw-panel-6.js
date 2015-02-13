@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwCol50', function () {
+angular.module('webApp').directive('fwPanel6', function () {
   'use strict';
 
   return {
@@ -12,7 +12,11 @@ angular.module('webApp').directive('fwCol50', function () {
         'col-s-offset-0 col-s-8 ' +
         'col-sm-7 ' +
         'col-md-6">' +
-          '<ng-transclude></ng-transclude>' +
+        '<div class="panel panel-default">' +
+          '<div class="panel-body jumbo-panel">' +
+            '<ng-transclude></ng-transclude>' +
+          '</div>' +
+        '</div>' +
       '</div>' +
     '</div>'
   };

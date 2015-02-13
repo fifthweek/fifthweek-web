@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwPanel100', function () {
+angular.module('webApp').directive('fwPanel12', function () {
   'use strict';
 
   return {
