@@ -54,7 +54,7 @@ describe('sign-in - forgot details form', function() {
     });
   });
 
-  ddescribe('when a user is registered', function(){
+  describe('when a user is registered', function(){
     var username;
     var email;
     var mailboxUrl;
