@@ -1,6 +1,7 @@
-﻿<fw-panel50>
+﻿<fw-panel50 ng-show="!requestSucceeded">
 
   <form role="form">
+
     <div class="form-group">
       <input type="text" class="form-control" placeholder="Username" ng-model="passwordResetRequestData.username" focus=true>
     </div>
@@ -20,11 +21,18 @@
         fw-form-submit="requestPasswordReset()">Reset Password</button>
     </div>
 
-    <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
+    <div ng-show="message" class="alert alert-danger sub-form-alert" id="password-reset-request-message">
       <p>{{message}}</p>
     </div>
+
   </form>
 
 </fw-panel50>
 
-
+<fw-col50 ng-show="requestSucceeded" id="password-reset-request-success">
+  <div class="alert alert-success">
+    <p>
+      <strong>Please check your inbox.</strong> You should receive an email from us containing a link to reset your password.
+    </p>
+  </div>
+</fw-col50>

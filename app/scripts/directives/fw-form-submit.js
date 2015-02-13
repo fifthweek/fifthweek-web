@@ -7,10 +7,20 @@ angular.module('webApp').directive('fwFormSubmit',
     restrict: 'A',
     link: function(scope, element, attrs) {
 
+      var setMessage;
+      if (_.isFunction(scope.setMessage)) {
+        setMessage = scope.setMessage;
+      }
+      else {
+        setMessage = function(message) {
+          scope.message = message;
+        }
+      }
+
       scope.isSubmitting = false;
       scope.hasSubmitted = false;
       scope.submissionSucceeded = false;
-      scope.message = '';
+      setMessage('');
 
       element.bind('click', function() {
 
@@ -23,7 +33,7 @@ angular.module('webApp').directive('fwFormSubmit',
 
         scope.isSubmitting = true;
         scope.submissionSucceeded = false;
-        scope.message = '';
+        setMessage('');
 
         if (!attrs.hasOwnProperty('ngDisabled')) {
           element.addClass('disabled').attr('disabled', 'disabled');
@@ -45,7 +55,7 @@ angular.module('webApp').directive('fwFormSubmit',
             }
           },
           function(error){
-            scope.message = utilities.getFriendlyErrorMessage(error);
+            setMessage(utilities.getFriendlyErrorMessage(error));
             return logService.error(error);
           }).finally(function() {
             scope.hasSubmitted = true;
