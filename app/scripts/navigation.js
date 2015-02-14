@@ -59,6 +59,12 @@ angular.module('webApp')
         ]
       },
       {
+        name: 'Backlog',
+        state: states.creators.backlog.name,
+        icon: 'fa fa-sort-amount-desc',
+        color: 'green',
+      },
+      {
         name: 'Customize',
         state: states.creators.customize.landingPage.name,
         icon: 'fa fa-eye',

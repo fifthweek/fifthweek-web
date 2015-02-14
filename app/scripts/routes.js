@@ -47,6 +47,9 @@ angular.module('routes', ['ui.router'])
           name: 'creators.compose.file'
         }
       },
+      backlog: {
+        name: 'creators.backlog'
+      },
       customize: {
         name: 'creators.customize',
         landingPage: {
@@ -256,6 +259,18 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: ' File',
           headTitle: ': ' + 'New File'
+        }
+      })
+      .state(states.creators.backlog.name, {
+        url: '/backlog',
+        templateUrl: 'views/creators/backlog.html',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Backlog',
+          headTitle: ': ' + 'Backlog',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.creators.customize.name, {
