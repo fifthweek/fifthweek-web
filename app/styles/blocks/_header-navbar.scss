@@ -30,7 +30,7 @@
     }
   }
   h1 {
-    display:inline-block;
+    @include inline-block(top);
     font-size:18px;
     padding:15px 11px;
     margin:0;

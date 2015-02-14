@@ -26,8 +26,7 @@ $html-name-space:'.page-backlog';
         margin-bottom:0;
         &::after {
           content:'.';
-          display:inline-block;
-          vertical-align:top;
+          @include inline-block(top);
           margin:0 10px;
           font-size:22px;
           line-height:8px;
@@ -58,8 +57,7 @@ $html-name-space:'.page-backlog';
     .actions {
       color:$grey-light-5;
       li {
-        display:inline-block;
-        vertical-align:top;
+        @include inline-block(top);
         margin:0 20px;
         &:first-child {
           margin-left:0;

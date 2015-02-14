@@ -16,3 +16,8 @@
     padding-left:90px;
   }
 }
+
+@mixin inline-block($v-align) {
+  display:inline-block;
+  vertical-align:$v-align;
+}

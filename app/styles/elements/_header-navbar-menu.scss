@@ -2,7 +2,7 @@
 
 ul.header-navbar-menu {
   list-style-type: none;
-  display:inline-block;
+  @include inline-block(top);
   padding:11px 11px 9px 60px;
   margin:0;
   white-space: nowrap;

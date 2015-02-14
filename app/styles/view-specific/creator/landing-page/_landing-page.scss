@@ -55,8 +55,7 @@ $panel-margin-bottom:40px;
     }
 
     .avatar-wrap {
-      display:inline-block;
-      vertical-align:top;
+      @include inline-block(top);
       width:17%;
       max-width:140px;
       margin:5% 0;
