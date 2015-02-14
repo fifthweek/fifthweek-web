@@ -1,13 +1,10 @@
 @import '_base';
 
-$input-height-base:38px;
-
 label {
   display:block;
   font-size:15px;
   color:$grey-dark;
 }
-
 
 div[fw-file-upload] {
   input[type="submit"] {
@@ -16,7 +13,7 @@ div[fw-file-upload] {
   }
 }
 
-@include form-control-height(38px);
+@include form-control-height(42px);
 
 .form-group {
   margin-bottom: 16px;
