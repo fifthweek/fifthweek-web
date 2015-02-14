@@ -67,14 +67,34 @@ $html-name-space:'.page-backlog';
         @include inline-block(top);
         padding:0 10px;
         margin:0 10px;
-        @include li-cancel-first-last-margins;
+        cursor:pointer;
         &.actions-more {
           position:relative;
           cursor:pointer;
         }
       }
+      @include li-cancel-first-last-margins;
       .fa {
         font-size:19px;
+      }
+
+      .active-comment .fa,
+      .active-actions-drop-down .fa {
+        color:$blue-light-2;
+      }
+      .active-favourite .fa {
+        color:$pink-light-1;
+      }
+      .fa-comment,
+      .fa-ellipsis-h {
+        #{$state-hover-focus} {
+          color:$blue-light-2;
+        }
+      }
+      .fa-heart {
+        #{$state-hover-focus} {
+          color:$pink-light-1;
+        }
       }
     }
 

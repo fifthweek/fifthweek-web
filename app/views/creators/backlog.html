@@ -24,13 +24,13 @@
         <div class="row actions">
           <div class="col-md-12">
             <ul>
-              <li>
+              <li ng-click="activeComment = !activeComment" ng-class="{'active-comment': activeComment}">
                 <i class="fa fa-comment"></i>
               </li>
-              <li>
-                <i class="fa fa-heart"></i>
+              <li ng-click="activeFavourite = !activeFavourite" ng-class="{'active-favourite': activeFavourite}">
+                <i class="fa fa-heart" ng-class="{'active' : activeFav}"></i>
               </li>
-              <li class="actions-more" ng-click="actionsDropDown = !actionsDropDown">
+              <li class="actions-more" ng-click="actionsDropDown = !actionsDropDown" ng-class="{'active-actions-drop-down': actionsDropDown}">
                 <i class="fa fa-ellipsis-h"></i>
                 <div class="actions-drop-down" ng-show="actionsDropDown">
                   <ul>
