@@ -7,7 +7,8 @@ angular.module('webApp')
       emailDefault:'marc@example.com',
       username:'',
       usernameDefault:'marc-holmes',
-      photo:'images/avatar-default.png',
+      photo:'',
+      photoDefault:'images/avatar-default.png',
       password:''
     };
 
