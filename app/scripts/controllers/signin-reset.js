@@ -1,5 +1,5 @@
 angular.module('webApp').controller('SignInResetCtrl',
-  function($scope, $state, membershipStub/*, utilities*/) {
+  function($scope, $state, membershipStub, utilities) {
     'use strict';
 
     var userId = $state.params.userId;
@@ -29,13 +29,13 @@ angular.module('webApp').controller('SignInResetCtrl',
       });
     };
 
-    //membershipStub.getPasswordResetTokenValidity(userId, token).catch(function(response) {
-    //  if (response.status === 404) {
-    //    $scope.tokenInvalid = true;
-    //  }
-    //  else {
-    //    $scope.setMessage(utilities.getFriendlyErrorMessage(response));
-    //  }
-    //});
+    membershipStub.getPasswordResetTokenValidity(userId, token).catch(function(error) {
+      if (error instanceof ApiError && error.response.status === 404) {
+        $scope.tokenInvalid = true;
+      }
+      else {
+        $scope.setMessage(utilities.getFriendlyErrorMessage(error));
+      }
+    });
   }
 );

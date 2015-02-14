@@ -7,8 +7,9 @@ function FifthweekError(message) {
 FifthweekError.prototype = Object.create(Error.prototype);
 FifthweekError.prototype.constructor = FifthweekError;
 
-function ApiError(message) {
+function ApiError(message, response) {
   this.message = message;
+  this.response = response;
   this.stack = Error().stack;
 }
 ApiError.prototype = Object.create(Error.prototype);
