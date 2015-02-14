@@ -35,6 +35,11 @@ ul.header-navbar-menu {
           border-color: $icon-green;
         }
       }
+      &.orange {
+        &.active{
+          border-color: $icon-orange;
+        }
+      }
       &.yellow {
         &.active{
           border-color: $icon-yellow;

@@ -72,6 +72,13 @@ $item-padding:$item-padding-tb $item-padding-lr;
           }
         }
       }
+      &.orange {
+        #{$state-active-hover-focus} {
+          .fa {
+            color:$icon-orange;
+          }
+        }
+      }
       &.yellow {
         #{$state-active-hover-focus} {
           .fa {

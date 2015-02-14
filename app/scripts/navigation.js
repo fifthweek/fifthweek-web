@@ -35,26 +35,26 @@ angular.module('webApp')
         name: 'New Post',
         state: states.creators.compose.note.name,
         icon: 'fa fa-pencil-square-o',
-        color: 'yellow',
+        color: 'orange',
         secondary:
         [
           {
             name: 'Note',
             state: states.creators.compose.note.name,
             icon: 'fa fa-quote-left',
-            color: 'yellow'
+            color: 'orange'
           },
           {
             name: 'Image',
             state: states.creators.compose.image.name,
             icon: 'fa fa-image',
-            color: 'yellow'
+            color: 'orange'
           },
           {
             name: 'File',
             state: states.creators.compose.file.name,
             icon: 'fa fa-file-o',
-            color: 'yellow'
+            color: 'orange'
           }
         ]
       },
@@ -62,7 +62,7 @@ angular.module('webApp')
         name: 'Backlog',
         state: states.creators.backlog.name,
         icon: 'fa fa-sort-amount-desc',
-        color: 'green',
+        color: 'yellow'
       },
       {
         name: 'Customize',
