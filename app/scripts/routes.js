@@ -136,7 +136,7 @@ angular.module('routes', ['ui.router'])
         }
       })
       .state(states.signIn.reset.name, {
-        url: '/reset',
+        url: '/reset?userId&token',
         templateUrl: 'views/sign-in/reset.html',
         controller: 'SignInResetCtrl',
         data : {

@@ -1,9 +1,9 @@
-﻿<fw-panel6 ng-show="!resetSucceeded" id="password-reset-confirmation-panel">
+﻿<fw-panel6 ng-show="!resetSucceeded && !tokenInvalid" id="password-reset-confirmation-panel">
 
   <form role="form">
 
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="New password" ng-model="passwordResetConfirmationData.username" required focus=true>
+      <input type="text" class="form-control" placeholder="New password" ng-model="passwordResetConfirmationData.newPassword" required focus=true>
     </div>
 
     <div class="row-btn">
@@ -25,10 +25,18 @@
 
 </fw-panel6>
 
-<fw-col7 ng-show="resetSucceeded" id="password-reset-request-success">
+<fw-col7 ng-show="resetSucceeded && !tokenInvalid" id="password-reset-confirmation-success">
   <div class="jumbo-panel alert alert-success">
     <p>
       <strong>Password has been reset.</strong> Please sign in with your new password. <strong><a ui-sref="signIn">Continue to sign in page &raquo;</a></strong>
+    </p>
+  </div>
+</fw-col7>
+
+<fw-col7 ng-show="tokenInvalid" id="password-reset-token-invalid">
+  <div class="jumbo-panel alert alert-warning">
+    <p>
+      <strong>This link has expired.</strong> If you need to reset your password, please go to the <strong><a ui-sref="signIn.forgot">forgot your details</a></strong> page.
     </p>
   </div>
 </fw-col7>

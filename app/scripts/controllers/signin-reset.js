@@ -1,11 +1,22 @@
 angular.module('webApp').controller('SignInResetCtrl',
-  function($scope) {
+  function($scope, $state, membershipStub/*, utilities*/) {
     'use strict';
 
+    var userId = $state.params.userId;
+    var token = $state.params.token;
+
     $scope.passwordResetConfirmationData = {
-      password: ''
+      newPassword: '',
+      userId: userId,
+      token: token
     };
 
+    if (userId === undefined || token === undefined) {
+      $scope.tokenInvalid = true;
+      return;
+    }
+
+    $scope.tokenInvalid = false;
     $scope.resetSucceeded = false;
 
     $scope.setMessage = function(message) {
@@ -13,7 +24,18 @@ angular.module('webApp').controller('SignInResetCtrl',
     };
 
     $scope.confirmPasswordReset = function() {
-      $scope.resetSucceeded = true;
+      return membershipStub.postPasswordResetConfirmation($scope.passwordResetConfirmationData).then(function() {
+        $scope.resetSucceeded = true;
+      });
     };
+
+    //membershipStub.getPasswordResetTokenValidity(userId, token).catch(function(response) {
+    //  if (response.status === 404) {
+    //    $scope.tokenInvalid = true;
+    //  }
+    //  else {
+    //    $scope.setMessage(utilities.getFriendlyErrorMessage(response));
+    //  }
+    //});
   }
 );

@@ -36,6 +36,28 @@ describe('utilities', function() {
       expect(error instanceof ApiError).toBeTruthy();
       expect(error.message).toBe('test');
     });
+
+    it('should return an unauthenticated on 401', function(){
+      var error = utilities.getHttpError({ status: 401 });
+      expect(error instanceof UnauthenticatedError).toBeTruthy();
+      expect(error.message).toBe('Not authenticated.');
+    });
+
+    it('should return an unauthorized on 403', function(){
+      var error = utilities.getHttpError({ status: 403 });
+      expect(error instanceof UnauthorizedError).toBeTruthy();
+      expect(error.message).toBe('Not authorized.');
+    });
+
+    it('should rethrow the original response for all other non-server error codes', function(){
+      var response = { status: 400, data: 'test' };
+      var error = utilities.getHttpError(response);
+      expect(error).toBe(response);
+
+      response = { status: 404, data: 'test' };
+      error = utilities.getHttpError(response);
+      expect(error).toBe(response);
+    });
   });
 
   describe('when getting a friendly error message', function(){
