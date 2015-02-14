@@ -3,8 +3,19 @@ angular.module('webApp')
     'use strict';
 
     $scope.accountSettingsData = {
-      photo:'images/avatar-default.png'
+      email:'',
+      emailDefault:'marc@example.com',
+      username:'',
+      usernameDefault:'marc-holmes',
+      photo:'images/avatar-default.png',
+      password:''
     };
+
+    /*$scope.submitForm = function() {
+
+    };
+    */
+
 
 
   });
