@@ -1,8 +1,19 @@
 @import '_base';
 
+@mixin li-cancel-first-last-margins {
+  li:first-child {
+    margin-left:0;
+  }
+  li:last-child {
+    margin-right:0;
+  }
+}
+
 $html-name-space:'.page-backlog';
 
 #{$html-name-space} {
+
+  @import 'elements/_actions-drop-down';
 
   .backlog-post {
 
@@ -11,7 +22,6 @@ $html-name-space:'.page-backlog';
       margin-bottom:0;
     }
 
-
     .info,
     .actions {
       color:$grey-light-4;
@@ -19,6 +29,7 @@ $html-name-space:'.page-backlog';
     }
 
     .info {
+      @include li-cancel-first-last-margins;
       li {
         list-style-type:none;
         display:inline-block;
@@ -31,11 +42,7 @@ $html-name-space:'.page-backlog';
           font-size:22px;
           line-height:8px;
         }
-        &:first-child {
-          margin-left:0;
-        }
         &:last-child {
-          margin-right:0;
           &::after {
             display:none;
           }
@@ -56,14 +63,14 @@ $html-name-space:'.page-backlog';
 
     .actions {
       color:$grey-light-5;
-      li {
+      ul > li {
         @include inline-block(top);
-        margin:0 20px;
-        &:first-child {
-          margin-left:0;
-        }
-        &:last-child {
-          margin-right:0;
+        padding:0 10px;
+        margin:0 10px;
+        @include li-cancel-first-last-margins;
+        &.actions-more {
+          position:relative;
+          cursor:pointer;
         }
       }
       .fa {
@@ -71,12 +78,12 @@ $html-name-space:'.page-backlog';
       }
     }
 
+
     @media (min-width:$screen-md) {
       #{$state-hover} {
         cursor:move;
       }
     }
-
 
   }
 }

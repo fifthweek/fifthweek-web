@@ -30,8 +30,15 @@
               <li>
                 <i class="fa fa-heart"></i>
               </li>
-              <li>
+              <li class="actions-more" ng-click="actionsDropDown = !actionsDropDown">
                 <i class="fa fa-ellipsis-h"></i>
+                <div class="actions-drop-down" ng-show="actionsDropDown">
+                  <ul>
+                    <li><a ui-sref="creators.backlog">Test item 1</a></li>
+                    <li><a ui-sref="creators.backlog">Test item 2</a></li>
+                    <li><a ui-sref="creators.backlog">Test item 3</a></li>
+                  </ul>
+                </div>
               </li>
             </ul>
           </div>

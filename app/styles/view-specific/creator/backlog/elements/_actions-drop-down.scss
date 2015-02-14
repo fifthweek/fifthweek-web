@@ -1,0 +1,33 @@
+@import '_base';
+
+$html-name-space:'.actions-drop-down';
+
+#{$html-name-space} {
+  @include panel-box-shadow;
+  position:absolute;
+  z-index:1;
+  top:20px;
+  left:0;
+  width:200px;
+  background:$white-full;
+  color:$grey-dark;
+  border:solid 1px $gray-light;
+  li {
+    margin:0 !important;
+    padding:0 !important;
+    width:100%;
+  }
+  a {
+    display:block;
+    padding:5px $main-cont-padding-x-small;
+    color:$grey-dark;
+    font-weight:normal;
+    text-decoration:none;
+    @media (min-width:$screen-md) {
+      #{$state-hover} {
+        background:$blue-dark-2;
+        color:$white-full;
+      }
+    }
+  }
+}

@@ -15,7 +15,6 @@ angular.module('webApp').controller('backlogCtrl',
         scheduledDate:'Sunday 25th Jan',
         bodyText:'Almost there'
       }
-      
     ];
 
   }
