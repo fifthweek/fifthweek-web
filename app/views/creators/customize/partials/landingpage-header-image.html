@@ -8,12 +8,8 @@
             <h5>Header Image</h5>
             <img ng-src="{{landingPageData.headerImage}}" alt="Header Image" />
           </div>
-          <div class="col-md-4 file-upload">
-            <label>Select a file to upload</label>
-            <input type="file" />
-            <input type="submit" 
-                   class="btn btn-sm btn-grey" 
-                   value="Upload Image" />
+          <div class="col-md-4">
+            <div fw-file-upload></div>
           </div>
         </div>
         <div class="row">
