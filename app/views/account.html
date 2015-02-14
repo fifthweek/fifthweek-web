@@ -1,0 +1,67 @@
+<div class="row page-account-settings">
+  <div class="col-md-12">
+
+    <div class="panel panel-default">
+      <div class="panel-body jumbo-panel">
+        <div class="col-sm-5">
+          <form name="accountSettings">
+            <div class="inner-row cancel-col-widths">
+
+              <div class="inner-row">
+                <div class="col-md-6">
+                  <label>Your Photo</label>
+                  <p>img here</p>
+                </div>
+                <div class="col-md-6">
+                  <p>file upload here</p>
+                </div>
+              </div>
+
+              <div class="inner-row">
+                <div class="col-md-12">
+                  <label for="email">Email</label>
+                  <input type="text"
+                         class="form-control"
+                         name="email"
+                         placeholder="marc@example.com" required/>
+                </div>
+              </div>
+
+              <div class="inner-row">
+                <div class="col-md-12">
+                  <label for="username">Username</label>
+                  <input type="text"
+                         class="form-control"
+                         name="username"
+                         placeholder="marc-holmes" required/>
+                </div>
+              </div>
+
+              <div class="inner-row">
+                <div class="col-md-12">
+                  <label for="password">Password</label>
+                  <input type="password"
+                         class="form-control"
+                         name="username" required/>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="submit" 
+                         class="btn btn-block btn-success" 
+                         ng-click="accountSettings.$valid && accountSettings.$dirty ? saveTheDataTempFunctionName() : false"
+                         ng-disabled="accountSettings.$invalid || 
+                                      accountSettings.$pristine || 
+                                      isSubmitting"
+                         value="Save Changes" />
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

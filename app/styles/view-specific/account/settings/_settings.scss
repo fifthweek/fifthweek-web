@@ -1,0 +1,9 @@
+@import '_base';
+
+$html-name-space:'.page-account-settings';
+
+#{$html-name-space} {
+  .panel-body .inner-row:first-child {
+    margin-bottom:0;
+  }
+}
