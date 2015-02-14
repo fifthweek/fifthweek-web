@@ -2,9 +2,9 @@
   <div class="panel-body jumbo-panel">
 
     <div class="col-md-12">
-      <div class="inner-row url">
+      <div class="inner-row">
         <h5>URL</h5>
-        <a ng-href="{{landingPageData.url}}">{{landingPageData.url}}</a>
+        <p><a ng-href="{{landingPageData.url}}">{{landingPageData.url}}</a></p>
       </div>
 
       <form name="landingPageBasics">
@@ -39,11 +39,11 @@
         </div>
 
         <div class="row">
-          <input type="submit" 
-                 class="btn btn-block btn-success" 
+          <input type="submit"
+                 class="btn btn-block btn-success"
                  ng-click="landingPageBasics.$valid && landingPageBasics.$dirty ? saveTheDataTempFunctionName() : false"
-                 ng-disabled="landingPageBasics.$invalid || 
-                              landingPageBasics.$pristine || 
+                 ng-disabled="landingPageBasics.$invalid ||
+                              landingPageBasics.$pristine ||
                               isSubmitting"
                  value="Save Changes" />
         </div>
