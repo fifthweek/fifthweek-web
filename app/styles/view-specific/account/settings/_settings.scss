@@ -3,6 +3,9 @@
 $html-name-space:'.page-account-settings';
 
 #{$html-name-space} {
+  .your-photo-label label {
+    margin-bottom:10px;
+  }
   .form-wrap {
     margin-bottom:0;
   }
