@@ -264,6 +264,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.backlog.name, {
         url: '/backlog',
         templateUrl: 'views/creators/backlog.html',
+        controller: 'backlogCtrl',
         requireSubscription: true,
         data : {
           pageTitle: 'Backlog',
