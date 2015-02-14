@@ -32,19 +32,20 @@ $html-name-space:'.page-backlog';
       @include li-cancel-first-last-margins;
       li {
         list-style-type:none;
-        display:inline-block;
-        vertical-align:top;
         margin-bottom:0;
-        &::after {
-          content:'.';
+        @media (min-width:$screen-xs) {
           @include inline-block(top);
-          margin:0 10px;
-          font-size:22px;
-          line-height:8px;
-        }
-        &:last-child {
           &::after {
-            display:none;
+            content:'.';
+            @include inline-block(top);
+            margin:0 10px;
+            font-size:22px;
+            line-height:8px;
+          }
+          &:last-child {
+            &::after {
+              display:none;
+            }
           }
         }
       }
@@ -65,9 +66,13 @@ $html-name-space:'.page-backlog';
       color:$grey-light-5;
       ul > li {
         @include inline-block(top);
-        padding:0 10px;
-        margin:0 10px;
+        padding:0 5px;
+        margin:0 5px;
         cursor:pointer;
+        @media (min-width:$screen-xs - 100px) {
+          padding:0 10px;
+          margin:0 10px;
+        }
         &.actions-more {
           position:relative;
           cursor:pointer;
