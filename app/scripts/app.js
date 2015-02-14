@@ -14,6 +14,7 @@ angular
     'ui.bootstrap',
     'snap',
     'monospaced.elastic',
+    'ui.sortable',
     'angulartics',
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',

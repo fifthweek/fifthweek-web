@@ -71,5 +71,12 @@ $html-name-space:'.page-backlog';
       }
     }
 
+    @media (min-width:$screen-md) {
+      #{$state-hover} {
+        cursor:move;
+      }
+    }
+
+
   }
 }
