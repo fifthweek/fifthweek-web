@@ -1,5 +1,6 @@
 'use strict';
 
+var UsernameInputPage = require('./username-input.page');
 var CreateSubscriptionPage = require('./creators/create-subscription.page.js');
 
 var RegisterPage = function() {};
@@ -12,14 +13,11 @@ RegisterPage.prototype = Object.create({},
   registerButton: { get: function () { return element(by.id('register-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#registrationForm .help-block')); }},
   nextPageUrl: { get: function () { return new CreateSubscriptionPage().pageUrl; }},
-  newUsername: { value: function() {
-    return 'wd_' + Date.now().toString().split('').reverse().join('');
-  }},
   newEmail: { value: function(username) {
     return username + '@testing.fifthweek.com';
   }},
   registerSuccessfully: { value: function() {
-    var username = this.newUsername();
+    var username = new UsernameInputPage().newUsername();
     var email = this.newEmail(username);
     var password = 'password1';
 

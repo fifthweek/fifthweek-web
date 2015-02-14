@@ -1,4 +1,5 @@
 var HomePage = require('../pages/home.page.js');
+var UsernameInputPage = require('../pages/username-input.page.js');
 var SignOutPage = require('../pages/sign-out.page.js');
 var SignInPage = require('../pages/sign-in.page.js');
 var RegisterPage = require('../pages/register.page.js');
@@ -6,10 +7,11 @@ var RegisterPage = require('../pages/register.page.js');
 describe('sign-in form', function() {
   'use strict';
 
-  var page = new SignInPage();
   var homePage = new HomePage();
+  var usernameInputPage = new UsernameInputPage();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
+  var page = new SignInPage();
 
   var navigateToPage = function() {
     signOutPage.signOutAndGoHome();
@@ -21,7 +23,7 @@ describe('sign-in form', function() {
     it('should not allow the existing user to sign in', function(){
       navigateToPage();
 
-      var username = registerPage.newUsername();
+      var username = usernameInputPage.newUsername();
       var password = username + '123';
 
       page.usernameTextBox.sendKeys(username);

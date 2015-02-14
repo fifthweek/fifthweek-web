@@ -1,4 +1,5 @@
 var HomePage = require('../pages/home.page.js');
+var UsernameInputPage = require('../pages/username-input.page.js');
 var SignOutPage = require('../pages/sign-out.page.js');
 var SignInPage = require('../pages/sign-in.page.js');
 var SignInForgotPage = require('../pages/sign-in-forgot.page.js');
@@ -11,6 +12,7 @@ describe('sign-in - forgot details form', function() {
   'use strict';
 
   var homePage = new HomePage();
+  var usernameInputPage = new UsernameInputPage();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
   var mailboxPage = new MailboxPage();
@@ -38,7 +40,7 @@ describe('sign-in - forgot details form', function() {
     beforeEach(navigateToPage);
 
     it('should display a success message when username is provided', function () {
-      var unregisteredUsername = registerPage.newUsername();
+      var unregisteredUsername = usernameInputPage.newUsername();
       page.usernameTextBox.sendKeys(unregisteredUsername);
 
       page.resetPasswordButton.click();

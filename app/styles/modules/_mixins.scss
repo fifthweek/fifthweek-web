@@ -21,3 +21,14 @@
   display:inline-block;
   vertical-align:$v-align;
 }
+
+@mixin form-control-height($height) {
+  .form-control {
+    height:$height;
+  }
+  .form-control-feedback {
+    line-height:$height;
+    height:$height;
+    width:$height;
+  }
+}

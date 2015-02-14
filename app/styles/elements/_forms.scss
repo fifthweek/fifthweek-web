@@ -16,15 +16,7 @@ div[fw-file-upload] {
   }
 }
 
-.form-control {
-  height:$input-height-base;
-}
-
-.form-control-feedback {
-  line-height:$input-height-base;
-  height:$input-height-base;
-  width:$input-height-base;
-}
+@include form-control-height(38px);
 
 .form-group {
   margin-bottom: 16px;

@@ -34,4 +34,5 @@
     width:100%;
     font-size: 17px;
   }
+  @include form-control-height(42px);
 }

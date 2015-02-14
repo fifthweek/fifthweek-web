@@ -54,22 +54,7 @@
           </div>
         </div>
 
-        <div class="form-group" fw-form-group-validation>
-          <div class="row">
-            <div class="col-md-6">
-              <div fw-form-input-glyphs>
-                <input type="password" class="form-control" name="password" placeholder="Password"
-                       ng-model="registrationData.password"
-                       ng-minlength="6"
-                       required>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <p fw-form-input-invalid-p="minlength">Must be at least 6 characters.</p>
-              <p fw-form-input-invalid-p="required">A password is required.</p>
-            </div>
-          </div>
-        </div>
+        <fw-form-input-password model="registrationData.password" placeholder="Password" required></fw-form-input-password>
 
         <div class="row">
           <div class="col-md-6">
