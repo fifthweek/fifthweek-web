@@ -4,10 +4,74 @@ $html-name-space:'.page-backlog';
 
 #{$html-name-space} {
 
+  .backlog-post {
 
-  .row.last {
-    .fa {
-      font-size:12px; //temp for dev - probably not the correct size
+    ul {
+      padding-left:0;
+      margin-bottom:0;
     }
+
+
+    .info,
+    .actions {
+      color:$grey-light-4;
+      font-weight:bold;
+    }
+
+    .info {
+      li {
+        list-style-type:none;
+        display:inline-block;
+        vertical-align:top;
+        margin-bottom:0;
+        &::after {
+          content:'.';
+          display:inline-block;
+          vertical-align:top;
+          margin:0 10px;
+          font-size:22px;
+          line-height:8px;
+        }
+        &:first-child {
+          margin-left:0;
+        }
+        &:last-child {
+          margin-right:0;
+          &::after {
+            display:none;
+          }
+        }
+      }
+      .fa {
+        margin-left:3px;
+      }
+    }
+
+    .main {
+      font-size:$p-font-size-large;
+      padding:{
+        top:$main-cont-padding-large - 10px;
+        bottom:$main-cont-padding-large - 10px;
+      }
+    }
+
+    .actions {
+      color:$grey-light-5;
+      li {
+        display:inline-block;
+        vertical-align:top;
+        margin:0 20px;
+        &:first-child {
+          margin-left:0;
+        }
+        &:last-child {
+          margin-right:0;
+        }
+      }
+      .fa {
+        font-size:19px;
+      }
+    }
+
   }
 }
