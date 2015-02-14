@@ -1,5 +1,5 @@
 angular.module('webApp')
-  .controller('fileUploadCtrl', function ($scope) {
+  .controller('fileUploadCtrl', function () {
     'use strict';
 
 
