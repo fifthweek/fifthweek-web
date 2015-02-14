@@ -9,8 +9,8 @@
             <ul>
               <li>{{post.scheduledDate}}</li>
               <li>live in ABC</li>
-              <li>In XYZ <i class="fa fa-filter"></i></li>
-              <li>In XYZ <i class="fa fa-calendar"></i></li>
+              <li ng-if="post.stored.calendar">In calendar <i class="fa fa-calendar"></i></li>
+              <li ng-if="post.stored.funnel">In funnel <i class="fa fa-filter"></i></li>
             </ul>
           </div>
         </div>
