@@ -1,0 +1,13 @@
+@import '_base';
+
+$html-name-space:'.page-backlog';
+
+#{$html-name-space} {
+
+
+  .row.last {
+    .fa {
+      font-size:12px; //temp for dev - probably not the correct size
+    }
+  }
+}
