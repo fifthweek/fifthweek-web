@@ -12,6 +12,6 @@ describe("homepage", function() {
   it('should have a sign-in link', function() {
     expect(homePage.signInLink.getText()).toContain('Sign In');
     homePage.signInLink.click();
-    expect(browser.getCurrentUrl()).toContain('/signin');
+    expect(browser.getCurrentUrl()).toContain('/sign-in');
   });
 });

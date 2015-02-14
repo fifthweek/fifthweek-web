@@ -9,7 +9,7 @@ SignOutPage.prototype = Object.create({},
   signInButton: { get: function () { return element(by.id('sign-in-button')); }},
   message: { get: function () { return element(by.id('sign-in-message')); }},
   signOutAndGoHome: { value: function() {
-    browser.get('/#/signout');
+    browser.get('/#/sign-out');
     browser.waitForAngular();
 
     browser.get('/');

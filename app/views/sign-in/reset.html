@@ -1,0 +1,34 @@
+﻿<fw-panel6 ng-show="!resetSucceeded" id="password-reset-confirmation-panel">
+
+  <form role="form">
+
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="New password" ng-model="passwordResetConfirmationData.username" required focus=true>
+    </div>
+
+    <div class="row-btn">
+      <button
+        id="password-reset-confirmation-button"
+        class="btn btn-success btn-block"
+        type="submit"
+        data-event-title="Password reset completed"
+        data-event-category="Sign-in"
+        data-loading-text="Resetting..."
+        fw-form-submit="confirmPasswordReset()">Reset Password</button>
+    </div>
+
+    <div ng-show="message" class="alert alert-danger sub-form-alert" id="password-reset-confirmation-message">
+      <p>{{message}}</p>
+    </div>
+
+  </form>
+
+</fw-panel6>
+
+<fw-col7 ng-show="resetSucceeded" id="password-reset-request-success">
+  <div class="jumbo-panel alert alert-success">
+    <p>
+      <strong>Password has been reset.</strong> Please sign in with your new password. <strong><a ui-sref="signIn">Continue to sign in page &raquo;</a></strong>
+    </p>
+  </div>
+</fw-col7>
