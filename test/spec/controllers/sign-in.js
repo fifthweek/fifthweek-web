@@ -6,7 +6,7 @@ describe('sign in controller', function() {
 
   var $rootScope;
   var $state;
-  var scope;
+  var $scope;
   var $q;
   var authenticationService;
   var calculatedStates;
@@ -27,8 +27,8 @@ describe('sign in controller', function() {
       $rootScope = $injector.get('$rootScope');
       $state = $injector.get('$state');
       $q = $injector.get('$q');
-      scope = $rootScope.$new();
-      target = $controller('SignInCtrl', { $scope: scope });
+      $scope = $rootScope.$new();
+      target = $controller('SignInCtrl', { $scope: $scope });
     });
   });
 
@@ -42,7 +42,7 @@ describe('sign in controller', function() {
 
     $state.expectTransitionTo(nextState);
 
-    scope.signIn();
+    $scope.signIn();
     $rootScope.$apply();
   });
 });
