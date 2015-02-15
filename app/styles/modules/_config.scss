@@ -1,16 +1,15 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
+$font-family-main:'Lato', cursive;
+
 //name spaces
 $left-container:'.left-container';
 $right-container:'.right-container';
 $logo:'.fifthweek-logo';
-
-
 $datepicker:'div[fw-datepicker]';
 
 
 //states
-
 $state-active-hover-focus:'&.active,&:hover,&:focus';
 $state-hover-focus:'&:hover,&:focus';
 $state-hover:'&:hover';
