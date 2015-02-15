@@ -18,8 +18,12 @@ angular.module('webApp').controller('SignInResetCtrl',
 
     $scope.tokenInvalid = false;
 
-    $scope.setMessage = function(message) {
-      $scope.message = message;
+    $scope.setMessage = function(value) {
+      $scope.message = value;
+    };
+
+    $scope.setSubmissionSucceeded = function(value) {
+      $scope.submissionSucceeded = value;
     };
 
     $scope.confirmPasswordReset = function() {

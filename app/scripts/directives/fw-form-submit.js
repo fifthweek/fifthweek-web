@@ -7,19 +7,24 @@ angular.module('webApp').directive('fwFormSubmit',
     restrict: 'A',
     link: function(scope, element, attrs) {
 
-      var setMessage;
-      if (_.isFunction(scope.setMessage)) {
-        setMessage = scope.setMessage;
-      }
-      else {
-        setMessage = function(message) {
-          scope.message = message;
-        };
-      }
+      var createSetter = function(name) {
+        var setterName = _.camelCase('set ' + name);
+        if (_.isFunction(scope[setterName])) {
+          return scope[setterName];
+        }
+        else {
+          return function(value) {
+            scope[name] = value;
+          };
+        }
+      };
+
+      var setMessage = createSetter('message');
+      var setSubmissionSucceeded = createSetter('submissionSucceeded');
 
       scope.isSubmitting = false;
       scope.hasSubmitted = false;
-      scope.submissionSucceeded = false;
+      setSubmissionSucceeded(false);
       setMessage('');
 
       element.bind('click', function() {
@@ -32,7 +37,7 @@ angular.module('webApp').directive('fwFormSubmit',
         }
 
         scope.isSubmitting = true;
-        scope.submissionSucceeded = false;
+        setSubmissionSucceeded(false);
         setMessage('');
 
         if (!attrs.hasOwnProperty('ngDisabled')) {
@@ -47,7 +52,7 @@ angular.module('webApp').directive('fwFormSubmit',
 
         return $q.when(scope.$apply(attrs.fwFormSubmit)).then(
           function(){
-            scope.submissionSucceeded = true;
+            setSubmissionSucceeded(true);
             var eventTitle = element.data('event-title');
             var eventCategory = element.data('event-category');
             if(eventTitle && eventCategory){

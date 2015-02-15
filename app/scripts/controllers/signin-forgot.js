@@ -7,8 +7,12 @@ angular.module('webApp').controller('SignInForgotCtrl',
       email: ''
     };
 
-    $scope.setMessage = function(message) {
-      $scope.message = message;
+    $scope.setMessage = function(value) {
+      $scope.message = value;
+    };
+
+    $scope.setSubmissionSucceeded = function(value) {
+      $scope.submissionSucceeded = value;
     };
 
     $scope.requestPasswordReset = function() {
