@@ -28,6 +28,11 @@ select {
   font-size:$input-font-size;
 }
 
+.form-control {
+  height:auto;
+  padding:$input-padding;
+}
+
 textarea.form-control {
   width:100%;
   max-width:100%;
