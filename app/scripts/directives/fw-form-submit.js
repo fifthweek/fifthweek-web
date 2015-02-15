@@ -1,26 +1,16 @@
 // See: https://gist.github.com/thisboyiscrazy/5137781#comment-838257
 angular.module('webApp').directive('fwFormSubmit',
-  function ($q, analytics, errorFacade) {
+  function ($q, analytics, errorFacade, utilities) {
   'use strict';
 
   return {
     restrict: 'A',
     link: function(scope, element, attrs) {
 
-      var createSetter = function(name) {
-        var setterName = _.camelCase('set ' + name);
-        if (_.isFunction(scope[setterName])) {
-          return scope[setterName];
-        }
-        else {
-          return function(value) {
-            scope[name] = value;
-          };
-        }
-      };
+      var scopeUtilities = utilities.forScope(scope);
 
-      var setMessage = createSetter('message');
-      var setSubmissionSucceeded = createSetter('submissionSucceeded');
+      var setMessage = scopeUtilities.createVirtualSetter('message');
+      var setSubmissionSucceeded = scopeUtilities.createVirtualSetter('submissionSucceeded');
 
       scope.isSubmitting = false;
       scope.hasSubmitted = false;

@@ -44,6 +44,24 @@ angular.module('webApp')
       }
     };
 
+    service.forScope = function(scope) {
+      var scopeUtilities = {};
+
+      scopeUtilities.createVirtualSetter = function(name) {
+        var setterName = _.camelCase('set ' + name);
+        if (_.isFunction(scope[setterName])) {
+          return scope[setterName];
+        }
+        else {
+          return function(value) {
+            scope[name] = value;
+          };
+        }
+      };
+
+      return scopeUtilities;
+    };
+
     return service;
   }
 );
