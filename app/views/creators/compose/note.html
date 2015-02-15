@@ -1,70 +1,69 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-body jumbo-panel">
-        <div class="col-md-12">
+<fw-panel12>
 
-          <form name="composeNote" ng-show="!postLater">
+  <form name="composeNote" ng-show="!postLater">
 
-
-            <div class="inner-row cancel-col-widths">
-              <textarea msd-elastic
-                        class="form-control"
-                        ng-model="composeNote.note"
-                        placeholder="Write your note here"
-                        required></textarea>
-            </div>
-
-            <div class="inner-row cancel-col-widths">
-              <div class="col-sm-5 select">
-                <select class="select-full-width" ng-model="sharePreferenceInit" ng-options="preference.name for preference in sharePreference"></select>
-              </div>
-            </div>
-
-            <div class="row">
-              <button type="submit"
-                      class="btn btn-block btn-success"
-                      ng-click="postNow()"
-                      data-loading-text="Posting..."
-                      fw-button-loading="isSubmitting">Post Now</button>
-              <button class="btn btn-block btn-grey"
-                      ng-click="postLater = true">Post Later</button>
-            </div>
-
-          </form>
-
-          <form name="postNoteLater" ng-show="postLater === true">
-
-            <div class="radio">
-              <label><input type="radio"
-                            ng-model="postLaterDate"
-                            ng-value="postsInFunnel" /> After other posts in queue (will appear Wednesday 7th Jan)</label>
-            </div>
-
-            <div class="radio">
-              <label><input type="radio"
-                            ng-model="postLaterDate"
-                            value="specficDate" /> On specific date:</label>
-            </div>
-
-            <div class="row">
-              <div class="col-sm-7">
-                  <div fw-datepicker></div>
-              </div>
-          </div>
-
-
-            <button type="submit"
-                   class="btn btn-block btn-success"
-                   ng-click="postToBacklog()"
-                   data-loading-text="Posting to Backlog..."
-                   fw-button-loading="isSubmitting">Post to Backlog</button>
-
-
-          </form>
-
+    <div class="form-group">
+      <div class="row">
+        <div class="col-xs-12">
+          <textarea msd-elastic
+                    class="form-control"
+                    ng-model="composeNote.note"
+                    placeholder="Write your note here"
+                    required></textarea>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-sm-5">
+          <div class="select">
+            <select class="select-full-width" ng-model="sharePreferenceInit" ng-options="preference.name for preference in sharePreference"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-btn">
+      <button type="submit"
+              class="btn btn-block btn-success"
+              ng-click="postNow()"
+              data-loading-text="Posting..."
+              fw-button-loading="isSubmitting">Post Now</button>
+      <button class="btn btn-block btn-grey"
+              ng-click="postLater = true">Post Later</button>
+    </div>
+
+  </form>
+
+  <form name="postNoteLater" ng-show="postLater === true">
+
+    <div class="radio">
+      <label><input type="radio"
+                    ng-model="postLaterDate"
+                    ng-value="postsInFunnel" /> After other posts in queue (will appear Wednesday 7th Jan)</label>
+    </div>
+
+    <div class="radio">
+      <label><input type="radio"
+                    ng-model="postLaterDate"
+                    value="specficDate" /> On specific date:</label>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-7">
+          <div fw-datepicker></div>
+      </div>
+    </div>
+
+    <div class="row-btn">
+      <button type="submit"
+             class="btn btn-block btn-success"
+             ng-click="postToBacklog()"
+             data-loading-text="Posting to Backlog..."
+             fw-button-loading="isSubmitting">Post to Backlog</button>
+    </div>
+
+  </form>
+
+</fw-panel12>
