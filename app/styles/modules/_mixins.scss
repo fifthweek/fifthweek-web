@@ -22,13 +22,12 @@
   vertical-align:$v-align;
 }
 
-
-
 //panel-box-shadow is bootstrap default. 
 //used in backlog > actionsDropDown
 @mixin panel-box-shadow {
   box-shadow:0 1px 1px rgba(0, 0, 0, 0.05);
 }
+
 @mixin form-control-height($height) {
   .form-control {
     height:$height;

@@ -1,5 +1,7 @@
 @import '_base';
 
+@include form-control-height(42px);
+
 label {
   display:block;
   font-size:15px;
@@ -13,14 +15,17 @@ div[fw-file-upload] {
   }
 }
 
-@include form-control-height(42px);
-
 .form-group {
   margin-bottom: 16px;
 }
 
 .sub-form-alert {
   margin: $grid-gutter-width 0 0 0;
+}
+
+.form-control,
+select {
+  font-size:$input-font-size;
 }
 
 textarea.form-control {
