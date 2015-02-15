@@ -52,7 +52,7 @@ describe('sign-in - forgot details form', function() {
     });
 
     it('should display a success message when email is provided', function () {
-      var unregisteredEmail = registerPage.newEmail();
+      var unregisteredEmail = registerPage.newEmail(usernameInputPage.newUsername());
       page.emailTextBox.sendKeys(unregisteredEmail);
 
       page.resetPasswordButton.click();
