@@ -1,6 +1,6 @@
 @import '_base';
 
-@include form-control-height(42px);
+@include form-control-height($input-height-base);
 
 label {
   display:block;
