@@ -77,4 +77,31 @@ describe('utilities', function() {
       expect(result).toBe(fifthweekConstants.unexpectedErrorText);
     });
   });
+
+  describe('scope utilities', function() {
+
+    describe('when creating a virtual setter', function() {
+
+      it('use the existing setter if in scope', function() {
+        var scope = jasmine.createSpyObj('scope', ['setSomethingInteresting']);
+
+        var setter = utilities.forScope(scope).createVirtualSetter('somethingInteresting');
+
+        setter('hello');
+
+        expect(scope.setSomethingInteresting).toHaveBeenCalledWith('hello');
+        expect(scope.somethingInteresting).toBeUndefined();
+      });
+
+      it('create a new variable in scope if no existing setter is in scope', function() {
+        var scope = {};
+
+        var setter = utilities.forScope(scope).createVirtualSetter('somethingInteresting');
+
+        setter('hello');
+
+        expect(scope.somethingInteresting).toBe('hello');
+      });
+    });
+  });
 });
