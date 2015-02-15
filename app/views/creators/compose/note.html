@@ -16,13 +16,13 @@
             </div>
 
             <div class="inner-row cancel-col-widths">
-              <div class="col-sm-5">
+              <div class="col-sm-5 select">
                 <select class="select-full-width" ng-model="sharePreferenceInit" ng-options="preference.name for preference in sharePreference"></select>
               </div>
             </div>
 
             <div class="row">
-              <button type="submit" 
+              <button type="submit"
                       class="btn btn-block btn-success"
                       ng-click="postNow()"
                       data-loading-text="Posting..."
@@ -36,14 +36,14 @@
           <form name="postNoteLater" ng-show="postLater === true">
 
             <div class="radio">
-              <label><input type="radio" 
-                            ng-model="postLaterDate" 
+              <label><input type="radio"
+                            ng-model="postLaterDate"
                             ng-value="postsInFunnel" /> After other posts in funnel (will appear Wednesday 7th Jan)</label>
             </div>
 
             <div class="radio">
-              <label><input type="radio"  
-                            ng-model="postLaterDate" 
+              <label><input type="radio"
+                            ng-model="postLaterDate"
                             value="specficDate" /> On specific date:</label>
             </div>
 
@@ -54,7 +54,7 @@
           </div>
 
 
-            <button type="submit" 
+            <button type="submit"
                    class="btn btn-block btn-success"
                    ng-click="postToBacklog()"
                    data-loading-text="Posting to Backlog..."
