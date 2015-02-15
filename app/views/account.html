@@ -1,72 +1,78 @@
-<div class="row page-account-settings">
-  <div class="col-md-12">
+<fw-panel12 class="page-account-settings">
 
-    <div class="panel panel-default">
-      <div class="panel-body jumbo-panel">
-        <div class="col-sm-6">
-          <form name="form">
-            <div class="inner-row cancel-col-widths form-wrap">
+  <form name="form">
 
-              <div class="inner-row">
-                <div class="col-xs-12 your-photo-label">
-                  <label>Your Photo</label>
-                </div>
-                <div class="col-xs-3 col-sm-5">
-                  <img ng-src="{{accountSettingsData.photoDefault}}" alt="" />
-                </div>
-                <div class="col-xs-9 col-sm-7">
-                  <div fw-file-upload></div>
-                </div>
-              </div>
-
-              <div class="inner-row">
-                <div class="col-md-12">
-                  <label for="email">Email</label>
-                  <input type="email"
-                         class="form-control"
-                         name="email"
-                         ng-model="accountSettingsData.email"
-                         placeholder="{{accountSettingsData.emailDefault}}" required/>
-                </div>
-              </div>
-
-              <div class="inner-row">
-                <div class="col-md-12">
-                  <label for="username">Username</label>
-                  <input type="text"
-                         class="form-control"
-                         name="username"
-                         ng-model="accountSettingsData.username"
-                         placeholder="{{accountSettingsData.usernameDefault}}" required/>
-                </div>
-              </div>
-
-              <div class="inner-row">
-                <div class="col-md-12">
-                  <label for="password">Password</label>
-                  <input type="password"
-                         class="form-control"
-                         ng-model="accountSettingsData.password"
-                         name="username" required/>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                  <input type="submit" 
-                         class="btn btn-block btn-success" 
-                         value="Save Changes"
-                         data-loading-text="Saving..."
-                         data-event-title="Account settings saved"
-                         data-event-category="Account"
-                         fw-can-submit-form="form.$valid && form.$dirty"
-                         fw-form-submit="submitForm()" />
-                </div>
-              </div>
-            </div>
-          </form>
+    <div class="form-group" fw-form-group-validation>
+      <div class="row">
+        <div class="col-xs-12 your-photo-label">
+          <label>Your Photo</label>
+        </div>
+        <div class="col-xs-3">
+          <img ng-src="{{accountSettingsData.photoDefault}}" alt="" />
+        </div>
+        <div class="col-xs-9">
+          <div fw-file-upload></div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <div class="form-group" fw-form-group-validation>
+      <div class="row">
+        <div class="col-sm-6">
+          <label for="email">Email</label>
+          <div fw-form-input-glyphs>
+            <input type="email"
+                   class="form-control"
+                   name="email"
+                   ng-model="accountSettingsData.email"
+                   placeholder="{{accountSettingsData.emailDefault}}" required/>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <p fw-form-input-invalid-p>A valid email address is required.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" fw-form-group-validation>
+      <div class="row">
+        <div class="col-sm-6">
+          <label for="username">Username</label>
+          <div fw-form-input-glyphs>
+            <input type="text"
+                   class="form-control"
+                   name="username"
+                   ng-model="accountSettingsData.username"
+                   placeholder="{{accountSettingsData.usernameDefault}}" required/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" fw-form-group-validation>
+      <div class="row">
+        <div class="col-sm-6">
+          <label for="password">Password</label>
+          <div fw-form-input-glyphs>
+            <input type="password"
+                   class="form-control"
+                   ng-model="accountSettingsData.password"
+                   name="username" required/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-btn">
+      <input type="submit"
+             class="btn btn-block btn-success"
+             value="Save Changes"
+             data-loading-text="Saving..."
+             data-event-title="Account settings saved"
+             data-event-category="Account"
+             fw-can-submit-form="form.$valid && form.$dirty"
+             fw-form-submit="submitForm()" />
+    </div>
+  </form>
+
+</fw-panel12>
