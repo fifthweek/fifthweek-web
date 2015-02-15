@@ -43,8 +43,8 @@
     "UnauthenticatedError": false,
     "UnauthorizedError": false,
     "FifthweekError": false,
+    "InputValidationError": false,
     "ConnectionError": false,
     "_": false
   }
 }
-

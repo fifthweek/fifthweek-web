@@ -27,6 +27,7 @@
     "jQuery": false,
     "ApiError": false,
     "FifthweekError": false,
+    "InputValidationError": false,
     "UnauthenticatedError": false,
     "UnauthorizedError": false,
     "ConnectionError": false,
