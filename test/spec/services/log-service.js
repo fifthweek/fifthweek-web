@@ -1,6 +1,44 @@
 describe('log service', function() {
   'use strict';
 
+  var $rootScope;
+  var $httpBackend;
+  var fifthweekConstants;
+  var log;
+  var logService;
+
+  beforeEach(function() {
+    log = {
+      debug: function () {},
+      info: function () {},
+      warn: function () {},
+      error: function () {}
+    };
+
+    var $window = {
+      location:{
+        href: '/test'
+      }
+    };
+
+    module('webApp');
+    module(function($provide) {
+      $provide.value('$log', log);
+      $provide.value('$window', $window);
+    });
+
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $httpBackend = $injector.get('$httpBackend');
+      fifthweekConstants = $injector.get('fifthweekConstants');
+      logService = $injector.get('logService');
+    });
+  });
+
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
 
   var testLogToServer = function(level, call){
 
@@ -34,7 +72,13 @@ describe('log service', function() {
   it('should not call the fifthweek API when requested to log an API error', function(){
     spyOn(log, 'info');
     logService.error(new ApiError('Test'));
-    expect(log.info).toHaveBeenCalled();
+    expect(log.info).toHaveBeenCalledWith('Test');
+  });
+
+  it('should not call the fifthweek API when requested to log an input validation error', function(){
+    spyOn(log, 'info');
+    logService.error(new InputValidationError('Test'));
+    expect(log.info).toHaveBeenCalledWith('Test');
   });
 
   it('should log an error if the fifthweek API call fails', function(){
@@ -106,48 +150,5 @@ describe('log service', function() {
   it('should return true from shouldLog if the payload is not empty or undefined', function()
   {
     expect(logService.shouldLog({ x: 1 })).toBeTruthy();
-  });
-
-  // load the service's module
-  beforeEach(module('webApp', 'stateMock'));
-
-  var $rootScope;
-  var $state;
-  var $httpBackend;
-  var fifthweekConstants;
-  var log;
-  var logService;
-
-  beforeEach(function() {
-    log = {
-      debug: function () {},
-      info: function () {},
-      warn: function () {},
-      error: function () {}
-    };
-
-    var $window = {
-      location:{
-        href: '/test'
-      }
-    };
-
-    module(function($provide) {
-      $provide.value('$log', log);
-      $provide.value('$window', $window);
-    });
-  });
-
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $state = $injector.get('$state');
-    $httpBackend = $injector.get('$httpBackend');
-    fifthweekConstants = $injector.get('fifthweekConstants');
-    logService = $injector.get('logService');
-  }));
-
-  afterEach(function() {
-    $httpBackend.verifyNoOutstandingExpectation();
-    $httpBackend.verifyNoOutstandingRequest();
   });
 });
