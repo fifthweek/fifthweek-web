@@ -24,16 +24,18 @@ angular.module('webApp').controller(
       $scope.isSubmitting = true;
     };
 
+    //disable specific date checkbox
+    $scope.postSpecificDate = false;
+
+    //toggle checkboxes 'checked' state
+    $scope.uncheck = function (event) {
+      if ($scope.checked == event.target.value) $scope.checked = false
+    }
+
     $scope.postToBacklog = function() {
       $scope.isSubmitting = true;
     };
 
-
-    $scope.postSpecificDate = false;
-
-    $scope.uncheck = function (event) {
-      if ($scope.checked == event.target.value) $scope.checked = false
-    }
 
 
   }
