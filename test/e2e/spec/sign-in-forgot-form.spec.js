@@ -1,3 +1,4 @@
+var TestKit = require('../test-kit.js');
 var HomePage = require('../pages/home.page.js');
 var UsernameInputPage = require('../pages/username-input.page.js');
 var SignOutPage = require('../pages/sign-out.page.js');
@@ -11,6 +12,7 @@ var MailboxPage = require('../pages/mailbox.page.js');
 describe('sign-in - forgot details form', function() {
   'use strict';
 
+  var testKit = new TestKit();
   var homePage = new HomePage();
   var usernameInputPage = new UsernameInputPage();
   var signOutPage = new SignOutPage();
@@ -113,20 +115,10 @@ describe('sign-in - forgot details form', function() {
       it('should link to "reset password" page', function () {
         page.emailTextBox.sendKeys(email);
         submitAndReadEmail();
-        rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink);
+        testKit.rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink);
         expect(browser.getCurrentUrl()).toContain(signInResetPage.pageUrl);
       });
     });
-
-    var rebaseLinkAndClick = function(linkElement) {
-      return linkElement.getAttribute('href').then(function(href) {
-        var pathArray = href.split( '/' );
-        var protocol = pathArray[0];
-        var host = pathArray[2];
-        var baseUrl = protocol + '//' + host;
-        browser.get(href.substring(baseUrl.length));
-      });
-    };
 
     var expectSuccessMessage = function() {
       expect(page.formPanel.isDisplayed()).toBe(false);

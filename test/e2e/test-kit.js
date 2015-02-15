@@ -26,6 +26,20 @@ TestKit.prototype = Object.create({}, {
         expect(textBox.getAttribute('value')).toBe(overSizedValue.substring(0, length));
       }
     });
+  }},
+  rebaseLinkAndClick: { value: function(linkElement) {
+    return linkElement.getAttribute('href').then(function(href) {
+      var pathArray = href.split( '/' );
+      var protocol = pathArray[0];
+      var host = pathArray[2];
+      var baseUrl = protocol + '//' + host;
+      var path = href.substring(baseUrl.length);
+
+      browser.waitForAngular(); // Not automatically awaited on get.
+      return browser.get(path).then(function() {
+        return path;
+      });
+    });
   }}
 });
 

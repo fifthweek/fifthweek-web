@@ -21,7 +21,7 @@ describe("registration form", function() {
     email = page.newEmail(username);
   };
 
-  describe('when user provides valid input', function() {
+  describe('when validating against good input', function() {
 
     beforeEach(navigateToPage);
 
@@ -47,7 +47,7 @@ describe("registration form", function() {
     });
   });
 
-  describe('when user provides invalid input', function() {
+  describe('when validating against bad input', function() {
 
     it('should run once before all', function() {
       navigateToPage();

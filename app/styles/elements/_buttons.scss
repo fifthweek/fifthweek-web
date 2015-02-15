@@ -4,6 +4,9 @@
   border:0 none;
   height:35px;
 }
+.input-group-btn .btn {
+  height:auto;
+}
 
 .btn + .btn {
   @media (min-width:$screen-s-min) {

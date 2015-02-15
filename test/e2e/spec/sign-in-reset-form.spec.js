@@ -1,3 +1,4 @@
+var TestKit = require('../test-kit.js');
 var SignOutPage = require('../pages/sign-out.page.js');
 var HomePage = require('../pages/home.page.js');
 var RegisterPage = require('../pages/register.page.js');
@@ -8,13 +9,14 @@ var SignInResetEmailPage = require('../pages/sign-in-reset-email.page.js');
 var PasswordInputPage = require('../pages/password-input.page.js');
 var SignInResetPage = require('../pages/sign-in-reset.page.js');
 
-describe('sign-in - reset password form', function() {
+ddescribe('sign-in - reset password form', function() {
   'use strict';
 
   var username;
   var email;
   var resetPasswordPageUrl;
 
+  var testKit = new TestKit();
   var signOutPage = new SignOutPage();
   var homePage = new HomePage();
   var registerPage = new RegisterPage();
@@ -50,14 +52,14 @@ describe('sign-in - reset password form', function() {
         });
     });
 
-    rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink).then(function(url) {
+    testKit.rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink).then(function(url) {
       resetPasswordPageUrl = url;
     });
   };
 
   it('should run once before all', register);
 
-  describe('when user provides valid input', function() {
+  describe('when validating against good input', function() {
 
     beforeEach(navigateToPage);
 
@@ -70,7 +72,7 @@ describe('sign-in - reset password form', function() {
     passwordInputPage.includeHappyPaths(page.passwordTextBox, function() { });
   });
 
-  describe('when user provides invalid input', function() {
+  describe('when validating against bad input', function() {
 
     it('should run once before all', navigateToPage);
 
@@ -82,16 +84,28 @@ describe('sign-in - reset password form', function() {
     passwordInputPage.includeSadPaths(page.passwordTextBox, page.resetPasswordButton, page.helpMessages, function() { });
   });
 
-  var rebaseLinkAndClick = function(linkElement) {
-    return linkElement.getAttribute('href').then(function(href) {
-      var pathArray = href.split( '/' );
-      var protocol = pathArray[0];
-      var host = pathArray[2];
-      var baseUrl = protocol + '//' + host;
-      var path = href.substring(baseUrl.length);
-      return browser.get(path).then(function() {
-        return path;
-      });
+  describe('after resetting password', function() {
+
+    var newPassword = 'YayItsBeenReset!';
+
+    it('should run once before all', function() {
+      navigateToPage();
+      page.passwordTextBox.sendKeys(newPassword);
+      page.resetPasswordButton.click();
     });
-  };
+
+    it('should allow user to sign in with new password', function() {
+      signOutPage.signOutAndGoHome();
+      homePage.signInLink.click();
+      signInPage.signInSuccessfully(username, newPassword);
+    });
+
+    it('the link should become expired', function() {
+      signOutPage.signOutAndGoHome();
+      browser.waitForAngular(); // Not automatically awaited on get.
+      browser.get(resetPasswordPageUrl);
+      expect(page.formPanel.isDisplayed()).toBe(false);
+      expect(page.linkExpiredMessage.isDisplayed()).toBe(true);
+    });
+  });
 });
