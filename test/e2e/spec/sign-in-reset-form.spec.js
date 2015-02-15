@@ -9,7 +9,7 @@ var SignInResetEmailPage = require('../pages/sign-in-reset-email.page.js');
 var PasswordInputPage = require('../pages/password-input.page.js');
 var SignInResetPage = require('../pages/sign-in-reset.page.js');
 
-ddescribe('sign-in - reset password form', function() {
+describe('sign-in - reset password form', function() {
   'use strict';
 
   var username;
