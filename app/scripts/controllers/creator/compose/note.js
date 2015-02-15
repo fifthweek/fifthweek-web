@@ -28,6 +28,9 @@ angular.module('webApp').controller(
       $scope.isSubmitting = true;
     };
 
+
+    $scope.postSpecificDate = false;
+
     $scope.uncheck = function (event) {
       if ($scope.checked == event.target.value) $scope.checked = false
     }
