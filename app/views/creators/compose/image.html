@@ -2,17 +2,9 @@
 
   <form name="form">
 
-    <div class="form-group" fw-form-group-validation>
-      <div class="row">
-        <div class="col-xs-12 your-photo-label">
-          <label>Your Photo</label>
-        </div>
-        <div class="col-xs-3">
-          <img ng-src="{{accountSettingsData.photoDefault}}" alt="" />
-        </div>
-        <div class="col-xs-9">
-          <div fw-file-upload></div>
-        </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div fw-file-upload file-type="Image"></div>
       </div>
     </div>
 

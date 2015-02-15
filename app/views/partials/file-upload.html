@@ -1,7 +1,9 @@
 <div ng-controller="fileUploadCtrl">
   <label>Select a file to upload</label>
   <input type="file" />
-  <input type="submit" 
-         class="btn btn-sm btn-grey" 
-         value="Upload Image" />
+  <div class="row-btn">
+    <input type="submit"
+           class="btn btn-sm btn-grey"
+           value="Upload {{fileType}}" />
+  </div>
 </div>
