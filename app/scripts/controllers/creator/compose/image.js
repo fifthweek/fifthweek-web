@@ -1,9 +1,9 @@
-angular.module('webApp').controller(
-  'newNoteCtrl', ['$scope',
+angular.module('webApp').controller('newImageCtrl',
   function($scope) {
     'use strict';
 
-    $scope.postLater = false;
+    $scope.uploaded = false;
+    $scope.postLaterSelected = false;
 
     $scope.sharePreference = [
       {
@@ -24,6 +24,10 @@ angular.module('webApp').controller(
       $scope.isSubmitting = true;
     };
 
+    $scope.postLater = function() {
+      $scope.postLaterSelected = true;
+    };
+
     //disable specific date checkbox
     $scope.postSpecificDate = false;
 
@@ -36,5 +40,9 @@ angular.module('webApp').controller(
       $scope.isSubmitting = true;
     };
 
+    $scope.onUploadComplete = function(fileId) {
+      $scope.uploaded = true;
+      $scope.fileId = fileId;
+    };
   }
-]);
+);

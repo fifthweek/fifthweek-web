@@ -1,11 +1,64 @@
 <fw-panel12>
 
-  <form name="form">
+  <form name="form" ng-show="postLaterSelected === false">
+
+    <div class="row" ng-if="!uploaded">
+      <div class="col-xs-12">
+        <div fw-file-upload file-type="Image" on-upload-complete="onUploadComplete(fileId)"></div>
+      </div>
+    </div>
+
+    <div class="form-group" ng-if="uploaded">
+      <div class="row">
+        <div class="col-xs-3">
+          <img src="images/avatar-default.png" alt="" />
+        </div>
+        <div class="col-xs-9">
+          <div fw-file-upload file-type="Image" on-upload-complete="onUploadComplete(fileId)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-btn" ng-if="uploaded">
+      <button type="submit"
+              class="btn btn-block btn-success"
+              ng-click="postNow()"
+              data-loading-text="Posting..."
+              fw-button-loading="isSubmitting">Post Now</button>
+      <button class="btn btn-block btn-grey"
+              ng-click="postLater()">Post Later</button>
+    </div>
+
+  </form>
+
+  <form name="postNoteLater" ng-show="postLaterSelected === true">
+
+    <div class="radio">
+      <label><input type="radio"
+                    ng-click="uncheck($event)"
+                    ng-model="postDate"
+                    ng-value="postFunnel" /> After other posts in queue (will appear Wednesday 7th Jan)</label>
+    </div>
+
+    <div class="radio">
+      <label><input type="radio"
+                    ng-click="uncheck($event)"
+                    ng-model="postDate"
+                    ng-value="postSpecificDate" /> On specific date:</label>
+    </div>
 
     <div class="row">
-      <div class="col-xs-12">
-        <div fw-file-upload file-type="Image"></div>
+      <div class="col-sm-7">
+        <div fw-datepicker></div>
       </div>
+    </div>
+
+    <div class="row-btn">
+      <button type="submit"
+              class="btn btn-block btn-success"
+              ng-click="postToBacklog()"
+              data-loading-text="Posting to Backlog..."
+              fw-button-loading="isSubmitting">Post to Backlog</button>
     </div>
 
   </form>

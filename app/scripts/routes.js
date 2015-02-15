@@ -230,7 +230,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.compose.note.name, {
         url: '/note',
         templateUrl: 'views/creators/compose/note.html',
-        controller: 'noteCtrl',
+        controller: 'newNoteCtrl',
         requireSubscription: true,
         data : {
           pageTitle: ' Note',
@@ -243,6 +243,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.compose.image.name, {
         url: '/image',
         templateUrl: 'views/creators/compose/image.html',
+        controller: 'newImageCtrl',
         requireSubscription: true,
         data : {
           pageTitle: ' Image',
