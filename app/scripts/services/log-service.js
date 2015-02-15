@@ -51,9 +51,10 @@ angular.module('webApp')
     };
 
     service.error = function(error){
-      if(error instanceof ApiError)
+      if(error instanceof ApiError || error instanceof InputValidationError)
       {
-        // We don't log API errors to the server (as they have already been logged).
+        // We don't log API errors to the server (as they have already been logged),
+        // also, input validation errors are recoverable and intended for the user.
         $log.info(error.message);
       }
       else
@@ -67,7 +68,7 @@ angular.module('webApp')
     service.logUnhandledError = function(exception, cause) {
       if(service.shouldLog(exception) || service.shouldLog(cause))
       {
-        if(exception instanceof ApiError)
+        if(exception instanceof ApiError) // || error instanceof InputValidationError - should be handled.
         {
           // We don't log API errors to the server (as they have already been logged).
           $log.info(exception.message);

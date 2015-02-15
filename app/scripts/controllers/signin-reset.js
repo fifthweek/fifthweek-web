@@ -1,5 +1,5 @@
 angular.module('webApp').controller('SignInResetCtrl',
-  function($scope, $state, membershipStub, utilities) {
+  function($scope, $state, membershipStub, errorFacade) {
     'use strict';
 
     var userId = $state.params.userId;
@@ -17,16 +17,13 @@ angular.module('webApp').controller('SignInResetCtrl',
     }
 
     $scope.tokenInvalid = false;
-    $scope.resetSucceeded = false;
 
     $scope.setMessage = function(message) {
       $scope.message = message;
     };
 
     $scope.confirmPasswordReset = function() {
-      return membershipStub.postPasswordResetConfirmation($scope.passwordResetConfirmationData).then(function() {
-        $scope.resetSucceeded = true;
-      });
+      return membershipStub.postPasswordResetConfirmation($scope.passwordResetConfirmationData);
     };
 
     membershipStub.getPasswordResetTokenValidity(userId, token).catch(function(error) {
@@ -34,7 +31,7 @@ angular.module('webApp').controller('SignInResetCtrl',
         $scope.tokenInvalid = true;
       }
       else {
-        $scope.setMessage(utilities.getFriendlyErrorMessage(error));
+        return errorFacade.handleError(error, $scope.setMessage);
       }
     });
   }

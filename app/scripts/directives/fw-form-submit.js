@@ -1,6 +1,6 @@
 // See: https://gist.github.com/thisboyiscrazy/5137781#comment-838257
 angular.module('webApp').directive('fwFormSubmit',
-  function ($q, analytics, logService, utilities) {
+  function ($q, analytics, errorFacade) {
   'use strict';
 
   return {
@@ -55,8 +55,7 @@ angular.module('webApp').directive('fwFormSubmit',
             }
           },
           function(error){
-            setMessage(utilities.getFriendlyErrorMessage(error));
-            return logService.error(error);
+            return errorFacade.handleError(error, setMessage);
           }).finally(function() {
             scope.hasSubmitted = true;
 

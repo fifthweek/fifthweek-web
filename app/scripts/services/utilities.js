@@ -31,8 +31,8 @@ angular.module('webApp')
     };
 
     service.getFriendlyErrorMessage = function(error){
-      if(error instanceof ApiError){
-        // The API error message is fine to display.
+      if(error instanceof ApiError || error instanceof InputValidationError){
+        // These error messages are fine to display.
         return error.message;
       }
       else if(error instanceof ConnectionError){

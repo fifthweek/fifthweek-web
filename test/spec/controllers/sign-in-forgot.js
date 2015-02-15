@@ -8,7 +8,6 @@ describe('sign in forgot controller', function() {
   var membershipStub;
   var target;
 
-  // Initialize the controller and a mock scope
   beforeEach(function() {
     membershipStub = jasmine.createSpyObj('membershipStub', ['postPasswordResetRequest']);
 
@@ -29,15 +28,20 @@ describe('sign in forgot controller', function() {
     expect($scope.passwordResetRequestData.message).toBeUndefined();
     expect($scope.passwordResetRequestData.username).toBe('');
     expect($scope.passwordResetRequestData.email).toBe('');
-    expect($scope.requestSucceeded).toBe(false);
   });
 
   it('should not allow both username and password to be omitted', function() {
-    $scope.requestPasswordReset();
+    var result = $scope.requestPasswordReset();
+
     $rootScope.$apply();
 
-    expect($scope.message).not.toBeUndefined();
-    expect($scope.requestSucceeded).toBe(false);
+    result
+      .catch(function(error) {
+        expect(error instanceof InputValidationError).toBe(true);
+      })
+      .then(function() {
+        fail();
+      });
   });
 
   it('should allow only username to be provided', function() {
@@ -48,7 +52,7 @@ describe('sign in forgot controller', function() {
     $scope.requestPasswordReset();
     $rootScope.$apply();
 
-    expect($scope.requestSucceeded).toBe(true);
+    expect(membershipStub.postPasswordResetRequest).toHaveBeenCalledWith($scope.passwordResetRequestData);
   });
 
 
@@ -60,6 +64,6 @@ describe('sign in forgot controller', function() {
     $scope.requestPasswordReset();
     $rootScope.$apply();
 
-    expect($scope.requestSucceeded).toBe(true);
+    expect(membershipStub.postPasswordResetRequest).toHaveBeenCalledWith($scope.passwordResetRequestData);
   });
 });

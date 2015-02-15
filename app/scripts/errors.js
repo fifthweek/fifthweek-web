@@ -7,6 +7,13 @@ function FifthweekError(message) {
 FifthweekError.prototype = Object.create(Error.prototype);
 FifthweekError.prototype.constructor = FifthweekError;
 
+function InputValidationError(message) {
+  this.message = message;
+  this.stack = Error().stack;
+}
+InputValidationError.prototype = Object.create(Error.prototype);
+InputValidationError.prototype.constructor = InputValidationError;
+
 function ApiError(message, response) {
   this.message = message;
   this.response = response;

@@ -1,38 +1,35 @@
 describe('submit form directive', function(){
   'use strict';
 
-  beforeEach(function() {
-    module('webApp');
-  });
-
   var $rootScope;
   var $compile;
   var $q;
 
-  var logService;
+  var errorFacade;
   var analytics;
-  var utilities;
-  var friendlyErrorMessage;
 
   beforeEach(function() {
-    logService = jasmine.createSpyObj('logService', ['error']);
     analytics = jasmine.createSpyObj('analytics', ['eventTrack']);
+    errorFacade = {};
 
-    friendlyErrorMessage = 'friendly error message';
-    utilities = { getFriendlyErrorMessage: function(){ return friendlyErrorMessage; } };
-
+    module('webApp');
     module(function($provide){
-      $provide.value('logService', logService);
+      $provide.value('errorFacade', errorFacade);
       $provide.value('analytics', analytics);
-      $provide.value('utilities', utilities);
     });
-  });
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $q = $injector.get('$q');
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $q = $injector.get('$q');
+    });
+
+    errorFacade.handleError = function(error, setMessage) {
+      setMessage('friendly error message');
+      return $q.when();
+    };
+    spyOn(errorFacade, 'handleError').and.callThrough();
+  });
 
   describe('when created', function(){
 
@@ -236,20 +233,20 @@ describe('submit form directive', function(){
       expect(element.attr('disabled')).toBeUndefined();
     });
 
-    it('should not log anything if submission succeeds', function(){
+    it('should not report error if submission succeeds', function(){
       deferred.resolve();
       element.click();
       $rootScope.$apply();
 
-      expect(logService.error).not.toHaveBeenCalled();
+      expect(errorFacade.handleError).not.toHaveBeenCalled();
     });
 
-    it('should log the error if submission fails', function(){
+    it('should report the error if submission fails', function(){
       deferred.reject('error');
       element.click();
       $rootScope.$apply();
 
-      expect(logService.error).toHaveBeenCalledWith('error');
+      expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
     });
 
     it('should not call the analytics service during successful submission', function(){
