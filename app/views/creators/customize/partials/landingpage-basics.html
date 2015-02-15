@@ -1,55 +1,71 @@
 <div class="panel panel-default">
   <div class="panel-body jumbo-panel">
 
-    <div class="col-md-12">
-      <div class="inner-row">
-        <h5>URL</h5>
-        <p><a ng-href="{{landingPageData.url}}">{{landingPageData.url}}</a></p>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-sm-6">
+          <h5>URL</h5>
+          <p><a ng-href="{{landingPageData.url}}">{{landingPageData.url}}</a></p>
+        </div>
+      </div>
+    </div>
+
+    <form name="landingPageBasics">
+
+      <div class="form-group" fw-form-group-validation>
+        <div class="row">
+          <div class="col-sm-6">
+            <label>Subscription name</label>
+            <div fw-form-input-glyphs>
+              <input type="text"
+                     class="form-control"
+                     name="subscriptionName"
+                     ng-model="landingPageData.subscriptionName"
+                     placeholder="Mark Holmes" required/>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <form name="landingPageBasics">
-        <div class="inner-row cancel-col-widths">
-          <div class="col-md-6">
-            <label>Subscription name</label>
-            <input type="text"
-                   class="form-control"
-                   name="subscriptionName"
-                   ng-model="landingPageData.subscriptionName"
-                   placeholder="Mark Holmes" required/>
-          </div>
-        </div>
-        <div class="inner-row cancel-col-widths">
-          <div class="col-md-6">
-            <label>Tagline</label>
-            <input type="text"
-                   class="form-control"
-                   name="tagline"
-                   ng-model="landingPageData.tagline"
-                   placeholder="Web Comics and more" required/>
-          </div>
-        </div>
-
-        <div class="inner-row cancel-col-widths">
-          <label>Quick introduction</label>
-          <textarea msd-elastic
-                    class="form-control"
-                    name="introduction"
-                    ng-model="landingPageData.introduction"
-                    placeholder="Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here!" required></textarea>
-        </div>
-
+      <div class="form-group" fw-form-group-validation>
         <div class="row">
-          <input type="submit"
-                 class="btn btn-block btn-success"
-                 ng-click="landingPageBasics.$valid && landingPageBasics.$dirty ? saveTheDataTempFunctionName() : false"
-                 ng-disabled="landingPageBasics.$invalid ||
-                              landingPageBasics.$pristine ||
-                              isSubmitting"
-                 value="Save Changes" />
+          <div class="col-sm-6">
+            <label>Tagline</label>
+            <div fw-form-input-glyphs>
+              <input type="text"
+                     class="form-control"
+                     name="tagline"
+                     ng-model="landingPageData.tagline"
+                     placeholder="Web Comics and more" required/>
+            </div>
+          </div>
         </div>
+      </div>
 
-      </form>
-    </div>
+      <div class="form-group" fw-form-group-validation>
+        <div class="row">
+          <div class="col-xs-12">
+            <label>Quick introduction</label>
+            <textarea msd-elastic
+                      class="form-control"
+                      name="introduction"
+                      ng-model="landingPageData.introduction"
+                      placeholder="Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here!" required></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-btn">
+        <input type="submit"
+               class="btn btn-block btn-success"
+               ng-click="landingPageBasics.$valid && landingPageBasics.$dirty ? saveTheDataTempFunctionName() : false"
+               ng-disabled="landingPageBasics.$invalid ||
+                            landingPageBasics.$pristine ||
+                            isSubmitting"
+               value="Save Changes" />
+      </div>
+
+    </form>
 
   </div>
 </div>
