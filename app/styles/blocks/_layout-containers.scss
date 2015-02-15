@@ -5,38 +5,8 @@ body {
   height:100%;
 }
 
-.row,
-.inner-row {
-  &.cancel-col-widths {
-    > div {
-      padding:{
-        right:0;
-        left:0;
-      }
-    }
-  }
-}
-
 .row {
   margin:0;
-}
-
-.inner-row {
-  clear:both;
-  margin:{
-    right:-15px;
-    bottom:20px;
-    left:-15px;
-  }
-  &:before,
-  &:after {
-    content: " ";
-    display: table;
-    clear:both;
-  }
-  .form-control {
-    margin-bottom:5px;
-  }
 }
 
 .panel-body,

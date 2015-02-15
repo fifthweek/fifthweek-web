@@ -1,10 +1,11 @@
 <div class="panel panel-default header-image">
   <div class="panel-body jumbo-panel">
-    <div class="col-md-12">
 
-      <form>
-        <div class="inner-row cancel-col-widths">
-          <div class="col-md-8">
+    <form>
+
+      <div class="form-group" fw-form-group-validation>
+        <div class="row">
+          <div class="col-sm-8">
             <h5>Header Image</h5>
             <img ng-src="{{landingPageData.headerImage}}" alt="Header Image" />
           </div>
@@ -12,13 +13,15 @@
             <div fw-file-upload></div>
           </div>
         </div>
-        <div class="row">
-          <input type="submit" 
-                 class="btn btn-block btn-success" 
-                 value="Save Changes" />
-        </div>
-      </form>
+      </div>
 
-    </div>
+      <div class="row-btn">
+        <input type="submit"
+               class="btn btn-block btn-success"
+               value="Save Changes" />
+      </div>
+
+    </form>
+
   </div>
 </div>
