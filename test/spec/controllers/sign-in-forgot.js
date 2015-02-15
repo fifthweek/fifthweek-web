@@ -40,7 +40,7 @@ describe('sign in forgot controller', function() {
         expect(error instanceof InputValidationError).toBe(true);
       })
       .then(function() {
-        fail();
+        throw 'Failure expected';
       });
   });
 
