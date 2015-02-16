@@ -1,6 +1,6 @@
 <fw-panel12>
 
-  <form name="form" ng-show="postLaterSelected === false">
+  <form novalidate name="formCompose" ng-show="!postLaterSelected">
 
     <div class="row" ng-if="!uploaded">
       <div class="col-xs-12">
@@ -20,24 +20,24 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <fw-form-group>
         <div class="row">
           <div class="col-xs-12">
-          <textarea msd-elastic
-                    class="form-control"
-                    ng-model="composeNote.note"
-                    placeholder="Add a comment, if you like"
-                    required
-                    focus=true></textarea>
+            <textarea msd-elastic
+                      class="form-control"
+                      name="comment"
+                      ng-model="newImageData.comment"
+                      placeholder="Add a comment, if you like"
+                      focus=true></textarea>
           </div>
         </div>
-      </div>
+      </fw-form-group>
 
       <div class="form-group" ng-if="collections.length > 0">
         <fw-form-input-select selected-item="selectedCollection" items="collections"></fw-form-input-select>
       </div>
 
-      <div class="form-group" fw-form-group-validation ng-if="collections.length === 0">
+      <fw-form-group ng-if="collections.length === 0">
         <div class="row">
           <div class="col-sm-6">
             <div fw-form-input-glyphs>
@@ -57,22 +57,24 @@
             <p fw-form-input-invalid-p="required">A collection name is required.</p>
           </div>
         </div>
-      </div>
+        </fw-form-group>
 
       <div class="row-btn">
         <button type="submit"
                 class="btn btn-block btn-success"
-                ng-click="postNow()"
                 data-loading-text="Posting..."
-                fw-button-loading="isSubmitting">Post Now</button>
+                data-event-title="Image posted now"
+                data-event-category="New post"
+                fw-can-submit-form="formCompose.$valid && formCompose.$dirty"
+                fw-form-submit="postNow()">Post Now</button>
         <button class="btn btn-block btn-grey"
-                ng-click="postLater()">Post Later</button>
+                ng-click="formCompose.$valid && formCompose.$dirty ? postLater() : false">Post Later</button>
       </div>
     </div>
 
   </form>
 
-  <form name="postNoteLater" ng-show="postLaterSelected === true">
+  <form novalidate name="formSchedule" ng-show="postLaterSelected">
 
     <div class="radio">
       <label><input type="radio"
@@ -100,6 +102,8 @@
               ng-click="postToBacklog()"
               data-loading-text="Posting to Backlog..."
               fw-button-loading="isSubmitting">Post to Backlog</button>
+      <button class="btn btn-block btn-grey"
+              ng-click="cancelPostLater()">Cancel</button>
     </div>
 
   </form>

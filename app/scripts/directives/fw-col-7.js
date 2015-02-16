@@ -4,7 +4,6 @@ angular.module('webApp').directive('fwCol7', function () {
   return {
     restrict: 'E',
     transclude: true,
-    scope: { title:'@' },
     template:
     '<div class="row">' +
       '<div class="' +

@@ -40,10 +40,10 @@ module.exports = function(config) {
       'bower_components/angular-ui-sortable/sortable.js',
       'app/scripts/app.js',
       'app/scripts/**/*.js',
+      'app/views/**/*.html',
       'test/mock/*.js',
       'test/pages/**/*.js',
       'test/spec/**/*.js'
-
     ],
 
     // list of files / patterns to exclude
@@ -71,6 +71,7 @@ module.exports = function(config) {
     // Which plugins to enable
     plugins: [
       'karma-phantomjs-launcher',
+      'karma-ng-html2js-preprocessor',
       'karma-chrome-launcher',
       'karma-safari-launcher',
       'karma-firefox-launcher',
@@ -86,6 +87,15 @@ module.exports = function(config) {
     // level of logging
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
     logLevel: config.LOG_INFO,
+
+    preprocessors: {
+      'app/views/**/*.html': ['ng-html2js']
+    },
+
+    ngHtml2JsPreprocessor: {
+      stripPrefix: 'app/',
+      moduleName: 'webApp.views'
+    }
 
     // Uncomment the following lines if you are using grunt's server to run the tests
     // proxies: {

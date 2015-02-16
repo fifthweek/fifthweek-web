@@ -28,6 +28,10 @@ angular.module('webApp').controller('newImageCtrl',
       $scope.newCollectionName = '';
     }
 
+    $scope.newImageData = {
+      comment: ''
+    };
+
     $scope.uploaded = false;
     $scope.postLaterSelected = false;
     $scope.isSubmitting = false;
@@ -38,6 +42,10 @@ angular.module('webApp').controller('newImageCtrl',
 
     $scope.postLater = function() {
       $scope.postLaterSelected = true;
+    };
+
+    $scope.cancelPostLater = function() {
+      $scope.postLaterSelected = false;
     };
 
     //disable specific date checkbox

@@ -10,8 +10,9 @@ angular.module('webApp').directive('fwFormInputPassword', function ($compile) {
       var focus = attrs.hasOwnProperty('focus') ? 'focus=true' : '';
       var breakpoint = attrs.breakpoint || 'sm';
 
+      // Should refactor... has not been aware of template(Url) at time of writing.
       var htmlText =
-        '<div class="form-group" fw-form-group-validation>' +
+        '<fw-form-group>' +
           '<div class="row">' +
             '<div class="col-' + breakpoint + '-6">' +
               '<div fw-form-input-glyphs>' +
@@ -27,7 +28,7 @@ angular.module('webApp').directive('fwFormInputPassword', function ($compile) {
               (isRequired ? '<p fw-form-input-invalid-p="required">A password is required.</p>' : '') +
             '</div>' +
           '</div>' +
-        '</div>';
+        '</fw-form-group>';
 
       $compile(htmlText)(scope, function(newElement) {
         element.replaceWith(newElement);

@@ -4,24 +4,21 @@ angular.module('webApp')
 
     var service = {};
 
-    service.closest = function(tag, element, searchDepth) {
+    // tag must be uppercase
+    service.ancestor = function(tag, element, searchDepth) {
       if (isNaN(searchDepth)) {
-        searchDepth = 5;
-      }
-      else if (searchDepth > 10) {
-        throw new FifthweekError('Search depth too high; operation would be inefficient.');
+        searchDepth = 10;
       }
       else if (searchDepth-- <= 0) {
-        throw new FifthweekError('Failed to locate ' + tag);
+        return null;
       }
 
       var parent = element.parent();
-      var result = parent.find(tag);
-      if (result.length === 0) {
-        return service.closest(tag, parent, searchDepth);
+      if (parent.prop('tagName') !== tag) {
+        return service.ancestor(tag, parent, searchDepth);
       }
 
-      return result;
+      return parent;
     };
 
     return service;

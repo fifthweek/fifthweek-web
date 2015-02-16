@@ -4,7 +4,7 @@ angular.module('webApp').directive('fwAssignCssClassFromState',
 
   return {
     restrict: 'A',
-    link:function (scope, element/*, attrs*/) {
+    link:function (scope, element) {
 
       var addClass = function(state){
         if(state.data && state.data.bodyClass){

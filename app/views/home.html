@@ -13,7 +13,7 @@
             id="registrationForm"
             ng-show="!registrationSucceeded">
 
-        <div class="form-group" fw-form-group-validation>
+        <fw-form-group>
           <div class="row">
             <div class="col-md-6">
               <div fw-form-input-glyphs>
@@ -26,9 +26,9 @@
               <p fw-form-input-invalid-p>A valid email address is required.</p>
             </div>
           </div>
-        </div>
+        </fw-form-group>
 
-        <div class="form-group" fw-form-group-validation>
+        <fw-form-group>
           <div class="row">
             <div class="col-md-6">
               <div fw-form-input-glyphs>
@@ -52,7 +52,7 @@
               <p ng-if="form.username.$error.username" class="help-block">This username is already taken!</p>
             </div>
           </div>
-        </div>
+        </fw-form-group>
 
         <fw-form-input-password model="registrationData.password" placeholder="Password" breakpoint="md" required></fw-form-input-password>
 

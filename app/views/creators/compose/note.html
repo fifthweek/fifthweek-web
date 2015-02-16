@@ -1,19 +1,23 @@
 <fw-panel12>
 
-  <form name="composeNote" ng-show="!postLater">
+  <form novalidate name="formCompose" ng-show="!postLaterSelected">
 
-    <div class="form-group">
+    <fw-form-group>
       <div class="row">
         <div class="col-xs-12">
           <textarea msd-elastic
                     class="form-control"
-                    ng-model="composeNote.note"
-                    placeholder="Write your note here"
+                    name="note"
+                    ng-model="newNoteData.note"
+                    placeholder="What's happening?"
                     required
                     focus=true></textarea>
         </div>
+        <div class="col-xs-12">
+          <p fw-form-input-invalid-p="required">Please write your note before continuing.</p>
+        </div>
       </div>
-    </div>
+    </fw-form-group>
 
     <div class="form-group" ng-if="channels.length > 1">
       <fw-form-input-select selected-item="selectedChannel" items="channels"></fw-form-input-select>
@@ -22,16 +26,18 @@
     <div class="row-btn">
       <button type="submit"
               class="btn btn-block btn-success"
-              ng-click="postNow()"
               data-loading-text="Posting..."
-              fw-button-loading="isSubmitting">Post Now</button>
+              data-event-title="Note posted now"
+              data-event-category="New post"
+              fw-can-submit-form="formCompose.$valid && formCompose.$dirty"
+              fw-form-submit="postNow()">Post Now</button>
       <button class="btn btn-block btn-grey"
-              ng-click="postLater = true">Post Later</button>
+              ng-click="formCompose.$valid && formCompose.$dirty ? postLater() : false">Post Later</button>
     </div>
 
   </form>
 
-  <form name="postNoteLater" ng-show="postLater === true">
+  <form novalidate name="formSchedule" ng-show="postLaterSelected">
 
     <div class="radio">
       <label><input type="radio"
@@ -49,7 +55,7 @@
 
     <div class="row">
       <div class="col-sm-7">
-          <div fw-datepicker></div>
+        <div fw-datepicker></div>
       </div>
     </div>
 
@@ -59,6 +65,8 @@
              ng-click="postToBacklog()"
              data-loading-text="Posting to Backlog..."
              fw-button-loading="isSubmitting">Post to Backlog</button>
+      <button class="btn btn-block btn-grey"
+              ng-click="cancelPostLater()">Cancel</button>
     </div>
 
   </form>

@@ -4,7 +4,6 @@ angular.module('webApp').directive('fwPanel12', function () {
   return {
     restrict: 'E',
     transclude: true,
-    scope: { title:'@' },
     template:
     '<div class="row">' +
       '<div class="col-xs-12">' +

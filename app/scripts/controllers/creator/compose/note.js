@@ -26,11 +26,22 @@ angular.module('webApp').controller(
       $scope.selectedChannel = channels[0];
     }
 
-    $scope.postLater = false;
+    $scope.newNoteData = {
+      note: ''
+    };
+    $scope.postLaterSelected = false;
     $scope.isSubmitting = false;
 
     $scope.postNow = function() {
       $scope.isSubmitting = true;
+    };
+
+    $scope.postLater = function() {
+      $scope.postLaterSelected = true;
+    };
+
+    $scope.cancelPostLater = function() {
+      $scope.postLaterSelected = false;
     };
 
     //disable specific date checkbox

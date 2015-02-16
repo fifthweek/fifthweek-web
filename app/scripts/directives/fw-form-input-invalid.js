@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwFormInputInvalid', function ($compile, domUtilities) {
+angular.module('webApp').directive('fwFormInputInvalid', function ($compile) {
   'use strict';
 
   return {
@@ -6,16 +6,18 @@ angular.module('webApp').directive('fwFormInputInvalid', function ($compile, dom
     terminal: true, // http://stackoverflow.com/a/19228302/592768
     priority: 1000,
     link: function(scope, element, attrs) {
+      var formGroup = scope.$parent;
+      var formName = formGroup.getFormName();
+      var inputName = formGroup.getInputName();
+      var ruleName = attrs.fwFormInputInvalid;
+      inputName = formName + '.' + inputName;
 
       var ngIf;
-      var inputName = domUtilities.closest('input', element, 2).attr('name');
-      var ruleName = attrs.fwFormInputInvalid;
-
       if (ruleName) {
-        ngIf = 'form.' + inputName + '.$error.' + ruleName + ' && ((form.' + inputName + '.$touched && form.' + inputName + '.$dirty) || form.$submitted)';
+        ngIf = inputName + '.$error.' + ruleName + ' && ((' + inputName + '.$touched && ' + inputName + '.$dirty) || ' + formName + '.$submitted)';
       }
       else {
-        ngIf = 'form.' + inputName + '.$invalid && ((form.' + inputName + '.$touched && form.' + inputName + '.$dirty) || form.$submitted)';
+        ngIf = inputName + '.$invalid && ((' + inputName + '.$touched && ' + inputName + '.$dirty) || ' + formName + '.$submitted)';
       }
 
       element.removeAttr('fw-form-input-invalid'); // Remove self to avoid infinite compilation loop.
