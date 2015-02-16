@@ -17,7 +17,8 @@ angular.module('webApp').controller('newImageCtrl',
       }
     ];
 
-    collections = []; // Simulate first post (no collections created).
+    // Simulate first post (no collections created).
+    collections = [];
 
     $scope.collections = collections;
     if (collections.length > 0) {

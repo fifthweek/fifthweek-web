@@ -3,25 +3,30 @@ angular.module('webApp').controller(
   function($scope) {
     'use strict';
 
-    $scope.postLater = false;
-
-    $scope.sharePreference = [
+    var channels = [
       {
         name:'Share with everyone',
-        value:''
+        value:'channel1' // Default channel
       },
       {
         name:'"Extras Channel" Only',
-        value:'channel1'
+        value:'channel2'
       },
       {
         name:'"HD Channel" Only',
-        value:'channel2'
+        value:'channel3'
       }
     ];
 
-    $scope.sharePreferenceInit = $scope.sharePreference[0];
+    // Simulate having no custom channels.
+    channels = [ channels[0] ];
 
+    if (channels.length > 1) {
+      $scope.channels = channels;
+      $scope.selectedChannel = channels[0];
+    }
+
+    $scope.postLater = false;
     $scope.isSubmitting = false;
 
     $scope.postNow = function() {
@@ -39,6 +44,5 @@ angular.module('webApp').controller(
     $scope.postToBacklog = function() {
       $scope.isSubmitting = true;
     };
-
   }
 ]);
