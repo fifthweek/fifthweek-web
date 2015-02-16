@@ -20,6 +20,19 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <div class="row">
+          <div class="col-xs-12">
+          <textarea msd-elastic
+                    class="form-control"
+                    ng-model="composeNote.note"
+                    placeholder="Add a comment, if you like"
+                    required
+                    focus=true></textarea>
+          </div>
+        </div>
+      </div>
+
       <div class="form-group" ng-if="collections.length > 0">
         <fw-form-input-select selected-item="selectedCollection" items="collections"></fw-form-input-select>
       </div>
@@ -35,8 +48,7 @@
                      ng-model="newCollectionName"
                      ng-maxlength="50"
                      maxlength="50"
-                     required
-                     focus=true />
+                     required />
             </div>
             <small>(it's like an album, except not just for photos!)</small>
           </div>
