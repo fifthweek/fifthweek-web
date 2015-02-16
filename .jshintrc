@@ -30,6 +30,7 @@
     "InputValidationError": false,
     "UnauthenticatedError": false,
     "UnauthorizedError": false,
+    "AzureError": false,
     "ConnectionError": false,
     "ActiveXObject": false,
     "_": false

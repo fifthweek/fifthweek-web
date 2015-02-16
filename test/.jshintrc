@@ -45,6 +45,7 @@
     "FifthweekError": false,
     "InputValidationError": false,
     "ConnectionError": false,
+    "AzureError": false,
     "_": false
   }
 }

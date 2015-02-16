@@ -43,6 +43,14 @@ function ConnectionError(message) {
 ConnectionError.prototype = Object.create(Error.prototype);
 ConnectionError.prototype.constructor = ConnectionError;
 
+function AzureError(message, response) {
+  this.message = message;
+  this.response = response;
+  this.stack = Error().stack;
+}
+AzureError.prototype = Object.create(Error.prototype);
+AzureError.prototype.constructor = AzureError;
+
 // Error handler for non-angular errors.  Tries to post the message to the server without
 // any dependencies on third party libraries.
 // Taken from:
