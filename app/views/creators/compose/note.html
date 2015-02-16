@@ -1,6 +1,6 @@
 <fw-panel12>
 
-  <form novalidate name="formCompose" ng-show="!postLaterSelected">
+  <form novalidate name="formCompose" ng-show="!model.postLater">
 
     <fw-form-group>
       <div class="row">
@@ -8,7 +8,7 @@
           <textarea msd-elastic
                     class="form-control"
                     name="note"
-                    ng-model="newNoteData.note"
+                    ng-model="model.input.note"
                     placeholder="What's happening?"
                     required
                     focus=true></textarea>
@@ -19,42 +19,30 @@
       </div>
     </fw-form-group>
 
-    <div class="form-group" ng-if="channels.length > 1">
-      <fw-form-input-select selected-item="selectedChannel" items="channels"></fw-form-input-select>
+    <div class="form-group" ng-if="model.channels.length > 1">
+      <fw-form-input-select selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
     </div>
 
     <div class="row-btn">
       <button type="submit"
               class="btn btn-block btn-success"
               data-loading-text="Posting..."
-              data-event-title="Note posted now"
+              data-event-title="Note posted"
               data-event-category="New post"
-              fw-can-submit-form="formCompose.$valid && formCompose.$dirty"
+              form="formCompose"
               fw-form-submit="postNow()">Post Now</button>
       <button class="btn btn-block btn-grey"
-              ng-click="formCompose.$valid && formCompose.$dirty ? postLater() : false">Post Later</button>
+              form="formCompose"
+              fw-form-submit="postLater()">Post Later</button>
     </div>
 
   </form>
 
-  <form novalidate name="formSchedule" ng-show="postLaterSelected">
-
-    <div class="radio">
-      <label><input type="radio"
-                    ng-click="uncheck($event)"
-                    ng-model="postDate"
-                    ng-value="postFunnel" /> After other posts in queue (will appear Wednesday 7th Jan)</label>
-    </div>
-
-    <div class="radio">
-      <label><input type="radio"
-                    ng-click="uncheck($event)"
-                    ng-model="postDate"
-                    ng-value="postSpecificDate" /> On specific date:</label>
-    </div>
+  <form novalidate name="formSchedule" ng-show="model.postLater">
 
     <div class="row">
       <div class="col-sm-7">
+        <label>On specific date:</label>
         <div fw-datepicker></div>
       </div>
     </div>
@@ -62,9 +50,11 @@
     <div class="row-btn">
       <button type="submit"
              class="btn btn-block btn-success"
-             ng-click="postToBacklog()"
              data-loading-text="Posting to Backlog..."
-             fw-button-loading="isSubmitting">Post to Backlog</button>
+             data-event-title="Note queued"
+             data-event-category="New post"
+             form="formSchedule"
+             fw-form-submit="postToBacklog()">Post to Backlog</button>
       <button class="btn btn-block btn-grey"
               ng-click="cancelPostLater()">Cancel</button>
     </div>

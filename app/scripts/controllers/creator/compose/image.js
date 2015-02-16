@@ -2,6 +2,16 @@ angular.module('webApp').controller('newImageCtrl',
   function($scope) {
     'use strict';
 
+    $scope.model = {
+      uploaded: false,
+      postToQueue: true,
+      postLater: false,
+      input: {
+        comment: '',
+        fileId: ''
+      }
+    };
+
     var collections = [
       {
         name:'Blog',
@@ -20,49 +30,34 @@ angular.module('webApp').controller('newImageCtrl',
     // Simulate first post (no collections created).
     collections = [];
 
-    $scope.collections = collections;
+    $scope.model.collections = collections;
     if (collections.length > 0) {
-      $scope.selectedCollection = collections[0];
+      $scope.model.input.selectedCollection = collections[0];
     }
     else {
-      $scope.newCollectionName = '';
+      $scope.model.input.newCollectionName = '';
     }
 
-    $scope.newImageData = {
-      comment: ''
-    };
+    $scope.postNow = function() { };
 
-    $scope.uploaded = false;
-    $scope.postLaterSelected = false;
-    $scope.isSubmitting = false;
-
-    $scope.postNow = function() {
-      $scope.isSubmitting = true;
-    };
+    $scope.postToBacklog = function() { };
 
     $scope.postLater = function() {
-      $scope.postLaterSelected = true;
+      $scope.model.postLater = true;
     };
 
     $scope.cancelPostLater = function() {
-      $scope.postLaterSelected = false;
+      $scope.model.postLater = false;
     };
-
-    //disable specific date checkbox
-    $scope.postSpecificDate = false;
 
     //toggle checkboxes 'checked' state
     $scope.uncheck = function (event) {
       if ($scope.checked == event.target.value) $scope.checked = false
     };
 
-    $scope.postToBacklog = function() {
-      $scope.isSubmitting = true;
-    };
-
     $scope.onUploadComplete = function(fileId) {
-      $scope.uploaded = true;
-      $scope.fileId = fileId;
+      $scope.model.uploaded = true;
+      $scope.model.input.fileId = fileId;
     };
   }
 );

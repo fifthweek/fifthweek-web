@@ -1,34 +1,36 @@
 // See: https://gist.github.com/thisboyiscrazy/5137781#comment-838257
 angular.module('webApp').directive('fwFormSubmit',
-  function ($q, analytics, errorFacade, utilities) {
+  function ($q, analytics, errorFacade) {
   'use strict';
 
   return {
     restrict: 'A',
+    scope: {
+      form: '=',
+      fwFormSubmit: '&'
+    },
     link: function(scope, element, attrs) {
 
-      var scopeUtilities = utilities.forScope(scope);
+      if (scope.form === undefined) {
+        throw new FifthweekError('"form" attribute must match an existing form\'s name')
+      }
 
-      var setMessage = scopeUtilities.createVirtualSetter('message');
-      var setSubmissionSucceeded = scopeUtilities.createVirtualSetter('submissionSucceeded');
-
-      scope.isSubmitting = false;
-      scope.hasSubmitted = false;
-      setSubmissionSucceeded(false);
-      setMessage('');
+      scope.form.isSubmitting = false;
+      scope.form.hasSubmitted = false;
+      scope.form.submissionSucceeded = false;
+      scope.form.message = '';
 
       element.bind('click', function() {
 
-        if (attrs.hasOwnProperty('fwCanSubmitForm')) {
-          var canSubmitForm = scope.$apply(attrs.fwCanSubmitForm);
-          if(!canSubmitForm){
-            return $q.when();
-          }
+        scope.form.$submitted = true;
+
+        if (scope.form.$invalid || scope.form.$pristine) {
+          return $q.when();
         }
 
-        scope.isSubmitting = true;
-        setSubmissionSucceeded(false);
-        setMessage('');
+        scope.form.isSubmitting = true;
+        scope.form.submissionSucceeded = false;
+        scope.form.message = '';
 
         if (!attrs.hasOwnProperty('ngDisabled')) {
           element.addClass('disabled').attr('disabled', 'disabled');
@@ -40,9 +42,9 @@ angular.module('webApp').directive('fwFormSubmit',
           element.html(loadingText);
         }
 
-        return $q.when(scope.$apply(attrs.fwFormSubmit)).then(
+        return $q.when(scope.fwFormSubmit()).then(
           function(){
-            setSubmissionSucceeded(true);
+            scope.form.submissionSucceeded = true;
             var eventTitle = element.data('event-title');
             var eventCategory = element.data('event-category');
             if(eventTitle && eventCategory){
@@ -50,9 +52,11 @@ angular.module('webApp').directive('fwFormSubmit',
             }
           },
           function(error){
-            return errorFacade.handleError(error, setMessage);
+            return errorFacade.handleError(error, function(message) {
+              scope.form.message = message;
+            });
           }).finally(function() {
-            scope.hasSubmitted = true;
+            scope.form.hasSubmitted = true;
 
             if (!attrs.hasOwnProperty('ngDisabled')) {
               element.removeClass('disabled').removeAttr('disabled');
@@ -63,7 +67,7 @@ angular.module('webApp').directive('fwFormSubmit',
               element.html(resetText);
             }
 
-            scope.isSubmitting = false;
+            scope.form.isSubmitting = false;
           });
       });
     }

@@ -1,14 +1,14 @@
 <fw-panel12>
 
-  <form novalidate name="formCompose" ng-show="!postLaterSelected">
+  <form novalidate name="formCompose" ng-show="!model.postLater">
 
-    <div class="row" ng-if="!uploaded">
+    <div class="row" ng-if="!model.uploaded">
       <div class="col-xs-12">
         <div fw-file-upload file-type="Image" on-upload-complete="onUploadComplete(fileId)"></div>
       </div>
     </div>
 
-    <div ng-if="uploaded">
+    <div ng-if="model.uploaded">
       <div class="form-group form-group-image">
         <div class="row">
           <div class="col-xs-3">
@@ -33,11 +33,11 @@
         </div>
       </fw-form-group>
 
-      <div class="form-group" ng-if="collections.length > 0">
-        <fw-form-input-select selected-item="selectedCollection" items="collections"></fw-form-input-select>
+      <div class="form-group" ng-if="model.collections.length > 0">
+        <fw-form-input-select selected-item="model.input.selectedCollection" items="model.collections"></fw-form-input-select>
       </div>
 
-      <fw-form-group ng-if="collections.length === 0">
+      <fw-form-group ng-if="model.collections.length === 0">
         <div class="row">
           <div class="col-sm-6">
             <div fw-form-input-glyphs>
@@ -45,7 +45,7 @@
                      class="form-control"
                      name="newCollectionName"
                      placeholder="New collection name"
-                     ng-model="newCollectionName"
+                     ng-model="model.input.newCollectionName"
                      ng-maxlength="50"
                      maxlength="50"
                      required />
@@ -63,31 +63,30 @@
         <button type="submit"
                 class="btn btn-block btn-success"
                 data-loading-text="Posting..."
-                data-event-title="Image posted now"
+                data-event-title="Image posted"
                 data-event-category="New post"
-                fw-can-submit-form="formCompose.$valid && formCompose.$dirty"
+                form="formCompose"
                 fw-form-submit="postNow()">Post Now</button>
         <button class="btn btn-block btn-grey"
-                ng-click="formCompose.$valid && formCompose.$dirty ? postLater() : false">Post Later</button>
+                form="formCompose"
+                fw-form-submit="postLater()">Post Later</button>
       </div>
     </div>
 
   </form>
 
-  <form novalidate name="formSchedule" ng-show="postLaterSelected">
+  <form novalidate name="formSchedule" ng-show="model.postLater">
 
     <div class="radio">
       <label><input type="radio"
-                    ng-click="uncheck($event)"
-                    ng-model="postDate"
-                    ng-value="postFunnel" /> After other posts in queue (will appear Wednesday 7th Jan)</label>
+                    ng-model="model.postToQueue"
+                    ng-value="true"/> After other posts in queue (will appear Wednesday 7th Jan)</label>
     </div>
 
     <div class="radio">
       <label><input type="radio"
-                    ng-click="uncheck($event)"
-                    ng-model="postDate"
-                    ng-value="postSpecificDate" /> On specific date:</label>
+                    ng-model="model.postToQueue"
+                    ng-value="false" /> On specific date:</label>
     </div>
 
     <div class="row">
@@ -99,9 +98,11 @@
     <div class="row-btn">
       <button type="submit"
               class="btn btn-block btn-success"
-              ng-click="postToBacklog()"
               data-loading-text="Posting to Backlog..."
-              fw-button-loading="isSubmitting">Post to Backlog</button>
+              data-event-title="Image queued"
+              data-event-category="New post"
+              form="formSchedule"
+              fw-form-submit="postToBacklog()">Post to Backlog</button>
       <button class="btn btn-block btn-grey"
               ng-click="cancelPostLater()">Cancel</button>
     </div>

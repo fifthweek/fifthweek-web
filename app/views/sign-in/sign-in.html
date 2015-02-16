@@ -1,6 +1,6 @@
 ﻿<fw-panel6>
 
-  <form role="form">
+  <form name="form" role="form">
     <div class="form-group">
       <input type="text" class="form-control" placeholder="Username" ng-model="signInData.username" required focus=true>
     </div>
@@ -19,6 +19,7 @@
             data-event-title="Sign-in succeeded"
             data-event-category="Sign-in"
             data-loading-text="Signing In..."
+            form="form"
             fw-form-submit="signIn()">Sign In</button>
         </div>
         <div class="col-s-8">
@@ -27,8 +28,8 @@
       </div>
     </div>
 
-    <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
-      <p>{{message}}</p>
+    <div ng-show="form.message" class="alert alert-danger sub-form-alert" id="sign-in-message">
+      <p>{{form.message}}</p>
     </div>
   </form>
 

@@ -14,7 +14,7 @@ angular.module('webApp').controller('HomeCtrl',
     return authenticationService.registerUser($scope.registrationData)
       .then(function() {
         $scope.registrationSucceeded = true;
-        $scope.message = 'Signing in...';
+        $scope.form.message = 'Signing in...';
 
         var signInData = {
           username: $scope.registrationData.username,

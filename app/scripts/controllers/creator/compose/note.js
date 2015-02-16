@@ -3,6 +3,13 @@ angular.module('webApp').controller(
   function($scope) {
     'use strict';
 
+    $scope.model = {
+      postLater: false,
+      input: {
+        note: ''
+      }
+    };
+
     var channels = [
       {
         name:'Share with everyone',
@@ -22,38 +29,25 @@ angular.module('webApp').controller(
     channels = [ channels[0] ];
 
     if (channels.length > 1) {
-      $scope.channels = channels;
-      $scope.selectedChannel = channels[0];
+      $scope.model.channels = channels;
+      $scope.model.input.selectedChannel = channels[0];
     }
 
-    $scope.newNoteData = {
-      note: ''
-    };
-    $scope.postLaterSelected = false;
-    $scope.isSubmitting = false;
+    $scope.postNow = function() { };
 
-    $scope.postNow = function() {
-      $scope.isSubmitting = true;
-    };
+    $scope.postToBacklog = function() { };
 
     $scope.postLater = function() {
-      $scope.postLaterSelected = true;
+      $scope.model.postLater = true;
     };
 
     $scope.cancelPostLater = function() {
-      $scope.postLaterSelected = false;
+      $scope.model.postLater = false;
     };
-
-    //disable specific date checkbox
-    $scope.postSpecificDate = false;
 
     //toggle checkboxes 'checked' state
     $scope.uncheck = function (event) {
       if ($scope.checked == event.target.value) $scope.checked = false
-    };
-
-    $scope.postToBacklog = function() {
-      $scope.isSubmitting = true;
     };
   }
 ]);

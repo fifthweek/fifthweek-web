@@ -65,7 +65,7 @@
               data-loading-text="Registering..."
               data-event-title="Registration succeeded"
               data-event-category="Registration"
-              fw-can-submit-form="form.$valid && form.$dirty"
+              form="form"
               fw-form-submit="register()">Register as creator</button>
           </div>
         </div>
@@ -81,7 +81,7 @@
       </div>
       <div clas="row">
         <div class="col-md-6">
-          <div id="messageBox" class="sub-form-alert" ng-show="message" ng-class="(submissionSucceeded) ? 'alert alert-success' : 'alert alert-danger'">
+          <div id="messageBox" class="sub-form-alert" ng-show="message" ng-class="(form.submissionSucceeded) ? 'alert alert-success' : 'alert alert-danger'">
             <p>{{message}}</p>
           </div>
         </div>

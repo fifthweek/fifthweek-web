@@ -18,14 +18,6 @@ angular.module('webApp').controller('SignInResetCtrl',
 
     $scope.tokenInvalid = false;
 
-    $scope.setMessage = function(value) {
-      $scope.message = value;
-    };
-
-    $scope.setSubmissionSucceeded = function(value) {
-      $scope.submissionSucceeded = value;
-    };
-
     $scope.confirmPasswordReset = function() {
       return membershipStub.postPasswordResetConfirmation($scope.passwordResetConfirmationData);
     };
@@ -35,7 +27,9 @@ angular.module('webApp').controller('SignInResetCtrl',
         $scope.tokenInvalid = true;
       }
       else {
-        return errorFacade.handleError(error, $scope.setMessage);
+        return errorFacade.handleError(error, function(message) {
+          $scope.form.message = message;
+        });
       }
     });
   }

@@ -1,4 +1,4 @@
-﻿<fw-panel12 ng-show="!submissionSucceeded && !tokenInvalid" id="password-reset-confirmation-panel">
+﻿<fw-panel12 ng-show="!form.submissionSucceeded && !tokenInvalid" id="password-reset-confirmation-panel">
 
   <form novalidate
         role="form"
@@ -14,19 +14,19 @@
         data-event-title="Password reset completed"
         data-event-category="Sign-in"
         data-loading-text="Resetting..."
-        fw-can-submit-form="form.$valid && form.$dirty"
+        form="form"
         fw-form-submit="confirmPasswordReset()">Reset Password</button>
     </div>
 
-    <div ng-show="message" class="alert alert-danger sub-form-alert" id="password-reset-confirmation-message">
-      <p>{{message}}</p>
+    <div ng-show="form.message" class="alert alert-danger sub-form-alert" id="password-reset-confirmation-message">
+      <p>{{form.message}}</p>
     </div>
 
   </form>
 
 </fw-panel12>
 
-<fw-col7 ng-show="submissionSucceeded && !tokenInvalid" id="password-reset-confirmation-success">
+<fw-col7 ng-show="form.submissionSucceeded && !tokenInvalid" id="password-reset-confirmation-success">
   <div class="jumbo-panel alert alert-success">
     <p>
       <strong>Password has been reset.</strong> Please sign in with your new password. <strong><a ui-sref="signIn">Continue to sign in page &raquo;</a></strong>

@@ -36,6 +36,7 @@ describe('sign in reset controller', function() {
       $rootScope = $injector.get('$rootScope');
       $q = $injector.get('$q');
       $scope = $rootScope.$new();
+      $scope.form = {};
       $controller = $injector.get('$controller');
     });
 

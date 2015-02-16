@@ -85,14 +85,14 @@
         data-loading-text="Saving..."
         data-event-title="Subscription created"
         data-event-category="Registration"
-        fw-can-submit-form="form.$valid && form.$dirty"
+        form="form"
         fw-form-submit="continue()">Save and Continue</button>
     </div>
 
     <div class="row">
       <div class="col-sm-6">
-        <div ng-show="message" class="alert alert-danger sub-form-alert" id="sign-in-message">
-          <p>{{message}}</p>
+        <div ng-show="form.message" class="alert alert-danger sub-form-alert" id="sign-in-message">
+          <p>{{form.message}}</p>
         </div>
       </div>
     </div>

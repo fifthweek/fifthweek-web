@@ -28,6 +28,7 @@ describe('home controller', function() {
       $q = $injector.get('$q');
       var $controller = $injector.get('$controller');
       scope = $injector.get('$rootScope').$new();
+      scope.form = {};
       $state = $injector.get('$state');
       target = $controller('HomeCtrl', { $scope: scope });
     });
@@ -77,7 +78,7 @@ describe('home controller', function() {
       scope.register();
       scope.$apply();
 
-      expect(scope.message).toContain('Signing in...');
+      expect(scope.form.message).toContain('Signing in...');
       expect(scope.registrationSucceeded).toBe(true);
     });
 
