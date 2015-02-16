@@ -2,15 +2,6 @@
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
 
-/* Define grid system for custom breakpoints */
-@media (min-width: $screen-ss-min) {
-  @include make-grid(ss);
-}
-
-@media (min-width: $screen-s-min) {
-  @include make-grid(s);
-}
-
 @mixin make-grid-columns-2($i: 1, $list: ".col-ss-#{$i}, .col-s-#{$i}") {
   @for $i from (1 + 1) through $grid-columns {
     $list: "#{$list}, .col-ss-#{$i}, .col-s-#{$i}";
@@ -25,9 +16,30 @@
   }
 }
 
-/* IMPORTANT:
- * Custom columns must be generated before Bootstrap, else our custom smaller columns
- * will override default larger columns, which is defective behavior.
- */
-@include make-grid-columns-2;
+
+
 @import 'bootstrap-sass-official/assets/stylesheets/_bootstrap.scss';
+
+/* IMPORTANT:
+ * Custom breakpoints must be generated after Bootstrap, and in complete order including those existing Bootstrap
+ * breakpoints. Otherwise col-* classes will not override each other correctly.
+ */
+@include make-grid(xs);
+
+@media (min-width: $screen-ss-min) {
+  @include make-grid(ss);
+}
+@media (min-width: $screen-s-min) {
+  @include make-grid(s);
+}
+@media (min-width: $screen-sm-min) {
+  @include make-grid(sm);
+}
+@media (min-width: $screen-md-min) {
+  @include make-grid(md);
+}
+@media (min-width: $screen-lg-min) {
+  @include make-grid(lg);
+}
+
+@include make-grid-columns-2;
