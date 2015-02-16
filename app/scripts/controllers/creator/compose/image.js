@@ -7,12 +7,16 @@ angular.module('webApp').controller('newImageCtrl',
 
     $scope.sharePreference = [
       {
-        name:'Share with everyone',
-        value:'shareWithAll'
+        name:'Blog',
+        value:'collection1'
       },
       {
-        name:'Share with subscribers',
-        value:'shareWithSubscribers'
+        name:'Wallpapers (HD Channel)',
+        value:'collection2'
+      },
+      {
+        name:'Side Comic (Extras Channel)',
+        value:'collection3'
       }
     ];
 

@@ -8,25 +8,37 @@
       </div>
     </div>
 
-    <div class="form-group" ng-if="uploaded">
-      <div class="row">
-        <div class="col-xs-3">
-          <img src="images/avatar-default.png" alt="" />
-        </div>
-        <div class="col-xs-9">
-          <div fw-file-upload file-type="Image" on-upload-complete="onUploadComplete(fileId)"></div>
+    <div ng-if="uploaded">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-xs-3">
+            <img src="images/avatar-default.png" alt="" />
+          </div>
+          <div class="col-xs-9">
+            <div fw-file-upload file-type="Image" on-upload-complete="onUploadComplete(fileId)"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="row-btn" ng-if="uploaded">
-      <button type="submit"
-              class="btn btn-block btn-success"
-              ng-click="postNow()"
-              data-loading-text="Posting..."
-              fw-button-loading="isSubmitting">Post Now</button>
-      <button class="btn btn-block btn-grey"
-              ng-click="postLater()">Post Later</button>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-5">
+            <div class="select">
+              <select class="select-full-width" ng-model="sharePreferenceInit" ng-options="preference.name for preference in sharePreference"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-btn">
+        <button type="submit"
+                class="btn btn-block btn-success"
+                ng-click="postNow()"
+                data-loading-text="Posting..."
+                fw-button-loading="isSubmitting">Post Now</button>
+        <button class="btn btn-block btn-grey"
+                ng-click="postLater()">Post Later</button>
+      </div>
     </div>
 
   </form>

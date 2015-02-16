@@ -8,11 +8,15 @@ angular.module('webApp').controller(
     $scope.sharePreference = [
       {
         name:'Share with everyone',
-        value:'shareWithAll'
+        value:''
       },
       {
-        name:'Share with subscribers',
-        value:'shareWithSubscribers'
+        name:'"Extras Channel" Only',
+        value:'channel1'
+      },
+      {
+        name:'"HD Channel" Only',
+        value:'channel2'
       }
     ];
 
