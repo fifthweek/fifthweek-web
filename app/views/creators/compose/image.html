@@ -9,7 +9,7 @@
     </div>
 
     <div ng-if="uploaded">
-      <div class="form-group">
+      <div class="form-group form-group-image">
         <div class="row">
           <div class="col-xs-3">
             <img src="images/avatar-default.png" alt="" />
@@ -20,8 +20,31 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <fw-form-input-select selected-item="sharePreferenceInit" items="sharePreference"></fw-form-input-select>
+      <div class="form-group" ng-if="collections.length > 0">
+        <fw-form-input-select selected-item="selectedCollection" items="collections"></fw-form-input-select>
+      </div>
+
+      <div class="form-group" fw-form-group-validation ng-if="collections.length === 0">
+        <div class="row">
+          <div class="col-sm-6">
+            <div fw-form-input-glyphs>
+              <input type="text"
+                     class="form-control"
+                     name="newCollectionName"
+                     placeholder="New collection name"
+                     ng-model="newCollectionName"
+                     ng-maxlength="50"
+                     maxlength="50"
+                     required
+                     focus=true />
+            </div>
+            <small>(it's like an album, except not just for photos!)</small>
+          </div>
+          <div class="col-sm-6">
+            <p fw-form-input-invalid-p="maxlength">Allowed 50 characters at most.</p>
+            <p fw-form-input-invalid-p="required">A collection name is required.</p>
+          </div>
+        </div>
       </div>
 
       <div class="row-btn">

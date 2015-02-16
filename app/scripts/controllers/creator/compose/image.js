@@ -2,10 +2,7 @@ angular.module('webApp').controller('newImageCtrl',
   function($scope) {
     'use strict';
 
-    $scope.uploaded = false;
-    $scope.postLaterSelected = false;
-
-    $scope.sharePreference = [
+    var collections = [
       {
         name:'Blog',
         value:'collection1'
@@ -20,8 +17,18 @@ angular.module('webApp').controller('newImageCtrl',
       }
     ];
 
-    $scope.sharePreferenceInit = $scope.sharePreference[0];
+    collections = []; // Simulate first post (no collections created).
 
+    $scope.collections = collections;
+    if (collections.length > 0) {
+      $scope.selectedCollection = collections[0];
+    }
+    else {
+      $scope.newCollectionName = '';
+    }
+
+    $scope.uploaded = false;
+    $scope.postLaterSelected = false;
     $scope.isSubmitting = false;
 
     $scope.postNow = function() {
