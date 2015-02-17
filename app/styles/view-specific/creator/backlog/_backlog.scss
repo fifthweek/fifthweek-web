@@ -75,9 +75,14 @@ $html-name-space:'.page-backlog';
           padding:0 10px;
           margin:0 10px;
         }
+        button {
+          border:0 none;
+          background:none;
+          padding:0;
+          outline:0 none;
+        }
         &.actions-more {
           position:relative;
-          cursor:pointer;
         }
       }
       @include li-cancel-first-last-spacing;
