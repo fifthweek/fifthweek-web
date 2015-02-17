@@ -8,7 +8,8 @@ angular.module('webApp').factory('azureBlobStub',
       var config = {
         headers: {
           'x-ms-blob-type': 'BlockBlob'
-        }
+        },
+        transformRequest: []
       };
 
       return $http.put(uri, requestData, config)
