@@ -90,8 +90,8 @@ $html-name-space:'.page-backlog';
         font-size:19px;
       }
 
-      .active-comment .fa {
-      //.active-actions-drop-down .fa {
+      .active-comment .fa,
+      .active-actions-drop-down .fa {
         color:$blue-light-2;
       }
       .active-favourite .fa {

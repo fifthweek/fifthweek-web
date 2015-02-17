@@ -31,7 +31,8 @@
                 <i class="fa fa-heart" ng-class="{'active' : activeFav}"></i>
               </li>
               <li class="actions-more"
-                  ng-init="dropDownFocus=false;dropDownBlur=false;">
+                  ng-init="dropDownFocus=false;dropDownBlur=false;"
+                  ng-class="{'active-actions-drop-down': dropDownFocus===true}">
                   <button
                     ng-focus="dropDownFocus=true;dropDownBlur=false;" 
                     ng-blur="dropDownBlur=true;dropDownFocus=false;">
