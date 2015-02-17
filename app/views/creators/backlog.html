@@ -30,9 +30,14 @@
               <li ng-click="activeFavourite = !activeFavourite" ng-class="{'active-favourite': activeFavourite}">
                 <i class="fa fa-heart" ng-class="{'active' : activeFav}"></i>
               </li>
-              <li class="actions-more" ng-click="actionsDropDown = !actionsDropDown" ng-class="{'active-actions-drop-down': actionsDropDown}">
-                <i class="fa fa-ellipsis-h"></i>
-                <div class="actions-drop-down" ng-show="actionsDropDown">
+              <li class="actions-more" 
+                  ng-init="dropDownFocus=false;dropDownBlur=false;">
+                <button 
+                  ng-focus="dropDownFocus=true;dropDownBlur=false;" 
+                  ng-blur="dropDownBlur=true;dropDownFocus=false;">
+                  <i class="fa fa-ellipsis-h"></i>
+                </button>
+                <div class="actions-drop-down" ng-show="dropDownFocus">
                   <ul>
                     <li><a ui-sref="creators.backlog">Edit</a></li>
                     <li><a ui-sref="creators.backlog">Reschedule</a></li>
