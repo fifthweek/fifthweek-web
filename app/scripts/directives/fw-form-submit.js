@@ -14,7 +14,7 @@ angular.module('webApp').directive('fwFormSubmit',
       var submit = scope.fwFormSubmit;
 
       if (form === undefined) {
-        throw new FifthweekError('"form" attribute must match an existing form\'s name');
+        throw new FifthweekError('"formName" attribute must match an existing form\'s name');
       }
 
       if (!_.isFunction(submit)) {
