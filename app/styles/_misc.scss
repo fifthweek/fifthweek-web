@@ -16,6 +16,17 @@
   display:none !important;
 }
 
+::-moz-selection {
+  background:$blue-light-1;
+  color:$white-full;
+  text-shadow:none;
+}
+::selection {
+  background:$blue-light-1;
+  color:$white-full;
+  text-shadow:none;
+}
+
 .vcenter {
   @include vcenter;
 }
