@@ -2,7 +2,7 @@ describe('submit form directive', function(){
   'use strict';
 
   var getFormHtml = function(attributes) {
-    return '<form name="form"><button form="form" fw-form-submit="submit()" ' + attributes + '>default</button></form>';
+    return '<form name="form"><button form-name="form" fw-form-submit="submit()" ' + attributes + '>default</button></form>';
   };
 
   var formHtml = getFormHtml();

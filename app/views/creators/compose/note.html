@@ -29,10 +29,10 @@
               data-loading-text="Posting..."
               data-event-title="Note posted"
               data-event-category="New post"
-              form="formCompose"
+              form-name="formCompose"
               fw-form-submit="postNow()">Post Now</button>
       <button class="btn btn-block btn-grey"
-              form="formCompose"
+              form-name="formCompose"
               fw-form-submit="postLater()">Post Later</button>
     </div>
 
@@ -53,7 +53,7 @@
              data-loading-text="Posting to Backlog..."
              data-event-title="Note queued"
              data-event-category="New post"
-             form="formSchedule"
+             form-name="formSchedule"
              fw-form-submit="postToBacklog()">Post to Backlog</button>
       <button class="btn btn-block btn-grey"
               ng-click="cancelPostLater()">Cancel</button>

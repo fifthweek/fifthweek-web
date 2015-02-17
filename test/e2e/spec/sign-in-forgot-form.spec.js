@@ -29,14 +29,6 @@ describe('sign-in - forgot details form', function() {
     signInPage.forgotDetailsLink.click();
   };
 
-  it('should not allow no username or email to be submitted', function () {
-    navigateToPage();
-
-    page.resetPasswordButton.click();
-
-    expect(page.message.getText()).toContain('Must provide username or email');
-  });
-
   describe('when a user is not registered', function() {
 
     beforeEach(navigateToPage);

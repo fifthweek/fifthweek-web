@@ -6,31 +6,35 @@ angular.module('webApp').directive('fwFormSubmit',
   return {
     restrict: 'A',
     scope: {
-      form: '=',
+      formName: '=',
       fwFormSubmit: '&'
     },
     link: function(scope, element, attrs) {
+      var form = scope.formName;
+      var submit = scope.fwFormSubmit;
 
-      if (scope.form === undefined) {
-        throw new FifthweekError('"form" attribute must match an existing form\'s name')
+      if (form === undefined) {
+        throw new FifthweekError('"form" attribute must match an existing form\'s name');
       }
 
-      scope.form.isSubmitting = false;
-      scope.form.hasSubmitted = false;
-      scope.form.submissionSucceeded = false;
-      scope.form.message = '';
+      if (!_.isFunction(submit)) {
+        throw new FifthweekError('"fwFormSubmit" attribute must reference a function name');
+      }
+
+      form.isSubmitting = false;
+      form.hasSubmitted = false;
+      form.submissionSucceeded = false;
+      form.message = '';
 
       element.bind('click', function() {
 
-        scope.form.$submitted = true;
-
-        if (scope.form.$invalid || scope.form.$pristine) {
+        if (form.$invalid || form.$pristine) {
           return $q.when();
         }
 
-        scope.form.isSubmitting = true;
-        scope.form.submissionSucceeded = false;
-        scope.form.message = '';
+        form.isSubmitting = true;
+        form.submissionSucceeded = false;
+        form.message = '';
 
         if (!attrs.hasOwnProperty('ngDisabled')) {
           element.addClass('disabled').attr('disabled', 'disabled');
@@ -42,9 +46,9 @@ angular.module('webApp').directive('fwFormSubmit',
           element.html(loadingText);
         }
 
-        return $q.when(scope.fwFormSubmit()).then(
+        return $q.when(submit()).then(
           function(){
-            scope.form.submissionSucceeded = true;
+            form.submissionSucceeded = true;
             var eventTitle = element.data('event-title');
             var eventCategory = element.data('event-category');
             if(eventTitle && eventCategory){
@@ -53,10 +57,10 @@ angular.module('webApp').directive('fwFormSubmit',
           },
           function(error){
             return errorFacade.handleError(error, function(message) {
-              scope.form.message = message;
+              form.message = message;
             });
           }).finally(function() {
-            scope.form.hasSubmitted = true;
+            form.hasSubmitted = true;
 
             if (!attrs.hasOwnProperty('ngDisabled')) {
               element.removeClass('disabled').removeAttr('disabled');
@@ -67,7 +71,7 @@ angular.module('webApp').directive('fwFormSubmit',
               element.html(resetText);
             }
 
-            scope.form.isSubmitting = false;
+            form.isSubmitting = false;
           });
       });
     }

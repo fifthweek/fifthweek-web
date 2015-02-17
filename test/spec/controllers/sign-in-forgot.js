@@ -30,20 +30,6 @@ describe('sign in forgot controller', function() {
     expect($scope.passwordResetRequestData.email).toBe('');
   });
 
-  it('should not allow both username and password to be omitted', function() {
-    var result = $scope.requestPasswordReset();
-
-    $rootScope.$apply();
-
-    result
-      .catch(function(error) {
-        expect(error instanceof InputValidationError).toBe(true);
-      })
-      .then(function() {
-        throw 'Failure expected';
-      });
-  });
-
   it('should allow only username to be provided', function() {
     $scope.passwordResetRequestData.username = 'username';
 
@@ -54,7 +40,6 @@ describe('sign in forgot controller', function() {
 
     expect(membershipStub.postPasswordResetRequest).toHaveBeenCalledWith($scope.passwordResetRequestData);
   });
-
 
   it('should allow only email to be provided', function() {
     $scope.passwordResetRequestData.email = 'captain@phil.com';
