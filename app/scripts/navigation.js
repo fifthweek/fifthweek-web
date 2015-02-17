@@ -15,16 +15,16 @@ angular.module('webApp')
         icon: 'fa fa-sign-in',
         color: 'green'
       },
-      //{
-      //  name: function() { return authenticationService.currentUser.username; },
-      //  id: 'Username',
-      //  state: states.creators.newsfeed.name,
-      //  icon: 'fa fa-user',
-      //  color: 'pink'
-      //},
-      //{
-      //  separator: true
-      //},
+      {
+        name: function() { return authenticationService.currentUser.username; },
+        id: 'Username',
+        state: states.user.posts.name,
+        icon: 'fa fa-user',
+        color: 'pink'
+      },
+      {
+        separator: true
+      },
       {
         name: 'Create Your Subscription',
         state: states.creators.createSubscription.name,

@@ -27,6 +27,12 @@ angular.module('routes', ['ui.router'])
     account: {
       name: 'account'
     },
+    user: {
+      name: 'user',
+      posts: {
+        name: 'posts'
+      }
+    },
     creators: {
       name: 'creators',
       landingPage: {
@@ -174,14 +180,36 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
+      .state(states.user.name, {
+        abstract: false,
+        url: '/my',
+        templateUrl: 'views/user/index.html',
+        redirectTo: states.user.posts.name,
+        data : {
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.user.posts.name, {
+        url: '/posts',
+        templateUrl: 'views/user/posts.html',
+        controller: 'postsCtrl',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Posts',
+          headTitle: ': ' + 'Posts',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
       .state(states.creators.name, {
         abstract: false,
         url: '/creators',
         templateUrl: 'views/creators/index.html',
         redirectTo: states.creators.landingPage.name,
         data : {
-          pageTitle: 'Creators',
-          headTitle: ': ' + 'Creators',
           access: {
             requireAuthenticated: true
           }
