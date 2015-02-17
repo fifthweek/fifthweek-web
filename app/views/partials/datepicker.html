@@ -1,6 +1,6 @@
 <div ng-controller="datepickerCtrl">
   <div class="input-group">
-    <input type="text" 
+    <input type="text"
            class="form-control"
            datepicker-popup="{{format}}"
            ng-model="shortDate"
@@ -10,7 +10,8 @@
            datepicker-options="dateOptions"
            date-disabled="disabled(date, mode)"
            ng-required="true"
-           close-text="Close" />
+           close-text="Close"
+           ng-disabled="ngDisabled"/>
     <span class="input-group-btn">
       <button type="button"
               class="btn btn-default"
