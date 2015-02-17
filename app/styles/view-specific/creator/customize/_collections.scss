@@ -4,6 +4,21 @@ $html-name-space:'.page-customize-collections';
 
 #{$html-name-space} {
   .row {
+    .every {
+      color:$grey-dark-2;
+      margin-right: 5px;
+
+      &::after {
+        content: " | ";
+        margin-left: 5px;
+      }
+
+      &:last-child {
+        &::after {
+          content: "";
+        }
+      }
+    }
     .channel {
       color:$grey-dark-2;
       margin-left: 5px;
