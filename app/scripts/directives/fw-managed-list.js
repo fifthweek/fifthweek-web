@@ -8,9 +8,6 @@ angular.module('webApp').directive('fwManagedList', function () {
       itemName: '@',
       items: '='
     },
-    templateUrl: 'views/partials/managed-list.html',
-    link: function(scope) {
-
-    }
+    templateUrl: 'views/partials/managed-list.html'
   };
 });
