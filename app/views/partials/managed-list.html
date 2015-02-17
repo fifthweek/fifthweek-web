@@ -1,0 +1,31 @@
+<fw-panel12 class="create-channel">
+  <div class="row-selection-slim">
+    <div class="row">
+      <div class="col-xs-9">
+        <h5><a href>Create a {{itemName}}</a></h5>
+      </div>
+      <div class="col-xs-3">
+        <button class="btn btn-success btn-slim">
+          <span class="visible-over-s">Create</span>
+          <i class="fa fa-plus-circle btn-icon-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</fw-panel12>
+
+<fw-panel12>
+  <div class="row-selection" ng-repeat="item in items">
+    <div class="row">
+      <div class="col-xs-9">
+        <ng-transclude></ng-transclude>
+      </div>
+      <div class="col-xs-3">
+        <button class="btn btn-default btn-slim">
+          <span class="visible-over-s">Manage</span>
+          <i class="fa fa-chevron-right btn-icon-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</fw-panel12>
