@@ -33,23 +33,6 @@ describe('fw-assign-css-class-from-state directive', function(){
       expect(scope.$on.calls.first().args[0]).toBe(uiRouterConstants.stateChangeSuccessEvent);
     });
 
-    it('should detach from $stateChangeSuccess when destroyed', function(){
-
-      var detached = false;
-      spyOn(scope, '$on').and.returnValue(function(){detached = true;});
-
-      var element = angular.element('<span fw-assign-css-class-from-state />');
-
-      $compile(element)(scope);
-      scope.$digest();
-
-      expect(detached).toBeFalsy();
-
-      element.remove();
-
-      expect(detached).toBeTruthy();
-    });
-
     var scope;
     var state;
 

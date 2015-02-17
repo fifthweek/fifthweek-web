@@ -20,13 +20,9 @@ angular.module('webApp').directive('fwAssignCssClassFromState',
 
       addClass($state.current);
 
-      var removeListener = scope.$on(uiRouterConstants.stateChangeSuccessEvent, function(event, toState, toParams, fromState/*, fromParams*/) {
+      scope.$on(uiRouterConstants.stateChangeSuccessEvent, function(event, toState, toParams, fromState/*, fromParams*/) {
         removeClass(fromState);
         addClass(toState);
-      });
-
-      element.on('$destroy', function() {
-        removeListener();
       });
     }
   };

@@ -16,12 +16,8 @@ angular.module('webApp').directive('fwSetSidebarEnabledFromState',
 
         apply($state.current);
 
-        var removeListener = scope.$on(uiRouterConstants.stateChangeSuccessEvent, function(event, toState/*, toParams, fromState, fromParams*/) {
+        scope.$on(uiRouterConstants.stateChangeSuccessEvent, function(event, toState/*, toParams, fromState, fromParams*/) {
           apply(toState);
-        });
-
-        element.on('$destroy', function() {
-          removeListener();
         });
       }
     };

@@ -43,23 +43,6 @@ describe('state-sidebar-enablement directive', function(){
       expect(scope.$on.calls.first().args[0]).toBe(uiRouterConstants.stateChangeSuccessEvent);
     });
 
-    it('should detach from $stateChangeSuccess when destroyed', function(){
-
-      var detached = false;
-      spyOn(scope, '$on').and.returnValue(function(){detached = true;});
-
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
-
-      $compile(element)(scope);
-      scope.$digest();
-
-      expect(detached).toBeFalsy();
-
-      element.remove();
-
-      expect(detached).toBeTruthy();
-    });
-
     var scope;
     var state;
 
