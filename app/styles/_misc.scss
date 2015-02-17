@@ -17,7 +17,7 @@
 }
 
 .vcenter {
-  vertical-align:middle;
+  @include vcenter;
 }
 
 img {

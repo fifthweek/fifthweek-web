@@ -1,9 +1,34 @@
 @import '_base';
 
 .btn {
-  border:0 none;
+  font-size:15px;
+  font-weight:bold;
   height:35px;
 }
+
+.btn-default {
+  background: $grey-light-2;
+  border: solid 1px $grey-dark-4;
+  #{$state-active-hover-focus} {
+    background: $white-full;
+  }
+}
+
+.btn-success {
+  #{$state-active-hover-focus} {
+    background:darken($green-light-1, 10%);
+    border-color:darken($green-light-1, 10%);
+  }
+}
+
+.btn-sm {
+  font-size:12px;
+}
+
+.btn-no-border {
+  border:0 none;
+}
+
 .input-group-btn .btn {
   height:auto;
 }
@@ -34,12 +59,7 @@ input[type="button"].btn-block,
   }
 }
 
-.btn-grey {
-  background:$grey-light-2;
-  border:solid 1px $grey-dark-4;
-}
-
-.btn-plain {
+.btn-transparent {
   @include text-shadow-black;
   background:none;
   border:solid 1px $white-full;
@@ -50,9 +70,21 @@ input[type="button"].btn-block,
   }
 }
 
-.btn-plain-text {
-  @extend .btn-plain;
+.btn-transparent-text {
+  @extend .btn-transparent;
   border:0 none;
+}
+
+.btn i {
+  font-size: 14px;
+}
+
+.btn-icon-right {
+  margin-left: 6px;
+}
+
+.btn-slim {
+  height: 36px;
 }
 
 .form-group small {

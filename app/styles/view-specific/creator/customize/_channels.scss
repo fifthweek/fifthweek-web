@@ -1,0 +1,22 @@
+@import '_base';
+
+$html-name-space:'.page-customize-channels';
+
+#{$html-name-space} {
+
+  ul li {
+    margin-bottom:5px;
+  }
+
+  .channel {
+    @include vcenter;
+    margin-bottom: 30px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .btn {
+      float:right;
+    }
+  }
+}

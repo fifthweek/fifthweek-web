@@ -5,6 +5,11 @@
   text-shadow:0 1px 10px rgba(0, 0, 0, 0.5);
 }
 
+@mixin vcenter {
+  display: flex;
+  align-items: center;
+}
+
 @mixin header-navbar-heading-spacing {
   @media (min-width:$screen-ss-min) {
     padding-top:11px;
@@ -22,7 +27,7 @@
   vertical-align:$v-align;
 }
 
-//panel-box-shadow is bootstrap default. 
+//panel-box-shadow is bootstrap default.
 //used in backlog > actionsDropDown
 @mixin panel-box-shadow {
   box-shadow:0 1px 1px rgba(0, 0, 0, 0.05);

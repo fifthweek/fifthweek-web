@@ -194,7 +194,6 @@ angular.module('routes', ['ui.router'])
       .state(states.user.posts.name, {
         url: '/posts',
         templateUrl: 'views/user/posts.html',
-        controller: 'postsCtrl',
         requireSubscription: true,
         data : {
           pageTitle: 'Posts',

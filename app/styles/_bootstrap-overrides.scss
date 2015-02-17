@@ -16,8 +16,6 @@
   }
 }
 
-
-
 @import 'bootstrap-sass-official/assets/stylesheets/_bootstrap.scss';
 
 /* IMPORTANT:
@@ -43,3 +41,11 @@
 }
 
 @include make-grid-columns-2;
+
+@media (max-width: $screen-ss-max) {
+  @include responsive-invisibility('.hidden-ss');
+}
+
+@media (max-width: $screen-s-max) {
+  @include responsive-invisibility('.hidden-s');
+}
