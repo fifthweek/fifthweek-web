@@ -6,9 +6,8 @@ angular.module('webApp').directive('fwFormInputValid', function ($compile) {
     terminal: true, // http://stackoverflow.com/a/19228302/592768
     priority: 1000,
     link: function(scope, element) {
-      var formGroup = scope.$parent;
-      var formName = formGroup.getFormName();
-      var inputName = formGroup.getInputName();
+      var formName = scope.getFormName();
+      var inputName = scope.getInputName();
       inputName = formName + '.' + inputName;
 
       var ngIf = inputName + '.$valid && ' + inputName + '.$touched';

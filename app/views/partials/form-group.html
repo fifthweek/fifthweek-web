@@ -2,6 +2,5 @@
      ng-class="{
      'has-error': input.$invalid && ((input.$touched && input.$dirty) || form.$submitted),
      'has-success': input.$valid && input.$touched
-   }">
-  <ng-transclude></ng-transclude>
+   }" ng-transclude="parent">
 </div>
