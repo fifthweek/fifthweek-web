@@ -4,12 +4,6 @@ $html-name-space:'.page-customize-channels';
 
 #{$html-name-space} {
   .row {
-    @include vcenter;
-
-    .btn {
-      float:right;
-    }
-
     .price {
       color:$grey-dark-2;
       margin-left: 5px;
@@ -30,18 +24,6 @@ $html-name-space:'.page-customize-channels';
           margin-bottom: 0;
         }
       }
-    }
-  }
-  .create-channel {
-    @include panel-body-slim;
-
-    h5 {
-      margin: 0;
-    }
-  }
-  .btn-icon-right {
-    @media (max-width: $screen-s-max) {
-      margin: 0;
     }
   }
 }

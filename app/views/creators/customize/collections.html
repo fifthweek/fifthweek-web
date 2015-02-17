@@ -1,54 +1,15 @@
-<fw-panel12 class="page-customize-collections">
-  <div class="collection">
-    <div class="row">
-      <div class="col-s-8">
-        <h5><a href>Blog</a></h5>
-        <p>
-          Wednesday
-        </p>
-      </div>
-      <div class="col-s-4 hidden-ss">
-        <button class="btn btn-default btn-slim">
-          Manage
-          <i class="fa fa-chevron-right btn-icon-right"></i>
-        </button>
-      </div>
-    </div>
-  </div>
+<div class="page-customize-collections" ng-init="collections = [
+  {name:'Blog', schedule:['Wednesday']},
+  {name:'Wallpapers', channel:'HD Channel', schedule:['Monday']},
+  {name:'Side Comic', channel:'Extras Channel', schedule:['Tuesday', 'Thursday']}
+]">
 
-  <div class="collection">
-    <div class="row">
-      <div class="col-s-8">
-        <h5><a href>Wallpapers</a> <span class="channel">HD Channel</span></h5>
-        <p>
-          Monday
-        </p>
-      </div>
-      <div class="col-s-4 hidden-ss">
-        <button class="btn btn-default btn-slim">
-          Manage
-          <i class="fa fa-chevron-right btn-icon-right"></i>
-        </button>
-      </div>
-    </div>
-  </div>
+  <fw-managed-list item-name="collection" items="collections">
+    <h5><a href>{{item.name}}</a>
+      <span class="channel" ng-if="item.channel !== undefined">{{item.channel}}</span></h5>
+    <p>
+      <span ng-repeat="weekday in item.schedule">{{weekday}}</span>
+    </p>
+  </fw-managed-list>
 
-  <div class="collection">
-    <div class="row">
-      <div class="col-s-8">
-        <h5><a href>Side Comic</a> <span class="channel">Extras Channel</span></h5>
-        <p>
-          Tuesday,
-          Thursday
-        </p>
-      </div>
-      <div class="col-s-4 hidden-ss">
-        <button class="btn btn-default btn-slim">
-          Manage
-          <i class="fa fa-chevron-right btn-icon-right"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-</fw-panel12>
+</div>

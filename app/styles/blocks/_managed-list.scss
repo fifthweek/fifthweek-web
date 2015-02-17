@@ -1,0 +1,23 @@
+@import '_base';
+
+.managed-list {
+  .row {
+    @include vcenter;
+
+    .btn {
+      float: right;
+    }
+  }
+  .managed-list-create {
+    @include panel-body-slim;
+
+    h5 {
+      margin: 0;
+    }
+  }
+  .btn-icon-right {
+    @media (max-width: $screen-s-max) {
+      margin: 0;
+    }
+  }
+}
