@@ -12,10 +12,11 @@
            ng-required="true"
            close-text="Close"
            ng-disabled="ngDisabled"/>
-    <span class="input-group-btn">
+    <span class="input-group-btn" >
       <button type="button"
               class="btn btn-default"
-              ng-click="open($event)">
+              ng-click="open($event)"
+              ng-disabled="ngDisabled" >
               <i class="glyphicon glyphicon-calendar"></i>
       </button>
     </span>
