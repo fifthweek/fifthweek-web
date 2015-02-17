@@ -43,3 +43,10 @@
     width:$height;
   }
 }
+
+@mixin panel-body-slim {
+  .panel-body {
+    padding-top: $main-cont-padding-small;
+    padding-bottom: $main-cont-padding-small;
+  }
+}

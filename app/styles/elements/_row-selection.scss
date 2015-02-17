@@ -1,0 +1,53 @@
+@import '_base';
+
+@mixin row-selection-bleed($horizontal, $vertical) {
+  padding-left: $horizontal;
+  padding-right: $horizontal;
+  margin: 0 ($horizontal * -1);
+
+  &:first-child {
+    padding-top: $vertical;
+    margin-top: ($vertical * -1);
+  }
+
+  &:last-child {
+    padding-bottom: $vertical;
+    margin-bottom: ($vertical * -1);
+  }
+}
+
+@mixin row-selection-base {
+  padding: 20px 0;
+
+  &:first-child {
+    border-top-right-radius: $border-radius;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+
+  #{$state-active-hover-focus} {
+    background: $grey-light-2;
+    cursor: pointer;
+  }
+}
+
+.row-selection {
+  @include row-selection-base;
+
+  @include row-selection-bleed($main-cont-padding-small, $main-cont-padding-small);
+  @media (min-width: $screen-sm-min) {
+    @include row-selection-bleed($main-cont-padding-large, $main-cont-padding-large);
+  }
+}
+
+.row-selection-slim {
+  @include row-selection-base;
+
+  @include row-selection-bleed($main-cont-padding-small, $main-cont-padding-small);
+  @media (min-width: $screen-sm-min) {
+    @include row-selection-bleed($main-cont-padding-large, $main-cont-padding-small);
+  }
+}

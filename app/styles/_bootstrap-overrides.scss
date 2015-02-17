@@ -40,6 +40,33 @@
   @include make-grid(lg);
 }
 
+
+.visible-over-xs {
+  @media (max-width: $screen-xs-max) {
+    display: none !important;
+  }
+}
+.visible-over-ss {
+  @media (max-width: $screen-ss-max) {
+    display: none !important;
+  }
+}
+.visible-over-s {
+  @media (max-width: $screen-s-max) {
+    display: none !important;
+  }
+}
+.visible-over-sm {
+  @media (max-width: $screen-sm-max) {
+    display: none !important;
+  }
+}
+.visible-over-md {
+  @media (max-width: $screen-md-max) {
+    display: none !important;
+  }
+}
+
 @include make-grid-columns-2;
 
 @media (max-width: $screen-ss-max) {

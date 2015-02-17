@@ -1,0 +1,54 @@
+@import '_base';
+
+$html-name-space:'.page-customize-collections';
+
+#{$html-name-space} {
+
+  .collection {
+    border: 1px solid transparent;
+    border-radius:$border-radius;
+    padding: 15px;
+    margin: -10px;
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: -10px;
+    }
+
+    #{$state-active-hover-focus} {
+      background: $grey-light-2;
+      border: solid 1px $grey-light-3;
+      cursor:pointer;
+    }
+
+    .row {
+      @include vcenter;
+    }
+
+    .btn {
+      float:right;
+    }
+
+    .channel {
+      color:$grey-dark-2;
+      margin-left: 5px;
+
+      &::before {
+        content: "-";
+        margin-right: 5px;
+      }
+    }
+
+    ul {
+      margin-bottom: 0;
+
+      li {
+        margin-bottom:5px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
