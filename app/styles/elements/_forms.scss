@@ -80,6 +80,13 @@ input[type="text"]::-ms-clear,input[type="number"]::-ms-clear,input[type="email"
   display:none
 }
 
+//override bootstrap disabled cursor
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  cursor:default;
+}
+
 .select {
   position:relative;
   select {
