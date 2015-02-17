@@ -18,6 +18,7 @@ $html-name-space:'.page-customize-channels';
     #{$state-active-hover-focus} {
       background: $grey-light-2;
       border: solid 1px $grey-light-3;
+      cursor:pointer;
     }
 
     .row {
