@@ -85,8 +85,8 @@ $html-name-space:'.page-backlog';
         font-size:19px;
       }
 
-      .active-comment .fa,
-      .active-actions-drop-down .fa {
+      .active-comment .fa {
+      //.active-actions-drop-down .fa {
         color:$blue-light-2;
       }
       .active-favourite .fa {
@@ -102,13 +102,6 @@ $html-name-space:'.page-backlog';
         #{$state-hover-focus} {
           color:$pink-light-1;
         }
-      }
-    }
-
-
-    @media (min-width:$screen-md) {
-      #{$state-hover} {
-        cursor:move;
       }
     }
 
