@@ -32,19 +32,19 @@
               </li>
               <li class="actions-more"
                   ng-init="dropDownFocus=false;dropDownBlur=false;">
-                <button
-                  ng-focus="dropDownFocus=true;dropDownBlur=false;" 
-                  ng-blur="dropDownBlur=true;dropDownFocus=false;">
-                  <i class="fa fa-ellipsis-h"></i>
-                </button>
-                <div class="actions-drop-down" ng-show="dropDownFocus">
-                  <ul>
-                    <li><a ui-sref="creators.backlog">Edit</a></li>
-                    <li><a ui-sref="creators.backlog">Reschedule</a></li>
-                    <li><a ui-sref="creators.backlog">Post now</a></li>
-                    <li><a ui-sref="creators.backlog">Delete</a></li>
-                  </ul>
-                </div>
+                  <button
+                    ng-focus="dropDownFocus=true;dropDownBlur=false;" 
+                    ng-blur="dropDownBlur=true;dropDownFocus=false;">
+                    <i class="fa fa-ellipsis-h"></i>
+                  </button>
+                  <div class="actions-drop-down" ng-show="dropDownFocus">
+                    <ul>
+                      <li><a ui-sref="creators.backlog">Edit</a></li>
+                      <li><a ui-sref="creators.backlog">Reschedule</a></li>
+                      <li><a ui-sref="creators.backlog">Post now</a></li>
+                      <li><a ui-sref="creators.backlog">Delete</a></li>
+                    </ul>
+                  </div>
               </li>
             </ul>
           </div>
