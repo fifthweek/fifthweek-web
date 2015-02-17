@@ -4,19 +4,50 @@ $html-name-space:'.page-customize-channels';
 
 #{$html-name-space} {
 
-  ul li {
-    margin-bottom:5px;
-  }
-
   .channel {
-    @include vcenter;
-    margin-bottom: 30px;
+    border: 1px solid transparent;
+    border-radius:$border-radius;
+    padding: 15px;
+    margin: -10px;
+    margin-bottom: 10px;
+
     &:last-child {
-      margin-bottom: 0;
+      margin-bottom: -10px;
+    }
+
+    #{$state-active-hover-focus} {
+      background: $grey-light-2;
+      border: solid 1px $grey-light-3;
+    }
+
+    .row {
+      @include vcenter;
     }
 
     .btn {
       float:right;
+    }
+
+    .price {
+      color:$grey-dark-2;
+      margin-left: 5px;
+
+      &::before {
+        content: "-";
+        margin-right: 5px;
+      }
+    }
+
+    ul {
+      margin-bottom: 0;
+
+      li {
+        margin-bottom:5px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 }

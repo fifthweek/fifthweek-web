@@ -4,7 +4,7 @@ div[fw-datepicker] {
   margin-bottom:$main-cont-padding-large - 10px;
 
   .input-group {
-    border:solid 1px $grey-light-3;
+    border:solid 1px $grey-light-5;
     border-radius:$input-border-radius;
     .form-control {
       height:auto;
@@ -17,7 +17,7 @@ div[fw-datepicker] {
   .input-group-btn {
     .btn {
       border:0 none;
-      border-left:solid 1px $grey-light-3;
+      border-left:solid 1px $grey-light-5;
       margin-left:0;
       padding:{
         top:9px;

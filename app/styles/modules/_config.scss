@@ -29,8 +29,11 @@ $main-cont-padding-large:30px;
 $p-font-size:15px;
 $p-font-size-large:$p-font-size + 3px;
 
+//misc
+$border-radius:4px;
+
 //forms
 $input-padding:9px 12px;
 $input-font-size:15.5px;
-$input-border-radius:4px;
+$input-border-radius:$border-radius;
 $input-height-base:42px;

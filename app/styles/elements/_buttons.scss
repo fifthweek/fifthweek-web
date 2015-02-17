@@ -8,7 +8,7 @@
 
 .btn-default {
   background: $grey-light-2;
-  border: solid 1px $grey-dark-4;
+  border: solid 1px $grey-light-5;
   #{$state-active-hover-focus} {
     background: $white-full;
   }
