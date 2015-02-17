@@ -3,17 +3,30 @@ describe('authentication interceptor', function() {
 
   describe('when intercepting a request', function() {
 
-    it('should add authentication data to the request headers', function() {
+    it('should add authentication data to the request headers for the API', function() {
       authenticationService.currentUser = {
         authenticated: true,
         accessToken: 'ABC'
       };
 
-      var config = {};
+      var config = { url: fifthweekConstants.apiBaseUri + 'blah' };
       var newConfig = authenticationInterceptor.request(config);
 
       expect(newConfig).toBe(config);
       expect(newConfig.headers.Authorization).toBe('Bearer ABC');
+    });
+
+    it('should not add authentication data to the request headers for non-API links', function() {
+      authenticationService.currentUser = {
+        authenticated: true,
+        accessToken: 'ABC'
+      };
+
+      var config = { url: 'http://www.google.com/blah' };
+      var newConfig = authenticationInterceptor.request(config);
+
+      expect(newConfig).toBe(config);
+      expect(newConfig.headers.Authorization).toBeUndefined();
     });
   });
 
@@ -123,6 +136,7 @@ describe('authentication interceptor', function() {
   var $state;
   var $httpBackend;
   var $q;
+  var fifthweekConstants;
   var authenticationInterceptor;
   var authenticationService;
   var states;
@@ -140,6 +154,7 @@ describe('authentication interceptor', function() {
     $state = $injector.get('$state');
     $httpBackend = $injector.get('$httpBackend');
     authenticationInterceptor = $injector.get('authenticationInterceptor');
+    fifthweekConstants = $injector.get('fifthweekConstants');
     states = $injector.get('states');
   }));
 

@@ -1,5 +1,5 @@
 angular.module('webApp').factory('authenticationInterceptor',
-  function($q, $injector, states) {
+  function($q, $injector, states, fifthweekConstants) {
     'use strict';
 
     var factory = {};
@@ -12,7 +12,7 @@ angular.module('webApp').factory('authenticationInterceptor',
       config.headers = config.headers || {};
 
       authenticationService = authenticationService || $injector.get('authenticationService');
-      if (authenticationService.currentUser.authenticated) {
+      if (authenticationService.currentUser.authenticated && _.startsWith(config.url, fifthweekConstants.apiBaseUri)) {
         config.headers.Authorization = 'Bearer ' + authenticationService.currentUser.accessToken;
       }
 
