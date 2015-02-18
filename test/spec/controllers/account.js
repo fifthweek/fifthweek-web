@@ -2,9 +2,6 @@
 
 describe('account controller', function () {
 
-  // load the controller's module
-  beforeEach(module('webApp'));
-
   var $q;
 
   var $scope;
