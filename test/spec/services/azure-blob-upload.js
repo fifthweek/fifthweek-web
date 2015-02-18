@@ -41,8 +41,8 @@ describe('azure blob upload', function(){
     smallBlob = createBlob(500);
 
     config = {
-      baseUrl: 'blobs.com/a/b',
-      sasToken: '?sas',
+      uri: 'blobs.com/a/b',
+      signature: '?sas',
       file: undefined,
       progress: undefined,
       complete: undefined,
@@ -65,12 +65,12 @@ describe('azure blob upload', function(){
       target.upload(config)
         .finally(function(){
           expect(azureBlobStub.putBlockBlob.calls.count()).toBe(1);
-          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[1]).toBe('00000000');
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[2].length).toBe(500);
 
           expect(azureBlobStub.commitBlockList.calls.count()).toBe(1);
-          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1].length).toBe(1);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1][0]).toBe('00000000');
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[2]).toBe(contentType);
@@ -86,15 +86,15 @@ describe('azure blob upload', function(){
       target.upload(config)
         .finally(function() {
           expect(azureBlobStub.putBlockBlob.calls.count()).toBe(10);
-          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[1]).toBe('00000000');
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[2].length).toBe(500);
-          expect(azureBlobStub.putBlockBlob.calls.argsFor(9)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.putBlockBlob.calls.argsFor(9)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.putBlockBlob.calls.argsFor(9)[1]).toBe('00000009');
           expect(azureBlobStub.putBlockBlob.calls.argsFor(9)[2].length).toBe(500);
 
           expect(azureBlobStub.commitBlockList.calls.count()).toBe(1);
-          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1].length).toBe(10);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1][0]).toBe('00000000');
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1][9]).toBe('00000009');
@@ -121,15 +121,15 @@ describe('azure blob upload', function(){
       target.upload(config)
         .finally(function(){
           expect(azureBlobStub.putBlockBlob.calls.count()).toBe(2);
-          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[1]).toBe('00000000');
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[2].length).toBe(400);
-          expect(azureBlobStub.putBlockBlob.calls.argsFor(1)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.putBlockBlob.calls.argsFor(1)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.putBlockBlob.calls.argsFor(1)[1]).toBe('00000001');
           expect(azureBlobStub.putBlockBlob.calls.argsFor(1)[2].length).toBe(100);
 
           expect(azureBlobStub.commitBlockList.calls.count()).toBe(1);
-          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1].length).toBe(2);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1][0]).toBe('00000000');
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1][1]).toBe('00000001');
@@ -146,15 +146,15 @@ describe('azure blob upload', function(){
       target.upload(config)
         .finally(function(){
           expect(azureBlobStub.putBlockBlob.calls.count()).toBe(13);
-          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[1]).toBe('00000000');
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[2].length).toBe(400);
-          expect(azureBlobStub.putBlockBlob.calls.argsFor(12)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.putBlockBlob.calls.argsFor(12)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.putBlockBlob.calls.argsFor(12)[1]).toBe('00000012');
           expect(azureBlobStub.putBlockBlob.calls.argsFor(12)[2].length).toBe(200);
 
           expect(azureBlobStub.commitBlockList.calls.count()).toBe(1);
-          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1].length).toBe(13);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1][0]).toBe('00000000');
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1][12]).toBe('00000012');
@@ -181,12 +181,12 @@ describe('azure blob upload', function(){
       target.upload(config)
         .finally(function(){
           expect(azureBlobStub.putBlockBlob.calls.count()).toBe(1);
-          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[1]).toBe('00000000');
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[2].length).toBe(500);
 
           expect(azureBlobStub.commitBlockList.calls.count()).toBe(1);
-          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1].length).toBe(1);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1][0]).toBe('00000000');
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[2]).toBe(contentType);
@@ -202,12 +202,12 @@ describe('azure blob upload', function(){
       target.upload(config)
         .finally(function(){
           expect(azureBlobStub.putBlockBlob.calls.count()).toBe(1);
-          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[1]).toBe('00000000');
           expect(azureBlobStub.putBlockBlob.calls.argsFor(0)[2].length).toBe(5000);
 
           expect(azureBlobStub.commitBlockList.calls.count()).toBe(1);
-          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.baseUrl + config.sasToken);
+          expect(azureBlobStub.commitBlockList.calls.argsFor(0)[0]).toBe(config.uri + config.signature);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1].length).toBe(1);
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[1][0]).toBe('00000000');
           expect(azureBlobStub.commitBlockList.calls.argsFor(0)[2]).toBe(contentType);

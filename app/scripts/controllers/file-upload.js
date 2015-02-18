@@ -1,5 +1,5 @@
 angular.module('webApp')
-  .controller('fileUploadCtrl', function ($scope, $q, fileUploadStub, azureBlobUpload, utilities) {
+  .controller('fileUploadCtrl', function ($scope, $q, fileUploadStub, azureBlobUpload, utilities, logService) {
     'use strict';
 
     var callUploadCompleteCallback = function(data){
@@ -14,7 +14,8 @@ angular.module('webApp')
         return $q.when();
       }
       catch(error){
-        return $q.reject(error);
+        logService.error(error);
+        return $q.when();
       }
     };
 
@@ -44,7 +45,7 @@ angular.module('webApp')
         return $q.reject(new InputValidationError('No file purpose specified.'));
       }
 
-      if(!files.length){
+      if(!files || !files.length){
         return $q.reject(new InputValidationError('No files selected.'));
       }
 
@@ -66,11 +67,10 @@ angular.module('webApp')
           purpose: $scope.filePurpose
         })
         .then(function(response){
-          var data = response.data;
-          fileData = data;
+          fileData = response.data;
           return azureBlobUpload.upload({
-            baseUrl: data.accessInformation.uri,
-            sasToken: data.accessInformation.signature,
+            uri: fileData.accessInformation.uri,
+            signature: fileData.accessInformation.signature,
             file: file,
             progress: reportProgress
           });
@@ -102,6 +102,7 @@ angular.module('webApp')
         })
         .catch(function(error) {
           reportError(utilities.getFriendlyErrorMessage(error));
+          logService.error(error);
           return $q.when();
         })
         .finally(function(){

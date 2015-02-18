@@ -1,4 +1,4 @@
-fdescribe('fw-file-upload directive', function(){
+describe('fw-file-upload directive', function(){
   'use strict';
 
   var $rootScope;
