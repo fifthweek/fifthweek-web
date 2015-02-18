@@ -83,7 +83,7 @@ describe('fw-file-upload directive', function(){
       expect(result.length).toBe(1);
 
       var button = result[0];
-      expect(_.trim(button.innerText)).toBe('Upload');
+      expect(_.trim(button.textContent)).toBe('Upload');
     });
 
     describe('when description is specified', function(){
@@ -96,7 +96,7 @@ describe('fw-file-upload directive', function(){
       it('should display the description in the button', function(){
         var result = element.find('#file-upload-button-area span');
         var button = result[0];
-        expect(_.trim(button.innerText)).toBe('description-value');
+        expect(_.trim(button.textContent)).toBe('description-value');
       });
     });
 
