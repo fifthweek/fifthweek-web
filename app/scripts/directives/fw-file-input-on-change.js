@@ -1,14 +1,14 @@
-angular.module('webApp').directive('fwOnChange', function() {
+angular.module('webApp').directive('fwFileInputOnChange', function() {
   'use strict';
 
   return {
     restrict: 'A',
     scope : {
-      fwOnChange: '&'
+      fwFileInputOnChange: '&'
     },
     link: function (scope, element) {
       element.on('change', function (event) {
-        scope.fwOnChange(event.target.files);
+        scope.fwFileInputOnChange({ files: event.target.files });
         element.val('');
       });
     }

@@ -262,7 +262,7 @@ describe('submit form directive', function(){
       expect(analytics.eventTrack).not.toHaveBeenCalled();
     });
 
-    it('should not call the analytics service during unsuccessful submission', function(){
+    it('should call the analytics service during unsuccessful submission', function(){
       deferred.reject('error');
       element.click();
       $rootScope.$apply();

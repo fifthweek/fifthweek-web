@@ -4,7 +4,9 @@ angular.module('webApp').directive('fwFileUpload', function () {
     return {
       scope: {
         onUploadComplete: '&',
-        fileType: '@'
+        description: '@',
+        filePurpose: '@',
+        accept: '@'
       },
       templateUrl:'views/partials/file-upload.html'
     };

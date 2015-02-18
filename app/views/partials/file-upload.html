@@ -1,10 +1,23 @@
 <div ng-controller="fileUploadCtrl">
-  <label>Select a file to upload</label>
-  <input type="file" />
-  <div class="row-btn">
-    <input type="submit"
-           class="btn btn-default"
-           value="Upload {{fileType}}"
-           ng-click="upload()" />
+  <div ng-if="!model.fileApiSupported">
+    <label>Sorry, we do not support uploading files with your current browser.</label>
+  </div>
+  <div ng-if="model.fileApiSupported">
+    <div ng-if="!model.isSubmitting">
+      <span class="btn btn-default btn-file">
+        {{description || 'Upload'}} <input type="file" fw-file-input-on-change="upload(files)" accept="{{accept}}">
+      </span>
+    </div>
+    <div ng-if="model.isSubmitting">
+      <p>
+        Uploading...
+        <progressbar value="model.progress"></progressbar>
+      </p>
+    </div>
+    <div class="has-error" ng-if="model.errorMessage">
+      <p class="help-block">
+        {{model.errorMessage}}
+      </p>
+    </div>
   </div>
 </div>

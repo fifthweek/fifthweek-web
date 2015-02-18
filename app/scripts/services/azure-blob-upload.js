@@ -2,7 +2,7 @@ angular.module('webApp')
   .factory('azureBlobUpload', function($q, logService, azureBlobStub) {
     'use strict';
 
-    var DefaultBlockSize = 1024 * 32;
+    var DefaultBlockSize = 1024 * 512;
 
     var service = {};
 
@@ -128,9 +128,9 @@ angular.module('webApp')
     //  sasToken:
     //  file:
     //  progress:
-    //  azureCalled:
+    //  azureCalled: // Note: This is used to help with unit testing, so that $rootScope.$apply() can be called.
     //  blockSize:
-    //  }
+    // }
     service.upload = function (config) {
       var state = initializeState(config);
 

@@ -1,4 +1,4 @@
-describe('on change directive', function(){
+describe('file input on change directive', function(){
   'use strict';
 
   var $rootScope;
@@ -33,7 +33,7 @@ describe('on change directive', function(){
       scope.submit = function(){};
       spyOn(scope, 'submit');
 
-      var element = angular.element('<input type="file" fw-on-change="submit()" value="default">');
+      var element = angular.element('<input type="file" fw-file-input-on-change="submit(files)" value="default">');
       $compile(element)(scope);
       scope.$digest();
 
@@ -43,12 +43,14 @@ describe('on change directive', function(){
 
   describe('when value changed', function(){
 
-    it('should call the bound event handler', function(){
+    it('should call the bound event handler with a list of files', function(){
       var scope = $rootScope.$new();
-      scope.submit = function(){};
-      spyOn(scope, 'submit');
 
-      var element = angular.element('<input type="file" fw-on-change="submit()" value="default">');
+      var submittedFiles;
+      scope.submit = function(f){submittedFiles = f;};
+      spyOn(scope, 'submit').and.callThrough();
+
+      var element = angular.element('<input type="file" fw-file-input-on-change="submit(files)" value="default">');
       $compile(element)(scope);
       scope.$digest();
 
@@ -58,6 +60,7 @@ describe('on change directive', function(){
 
       expect(scope.submit).toHaveBeenCalled();
       expect(scope.submit.calls.count()).toBe(1);
+      expect(submittedFiles).toBeDefined();
     });
   });
 });

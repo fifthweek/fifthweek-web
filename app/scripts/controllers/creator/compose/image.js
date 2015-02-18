@@ -55,9 +55,9 @@ angular.module('webApp').controller('newImageCtrl',
       if ($scope.checked == event.target.value) $scope.checked = false
     };
 
-    $scope.onUploadComplete = function(fileId) {
+    $scope.onUploadComplete = function(data) {
       $scope.model.uploaded = true;
-      $scope.model.input.fileId = fileId;
+      $scope.model.input.fileId = data.fileId;
     };
   }
 );
