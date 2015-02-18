@@ -326,6 +326,6 @@ describe('file upload controller', function(){
         expect($scope.model.isSubmitting).toBe(false);
         expect(logService.error).toHaveBeenCalled();
       });
-    })
+    });
   });
 });
