@@ -2,7 +2,7 @@ angular.module('webApp')
   .factory('azureBlobUpload', function($q, logService, azureBlobStub) {
     'use strict';
 
-    var DefaultBlockSize = 1024 * 512;
+    var DefaultBlockSize = 1024 * 256;
 
     var service = {};
 

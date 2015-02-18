@@ -39,6 +39,24 @@ angular.module('webApp')
       return true;
     };
 
+    var performValidation = function(files){
+      if(!$scope.filePurpose){
+        return $q.reject(new InputValidationError('No file purpose specified.'));
+      }
+
+      if(!files.length){
+        return $q.reject(new InputValidationError('No files selected.'));
+      }
+
+      var file = files[0];
+
+      if(!isFileTypeSupported(file)){
+        return $q.reject(new InputValidationError('The selected file type is not supported.'));
+      }
+
+      return $q.when(file);
+    };
+
     var performUpload = function(file)
     {
       var fileData;
@@ -71,24 +89,6 @@ angular.module('webApp')
     var fileApiSupported = (window.File && window.FileReader && window.FileList && window.Blob);
     $scope.model = {
       fileApiSupported: fileApiSupported
-    };
-
-    var performValidation = function(files){
-      if(!$scope.filePurpose){
-        return $q.reject(new InputValidationError('No file purpose specified.'));
-      }
-
-      if(!files.length){
-        return $q.reject(new InputValidationError('No files selected.'));
-      }
-
-      var file = files[0];
-
-      if(!isFileTypeSupported(file)){
-        return $q.reject(new InputValidationError('The selected file type is not supported.'));
-      }
-
-      return $q.when(file);
     };
 
     $scope.upload = function(files) {
