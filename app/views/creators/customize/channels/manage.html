@@ -13,24 +13,7 @@
     <fw-form-input-channel-name ng-model="channelData.name" placeholder="Channel name" required focus></fw-form-input-channel-name>
     <fw-form-input-channel-description ng-model="channelData.description" required></fw-form-input-channel-description>
     <fw-form-input-channel-price ng-model="channelData.price" required hide-help></fw-form-input-channel-price>
-
-    <fw-form-group input-name="channelHidden">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="checkbox">
-            <label>
-              <input
-                name="channelHidden"
-                ng-model="channelData.hidden"
-                type="checkbox">
-              Hidden channel
-            </label>
-            <small>Hidden channels are not listed on your landing page.</small>
-          </div>
-
-        </div>
-      </div>
-    </fw-form-group>
+    <fw-form-input-channel-visibility ng-model="channelData.hidden" required hide-help></fw-form-input-channel-visibility>
 
     <div class="row-btn">
       <button
