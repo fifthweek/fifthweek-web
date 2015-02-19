@@ -10,14 +10,14 @@ angular.module('webApp').directive('fwFormInputPassword', function ($compile) {
       var focus = attrs.hasOwnProperty('focus') ? 'focus=true' : '';
       var breakpoint = attrs.breakpoint || 'sm';
 
-      // Should refactor... has not been aware of template(Url) at time of writing.
+      var inputName = 'password';
       var htmlText =
-        '<fw-form-group>' +
+        '<fw-form-group input-name="' + inputName + '">' +
           '<div class="row">' +
             '<div class="col-' + breakpoint + '-6">' +
               '<div fw-form-input-glyphs>' +
-                '<input type="password" class="form-control" name="password" placeholder="' + attrs.placeholder + '" ' +
-                'ng-model="' + attrs.model + '" ' +
+                '<input type="password" class="form-control" name="' + inputName + '" placeholder="' + attrs.placeholder + '" ' +
+                'ng-model="' + attrs.ngModel + '" ' +
                 'ng-minlength="6" ' +
                 focus + ' ' +
                 required + '>' +

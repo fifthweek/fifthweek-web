@@ -8,22 +8,30 @@ angular.module('webApp').directive('fwFormGroup', function (domUtilities) {
     templateUrl: 'views/partials/form-group.html',
     link: {
       pre: function(scope, element) {
-        var input;
-        var form;
+
+        // Allow optimisation through explicit specification of which elements to use.
+        var inputName = element.inputName;
+        var formName = element.formName;
 
         scope.getInputName = function() {
-          if (!input) {
-            input = element.find('input');
+          if (!inputName) {
+            var input = element.find('input');
             if (input.length === 0) {
               input = element.find('textarea');
             }
+
+            inputName = input.attr('name');
           }
 
-          return input.attr('name');
+          return inputName;
         };
 
         scope.getFormName = function() {
-          return (form || (form = domUtilities.ancestor('FORM', element))).attr('name');
+          if (!formName) {
+            formName = domUtilities.ancestor('FORM', element).attr('name');
+          }
+
+          return formName;
         };
       },
       post: function(scope) {

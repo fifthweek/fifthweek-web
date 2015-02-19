@@ -4,7 +4,7 @@
 
   <fw-panel12 ng-show="!form.submissionSucceeded && !tokenInvalid" id="password-reset-confirmation-panel">
 
-    <fw-form-input-password model="passwordResetConfirmationData.newPassword" placeholder="New password" required focus></fw-form-input-password>
+    <fw-form-input-password ng-model="passwordResetConfirmationData.newPassword" placeholder="New password" required focus></fw-form-input-password>
 
     <div class="row-btn">
       <button
