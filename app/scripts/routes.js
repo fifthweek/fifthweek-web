@@ -62,7 +62,13 @@ angular.module('routes', ['ui.router'])
           name: 'creators.customize.landingPage'
         },
         collections: {
-          name: 'creators.customize.collections'
+          name: 'creators.customize.collections',
+          new: {
+            name: 'creators.customize.collections.new'
+          },
+          list: {
+            name: 'creators.customize.collections.list'
+          }
         },
         channels: {
           name: 'creators.customize.channels',
@@ -332,7 +338,29 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.customize.collections.name, {
         url: '/collections',
-        templateUrl: 'views/creators/customize/collections.html',
+        templateUrl: 'views/creators/customize/collections/index.html',
+        requireSubscription: true,
+        redirectTo: states.creators.customize.collections.list.name,
+        data : {
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.customize.collections.new.name, {
+        url: '/new',
+        templateUrl: 'views/creators/customize/collections/new.html',
+        requireSubscription: true,
+        data : {
+          headTitle: ': ' + 'Create Collection',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.customize.collections.list.name, {
+        url: '/new',
+        templateUrl: 'views/creators/customize/collections/list.html',
         requireSubscription: true,
         data : {
           pageTitle: 'Collections',

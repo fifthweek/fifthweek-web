@@ -1,0 +1,25 @@
+<fw-panel12 ng-init="newChannelData = {
+  price: '1.00'
+}">
+
+  <form novalidate
+        role="form"
+        name="form"
+        id="createSubscriptionForm">
+
+    <div class="row-btn">
+      <button
+        id="create-channel-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Saving..."
+        data-event-title="Subscription created"
+        data-event-category="Customization"
+        form-name="form"
+        fw-form-submit="continue()">Create Collection</button>
+      <button class="btn btn-default btn-block"
+              ui-sref="creators.customize.collections">Cancel</button>
+    </div>
+
+  </form>
+
+</fw-panel12>
