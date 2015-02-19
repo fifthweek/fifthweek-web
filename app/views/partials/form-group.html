@@ -1,6 +1,6 @@
 <div class="form-group"
      ng-class="{
      'has-error': input.$invalid && ((input.$touched && input.$dirty) || form.$submitted),
-     'has-success': input.$valid && input.$touched
+     'has-success': input.$valid && ((input.$touched && input.$dirty) || form.$submitted)
    }" ng-transclude="parent">
 </div>

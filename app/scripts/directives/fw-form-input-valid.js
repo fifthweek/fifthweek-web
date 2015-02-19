@@ -10,7 +10,7 @@ angular.module('webApp').directive('fwFormInputValid', function ($compile) {
       var inputName = scope.getInputName();
       inputName = formName + '.' + inputName;
 
-      var ngIf = inputName + '.$valid && ' + inputName + '.$touched';
+      var ngIf = inputName + '.$valid && ((' + inputName + '.$touched && ' + inputName + '.$dirty) || ' + formName + '.$submitted)';
 
       element.removeAttr('fw-form-input-valid'); // Remove self to avoid infinite compilation loop.
       element.attr('ng-if', ngIf);

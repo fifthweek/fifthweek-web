@@ -23,6 +23,6 @@ describe('form input valid directive', function(){
   it('should add the ng-if directive', function () {
     runDirective('<p fw-form-input-valid />');
 
-    expect(element.attr('ng-if')).toBe('formX.test.$valid && formX.test.$touched');
+    expect(element.attr('ng-if')).toBe('formX.test.$valid && ((formX.test.$touched && formX.test.$dirty) || formX.$submitted)');
   });
 });
