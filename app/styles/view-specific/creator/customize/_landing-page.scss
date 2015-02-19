@@ -34,8 +34,8 @@ $html-name-space:'.page-customize-landing';
   }
 
   .full-description {
-    p.light-grey {
-      line-height:15px;
+    textarea {
+      min-height:300px;
     }
   }
 
