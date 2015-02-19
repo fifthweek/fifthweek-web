@@ -81,7 +81,8 @@ angular.module('webApp')
         .then(function(){
           return callUploadCompleteCallback({
             fileId: fileData.fileId,
-            fileUri: fileData.accessInformation.uri
+            fileUri: fileData.accessInformation.uri,
+            containerName: fileData.accessInformation.containerName
           });
         });
     };

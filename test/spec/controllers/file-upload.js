@@ -50,7 +50,8 @@ describe('file upload controller', function(){
         $q: $q,
         fileUploadStub: fileUploadStub,
         azureBlobUpload: azureBlobUpload,
-        utilities: utilities
+        utilities: utilities,
+        logService: logService
       });
     });
   };
@@ -228,7 +229,8 @@ describe('file upload controller', function(){
         expect($scope.onUploadComplete).toHaveBeenCalledWith({
           data: {
             fileId: uploadRequestData.fileId,
-            fileUri: uploadRequestData.accessInformation.uri
+            fileUri: uploadRequestData.accessInformation.uri,
+            containerName: uploadRequestData.accessInformation.containerName
           }
         });
 
