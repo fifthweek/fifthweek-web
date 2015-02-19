@@ -4,7 +4,7 @@
   {name:'HD Channel', price:'0.25', description:['Signed digital prints', 'Behind the scenes production videos', 'Behind the scenes photos']}
 ]">
 
-  <fw-managed-list item-name="channel" items="channels">
+  <fw-managed-list item-name="channel" items="channels" new-item-state="creators.customize.channels.new">
     <h5><a href>{{item.name}}</a> <span class="price">${{item.price}}</span></h5>
     <ul>
       <li ng-repeat="description in item.description">{{description}}</li>

@@ -6,7 +6,8 @@ angular.module('webApp').directive('fwManagedList', function () {
     transclude: true,
     scope: {
       itemName: '@',
-      items: '='
+      items: '=',
+      newItemState: '@'
     },
     templateUrl: 'views/partials/managed-list.html'
   };

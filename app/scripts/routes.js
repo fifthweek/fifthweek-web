@@ -65,7 +65,13 @@ angular.module('routes', ['ui.router'])
           name: 'creators.customize.collections'
         },
         channels: {
-          name: 'creators.customize.channels'
+          name: 'creators.customize.channels',
+          new: {
+            name: 'creators.customize.channels.new'
+          },
+          list: {
+            name: 'creators.customize.channels.list'
+          }
         }
       }
     },
@@ -316,7 +322,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.customize.landingPage.name, {
         url: '/landing-page',
-        templateUrl: 'views/creators/customize/landingpage.html',
+        templateUrl: 'views/creators/customize/landing-page/index.html',
         controller: 'customizeLandingPageCtrl',
         requireSubscription: true,
         data : {
@@ -338,7 +344,29 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.customize.channels.name, {
         url: '/channels',
-        templateUrl: 'views/creators/customize/channels.html',
+        templateUrl: 'views/creators/customize/channels/index.html',
+        requireSubscription: true,
+        redirectTo: states.creators.customize.channels.list.name,
+        data : {
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.customize.channels.new.name, {
+        url: '/new',
+        templateUrl: 'views/creators/customize/channels/new.html',
+        requireSubscription: true,
+        data : {
+          headTitle: ': ' + 'Create Channel',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.customize.channels.list.name, {
+        url: '/new',
+        templateUrl: 'views/creators/customize/channels/list.html',
         requireSubscription: true,
         data : {
           pageTitle: 'Channels',
