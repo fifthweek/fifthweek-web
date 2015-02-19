@@ -18,5 +18,12 @@ angular.module('webApp')
     */
 
 
+    $scope.blobImage = {};
+    $scope.model = {};
+
+    $scope.onUploadComplete = function(data) {
+      $scope.model.newProfileImage = data;
+      $scope.blobImage.update(data.fileUri, data.containerName);
+    };
 
   });
