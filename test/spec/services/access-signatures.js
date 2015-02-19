@@ -1,4 +1,4 @@
-fdescribe('access signatures', function() {
+describe('access signatures', function() {
   'use strict';
 
   var response = {

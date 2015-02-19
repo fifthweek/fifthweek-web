@@ -91,7 +91,7 @@ describe('azure stubs', function(){
       expect(error instanceof AzureError).toBeTruthy();
     });
 
-    fdescribe('when calling checkAvailability', function(){
+    describe('when calling checkAvailability', function(){
 
       var url;
 
