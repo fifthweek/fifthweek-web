@@ -1,0 +1,22 @@
+<fw-form-group input-name="channelDescription">
+  <div class="row">
+    <div class="col-xs-12">
+      <textarea
+        id="{{inputId}}"
+        name="channelDescription"
+        ng-model="ngModel[ngModelAccessor]"
+        class="form-control"
+        placeholder="{{placeholder}}"
+        ng-maxlength="250"
+        maxlength="250"
+        focus="{{focus}}"
+        required="{{required}}"
+        msd-elastic></textarea>
+    </div>
+    <div class="col-xs-12">
+      <span ng-if="required">
+        <p fw-form-input-invalid-p="required">A description is required.</p>
+      </span>
+    </div>
+  </div>
+</fw-form-group>
