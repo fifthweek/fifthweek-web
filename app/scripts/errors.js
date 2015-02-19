@@ -1,5 +1,7 @@
 'use strict';
 
+// Used for web application errors containing information that the user
+// isn't concerned with.
 function FifthweekError(message) {
   this.message = message;
   this.stack = Error().stack;
@@ -7,35 +9,7 @@ function FifthweekError(message) {
 FifthweekError.prototype = Object.create(Error.prototype);
 FifthweekError.prototype.constructor = FifthweekError;
 
-function InputValidationError(message) {
-  this.message = message;
-  this.stack = Error().stack;
-}
-InputValidationError.prototype = Object.create(Error.prototype);
-InputValidationError.prototype.constructor = InputValidationError;
-
-function ApiError(message, response) {
-  this.message = message;
-  this.response = response;
-  this.stack = Error().stack;
-}
-ApiError.prototype = Object.create(Error.prototype);
-ApiError.prototype.constructor = ApiError;
-
-function UnauthenticatedError(message) {
-  this.message = message;
-  this.stack = Error().stack;
-}
-UnauthenticatedError.prototype = Object.create(ApiError.prototype);
-UnauthenticatedError.prototype.constructor = UnauthenticatedError;
-
-function UnauthorizedError(message) {
-  this.message = message;
-  this.stack = Error().stack;
-}
-UnauthorizedError.prototype = Object.create(ApiError.prototype);
-UnauthorizedError.prototype.constructor = UnauthorizedError;
-
+// Used for when the web application fails to connect to another service.
 function ConnectionError(message) {
   this.message = message;
   this.stack = Error().stack;
@@ -43,6 +17,7 @@ function ConnectionError(message) {
 ConnectionError.prototype = Object.create(Error.prototype);
 ConnectionError.prototype.constructor = ConnectionError;
 
+// Used to wrap any errors resulting from interactions with Azure services.
 function AzureError(message, response) {
   this.message = message;
   this.response = response;
@@ -50,6 +25,53 @@ function AzureError(message, response) {
 }
 AzureError.prototype = Object.create(Error.prototype);
 AzureError.prototype.constructor = AzureError;
+
+// An error which contains information that can be displayed to the user.
+function DisplayableError(displayMessage, detailedMessage) {
+  this.message = displayMessage;
+  this.detailedMessage = detailedMessage;
+  this.stack = Error().stack;
+}
+DisplayableError.prototype = Object.create(Error.prototype);
+DisplayableError.prototype.constructor = InputValidationError;
+
+  // Derives from DisplayableError. Used if there is a problem validating user input.
+  // These are not logged back to the API.
+  function InputValidationError(message) {
+    this.message = message;
+    this.stack = Error().stack;
+  }
+  InputValidationError.prototype = Object.create(DisplayableError.prototype);
+  InputValidationError.prototype.constructor = InputValidationError;
+
+  // Derives from DisplayableError.  Used for errors resulting from interactions
+  // with the Fifthweek API.
+  // These are not logged back to the API.
+  function ApiError(message, response) {
+    this.message = message;
+    this.response = response;
+    this.stack = Error().stack;
+  }
+  ApiError.prototype = Object.create(DisplayableError.prototype);
+  ApiError.prototype.constructor = ApiError;
+
+    // Derives from ApiError. Used specifically for when the a request was denied
+    // because the user was unauthenticated.
+    function UnauthenticatedError(message) {
+      this.message = message;
+      this.stack = Error().stack;
+    }
+    UnauthenticatedError.prototype = Object.create(ApiError.prototype);
+    UnauthenticatedError.prototype.constructor = UnauthenticatedError;
+
+    // Derives from ApiError. Used specifically for when the a request was denied
+    // because the user was unauthorized for the request.
+    function UnauthorizedError(message) {
+      this.message = message;
+      this.stack = Error().stack;
+    }
+    UnauthorizedError.prototype = Object.create(ApiError.prototype);
+    UnauthorizedError.prototype.constructor = UnauthorizedError;
 
 // Error handler for non-angular errors.  Tries to post the message to the server without
 // any dependencies on third party libraries.

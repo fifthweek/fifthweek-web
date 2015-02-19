@@ -62,6 +62,11 @@ describe('utilities', function() {
       expect(result).toBe('test');
     });
 
+    it('should return the message in the error if it a displayable error', function(){
+      var result = utilities.getFriendlyErrorMessage(new DisplayableError('test', 'description'));
+      expect(result).toBe('test');
+    });
+
     it('should return a connection error message if it is a connection error', function(){
       var result = utilities.getFriendlyErrorMessage(new ConnectionError('test'));
       expect(result).toBe(fifthweekConstants.connectionErrorText);
