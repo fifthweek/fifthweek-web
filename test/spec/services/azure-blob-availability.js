@@ -49,19 +49,19 @@ describe('azure blob availability service', function() {
         target.checkAvailability(url, container)
           .then(function(result){ expect(result).toBe(url + signature); });
         $rootScope.$apply();
-      })
+      });
 
       it('should call the access signatures service with the container', function(){
         target.checkAvailability(url, container);
         $rootScope.$apply();
         expect(accessSignatures.getContainerAccessInformation).toHaveBeenCalledWith(container);
-      })
+      });
 
       it('should call the azure blob stub with the uri and signature', function(){
         target.checkAvailability(url, container);
         $rootScope.$apply();
         expect(azureBlobStub.checkAvailability).toHaveBeenCalledWith(url + signature);
-      })
+      });
     });
 
     describe('when blob is not available', function(){
@@ -73,19 +73,19 @@ describe('azure blob availability service', function() {
         target.checkAvailability(url, container)
           .then(function(result){ expect(result).toBeUndefined(); });
         $rootScope.$apply();
-      })
+      });
 
       it('should call the access signatures service with the container', function(){
         target.checkAvailability(url, container);
         $rootScope.$apply();
         expect(accessSignatures.getContainerAccessInformation).toHaveBeenCalledWith(container);
-      })
+      });
 
       it('should call the azure blob stub with the uri and signature', function(){
         target.checkAvailability(url, container);
         $rootScope.$apply();
         expect(azureBlobStub.checkAvailability).toHaveBeenCalledWith(url + signature);
-      })
+      });
     });
 
     describe('when checking availability fails', function(){
@@ -95,10 +95,10 @@ describe('azure blob availability service', function() {
 
       it('should return the error', function(){
         target.checkAvailability(url, container)
-          .then(function(result){ fail('This should not occur'); })
+          .then(function(){ fail('This should not occur'); })
           .catch(function(error){ expect(error).toBe('error'); });
         $rootScope.$apply();
-      })
+      });
     });
   });
 
@@ -109,10 +109,10 @@ describe('azure blob availability service', function() {
 
     it('should return the error', function(){
       target.checkAvailability(url, container)
-        .then(function(result){ fail('This should not occur'); })
+        .then(function(){ fail('This should not occur'); })
         .catch(function(error){ expect(error).toBe('error'); });
       $rootScope.$apply();
-    })
+    });
 
     it('should not call the azure blob stub', function(){
       target.checkAvailability(url, container);

@@ -10,7 +10,7 @@ angular.module('webApp').directive('fwBlobImage',
       thumbnail: '@'
     },
     templateUrl:'views/partials/blob-image.html',
-    link: function(scope, element, attrs){
+    link: function(scope/*, element, attrs*/){
       scope.internalControl = scope.control || {};
       scope.internalControl.update = function(fileUri, containerName) {
 
@@ -19,8 +19,7 @@ angular.module('webApp').directive('fwBlobImage',
         }
 
         scope.$broadcast(blobImageCtrlConstants.updateEvent, fileUri,  containerName);
-      }
+      };
     }
   };
-
 });

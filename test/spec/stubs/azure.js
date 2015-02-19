@@ -121,7 +121,7 @@ describe('azure stubs', function(){
         $httpBackend.expectHEAD(url).respond(401);
 
         target.checkAvailability(url)
-          .then(function(result){ fail('This should not occur'); })
+          .then(function(){ fail('This should not occur'); })
           .catch(function(error){ expect(error instanceof AzureError).toBeTruthy(); });
 
         $httpBackend.flush();

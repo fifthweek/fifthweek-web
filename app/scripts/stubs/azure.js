@@ -44,7 +44,7 @@ angular.module('webApp').factory('azureBlobStub',
           return $q.when(true);
         })
         .catch(function(response){
-          if(response.status == 404){
+          if(response.status === 404){
             return $q.when(false);
           }
 

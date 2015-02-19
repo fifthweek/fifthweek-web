@@ -13,8 +13,8 @@ angular.module('webApp')
       updating: false
     };
 
-    var pendingImageData = undefined;
-    var pendingImageDataExpiry = undefined;
+    var pendingImageData;
+    var pendingImageDataExpiry;
 
     var updateExpiryTime = function(){
       pendingImageDataExpiry = _.now() + (blobImageCtrlConstants.timeoutSeconds * 1000);
@@ -50,7 +50,7 @@ angular.module('webApp')
       $scope.model.updating = true;
       updateExpiryTime();
 
-      var isAlreadyWaiting = pendingImageData != undefined;
+      var isAlreadyWaiting = pendingImageData !== undefined;
       pendingImageData = {
         fileUri: fileUri,
         containerName: containerName
