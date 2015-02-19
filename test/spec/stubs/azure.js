@@ -1,6 +1,6 @@
 describe('azure stubs', function(){
   'use strict';
-  
+
   var target;
   var $httpBackend;
 
@@ -89,6 +89,43 @@ describe('azure stubs', function(){
 
       expect(error).toBeDefined();
       expect(error instanceof AzureError).toBeTruthy();
+    });
+
+    fdescribe('when calling checkAvailability', function(){
+
+      var url;
+
+      beforeEach(function(){
+        url = 'blah.com/?abc';
+      });
+
+      it('should return true if available', function(){
+        $httpBackend.expectHEAD(url).respond(200);
+
+        target.checkAvailability(url)
+          .then(function(result){ expect(result).toBe(true); });
+
+        $httpBackend.flush();
+      });
+
+      it('should return true if available', function(){
+        $httpBackend.expectHEAD(url).respond(404);
+
+        target.checkAvailability(url)
+          .then(function(result){ expect(result).toBe(false); });
+
+        $httpBackend.flush();
+      });
+
+      it('should return the error if there is an unexpected response', function(){
+        $httpBackend.expectHEAD(url).respond(401);
+
+        target.checkAvailability(url)
+          .then(function(result){ fail('This should not occur'); })
+          .catch(function(error){ expect(error instanceof AzureError).toBeTruthy(); });
+
+        $httpBackend.flush();
+      });
     });
   });
 });
