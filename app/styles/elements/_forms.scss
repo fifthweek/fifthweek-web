@@ -53,8 +53,12 @@ select {
   }
 }
 
-.radio {
+.radio, .checkbox {
   margin-top:0;
+
+  &:last-child {
+    margin-bottom:0;
+  }
 }
 
 .help-block {

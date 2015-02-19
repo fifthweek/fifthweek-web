@@ -44,6 +44,10 @@ angular.module('webApp')
       }
     };
 
+    service.parseFlag = function(object, flag) {
+      return object.hasOwnProperty(flag) ? object[flag] !== false : false;
+    };
+
     service.forScope = function(scope) {
       var scopeUtilities = {};
 
@@ -69,8 +73,8 @@ angular.module('webApp')
       var directiveUtilities = {};
 
       directiveUtilities.scaffoldFormInput = function() {
-        scope.required = attrs.hasOwnProperty('required') ? attrs.required !== false : false;
-        scope.focus = attrs.hasOwnProperty('focus') ? attrs.focus !== false : false;
+        scope.required = service.parseFlag(attrs, 'required');
+        scope.focus = service.parseFlag(attrs, 'focus');
         scope.placeholder = attrs.placeholder;
         scope.breakpoint = attrs.breakpoint || 'sm';
         scope.inputId = attrs.ngModel.replace('.', '-');
