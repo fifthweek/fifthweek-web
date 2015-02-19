@@ -1,0 +1,11 @@
+<span ng-controller="blobImageCtrl" fw-blob-image-size>
+  <span ng-if="model.imageUri" id="blob-image-thumbnail-area">
+    <img ng-src="{{model.imageUri}}" fw-blob-image-size />
+  </span>
+  <span ng-if="model.errorMessage" id="blob-image-error-area">
+    <p>{{model.errorMessage}}</p>
+  </span>
+  <span ng-if="model.updating" id="blob-image-updating-area">
+    <p>Updating...</p>
+  </span>
+</span>

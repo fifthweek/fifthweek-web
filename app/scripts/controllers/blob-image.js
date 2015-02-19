@@ -9,7 +9,8 @@ angular.module('webApp')
 
     $scope.model = {
       imageUri: undefined,
-      errorMessage: undefined
+      errorMessage: undefined,
+      updating: false
     };
 
     var pendingImageData = undefined;
@@ -22,6 +23,7 @@ angular.module('webApp')
     var assignImage = function(urlWithSignature){
       pendingImageData = undefined;
       $scope.model.imageUri = urlWithSignature;
+      $scope.model.updating = false;
       return $q.when();
     };
 
@@ -45,6 +47,7 @@ angular.module('webApp')
     var handleUpdateEvent = function(event, fileUri, containerName){
       $scope.model.errorMessage = undefined;
       $scope.model.imageUri = undefined;
+      $scope.model.updating = true;
       updateExpiryTime();
 
       var isAlreadyWaiting = pendingImageData != undefined;
@@ -58,6 +61,7 @@ angular.module('webApp')
           .catch(function(error){
             logService.error(error);
             $scope.model.errorMessage = utilities.getFriendlyErrorMessage(error);
+            $scope.model.updating = false;
             pendingImageData = undefined;
           });
       }
