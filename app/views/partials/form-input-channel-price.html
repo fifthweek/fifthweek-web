@@ -1,0 +1,30 @@
+<fw-form-group input-name="channelPrice">
+  <div class="row">
+    <div class="col-{{breakpoint}}-6">
+      <div class="input-group">
+        <div class="input-group-addon">&#36;</div>
+        <input
+          id="{{inputId}}"
+          ng-model="ngModel[ngModelAccessor]"
+          name="channelPrice"
+          type="text"
+          class="form-control"
+          money
+          min="0.01"
+          focus="{{focus}}"
+          required="{{required}}">
+        <div class="input-group-addon">per week</div>
+        </div>
+      <small>i.e. the amount people will pay you</small>
+      <!-- https://github.com/twbs/bootstrap/issues/12551 -->
+      <span style="right: 98px;" fw-form-input-valid class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+      <span style="right: 98px;" fw-form-input-invalid class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+      </div>
+    <div class="col-{{breakpoint}}-6">
+      <p fw-form-input-invalid-p="min">Must be at least one cent.</p>
+      <span ng-if="required">
+        <p fw-form-input-invalid-p="required">A price is required.</p>
+      </span>
+    </div>
+  </div>
+</fw-form-group>

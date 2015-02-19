@@ -80,27 +80,40 @@ describe('utilities', function() {
 
   describe('scope utilities', function() {
 
-    describe('when creating a virtual setter', function() {
+    describe('defining the model accessor', function() {
 
-      it('use the existing setter if in scope', function() {
-        var scope = jasmine.createSpyObj('scope', ['setSomethingInteresting']);
-
-        var setter = utilities.forScope(scope).createVirtualSetter('somethingInteresting');
-
-        setter('hello');
-
-        expect(scope.setSomethingInteresting).toHaveBeenCalledWith('hello');
-        expect(scope.somethingInteresting).toBeUndefined();
-      });
-
-      it('create a new variable in scope if no existing setter is in scope', function() {
+      it('should throw an error if model is primitive', function() {
         var scope = {};
 
-        var setter = utilities.forScope(scope).createVirtualSetter('somethingInteresting');
+        expect(function() {
+          utilities.forScope(scope).defineModelAccessor({
+            ngModel: 'primitive'
+          });
+        }).toThrowError(FifthweekError);
+      });
 
-        setter('hello');
+      it('should set ngModel to the base object', function() {
+        var scope = {
+          base: {
+            primitive: 'hello'
+          }
+        };
 
-        expect(scope.somethingInteresting).toBe('hello');
+        utilities.forScope(scope).defineModelAccessor({
+          ngModel: 'base.primitive'
+        });
+
+        expect(scope.ngModel).toBe(scope.base);
+      });
+
+      it('should set ngModelAccessor to the accessor object', function() {
+        var scope = {};
+
+        utilities.forScope(scope).defineModelAccessor({
+          ngModel: 'base.primitive'
+        });
+
+        expect(scope.ngModelAccessor).toBe('primitive');
       });
     });
   });

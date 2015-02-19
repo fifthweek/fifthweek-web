@@ -47,16 +47,19 @@ angular.module('webApp')
     service.forScope = function(scope) {
       var scopeUtilities = {};
 
-      scopeUtilities.createVirtualSetter = function(name) {
-        var setterName = _.camelCase('set ' + name);
-        if (_.isFunction(scope[setterName])) {
-          return scope[setterName];
+      scopeUtilities.defineModelAccessor = function(attrs) {
+        var ngModelLength = attrs.ngModel.lastIndexOf('.');
+        if (ngModelLength === -1) {
+          throw new FifthweekError('Must not be bound to primitive');
         }
-        else {
-          return function(value) {
-            scope[name] = value;
-          };
+        if (attrs.ngModel.indexOf('.') !== ngModelLength) {
+          // Thought about using eval, except a little unsafe. Lodash doesn't appear
+          // to have a way of doing this. Would be good to see how Angular does it.
+          throw new FifthweekError('Nested properties currently not supported (but easy to add!)');
         }
+
+        scope.ngModel = scope[attrs.ngModel.substring(0, ngModelLength)];
+        scope.ngModelAccessor = attrs.ngModel.substring(ngModelLength + 1);
       };
 
       return scopeUtilities;

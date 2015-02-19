@@ -6,7 +6,7 @@ CreateSubscriptionPage.prototype = Object.create({}, {
   pageUrl: { get: function () { return '/creators/create-subscription'; }},
   nameTextBox: { get: function () { return element(by.model('newSubscriptionData.subscriptionName')); }},
   taglineTextBox: { get: function () { return element(by.model('newSubscriptionData.tagline')); }},
-  basePriceTextBox: { get: function () { return element(by.model('newSubscriptionData.basePrice')); }},
+  basePriceTextBox: { get: function () { return element(by.id('newSubscriptionData-basePrice')); }},
   submitButton: { get: function () { return element(by.id('create-subscription-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#createSubscriptionForm .help-block')); }},
   nextPageUrl: { get: function () { return '/creators/compose/note'; }}, // Todo: replace with page object
