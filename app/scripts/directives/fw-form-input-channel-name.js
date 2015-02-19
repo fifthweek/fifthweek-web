@@ -1,10 +1,10 @@
-angular.module('webApp').directive('fwFormInputPassword', function (utilities) {
+angular.module('webApp').directive('fwFormInputChannelName', function (utilities) {
   'use strict';
 
   return {
     restrict: 'E',
     scope: true,
-    templateUrl: 'views/partials/form-input-password.html',
+    templateUrl: 'views/partials/form-input-channel-name.html',
     link: function(scope, element, attrs) {
       utilities.forDirective(scope, element, attrs).scaffoldFormInput();
     }

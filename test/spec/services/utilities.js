@@ -80,26 +80,30 @@ describe('utilities', function() {
 
   describe('scope utilities', function() {
 
+    var scope;
+    var scopeUtilities;
+
+    beforeEach(function() {
+      scope = {};
+      scopeUtilities = utilities.forScope(scope);
+    });
+
     describe('defining the model accessor', function() {
 
       it('should throw an error if model is primitive', function() {
-        var scope = {};
-
         expect(function() {
-          utilities.forScope(scope).defineModelAccessor({
+          scopeUtilities.defineModelAccessor({
             ngModel: 'primitive'
           });
         }).toThrowError(FifthweekError);
       });
 
       it('should set ngModel to the base object', function() {
-        var scope = {
-          base: {
-            primitive: 'hello'
-          }
+        scope.base = {
+          primitive: 'hello'
         };
 
-        utilities.forScope(scope).defineModelAccessor({
+        scopeUtilities.defineModelAccessor({
           ngModel: 'base.primitive'
         });
 
@@ -107,13 +111,124 @@ describe('utilities', function() {
       });
 
       it('should set ngModelAccessor to the accessor object', function() {
-        var scope = {};
+        scope.base = {
+          primitive: 'hello'
+        };
 
-        utilities.forScope(scope).defineModelAccessor({
+        scopeUtilities.defineModelAccessor({
           ngModel: 'base.primitive'
         });
 
         expect(scope.ngModelAccessor).toBe('primitive');
+      });
+    });
+  });
+
+  describe('directive utilities', function() {
+
+    var scope;
+    var element;
+    var attrs;
+    var directiveUtilities;
+
+    beforeEach(function() {
+      scope = {};
+      element = {};
+      attrs = {
+        ngModel: 'some.binding'
+      };
+      directiveUtilities = utilities.forDirective(scope, element, attrs);
+    });
+
+    describe('scaffolding form input', function() {
+
+      it('should set "required" to true if specified without value', function() {
+        attrs.required = '' ;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.required).toBe(true);
+      });
+
+      it('should set "required" to true if specified with "true"', function() {
+        attrs.required = true ;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.required).toBe(true);
+      });
+
+      it('should set "required" to false if not specified', function() {
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.required).toBe(false);
+      });
+
+      it('should set "required" to false if specified with "false"', function() {
+        attrs.required = false ;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.required).toBe(false);
+      });
+
+
+      it('should set "focus" to true if specified without value', function() {
+        attrs.focus = '' ;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.focus).toBe(true);
+      });
+
+      it('should set "focus" to true if specified with "true"', function() {
+        attrs.focus = true ;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.focus).toBe(true);
+      });
+
+      it('should set "focus" to false if not specified', function() {
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.focus).toBe(false);
+      });
+
+      it('should set "focus" to false if specified with "false"', function() {
+        attrs.focus = false ;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.focus).toBe(false);
+      });
+
+      it('should set "placeholder" straight from attribute', function() {
+        attrs.placeholder = 'hello';
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.placeholder).toBe('hello');
+      });
+
+      it('should set "breakpoint" straight from attribute if specified', function() {
+        attrs.breakpoint = 'xxxxs';
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.breakpoint).toBe('xxxxs');
+      });
+
+      it('should set "breakpoint" to "sm" if not specified', function() {
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.breakpoint).toBe('sm');
+      });
+
+      it('should set "inputId" to kebab-cased equivalent of ngModel', function() {
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.inputId).toBe('some-binding');
       });
     });
   });

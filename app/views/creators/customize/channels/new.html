@@ -1,4 +1,5 @@
 <fw-panel12 ng-init="newChannelData = {
+  name: '',
   price: '1.00'
 }">
 
@@ -7,6 +8,7 @@
         name="form"
         id="createSubscriptionForm">
 
+    <fw-form-input-channel-name ng-model="newChannelData.name" placeholder="New channel name" required focus></fw-form-input-channel-name>
     <fw-form-input-channel-price ng-model="newChannelData.price" required></fw-form-input-channel-price>
 
     <div class="row-btn">

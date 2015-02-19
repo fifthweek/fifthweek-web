@@ -65,6 +65,21 @@ angular.module('webApp')
       return scopeUtilities;
     };
 
+    service.forDirective = function(scope, element, attrs) {
+      var directiveUtilities = {};
+
+      directiveUtilities.scaffoldFormInput = function() {
+        scope.required = attrs.hasOwnProperty('required') ? attrs.required !== false : false;
+        scope.focus = attrs.hasOwnProperty('focus') ? attrs.focus !== false : false;
+        scope.placeholder = attrs.placeholder;
+        scope.breakpoint = attrs.breakpoint || 'sm';
+        scope.inputId = attrs.ngModel.replace('.', '-');
+        service.forScope(scope).defineModelAccessor(attrs);
+      };
+
+      return directiveUtilities;
+    };
+
     return service;
   }
 );
