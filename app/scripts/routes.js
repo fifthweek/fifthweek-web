@@ -412,6 +412,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.customize.channels.manage.name, {
         url: '/{id}',
         templateUrl: 'views/creators/customize/channels/manage.html',
+        controller: 'manageChannelCtrl',
         requireSubscription: true,
         data : {
           headTitle: ': ' + 'Manage Channel',

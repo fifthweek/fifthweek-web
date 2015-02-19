@@ -1,5 +1,9 @@
 @import '_base';
 
+.modal-content {
+  border-radius: $border-radius;
+}
+
 .modal-dialog {
   @media (min-width:$screen-sm-min) {
     margin:9.5% auto;
@@ -11,11 +15,5 @@
   opacity:0.6;
 }
 .modal-body {
-  padding:5px;
-}
-.modal-content {
-  background-color:$grey-dark;
-}
-.modal iframe {
-  width:100%;
+  padding:$main-cont-padding-small;
 }

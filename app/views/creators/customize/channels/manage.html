@@ -1,4 +1,5 @@
 <fw-panel12 ng-init="channelData = {
+  savedName: 'Base Channel',
   name: 'Base Channel',
   description: 'Backstage News Feed\nEternal Gratitude',
   hidden: false,
@@ -16,16 +17,27 @@
     <fw-form-input-channel-visibility ng-model="channelData.hidden" required hide-help></fw-form-input-channel-visibility>
 
     <div class="row-btn">
-      <button
-        id="create-channel-button"
-        class="btn btn-block btn-success"
-        data-loading-text="Saving..."
-        data-event-title="Subscription created"
-        data-event-category="Customization"
-        form-name="form"
-        fw-form-submit="save()">Save</button>
-      <button class="btn btn-default btn-block"
-              ui-sref="creators.customize.channels">Cancel</button>
+      <div class="row">
+        <div class="col-s-8">
+          <button
+            id="create-channel-button"
+            class="btn btn-block btn-success"
+            data-loading-text="Saving..."
+            data-event-title="Channel edited"
+            data-event-category="Customization"
+            form-name="form"
+            fw-form-submit="save()">Save</button>
+          <button class="btn btn-default btn-block"
+                  ui-sref="creators.customize.channels">Cancel</button>
+        </div>
+        <div class="col-s-4">
+          <fw-form-input-delete
+            item="channelData.savedName"
+            item-type="channel"
+            link-id="delete-channel-link"
+            delete="delete()"></fw-form-input-delete>
+        </div>
+      </div>
     </div>
 
   </form>

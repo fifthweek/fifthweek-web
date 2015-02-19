@@ -67,6 +67,32 @@
   }
 }
 
+.visible-under-ss {
+  @media (min-width: $screen-ss-min) {
+    display: none !important;
+  }
+}
+.visible-under-s {
+  @media (min-width: $screen-s-min) {
+    display: none !important;
+  }
+}
+.visible-under-sm {
+  @media (min-width: $screen-sm-min) {
+    display: none !important;
+  }
+}
+.visible-under-md {
+  @media (min-width: $screen-md-min) {
+    display: none !important;
+  }
+}
+.visible-under-lg {
+  @media (min-width: $screen-lg-min) {
+    display: none !important;
+  }
+}
+
 @include make-grid-columns-2;
 
 @media (max-width: $screen-ss-max) {

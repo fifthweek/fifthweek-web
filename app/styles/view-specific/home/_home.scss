@@ -62,7 +62,6 @@ $html-name-space:'.page-home';
     }
   }
 
-
   .wrapper,
   .left-right-container-wrap,
   #{$right-container},
@@ -99,10 +98,17 @@ $html-name-space:'.page-home';
     }
   }
 
+  .modal-content {
+    background-color:$grey-dark;
+    border-radius: 6px;
+  }
+  .modal iframe {
+    width:100%;
+  }
+
   @import 'blocks/_intro';
   @import 'blocks/_form';
   @import 'blocks/_footer';
   @import 'blocks/_video';
-
 }
 
