@@ -32,7 +32,7 @@
         ng-disabled="item !== confirmationText.value"
         fw-form-submit="confirmDelete()">I understand, delete this {{itemType}}</button>
       <button class="btn btn-default btn-block"
-              ui-sref="creators.customize.channels">Cancel</button>
+              ng-click="$close()">Cancel</button>
     </div>
 
   </form>
