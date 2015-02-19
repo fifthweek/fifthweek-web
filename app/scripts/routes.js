@@ -359,7 +359,7 @@ angular.module('routes', ['ui.router'])
         }
       })
       .state(states.creators.customize.collections.list.name, {
-        url: '/new',
+        url: '',
         templateUrl: 'views/creators/customize/collections/list.html',
         requireSubscription: true,
         data : {
@@ -393,7 +393,7 @@ angular.module('routes', ['ui.router'])
         }
       })
       .state(states.creators.customize.channels.list.name, {
-        url: '/new',
+        url: '',
         templateUrl: 'views/creators/customize/channels/list.html',
         requireSubscription: true,
         data : {
