@@ -66,6 +66,9 @@ angular.module('routes', ['ui.router'])
           new: {
             name: 'creators.customize.collections.new'
           },
+          manage: {
+            name: 'creators.customize.collections.manage'
+          },
           list: {
             name: 'creators.customize.collections.list'
           }
@@ -74,6 +77,9 @@ angular.module('routes', ['ui.router'])
           name: 'creators.customize.channels',
           new: {
             name: 'creators.customize.channels.new'
+          },
+          manage: {
+            name: 'creators.customize.channels.manage'
           },
           list: {
             name: 'creators.customize.channels.list'
@@ -358,6 +364,17 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
+      .state(states.creators.customize.collections.manage.name, {
+        url: '/{collectionId}',
+        templateUrl: 'views/creators/customize/collections/manage.html',
+        requireSubscription: true,
+        data : {
+          headTitle: ': ' + 'Manage Collection',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
       .state(states.creators.customize.collections.list.name, {
         url: '',
         templateUrl: 'views/creators/customize/collections/list.html',
@@ -387,6 +404,17 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           headTitle: ': ' + 'Create Channel',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.customize.channels.manage.name, {
+        url: '/{id}',
+        templateUrl: 'views/creators/customize/channels/manage.html',
+        requireSubscription: true,
+        data : {
+          headTitle: ': ' + 'Manage Channel',
           access: {
             requireAuthenticated: true
           }

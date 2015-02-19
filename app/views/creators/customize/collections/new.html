@@ -1,5 +1,4 @@
-<fw-panel12 ng-init="newChannelData = {
-  price: '1.00'
+<fw-panel12 ng-init="newCollectionData = {
 }">
 
   <form novalidate
@@ -15,7 +14,7 @@
         data-event-title="Subscription created"
         data-event-category="Customization"
         form-name="form"
-        fw-form-submit="continue()">Create Collection</button>
+        fw-form-submit="createCollection()">Create Collection</button>
       <button class="btn btn-default btn-block"
               ui-sref="creators.customize.collections">Cancel</button>
     </div>

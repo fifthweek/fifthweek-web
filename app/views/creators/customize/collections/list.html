@@ -1,10 +1,10 @@
 <div class="page-customize-collections" ng-init="collections = [
-  {name:'Blog', schedule:['Monday', 'Wednesday', 'Friday']},
-  {name:'Wallpapers', channel:'HD Channel', schedule:['Sunday']},
-  {name:'Side Comic', channel:'Extras Channel', schedule:['Tuesday', 'Thursday']}
+  {id:'a', name:'Blog', schedule:['Monday', 'Wednesday', 'Friday']},
+  {id:'b', name:'Wallpapers', channel:'HD Channel', schedule:['Sunday']},
+  {id:'c', name:'Side Comic', channel:'Extras Channel', schedule:['Tuesday', 'Thursday']}
 ]">
 
-  <fw-managed-list item-name="collection" items="collections" new-item-state="creators.customize.collections.new">
+  <fw-managed-list item-name="collection" items="collections" new-item-state="creators.customize.collections.new" manage-item-state="creators.customize.collections.manage">
     <h5><a href>{{item.name}}</a>
       <span class="channel" ng-if="item.channel !== undefined">{{item.channel}}</span></h5>
     <p>

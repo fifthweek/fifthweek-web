@@ -1,6 +1,6 @@
-<fw-panel12 ng-init="newChannelData = {
-  name: '',
-  description: '',
+<fw-panel12 ng-init="channelData = {
+  name: 'Base Channel',
+  description: 'Backstage News Feed\nEternal Gratitude',
   hidden: false,
   price: '1.00'
 }">
@@ -8,11 +8,11 @@
   <form novalidate
         role="form"
         name="form"
-        id="createSubscriptionForm">
+        id="manageSubscriptionForm">
 
-    <fw-form-input-channel-name ng-model="newChannelData.name" placeholder="New channel name" required focus></fw-form-input-channel-name>
-    <fw-form-input-channel-description ng-model="newChannelData.description" required></fw-form-input-channel-description>
-    <fw-form-input-channel-price ng-model="newChannelData.price" required hide-help></fw-form-input-channel-price>
+    <fw-form-input-channel-name ng-model="channelData.name" placeholder="Channel name" required focus></fw-form-input-channel-name>
+    <fw-form-input-channel-description ng-model="channelData.description" required></fw-form-input-channel-description>
+    <fw-form-input-channel-price ng-model="channelData.price" required hide-help></fw-form-input-channel-price>
 
     <fw-form-group input-name="channelHidden">
       <div class="row">
@@ -21,7 +21,7 @@
             <label>
               <input
                 name="channelHidden"
-                ng-model="newChannelData.hidden"
+                ng-model="channelData.hidden"
                 type="checkbox">
               Hidden channel
             </label>
@@ -40,7 +40,7 @@
         data-event-title="Subscription created"
         data-event-category="Customization"
         form-name="form"
-        fw-form-submit="createChannel()">Create Channel</button>
+        fw-form-submit="save()">Save</button>
       <button class="btn btn-default btn-block"
               ui-sref="creators.customize.channels">Cancel</button>
     </div>

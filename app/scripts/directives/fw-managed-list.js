@@ -7,7 +7,8 @@ angular.module('webApp').directive('fwManagedList', function () {
     scope: {
       itemName: '@',
       items: '=',
-      newItemState: '@'
+      newItemState: '@',
+      manageItemState: '@'
     },
     templateUrl: 'views/partials/managed-list.html'
   };
