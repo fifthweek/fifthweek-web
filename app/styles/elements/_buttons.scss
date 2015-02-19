@@ -21,6 +21,14 @@
   }
 }
 
+.btn-blue {
+  background:$blue-light-4;
+  color:$white-full;
+  #{$state-active-hover-focus} {
+    color:$white-full;
+  }
+}
+
 .btn-sm {
   font-size:12px;
 }
