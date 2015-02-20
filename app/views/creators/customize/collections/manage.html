@@ -1,55 +1,21 @@
-<fw-panel12 class="page-customize-collections-manage" ng-init="collectionData = {
-  id: 'a',
-  savedName: 'Side Comic',
-  name: 'Side Comic',
-  schedule: [
-    {
-      id: 1,
-      day:'Monday',
-      time:'12:00am'
-    },
-    {
-      id: 2,
-      day:'Wednesday',
-      time:'12:00am'
-    },
-    {
-      id: 3,
-      day:'Friday',
-      time:'6:00pm'
-    }
-  ],
-  channels: [
-    {
-      name:'Base Channel',
-      value:'a'
-    },
-    {
-      name:'Extras Channel',
-      value:'b'
-    },
-    {
-      name:'HD Channel',
-      value:'c'
-    }
-  ]
-}; collectionData.selectedChannel = collectionData.channels[1];">
+<fw-panel12 class="page-customize-collections-manage">
 
   <form novalidate
         role="form"
-        name="form">
+        name="manageCollection"
+        ng-show="!model.addingReleaseTime && !model.managingReleaseTime">
 
-    <fw-form-input-collection-name ng-model="collectionData.name" placeholder="Collection name" required focus></fw-form-input-collection-name>
+    <fw-form-input-collection-name ng-model="model.name" placeholder="Collection name" required focus></fw-form-input-collection-name>
 
     <div class="form-group">
-      <fw-form-input-select selected-item="collectionData.selectedChannel" items="collectionData.channels"></fw-form-input-select>
+      <fw-form-input-select selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
     </div>
 
     <fw-managed-list-sm
       item-name="release time"
-      items="collectionData.schedule"
-      new-item-state="creators.customize.collections.manage.newTime({id: collectionData.id})"
-      manage-item-state="creators.customize.collections.manage.manageTime">
+      items="model.schedule"
+      new-item="model.addingReleaseTime = true"
+      manage-item="model.managingReleaseTime = item">
       <p><strong>{{item.day}}</strong> {{item.time}}</p>
     </fw-managed-list-sm>
 
@@ -61,20 +27,29 @@
           data-loading-text="Saving..."
           data-event-title="Collection edited"
           data-event-category="Customization"
-          form-name="form"
+          form-name="manageCollection"
           fw-form-submit="save()">Save</button>
         <button class="btn btn-default btn-block"
                 ui-sref="creators.customize.collections">Cancel</button>
       </div>
       <div class="col-s-4">
         <fw-form-input-delete
-          item="collectionData.savedName"
+          item="model.savedName"
           item-type="collection"
           link-id="delete-collection-link"
           delete="delete()"></fw-form-input-delete>
       </div>
     </div>
 
+  </form>
+
+  <form novalidate
+        role="form"
+        name="newReleaseTime"
+        ng-show="model.addingReleaseTime">
+
+    <button class="btn btn-default btn-block"
+            ng-click="model.addingReleaseTime = false">Cancel</button>
   </form>
 
 </fw-panel12>
