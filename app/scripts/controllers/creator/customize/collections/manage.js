@@ -40,6 +40,16 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
 
   $scope.model.selectedChannel = $scope.model.channels[1];
 
+  $scope.manageReleaseTime = function(releaseTime) {
+    $scope.model.stagedReleaseTime = _.clone(releaseTime);
+    $scope.model.selectedReleaseTime = releaseTime;
+  };
+
+  $scope.saveReleaseTime = function() {
+    _.merge($scope.model.selectedReleaseTime, $scope.model.stagedReleaseTime);
+    $scope.model.selectedReleaseTime = null;
+  };
+
   $scope.delete = function() {
     $state.go(states.creators.customize.collections.name);
   };

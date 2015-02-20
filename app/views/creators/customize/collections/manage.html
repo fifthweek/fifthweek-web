@@ -3,7 +3,7 @@
   <form novalidate
         role="form"
         name="manageCollection"
-        ng-show="!model.addingReleaseTime && !model.managingReleaseTime">
+        ng-show="!model.addingReleaseTime && !model.selectedReleaseTime">
 
     <fw-form-input-collection-name ng-model="model.name" placeholder="Collection name" required focus></fw-form-input-collection-name>
 
@@ -15,14 +15,14 @@
       item-name="release time"
       items="model.schedule"
       new-item="model.addingReleaseTime = true"
-      manage-item="model.managingReleaseTime = item">
+      manage-item="manageReleaseTime(item)">
       <p><strong>{{item.day}}</strong> {{item.time}}</p>
     </fw-managed-list-sm>
 
     <div class="row">
       <div class="col-s-8">
         <button
-          id="create-collection-button"
+          id="save-collection-button"
           class="btn btn-block btn-success"
           data-loading-text="Saving..."
           data-event-title="Collection edited"
@@ -47,7 +47,7 @@
 
   <form novalidate
         role="form"
-        name="newReleaseTime"
+        name="newReleaseTimeForm"
         ng-show="model.addingReleaseTime">
 
     <button class="btn btn-default btn-block"
@@ -56,13 +56,18 @@
 
   <form novalidate
         role="form"
-        name="manageReleaseTime"
-        ng-show="model.managingReleaseTime">
+        name="manageReleaseTimeForm"
+        ng-show="model.selectedReleaseTime">
 
     <div class="row">
       <div class="col-s-8">
-        <button class="btn btn-default btn-block"
-          ng-click="model.managingReleaseTime = null">Cancel</button>
+        <button
+          id="save-release-time-button"
+          class="btn btn-block btn-success"
+          ng-click="saveReleaseTime()">Save</button>
+        <button
+          class="btn btn-default btn-block"
+          ng-click="model.selectedReleaseTime = null">Cancel</button>
       </div>
       <div class="col-s-4">
         <fw-form-input-delete
