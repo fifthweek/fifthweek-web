@@ -40,6 +40,10 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
 
   $scope.model.selectedChannel = $scope.model.channels[1];
 
+  $scope.timeChanged = function() {
+
+  };
+
   $scope.manageReleaseTime = function(releaseTime) {
     $scope.model.stagedReleaseTime = _.clone(releaseTime);
     $scope.model.selectedReleaseTime = releaseTime;

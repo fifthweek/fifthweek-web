@@ -36,3 +36,24 @@ div[fw-datepicker] {
     outline:0 none;
   }
 }
+
+.timepicker {
+  font-size: $p-font-size;
+  button, input {
+    height: $input-height-base;
+  }
+}
+
+.hour-of-week {
+  .timepicker {
+    margin-top: -35px;
+  }
+  .row {
+    div:first-child {
+      padding-right: 0;
+    }
+    div:last-child {
+      padding-left: 2px;
+    }
+  }
+}
