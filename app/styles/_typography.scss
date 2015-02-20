@@ -79,10 +79,10 @@ p.small {
 }
 
 a {
-  color:$blue-light-3;
+  color:$link-color;
   &:hover,
   &:focus {
-    color:$blue-light-3;
+    color:$link-color;
   }
 }
 

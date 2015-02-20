@@ -44,6 +44,21 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
 
   };
 
+  $scope.createBreadcrumb = function(title) {
+    var result = [
+      {
+        name: $scope.model.savedName,
+        click: $scope.cancelSubAction
+      }
+    ];
+
+    if (title) {
+      result.push({ name: title });
+    }
+
+    return result;
+  };
+
   $scope.manageReleaseTime = function(releaseTime) {
     $scope.model.stagedReleaseTime = _.clone(releaseTime);
     $scope.model.selectedReleaseTime = releaseTime;
@@ -52,6 +67,11 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
   $scope.saveReleaseTime = function() {
     _.merge($scope.model.selectedReleaseTime, $scope.model.stagedReleaseTime);
     $scope.model.selectedReleaseTime = null;
+  };
+
+  $scope.cancelSubAction = function() {
+    $scope.model.selectedReleaseTime = null;
+    $scope.model.addingReleaseTime = false
   };
 
   $scope.delete = function() {
