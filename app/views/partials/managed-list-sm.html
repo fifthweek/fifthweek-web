@@ -1,0 +1,27 @@
+<div class="form-group">
+  <div class="row">
+    <div class="col-xs-12 col-s-7 col-sm-6">
+      <div class="managed-list-sm">
+        <div class="row-outer" ui-sref="newItemState()">
+          <div class="row">
+            <div class="col-xs-10">
+              <p><strong>Add {{itemName}}</strong></p>
+            </div>
+            <div class="col-xs-2 action">
+              <p>+</p>
+            </div>
+          </div>
+        </div>
+        <div class="row-outer" ng-repeat="item in items" ui-sref="{{manageItemState}}({id: item.id})">
+          <div class="row">
+            <div class="col-xs-10" ng-transclude="parent">
+            </div>
+            <div class="col-xs-2 action">
+              <p><i class="fa fa-angle-right"></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
