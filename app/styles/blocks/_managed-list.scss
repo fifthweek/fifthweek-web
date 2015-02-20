@@ -32,8 +32,8 @@
     #{$state-active-hover-focus} {
       background: #f9fdff;
       cursor: pointer;
-      .row {
-        i {
+      .row .action {
+        i, p {
           font-weight: bold;
         }
       }

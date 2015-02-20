@@ -1,11 +1,10 @@
 <div class="modal-body">
   <form novalidate
         role="form"
-        name="form"
-        id="manageSubscriptionForm">
+        name="verifiedDeleteForm"
+        ng-if="item">
 
-    <h5>Are you ABSOLUTELY sure?</h5>
-    <div ng-if="item">
+      <h5>Are you ABSOLUTELY sure?</h5>
       <p>
         This action CANNOT be undone. This will permanently delete <strong>{{item}}</strong>. All associated content and comments will be removed.
       </p>
@@ -21,28 +20,47 @@
           focus="true"
           required>
       </div>
-    </div>
 
-    <div ng-if="!item">
-      <p>
-        This action CANNOT be undone. This will permanently delete the {{itemType}}.
-      </p>
-    </div>
+      <div class="row-btn">
+        <button
+          id="delete-item-verified-button"
+          class="btn btn-block btn-danger"
+          data-loading-text="Deleting..."
+          data-event-title="{{data-event-title}}"
+          data-event-category="{{data-event-category}}"
+          form-name="verifiedDeleteForm"
+          ng-disabled="item !== confirmationText.value"
+          fw-form-submit="confirmDelete()">I understand, delete this {{itemType}}</button>
+        <button class="btn btn-default btn-block"
+                ng-click="$close()">Cancel</button>
+      </div>
+
+  </form>
+
+  <form novalidate
+        role="form"
+        name="unverifiedDeleteForm"
+        ng-if="!item">
+
+    <h5>Are you sure?</h5>
+    <p>
+      This will permanently delete the {{itemType}}.
+    </p>
 
     <div class="row-btn">
       <button
-        id="delete-item-button"
+        id="delete-item-unverified-button"
         class="btn btn-block btn-danger"
         data-loading-text="Deleting..."
         data-event-title="{{data-event-title}}"
         data-event-category="{{data-event-category}}"
-        form-name="form"
-        can-submit="!item || (form.$valid && form.$dirty)"
-        ng-disabled="item && item !== confirmationText.value"
-        fw-form-submit="confirmDelete()">I understand, delete this {{itemType}}</button>
+        form-name="unverifiedDeleteForm"
+        can-submit="true"
+        fw-form-submit="confirmDelete()">Yes, delete this {{itemType}}</button>
       <button class="btn btn-default btn-block"
               ng-click="$close()">Cancel</button>
     </div>
 
   </form>
+
 </div>
