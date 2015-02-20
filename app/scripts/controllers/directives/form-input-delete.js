@@ -5,7 +5,7 @@ angular.module('webApp').controller('formInputDeleteCtrl', function ($q, $scope,
     value: ''
   };
 
-  $scope.itemTypeCapitalized = _.capitalize($scope.itemType)
+  $scope.itemTypeLowered = $scope.itemType.toLowerCase();
 
   $scope.questionDelete = function() {
     $scope.modal = $modal.open({

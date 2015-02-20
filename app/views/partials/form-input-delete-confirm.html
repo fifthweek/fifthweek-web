@@ -10,7 +10,7 @@
       </p>
 
       <div class="form-group">
-        <label for="confirmationText">Please type in the name of the {{itemType}}</label>
+        <label for="deletion-confirmation-text">Please type in the name of the {{itemTypeLowered}}</label>
         <input
           id="deletion-confirmation-text"
           name="confirmationText"
@@ -30,7 +30,7 @@
           data-event-category="{{data-event-category}}"
           form-name="verifiedDeleteForm"
           ng-disabled="item !== confirmationText.value"
-          fw-form-submit="confirmDelete()">I understand, delete this {{itemType}}</button>
+          fw-form-submit="confirmDelete()">I understand, delete this {{itemTypeLowered}}</button>
         <button class="btn btn-default btn-block"
                 ng-click="$close()">Cancel</button>
       </div>
@@ -44,7 +44,7 @@
 
     <h5>Are you sure?</h5>
     <p>
-      This will permanently delete the {{itemType}}.
+      This will permanently delete the {{itemTypeLowered}}.
     </p>
 
     <div class="row-btn">
@@ -56,7 +56,7 @@
         data-event-category="{{data-event-category}}"
         form-name="unverifiedDeleteForm"
         can-submit="true"
-        fw-form-submit="confirmDelete()">Yes, delete this {{itemType}}</button>
+        fw-form-submit="confirmDelete()">Yes, delete this {{itemTypeLowered}}</button>
       <button class="btn btn-default btn-block"
               ng-click="$close()">Cancel</button>
     </div>
