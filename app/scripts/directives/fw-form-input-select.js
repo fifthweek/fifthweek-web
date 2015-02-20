@@ -7,6 +7,6 @@ angular.module('webApp').directive('fwFormInputSelect', function () {
       items:'=',
       selectedItem:'='
     },
-    templateUrl:'views/partials/select.html'
+    templateUrl:'views/partials/form-input-select.html'
   };
 });

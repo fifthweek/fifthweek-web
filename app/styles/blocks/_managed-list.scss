@@ -21,3 +21,31 @@
     }
   }
 }
+
+.managed-list-sm {
+  .row-outer {
+    border-bottom: 1px solid $grey-light-3;
+    padding: 10px 0;
+    &:last-child {
+      border-bottom:none;
+    }
+    #{$state-active-hover-focus} {
+      background: #f9fdff;
+      cursor: pointer;
+      .row {
+        i {
+          font-weight: bold;
+        }
+      }
+    }
+    .row {
+      @include vcenter;
+      .action {
+        p {
+          float: right;
+          margin-right: 2px;
+        }
+      }
+    }
+  }
+}

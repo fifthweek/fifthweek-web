@@ -26,7 +26,7 @@ angular.module('webApp').controller(
     ];
 
     // Simulate having no custom channels.
-    channels = [ channels[0] ];
+    // channels = [ channels[0] ];
 
     if (channels.length > 1) {
       $scope.model.channels = channels;
