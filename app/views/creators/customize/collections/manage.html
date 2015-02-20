@@ -37,6 +37,8 @@
           item="model.savedName"
           item-type="collection"
           link-id="delete-collection-link"
+          data-event-title="Collection deleted"
+          data-event-category="Customization"
           delete="delete()"></fw-form-input-delete>
       </div>
     </div>
@@ -50,6 +52,25 @@
 
     <button class="btn btn-default btn-block"
             ng-click="model.addingReleaseTime = false">Cancel</button>
+  </form>
+
+  <form novalidate
+        role="form"
+        name="manageReleaseTime"
+        ng-show="model.managingReleaseTime">
+
+    <div class="row">
+      <div class="col-s-8">
+        <button class="btn btn-default btn-block"
+          ng-click="model.managingReleaseTime = null">Cancel</button>
+      </div>
+      <div class="col-s-4">
+        <fw-form-input-delete
+          item-type="release time"
+          link-id="delete-release-time-link"
+          delete="deleteReleaseTime()"></fw-form-input-delete>
+      </div>
+    </div>
   </form>
 
 </fw-panel12>

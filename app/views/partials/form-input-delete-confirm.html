@@ -5,20 +5,28 @@
         id="manageSubscriptionForm">
 
     <h5>Are you ABSOLUTELY sure?</h5>
-    <p>
-      This action CANNOT be undone. This will permanently delete <strong>{{item}}</strong>. All associated content and comments will be removed.
-    </p>
+    <div ng-if="item">
+      <p>
+        This action CANNOT be undone. This will permanently delete <strong>{{item}}</strong>. All associated content and comments will be removed.
+      </p>
 
-    <div class="form-group">
-      <label for="confirmationText">Please type in the name of the {{itemType}}</label>
-      <input
-        id="deletion-confirmation-text"
-        name="confirmationText"
-        ng-model="confirmationText.value"
-        type="text"
-        class="form-control"
-        focus="true"
-        required>
+      <div class="form-group">
+        <label for="confirmationText">Please type in the name of the {{itemType}}</label>
+        <input
+          id="deletion-confirmation-text"
+          name="confirmationText"
+          ng-model="confirmationText.value"
+          type="text"
+          class="form-control"
+          focus="true"
+          required>
+      </div>
+    </div>
+
+    <div ng-if="!item">
+      <p>
+        This action CANNOT be undone. This will permanently delete the {{itemType}}.
+      </p>
     </div>
 
     <div class="row-btn">
@@ -29,7 +37,8 @@
         data-event-title="{{data-event-title}}"
         data-event-category="{{data-event-category}}"
         form-name="form"
-        ng-disabled="item !== confirmationText.value"
+        can-submit="!item || (form.$valid && form.$dirty)"
+        ng-disabled="item && item !== confirmationText.value"
         fw-form-submit="confirmDelete()">I understand, delete this {{itemType}}</button>
       <button class="btn btn-default btn-block"
               ng-click="$close()">Cancel</button>

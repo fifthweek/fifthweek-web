@@ -53,18 +53,6 @@ describe('submit form directive', function(){
       expect(scope.form.hasSubmitted).toBe(false);
       expect(scope.form.submissionSucceeded).toBe(false);
     });
-
-    it('bind message to setMessage on parent if present', function(){
-      var scope = $rootScope.$new();
-      scope.submit = function(){};
-      spyOn(scope, 'submit');
-
-      var element = angular.element(formHtml);
-      $compile(element)(scope);
-      scope.$digest();
-
-      expect(scope.form.message).toBe('');
-    });
   });
 
   describe('when click event is triggered', function(){
@@ -82,7 +70,8 @@ describe('submit form directive', function(){
       $compile(element)(scope);
       element = element.find('button');
       scope.$digest();
-      scope.form.$pristine = false;
+      scope.form.$valid = true;
+      scope.form.$dirty = true;
     });
 
     it('should call the specified delegate', function(){
@@ -289,7 +278,8 @@ describe('submit form directive', function(){
         scope.submit = function() {};
         element.click();
         $rootScope.$apply();
-        scope.form.$pristine = false;
+        scope.form.$valid = true;
+        scope.form.$dirty = true;
       });
 
       it('should keep the hasSubmitted as true', function(){
@@ -369,7 +359,8 @@ describe('submit form directive', function(){
 
         element.click();
         $rootScope.$apply();
-        scope.form.$pristine = false;
+        scope.form.$valid = true;
+        scope.form.$dirty = true;
       });
 
       it('should keep the hasSubmitted as true on subsequent unsuccessful submissions', function(){
@@ -440,7 +431,8 @@ describe('submit form directive', function(){
       $compile(element)(scope);
       element = element.find('button');
       scope.$digest();
-      scope.form.$pristine = false;
+      scope.form.$valid = true;
+      scope.form.$dirty = true;
     });
 
     it('should not disable the button during submission', function(){
@@ -476,7 +468,8 @@ describe('submit form directive', function(){
       $compile(element)(scope);
       element = element.find('button');
       scope.$digest();
-      scope.form.$pristine = false;
+      scope.form.$valid = true;
+      scope.form.$dirty = true;
     });
 
     it('should set the loading text on the button during submission', function(){
@@ -509,7 +502,8 @@ describe('submit form directive', function(){
       $compile(element)(scope);
       element = element.find('button');
       scope.$digest();
-      scope.form.$pristine = false;
+      scope.form.$valid = true;
+      scope.form.$dirty = true;
     });
 
     it('should not call the analytics service during successful submission', function(){
@@ -544,7 +538,8 @@ describe('submit form directive', function(){
       $compile(element)(scope);
       element = element.find('button');
       scope.$digest();
-      scope.form.$pristine = false;
+      scope.form.$valid = true;
+      scope.form.$dirty = true;
     });
 
     it('should not call the analytics service during successful submission', function(){
@@ -579,7 +574,8 @@ describe('submit form directive', function(){
       $compile(element)(scope);
       element = element.find('button');
       scope.$digest();
-      scope.form.$pristine = false;
+      scope.form.$valid = true;
+      scope.form.$dirty = true;
     });
 
     it('should call the analytics service during successful submission', function(){
@@ -617,7 +613,8 @@ describe('submit form directive', function(){
     });
 
     it('should not perform the submission if invalid', function(){
-      scope.form.$invalid = true;
+      scope.form.$valid = false;
+      scope.form.$dirty = true;
       deferred.resolve();
       element.click();
       $rootScope.$apply();
@@ -626,7 +623,8 @@ describe('submit form directive', function(){
     });
 
     it('should not perform the submission if pristine', function(){
-      scope.form.$pristine = true;
+      scope.form.$valid = true;
+      scope.form.$dirty = false;
       deferred.resolve();
       element.click();
       $rootScope.$apply();
@@ -635,8 +633,8 @@ describe('submit form directive', function(){
     });
 
     it('should perform the submission if valid and dirty ;)', function(){
-      scope.form.$invalid = false;
-      scope.form.$pristine = false;
+      scope.form.$valid = true;
+      scope.form.$dirty = true;
       deferred.resolve();
       element.click();
       $rootScope.$apply();

@@ -7,9 +7,11 @@ angular.module('webApp').directive('fwFormSubmit',
     restrict: 'A',
     scope: {
       formName: '=',
+      canSubmit: '&',
       fwFormSubmit: '&'
     },
     link: function(scope, element, attrs) {
+      var canSubmit = attrs.canSubmit ? scope.canSubmit : null;
       var form = scope.formName;
       var submit = scope.fwFormSubmit;
 
@@ -21,6 +23,12 @@ angular.module('webApp').directive('fwFormSubmit',
         throw new FifthweekError('"fwFormSubmit" attribute must reference a function name');
       }
 
+      if (!canSubmit) {
+        canSubmit = function() {
+          return form.$valid && form.$dirty;
+        };
+      }
+
       form.isSubmitting = false;
       form.hasSubmitted = false;
       form.submissionSucceeded = false;
@@ -28,7 +36,7 @@ angular.module('webApp').directive('fwFormSubmit',
 
       element.bind('click', function() {
 
-        if (form.$invalid || form.$pristine) {
+        if (!canSubmit()) {
           return $q.when();
         }
 

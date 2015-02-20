@@ -43,4 +43,9 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
   $scope.delete = function() {
     $state.go(states.creators.customize.collections.name);
   };
+
+  $scope.deleteReleaseTime = function() {
+    _.remove($scope.model.schedule, $scope.model.managingReleaseTime);
+    $scope.model.managingReleaseTime = null;
+  }
 });
