@@ -33,7 +33,7 @@
             items="model.schedule"
             new-item="model.addingReleaseTime = true"
             manage-item="manageReleaseTime(item)">
-            <p>{{item.day}} @ {{item.time}}</p>
+            <p>{{item.day}} <span class="release-time-of-day">@ {{item.time}}</span></p>
           </fw-managed-list-sm>
         </section>
       </fw-form-subsection>
