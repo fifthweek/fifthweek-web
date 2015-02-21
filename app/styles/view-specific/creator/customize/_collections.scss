@@ -1,25 +1,7 @@
 @import '_base';
 
-$html-name-space:'.page-customize-collections';
-
-#{$html-name-space} {
+.page-customize-collections {
   .row {
-    .every {
-      color:$grey-dark-3;
-      margin-right: 5px;
-
-      &::after {
-        @include dot-separator;
-
-        margin-left: 5px;
-      }
-
-      &:last-child {
-        &::after {
-          content: "";
-        }
-      }
-    }
     .channel {
       color:$grey-dark-3;
       margin-left: 5px;
@@ -28,6 +10,23 @@ $html-name-space:'.page-customize-collections';
         content: "-";
         margin-right: 5px;
       }
+    }
+  }
+}
+
+.release-times span {
+  color:$grey-dark-3;
+  margin-right: 5px;
+
+  &::after {
+    @include dot-separator;
+
+    margin-left: 5px;
+  }
+
+  &:last-child {
+    &::after {
+      content: "";
     }
   }
 }

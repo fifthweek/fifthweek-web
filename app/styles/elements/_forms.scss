@@ -68,13 +68,13 @@ select {
 .form-control,select {
   font-size:$input-font-size;
   padding:$input-padding;
-  border:1px solid #c5c5c5;
-  border-radius:4px;
+  border:1px solid $grey-light-5;
+  border-radius:$input-border-radius;
   -webkit-appearance:none;
   -moz-appearance:none;
   appearance:none;
   outline:0;
-  color:#555459;
+  color:$grey-dark;
   width:100%;
   max-width:100%;
   font-family:'Lato',sans-serif;
@@ -105,5 +105,41 @@ fieldset[disabled] .form-control {
     top:6px;
     font-size:22px;
     pointer-events:none
+  }
+}
+
+.form-subsection {
+  border:1px solid transparent;
+  border-radius:$border-radius;
+  margin:-3px -5px;
+  padding:3px 5px;
+  margin-right: 0;
+  padding-right: 0;
+
+  #{$state-active-hover-focus} {
+    background: $grey-light-2;
+    border-color: $grey-light-3;
+
+    * {
+      cursor: pointer;
+    }
+
+    label {
+      color: $link-color;
+    }
+  }
+
+  .row {
+    @include vcenter;
+  }
+
+  .form-subsection-link {
+    p {
+      float:right;
+    }
+    i {
+      font-size:22px;
+      margin-right:18px;
+    }
   }
 }
