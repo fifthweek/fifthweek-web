@@ -110,36 +110,22 @@ fieldset[disabled] .form-control {
 
 .form-subsection {
   border:1px solid transparent;
-  border-radius:$border-radius;
-  margin:-3px -5px;
-  padding:3px 5px;
-  margin-right: 0;
-  padding-right: 0;
+  border-top-color: $grey-light-3;
+  border-bottom-color: $grey-light-3;
+  padding:15px 0;
 
-  #{$state-active-hover-focus} {
-    background: $grey-light-2;
-    border-color: $grey-light-3;
-
-    * {
-      cursor: pointer;
-    }
-
-    label {
-      color: $link-color;
-    }
+  .form-subsection-toggle button {
+    float:right;
   }
+}
 
-  .row {
-    @include vcenter;
+.form-subsection-expanded {
+  padding-bottom: 0; /* Expanded complex is typically quite complex and includes its own bottom margins */
+  .if-collapsed {
+    display: none;
   }
+}
 
-  .form-subsection-link {
-    p {
-      float:right;
-    }
-    i {
-      font-size:22px;
-      margin-right:18px;
-    }
-  }
+.form-subsection-collapsed .if-expanded {
+  display:none;
 }

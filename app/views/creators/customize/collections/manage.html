@@ -2,7 +2,7 @@
   <form novalidate
         role="form"
         name="manageCollectionForm"
-        ng-show="!model.isManagingSchedule">
+        ng-show="!model.addingReleaseTime && !model.selectedReleaseTime">
 
     <fw-breadcrumb current="model.savedName"></fw-breadcrumb>
 
@@ -16,10 +16,26 @@
         <fw-form-input-select selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
       </div>
 
-      <fw-form-subsection name="Schedule" ng-click="model.isManagingSchedule = true">
-        <p class="release-times">
-          <span ng-repeat="time in model.schedule">{{time.day}}</span>
-        </p>
+      <fw-form-subsection name="Schedule">
+        <summary>
+          <p class="release-times">
+            <span ng-repeat="time in model.schedule">{{time.day}}</span>
+          </p>
+        </summary>
+        <summary-expanded>
+          <p>
+            When you add posts to ‘the queue’ they automatically become published according to the schedule defined against their collection.
+          </p>
+        </summary-expanded>
+        <section>
+          <fw-managed-list-sm
+            item-name="release time"
+            items="model.schedule"
+            new-item="model.addingReleaseTime = true"
+            manage-item="manageReleaseTime(item)">
+            <p>{{item.day}} @ {{item.time}}</p>
+          </fw-managed-list-sm>
+        </section>
       </fw-form-subsection>
 
       <div class="row-btn">
@@ -50,83 +66,54 @@
     </fw-panel12>
   </form>
 
-  <div ng-show="model.isManagingSchedule">
+  <form novalidate
+        role="form"
+        name="newReleaseTimeForm"
+        ng-show="model.addingReleaseTime">
 
-    <form novalidate
-          role="form"
-          name="manageReleaseTimes"
-          ng-show="!model.addingReleaseTime && !model.selectedReleaseTime">
+    <fw-breadcrumb current="model.savedName"></fw-breadcrumb>
 
-      <fw-breadcrumb current="model.savedName"></fw-breadcrumb>
+    <fw-panel12>
 
-      <fw-panel12>
+      <fw-form-input-hour-of-week></fw-form-input-hour-of-week>
 
-        <fw-managed-list-sm
-          item-name="release time"
-          items="model.schedule"
-          new-item="model.addingReleaseTime = true"
-          manage-item="manageReleaseTime(item)">
-          <p>{{item.day}} @ {{item.time}}</p>
-        </fw-managed-list-sm>
+      <button
+        class="btn btn-default btn-block"
+        ng-click="model.addingReleaseTime = false">Cancel</button>
 
-        <div class="row-btn">
+    </fw-panel12>
+
+  </form>
+
+  <form novalidate
+        role="form"
+        name="manageReleaseTimeForm"
+        ng-show="model.selectedReleaseTime">
+
+    <fw-breadcrumb current="model.savedName"></fw-breadcrumb>
+
+    <fw-panel12>
+      <fw-form-input-hour-of-week></fw-form-input-hour-of-week>
+
+      <div class="row">
+        <div class="col-s-8">
+          <button
+            id="save-release-time-button"
+            class="btn btn-block btn-success"
+            ng-click="saveReleaseTime()">Update Release Time</button>
           <button
             class="btn btn-default btn-block"
-            ng-click="backToInitialView()">
-            <i class="fa fa-chevron-left btn-icon-left"></i>Back</button>
+            ng-click="model.selectedReleaseTime = null">Cancel</button>
         </div>
-      </fw-panel12>
-    </form>
-
-    <form novalidate
-          role="form"
-          name="newReleaseTimeForm"
-          ng-show="model.addingReleaseTime">
-
-      <fw-breadcrumb current="model.savedName"></fw-breadcrumb>
-
-      <fw-panel12>
-
-        <fw-form-input-hour-of-week></fw-form-input-hour-of-week>
-
-        <button
-          class="btn btn-default btn-block"
-          ng-click="model.addingReleaseTime = false">Cancel</button>
-
-      </fw-panel12>
-
-    </form>
-
-    <form novalidate
-          role="form"
-          name="manageReleaseTimeForm"
-          ng-show="model.selectedReleaseTime">
-
-      <fw-breadcrumb current="model.savedName"></fw-breadcrumb>
-
-      <fw-panel12>
-        <fw-form-input-hour-of-week></fw-form-input-hour-of-week>
-
-        <div class="row">
-          <div class="col-s-8">
-            <button
-              id="save-release-time-button"
-              class="btn btn-block btn-success"
-              ng-click="saveReleaseTime()">Update Release Time</button>
-            <button
-              class="btn btn-default btn-block"
-              ng-click="model.selectedReleaseTime = null">Cancel</button>
-          </div>
-          <div class="col-s-4">
-            <fw-form-input-delete
-              item-type="Release Time"
-              link-id="delete-release-time-link"
-              delete="deleteReleaseTime()"></fw-form-input-delete>
-          </div>
+        <div class="col-s-4">
+          <fw-form-input-delete
+            item-type="Release Time"
+            link-id="delete-release-time-link"
+            delete="deleteReleaseTime()"></fw-form-input-delete>
         </div>
+      </div>
 
-      </fw-panel12>
-    </form>
+    </fw-panel12>
+  </form>
 
-  </div>
 </div>

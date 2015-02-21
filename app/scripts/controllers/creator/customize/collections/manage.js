@@ -5,7 +5,6 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
     id: 'a',
     savedName: 'Side Comic',
     name: 'Side Comic',
-    isManagingSchedule: false,
     schedule: [
       {
         id: 1,
@@ -53,12 +52,6 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
   $scope.saveReleaseTime = function() {
     _.merge($scope.model.selectedReleaseTime, $scope.model.stagedReleaseTime);
     $scope.model.selectedReleaseTime = null;
-  };
-
-  $scope.backToInitialView = function() {
-    $scope.model.selectedReleaseTime = null;
-    $scope.model.addingReleaseTime = false;
-    $scope.model.isManagingSchedule = false;
   };
 
   $scope.delete = function() {

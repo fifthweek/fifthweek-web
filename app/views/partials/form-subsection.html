@@ -1,17 +1,26 @@
-<div class="form-group">
+<div class="form-group form-subsection"
+     ng-class="{'form-subsection-expanded': formSubsection.expanded, 'form-subsection-collapsed': !formSubsection.expanded}"
+     ng-controller="formSubsectionCtrl">
   <div class="row">
-    <div class="col-xs-12 col-s-7 col-sm-6">
-      <div class="form-subsection">
-        <div class="row">
-          <div class="col-xs-11">
-            <label>{{name}}</label>
-            <ng-transclude></ng-transclude>
-          </div>
-          <div class="col-xs-1 form-subsection-link">
-            <p><i class="fa fa-caret-right"></i></p>
-          </div>
-        </div>
+    <div class="col-xs-9">
+      <label>{{name}}</label>
+      <div class="if-collapsed">
+        <summary-placeholder></summary-placeholder>
       </div>
+      <div class="if-expanded">
+        <summary-expanded-placeholder></summary-expanded-placeholder>
+      </div>
+    </div>
+    <div class="col-xs-3 form-subsection-toggle">
+      <button ng-click="formSubsection.expanded = true; $event.preventDefault();" class="btn btn-default btn-slim if-collapsed">
+        expand
+      </button>
+      <button ng-click="formSubsection.expanded = false; $event.preventDefault();" class="btn btn-default btn-slim if-expanded">
+        close
+      </button>
+    </div>
+    <div class="col-xs-12 if-expanded">
+      <section-placeholder></section-placeholder>
     </div>
   </div>
 </div>
