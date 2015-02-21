@@ -1,20 +1,23 @@
 <div class="managed-list-sm">
-  <div class="row-outer" ng-click="newItem()">
-    <div class="row">
-      <div class="col-xs-10">
-        <p><strong>Add {{itemName}}</strong></p>
-      </div>
-      <div class="col-xs-2 action">
-        <p>+</p>
-      </div>
-    </div>
-  </div>
   <div class="row-outer" ng-repeat="item in items" ng-click="manageItem({item: item})">
     <div class="row">
       <div class="col-xs-10" ng-transclude="parent">
       </div>
       <div class="col-xs-2 action">
-        <p><i class="fa fa-angle-right"></i></p>
+        <p><i class="fa fa-chevron-right"></i></p>
+      </div>
+    </div>
+  </div>
+  <div class="row-outer" ng-click="newItem()">
+    <div class="row">
+      <div class="col-xs-9">
+        <p>Add a new {{itemName}}</p>
+      </div>
+      <div class="col-xs-3 action">
+        <button class="btn btn-success btn-slim">
+          <span class="visible-over-s">add</span>
+          <i class="fa fa-plus-circle btn-icon-right"></i>
+        </button>
       </div>
     </div>
   </div>

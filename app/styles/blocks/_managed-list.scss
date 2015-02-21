@@ -23,27 +23,19 @@
 }
 
 .managed-list-sm {
+  margin-top: 10px;
   .row-outer {
-    border-bottom: 1px solid $grey-light-3;
+    border-top: 1px dashed $grey-light-3;
     padding: 10px 0;
-    &:last-child {
-      border-bottom:none;
-    }
     #{$state-active-hover-focus} {
       background: #f9fdff;
       cursor: pointer;
-      .row .action {
-        i, p {
-          font-weight: bold;
-        }
-      }
     }
     .row {
       @include vcenter;
       .action {
-        p {
+        p, button {
           float: right;
-          margin-right: 2px;
         }
       }
     }
