@@ -49,6 +49,15 @@ h4 {
   }
 }
 
+h4.unframed {
+  font-size: 22px;
+  color:$grey-dark-3;
+  margin-top:8px;
+  i {
+    margin-right:8px;
+  }
+}
+
 h5 {
   font:{
     size:15px;

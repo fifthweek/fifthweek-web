@@ -31,6 +31,10 @@
   @include vcenter;
 }
 
+.no-bottom-margin {
+  margin-bottom: 0;
+}
+
 img {
   max-width:100%;
 }
