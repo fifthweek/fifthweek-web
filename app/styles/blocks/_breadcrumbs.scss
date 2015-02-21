@@ -1,14 +1,13 @@
 @import '_base';
 
 h4.bread-crumb {
+  font-size: 16px;
+  color:$grey-dark;
   background: $white-3;
-  padding: 9px 15px;
   border: 1px solid $grey-light-3;
   border-radius: 4px;
-
-  font-size: 16px;
   margin-top:-8px;
-  color:$grey-dark;
+  padding:9px $main-cont-padding-small;
   > span {
     color:$grey-dark-3;
     margin-left:5px;

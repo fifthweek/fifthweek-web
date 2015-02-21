@@ -1,0 +1,8 @@
+@import '_base';
+
+ul.nav-tabs > li > a {
+  padding:10px $main-cont-padding-large;
+  @media (max-width: $screen-s-max) {
+    padding:10px $main-cont-padding-small;
+  }
+}
