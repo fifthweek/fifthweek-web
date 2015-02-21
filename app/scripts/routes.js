@@ -365,7 +365,7 @@ angular.module('routes', ['ui.router'])
         }
       })
       .state(states.creators.customize.collections.manage.name, {
-        url: '/{collectionId}',
+        url: '/{id}',
         templateUrl: 'views/creators/customize/collections/manage.html',
         controller: 'manageCollectionCtrl',
         requireSubscription: true,
