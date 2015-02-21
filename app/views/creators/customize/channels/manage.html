@@ -1,4 +1,4 @@
-<fw-panel12 ng-init="channelData = {
+<div ng-init="model = {
   savedName: 'Base Channel',
   name: 'Base Channel',
   description: 'Backstage News Feed\nEternal Gratitude',
@@ -6,41 +6,47 @@
   price: '1.00'
 }">
 
-  <form novalidate
-        role="form"
-        name="form">
+<fw-breadcrumb current="model.savedName"></fw-breadcrumb>
 
-    <fw-form-input-channel-name ng-model="channelData.name" placeholder="Collection name" required focus></fw-form-input-channel-name>
-    <fw-form-input-channel-description ng-model="channelData.description" required></fw-form-input-channel-description>
-    <fw-form-input-channel-price ng-model="channelData.price" required hide-help></fw-form-input-channel-price>
-    <fw-form-input-channel-visibility ng-model="channelData.hidden" required hide-help></fw-form-input-channel-visibility>
+  <fw-panel12>
 
-    <div class="row-btn">
-      <div class="row">
-        <div class="col-s-8">
-          <button
-            id="save-channel-button"
-            class="btn btn-block btn-success"
-            data-loading-text="Saving..."
-            data-event-title="Channel edited"
-            data-event-category="Customization"
-            form-name="form"
-            fw-form-submit="save()">Save</button>
-          <button class="btn btn-default btn-block"
-                  ui-sref="creators.customize.channels">Cancel</button>
-        </div>
-        <div class="col-s-4">
-          <fw-form-input-delete
-            item="channelData.savedName"
-            item-type="Channel"
-            link-id="delete-channel-link"
-            data-event-title="Channel deleted"
-            data-event-category="Customization"
-            delete="delete()"></fw-form-input-delete>
+    <form novalidate
+          role="form"
+          name="form">
+
+      <fw-form-input-channel-name ng-model="model.name" placeholder="Collection name" required focus></fw-form-input-channel-name>
+      <fw-form-input-channel-description ng-model="model.description" required></fw-form-input-channel-description>
+      <fw-form-input-channel-price ng-model="model.price" required hide-help></fw-form-input-channel-price>
+      <fw-form-input-channel-visibility ng-model="model.hidden" required hide-help></fw-form-input-channel-visibility>
+
+      <div class="row-btn">
+        <div class="row">
+          <div class="col-s-8">
+            <button
+              id="save-channel-button"
+              class="btn btn-block btn-success"
+              data-loading-text="Saving..."
+              data-event-title="Channel edited"
+              data-event-category="Customization"
+              form-name="form"
+              fw-form-submit="save()">Save</button>
+            <button class="btn btn-default btn-block"
+                    ui-sref="creators.customize.channels">Cancel</button>
+          </div>
+          <div class="col-s-4">
+            <fw-form-input-delete
+              item="model.savedName"
+              item-type="Channel"
+              link-id="delete-channel-link"
+              data-event-title="Channel deleted"
+              data-event-category="Customization"
+              delete="delete()"></fw-form-input-delete>
+          </div>
         </div>
       </div>
-    </div>
 
-  </form>
+    </form>
 
-</fw-panel12>
+  </fw-panel12>
+
+</div>
