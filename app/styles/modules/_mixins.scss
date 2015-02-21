@@ -50,3 +50,11 @@
     padding-bottom: $main-cont-padding-small;
   }
 }
+
+@mixin dot-separator {
+  content: '.';
+  display: inline-block;
+  vertical-align: top;
+  font-size: 22px;
+  line-height: 8px;
+}

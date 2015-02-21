@@ -38,11 +38,8 @@ $html-name-space:'.page-backlog';
         @media (min-width:$screen-xs) {
           @include inline-block(top);
           &::after {
-            content:'.';
-            @include inline-block(top);
+            @include dot-separator;
             margin:0 10px;
-            font-size:22px;
-            line-height:8px;
           }
           &:last-child {
             &::after {

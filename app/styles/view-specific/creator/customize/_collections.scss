@@ -5,11 +5,12 @@ $html-name-space:'.page-customize-collections';
 #{$html-name-space} {
   .row {
     .every {
-      color:$grey-dark-2;
+      color:$grey-dark-3;
       margin-right: 5px;
 
       &::after {
-        content: " | ";
+        @include dot-separator;
+
         margin-left: 5px;
       }
 
@@ -20,7 +21,7 @@ $html-name-space:'.page-customize-collections';
       }
     }
     .channel {
-      color:$grey-dark-2;
+      color:$grey-dark-3;
       margin-left: 5px;
 
       &::before {

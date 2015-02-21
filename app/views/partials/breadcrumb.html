@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-xs-12">
     <h4 class="bread-crumb">
+      <i ng-class="item.icon" class="fa fa-th"></i>
       <span ng-repeat="item in items">
         <i class="fa fa-angle-right" ng-if="!$first"></i>
         <a ng-if="!$last" ng-click="item.click()" href>{{item.name}}</a>
