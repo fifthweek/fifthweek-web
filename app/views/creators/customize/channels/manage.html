@@ -14,8 +14,13 @@
           role="form"
           name="form">
 
-      <fw-form-input-channel-name ng-model="model.name" placeholder="Collection name" required focus></fw-form-input-channel-name>
+      <label>Name</label>
+      <fw-form-input-channel-name ng-model="model.name" placeholder="Channel name" required focus></fw-form-input-channel-name>
+
+      <label>Description</label>
       <fw-form-input-channel-description ng-model="model.description" required></fw-form-input-channel-description>
+
+      <label>Subscription price</label>
       <fw-form-input-channel-price ng-model="model.price" required hide-help></fw-form-input-channel-price>
       <fw-form-input-channel-visibility ng-model="model.hidden" required hide-help></fw-form-input-channel-visibility>
 
