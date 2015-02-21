@@ -1,14 +1,15 @@
 <div class="row">
   <div class="col-xs-12">
     <h4 class="bread-crumb">
-      <i ng-class="item.icon" class="fa fa-th"></i>
-      <span ng-repeat="item in items">
-        <i class="fa fa-angle-right" ng-if="!$first"></i>
-        <a ng-if="!$last" ng-click="item.click()" href>{{item.name}}</a>
-        <span ng-if="$last">
-          {{item.name}}
-        </span>
+      <a ui-sref="{{rootState}}"><i class="{{rootIcon}}"></i> {{rootName}}</a>
+
+      <span ng-repeat="item in intermediateStates">
+        <i class="fa fa-angle-right"></i>
+        <a ng-click="item.click()" href>{{item.name}}</a>
       </span>
+
+      <i class="fa fa-angle-right"></i>
+      {{current}}
     </h4>
   </div>
 </div>

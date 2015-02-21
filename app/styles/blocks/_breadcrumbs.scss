@@ -2,19 +2,20 @@
 
 h4.bread-crumb {
   font-size: 16px;
-  color:$grey-dark;
+  color:$grey-dark-3;
   background: $white-3;
   border: 1px solid $grey-light-3;
   border-radius: 4px;
   margin-top:-8px;
   padding:9px $main-cont-padding-small;
-  > span {
-    color:$grey-dark-3;
-    margin-left:5px;
-    i {
-      margin-right:5px;
+
+  i {
+    margin:0 7px 0 9px;
+    &:first-child {
+      margin:0 3px 0 0;
     }
   }
+
   a {
     color:$grey-dark;
     #{$state-active-hover-focus} {
