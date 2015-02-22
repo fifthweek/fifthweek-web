@@ -21,7 +21,7 @@ $html-name-space:'.page-backlog';
 
     .publish-info {
       width:64px;
-      margin-top:11px;
+      margin-top:12px;
       float:left;
       font-weight: bold;
       text-align: center;
@@ -63,6 +63,13 @@ $html-name-space:'.page-backlog';
       @media (max-width:$screen-s-max) {
         margin-left: 34px;
       }
+
+      .panel-body {
+        padding: 10px 10px;
+        @media (min-width:$screen-sm-min) {
+          padding: 11px 27px;
+        }
+      }
     }
 
     ul {
@@ -72,8 +79,11 @@ $html-name-space:'.page-backlog';
 
     .info,
     .actions {
-      color:$grey-light-4;
-      font-weight:bold;
+      li {
+        color:$grey-light-4;
+        font-weight: bold;
+        font-size: 14px;
+      }
     }
 
     .info {

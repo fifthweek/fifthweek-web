@@ -18,16 +18,3 @@
     }
   }
 }
-
-.jumbo-panel-small-padding {
-  padding:{
-    top:$main-cont-padding-x-small;
-    bottom:$main-cont-padding-x-small;
-  }
-  @media (min-width:$screen-sm-min) {
-    padding:{
-      top:$main-cont-padding-x-small;
-      bottom:$main-cont-padding-x-small;
-    }
-  }
-}
