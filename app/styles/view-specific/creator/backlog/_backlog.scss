@@ -27,6 +27,11 @@ $html-name-space:'.page-backlog';
       font-weight: bold;
       text-align: center;
       color:$grey-light-1;
+      &:hover {
+        cursor: pointer;
+        color:$grey-dark-3;
+      }
+
       .publish-info-day {
         font-size: 15px;
         text-transform: uppercase;
