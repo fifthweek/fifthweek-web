@@ -1,5 +1,7 @@
 @import '_base';
 
+$section-max-height:500px; /* Arbitrarily large. */
+$summary-max-height:50px; /* Arbitrarily large. */
 $section-transition-duration:0.4s;
 $summary-opacity-transition-duration:0.1s;
 
@@ -17,11 +19,9 @@ $summary-opacity-transition-duration:0.1s;
     float:right;
   }
 
-  .form-subsection-section {
+  .form-subsection-summary, .form-subsection-section {
     overflow: hidden;
   }
-
-  overflow: hidden;
 }
 
 .form-subsection-expanded {
@@ -32,15 +32,15 @@ $summary-opacity-transition-duration:0.1s;
     display: none;
   }
   .form-subsection-summary {
-    @include transition(opacity $summary-opacity-transition-duration linear, line-height 0.1s linear);
+    @include transition(opacity $summary-opacity-transition-duration linear, max-height 0.1s linear);
     @include transition-delays(0s, $summary-opacity-transition-duration);
     opacity:0;
-    line-height: 0;
+    max-height: 0;
   }
   .form-subsection-section {
     @include transition(all $section-transition-duration linear);
     @include transition-delays(0.2s);
-    max-height: 500px; /* Arbitrarily large */
+    max-height: $section-max-height;
   }
 }
 
@@ -51,9 +51,10 @@ $summary-opacity-transition-duration:0.1s;
     display: none;
   }
   .form-subsection-summary {
-    @include transition(line-height 0.2s linear, opacity $summary-opacity-transition-duration linear);
+    @include transition(max-height 0.2s linear, opacity $summary-opacity-transition-duration linear);
     @include transition-delays(0s, $section-transition-duration);
     opacity:1;
+    max-height: $summary-max-height;
   }
   .form-subsection-section {
     @include transition(all $section-transition-duration linear);
