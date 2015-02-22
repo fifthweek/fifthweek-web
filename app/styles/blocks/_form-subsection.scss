@@ -12,7 +12,6 @@ $summary-opacity-transition-duration:0.1s;
   padding:15px 6px;
 
   @include transition(padding-bottom 0.2s linear);
-  @include transition-delays(0.2s);
 
   .form-subsection-toggle button {
     float:right;
@@ -27,6 +26,7 @@ $summary-opacity-transition-duration:0.1s;
 
 .form-subsection-expanded {
   padding-bottom: 0; /* Expanded complex is typically quite complex and includes its own bottom margins */
+  @include transition-delays(0.1s);
 
   .if-collapsed {
     display: none;
@@ -38,13 +38,15 @@ $summary-opacity-transition-duration:0.1s;
     line-height: 0;
   }
   .form-subsection-section {
-    @include transition(all $section-transition-duration ease-in);
+    @include transition(all $section-transition-duration linear);
     @include transition-delays(0.2s);
     max-height: 500px; /* Arbitrarily large */
   }
 }
 
 .form-subsection-collapsed {
+  @include transition-delays(0.3s);
+
   .if-expanded {
     display: none;
   }
@@ -54,7 +56,7 @@ $summary-opacity-transition-duration:0.1s;
     opacity:1;
   }
   .form-subsection-section {
-    @include transition(all $section-transition-duration ease-out);
+    @include transition(all $section-transition-duration linear);
     @include transition-delays(0.1s);
     max-height: 0;
   }
