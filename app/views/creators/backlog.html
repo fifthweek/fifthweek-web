@@ -33,13 +33,11 @@
               </ul>
             </div>
             <div class="col-xs-4">
-              <p class="pull-right" ng-if="post.collection">
-                <a href>{{post.collection}}</a>
-                <i class="fa fa-th"></i>
+              <p class="text-right" ng-if="post.collection">
+                <a href>{{post.collection}} <i class="fa fa-th"></i></a>
               </p>
-              <p class="pull-right" ng-if="!post.collection">
-                <a href>{{post.channel}}</a>
-                <i class="fa fa-group"></i>
+              <p class="text-right" ng-if="!post.collection">
+                <a href>{{post.channel}} <i class="fa fa-group"></i></a>
               </p>
             </div>
           </div>
