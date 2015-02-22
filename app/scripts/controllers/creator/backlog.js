@@ -4,17 +4,28 @@ angular.module('webApp').controller('backlogCtrl',
 
     $scope.posts = [
       {
-        scheduledDate:'Wednesday 21st Jan',
+        //     postId: 'a',
+        //     channelId: 'Base64Guid',
+        //     collectionId: 'Base64Guid', /* optional */
+        //     comment: '', /* optional */
+        //     fileId: 'Base64Guid', /* optional */
+        //     imageId: 'Base64Guid', /* optional */
+        //     scheduledByQueue: false,
+        //     liveDate: '2015-12-25T14:45:05Z'
+        dayOfWeek:'Wed',
+        date:'21st Jan',
         bodyText:'Hang in there folks, nearly ready!',
         queued:false
       },
       {
-        scheduledDate:'Friday 23rd Jan',
+        dayOfWeek:'Fri',
+        date:'23rd Jan',
         bodyText:'Looking good :-)',
         queued:true
       },
       {
-        scheduledDate:'Sunday 25th Jan',
+        dayOfWeek:'Sun',
+        date:'25th Jan',
         bodyText:'Almost there',
         queued:false
       }
