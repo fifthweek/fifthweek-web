@@ -27,7 +27,7 @@ $html-name-space:'.page-backlog';
       text-align: center;
       color:$grey-dark-3;
       .publish-info-day {
-        font-size: 16px;
+        font-size: 15px;
         text-transform: uppercase;
         margin-bottom:2px;
       }
@@ -44,7 +44,7 @@ $html-name-space:'.page-backlog';
           font-size: 14px;
 
           @media (max-width:$screen-s-max) {
-            font-size: 19px;
+            font-size: 18px;
           }
         }
       }
@@ -63,7 +63,6 @@ $html-name-space:'.page-backlog';
       @media (max-width:$screen-s-max) {
         margin-left: 34px;
       }
-
       .panel-body {
         padding: 10px 10px;
         @media (min-width:$screen-sm-min) {
@@ -77,13 +76,10 @@ $html-name-space:'.page-backlog';
       margin-bottom:0;
     }
 
-    .info,
-    .actions {
-      li {
-        color:$grey-light-4;
-        font-weight: bold;
-        font-size: 14px;
-      }
+    .info li {
+      color:$grey-light-4;
+      font-weight: bold;
+      font-size: 14px;
     }
 
     .info {
@@ -124,15 +120,15 @@ $html-name-space:'.page-backlog';
     }
 
     .actions {
-      color:$grey-light-5;
+      color:$grey-light-6;
       ul > li {
         @include inline-block(top);
         padding:0 5px;
         margin:0 5px;
         cursor:pointer;
         @media (min-width:$screen-xs - 100px) {
-          padding:0 10px;
-          margin:0 10px;
+          padding:0 9px;
+          margin:0 9px;
         }
         button {
           border:0 none;
@@ -146,7 +142,7 @@ $html-name-space:'.page-backlog';
       }
       @include li-cancel-first-last-spacing;
       .fa {
-        font-size:19px;
+        font-size:18px;
       }
 
       .active-comment .fa,
