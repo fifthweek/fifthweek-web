@@ -9,8 +9,7 @@
 
   <form novalidate
         role="form"
-        name="form"
-        id="createSubscriptionForm">
+        name="createChannelForm">
 
     <fw-form-input-channel-name ng-model="newChannelData.name" placeholder="New channel name" required focus></fw-form-input-channel-name>
     <fw-form-input-channel-description ng-model="newChannelData.description" required></fw-form-input-channel-description>
@@ -21,10 +20,10 @@
       <button
         id="create-channel-button"
         class="btn btn-block btn-success"
-        data-loading-text="Saving..."
+        data-loading-text="Creating..."
         data-event-title="Channel created"
         data-event-category="Customization"
-        form-name="form"
+        form-name="createChannelForm"
         fw-form-submit="createChannel()">Create Channel</button>
       <button class="btn btn-default btn-block"
               ui-sref="creators.customize.channels">Cancel</button>

@@ -356,6 +356,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.customize.collections.new.name, {
         url: '/new',
         templateUrl: 'views/creators/customize/collections/new.html',
+        controller: 'newCollectionCtrl',
         requireSubscription: true,
         data : {
           headTitle: ': ' + 'Create Collection',

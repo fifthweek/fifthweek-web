@@ -62,28 +62,4 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
     _.remove($scope.model.schedule, $scope.model.selectedReleaseTime);
     $scope.model.selectedReleaseTime = null;
   };
-
-  // Some of this complexity could be deferred to the breadcrumb control. However,
-  // this will not be possible until we can dynamically generated `data` objects
-  // for states, e.g. name of current collection.
-  $scope.createBreadcrumb = function(title) {
-    var result = [
-      {
-        name: 'Collections',
-        click: function() {
-          $state.go(states.creators.customize.collections.name);
-        }
-      },
-      {
-        name: $scope.model.savedName,
-        click: $scope.cancelSubAction
-      }
-    ];
-
-    if (title) {
-      result.push({ name: title });
-    }
-
-    return result;
-  };
 });
