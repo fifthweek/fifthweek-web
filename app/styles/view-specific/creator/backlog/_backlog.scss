@@ -28,10 +28,24 @@ $html-name-space:'.page-backlog';
       .publish-info-day {
         font-size: 16px;
         text-transform: uppercase;
-        margin-bottom: 2px;
+        margin: 11px 0 2px 0;
       }
       .publish-info-date {
         font-size: 12px;
+        margin-bottom: 0;
+      }
+      .publish-info-mode {
+        color:$grey-dark-3;
+        font-size: 12px;
+        i {
+          display:block;
+          margin-top:3px;
+          font-size: 14px;
+        }
+      }
+      hr {
+        margin: 10px 0 8px 0;
+        width:20px;
       }
     }
     .panel {
@@ -58,13 +72,19 @@ $html-name-space:'.page-backlog';
           @include inline-block(top);
           &::after {
             @include dot-separator;
-            margin:0 10px;
+            margin:0 8px;
           }
           &:last-child {
             &::after {
               display:none;
             }
           }
+        }
+
+        .poster-name {
+          color:$grey-light-1;
+          font-weight: bold;
+          margin-right: 3px;
         }
       }
       .fa {

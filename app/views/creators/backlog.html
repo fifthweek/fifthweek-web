@@ -5,6 +5,9 @@
       <div class="publish-info">
         <p class="publish-info-day">{{post.dayOfWeek}}</p>
         <p class="publish-info-date">{{post.date}}</p>
+        <hr />
+        <p class="publish-info-mode" ng-if="!post.queued">scheduled <i class="fa fa-calendar"></i></p>
+        <p class="publish-info-mode" ng-if="post.queued">queued <i class="fa fa-clock-o"></i></p>
       </div>
 
       <div class="panel panel-default">
@@ -13,10 +16,8 @@
           <div class="row info">
             <div class="col-md-12">
               <ul>
-                <li>{{post.scheduledDate}}</li>
-                <li>live in ABC</li>
-                <li ng-if="!post.queued">In calendar <i class="fa fa-calendar"></i></li>
-                <li ng-if="post.queued">In queue <i class="fa fa-filter"></i></li>
+                <li><span class="poster-name">Marc Holmes</span> <span class="poster">@marc-holmes</span></li>
+                <li>live in {{post.liveIn}}</li>
               </ul>
             </div>
           </div>

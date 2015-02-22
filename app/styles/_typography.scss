@@ -77,7 +77,7 @@ p.small {
 
 a {
   color:$link-color;
-  #{$state-active-hover-focus} {
+  &:hover {
     color:$link-color;
   }
 }
