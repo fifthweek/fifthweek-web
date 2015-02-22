@@ -26,22 +26,32 @@
         <div class="panel-body jumbo-panel">
 
           <div class="row info">
-            <div class="col-md-12">
+            <div class="col-xs-8">
               <ul>
                 <li><span class="poster-name">Marc Holmes</span> <span class="poster">@marc-holmes</span></li>
                 <li>live in {{post.liveIn}}</li>
               </ul>
             </div>
+            <div class="col-xs-4">
+              <p class="pull-right" ng-if="post.collection">
+                <a href>{{post.collection}}</a>
+                <i class="fa fa-th"></i>
+              </p>
+              <p class="pull-right" ng-if="!post.collection">
+                <a href>{{post.channel}}</a>
+                <i class="fa fa-group"></i>
+              </p>
+            </div>
           </div>
 
           <div class="row main">
-            <div class="col-md-12">
+            <div class="col-xs-12">
               <p>{{post.bodyText}}</p>
             </div>
           </div>
 
           <div class="row actions">
-            <div class="col-md-12">
+            <div class="col-xs-12">
               <ul>
                 <li>
                   <i class="fa fa-comment"></i>

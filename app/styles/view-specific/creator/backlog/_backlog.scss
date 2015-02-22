@@ -81,14 +81,19 @@ $html-name-space:'.page-backlog';
       margin-bottom:0;
     }
 
-    .info li {
-      color:$grey-light-4;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
     .info {
       @include li-cancel-first-last-spacing;
+
+      li, p {
+        color:$grey-light-4;
+        font-weight: bold;
+        font-size: 14px;
+
+        a {
+          color:$grey-light-1;
+        }
+      }
+
       li {
         list-style-type:none;
         margin-bottom:0;
