@@ -80,7 +80,7 @@ angular.module('webApp')
           {
             name: 'Channels',
             state: states.creators.customize.channels.name,
-            icon: 'fa fa-list-alt',
+            icon: 'fa fa-list-ul',
             color: 'green'
           },
           {
