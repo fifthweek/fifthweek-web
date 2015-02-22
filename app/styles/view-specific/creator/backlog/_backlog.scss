@@ -26,7 +26,7 @@ $html-name-space:'.page-backlog';
       float:left;
       font-weight: bold;
       text-align: center;
-      color:$grey-dark-3;
+      color:$grey-light-1;
       .publish-info-day {
         font-size: 15px;
         text-transform: uppercase;
@@ -37,7 +37,6 @@ $html-name-space:'.page-backlog';
         margin-bottom: 0;
       }
       .publish-info-mode {
-        color:$grey-dark-3;
         font-size: 12px;
         i {
           display:block;
@@ -165,6 +164,5 @@ $html-name-space:'.page-backlog';
         }
       }
     }
-
   }
 }
