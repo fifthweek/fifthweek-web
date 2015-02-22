@@ -1,0 +1,61 @@
+@import '_base';
+
+$section-transition-duration:0.4s;
+$summary-opacity-transition-duration:0.1s;
+
+.form-subsection {
+  border:1px solid transparent;
+  border-top-color: $grey-light-3;
+  border-bottom-color: $grey-light-3;
+  margin-left: -6px;
+  margin-right: -6px;
+  padding:15px 6px;
+
+  @include transition(padding-bottom 0.2s linear);
+  @include transition-delays(0.2s);
+
+  .form-subsection-toggle button {
+    float:right;
+  }
+
+  .form-subsection-section {
+    overflow: hidden;
+  }
+
+  overflow: hidden;
+}
+
+.form-subsection-expanded {
+  padding-bottom: 0; /* Expanded complex is typically quite complex and includes its own bottom margins */
+
+  .if-collapsed {
+    display: none;
+  }
+  .form-subsection-summary {
+    @include transition(opacity $summary-opacity-transition-duration linear, line-height 0.1s linear);
+    @include transition-delays(0s, $summary-opacity-transition-duration);
+    opacity:0;
+    line-height: 0;
+  }
+  .form-subsection-section {
+    @include transition(all $section-transition-duration ease-in);
+    @include transition-delays(0.2s);
+    max-height: 500px; /* Arbitrarily large */
+  }
+}
+
+.form-subsection-collapsed {
+  .if-expanded {
+    display: none;
+  }
+  .form-subsection-summary {
+    @include transition(line-height 0.2s linear, opacity $summary-opacity-transition-duration linear);
+    @include transition-delays(0s, $section-transition-duration);
+    opacity:1;
+  }
+  .form-subsection-section {
+    @include transition(all $section-transition-duration ease-out);
+    @include transition-delays(0.1s);
+    max-height: 0;
+  }
+}

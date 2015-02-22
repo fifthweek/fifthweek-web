@@ -58,3 +58,8 @@
   font-size: 22px;
   line-height: 8px;
 }
+
+@mixin transition-delays($transition-delay...) {
+  -webkit-transition-delay: $transition-delay;
+  transition-delay: $transition-delay;
+}
