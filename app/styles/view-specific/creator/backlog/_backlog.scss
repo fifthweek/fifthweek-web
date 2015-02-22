@@ -21,6 +21,7 @@ $html-name-space:'.page-backlog';
 
     .publish-info {
       width:64px;
+      margin-top:11px;
       float:left;
       font-weight: bold;
       text-align: center;
@@ -28,7 +29,7 @@ $html-name-space:'.page-backlog';
       .publish-info-day {
         font-size: 16px;
         text-transform: uppercase;
-        margin: 11px 0 2px 0;
+        margin-bottom:2px;
       }
       .publish-info-date {
         font-size: 12px;
@@ -41,15 +42,27 @@ $html-name-space:'.page-backlog';
           display:block;
           margin-top:3px;
           font-size: 14px;
+
+          @media (max-width:$screen-s-max) {
+            font-size: 19px;
+          }
         }
       }
       hr {
         margin: 10px 0 8px 0;
         width:20px;
       }
+
+      @media (max-width:$screen-s-max) {
+        width:18px;
+        margin-top:9px;
+      }
     }
     .panel {
       margin-left: 80px;
+      @media (max-width:$screen-s-max) {
+        margin-left: 34px;
+      }
     }
 
     ul {

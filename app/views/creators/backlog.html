@@ -3,11 +3,23 @@
 
     <div class="backlog-post" ng-repeat="post in posts">
       <div class="publish-info">
-        <p class="publish-info-day">{{post.dayOfWeek}}</p>
-        <p class="publish-info-date">{{post.date}}</p>
-        <hr />
-        <p class="publish-info-mode" ng-if="!post.queued">scheduled <i class="fa fa-calendar"></i></p>
-        <p class="publish-info-mode" ng-if="post.queued">queued <i class="fa fa-clock-o"></i></p>
+        <div class="visible-over-s">
+          <p class="publish-info-day">{{post.dayOfWeek}}</p>
+          <p class="publish-info-date">{{post.date}}</p>
+          <hr />
+        </div>
+        <p class="publish-info-mode" ng-if="!post.queued">
+          <span class="visible-over-s">
+            scheduled
+          </span>
+          <i class="fa fa-calendar"></i>
+        </p>
+        <p class="publish-info-mode" ng-if="post.queued">
+          <span class="visible-over-s">
+            queued
+          </span>
+          <i class="fa fa-clock-o"></i>
+        </p>
       </div>
 
       <div class="panel panel-default">
@@ -49,7 +61,6 @@
                       <ul>
                         <li><a ui-sref="creators.backlog">Edit</a></li>
                         <li><a ui-sref="creators.backlog">Reschedule</a></li>
-                        <li><a ui-sref="creators.backlog">Post now</a></li>
                         <li><a ui-sref="creators.backlog">Delete</a></li>
                       </ul>
                     </div>
