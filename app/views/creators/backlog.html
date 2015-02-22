@@ -9,8 +9,8 @@
             <ul>
               <li>{{post.scheduledDate}}</li>
               <li>live in ABC</li>
-              <li ng-if="post.stored.calendar">In calendar <i class="fa fa-calendar"></i></li>
-              <li ng-if="post.stored.funnel">In funnel <i class="fa fa-filter"></i></li>
+              <li ng-if="!post.queued">In calendar <i class="fa fa-calendar"></i></li>
+              <li ng-if="post.queued">In queue <i class="fa fa-filter"></i></li>
             </ul>
           </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="row actions">
           <div class="col-md-12">
             <ul>
-              <li ng-click="activeComment = !activeComment" ng-class="{'active-comment': activeComment}">
+              <li>
                 <i class="fa fa-comment"></i>
               </li>
               <li ng-click="activeFavourite = !activeFavourite" ng-class="{'active-favourite': activeFavourite}">
@@ -34,7 +34,7 @@
                   ng-init="dropDownFocus=false;dropDownBlur=false;"
                   ng-class="{'active-actions-drop-down': dropDownFocus===true}">
                   <button
-                    ng-focus="dropDownFocus=true;dropDownBlur=false;" 
+                    ng-focus="dropDownFocus=true;dropDownBlur=false;"
                     ng-blur="dropDownBlur=true;dropDownFocus=false;">
                     <i class="fa fa-ellipsis-h"></i>
                   </button>

@@ -6,26 +6,17 @@ angular.module('webApp').controller('backlogCtrl',
       {
         scheduledDate:'Wednesday 21st Jan',
         bodyText:'Hang in there folks, nearly ready!',
-        stored:{
-          calendar:true,
-          funnel:false
-        }
+        queued:false
       },
       {
         scheduledDate:'Friday 23rd Jan',
         bodyText:'Looking good :-)',
-        stored:{
-          calendar:false,
-          funnel:true
-        }
+        queued:true
       },
       {
         scheduledDate:'Sunday 25th Jan',
         bodyText:'Almost there',
-        stored:{
-          calendar:true,
-          funnel:false
-        }
+        queued:false
       }
     ];
 
