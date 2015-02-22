@@ -1,7 +1,8 @@
 angular.module('webApp')
   .constant('blobImageCtrlConstants', {
-    timeoutSeconds: 30,
-    checkIntervalSeconds: 1,
+    timeoutMilliseconds: 30000,
+    checkIntervalMilliseconds: 1500,
+    initialWaitMilliseconds: 3000,
     updateEvent: 'update'
   })
   .controller('blobImageCtrl', function ($scope, $q, $timeout, blobImageCtrlConstants, azureBlobAvailability, utilities, logService) {
@@ -17,7 +18,7 @@ angular.module('webApp')
     var pendingImageDataExpiry;
 
     var updateExpiryTime = function(){
-      pendingImageDataExpiry = _.now() + (blobImageCtrlConstants.timeoutSeconds * 1000);
+      pendingImageDataExpiry = _.now() + (blobImageCtrlConstants.timeoutMilliseconds);
     };
 
     var assignImage = function(urlWithSignature){
@@ -39,9 +40,13 @@ angular.module('webApp')
             return assignImage(urlWithSignature);
           }
           else {
-            return $timeout(waitForImage, blobImageCtrlConstants.checkIntervalSeconds * 1000);
+            return pauseAndWaitForImage(blobImageCtrlConstants.checkIntervalMilliseconds);
           }
         });
+    };
+
+    var pauseAndWaitForImage = function(intervalMilliseconds){
+      return $timeout(waitForImage, intervalMilliseconds);
     };
 
     var handleUpdateEvent = function(event, fileUri, containerName){
@@ -57,7 +62,7 @@ angular.module('webApp')
       };
 
       if(!isAlreadyWaiting){
-        return waitForImage()
+        return pauseAndWaitForImage(blobImageCtrlConstants.initialWaitMilliseconds)
           .catch(function(error){
             logService.error(error);
             $scope.model.errorMessage = utilities.getFriendlyErrorMessage(error);

@@ -82,8 +82,18 @@ describe('blob image controller', function(){
       azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
+      $timeout.flush();
       expect($scope.model.imageUri).toBe('uri?sig');
       expect($scope.model.errorMessage).toBeUndefined();
+    });
+
+    it('should pause before the initial check', function(){
+      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
+      $scope.$apply();
+      expect($scope.model.imageUri).toBeUndefined();
+      $timeout.flush();
+      expect($scope.model.imageUri).toBe('uri?sig');
     });
 
     it('should set the image uri to undefined while checking availability', function(){
@@ -93,6 +103,7 @@ describe('blob image controller', function(){
 
       expect($scope.model.imageUri).toBeUndefined();
       $scope.$apply();
+      $timeout.flush();
       expect($scope.model.imageUri).toBe('uri?sig');
     });
 
@@ -108,6 +119,7 @@ describe('blob image controller', function(){
       azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
+      $timeout.flush();
 
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
@@ -125,6 +137,7 @@ describe('blob image controller', function(){
       azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
+      $timeout.flush();
 
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
@@ -148,13 +161,14 @@ describe('blob image controller', function(){
       azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
+      $timeout.flush();
 
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
       expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(1);
 
       azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
-      _.now.and.returnValue(now + blobImageCtrlConstants.timeoutSeconds * 1000);
+      _.now.and.returnValue(now + blobImageCtrlConstants.timeoutMilliseconds);
 
       $timeout.flush();
 
@@ -167,13 +181,14 @@ describe('blob image controller', function(){
       azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
+      $timeout.flush();
 
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
       expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(1);
 
       azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
-      _.now.and.returnValue(now + blobImageCtrlConstants.timeoutSeconds * 1000 + 1);
+      _.now.and.returnValue(now + blobImageCtrlConstants.timeoutMilliseconds + 1);
 
       $timeout.flush();
 
@@ -187,6 +202,7 @@ describe('blob image controller', function(){
       azureBlobAvailability.checkAvailability.and.returnValue($q.reject({ message: 'error' }));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
+      $timeout.flush();
 
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBe('error');
@@ -197,6 +213,7 @@ describe('blob image controller', function(){
       azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
+      $timeout.flush();
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri2', 'containerName');
       $scope.$apply();
@@ -211,6 +228,7 @@ describe('blob image controller', function(){
       azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
+      $timeout.flush();
       expect($scope.model.errorMessage).toBeUndefined();
 
       _.now.and.returnValue(now + 10000);
@@ -220,12 +238,12 @@ describe('blob image controller', function(){
       $timeout.flush();
       expect($scope.model.errorMessage).toBeUndefined();
 
-      _.now.and.returnValue(now + 10000 + blobImageCtrlConstants.timeoutSeconds * 1000);
+      _.now.and.returnValue(now + 10000 + blobImageCtrlConstants.timeoutMilliseconds);
 
       $timeout.flush();
       expect($scope.model.errorMessage).toBeUndefined();
 
-      _.now.and.returnValue(now + 10000 + blobImageCtrlConstants.timeoutSeconds * 1000 + 1);
+      _.now.and.returnValue(now + 10000 + blobImageCtrlConstants.timeoutMilliseconds + 1);
 
       $timeout.flush();
       expect($scope.model.errorMessage).toBe('Timeout');
