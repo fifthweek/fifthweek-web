@@ -54,6 +54,15 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
     $scope.model.selectedReleaseTime = null;
   };
 
+  $scope.addReleaseTime = function() {
+    // To-do: add to release times.
+    $scope.model.addingReleaseTime = false;
+  };
+
+  $scope.save = function() {
+    $state.go(states.creators.customize.collections.name);
+  };
+
   $scope.delete = function() {
     $state.go(states.creators.customize.collections.name);
   };
