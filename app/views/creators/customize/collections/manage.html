@@ -4,7 +4,7 @@
         name="manageCollectionForm"
         ng-show="!model.addingReleaseTime && !model.selectedReleaseTime">
 
-    <fw-breadcrumb current="model.savedName"></fw-breadcrumb>
+    <fw-breadcrumb current="{{model.savedName}}"></fw-breadcrumb>
 
     <fw-panel12>
 
@@ -71,7 +71,10 @@
         name="newReleaseTimeForm"
         ng-show="model.addingReleaseTime">
 
-    <fw-breadcrumb current="model.savedName"></fw-breadcrumb>
+    <fw-breadcrumb
+      current="New Release Time"
+      previous="{{model.savedName}}"
+      previous-state="model.addingReleaseTime = false"></fw-breadcrumb>
 
     <fw-panel12>
 
@@ -90,7 +93,10 @@
         name="manageReleaseTimeForm"
         ng-show="model.selectedReleaseTime">
 
-    <fw-breadcrumb current="model.savedName"></fw-breadcrumb>
+    <fw-breadcrumb
+      current="Edit Release Time"
+      previous="{{model.savedName}}"
+      previous-state="model.selectedReleaseTime = null"></fw-breadcrumb>
 
     <fw-panel12>
       <fw-form-input-hour-of-week></fw-form-input-hour-of-week>

@@ -57,9 +57,6 @@ h5 {
 
   a {
     color:$grey-dark;
-    #{$state-active-hover-focus} {
-      color:$grey-dark;
-    }
   }
 }
 
@@ -80,8 +77,7 @@ p.small {
 
 a {
   color:$link-color;
-  &:hover,
-  &:focus {
+  #{$state-active-hover-focus} {
     color:$link-color;
   }
 }

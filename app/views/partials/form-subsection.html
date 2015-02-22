@@ -3,7 +3,11 @@
      ng-controller="formSubsectionCtrl">
   <div class="row">
     <div class="col-xs-9">
-      <label>{{name}}</label>
+      <h5 class="form-group-heading">
+        <a href ng-click="formSubsection.expanded = !formSubsection.expanded">
+          {{name}}
+        </a>
+      </h5>
       <div class="form-subsection-summary">
         <summary-placeholder></summary-placeholder>
       </div>

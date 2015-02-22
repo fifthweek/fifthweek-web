@@ -7,9 +7,6 @@ h4.bread-crumb {
 
   i {
     margin:0 7px 0 9px;
-    &:first-child {
-      margin:0 3px 0 0;
-    }
   }
 
   a {
@@ -17,6 +14,12 @@ h4.bread-crumb {
     #{$state-active-hover-focus} {
       text-decoration: none;
       color: $link-color;
+    }
+
+    &:first-child {
+      i {
+        margin:0 3px 0 0;
+      }
     }
   }
 }

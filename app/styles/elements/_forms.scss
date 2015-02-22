@@ -8,6 +8,10 @@ label {
   color:$grey-dark;
 }
 
+h5.form-group-heading {
+  margin-bottom: 5px;
+}
+
 div[fw-file-upload] {
   input[type="submit"] {
     margin-top:10px;
