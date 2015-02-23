@@ -1,5 +1,5 @@
 angular.module('webApp').controller('backlogCtrl',
-  function($scope, $timeout) {
+  function($scope, $timeout, $modal) {
     'use strict';
 
     $scope.posts = [
@@ -71,8 +71,28 @@ angular.module('webApp').controller('backlogCtrl',
       }
     ];
 
+
+    $scope.openModalImage = function (_post) {
+
+        var modalInstance = $modal.open({
+            controller: "ModalBacklogCtrl",
+            templateUrl: 'myModalContent.html',
+            resolve: {
+                post: function()
+                {
+                    return _post;
+                }
+            }
+        });
+    };
+
+
+
+
     $scope.delete = function(postId) {
 
     };
+
+
   }
 );
