@@ -167,5 +167,9 @@ $html-name-space:'.page-backlog';
       }
       @include li-cancel-first-last-spacing;
     }
+
+    img {
+      margin-bottom: 20px;
+    }
   }
 }

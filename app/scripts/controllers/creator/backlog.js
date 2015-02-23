@@ -36,7 +36,7 @@ angular.module('webApp').controller('backlogCtrl',
         date:'25th Jan',
         comment:'Almost there',
         collection:'Blog',
-        imagePath:'images/avatar-default.png',
+        imagePath:'images/home/bg/2048.jpg',
         queued:true
       },
       {
@@ -45,7 +45,7 @@ angular.module('webApp').controller('backlogCtrl',
         dayOfWeek:'Sun',
         date:'25th Jan',
         collection:'Side Comic',
-        imagePath:'images/avatar-default.png',
+        imagePath:'images/creator/landing-page/header-default.jpg',
         queued:false
       },
       {
