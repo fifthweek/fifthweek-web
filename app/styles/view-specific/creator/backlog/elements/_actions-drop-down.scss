@@ -12,6 +12,8 @@ $html-name-space:'.actions-drop-down';
   background:$white-full;
   color:$grey-dark;
   border:solid 1px $gray-light;
+  border-radius: $border-radius;
+  padding: 5px 0;
   li {
     margin:0 !important;
     padding:0 !important;
@@ -19,14 +21,14 @@ $html-name-space:'.actions-drop-down';
   }
   a {
     display:block;
-    padding:5px $main-cont-padding-x-small;
+    padding:5px 16px;
     color:$grey-dark;
     font-weight:normal;
+    font-size:14.5px;
     text-decoration:none;
     @media (min-width:$screen-md) {
       #{$state-hover} {
-        background:$blue-dark-2;
-        color:$white-full;
+        background:$white-4;
       }
     }
   }
