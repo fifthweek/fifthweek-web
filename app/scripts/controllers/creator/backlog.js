@@ -56,6 +56,7 @@ angular.module('webApp').controller('backlogCtrl',
         comment:'Very nearly there',
         collection:'Blog',
         filePath:'images/avatar-default.png',
+        fileName:'comic-ebook.pdf',
         queued:true
       },
       {
@@ -65,6 +66,7 @@ angular.module('webApp').controller('backlogCtrl',
         date:'26th Jan',
         collection:'Side Comic',
         filePath:'images/avatar-default.png',
+        fileName:'comic-ebook.pdf',
         queued:true
       }
     ];

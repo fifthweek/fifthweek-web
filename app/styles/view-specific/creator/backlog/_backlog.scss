@@ -168,8 +168,36 @@ $html-name-space:'.page-backlog';
       @include li-cancel-first-last-spacing;
     }
 
-    img {
+    .image-content, .file-content {
+      display: block;
       margin-bottom: 20px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .file-content {
+      padding-top: 6px;
+      overflow: hidden;
+      &:hover {
+        span, i {
+          color: $link-color;
+        }
+      }
+      span, i {
+        float: left;
+        display:block;
+      }
+      span {
+        font-size: 15px;
+        font-weight: bold;
+        color:$grey-dark;
+      }
+      i {
+        font-size: 28px;
+        margin-right: 7px;
+        color:$grey-light-1;
+      }
     }
   }
 }

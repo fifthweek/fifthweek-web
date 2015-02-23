@@ -49,6 +49,7 @@ body {
 
 .main-container {
   margin-top:81px;
+  padding-bottom: 80px; /* Allow users to bring bottom of a scrolling page further into view */
 
   //ensure vimeo embeds do not overlay header nav
   /*

@@ -48,8 +48,14 @@
 
           <div class="row main">
             <div class="col-xs-12">
-              <img ng-if="post.imagePath" src="{{post.imagePath}}" />
-              <p>{{post.comment}}</p>
+              <a ng-if="post.imagePath" href="{{post.imagePath}}" class="image-content">
+                <img src="{{post.imagePath}}" />
+              </a>
+              <a ng-if="post.filePath" class="file-content" href="{{post.filePath}}">
+                <i class="fa fa-link"></i>
+                <span>{{post.fileName}}</span>
+              </a>
+              <p ng-if="post.comment">{{post.comment}}</p>
             </div>
           </div>
 
