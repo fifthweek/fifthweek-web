@@ -77,6 +77,7 @@ angular.module('webApp').controller('backlogCtrl',
         var modalInstance = $modal.open({
             controller: "ModalBacklogCtrl",
             templateUrl: 'myModalContent.html',
+            windowClass: 'modal-fw-large-image',
             resolve: {
                 post: function()
                 {
