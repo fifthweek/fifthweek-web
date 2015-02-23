@@ -109,15 +109,19 @@ describe('fw-blob-image directive', function(){
       });
 
       it('should not display the thumbnail area', function(){
-        expect(element.find('#blob-image-thumbnail-area').length).toBe(0);
+        expect(element.find('.thumbnail-area').length).toBe(0);
       });
 
       it('should not display the error area', function(){
-        expect(element.find('#blob-image-error-area').length).toBe(0);
+        expect(element.find('.error-area').length).toBe(0);
       });
 
       it('should not display the updating area', function(){
-        expect(element.find('#blob-image-updating-area').length).toBe(0);
+        expect(element.find('.updating-area').length).toBe(0);
+      });
+
+      it('should display the blank area', function(){
+        expect(element.find('.blank-area').length).toBe(1);
       });
     });
 
@@ -129,15 +133,19 @@ describe('fw-blob-image directive', function(){
       });
 
       it('should not display the thumbnail area', function(){
-        expect(element.find('#blob-image-thumbnail-area').length).toBe(0);
+        expect(element.find('.thumbnail-area').length).toBe(0);
       });
 
       it('should not display the error area', function(){
-        expect(element.find('#blob-image-error-area').length).toBe(0);
+        expect(element.find('.error-area').length).toBe(0);
       });
 
       it('should display the updating area', function(){
-        expect(element.find('#blob-image-updating-area').length).toBe(1);
+        expect(element.find('.updating-area').length).toBe(1);
+      });
+
+      it('should not display the blank area', function(){
+        expect(element.find('.blank-area').length).toBe(0);
       });
     });
 
@@ -149,24 +157,31 @@ describe('fw-blob-image directive', function(){
       });
 
       it('should not display the thumbnail area', function(){
-        expect(element.find('#blob-image-thumbnail-area').length).toBe(0);
+        expect(element.find('.thumbnail-area').length).toBe(0);
       });
 
       it('should display the error area', function(){
-        expect(element.find('#blob-image-error-area').length).toBe(1);
+        expect(element.find('.error-area').length).toBe(1);
       });
 
       it('should not display the updating area', function(){
-        expect(element.find('#blob-image-updating-area').length).toBe(0);
+        expect(element.find('.updating-area').length).toBe(0);
       });
 
+      it('should not display the blank area', function(){
+        expect(element.find('.blank-area').length).toBe(0);
+      });
+
+      /* It no longer displays the error message */
+      /*
       it('should display the error message', function(){
-        var result = element.find('#blob-image-error-area p');
+        var result = element.find('.error-area p');
         expect(result.length).toBe(1);
 
         var p = result[0];
         expect(_.trim(p.textContent)).toBe('blah');
       });
+      */
     });
 
     describe('when an imageUri exists', function(){
@@ -177,19 +192,23 @@ describe('fw-blob-image directive', function(){
       });
 
       it('should display the thumbnail area', function(){
-        expect(element.find('#blob-image-thumbnail-area').length).toBe(1);
+        expect(element.find('.thumbnail-area').length).toBe(1);
       });
 
       it('should not display the error area', function(){
-        expect(element.find('#blob-image-error-area').length).toBe(0);
+        expect(element.find('.error-area').length).toBe(0);
       });
 
       it('should not display the updating area', function(){
-        expect(element.find('#blob-image-updating-area').length).toBe(0);
+        expect(element.find('.updating-area').length).toBe(0);
+      });
+
+      it('should not display the blank area', function(){
+        expect(element.find('.blank-area').length).toBe(0);
       });
 
       it('should set the image source to the uri', function(){
-        var result = element.find('#blob-image-thumbnail-area img');
+        var result = element.find('.thumbnail-area img');
         expect(result.length).toBe(1);
 
         var img = result[0];

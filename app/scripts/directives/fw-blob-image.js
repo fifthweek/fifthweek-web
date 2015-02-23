@@ -7,6 +7,8 @@ angular.module('webApp').directive('fwBlobImage',
       control: '=',
       width: '@',
       height: '@',
+      pendingWidth: '@',
+      pendingHeight: '@',
       borderRadius: '@',
       thumbnail: '@'
     },

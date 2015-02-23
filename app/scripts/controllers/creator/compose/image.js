@@ -55,9 +55,12 @@ angular.module('webApp').controller('newImageCtrl',
       if ($scope.checked == event.target.value) $scope.checked = false
     };
 
+    $scope.blobImage = {};
+
     $scope.onUploadComplete = function(data) {
       $scope.model.uploaded = true;
       $scope.model.input.fileId = data.fileId;
+      $scope.blobImage.update(data.fileUri, data.containerName);
     };
   }
 );

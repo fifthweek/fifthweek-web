@@ -2,18 +2,18 @@
 
   <form name="form">
 
-    <div class="form-group form-group-image">
+    <div class="form-group">
       <div class="row">
-        <div class="col-xs-12 your-photo-label">
+        <div class="col-xs-12 bottom-buffer">
           <label>Profile Image</label>
         </div>
       </div>
-      <div class="row vcenter">
-        <div class="col-xs-3">
-          <fw-blob-image control="blobImage" width="128px" height="128px" border-radius="6px" thumbnail="150x150-crop"></fw-blob-image>
+      <div class="row">
+        <div class="col-xs-6 col-s-4 bottom-buffer">
+          <fw-blob-image control="blobImage" width="128px" height="128px" border-radius="2px" thumbnail="128x128-crop"></fw-blob-image>
         </div>
-        <div class="col-xs-3">
-          <fw-file-upload description="Change Image" on-upload-complete="onUploadComplete(data)" file-purpose="profile-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
+        <div class="col-xs-2 bottom-buffer">
+          <fw-file-upload description="Upload" on-upload-complete="onUploadComplete(data)" file-purpose="profile-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
         </div>
       </div>
     </div>

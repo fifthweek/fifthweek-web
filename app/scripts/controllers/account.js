@@ -22,7 +22,7 @@ angular.module('webApp')
     $scope.model = {};
 
     $scope.onUploadComplete = function(data) {
-      $scope.model.newProfileImage = data;
+      $scope.model.newProfileImageId = data.fileUri;
       $scope.blobImage.update(data.fileUri, data.containerName);
     };
 
