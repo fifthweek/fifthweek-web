@@ -4,6 +4,7 @@ angular.module('webApp').directive('fwFormSubsection', function () {
   return {
     restrict: 'E',
     scope: true,
+    replace: true,
     templateUrl: function(element){
       element.data('summary', element.find('summary'));
       element.data('summary-expanded', element.find('summary-expanded'));

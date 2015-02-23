@@ -1,30 +1,66 @@
 <fw-breadcrumb current="Edit Post"></fw-breadcrumb>
 
 <fw-panel12>
-  <fw-form-subsection name="Image">
-    <summary>
-      <p>Hearts.jpg</p>
-    </summary>
-    <summary-expanded>
-      <p>
-        Todo...
-      </p>
-    </summary-expanded>
-    <section>
-      This will be an input.
-    </section>
-  </fw-form-subsection>
-  <fw-form-subsection name="Comment">
-    <summary>
-      <p>"Nearly there guys!"</p>
-    </summary>
-    <summary-expanded>
-      <p>
-        Todo...
-      </p>
-    </summary-expanded>
-    <section>
-      This will be an input.
-    </section>
-  </fw-form-subsection>
+  <form novalidate
+        role="form"
+        name="editBacklogPostForm">
+
+    <div class="form-group">
+      <fw-form-subsection name="Image">
+        <summary>
+          <p>Hearts.jpg</p>
+        </summary>
+        <summary-expanded>
+          <p>
+            Todo...
+          </p>
+        </summary-expanded>
+        <section>
+          This will be an input.
+        </section>
+      </fw-form-subsection>
+
+      <fw-form-subsection name="Comment">
+        <summary>
+          <p>"Nearly there guys!"</p>
+        </summary>
+        <summary-expanded>
+          <p>
+            Todo...
+          </p>
+        </summary-expanded>
+        <section>
+          This will be an input.
+        </section>
+      </fw-form-subsection>
+
+      <fw-form-subsection name="Release Time">
+        <summary>
+          <p>Scheduled for: Wednesday 21st Jan, 2015</p>
+        </summary>
+        <summary-expanded>
+          <p>
+            Todo...
+          </p>
+        </summary-expanded>
+        <section>
+          This will be an input.
+        </section>
+      </fw-form-subsection>
+    </div>
+
+    <div class="row-btn">
+      <button
+        id="save-post-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Saving..."
+        data-event-title="Backlog post edited"
+        data-event-category="Edited post"
+        form-name="editBacklogPostForm"
+        fw-form-submit="save()">Save</button>
+      <button class="btn btn-default btn-block"
+              ui-sref="creators.customize.collections">Cancel</button>
+    </div>
+
+  </form>
 </fw-panel12>

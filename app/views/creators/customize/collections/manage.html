@@ -16,27 +16,29 @@
         <fw-form-input-select selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
       </div>
 
-      <fw-form-subsection name="Schedule">
-        <summary>
-          <p class="release-times">
-            <span ng-repeat="time in model.schedule">{{time.day}}</span>
-          </p>
-        </summary>
-        <summary-expanded>
-          <p>
-            When you add posts to ‘the queue’ they automatically become published according to the schedule defined against their collection.
-          </p>
-        </summary-expanded>
-        <section>
-          <fw-managed-list-sm
-            item-name="release time"
-            items="model.schedule"
-            new-item="model.addingReleaseTime = true"
-            manage-item="manageReleaseTime(item)">
-            <p>{{item.day}} <span class="release-time-of-day">@ {{item.time}}</span></p>
-          </fw-managed-list-sm>
-        </section>
-      </fw-form-subsection>
+      <div class="form-group">
+        <fw-form-subsection name="Schedule">
+          <summary>
+            <p class="release-times">
+              <span ng-repeat="time in model.schedule">{{time.day}}</span>
+            </p>
+          </summary>
+          <summary-expanded>
+            <p>
+              When you add posts to ‘the queue’ they automatically become published according to the schedule defined against their collection.
+            </p>
+          </summary-expanded>
+          <section>
+            <fw-managed-list-sm
+              item-name="release time"
+              items="model.schedule"
+              new-item="model.addingReleaseTime = true"
+              manage-item="manageReleaseTime(item)">
+              <p>{{item.day}} <span class="release-time-of-day">@ {{item.time}}</span></p>
+            </fw-managed-list-sm>
+          </section>
+        </fw-form-subsection>
+      </div>
 
       <div class="row-btn">
         <div class="row">
