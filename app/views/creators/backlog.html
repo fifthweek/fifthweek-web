@@ -37,7 +37,7 @@
                 <a href>{{post.collection}} <i class="fa fa-th"></i></a>
               </p>
               <p class="text-right" ng-if="!post.collection">
-                <a href>{{post.channel}} <i class="fa fa-group"></i></a>
+                <a href>{{post.channel}} <i class="fa fa-comments-o"></i></a>
               </p>
             </div>
           </div>
@@ -52,33 +52,16 @@
             <div class="col-xs-12">
               <ul>
                 <li>
-                  <i class="fa fa-comment"></i>
+                  <a ui-sref="creators.backlog"><i class="fa fa-cog"></i></a>
                 </li>
-                <li ng-click="activeFavourite = !activeFavourite" ng-class="{'active-favourite': activeFavourite}">
-                  <i class="fa fa-heart" ng-class="{'active' : activeFav}"></i>
-                </li>
-                <li class="actions-more"
-                    ng-class="{'active-actions-drop-down': post.showMenu}">
-                    <button
-                      ng-click="post.showMenu = !post.showMenu"
-                      ng-blur="post.showMenu = false">
-                      <i class="fa fa-ellipsis-h"></i>
-                    </button>
-                    <div class="actions-drop-down" ng-show="post.showMenu">
-                      <ul>
-                        <li><a ui-sref="creators.backlog">Edit</a></li>
-                        <li><a ui-sref="creators.backlog">Post Now</a></li>
-                        <li>
-                          <fw-delete-link
-                            item-type="Post"
-                            data-event-title="Post deleted"
-                            data-event-category="Backlog"
-                            delete="delete(post.postId)">
-                            Delete
-                          </fw-delete-link>
-                        </li>
-                      </ul>
-                    </div>
+                <li>
+                  <fw-delete-link
+                    item-type="Post"
+                    data-event-title="Post deleted"
+                    data-event-category="Backlog"
+                    delete="delete(post.postId)">
+                    <i class="fa fa-trash"></i>
+                  </fw-delete-link>
                 </li>
               </ul>
             </div>

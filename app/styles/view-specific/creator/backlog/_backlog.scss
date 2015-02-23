@@ -133,7 +133,6 @@ $html-name-space:'.page-backlog';
     }
 
     .actions {
-      color:$grey-light-6;
       ul > li {
         @include inline-block(top);
         padding:0 5px;
@@ -143,39 +142,30 @@ $html-name-space:'.page-backlog';
           padding:0 10px;
           margin:0 10px;
         }
+
         button {
           border:0 none;
           background:none;
           padding:0;
           outline:0 none;
         }
+        a {
+          color:$grey-light-4;
+          font-weight: bold;
+          font-size: 14px;
+          #{$state-hover-focus} {
+            color:$blue-light-2;
+          }
+          .fa {
+            font-size:18px;
+            font-weight: normal;
+          }
+        }
         &.actions-more {
           position:relative;
         }
       }
       @include li-cancel-first-last-spacing;
-      .fa {
-        font-size:18px;
-      }
-
-      .active-comment .fa,
-      .active-actions-drop-down .fa {
-        color:$blue-light-2;
-      }
-      .active-favourite .fa {
-        color:$pink-light-1;
-      }
-      .fa-comment,
-      .fa-ellipsis-h {
-        #{$state-hover-focus} {
-          color:$blue-light-2;
-        }
-      }
-      .fa-heart {
-        #{$state-hover-focus} {
-          color:$pink-light-1;
-        }
-      }
     }
   }
 }
