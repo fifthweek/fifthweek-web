@@ -58,18 +58,25 @@
                   <i class="fa fa-heart" ng-class="{'active' : activeFav}"></i>
                 </li>
                 <li class="actions-more"
-                    ng-init="dropDownFocus=false;dropDownBlur=false;"
-                    ng-class="{'active-actions-drop-down': dropDownFocus===true}">
+                    ng-class="{'active-actions-drop-down': post.showMenu}">
                     <button
-                      ng-focus="dropDownFocus=true;dropDownBlur=false;"
-                      ng-blur="dropDownBlur=true;dropDownFocus=false;">
+                      ng-click="post.showMenu = !post.showMenu"
+                      ng-blur="post.showMenu = false">
                       <i class="fa fa-ellipsis-h"></i>
                     </button>
-                    <div class="actions-drop-down" ng-show="dropDownFocus">
+                    <div class="actions-drop-down" ng-show="post.showMenu">
                       <ul>
                         <li><a ui-sref="creators.backlog">Edit</a></li>
                         <li><a ui-sref="creators.backlog">Post Now</a></li>
-                        <li><a ui-sref="creators.backlog">Delete</a></li>
+                        <li>
+                          <fw-delete-link
+                            item-type="Post"
+                            data-event-title="Post deleted"
+                            data-event-category="Backlog"
+                            delete="delete(post.postId)">
+                            Delete
+                          </fw-delete-link>
+                        </li>
                       </ul>
                     </div>
                 </li>

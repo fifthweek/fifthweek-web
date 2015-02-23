@@ -1,4 +1,16 @@
-<div class="btn-delete-item" ng-controller="formInputDeleteCtrl">
+<div class="btn-delete-item">
   <hr class="visible-under-s" />
-  <p class="btn-alternate-action"><a id="{link-id}" class="text-danger" ng-click="questionDelete()" href>Delete {{itemType}}</a></p>
+
+  <p class="btn-alternate-action">
+    <fw-delete-link
+      link-id="{{link-id}}"
+      class="text-danger"
+      item="item"
+      item-type="{{itemType}}"
+      data-event-title="{{dataEventTitle}}"
+      data-event-category="{{dataEventCategory}}"
+      delete="delete()">
+      Delete {{itemType}}
+    </fw-delete-link>
+  </p>
 </div>

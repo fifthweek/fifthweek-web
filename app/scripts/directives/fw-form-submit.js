@@ -67,7 +67,8 @@ angular.module('webApp').directive('fwFormSubmit',
             return errorFacade.handleError(error, function(message) {
               form.message = message;
             });
-          }).finally(function() {
+          })
+          .finally(function() {
             form.hasSubmitted = true;
 
             if (!attrs.hasOwnProperty('ngDisabled')) {

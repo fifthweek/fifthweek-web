@@ -17,3 +17,7 @@
 .modal-body {
   padding:$main-cont-padding-small;
 }
+
+.modal-sm {
+  width: 360px; /* Deleting release times is currently the longest modal */
+}
