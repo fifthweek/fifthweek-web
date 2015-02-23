@@ -171,6 +171,7 @@ $html-name-space:'.page-backlog';
     .image-content, .file-content {
       display: block;
       margin-bottom: 20px;
+      cursor: pointer;
       &:last-child {
         margin-bottom: 0;
       }
