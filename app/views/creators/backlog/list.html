@@ -28,63 +28,65 @@
 
       <div class="panel panel-default">
         <div class="panel-body jumbo-panel">
+          <div class="full-width-float">
 
-          <div class="row info">
-            <div class="col-xs-8">
-              <ul>
-                <li><span class="poster-name">Marc Holmes</span> <span class="poster">@marc-holmes</span></li>
-                <li>live in {{post.liveIn}}</li>
-              </ul>
-            </div>
-            <div class="col-xs-4">
-              <p class="text-right" ng-if="post.collection">
-                <a href>{{post.collection}} <i class="fa fa-th"></i></a>
-              </p>
-              <p class="text-right" ng-if="!post.collection">
-                <a href>{{post.channel}} <i class="fa fa-comments-o"></i></a>
-              </p>
-            </div>
-          </div>
-
-          <div class="row main">
-            <div class="col-xs-12">
-              <div ng-if="post.imagePath" class="image-content">
-                <img ng-src="{{post.imagePath}}" ng-click="openModalImage(post)"/>
+            <div class="row info">
+              <div class="col-xs-8">
+                <ul>
+                  <li><span class="poster-name">Marc Holmes</span> <span class="poster">@marc-holmes</span></li>
+                  <li>live in {{post.liveIn}}</li>
+                </ul>
               </div>
+              <div class="col-xs-4">
+                <p class="text-right" ng-if="post.collection">
+                  <a href>{{post.collection}} <i class="fa fa-th"></i></a>
+                </p>
+                <p class="text-right" ng-if="!post.collection">
+                  <a href>{{post.channel}} <i class="fa fa-comments-o"></i></a>
+                </p>
+              </div>
+            </div>
 
-              <script type="text/ng-template" id="myModalContent.html">
-                <div class="modal-body">
-                  <img ng-src="{{post.imagePath}}" class="img-responsive"/>
+            <div class="row main">
+              <div class="col-xs-12">
+                <div ng-if="post.imagePath" class="image-content">
+                  <img ng-src="{{post.imagePath}}" ng-click="openModalImage(post)"/>
                 </div>
-              </script>
 
-              <a ng-if="post.filePath" class="file-content" href="{{post.filePath}}">
-                <i class="fa fa-link"></i>
-                <span>{{post.fileName}}</span>
-              </a>
-              <p ng-if="post.comment">{{post.comment}}</p>
+                <script type="text/ng-template" id="myModalContent.html">
+                  <div class="modal-body">
+                    <img ng-src="{{post.imagePath}}" class="img-responsive"/>
+                  </div>
+                </script>
+
+                <a ng-if="post.filePath" class="file-content" href="{{post.filePath}}">
+                  <i class="fa fa-link"></i>
+                  <span>{{post.fileName}}</span>
+                </a>
+                <p ng-if="post.comment">{{post.comment}}</p>
+              </div>
             </div>
-          </div>
 
-          <div class="row actions">
-            <div class="col-xs-12">
-              <ul>
-                <li>
-                  <a ui-sref="creators.backlog.edit({id: post.postId})"><i class="fa fa-cog"></i></a>
-                </li>
-                <li>
-                  <fw-delete-link
-                    item-type="Post"
-                    data-event-title="Post deleted"
-                    data-event-category="Backlog"
-                    delete="delete(post.postId)">
-                    <i class="fa fa-trash"></i>
-                  </fw-delete-link>
-                </li>
-              </ul>
+            <div class="row actions">
+              <div class="col-xs-12">
+                <ul>
+                  <li>
+                    <a ui-sref="creators.backlog.edit({id: post.postId})"><i class="fa fa-cog"></i></a>
+                  </li>
+                  <li>
+                    <fw-delete-link
+                      item-type="Post"
+                      data-event-title="Post deleted"
+                      data-event-category="Backlog"
+                      delete="delete(post.postId)">
+                      <i class="fa fa-trash"></i>
+                    </fw-delete-link>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
     </div>
