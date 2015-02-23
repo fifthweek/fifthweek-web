@@ -1,0 +1,18 @@
+@import '_base';
+
+.blob-image {
+  .pending-image{
+    border: 2px dashed $grey-light-1;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    font-size: 16px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+
+    .fa{
+      font-size: 20px;
+    }
+  }
+}

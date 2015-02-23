@@ -7,6 +7,7 @@ angular.module('webApp').directive('fwBlobImage',
       control: '=',
       width: '@',
       height: '@',
+      borderRadius: '@',
       thumbnail: '@'
     },
     templateUrl:'views/partials/blob-image.html',

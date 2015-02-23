@@ -1,11 +1,13 @@
-<span ng-controller="blobImageCtrl" fw-blob-image-size>
-  <span ng-if="model.imageUri" id="blob-image-thumbnail-area">
-    <img ng-src="{{model.imageUri}}" fw-blob-image-size />
+<span ng-controller="blobImageCtrl" class="blob-image">
+  <span ng-if="model.imageUri" id="thumbnail-area">
+    <img ng-src="{{model.imageUri}}" fw-blob-image-size/>
   </span>
-  <span ng-if="model.errorMessage" id="blob-image-error-area">
-    <p>{{model.errorMessage}}</p>
+  <span ng-if="model.errorMessage" fw-blob-image-size id="error-area pending-image">
+    {{model.errorMessage}}
   </span>
-  <span ng-if="model.updating" id="blob-image-updating-area">
-    <p>Updating...</p>
+  <span ng-if="model.updating" fw-blob-image-size class="updating-area pending-image">
+    <i class="fa fa-refresh fa-spin"></i>
+  </span>
+  <span ng-if="!model.updating && !model.imageUri" fw-blob-image-size class="blank-area pending-image">
   </span>
 </span>

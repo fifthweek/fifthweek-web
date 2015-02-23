@@ -7,10 +7,15 @@ angular.module('webApp').directive('fwBlobImageSize',
       link:function (scope, element) {
 
         if(scope.width){
-          element.attr('width', scope.width);
+          element.css('width', scope.width);
         }
+
         if(scope.height){
-          element.attr('height', scope.height);
+          element.css('height', scope.height);
+        }
+
+        if(scope.borderRadius){
+          element.css('border-radius', scope.borderRadius);
         }
       }
     };
