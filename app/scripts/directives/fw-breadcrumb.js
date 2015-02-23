@@ -13,7 +13,10 @@ angular.module('webApp').directive('fwBreadcrumb', function (navigationOrchestra
     templateUrl: 'views/partials/breadcrumb.html',
     link: {
       pre: function (scope, element, attrs) {
-        var rootNavigationItem = _.find(navigationOrchestrator.getSecondaryNavigation(), { isActive: true });
+        var rootNavigationItem =
+          _.find(navigationOrchestrator.getSecondaryNavigation(), { isActive: true }) ||
+          _.find(navigationOrchestrator.getPrimaryNavigation(), { isActive: true });
+
         if (!rootNavigationItem) {
           throw new FifthweekError('Could not determine active secondary page for breadcrumb');
         }

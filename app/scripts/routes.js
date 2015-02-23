@@ -54,7 +54,13 @@ angular.module('routes', ['ui.router'])
         }
       },
       backlog: {
-        name: 'creators.backlog'
+        name: 'creators.backlog',
+        backlog: {
+          name: 'creators.backlog.backlog'
+        },
+        edit: {
+          name: 'creators.backlog.edit'
+        }
       },
       customize: {
         name: 'creators.customize',
@@ -309,12 +315,35 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.backlog.name, {
         url: '/backlog',
-        templateUrl: 'views/creators/backlog.html',
+        templateUrl: 'views/creators/backlog/index.html',
+        redirectTo: states.creators.backlog.backlog.name,
+        requireSubscription: true,
+        data : {
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.backlog.backlog.name, {
+        url: '',
+        templateUrl: 'views/creators/backlog/list.html',
         controller: 'backlogCtrl',
         requireSubscription: true,
         data : {
           pageTitle: 'Backlog',
           headTitle: ': ' + 'Backlog',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.backlog.edit.name, {
+        url: '/edit-post/{id}',
+        templateUrl: 'views/creators/backlog/edit-post.html',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Backlog',
+          headTitle: ': ' + 'Edit Post',
           access: {
             requireAuthenticated: true
           }

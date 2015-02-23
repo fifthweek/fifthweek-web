@@ -153,7 +153,7 @@ $html-name-space:'.page-backlog';
           color:$grey-light-4;
           font-weight: bold;
           font-size: 14px;
-          #{$state-hover-focus} {
+          &:hover {
             color:$blue-light-2;
           }
           .fa {
