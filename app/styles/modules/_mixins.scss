@@ -17,9 +17,6 @@
   @media (min-width:$screen-s-min) {
     padding-left:75px;
   }
-  @media (min-width:$screen-sm-min) {
-    padding-left:90px;
-  }
 }
 
 @mixin inline-block($v-align) {

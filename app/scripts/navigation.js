@@ -26,7 +26,7 @@ angular.module('webApp')
         separator: true
       },
       {
-        name: 'Create Your Subscription',
+        name: 'Create Subscription',
         state: states.creators.createSubscription.name,
         icon: 'fa fa-asterisk',
         color: 'yellow'
