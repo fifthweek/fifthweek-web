@@ -12,13 +12,17 @@
           <span class="visible-over-s">
             scheduled
           </span>
-          <i class="fa fa-calendar"></i>
+          <span class="visible-under-sm">
+            schd.
+          </span>
         </p>
         <p class="publish-info-mode" ng-if="post.queued">
           <span class="visible-over-s">
             queued
           </span>
-          <i class="fa fa-clock-o"></i>
+          <span class="visible-under-sm">
+            que.
+          </span>
         </p>
       </div>
 
@@ -44,7 +48,7 @@
 
           <div class="row main">
             <div class="col-xs-12">
-              <p>{{post.bodyText}}</p>
+              <p>{{post.comment}}</p>
             </div>
           </div>
 

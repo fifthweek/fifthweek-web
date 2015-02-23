@@ -16,40 +16,56 @@ angular.module('webApp').controller('backlogCtrl',
         liveIn:'1 day',
         dayOfWeek:'Wed',
         date:'21st Jan',
-        bodyText:'Hang in there folks, nearly ready!',
-        collection:'Side Comic',
-        queued:true,
-        showMenu:false
+        comment:'Hang in there folks, nearly ready!',
+        channel:'HD Channel',
+        queued:false
       },
       {
         postId: 'b',
         liveIn:'3 days',
         dayOfWeek:'Fri',
         date:'23rd Jan',
-        bodyText:'Looking good :-)',
-        collection:'Blog',
-        queued:true,
-        showMenu:false
+        comment:'Looking good :-)',
+        channel:'Everyone',
+        queued:false
       },
       {
         postId: 'c',
         liveIn:'5 days',
         dayOfWeek:'Sun',
         date:'25th Jan',
-        bodyText:'Almost there',
-        channel:'Everyone',
-        queued:false,
-        showMenu:false
+        comment:'Almost there',
+        collection:'Blog',
+        imagePath:'images/avatar-default.png',
+        queued:true
+      },
+      {
+        postId: 'c',
+        liveIn:'5 days',
+        dayOfWeek:'Sun',
+        date:'25th Jan',
+        collection:'Side Comic',
+        imagePath:'images/avatar-default.png',
+        queued:false
       },
       {
         postId: 'd',
         liveIn:'6 days',
         dayOfWeek:'Mon',
         date:'26th Jan',
-        bodyText:'Very nearly there',
-        channel:'HD Channel',
-        queued:true,
-        showMenu:false
+        comment:'Very nearly there',
+        collection:'Blog',
+        filePath:'images/avatar-default.png',
+        queued:true
+      },
+      {
+        postId: 'e',
+        liveIn:'6 days',
+        dayOfWeek:'Mon',
+        date:'26th Jan',
+        collection:'Side Comic',
+        filePath:'images/avatar-default.png',
+        queued:true
       }
     ];
 
