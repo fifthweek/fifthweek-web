@@ -72,6 +72,7 @@ angular.module('webApp')
         scope.focus = service.parseFlag(attrs, 'focus');
         scope.placeholder = attrs.placeholder;
         scope.breakpoint = attrs.breakpoint || 'sm';
+        scope.label = attrs.label;
         scope.inputId = attrs.ngModel.replace('.', '-');
         service.forScope(scope).defineModelAccessor(attrs);
       };
