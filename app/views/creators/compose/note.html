@@ -2,22 +2,7 @@
 
   <form novalidate name="formCompose" ng-show="!model.postLater">
 
-    <fw-form-group>
-      <div class="row">
-        <div class="col-xs-12">
-          <textarea msd-elastic
-                    class="form-control"
-                    name="note"
-                    ng-model="model.input.note"
-                    placeholder="What's happening?"
-                    required
-                    focus=true></textarea>
-        </div>
-        <div class="col-xs-12">
-          <p fw-form-input-invalid-p="required">Please write your note before continuing.</p>
-        </div>
-      </div>
-    </fw-form-group>
+    <fw-form-input-note ng-model="model.input.note" required focus></fw-form-input-note>
 
     <div class="form-group" ng-if="model.channels.length > 1">
       <fw-form-input-select selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>

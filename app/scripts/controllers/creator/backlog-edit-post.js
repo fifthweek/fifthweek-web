@@ -5,7 +5,8 @@ angular.module('webApp').controller('backlogEditPostCtrl',
     $scope.model = {
       isNote: false,
       isImage: false,
-      isFile: false
+      isFile: false,
+      note: 'Hang in there folks, nearly ready!'
     };
 
     if (postId === 'a') {

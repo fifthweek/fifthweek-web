@@ -1,0 +1,18 @@
+<fw-form-group input-name="note">
+  <div class="row">
+    <div class="col-xs-12">
+      <textarea
+        id="{{inputId}}"
+        class="form-control"
+        name="note"
+        ng-model="ngModel[ngModelAccessor]"
+        placeholder="What's happening?"
+        focus="{{focus}}"
+        required="{{required}}"
+        msd-elastic></textarea>
+    </div>
+    <div class="col-xs-12">
+      <p fw-form-input-invalid-p="required">Please write your note before continuing.</p>
+    </div>
+  </div>
+</fw-form-group>

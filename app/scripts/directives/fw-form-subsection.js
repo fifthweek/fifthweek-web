@@ -13,12 +13,18 @@ angular.module('webApp').directive('fwFormSubsection', function () {
     },
     compile: function(templateElement) {
       templateElement.find('summary-placeholder').replaceWith(templateElement.data('summary').contents());
-      templateElement.find('summary-expanded-placeholder').replaceWith(templateElement.data('summary-expanded').contents());
       templateElement.find('section-placeholder').replaceWith(templateElement.data('section').contents());
+
+      var summaryExpanded = templateElement.data('summary-expanded');
+      var hasExpandedSummary = summaryExpanded.length == 1;
+      if (hasExpandedSummary) {
+        templateElement.find('summary-expanded-placeholder').replaceWith(templateElement.data('summary-expanded').contents());
+      }
 
       return {
         pre: function(scope, element, attrs) {
           scope.name = attrs.name;
+          scope.hasExpandedSummary = hasExpandedSummary;
         }
       };
     }

@@ -8,10 +8,10 @@
           {{name}}
         </a>
       </h5>
-      <div class="form-subsection-summary">
+      <div ng-class="{'form-subsection-summary': hasExpandedSummary}">
         <summary-placeholder></summary-placeholder>
       </div>
-      <div class="form-subsection-section">
+      <div class="form-subsection-section" ng-if="hasExpandedSummary">
         <summary-expanded-placeholder></summary-expanded-placeholder>
       </div>
     </div>
