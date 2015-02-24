@@ -4,7 +4,7 @@
         name="editBacklogPostForm">
 
     <div class="form-group">
-      <fw-form-subsection name="Image">
+      <fw-form-subsection name="Image" ng-if="model.isImage">
         <summary>
           <p>Hearts.jpg</p>
         </summary>
@@ -18,9 +18,37 @@
         </section>
       </fw-form-subsection>
 
-      <fw-form-subsection name="Comment">
+      <fw-form-subsection name="File" ng-if="model.isFile">
+        <summary>
+          <p>comic-ebook.pdf</p>
+        </summary>
+        <summary-expanded>
+          <p>
+            Todo...
+          </p>
+        </summary-expanded>
+        <section>
+          This will be an input.
+        </section>
+      </fw-form-subsection>
+
+      <fw-form-subsection name="Comment" ng-if="model.isImage || model.isFile">
         <summary>
           <p>"Nearly there guys!"</p>
+        </summary>
+        <summary-expanded>
+          <p>
+            Todo...
+          </p>
+        </summary-expanded>
+        <section>
+          This will be an input.
+        </section>
+      </fw-form-subsection>
+
+      <fw-form-subsection name="Note" ng-if="model.isNote">
+        <summary>
+          <p>"Hey guys!"</p>
         </summary>
         <summary-expanded>
           <p>
@@ -47,16 +75,17 @@
       </fw-form-subsection>
     </div>
 
-    <button
-      id="save-post-button"
-      class="btn btn-block btn-success"
-      data-loading-text="Saving..."
-      data-event-title="Backlog post edited"
-      data-event-category="Edited post"
-      form-name="editBacklogPostForm"
-      fw-form-submit="save()">Save</button>
-    <button class="btn btn-default btn-block"
-            ng-click="$close()">Cancel</button>
-
+    <div class="row-btn">
+      <button
+        id="save-post-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Saving..."
+        data-event-title="Backlog post edited"
+        data-event-category="Edited post"
+        form-name="editBacklogPostForm"
+        fw-form-submit="save()">Save</button>
+      <button class="btn btn-default btn-block"
+              ng-click="$close()">Cancel</button>
+    </div>
   </form>
 </div>
