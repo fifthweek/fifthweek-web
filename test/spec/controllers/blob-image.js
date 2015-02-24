@@ -33,15 +33,7 @@ describe('blob image controller', function(){
 
   var createController = function(){
     inject(function ($controller) {
-      target = $controller('blobImageCtrl', {
-        $scope: $scope,
-        $q: $q,
-        $timeout: $timeout,
-        blobImageCtrlConstants: blobImageCtrlConstants,
-        azureBlobAvailability: azureBlobAvailability,
-        utilities: utilities,
-        logService: logService
-      });
+      target = $controller('blobImageCtrl', { $scope: $scope });
     });
   };
 

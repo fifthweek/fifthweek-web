@@ -1,80 +1,96 @@
 <fw-panel12 class="page-account-settings">
 
-  <form name="form">
+  <div ng-if="model.errorMessage" class="has-error">
+    <p class="help-block">
+      {{model.errorMessage}}
+    </p>
+  </div>
+  <div ng-if="model.isLoading">
+    <p>
+      <i class="fa fa-refresh fa-spin"></i>
+    </p>
+  </div>
+  <div ng-show="model.accountSettings">
+    <form novalidate
+          role="form"
+          name="form">
 
-    <div class="form-group-file">
-      <div class="row">
-        <div class="col-xs-12 bottom-buffer">
-          <label>Profile Image</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-6 col-s-4 bottom-buffer">
-          <fw-blob-image control="blobImage" width="128px" height="128px" border-radius="2px" thumbnail="128x128-crop"></fw-blob-image>
-        </div>
-        <div class="col-xs-2 bottom-buffer">
-          <fw-file-upload description="Upload" on-upload-complete="onUploadComplete(data)" file-purpose="profile-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
-        </div>
-      </div>
-    </div>
-
-    <fw-form-group>
-      <div class="row">
-        <div class="col-sm-6">
-          <label for="email">Email</label>
-          <div fw-form-input-glyphs>
-            <input type="email"
-                   class="form-control"
-                   name="email"
-                   ng-model="accountSettingsData.email"
-                   placeholder="{{accountSettingsData.emailDefault}}" required/>
+      <div class="form-group-file">
+        <label>Profile Image</label>
+        <div class="row">
+          <div class="col-xs-6 col-s-4 bottom-buffer">
+            <fw-blob-image control="blobImage" width="128px" height="128px" border-radius="2px" thumbnail="128x128-crop"></fw-blob-image>
           </div>
-        </div>
-        <div class="col-md-6">
-          <p fw-form-input-invalid-p>A valid email address is required.</p>
-        </div>
-      </div>
-    </fw-form-group>
-
-    <fw-form-group>
-      <div class="row">
-        <div class="col-sm-6">
-          <label for="username">Username</label>
-          <div fw-form-input-glyphs>
-            <input type="text"
-                   class="form-control"
-                   name="username"
-                   ng-model="accountSettingsData.username"
-                   placeholder="{{accountSettingsData.usernameDefault}}" required/>
+          <div class="col-xs-2 bottom-buffer">
+            <fw-file-upload description="Upload" on-upload-complete="onUploadComplete(data)" file-purpose="profile-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
           </div>
         </div>
       </div>
-    </fw-form-group>
 
-    <fw-form-group>
-      <div class="row">
-        <div class="col-sm-6">
-          <label for="password">Password</label>
-          <div fw-form-input-glyphs>
-            <input type="password"
-                   class="form-control"
-                   ng-model="accountSettingsData.password"
-                   name="username" required/>
+      <fw-form-group>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="email">Email</label>
+            <div fw-form-input-glyphs>
+              <input type="email" id="email" class="form-control" name="email" placeholder="Email"
+                     ng-model="model.accountSettings.email"
+                     required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p fw-form-input-invalid-p>A valid email address is required.</p>
           </div>
         </div>
-      </div>
-    </fw-form-group>
+      </fw-form-group>
 
-    <div class="row-btn">
-      <input type="submit"
-             class="btn btn-block btn-success"
-             value="Save Changes"
-             data-loading-text="Saving..."
-             data-event-title="Account settings saved"
-             data-event-category="Account"
-             form-name="form"
-             fw-form-submit="submitForm()" />
-    </div>
-  </form>
+      <fw-form-group>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="username">Username</label>
+            <div fw-form-input-glyphs>
+              <input type="text" id="username" class="form-control" name="username" placeholder="Username"
+                     ng-model="model.accountSettings.username"
+                     ng-model-options="{ debounce: 500 }"
+                     ng-pattern="/^[a-zA-Z0-9_]+$/"
+                     ng-minlength="2"
+                     ng-maxlength="20"
+                     maxlength="20"
+                     required
+                     fw-check-username-availability>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p fw-form-input-invalid-p="pattern">Letters, numbers and underscores only.</p>
+            <p fw-form-input-invalid-p="minlength">Must be at least 2 characters.</p>
+            <p fw-form-input-invalid-p="maxlength">Allowed 20 characters at most.</p>
+            <p fw-form-input-invalid-p="required">A username is required.</p>
+            <p ng-if="form.username.$pending.username" class="help-block">Checking availability...</p>
+            <p ng-if="form.username.$error.username" class="help-block">This username is already taken!</p>
+          </div>
+        </div>
+      </fw-form-group>
+
+      <fw-form-input-password ng-model="model.password" placeholder="New password" label="Password" breakpoint="md"></fw-form-input-password>
+
+      <div class="row-btn">
+        <div ng-show="form.submissionSucceeded" class="alert alert-success" >
+          <p><i class="fa fa-check"></i> Saved successfully</p>
+        </div>
+        <div ng-show="form.message" class="alert alert-danger sub-form-alert" id="form-message">
+          <p>{{form.message}}</p>
+        </div>
+        <input type="submit"
+               class="btn btn-block btn-success"
+               value="Save Changes"
+               data-loading-text="Saving..."
+               data-event-title="Account settings saved"
+               data-event-category="Account"
+               form-name="form"
+               can-submit="form.$valid"
+               fw-form-submit="submitForm()" />
+      </div>
+    </form>
+
+  </div>
 
 </fw-panel12>
