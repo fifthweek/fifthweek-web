@@ -59,9 +59,14 @@
           <p>Scheduled for: Wednesday 21st Jan, 2015</p>
         </summary>
         <section>
-          This will be an input.
+          <div class="row" ng-if="model.isNote">
+            <div class="col-sm-7">
+              <div fw-datepicker></div>
+            </div>
+          </div>
         </section>
       </fw-form-subsection>
+
     </form-body>
     <form-buttons>
       <button

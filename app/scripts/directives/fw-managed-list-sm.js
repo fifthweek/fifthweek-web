@@ -4,6 +4,7 @@ angular.module('webApp').directive('fwManagedListSm', function () {
   return {
     restrict: 'E',
     transclude: true,
+    replace: true,
     scope: {
       itemName: '@',
       items: '=',
