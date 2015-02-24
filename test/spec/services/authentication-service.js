@@ -559,5 +559,72 @@ describe('authentication service', function() {
         expect(result.message).toBe('Cannot refresh the authentication token because the user is not authenticated.');
       });
     });
+
+    describe('when updating the username', function(){
+
+      beforeEach(function(){
+        localStorageService.set = jasmine.createSpy();
+        spyOn($rootScope, '$broadcast');
+      });
+
+      it('should update the username and persist', function(){
+
+        target.currentUser = { authenticated: true, username: 'username', userId: 'userId' };
+
+        target.updateUsername('userId', 'username2');
+        $rootScope.$apply();
+
+        expect(target.currentUser.authenticated).toBe(true);
+        expect(target.currentUser.username).toBe('username2');
+        expect(target.currentUser.userId).toBe('userId');
+      });
+
+      it('should persist the new username', function(){
+
+        target.currentUser = { authenticated: true, username: 'username', userId: 'userId' };
+
+        target.updateUsername('userId', 'username2');
+        $rootScope.$apply();
+
+        expect(localStorageService.set).toHaveBeenCalled();
+      });
+
+      it('should broadcast the current user changed event', function(){
+
+        target.currentUser = { authenticated: true, username: 'username', userId: 'userId' };
+
+        target.updateUsername('userId', 'username2');
+        $rootScope.$apply();
+
+        expect($rootScope.$broadcast).toHaveBeenCalled();
+        expect($rootScope.$broadcast.calls.first().args[0]).toBe(authenticationServiceConstants.currentUserChangedEvent);
+      });
+
+      it('should not update the if the user is not authenticated', function(){
+
+        target.currentUser = { authenticated: false, username: 'username', userId: 'userId' };
+
+        target.updateUsername('userId', 'username2');
+        $rootScope.$apply();
+
+        expect(target.currentUser.username).toBe('username');
+        expect($rootScope.$broadcast).not.toHaveBeenCalled();
+        expect(localStorageService.set).not.toHaveBeenCalled();
+      });
+
+      it('should not update the if the userId does not match the current user', function(){
+
+        target.currentUser = { authenticated: true, username: 'username', userId: 'userId' };
+
+        target.updateUsername('userId2', 'username2');
+        $rootScope.$apply();
+
+        expect(target.currentUser.authenticated).toBe(true);
+        expect(target.currentUser.username).toBe('username');
+        expect(target.currentUser.userId).toBe('userId');
+        expect($rootScope.$broadcast).not.toHaveBeenCalled();
+        expect(localStorageService.set).not.toHaveBeenCalled();
+      });
+    });
   });
 });

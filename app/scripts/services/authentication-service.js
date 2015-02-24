@@ -62,6 +62,51 @@ angular.module('webApp')
       broadcastCurrentUserChangedEvent();
     };
 
+    var updateUsername = function(userId, username){
+      if(service.currentUser.authenticated && service.currentUser.userId === userId){
+        service.currentUser.username = username;
+
+        localStorageService.set(localStorageName, service.currentUser);
+        broadcastCurrentUserChangedEvent();
+      }
+    };
+
+    var extractAuthenticationDataFromResponse = function (response){
+      return $q(function(resolve, reject) {
+        var username = response.data.username;
+        if (!username ){
+          return reject(new FifthweekError('The username was not returned'));
+        }
+
+        var roles = [];
+        var rolesString = response.data.roles;
+        if (rolesString)
+        {
+          roles = response.data.roles.split(',');
+        }
+
+        var userId = response.data.user_id;
+        if (!userId){
+          return reject(new FifthweekError('The user ID was not returned'));
+        }
+
+        var accessToken = response.data.access_token;
+        if (!accessToken)
+        {
+          return reject(new FifthweekError('The access token was not returned'));
+        }
+
+        var refreshToken = response.data.refresh_token;
+        if (!refreshToken)
+        {
+          return reject(new FifthweekError('The refresh token was not returned'));
+        }
+
+        setCurrentUserDetails(accessToken, refreshToken, userId, username, roles);
+        return resolve();
+      });
+    };
+
     service.initialize = function() {
       var storedUser = localStorageService.get(localStorageName);
       if (storedUser) {
@@ -148,40 +193,8 @@ angular.module('webApp')
       return fetchAggregateUserState.updateFromServer();
     };
 
-    var extractAuthenticationDataFromResponse = function (response){
-      return $q(function(resolve, reject) {
-        var username = response.data.username;
-        if (!username ){
-          return reject(new FifthweekError('The username was not returned'));
-        }
-
-        var roles = [];
-        var rolesString = response.data.roles;
-        if (rolesString)
-        {
-          roles = response.data.roles.split(',');
-        }
-
-        var userId = response.data.user_id;
-        if (!userId){
-          return reject(new FifthweekError('The user ID was not returned'));
-        }
-
-        var accessToken = response.data.access_token;
-        if (!accessToken)
-        {
-          return reject(new FifthweekError('The access token was not returned'));
-        }
-
-        var refreshToken = response.data.refresh_token;
-        if (!refreshToken)
-        {
-          return reject(new FifthweekError('The refresh token was not returned'));
-        }
-
-        setCurrentUserDetails(accessToken, refreshToken, userId, username, roles);
-        return resolve();
-      });
+    service.updateUsername = function(userId, username){
+      updateUsername(userId, username);
     };
 
     return service;
