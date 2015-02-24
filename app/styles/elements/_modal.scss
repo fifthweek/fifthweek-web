@@ -1,7 +1,33 @@
 @import '_base';
 
+@mixin modal-box-shadow {
+  box-shadow: 0 2px 26px rgba(0, 0, 0, .3), 0 0 0 1px rgba(0, 0, 0, .05);
+}
+
 .modal-content {
   border-radius: $border-radius;
+  @include modal-box-shadow;
+
+  h4 {
+    font-size:16px;
+    background: $body-bg;
+    border-bottom: 1px solid $grey-light-3;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    margin-bottom: 0;
+  }
+
+  .row-btn {
+    background: $white-2;
+    border-top: 1px solid $grey-light-3;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    padding:($modal-padding / 1.618) $modal-padding;
+  }
+
+  .modal-body, h4 {
+    padding:$modal-padding;
+  }
 }
 
 .modal-dialog {
@@ -12,16 +38,12 @@
 .modal-backdrop.in {
   position:fixed;
   height:100%;
-  opacity:0.6;
-}
-.modal-body {
-  padding:$main-cont-padding-small;
+  opacity:0.4;
 }
 
 .modal-sm {
   width: 360px; /* Deleting release times is currently the longest modal */
 }
-
 
 .modal-fw-large-image {
   .modal-dialog {
@@ -39,8 +61,7 @@
     text-align:center;
   }
   img {
+    @include modal-box-shadow;
     margin:0 auto;
-    box-shadow:0 5px 15px rgba(0, 0, 0, 0.5);
   }
-
 }

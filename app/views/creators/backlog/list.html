@@ -50,7 +50,7 @@
             <div class="row main">
               <div class="col-xs-12">
                 <div ng-if="post.imagePath" class="image-content">
-                  <img ng-src="{{post.imagePath}}" ng-click="openModalImage(post)"/>
+                  <img ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
                 </div>
 
                 <a ng-if="post.filePath" class="file-content" href="{{post.filePath}}">

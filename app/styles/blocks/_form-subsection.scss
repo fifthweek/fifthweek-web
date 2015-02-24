@@ -43,6 +43,20 @@ $summary-opacity-transition-duration:0.1s;
   }
 }
 
+.modal-content {
+  .form-subsection {
+    margin-left: $modal-padding * -1;
+    margin-right: $modal-padding * -1;
+    padding-left: $modal-padding;
+    padding-right: $modal-padding;
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom:0;
+    }
+  }
+}
+
 .form-subsection-expanded {
   padding-bottom: 0; /* Expanded complex is typically quite complex and includes its own bottom margins */
   @include transition-delays(0.1s);
