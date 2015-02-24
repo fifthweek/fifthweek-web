@@ -23,7 +23,7 @@ div[fw-file-upload] {
   margin-bottom: $form-group-margin;
 }
 .form-group-file {
-  margin-bottom: $form-group-margin - 5;
+  margin-bottom: $form-group-margin - $form-group-inner-margin;
 }
 
 .sub-form-alert {
@@ -112,4 +112,6 @@ fieldset[disabled] .form-control {
   }
 }
 
-.bottom-buffer { margin-bottom:10px; }
+.bottom-buffer {
+  margin-bottom:$form-group-inner-margin;
+}
