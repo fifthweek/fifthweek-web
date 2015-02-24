@@ -36,27 +36,13 @@
         <fw-form-input-select selected-item="model.input.selectedCollection" items="model.collections"></fw-form-input-select>
       </div>
 
-      <fw-form-group ng-if="model.collections.length === 0">
-        <div class="row">
-          <div class="col-sm-6">
-            <div fw-form-input-glyphs>
-              <input type="text"
-                     class="form-control"
-                     name="newCollectionName"
-                     placeholder="New collection name"
-                     ng-model="model.input.newCollectionName"
-                     ng-maxlength="50"
-                     maxlength="50"
-                     required />
-            </div>
-            <small>(it's like an album, except not just for photos!)</small>
-          </div>
-          <div class="col-sm-6">
-            <p fw-form-input-invalid-p="maxlength">Allowed 50 characters at most.</p>
-            <p fw-form-input-invalid-p="required">A collection name is required.</p>
-          </div>
-        </div>
-        </fw-form-group>
+      <fw-form-input-collection-name
+        ng-if="model.collections.length === 0"
+        ng-model="model.input.newCollectionName"
+        placeholder="New collection name"
+        show-help
+        required>
+      </fw-form-input-collection-name>
 
       <div class="row-btn">
         <button type="submit"
