@@ -16,7 +16,7 @@ angular.module('webApp').directive('fwFormSubsection', function () {
       templateElement.find('section-placeholder').replaceWith(templateElement.data('section').contents());
 
       var summaryExpanded = templateElement.data('summary-expanded');
-      var hasExpandedSummary = summaryExpanded.length == 1;
+      var hasExpandedSummary = summaryExpanded.length === 1;
       if (hasExpandedSummary) {
         templateElement.find('summary-expanded-placeholder').replaceWith(templateElement.data('summary-expanded').contents());
       }
