@@ -8,10 +8,10 @@
           {{name}}
         </a>
       </h5>
-      <div ng-class="{'form-subsection-summary': hasExpandedSummary}">
+      <div ng-class="{'if-collapsed': hasExpandedSummary}">
         <summary-placeholder></summary-placeholder>
       </div>
-      <div class="form-subsection-section" ng-if="hasExpandedSummary">
+      <div class="if-expanded" ng-if="hasExpandedSummary">
         <summary-expanded-placeholder></summary-expanded-placeholder>
       </div>
     </div>
@@ -23,7 +23,7 @@
         close
       </button>
     </div>
-    <div class="col-xs-12 form-subsection-section">
+    <div class="col-xs-12 form-subsection-section if-expanded">
       <section-placeholder></section-placeholder>
     </div>
   </div>

@@ -1,10 +1,5 @@
 @import '_base';
 
-$section-max-height:500px; /* Arbitrarily large. */
-$summary-max-height:50px; /* Arbitrarily large. */
-$section-transition-duration:0.4s;
-$summary-opacity-transition-duration:0.1s;
-
 .form-subsection {
   border:1px solid transparent;
   border-top-color: $grey-light-3;
@@ -22,10 +17,6 @@ $summary-opacity-transition-duration:0.1s;
 
   .form-subsection-section > *:first-child {
     margin-top: 10px;
-  }
-
-  .form-subsection-summary, .form-subsection-section {
-    overflow: hidden;
   }
 }
 
@@ -65,25 +56,10 @@ $summary-opacity-transition-duration:0.1s;
   .if-collapsed {
     display: none;
   }
-  .form-subsection-summary {
-    opacity:0;
-    max-height: 0;
-  }
-  .form-subsection-section {
-    max-height: $section-max-height;
-  }
 }
 
 .form-subsection-collapsed {
-
   .if-expanded {
     display: none;
-  }
-  .form-subsection-summary {
-    opacity:1;
-    max-height: $summary-max-height;
-  }
-  .form-subsection-section {
-    max-height: 0;
   }
 }
