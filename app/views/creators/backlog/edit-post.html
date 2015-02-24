@@ -44,10 +44,17 @@
       </div>
     </div>
 
-    <fw-form-input-note ng-if="model.isNote" ng-model="model.note" required focus></fw-form-input-note>
+    <div ng-if="model.isNote">
+      <fw-form-input-note ng-model="model.note" required focus></fw-form-input-note>
+
+      <label>Share with</label>
+      <div class="form-group" ng-if="model.channels.length > 1">
+        <fw-form-input-select selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
+      </div>
+    </div>
 
     <div class="form-group">
-      <fw-form-subsection name="Release Time">
+      <fw-form-subsection name="Release time">
         <summary>
           <p>Scheduled for: Wednesday 21st Jan, 2015</p>
         </summary>

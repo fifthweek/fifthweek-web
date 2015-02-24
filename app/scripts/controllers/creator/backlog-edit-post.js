@@ -2,6 +2,21 @@ angular.module('webApp').controller('backlogEditPostCtrl',
   function($scope, postId) {
     'use strict';
 
+    var channels = [
+      {
+        name:'Everyone',
+        value:'channel1' // Default channel
+      },
+      {
+        name:'"Extras Channel" Only',
+        value:'channel2'
+      },
+      {
+        name:'"HD Channel" Only',
+        value:'channel3'
+      }
+    ];
+
     var collections = [
       {
         name:'Blog',
@@ -24,7 +39,9 @@ angular.module('webApp').controller('backlogEditPostCtrl',
       note: 'Hang in there folks, nearly ready!',
       comment: 'Nearly there guys!',
       collections: collections,
-      selectedCollection: collections[0]
+      channels: channels,
+      selectedCollection: collections[0],
+      selectedChannel: channels[0]
     };
 
     if (postId === 'a') {
