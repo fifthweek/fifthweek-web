@@ -95,7 +95,7 @@
         data-event-title="Backlog post edited"
         data-event-category="Edited post"
         form-name="editBacklogPostForm"
-        fw-form-submit="save()">Save</button>
+        fw-form-submit="save()">{{model.scheduleMode === scheduleModes.now ? 'Post' : 'Save'}}</button>
     </form-buttons>
   </fw-form-modal>
 
