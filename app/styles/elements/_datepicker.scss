@@ -1,8 +1,6 @@
 @import '_base';
 
 div[fw-datepicker] {
-  margin-bottom:$main-cont-padding-large - 10px;
-
   .input-group {
     border:solid 1px $grey-light-5;
     border-radius:$input-border-radius;

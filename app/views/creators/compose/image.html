@@ -51,21 +51,23 @@
 
   <form novalidate name="formSchedule" ng-show="model.postLater">
 
-    <div class="radio">
-      <label><input type="radio"
-                    ng-model="model.postToQueue"
-                    ng-value="true"/> After other posts in queue (will appear Wednesday 7th Jan)</label>
-    </div>
+    <div class="form-group">
+      <div class="radio">
+        <label><input type="radio"
+                      ng-model="model.postToQueue"
+                      ng-value="true"/> After other posts in queue (will appear Wednesday 7th Jan)</label>
+      </div>
 
-    <div class="radio">
-      <label><input type="radio"
-                    ng-model="model.postToQueue"
-                    ng-value="false" /> On specific date:</label>
-    </div>
+      <div class="radio">
+        <label><input type="radio"
+                      ng-model="model.postToQueue"
+                      ng-value="false" /> On specific date:</label>
+      </div>
 
-    <div class="row">
-      <div class="col-sm-7">
-        <div fw-datepicker ng-disabled="model.postToQueue"></div>
+      <div class="row">
+        <div class="col-sm-7">
+          <div fw-datepicker ng-disabled="model.postToQueue"></div>
+        </div>
       </div>
     </div>
 

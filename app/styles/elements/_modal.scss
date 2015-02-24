@@ -37,6 +37,10 @@
   .modal-body, h4 {
     padding:$modal-padding;
   }
+
+  .modal-body {
+    padding-bottom: 0;
+  }
 }
 
 .modal-dialog {
