@@ -14,7 +14,7 @@
           focus="{{focus}}"
           required="{{required}}">
       </div>
-      <small>(it's like an album, except not just for photos!)</small>
+      <small ng-if="showHelp">(it's like an album, except not just for photos!)</small>
     </div>
     <div class="col-{{breakpoint}}-6">
       <p fw-form-input-invalid-p="maxlength">Allowed 50 characters at most.</p>

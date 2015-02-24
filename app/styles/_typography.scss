@@ -24,6 +24,17 @@ h4,
 h5,
 h6 {
   color:$grey-dark;
+
+  span.tail {
+    color:$grey-dark-3;
+    margin-left: 5px;
+    &::before {
+      content: "(";
+    }
+    &::after {
+      content: ")";
+    }
+  }
 }
 
 h1 {
@@ -59,6 +70,8 @@ h5 {
     color:$grey-dark;
   }
 }
+
+
 
 .heading-light {
   font-weight:normal;

@@ -20,10 +20,10 @@ div[fw-file-upload] {
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: $form-group-margin;
 }
-.form-group-image {
-  margin-bottom: 32px;
+.form-group-file {
+  margin-bottom: $form-group-margin - 5;
 }
 
 .sub-form-alert {

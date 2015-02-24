@@ -1,19 +1,5 @@
 @import '_base';
 
-.page-customize-collections {
-  .row {
-    .channel {
-      color:$grey-dark-3;
-      margin-left: 5px;
-
-      &::before {
-        content: "-";
-        margin-right: 5px;
-      }
-    }
-  }
-}
-
 .release-times span {
   color:$grey-dark-3;
   margin-right: 5px;

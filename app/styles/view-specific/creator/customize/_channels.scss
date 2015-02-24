@@ -4,16 +4,6 @@ $html-name-space:'.page-customize-channels';
 
 #{$html-name-space} {
   .row {
-    .price {
-      color:$grey-dark-3;
-      margin-left: 5px;
-
-      &::before {
-        content: "-";
-        margin-right: 5px;
-      }
-    }
-
     ul {
       margin-bottom: 0;
 

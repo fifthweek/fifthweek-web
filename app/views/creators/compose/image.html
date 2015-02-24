@@ -2,7 +2,7 @@
 
   <form novalidate name="formCompose" ng-show="!model.postLater">
 
-    <div class="form-group">
+    <div class="form-group-file">
       <div class="row">
         <div class="col-xs-12 bottom-buffer">
           <label>Post an Image</label>
@@ -19,18 +19,11 @@
     </div>
 
     <div ng-if="model.uploaded">
-      <fw-form-group>
-        <div class="row">
-          <div class="col-xs-12">
-            <textarea msd-elastic
-                      class="form-control"
-                      name="comment"
-                      ng-model="newImageData.comment"
-                      placeholder="Add a comment, if you like"
-                      focus=true></textarea>
-          </div>
-        </div>
-      </fw-form-group>
+      <fw-form-input-comment
+        ng-model="model.input.comment"
+        placeholder="Add a comment, if you like"
+        focus>
+      </fw-form-input-comment>
 
       <div class="form-group" ng-if="model.collections.length > 0">
         <fw-form-input-select selected-item="model.input.selectedCollection" items="model.collections"></fw-form-input-select>

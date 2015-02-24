@@ -3,39 +3,50 @@
         role="form"
         name="editBacklogPostForm">
 
-    <div class="form-group">
-      <fw-form-subsection name="Image" ng-if="model.isImage">
-        <summary>
-          <p>Hearts.jpg</p>
-        </summary>
-        <section>
-          This will be an input.
-        </section>
-      </fw-form-subsection>
+    <h4 ng-if="model.isNote">Note <span class="tail">Edit Post</span></h4>
+    <h4 ng-if="model.isImage">Image <span class="tail">Edit Post</span></h4>
+    <h4 ng-if="model.isFile">File <span class="tail">Edit Post</span></h4>
 
-      <fw-form-subsection name="File" ng-if="model.isFile">
-        <summary>
-          <p>comic-ebook.pdf</p>
-        </summary>
-        <section>
-          This will be an input.
-        </section>
-      </fw-form-subsection>
+    <div ng-if="model.isImage || model.isFile">
 
-      <fw-form-subsection name="Comment" ng-if="model.isImage || model.isFile">
-        <summary>
-          <p>"Nearly there guys!"</p>
-        </summary>
-        <section>
-          This will be an input.
-        </section>
-      </fw-form-subsection>
-
-      <div ng-if="model.isNote">
-        <label>Note</label>
-        <fw-form-input-note ng-model="model.note" required focus></fw-form-input-note>
+      <div class="form-group-file" ng-if="model.isFile">
+        <div class="row">
+          <div class="col-s-6 bottom-buffer">
+            <p>comic-ebook.pdf</p>
+          </div>
+          <div class="col-s-6 bottom-buffer">
+            <fw-file-upload description="Upload File" on-upload-complete="onUploadComplete(data)" file-purpose="post-file" accept="*"></fw-file-upload>
+          </div>
+        </div>
       </div>
 
+      <div class="form-group-file" ng-if="model.isImage">
+        <div class="row">
+          <div class="col-s-6 bottom-buffer">
+            <fw-blob-image control="blobImage" pending-width="300px" pending-height="200px" thumbnail="300x300"></fw-blob-image>
+          </div>
+          <div class="col-s-6 bottom-buffer">
+            <fw-file-upload description="Upload Image" on-upload-complete="onUploadComplete(data)" file-purpose="post-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
+          </div>
+        </div>
+      </div>
+
+      <label>Comment</label>
+      <fw-form-input-comment
+        ng-model="model.comment"
+        placeholder="Add a comment, if you like"
+        focus>
+      </fw-form-input-comment>
+
+      <label>Collection</label>
+      <div class="form-group">
+        <fw-form-input-select selected-item="model.selectedCollection" items="model.collections"></fw-form-input-select>
+      </div>
+    </div>
+
+    <fw-form-input-note ng-if="model.isNote" ng-model="model.note" required focus></fw-form-input-note>
+
+    <div class="form-group">
       <fw-form-subsection name="Release Time">
         <summary>
           <p>Scheduled for: Wednesday 21st Jan, 2015</p>
