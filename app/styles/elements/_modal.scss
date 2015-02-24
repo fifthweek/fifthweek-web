@@ -22,7 +22,7 @@
     border-top: 1px solid $grey-light-3;
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
-    padding:($modal-padding / 1.618) $modal-padding;
+    padding:($modal-padding - 5) $modal-padding;
   }
 
   .modal-body, h4 {

@@ -8,13 +8,15 @@
     <div ng-if="model.isImage || model.isFile">
 
       <div class="form-group-file" ng-if="model.isFile">
-        <label>File</label>
         <div class="row">
           <div class="col-s-6 bottom-buffer">
-            <p>comic-ebook.pdf</p>
+            <a class="btn-file-download" href="images/avatar-default.png" target="_blank">
+              <i class="fa fa-link"></i>
+              <span>comic-ebook.pdf</span>
+            </a>
           </div>
           <div class="col-s-6 bottom-buffer">
-            <fw-file-upload description="Upload File" on-upload-complete="onUploadComplete(data)" file-purpose="post-file" accept="*"></fw-file-upload>
+            <fw-file-upload class="pull-right" description="Upload File" on-upload-complete="onUploadComplete(data)" file-purpose="post-file" accept="*"></fw-file-upload>
           </div>
         </div>
       </div>

@@ -53,7 +53,7 @@
                   <img ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
                 </div>
 
-                <a ng-if="post.filePath" class="file-content" href="{{post.filePath}}">
+                <a ng-if="post.filePath" class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">
                   <i class="fa fa-link"></i>
                   <span>{{post.fileName}}</span>
                 </a>
