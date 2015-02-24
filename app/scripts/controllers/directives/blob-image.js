@@ -30,6 +30,10 @@ angular.module('webApp')
 
     var waitForImage = function(){
 
+      if(!pendingImageData){
+        return $q.when(); // No longer waiting for an image.
+      }
+
       if(_.now() > pendingImageDataExpiry){
         return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for image ' + pendingImageData.fileUri + ' to be available.'));
       }
@@ -49,7 +53,17 @@ angular.module('webApp')
       return $timeout(waitForImage, intervalMilliseconds);
     };
 
-    var handleUpdateEvent = function(event, fileUri, containerName){
+    var handleUpdateEvent = function(event, fileUri, containerName, availableImmediately){
+
+      if(!fileUri){
+        // Reset and cancel existing checks.
+        $scope.model.errorMessage = undefined;
+        $scope.model.imageUri = undefined;
+        $scope.model.updating = false;
+        pendingImageData = undefined;
+        return $q.when();
+      }
+
       $scope.model.errorMessage = undefined;
       $scope.model.imageUri = undefined;
       $scope.model.updating = true;
@@ -61,15 +75,19 @@ angular.module('webApp')
         containerName: containerName
       };
 
-      if(!isAlreadyWaiting){
-        return pauseAndWaitForImage(blobImageCtrlConstants.initialWaitMilliseconds)
-          .catch(function(error){
-            logService.error(error);
-            $scope.model.errorMessage = utilities.getFriendlyErrorMessage(error);
-            $scope.model.updating = false;
-            pendingImageData = undefined;
-          });
+      if(isAlreadyWaiting) {
+        return $q.when();
       }
+
+      var initialInterval = availableImmediately ? 0 : blobImageCtrlConstants.initialWaitMilliseconds;
+
+      return pauseAndWaitForImage(initialInterval)
+        .catch(function(error){
+          logService.error(error);
+          $scope.model.errorMessage = utilities.getFriendlyErrorMessage(error);
+          $scope.model.updating = false;
+          pendingImageData = undefined;
+        });
     };
 
     $scope.$on(blobImageCtrlConstants.updateEvent, handleUpdateEvent);

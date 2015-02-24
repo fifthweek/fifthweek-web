@@ -68,9 +68,35 @@ describe('fw-blob-image directive', function(){
       var isolateScope = element.isolateScope();
       spyOn(isolateScope, '$broadcast');
 
+      isolateScope.internalControl.update('uri', 'containerName', true);
+
+      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri', 'containerName', true);
+    });
+
+    it('should broadcast an event when update is called without the availableImmediately parameter', function(){
+      var element = angular.element('<fw-blob-image />');
+      $compile(element)(scope);
+      scope.$digest();
+
+      var isolateScope = element.isolateScope();
+      spyOn(isolateScope, '$broadcast');
+
       isolateScope.internalControl.update('uri', 'containerName');
 
-      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
+      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri', 'containerName', undefined);
+    });
+
+    it('should broadcast an event when update is called without any parameters', function(){
+      var element = angular.element('<fw-blob-image />');
+      $compile(element)(scope);
+      scope.$digest();
+
+      var isolateScope = element.isolateScope();
+      spyOn(isolateScope, '$broadcast');
+
+      isolateScope.internalControl.update();
+
+      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent);
     });
 
     it('should broadcast an event with the thumbnail url when update is called and thumbnail is specified', function(){
@@ -81,9 +107,9 @@ describe('fw-blob-image directive', function(){
       var isolateScope = element.isolateScope();
       spyOn(isolateScope, '$broadcast');
 
-      isolateScope.internalControl.update('uri', 'containerName');
+      isolateScope.internalControl.update('uri', 'containerName', true);
 
-      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri/thumb', 'containerName');
+      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri/thumb', 'containerName', true);
     });
   });
 

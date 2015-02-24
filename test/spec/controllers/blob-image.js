@@ -248,5 +248,47 @@ describe('blob image controller', function(){
       $timeout.flush();
       expect($scope.model.errorMessage).toBe('Timeout');
     });
+
+    it('should not start checking availability if the update event has no arguments', function(){
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent);
+      $scope.$apply();
+      $timeout.flush();
+      expect($scope.model.updating).toBe(false);
+      expect($scope.model.imageUri).toBeUndefined();
+      expect($scope.model.errorMessage).toBeUndefined();
+    });
+
+    it('should reset the model to defaults if the update event has no arguments', function(){
+      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
+      $scope.$apply();
+      $timeout.flush();
+      expect($scope.model.imageUri).toBe('uri?sig');
+      expect($scope.model.errorMessage).toBeUndefined();
+
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent);
+      $scope.$apply();
+      $timeout.flush();
+      expect($scope.model.updating).toBe(false);
+      expect($scope.model.imageUri).toBeUndefined();
+      expect($scope.model.errorMessage).toBeUndefined();
+    });
+
+    it('should stop checking availability if interrupted with an update event with no arguments', function(){
+      azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
+      $scope.$apply();
+      $timeout.flush();
+      expect($scope.model.errorMessage).toBeUndefined();
+      expect($scope.model.imageUri).toBeUndefined();
+      expect($scope.model.updating).toBe(true);
+
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent);
+      $scope.$apply();
+      $timeout.flush();
+      expect($scope.model.updating).toBe(false);
+      expect($scope.model.imageUri).toBeUndefined();
+      expect($scope.model.errorMessage).toBeUndefined();
+    });
   });
 });
