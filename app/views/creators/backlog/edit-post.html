@@ -59,11 +59,31 @@
           <p>Currently scheduled for <strong>Wednesday 21st Jan, 2015</strong></p>
         </summary>
         <section>
-          <div class="row" ng-if="model.isNote">
+
+          <div class="radio">
+            <label><input type="radio"
+                          ng-model="model.scheduleMode"
+                          ng-value="scheduleModes.now"/> Post now</label>
+          </div>
+
+          <div class="radio" ng-if="model.isImage || model.isFile">
+            <label><input type="radio"
+                          ng-model="model.scheduleMode"
+                          ng-value="scheduleModes.queued" /> Determined by queue</label>
+          </div>
+
+          <div class="radio">
+            <label><input type="radio"
+                          ng-model="model.scheduleMode"
+                          ng-value="scheduleModes.scheduled" /> On specific date:</label>
+          </div>
+
+          <div class="row">
             <div class="col-sm-7">
-              <div fw-datepicker></div>
+              <div fw-datepicker ng-disabled="model.scheduleMode !== scheduleModes.scheduled"></div>
             </div>
           </div>
+
         </section>
       </fw-form-subsection>
 

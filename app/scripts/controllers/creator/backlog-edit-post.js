@@ -32,6 +32,12 @@ angular.module('webApp').controller('backlogEditPostCtrl',
       }
     ];
 
+    $scope.scheduleModes = {
+      now: 0,
+      scheduled: 1,
+      queued: 2
+    };
+
     $scope.model = {
       isNote: false,
       isImage: false,
@@ -41,7 +47,8 @@ angular.module('webApp').controller('backlogEditPostCtrl',
       collections: collections,
       channels: channels,
       selectedCollection: collections[0],
-      selectedChannel: channels[0]
+      selectedChannel: channels[0],
+      scheduleMode: $scope.scheduleModes.scheduled
     };
 
     if (postId === 'a') {
