@@ -15,6 +15,12 @@
     float:right;
   }
 
+  .form-subsection-summary {
+    strong {
+      color: $grey-dark-2;
+    }
+  }
+
   .form-subsection-section > *:first-child {
     margin-top: 10px;
   }
