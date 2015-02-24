@@ -1,6 +1,4 @@
-<fw-breadcrumb current="Edit Post"></fw-breadcrumb>
-
-<fw-panel12>
+<div class="modal-body restore-row-behaviour">
   <form novalidate
         role="form"
         name="editBacklogPostForm">
@@ -49,18 +47,16 @@
       </fw-form-subsection>
     </div>
 
-    <div class="row-btn">
-      <button
-        id="save-post-button"
-        class="btn btn-block btn-success"
-        data-loading-text="Saving..."
-        data-event-title="Backlog post edited"
-        data-event-category="Edited post"
-        form-name="editBacklogPostForm"
-        fw-form-submit="save()">Save</button>
-      <button class="btn btn-default btn-block"
-              ui-sref="creators.backlog">Cancel</button>
-    </div>
+    <button
+      id="save-post-button"
+      class="btn btn-block btn-success"
+      data-loading-text="Saving..."
+      data-event-title="Backlog post edited"
+      data-event-category="Edited post"
+      form-name="editBacklogPostForm"
+      fw-form-submit="save()">Save</button>
+    <button class="btn btn-default btn-block"
+            ng-click="$close()">Cancel</button>
 
   </form>
-</fw-panel12>
+</div>

@@ -71,29 +71,33 @@ angular.module('webApp').controller('backlogCtrl',
       }
     ];
 
-
-    $scope.openModalImage = function (_post) {
-
-        var modalInstance = $modal.open({
-            controller: "ModalBacklogCtrl",
-            templateUrl: 'myModalContent.html',
-            windowClass: 'modal-fw-large-image',
-            resolve: {
-                post: function()
-                {
-                    return _post;
-                }
-            }
-        });
+    $scope.viewImage = function (post) {
+      $modal.open({
+        controller: "fullSizeImageModalCtrl",
+        templateUrl: 'views/full-size-image-modal.html',
+        windowClass: 'modal-fw-large-image',
+        resolve: {
+          imagePath: function() {
+            return post.imagePath;
+          }
+        }
+      });
     };
 
-
-
+    $scope.edit = function(postId) {
+      $modal.open({
+        controller: "backlogEditPostCtrl",
+        templateUrl: 'views/creators/backlog/edit-post.html',
+        resolve: {
+          postId: function() {
+            return postId;
+          }
+        }
+      });
+    };
 
     $scope.delete = function(postId) {
 
     };
-
-
   }
 );
