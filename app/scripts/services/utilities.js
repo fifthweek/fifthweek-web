@@ -2,7 +2,7 @@
 
 angular.module('webApp')
   .factory('utilities',
-  function(fifthweekConstants) {
+  function(fifthweekConstants, $parse) {
     'use strict';
 
     var service = {};
@@ -56,13 +56,8 @@ angular.module('webApp')
         if (ngModelLength === -1) {
           throw new FifthweekError('Must not be bound to primitive');
         }
-        if (attrs.ngModel.indexOf('.') !== ngModelLength) {
-          // Thought about using eval, except a little unsafe. Lodash doesn't appear
-          // to have a way of doing this. Would be good to see how Angular does it.
-          throw new FifthweekError('Nested properties currently not supported (but easy to add!)');
-        }
 
-        scope.ngModel = scope[attrs.ngModel.substring(0, ngModelLength)];
+        scope.ngModel = $parse(attrs.ngModel.substring(0, ngModelLength))(scope);
         scope.ngModelAccessor = attrs.ngModel.substring(ngModelLength + 1);
       };
 

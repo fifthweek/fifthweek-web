@@ -126,6 +126,36 @@ describe('utilities', function() {
 
         expect(scope.ngModelAccessor).toBe('primitive');
       });
+
+      describe('when property is nested', function() {
+        it('should set ngModel to the base object', function() {
+          scope.base = {
+            base2: {
+              primitive: 'hello'
+            }
+          };
+
+          scopeUtilities.defineModelAccessor({
+            ngModel: 'base.base2.primitive'
+          });
+
+          expect(scope.ngModel).toBe(scope.base.base2);
+        });
+
+        it('should set ngModelAccessor to the accessor object', function() {
+          scope.base = {
+            base2: {
+              primitive: 'hello'
+            }
+          };
+
+          scopeUtilities.defineModelAccessor({
+            ngModel: 'base.base2.primitive'
+          });
+
+          expect(scope.ngModelAccessor).toBe('primitive');
+        });
+      });
     });
   });
 
