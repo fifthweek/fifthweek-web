@@ -62,7 +62,22 @@ angular.module('webApp')
         name: 'Backlog',
         state: states.creators.backlog.name,
         icon: 'fa fa-sort-amount-desc',
-        color: 'yellow'
+        color: 'yellow',
+        secondary:
+          [
+            {
+              name: 'Future Timeline',
+              state: states.creators.backlog.timeline.name,
+              icon: 'fa fa-clock-o',
+              color: 'yellow'
+            },
+            {
+              name: 'Queues',
+              state: states.creators.backlog.queues.name,
+              icon: 'fa fa-caret-square-o-right',
+              color: 'yellow'
+            }
+          ]
       },
       {
         name: 'Customize',

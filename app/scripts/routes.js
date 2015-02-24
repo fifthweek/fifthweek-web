@@ -55,11 +55,11 @@ angular.module('routes', ['ui.router'])
       },
       backlog: {
         name: 'creators.backlog',
-        backlog: {
-          name: 'creators.backlog.backlog'
+        timeline: {
+          name: 'creators.backlog.timeline'
         },
-        edit: {
-          name: 'creators.backlog.edit'
+        queues: {
+          name: 'creators.backlog.queues'
         }
       },
       customize: {
@@ -316,7 +316,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.backlog.name, {
         url: '/backlog',
         templateUrl: 'views/creators/backlog/index.html',
-        redirectTo: states.creators.backlog.backlog.name,
+        redirectTo: states.creators.backlog.timeline.name,
         requireSubscription: true,
         data : {
           access: {
@@ -324,26 +324,26 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.backlog.backlog.name, {
+      .state(states.creators.backlog.timeline.name, {
         url: '',
         templateUrl: 'views/creators/backlog/list.html',
         controller: 'backlogCtrl',
         requireSubscription: true,
         data : {
-          pageTitle: 'Backlog',
-          headTitle: ': ' + 'Backlog',
+          pageTitle: 'Future Timeline',
+          headTitle: ': ' + 'Future Timeline',
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.backlog.edit.name, {
-        url: '/edit-post/{id}',
-        templateUrl: 'views/creators/backlog/edit-post.html',
+      .state(states.creators.backlog.queues.name, {
+        url: '/queues',
+        templateUrl: 'views/creators/backlog/list.html',
         requireSubscription: true,
         data : {
-          pageTitle: 'Backlog',
-          headTitle: ': ' + 'Edit Post',
+          pageTitle: 'Queues',
+          headTitle: ': ' + 'Queues',
           access: {
             requireAuthenticated: true
           }
