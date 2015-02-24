@@ -2,7 +2,12 @@
       role="form"
       name="editBacklogPostForm">
 
-  <h4>Edit Post</h4>
+  <h4>
+    <a class="btn-close" href ng-click="$close()">
+      <i class="fa fa-close"></i>
+    </a>
+    Edit Post
+  </h4>
 
   <div class="modal-body restore-row-behaviour">
     <div ng-if="model.isImage || model.isFile">

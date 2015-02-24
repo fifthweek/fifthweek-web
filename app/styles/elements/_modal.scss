@@ -25,6 +25,15 @@
     padding:($modal-padding - 5) $modal-padding;
   }
 
+  .btn-close {
+    float:right;
+    font-size: 18px;
+    color:$grey-light-5;
+    &:hover {
+      color:$grey-light-4;
+    }
+  }
+
   .modal-body, h4 {
     padding:$modal-padding;
   }

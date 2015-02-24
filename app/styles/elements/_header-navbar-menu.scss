@@ -14,16 +14,16 @@ ul.header-navbar-menu {
     font-size: 14px; /* This hack removes excess height */
 
     a {
-      color: $grey-dark-2;
+      color: $grey-light-4;
       text-transform: uppercase;
       padding-bottom: 13px;
       &:hover{
         text-decoration: none;
-        color: $grey-dark-3;
+        color: $grey-dark-2;
       }
       &.active{
-        border-bottom: 4px solid $grey-dark-3;
-        color: $grey-dark-3;
+        border-bottom: 4px solid $grey-dark-2;
+        color: $grey-dark-2;
       }
       &.blue {
         &.active{
