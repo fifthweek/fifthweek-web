@@ -84,7 +84,6 @@ input[type="button"].btn-block,
   border:0 none;
 }
 
-
 .btn-icon-right, .btn-icon-right-collapsible {
   margin-left: 6px;
 }
@@ -166,9 +165,9 @@ input[type="button"].btn-block,
   margin: 15px 0;
 }
 
-
 a.btn-file-download {
   overflow: hidden;
+  padding-top: 1px;
   &:hover {
     span, i {
       color: $link-color;
@@ -184,7 +183,7 @@ a.btn-file-download {
     color:$grey-dark;
   }
   i {
-    font-size: 28px;
+    font-size: 24px;
     margin-right: 7px;
     color:$grey-light-1;
   }
