@@ -1,11 +1,7 @@
-angular.module('webApp').factory('postInteractions', function($modal) {
+angular.module('webApp').factory('postInteractions', function($modal, deleteVerification) {
     'use strict';
 
     var service = {};
-
-    var performDelete = function() {
-
-    };
 
     service.viewImage = function (imagePath) {
       $modal.open({
@@ -33,23 +29,15 @@ angular.module('webApp').factory('postInteractions', function($modal) {
     };
 
     service.delete = function(postId, isBacklog) {
-      $modal.open({
-        controller: 'deleteVerificationCtrl',
-        templateUrl: 'views/partials/delete-verification.html',
-        size: 'sm',
-        resolve: {
-          deleteContext: function() {
-            return {
-              itemType: 'Post',
-              dataEventTitle: 'Post deleted',
-              dataEventCategory: isBacklog ? 'Backlog' : 'News Feed',
-              action: function() {
-                performDelete(postId);
-              }
-            };
-          }
-        }
-      });
+      var performDelete = function() {
+
+      };
+
+      deleteVerification.verifyDelete(
+        performDelete,
+        'Post deleted',
+        isBacklog ? 'Backlog' : 'News Feed',
+        'Post');
     };
 
     return service;
