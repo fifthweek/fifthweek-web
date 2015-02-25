@@ -43,6 +43,15 @@
   }
 }
 
+.row-selection-disabled {
+  background: $white-1;
+  opacity: 0.65;
+  #{$state-active-hover-focus} {
+    cursor: auto;
+    background: $white-1;
+  }
+}
+
 .row-selection-slim {
   @include row-selection-base;
 
