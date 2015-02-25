@@ -3,7 +3,7 @@
 $panel-margin-sm:10px;
 $panel-margin-lg:27px;
 $footer-margin:10px;
-$queued-image-width-sm: 33.33%;
+$queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*0.382)*1.618) */
 $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
 
 @mixin li-cancel-first-last-spacing {
