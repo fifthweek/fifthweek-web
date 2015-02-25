@@ -1,37 +1,22 @@
-angular.module('webApp').controller('deleteCtrl', function ($q, $scope, $modal, analytics, errorFacade) {
+angular.module('webApp').controller('deleteLinkCtrl', function ($q, $scope, $modal) {
   'use strict';
 
-  $scope.confirmationText = {
-    value: ''
-  };
-
-  $scope.itemTypeLowered = $scope.itemType.toLowerCase();
-
-  $scope.questionDelete = function() {
-    $scope.modal = $modal.open({
-      scope: $scope,
-      templateUrl: 'views/partials/delete-confirm.html',
-      size: $scope.item ? undefined : 'sm'
-    });
-  };
-
-  // Todo: test the below!
-  $scope.confirmDelete = function() {
-    return $q.when($scope.delete()).then(function() {
-        var eventTitle = $scope.dataEventTitle;
-        var eventCategory = $scope.dataEventCategory;
-        if(eventTitle && eventCategory){
-          analytics.eventTrack(eventTitle,  eventCategory);
+  $scope.verifyDelete = function() {
+    $modal.open({
+      controller: "deleteVerificationCtrl",
+      templateUrl: 'views/partials/delete-verification.html',
+      size: $scope.item ? undefined : 'sm',
+      resolve: {
+        deleteContext: function() {
+          return {
+            item: $scope.item,
+            itemType: $scope.itemType,
+            dataEventTitle: $scope.dataEventTitle,
+            dataEventCategory: $scope.dataEventCategory,
+            action: $scope.delete
+          };
         }
-      },
-      function(error){
-        return errorFacade.handleError(error, function(message) {
-          form.message = message;
-        });
-      })
-      .finally(function() {
-        $scope.modal.close();
       }
-    );
+    });
   };
 });

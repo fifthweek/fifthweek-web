@@ -1,20 +1,20 @@
 <form novalidate
       role="form"
       name="verifiedDeleteForm"
-      ng-if="item">
-  <fw-form-modal name="Delete {{itemType}}">
+      ng-if="model.item">
+  <fw-form-modal name="Delete {{model.itemType}}">
     <form-body>
       <h5>Are you ABSOLUTELY sure?</h5>
       <p>
-        This action CANNOT be undone. This will permanently delete <strong>{{item}}</strong>. All associated content and comments will be removed.
+        This action CANNOT be undone. This will permanently delete <strong>{{model.item}}</strong>. All associated content and comments will be removed.
       </p>
 
       <div class="form-group">
-        <label for="deletion-confirmation-text">Please type in the name of the {{itemTypeLowered}}</label>
+        <label for="deletion-confirmation-text">Please type in the name of the {{model.itemTypeLowered}}</label>
         <input
           id="deletion-confirmation-text"
           name="confirmationText"
-          ng-model="confirmationText.value"
+          ng-model="model.confirmationText"
           type="text"
           class="form-control"
           focus="true"
@@ -23,14 +23,14 @@
     </form-body>
     <form-buttons>
       <button
-        id="delete-item-verified-button"
+        id="delete-model.item-verified-button"
         class="btn btn-block btn-danger"
         data-loading-text="Deleting..."
-        data-event-title="{{dataEventTitle}}"
-        data-event-category="{{dataEventCategory}}"
+        data-event-title="{{model.dataEventTitle}}"
+        data-event-category="{{model.dataEventCategory}}"
         form-name="verifiedDeleteForm"
-        ng-disabled="item !== confirmationText.value"
-        fw-form-submit="confirmDelete()">I understand, delete this {{itemTypeLowered}}</button>
+        ng-disabled="model.item !== model.confirmationText"
+        fw-form-submit="confirmDelete()">I understand, delete this {{model.itemTypeLowered}}</button>
     </form-buttons>
   </fw-form-modal>
 </form>
@@ -38,8 +38,8 @@
 <form novalidate
       role="form"
       name="unverifiedDeleteForm"
-      ng-if="!item">
-  <fw-form-modal name="Delete {{itemType}}">
+      ng-if="!model.item">
+  <fw-form-modal name="Delete {{model.itemType}}">
     <form-body>
       <div class="form-group">
         <p>
@@ -49,14 +49,14 @@
     </form-body>
     <form-buttons>
       <button
-        id="delete-item-unverified-button"
+        id="delete-model.item-unverified-button"
         class="btn btn-block btn-danger"
         data-loading-text="Deleting..."
-        data-event-title="{{dataEventTitle}}"
-        data-event-category="{{dataEventCategory}}"
+        data-event-title="{{model.dataEventTitle}}"
+        data-event-category="{{model.dataEventCategory}}"
         form-name="unverifiedDeleteForm"
         can-submit="true"
-        fw-form-submit="confirmDelete()">Delete {{itemType}}</button>
+        fw-form-submit="confirmDelete()">Delete {{model.itemType}}</button>
     </form-buttons>
   </fw-form-modal>
 </form>

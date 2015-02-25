@@ -1,17 +1,9 @@
 angular.module('webApp').controller('backlogPostListCtrl',
-  function($scope, $timeout, $modal) {
+  function($scope, postInteractions) {
     'use strict';
 
     $scope.posts = [
       {
-        //     postId: 'a',
-        //     channelId: 'Base64Guid',
-        //     collectionId: 'Base64Guid', /* optional */
-        //     comment: '', /* optional */
-        //     fileId: 'Base64Guid', /* optional */
-        //     imageId: 'Base64Guid', /* optional */
-        //     scheduledByQueue: false,
-        //     liveDate: '2015-12-25T14:45:05Z'
         postId: 'a',
         liveIn:'1 day',
         dayOfWeek:'Wed',
@@ -72,32 +64,15 @@ angular.module('webApp').controller('backlogPostListCtrl',
     ];
 
     $scope.viewImage = function (post) {
-      $modal.open({
-        controller: "fullSizeImageModalCtrl",
-        templateUrl: 'views/full-size-image-modal.html',
-        windowClass: 'modal-fw-large-image',
-        resolve: {
-          imagePath: function() {
-            return post.imagePath;
-          }
-        }
-      });
+      postInteractions.viewImage(post.imagePath, true);
     };
 
     $scope.edit = function(postId) {
-      $modal.open({
-        controller: "backlogPostEditCtrl",
-        templateUrl: 'views/creators/backlog/post-edit.html',
-        resolve: {
-          postId: function() {
-            return postId;
-          }
-        }
-      });
+      postInteractions.edit(postId, true);
     };
 
     $scope.delete = function(postId) {
-
+      postInteractions.delete(postId, true);
     };
   }
 );
