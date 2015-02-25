@@ -8,7 +8,7 @@ angular.module('webApp').controller('backlogPostListCtrl',
         liveIn:'1 day',
         dayOfWeek:'Wed',
         date:'21st Jan',
-        comment:'Hang in there folks, nearly ready!',
+        comment:'Certain internet providers exploit the fact that fill text cannot be recognized by automatic search engines - meaningful information cannot be distinguished from meaningless: Target-generated dummy text mixed with a certain combination of search terms can lead to an increased frequency of visits by search machine users. As a consequence, advertising revenues, which rely on website hits, are increased.',
         channel:'HD Channel',
         queued:false
       },

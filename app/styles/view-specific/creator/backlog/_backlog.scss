@@ -11,11 +11,13 @@
   }
 }
 
-$html-name-space:'.page-backlog';
+.posts {
+  .panel {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.22); /* Make shadows more subtle around content */
+  }
+}
 
-#{$html-name-space} {
-
-  @import 'elements/_actions-drop-down';
+.backlog {
 
   .backlog-post {
 
@@ -175,5 +177,11 @@ $html-name-space:'.page-backlog';
     .file-content {
       padding-top: 6px;
     }
+  }
+}
+
+.backlog-queue {
+  .main {
+
   }
 }
