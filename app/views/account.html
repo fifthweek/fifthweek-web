@@ -1,20 +1,20 @@
-<fw-panel12 class="page-account-settings">
+<form novalidate
+      role="form"
+      name="form">
 
-  <div ng-if="model.errorMessage" class="has-error">
-    <p class="help-block">
-      {{model.errorMessage}}
-    </p>
-  </div>
-  <div ng-if="model.isLoading">
-    <p>
-      <i class="fa fa-refresh fa-spin"></i>
-    </p>
-  </div>
-  <div ng-show="model.accountSettings">
-    <form novalidate
-          role="form"
-          name="form">
+  <fw-panel12 class="page-account-settings">
 
+    <div ng-if="model.errorMessage" class="has-error">
+      <p class="help-block">
+        {{model.errorMessage}}
+      </p>
+    </div>
+    <div ng-if="model.isLoading">
+      <p>
+        <i class="fa fa-refresh fa-spin"></i>
+      </p>
+    </div>
+    <div ng-show="model.accountSettings">
       <div class="form-group-file">
         <label>Profile Image</label>
         <div class="row">
@@ -73,10 +73,10 @@
       <fw-form-input-password ng-model="model.password" placeholder="New password" label="Password" breakpoint="md"></fw-form-input-password>
 
       <div class="row-btn">
-        <div ng-show="form.submissionSucceeded" class="alert alert-success" >
+        <div ng-show="form.submissionSucceeded && form.$pristine" class="alert alert-success" >
           <p><i class="fa fa-check"></i> Saved successfully</p>
         </div>
-        <div ng-show="form.message" class="alert alert-danger sub-form-alert" id="form-message">
+        <div ng-show="form.message" class="alert alert-danger" id="form-message">
           <p>{{form.message}}</p>
         </div>
         <input type="submit"
@@ -86,11 +86,9 @@
                data-event-title="Account settings saved"
                data-event-category="Account"
                form-name="form"
-               can-submit="form.$valid"
+               ng-disabled="form.$pristine || form.isSubmitting"
                fw-form-submit="submitForm()" />
       </div>
-    </form>
-
-  </div>
-
-</fw-panel12>
+    </div>
+  </fw-panel12>
+</form>

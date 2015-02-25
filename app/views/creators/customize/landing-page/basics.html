@@ -1,72 +1,79 @@
 <div class="panel panel-default">
   <div class="panel-body jumbo-panel">
 
-    <div class="form-group">
-      <div class="row">
-        <div class="col-xs-12">
-          <h5>URL</h5>
-          <p><a ng-href="{{landingPageData.url}}">{{landingPageData.url}}</a></p>
-        </div>
-      </div>
-    </div>
+    <div ng-include="'views/creators/customize/landing-page/loading-area.html'"></div>
 
-    <form name="landingPageBasics">
-
-      <fw-form-group>
-        <div class="row">
-          <div class="col-sm-6">
-            <label>Subscription name</label>
-            <div fw-form-input-glyphs>
-              <input type="text"
-                     class="form-control"
-                     name="subscriptionName"
-                     ng-model="landingPageData.subscriptionName"
-                     placeholder="Mark Holmes" required/>
-            </div>
-          </div>
-        </div>
-      </fw-form-group>
-
-      <fw-form-group>
-        <div class="row">
-          <div class="col-sm-6">
-            <label>Tagline</label>
-            <div fw-form-input-glyphs>
-              <input type="text"
-                     class="form-control"
-                     name="tagline"
-                     ng-model="landingPageData.tagline"
-                     placeholder="Web Comics and more" required/>
-            </div>
-          </div>
-        </div>
-      </fw-form-group>
-
-      <fw-form-group>
+    <div ng-show="model.settings">
+      <div class="form-group">
         <div class="row">
           <div class="col-xs-12">
-            <label>Quick introduction</label>
-            <textarea msd-elastic
-                      class="form-control"
-                      name="introduction"
-                      ng-model="landingPageData.introduction"
-                      rows="4"
-                      placeholder="Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here!" required></textarea>
+            <h5>URL</h5>
+            <p><a ng-href="{{model.landingPageUrl}}">{{model.landingPageUrl}}</a></p>
+          </div>
+        </div>
+      </div>
+
+      <fw-form-group>
+        <label for="subscription-name">Subscription name</label>
+        <div class="row">
+          <div class="col-md-6">
+            <div fw-form-input-glyphs>
+              <input type="text" id="subscription-name" class="form-control" name="subscriptionName"
+                     ng-model="model.settings.subscriptionName"
+                     ng-maxlength="25"
+                     maxlength="25"
+                     placeholder="e.g. Your name or product" required/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p fw-form-input-invalid-p="maxlength">Allowed 25 characters at most.</p>
+            <p fw-form-input-invalid-p="required">A subscription name is required.</p>
           </div>
         </div>
       </fw-form-group>
 
-      <div class="row-btn">
-        <input type="submit"
-               class="btn btn-block btn-success"
-               ng-click="landingPageBasics.$valid && landingPageBasics.$dirty ? saveTheDataTempFunctionName() : false"
-               ng-disabled="landingPageBasics.$invalid ||
-                            landingPageBasics.$pristine ||
-                            isSubmitting"
-               value="Save Changes" />
-      </div>
+      <fw-form-group>
+        <label for="tagline">Tagline</label>
+        <div class="row">
+          <div class="col-md-6">
+            <div fw-form-input-glyphs>
+              <input type="text" id="tagline" class="form-control" name="tagline"
+                     ng-model="model.settings.tagline"
+                     ng-minlength="5"
+                     ng-maxlength="55"
+                     maxlength="55"
+                     placeholder="A snappy summary" required/>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <p fw-form-input-invalid-p="minlength">Must be at least 5 characters.</p>
+            <p fw-form-input-invalid-p="maxlength">Allowed 55 characters at most.</p>
+            <p fw-form-input-invalid-p="required">A tagline is required.</p>
+          </div>
+        </div>
+      </fw-form-group>
 
-    </form>
+      <fw-form-group>
+        <label for="introduction">Quick introduction</label>
+        <div class="row">
+          <div class="col-xs-12">
+            <textarea msd-elastic id="introduction" class="form-control" name="introduction"
+                    ng-model="model.settings.introduction"
+                    ng-minlength="15"
+                    ng-maxlength="250"
+                    maxlength="250"
+                    rows="4"
+                    placeholder="For example, who are you? And why are you here?" required></textarea>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <p fw-form-input-invalid-p="minlength">Must be at least 15 characters.</p>
+          <p fw-form-input-invalid-p="maxlength">Allowed 250 characters at most.</p>
+          <p fw-form-input-invalid-p="required">An introduction is required.</p>
+        </div>
+      </fw-form-group>
 
+      <div ng-include="'views/creators/customize/landing-page/submission-area.html'"></div>
+    </div>
   </div>
 </div>

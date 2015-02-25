@@ -1,6 +1,5 @@
-'use strict';
-
 describe('account controller', function () {
+  'use strict';
 
   var $q;
   var $scope;
@@ -30,6 +29,8 @@ describe('account controller', function () {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
     });
+
+    $scope.form = jasmine.createSpyObj('form', ['$setDirty','$setPristine']);
   });
 
   var createController = function(){
@@ -45,6 +46,7 @@ describe('account controller', function () {
     beforeEach(function(){
       authenticationService.currentUser = { username: 'username', userId: 'userId' };
     });
+
     describe('when initializing', function(){
 
       beforeEach(function(){
@@ -54,6 +56,10 @@ describe('account controller', function () {
         }}));
 
         createController();
+      });
+
+      it('should call get with the user ID', function(){
+        expect(accountSettingsStub.get).toHaveBeenCalledWith('userId');
       });
 
       it('should set the blobImage control variable', function(){
@@ -187,6 +193,10 @@ describe('account controller', function () {
         expect($scope.model.accountSettings.profileImageId).toBe('fileId');
       });
 
+      it('should set the form to dirty', function(){
+        expect($scope.form.$setDirty).toHaveBeenCalled();
+      });
+
       it('should update the blob image', function(){
         expect($scope.blobImage.update).toHaveBeenCalledWith('fileUri', 'containerName', false);
       });
@@ -218,6 +228,10 @@ describe('account controller', function () {
         it('should update the username in the authentication service', function(){
           expect(authenticationService.updateUsername).toHaveBeenCalledWith('userId', 'username');
         });
+
+        it('should set the form to pristine', function(){
+          expect($scope.form.$setPristine).toHaveBeenCalled();
+        });
       });
 
       describe('when saving account settings fails', function(){
@@ -232,6 +246,10 @@ describe('account controller', function () {
 
         it('should not update the username in the authentication service', function(){
           expect(authenticationService.updateUsername).not.toHaveBeenCalled();
+        });
+
+        it('should not set the form to pristine', function(){
+          expect($scope.form.$setPristine).not.toHaveBeenCalled();
         });
 
         it('should propagate the error back to the caller', function(){

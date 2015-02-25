@@ -1,49 +1,47 @@
 <div class="panel panel-default full-description">
   <div class="panel-body jumbo-panel">
 
-    <form name="landingPageFullDescription">
+    <div ng-include="'views/creators/customize/landing-page/loading-area.html'"></div>
 
-      <div class="form-group">
+    <div ng-show="model.settings">
+      <fw-form-group>
+        <label for="video">Your Video</label>
         <div class="row">
           <div class="col-sm-10">
-            <label>Your Video</label>
-            <input type="url"
-                   class="form-control"
-                  ng-model="landingPageData.videoUrl"
-                  placeholder="https://www.youtube.com/watch?v=vEQrP3bGX8k" />
-            <p class="light-grey"><small>Creators with videos have a much higher success rate. <br/><strong>Paste in the url of your video from Youtube, Vimeo, etc.</strong></small></p>
+            <input type="url" id="video" name="video" class="form-control"
+                   ng-model="model.settings.video"
+                   ng-maxlength="100"
+                   maxlength="100"
+                   placeholder="http://" />
+            <p class="light-grey">
+              <small>Creators with videos have a much higher success rate. <br/>
+              <strong>Paste in the url of your video from Youtube, Vimeo, etc.</strong></small>
+            </p>
+          </div>
+          <div class="col-xs-12">
+            <p fw-form-input-invalid-p="maxlength">Allowed 100 characters at most.</p>
           </div>
         </div>
-      </div>
+      </fw-form-group>
 
-      <div class="form-group">
+      <fw-form-group>
+        <label for="description">About the subscription</label>
         <div class="row">
           <div class="col-xs-12">
-            <label>About the subscription</label>
-            <textarea msd-elastic
-                      class="form-control"
-                      ng-model="landingPageData.subscriptionAbout"
-                      placeholder="Hi, I'm Marc. I do a web comic called Something. That's my job, and my income is generated entirely by selling Something books, doing commissions and subscriptions from people like you. By becoming a subscriber you can help me pay for business and living expenses, meaning that I'll be able to spend more time making comics and art for everyone to enjoy!
-
-    What your subscriptions will allow me to do: Right now I post a new Something strip 3 times a week (most of the time). Your money will go directly to paying my rent, food, insurance and business expenses, leaving me with more time to make comics, including stuff like my Something 24 hour comics, my super hero comic or weird stuff like my Turtles! I'll be creating comics and art full time, which means more cool stuff for you to read and enjoy!
-
-    **Will Something still be free to read?** Yes! Everyone will always be able to read Something for free on my site (and a whole bunch of other places on the internet)." required></textarea>
+            <textarea msd-elastic id="description" name="description" class="form-control"
+                    ng-model="model.settings.description"
+                    ng-maxlength="2000"
+                    maxlength="2000"
+                    placeholder="This is where you can really sell your subscription... tell everyone why they need to subscribe."></textarea>
             <p class="light-grey"><small>Syntax: <strong>&#42;&#42;bold&#42;&#42;</strong> &#124; <i>&#42;italic&#42;</i> &#124; !(imageurl)</small></p>
           </div>
+          <div class="col-xs-12">
+            <p fw-form-input-invalid-p="maxlength">Allowed 2000 characters at most.</p>
+          </div>
         </div>
-      </div>
+      </fw-form-group>
 
-      <div class="row-btn">
-        <input type="submit"
-               class="btn btn-block btn-success"
-               ng-click="landingPageFullDescription.$valid && landingPageFullDescription.$dirty ? saveTheDataTempFunctionName() : false"
-               ng-disabled="landingPageFullDescription.$invalid ||
-                            landingPageFullDescription.$pristine ||
-                            isSubmitting"
-               value="Save Changes" />
-      </div>
-
-    </form>
-
+      <div ng-include="'views/creators/customize/landing-page/submission-area.html'"></div>
+    </div>
   </div>
 </div>

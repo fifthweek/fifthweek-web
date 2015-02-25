@@ -1,16 +1,19 @@
-<!-- customize-landing-page class here until GH issue #167 is resolved -->
-<div class="row page-customize-landing">
+<div class="row">
   <div class="col-xs-12 col-sm-10 col-md-11">
-    <tabset>
-      <tab heading="Basics">
-        <div ng-include="'views/creators/customize/landing-page/basics.html'"></div>
-      </tab>
-      <tab heading="Header Image">
-        <div ng-include="'views/creators/customize/landing-page/header-image.html'"></div>
-      </tab>
-      <tab heading="Full Description">
-        <div ng-include="'views/creators/customize/landing-page/full-description.html'"></div>
-      </tab>
-    </tabset>
+    <form novalidate
+          role="form"
+          name="form">
+      <tabset>
+        <tab heading="Basics">
+          <div ng-include="'views/creators/customize/landing-page/basics.html'"></div>
+        </tab>
+        <tab heading="Header Image">
+          <div ng-include="'views/creators/customize/landing-page/header-image.html'"></div>
+        </tab>
+        <tab heading="Full Description">
+          <div ng-include="'views/creators/customize/landing-page/full-description.html'"></div>
+        </tab>
+      </tabset>
+    </form>
   </div>
 </div>

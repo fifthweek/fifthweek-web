@@ -399,7 +399,8 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Landing page',
-          headTitle: ': ' + 'Landing page'
+          headTitle: ': ' + 'Landing page',
+          bodyClass: 'page-customize-landing'
         }
       })
       .state(states.creators.customize.collections.name, {

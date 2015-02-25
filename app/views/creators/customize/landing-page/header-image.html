@@ -1,27 +1,23 @@
 <div class="panel panel-default header-image">
   <div class="panel-body jumbo-panel">
 
-    <form name="landingPageHeaderImage">
+    <div ng-include="'views/creators/customize/landing-page/loading-area.html'"></div>
+
+    <div ng-show="model.settings">
 
       <div class="form-group-file">
+        <label>Header Image</label>
         <div class="row">
-          <div class="col-sm-8">
-            <h5>Header Image</h5>
-            <img ng-src="{{landingPageData.headerImage}}" alt="Header Image" />
+          <div class="col-xs-12 col-md-10 bottom-buffer">
+            <fw-blob-image control="blobImage" width="480px" height="128px" border-radius="2px" thumbnail="480x128-crop"></fw-blob-image>
           </div>
-          <div class="col-md-4">
-            <div fw-file-upload file-type="Image"></div>
+          <div class="col-xs-2 bottom-buffer">
+            <fw-file-upload description="Upload" on-upload-complete="onUploadComplete(data)" file-purpose="profile-header-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
           </div>
         </div>
       </div>
 
-      <div class="row-btn">
-        <input type="submit"
-               class="btn btn-block btn-success"
-               value="Save Changes" />
-      </div>
-
-    </form>
-
+      <div ng-include="'views/creators/customize/landing-page/submission-area.html'"></div>
+    </div>
   </div>
 </div>

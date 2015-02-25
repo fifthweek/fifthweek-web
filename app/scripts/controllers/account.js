@@ -4,7 +4,7 @@ angular.module('webApp')
 
     var model = {
       accountSettings: undefined,
-      isLoading: undefined,
+      isLoading: false,
       errorMessage: undefined
     };
 
@@ -47,6 +47,7 @@ angular.module('webApp')
 
     $scope.onUploadComplete = function(data) {
       model.accountSettings.profileImageId = data.fileId;
+      $scope.form.$setDirty();
       $scope.blobImage.update(data.fileUri, data.containerName, false);
     };
 
@@ -59,6 +60,7 @@ angular.module('webApp')
           newProfileImageId: model.accountSettings.profileImageId
         })
         .then(function(){
+          $scope.form.$setPristine();
           authenticationService.updateUsername(model.accountSettings.userId, model.accountSettings.username);
         });
     };
