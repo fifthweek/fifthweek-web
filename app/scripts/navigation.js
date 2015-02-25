@@ -66,7 +66,7 @@ angular.module('webApp')
         secondary:
           [
             {
-              name: 'Future Timeline',
+              name: 'Future Posts',
               state: states.creators.backlog.timeline.name,
               icon: 'fa fa-clock-o',
               color: 'yellow'

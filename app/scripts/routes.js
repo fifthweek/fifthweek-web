@@ -330,8 +330,8 @@ angular.module('routes', ['ui.router'])
         controller: 'backlogCtrl',
         requireSubscription: true,
         data : {
-          pageTitle: 'Future Timeline',
-          headTitle: ': ' + 'Future Timeline',
+          pageTitle: 'Future Posts',
+          headTitle: ': ' + 'Future Posts',
           access: {
             requireAuthenticated: true
           }
