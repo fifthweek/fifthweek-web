@@ -84,15 +84,33 @@ input[type="button"].btn-block,
   border:0 none;
 }
 
-.btn i {
-  font-size: 14px;
-}
 
-.btn-icon-right {
+.btn-icon-right, .btn-icon-right-collapsible {
   margin-left: 6px;
 }
-.btn-icon-left {
+.btn-icon-right-collapsible {
+  @media (max-width: $screen-s-max) {
+    margin: 0;
+  }
+}
+.btn-icon-left, .btn-icon-left-collapsible {
   margin-right: 6px;
+}
+.btn-icon-left-collapsible {
+  @media (max-width: $screen-s-max) {
+    margin: 0;
+  }
+}
+
+.btn {
+  i {
+    font-size: 14px;
+  }
+  *:not( [style*='display: none'] ) {
+    &.btn-icon-right:first-child {
+      margin: 0;
+    }
+  }
 }
 
 .btn-slim {
