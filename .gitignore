@@ -1,6 +1,7 @@
 node_modules
 dist
 reports
+.DS_Store
 .idea
 .tmp
 .sass-cache

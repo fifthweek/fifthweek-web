@@ -3,6 +3,8 @@
 $panel-margin-sm:10px;
 $panel-margin-lg:27px;
 $footer-margin:10px;
+$queued-image-width-sm: 33.33%;
+$queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
 
 @mixin li-cancel-first-last-spacing {
   li:first-child {
@@ -12,6 +14,13 @@ $footer-margin:10px;
   li:last-child {
     margin-right:0;
     padding-right:0;
+  }
+}
+
+@mixin body-padding {
+  padding: 10px $panel-margin-sm;
+  @media (min-width:$screen-sm-min) {
+    padding: 11px $panel-margin-lg;
   }
 }
 
@@ -25,7 +34,7 @@ $footer-margin:10px;
 
 .backlog {
 
-  .backlog-post {
+  .post {
 
     .publish-info {
       width:64px;
@@ -45,15 +54,6 @@ $footer-margin:10px;
       }
       .publish-info-mode {
         font-size: 12px;
-        i {
-          display:block;
-          margin-top:3px;
-          font-size: 14px;
-
-          @media (max-width:$screen-s-max) {
-            font-size: 18px;
-          }
-        }
       }
       hr {
         margin: 6px 0 4px 0;
@@ -71,10 +71,7 @@ $footer-margin:10px;
         margin-left: 34px;
       }
       .panel-body {
-        padding: 10px $panel-margin-sm;
-        @media (min-width:$screen-sm-min) {
-          padding: 11px $panel-margin-lg;
-        }
+        @include body-padding;
       }
     }
 
@@ -188,5 +185,49 @@ $footer-margin:10px;
         margin-bottom: 0;
       }
     }
+  }
+}
+
+.backlog-queue {
+  .post {
+    .image-post {
+      .image-content {
+        margin: 0;
+        float:left;
+
+        width:$queued-image-width-lg;
+        @media (max-width:$screen-ss-max) {
+          width:$queued-image-width-sm;
+        }
+
+        img {
+          border-radius: 0;
+          border-top-left-radius: $border-radius;
+          border-bottom-left-radius: $border-radius;
+        }
+      }
+
+      .info {
+        float:left;
+
+
+        width:100% - $queued-image-width-lg;
+        @media (max-width:$screen-ss-max) {
+          width:100% - $queued-image-width-sm;
+        }
+
+        .info-content {
+          position:relative;
+          @include body-padding;
+        }
+
+        ul {
+          position: absolute;
+          bottom: 5px;
+        }
+
+      }
+    }
+
   }
 }

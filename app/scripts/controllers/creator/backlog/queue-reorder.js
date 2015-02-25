@@ -32,7 +32,7 @@ angular.module('webApp').controller('queueReorderCtrl',
         date:'25th Jan',
         comment:'Almost there',
         collection:'Blog',
-        imagePath:'images/home/bg/2048.jpg',
+        imagePath:'images/tmp-queue-thumb.jpg',
         queued:true
       },
       {
@@ -41,7 +41,7 @@ angular.module('webApp').controller('queueReorderCtrl',
         dayOfWeek:'Sun',
         date:'25th Jan',
         collection:'Side Comic',
-        imagePath:'images/creator/landing-page/header-default.jpg',
+        imagePath:'images/tmp-queue-thumb-2.jpg',
         queued:false
       },
       {
