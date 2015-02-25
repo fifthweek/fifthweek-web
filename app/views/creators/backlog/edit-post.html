@@ -57,7 +57,7 @@
       <div class="form-group">
         <fw-form-subsection name="Release time">
           <summary>
-            <p>Currently scheduled for <strong>Wednesday 21st Jan, 2015</strong></p>
+            <p>Currently scheduled for <strong>Wednesday 21st Jan</strong></p>
           </summary>
           <section>
             <div class="radio">
@@ -67,9 +67,14 @@
             </div>
 
             <div class="radio" ng-if="model.isImage || model.isFile">
-              <label><input type="radio"
-                            ng-model="model.scheduleMode"
-                            ng-value="scheduleModes.queued" /> Scheduled by queue</label>
+              <label>
+                <input
+                  type="radio"
+                  ng-model="model.scheduleMode"
+                  ng-value="scheduleModes.queued" />
+                Scheduled by queue
+                <span ng-if="model.savedScheduleMode !== scheduleModes.queued">(will appear <strong>Wednesday 7th Jan</strong>)</span>
+              </label>
             </div>
 
             <div class="radio">

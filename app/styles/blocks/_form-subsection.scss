@@ -15,10 +15,9 @@
     float:right;
   }
 
-  .form-subsection-summary {
-    strong {
-      color: $grey-dark-2;
-    }
+  /* So contrast is below form group label */
+  strong {
+    color: $grey-dark-2;
   }
 
   .form-subsection-section > *:first-child {

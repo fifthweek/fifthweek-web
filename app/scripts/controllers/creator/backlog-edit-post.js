@@ -48,7 +48,8 @@ angular.module('webApp').controller('backlogEditPostCtrl',
       channels: channels,
       selectedCollection: collections[0],
       selectedChannel: channels[0],
-      scheduleMode: $scope.scheduleModes.scheduled
+      scheduleMode: $scope.scheduleModes.scheduled,
+      savedScheduleMode: $scope.scheduleModes.scheduled
     };
 
     if (postId === 'a') {
