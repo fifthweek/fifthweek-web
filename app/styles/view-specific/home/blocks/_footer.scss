@@ -24,11 +24,10 @@
       }
     }
     br {
-      display:none;
       @media (min-width:420px) {
         display:block;
       }
-      @media (min-width:$screen-s-min) {
+      @media (min-width:$screen-sm-min) {
         display:none;
       }
     }
