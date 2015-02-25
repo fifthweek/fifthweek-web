@@ -5,6 +5,11 @@ body {
   height:100%;
 }
 
+body {
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch; //prevent safari scrolling 'lag'
+}
+
 .row {
   margin:0;
 }

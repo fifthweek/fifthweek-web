@@ -279,6 +279,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Compose',
           headTitle: ': ' + 'Compose',
+          bodyClass: 'page-creators-compose',
           access: {
             requireAuthenticated: true
           }
@@ -501,7 +502,8 @@ angular.module('routes', ['ui.router'])
         redirectTo: states.help.faq.name,
         data : {
           pageTitle: 'Help',
-          headTitle: ': ' + 'Help'
+          headTitle: ': ' + 'Help',
+          bodyClass: 'page-help',
         }
       })
       .state(states.help.faq.name, {

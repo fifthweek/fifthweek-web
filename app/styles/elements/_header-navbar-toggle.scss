@@ -3,10 +3,17 @@
 .navbar-toggle {
   float:left;
   z-index:3;
-  margin-right:0;
-  margin-bottom:0;
-  padding-left:15px;
-  background:none;
+  margin:{
+    top:0;
+    right:0;
+    bottom:0;
+  }
+  padding:{
+    top:16.5px;
+    bottom:17px;
+    left:15px;
+  }
+  background:$white-full;
   border:0 none;
   font-size:12px;
   #{$state-hover-focus} {

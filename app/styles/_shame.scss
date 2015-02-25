@@ -33,3 +33,16 @@
     margin-right: -15px;
   }
 }
+
+
+
+
+////////
+////////
+//mobile navbar scrolling - WIP
+////////
+////////
+
+.page-help {
+  @include mobile-nav-scroll(360px);
+}

@@ -4,19 +4,21 @@
       <ng-include src="'views/partials/header-sidebar-toggle.html'" class="header-wrapper"></ng-include>
       <h1 id="header-title" ng-if="navigation.length <= 1" ng-bind="$state.current.data.pageTitle" class=""></h1>
 
-      <ul ng-if="navigation.length > 1" id="header-navbar" class="header-navbar-menu">
-        <li ng-repeat="item in navigation">
-          <a ng-if="!item.separator"
-             class="{{item.color}}"
-             ng-class="{active: item.isActive}"
-             id="{{item.id}}"
-             ui-sref="{{item.state}}"
-             snap-close>
-            <span><i ng-class="item.icon"></i></span>
-            <span>{{item.name}}</span>
-          </a>
-        </li>
-      </ul>
+      <div class="header-navbar-menu-wrap">
+        <ul ng-if="navigation.length > 1" id="header-navbar" class="header-navbar-menu">
+          <li ng-repeat="item in navigation">
+            <a ng-if="!item.separator"
+               class="{{item.color}}"
+               ng-class="{active: item.isActive}"
+               id="{{item.id}}"
+               ui-sref="{{item.state}}"
+               snap-close>
+              <span><i ng-class="item.icon"></i></span>
+              <span>{{item.name}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 </header>
