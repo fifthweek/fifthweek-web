@@ -87,7 +87,7 @@ angular.module('webApp').controller('backlogCtrl',
     $scope.edit = function(postId) {
       $modal.open({
         controller: "backlogEditPostCtrl",
-        templateUrl: 'views/creators/backlog/edit-post.html',
+        templateUrl: 'views/creators/backlog/post-edit.html',
         resolve: {
           postId: function() {
             return postId;

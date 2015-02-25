@@ -1,0 +1,89 @@
+<div class="row page-backlog">
+  <div class="col-md-12">
+
+    <div class="backlog-post" ng-repeat="post in posts">
+      <div class="publish-info">
+        <div class="visible-over-s">
+          <p class="publish-info-day">{{post.dayOfWeek}}</p>
+          <p class="publish-info-date">{{post.date}}</p>
+          <hr/>
+        </div>
+        <p class="publish-info-mode" ng-if="!post.queued">
+          <span class="visible-over-s">
+            scheduled
+          </span>
+          <span class="visible-under-sm">
+            schd.
+          </span>
+        </p>
+        <p class="publish-info-mode" ng-if="post.queued">
+          <span class="visible-over-s">
+            queued
+          </span>
+          <span class="visible-under-sm">
+            que.
+          </span>
+        </p>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-body jumbo-panel">
+          <div class="full-width-float">
+
+            <div class="row info">
+              <div class="col-xs-8">
+                <ul>
+                  <li><span class="poster-name">Marc Holmes</span> <span class="poster">@marc-holmes</span></li>
+                  <li>live in {{post.liveIn}}</li>
+                </ul>
+              </div>
+              <div class="col-xs-4 channel-collection">
+                <p class="text-right" ng-if="post.collection">
+                  {{post.collection}} <i class="fa fa-th"></i>
+                </p>
+                <p class="text-right" ng-if="!post.collection">
+                  {{post.channel}} <i class="fa fa-comments-o"></i>
+                </p>
+              </div>
+            </div>
+
+            <div class="row main">
+              <div class="col-xs-12">
+                <div ng-if="post.imagePath" class="image-content">
+                  <img ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
+                </div>
+
+                <a ng-if="post.filePath" class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">
+                  <i class="fa fa-link"></i>
+                  <span>{{post.fileName}}</span>
+                </a>
+                <p ng-if="post.comment">{{post.comment}}</p>
+              </div>
+            </div>
+
+            <div class="row actions">
+              <div class="col-xs-12">
+                <ul>
+                  <li>
+                    <a ng-click="edit(post.postId)"><i class="fa fa-cog"></i></a>
+                  </li>
+                  <li>
+                    <fw-delete-link
+                      item-type="Post"
+                      data-event-title="Post deleted"
+                      data-event-category="Backlog"
+                      delete="delete(post.postId)">
+                      <i class="fa fa-trash"></i>
+                    </fw-delete-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

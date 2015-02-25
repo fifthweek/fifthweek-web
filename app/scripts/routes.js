@@ -326,7 +326,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.backlog.timeline.name, {
         url: '',
-        templateUrl: 'views/creators/backlog/list.html',
+        templateUrl: 'views/creators/backlog/post-list.html',
         controller: 'backlogCtrl',
         requireSubscription: true,
         data : {
@@ -339,7 +339,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.backlog.queues.name, {
         url: '/queues',
-        templateUrl: 'views/creators/backlog/queues.html',
+        templateUrl: 'views/creators/backlog/queue-list.html',
         requireSubscription: true,
         data : {
           pageTitle: 'Queues',
