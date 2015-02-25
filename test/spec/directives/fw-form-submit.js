@@ -50,6 +50,7 @@ describe('submit form directive', function(){
       expect(scope.submit).not.toHaveBeenCalled();
       expect(scope.form.message).toBe('');
       expect(scope.form.isSubmitting).toBe(false);
+      expect(scope.form.hasAttemptedSubmit).toBe(false);
       expect(scope.form.hasSubmitted).toBe(false);
       expect(scope.form.submissionSucceeded).toBe(false);
     });
@@ -595,7 +596,7 @@ describe('submit form directive', function(){
     });
   });
 
-  describe('when click event is triggered with fw-can-submit-form attribute', function() {
+  describe('when click event is triggered without can-submit attribute', function() {
 
     var scope;
     var element;
@@ -640,6 +641,60 @@ describe('submit form directive', function(){
       $rootScope.$apply();
 
       expect(scope.form.hasSubmitted).toBe(true);
+    });
+  });
+
+  describe('when click event is triggered with can-submit attribute', function() {
+
+    var scope;
+    var element;
+    var deferred;
+
+    beforeEach(function () {
+      scope = $rootScope.$new();
+      deferred = $q.defer();
+      scope.submit = function() { return deferred.promise; };
+
+      element = angular.element(getFormHtml('can-submit="canSubmit()"'));
+      $compile(element)(scope);
+      element = element.find('button');
+      scope.$digest();
+    });
+
+    it('should not perform the submission if canSubmit returns false', function(){
+      scope.canSubmit = function(){ return false; };
+      deferred.resolve();
+      element.click();
+      $rootScope.$apply();
+
+      expect(scope.form.hasSubmitted).toBe(false);
+    });
+
+    it('should set hasAttemptedSubmit to true when canSubmit returns false', function(){
+      scope.canSubmit = function(){ return false; };
+      deferred.resolve();
+      element.click();
+      $rootScope.$apply();
+
+      expect(scope.form.hasAttemptedSubmit).toBe(true);
+    });
+
+    it('should perform the submission if canSubmit returns true', function(){
+      scope.canSubmit = function(){ return true; };
+      deferred.resolve();
+      element.click();
+      $rootScope.$apply();
+
+      expect(scope.form.hasSubmitted).toBe(true);
+    });
+
+    it('should set hasAttemptedSubmit to true when canSubmit returns false', function(){
+      scope.canSubmit = function(){ return true; };
+      deferred.resolve();
+      element.click();
+      $rootScope.$apply();
+
+      expect(scope.form.hasAttemptedSubmit).toBe(true);
     });
   });
 });

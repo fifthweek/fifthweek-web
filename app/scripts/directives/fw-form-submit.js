@@ -30,11 +30,14 @@ angular.module('webApp').directive('fwFormSubmit',
       }
 
       form.isSubmitting = false;
+      form.hasAttemptedSubmit = false;
       form.hasSubmitted = false;
       form.submissionSucceeded = false;
       form.message = '';
 
       element.bind('click', function() {
+
+        form.hasAttemptedSubmit = true;
 
         if (!canSubmit()) {
           return $q.when();
