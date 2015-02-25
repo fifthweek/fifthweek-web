@@ -26,10 +26,6 @@ $html-name-space:'.page-backlog';
       font-weight: bold;
       text-align: center;
       color:$grey-light-1;
-      &:hover {
-        cursor: pointer;
-        color:$grey-dark-2;
-      }
 
       .publish-info-day {
         font-size: 15px;
@@ -83,19 +79,6 @@ $html-name-space:'.page-backlog';
     .info {
       @include li-cancel-first-last-spacing;
 
-      li, p {
-        color:$grey-light-4;
-        font-weight: bold;
-        font-size: 14px;
-
-        a {
-          color:$grey-light-1;
-          i {
-            color:$grey-light-4;
-          }
-        }
-      }
-
       li {
         list-style-type:none;
         margin-bottom:0;
@@ -111,13 +94,26 @@ $html-name-space:'.page-backlog';
             }
           }
         }
+      }
 
-        .poster-name {
-          color:$grey-light-1;
-          font-weight: bold;
-          margin-right: 3px;
+      li, p {
+        color:$grey-light-4;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .poster-name {
+        color:$grey-light-1;
+        margin-right: 3px;
+      }
+
+      .channel-collection p {
+        color:$grey-light-1;
+        i {
+          color:$grey-light-4;
         }
       }
+
       .fa {
         margin-left:3px;
       }

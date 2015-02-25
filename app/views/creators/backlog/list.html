@@ -37,12 +37,12 @@
                   <li>live in {{post.liveIn}}</li>
                 </ul>
               </div>
-              <div class="col-xs-4">
+              <div class="col-xs-4 channel-collection">
                 <p class="text-right" ng-if="post.collection">
-                  <a href>{{post.collection}} <i class="fa fa-th"></i></a>
+                  {{post.collection}} <i class="fa fa-th"></i>
                 </p>
                 <p class="text-right" ng-if="!post.collection">
-                  <a href>{{post.channel}} <i class="fa fa-comments-o"></i></a>
+                  {{post.channel}} <i class="fa fa-comments-o"></i>
                 </p>
               </div>
             </div>
