@@ -58,17 +58,27 @@
               </div>
               <div class="col-xs-4 actions">
                 <ul>
-                  <li>
-                    <a ng-click="edit(post.postId)"><i class="fa fa-cog"></i></a>
-                  </li>
-                  <li>
-                    <fw-delete-link
-                      item-type="Post"
-                      data-event-title="Post deleted"
-                      data-event-category="Backlog"
-                      delete="delete(post.postId)">
-                      <i class="fa fa-trash"></i>
-                    </fw-delete-link>
+                  <li class="actions-more"
+                      ng-class="{'active-actions-drop-down': post.showMenu}">
+                    <button
+                      ng-click="post.showMenu = !post.showMenu"
+                      ng-blur="post.showMenu = false">
+                      <i class="fa fa-ellipsis-h"></i>
+                    </button>
+                    <div class="actions-drop-down" ng-show="post.showMenu">
+                      <ul>
+                        <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
+                        <li>
+                          <fw-delete-link
+                            item-type="Post"
+                            data-event-title="Post deleted"
+                            data-event-category="Backlog"
+                            delete="delete(post.postId)">
+                            Delete
+                          </fw-delete-link>
+                        </li>
+                      </ul>
+                    </div>
                   </li>
                 </ul>
               </div>

@@ -16,6 +16,8 @@ $footer-margin:10px;
 }
 
 .posts {
+  @import 'elements/_actions-drop-down';
+
   .panel {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.22); /* Make shadows more subtle around content */
   }
@@ -109,7 +111,6 @@ $footer-margin:10px;
 
       .poster-name {
         color:$grey-light-1;
-        margin-right: 3px;
       }
 
       .channel-collection p {
@@ -133,7 +134,8 @@ $footer-margin:10px;
     }
 
     .actions {
-      ul {
+      color:$grey-light-6;
+      > ul {
         float:right;
         > li {
           @include inline-block(top);
@@ -151,18 +153,7 @@ $footer-margin:10px;
             padding:0;
             outline:0 none;
           }
-          a {
-            color:$grey-light-4;
-            font-weight: bold;
-            font-size: 14px;
-            &:hover {
-              color:$blue-light-2;
-            }
-            .fa {
-              font-size:18px;
-              font-weight: normal;
-            }
-          }
+
           &.actions-more {
             position:relative;
           }

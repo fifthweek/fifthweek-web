@@ -1,23 +1,29 @@
 @import '_base';
 
-$html-name-space:'.actions-drop-down';
+$drop-down-right-margin-sm: 23px;
+$drop-down-right-margin-lg: 60px;
+$drop-down-width: 110px;
 
-#{$html-name-space} {
+.actions-drop-down {
   @include panel-box-shadow;
   position:absolute;
   z-index:1;
   top:20px;
-  left:0;
-  width:200px;
+  left:(-1 * $drop-down-width) + $drop-down-right-margin-sm;
+  width:$drop-down-width;
   background:$white-full;
   color:$grey-dark;
   border:solid 1px $gray-light;
   border-radius: $border-radius;
   padding: 5px 0;
+  @media (min-width:$screen-sm-min) {
+    left:(-1 * $drop-down-width) + $drop-down-right-margin-lg;
+  }
   li {
     margin:0 !important;
     padding:0 !important;
     width:100%;
+    list-style:none;
   }
   a {
     display:block;
@@ -26,10 +32,8 @@ $html-name-space:'.actions-drop-down';
     font-weight:normal;
     font-size:14.5px;
     text-decoration:none;
-    @media (min-width:$screen-md) {
-      #{$state-hover} {
-        background:$white-3;
-      }
+    #{$state-hover} {
+      background:$white-3;
     }
   }
 }
