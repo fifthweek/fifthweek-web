@@ -1,5 +1,9 @@
 @import '_base';
 
+$panel-margin-sm:10px;
+$panel-margin-lg:27px;
+$footer-margin:10px;
+
 @mixin li-cancel-first-last-spacing {
   li:first-child {
     margin-left:0;
@@ -23,7 +27,6 @@
 
     .publish-info {
       width:64px;
-      padding-top:12px;
       float:left;
       font-weight: bold;
       text-align: center;
@@ -51,7 +54,7 @@
         }
       }
       hr {
-        margin: 10px 0 8px 0;
+        margin: 6px 0 4px 0;
         width:20px;
       }
 
@@ -66,9 +69,9 @@
         margin-left: 34px;
       }
       .panel-body {
-        padding: 10px 10px;
+        padding: 10px $panel-margin-sm;
         @media (min-width:$screen-sm-min) {
-          padding: 11px 27px;
+          padding: 11px $panel-margin-lg;
         }
       }
     }
@@ -124,50 +127,71 @@
     .main {
       font-size:$p-font-size-large;
       padding:{
-        top:$main-cont-padding-large - 10px;
-        bottom:$main-cont-padding-large - 10px;
+        top:$footer-margin;
+        bottom:$footer-margin + 5;
       }
     }
 
     .actions {
-      ul > li {
-        @include inline-block(top);
-        padding:0 5px;
-        margin:0 5px;
-        cursor:pointer;
-        @media (min-width:$screen-xs - 100px) {
-          padding:0 10px;
-          margin:0 10px;
-        }
+      ul {
+        float:right;
+        > li {
+          @include inline-block(top);
+          padding:0 5px;
+          margin:0 5px;
+          cursor:pointer;
+          @media (min-width:$screen-xs - 100px) {
+            padding:0 10px;
+            margin:0 10px;
+          }
 
-        button {
-          border:0 none;
-          background:none;
-          padding:0;
-          outline:0 none;
-        }
-        a {
-          color:$grey-light-4;
-          font-weight: bold;
-          font-size: 14px;
-          &:hover {
-            color:$blue-light-2;
+          button {
+            border:0 none;
+            background:none;
+            padding:0;
+            outline:0 none;
           }
-          .fa {
-            font-size:18px;
-            font-weight: normal;
+          a {
+            color:$grey-light-4;
+            font-weight: bold;
+            font-size: 14px;
+            &:hover {
+              color:$blue-light-2;
+            }
+            .fa {
+              font-size:18px;
+              font-weight: normal;
+            }
           }
-        }
-        &.actions-more {
-          position:relative;
+          &.actions-more {
+            position:relative;
+          }
         }
       }
+
       @include li-cancel-first-last-spacing;
+    }
+
+    .image-content {
+
+      /* Todo: implement without negative margins */
+      margin-top:-21px;
+      margin-left:$panel-margin-sm * -1;
+      margin-right:$panel-margin-sm * -1;
+      @media (min-width:$screen-sm-min) {
+        margin-left:$panel-margin-lg * -1;
+        margin-right:$panel-margin-lg * -1;
+      }
+
+      img {
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+      }
     }
 
     .image-content, .file-content {
       display: block;
-      margin-bottom: 20px;
+      margin-bottom: $footer-margin + 10;
       cursor: pointer;
       &:last-child {
         margin-bottom: 0;
@@ -177,11 +201,5 @@
     .file-content {
       padding-top: 6px;
     }
-  }
-}
-
-.backlog-queue {
-  .main {
-
   }
 }

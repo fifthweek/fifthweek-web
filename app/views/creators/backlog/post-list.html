@@ -30,23 +30,6 @@
         <div class="panel-body jumbo-panel">
           <div class="full-width-float">
 
-            <div class="row info">
-              <div class="col-xs-8">
-                <ul>
-                  <li><span class="poster-name">Marc Holmes</span> <span class="poster">@marc-holmes</span></li>
-                  <li>live in {{post.liveIn}}</li>
-                </ul>
-              </div>
-              <div class="col-xs-4 channel-collection">
-                <p class="text-right" ng-if="post.collection">
-                  {{post.collection}} <i class="fa fa-th"></i>
-                </p>
-                <p class="text-right" ng-if="!post.collection">
-                  {{post.channel}} <i class="fa fa-comments-o"></i>
-                </p>
-              </div>
-            </div>
-
             <div class="row main">
               <div class="col-xs-12">
                 <div ng-if="post.imagePath" class="image-content">
@@ -61,8 +44,18 @@
               </div>
             </div>
 
-            <div class="row actions">
-              <div class="col-xs-12">
+            <div class="row">
+              <div class="col-xs-8 info">
+                <ul>
+                  <li>
+                    <span class="poster-name">Marc Holmes</span>
+                    <span ng-if="post.collection">in {{post.collection}}</span>
+                    <span ng-if="!post.collection">to {{post.channel}}</span>
+                  </li>
+                  <li>live in {{post.liveIn}}</li>
+                </ul>
+              </div>
+              <div class="col-xs-4 actions">
                 <ul>
                   <li>
                     <a ng-click="edit(post.postId)"><i class="fa fa-cog"></i></a>
