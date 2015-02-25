@@ -26,8 +26,8 @@
         id="delete-item-verified-button"
         class="btn btn-block btn-danger"
         data-loading-text="Deleting..."
-        data-event-title="{{data-event-title}}"
-        data-event-category="{{data-event-category}}"
+        data-event-title="{{dataEventTitle}}"
+        data-event-category="{{dataEventCategory}}"
         form-name="verifiedDeleteForm"
         ng-disabled="item !== confirmationText.value"
         fw-form-submit="confirmDelete()">I understand, delete this {{itemTypeLowered}}</button>
@@ -52,8 +52,8 @@
         id="delete-item-unverified-button"
         class="btn btn-block btn-danger"
         data-loading-text="Deleting..."
-        data-event-title="{{data-event-title}}"
-        data-event-category="{{data-event-category}}"
+        data-event-title="{{dataEventTitle}}"
+        data-event-category="{{dataEventCategory}}"
         form-name="unverifiedDeleteForm"
         can-submit="true"
         fw-form-submit="confirmDelete()">Delete {{itemType}}</button>
