@@ -67,7 +67,7 @@ angular.module('webApp')
           [
             {
               name: 'Future Posts',
-              state: states.creators.backlog.timeline.name,
+              state: states.creators.backlog.futurePosts.name,
               icon: 'fa fa-clock-o',
               color: 'yellow'
             },

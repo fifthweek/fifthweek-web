@@ -28,7 +28,7 @@ describe('backlog controller', function() {
       scope = $injector.get('$rootScope').$new();
       scope.form = {};
       $state = $injector.get('$state');
-      target = $controller('backlogCtrl', { $scope: scope });
+      target = $controller('backlogPostListCtrl', { $scope: scope });
     });
 
     // Satisfy the 'construction precondition' by default. There only needs to be

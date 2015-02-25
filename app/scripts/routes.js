@@ -55,11 +55,17 @@ angular.module('routes', ['ui.router'])
       },
       backlog: {
         name: 'creators.backlog',
-        timeline: {
-          name: 'creators.backlog.timeline'
+        futurePosts: {
+          name: 'creators.backlog.futurePosts'
         },
         queues: {
-          name: 'creators.backlog.queues'
+          name: 'creators.backlog.queues',
+          queues: {
+            name: 'creators.backlog.queues.queues'
+          },
+          reorder: {
+            name: 'creators.backlog.queues.reorder'
+          }
         }
       },
       customize: {
@@ -316,7 +322,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.backlog.name, {
         url: '/backlog',
         templateUrl: 'views/creators/backlog/index.html',
-        redirectTo: states.creators.backlog.timeline.name,
+        redirectTo: states.creators.backlog.futurePosts.name,
         requireSubscription: true,
         data : {
           access: {
@@ -324,10 +330,10 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.backlog.timeline.name, {
+      .state(states.creators.backlog.futurePosts.name, {
         url: '',
         templateUrl: 'views/creators/backlog/post-list.html',
-        controller: 'backlogCtrl',
+        controller: 'backlogPostListCtrl',
         requireSubscription: true,
         data : {
           pageTitle: 'Future Posts',
@@ -339,11 +345,35 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.backlog.queues.name, {
         url: '/queues',
+        templateUrl: 'views/creators/backlog/index.html',
+        redirectTo: states.creators.backlog.queues.queues.name,
+        requireSubscription: true,
+        data : {
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.backlog.queues.queues.name, {
+        url: '/',
         templateUrl: 'views/creators/backlog/queue-list.html',
         requireSubscription: true,
         data : {
           pageTitle: 'Queues',
           headTitle: ': ' + 'Queues',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.backlog.queues.reorder.name, {
+        url: '/{id}',
+        templateUrl: 'views/creators/backlog/queue-reorder.html',
+        controller: 'queueReorderCtrl',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Reorder Queue',
+          headTitle: ': ' + 'Reorder Queues',
           access: {
             requireAuthenticated: true
           }

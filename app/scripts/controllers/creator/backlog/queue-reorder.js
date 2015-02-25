@@ -1,6 +1,10 @@
-angular.module('webApp').controller('backlogPostListCtrl',
+angular.module('webApp').controller('queueReorderCtrl',
   function($scope, $timeout, $modal) {
     'use strict';
+
+    $scope.model = {
+      collectionName: 'Side Comic'
+    };
 
     $scope.posts = [
       {
