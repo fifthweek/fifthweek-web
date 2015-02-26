@@ -208,7 +208,7 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
       }
     }
 
-    .info {
+    .image-body {
       position: absolute;
       bottom: 0;
       left:$queued-image-width-lg;
@@ -219,7 +219,7 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
       }
 
 
-      .info-content {
+      .image-body-padding {
         @include body-padding;
       }
     }

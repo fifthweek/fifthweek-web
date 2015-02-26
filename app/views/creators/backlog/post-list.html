@@ -1,4 +1,4 @@
-<div class="row posts backlog">
+<div class="row posts backlog restore-row-behaviour">
   <div class="col-md-12">
 
     <div class="post" ng-repeat="post in posts">
@@ -40,7 +40,7 @@
                   <i class="fa fa-link"></i>
                   <span>{{post.fileName}}</span>
                 </a>
-                <p ng-if="post.comment">{{post.comment}}</p>
+                <div ng-if="post.trustedCommentHtml" ng-bind-html="post.trustedCommentHtml"></div>
               </div>
             </div>
 
