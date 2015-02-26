@@ -8,7 +8,7 @@
       <p class="tag" ng-if="post.queued">Queued, {{post.date}}</p>
 
       <div class="text">
-        <div class="clearfix" ng-if="post.comment || post.filePath">
+        <div class="content" ng-if="post.comment || post.filePath">
           <md ng-model="post.comment" ng-if="post.comment"></md>
 
           <p ng-if="post.filePath">

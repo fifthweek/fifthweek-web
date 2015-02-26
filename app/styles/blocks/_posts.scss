@@ -23,7 +23,7 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
   @import 'actions-drop-down';
 
   /* temporary until redesign of site template */
-  max-width: 600px;
+  max-width: 600px + ($main-cont-padding-small * 2);
 
   .post {
     @include panel-shadow;
@@ -32,11 +32,8 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
     background: #fff;
     position: relative;
     margin-bottom:20px;
-
-    @media (max-width:$screen-ss-max) {
-      margin-left: $main-cont-padding-small;
-      margin-right: $main-cont-padding-small;
-    }
+    margin-left: $main-cont-padding-small;
+    margin-right: $main-cont-padding-small;
 
     .text {
       /* Serious pixel pushing: there should be equal margin in the footer */
@@ -166,7 +163,7 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
 
 
 
-.backlog-queue .post {
+.queue .post {
 
   .comment-preview {
     display: none;

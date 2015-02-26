@@ -1,131 +1,71 @@
 <fw-breadcrumb current="{{model.collectionName}}"></fw-breadcrumb>
-<div class="row posts backlog backlog-queue restore-row-behaviour">
-  <div class="col-md-12">
 
-    <div class="post" ng-repeat="post in posts">
-      <div class="publish-info visible-over-s">
-        <p class="publish-info-day">{{post.dayOfWeek}}</p>
-        <p class="publish-info-date">{{post.date}}</p>
-      </div>
+<div class="posts queue restore-row-behaviour">
+  <div class="post tagged-post" ng-repeat="post in posts">
+    <div ng-class="{'non-image-post': !post.imagePath, 'image-post': post.imagePath}">
+      <img ng-if="post.imagePath" ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
 
-      <div class="panel panel-default clearfix">
+      <p class="tag" ng-if="!post.queued">Scheduled, {{post.date}}</p>
 
-        <div class="full-width-float image-post" ng-if="post.imagePath">
+      <p class="tag" ng-if="post.queued">Queued, {{post.date}}</p>
 
-          <div class="image-content">
-            <img ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
+      <div class="text">
+        <div class="content" ng-if="post.comment || post.filePath">
+          <md ng-model="post.comment" ng-if="post.comment"></md>
+
+          <p ng-if="post.filePath">
+            <a class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">
+              {{post.fileName}}
+            </a>
+          </p>
+        </div>
+
+        <hr />
+
+        <div class="row info-actions">
+          <div class="col-xs-8 info">
+            <div class="author">
+              <fw-blob-image control="blobImage" width="32px" height="32px" border-radius="16px" thumbnail="128x128-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
+            </div>
+            <ul>
+              <li>
+                <span class="poster-name">Marc Holmes</span>
+                <span ng-if="post.collection">in {{post.collection}}</span>
+                <span ng-if="!post.collection">to {{post.channel}}</span>
+              </li>
+              <li>live in {{post.liveIn}}</li>
+            </ul>
           </div>
-
-          <div class="image-body">
-            <div class="image-body-padding">
-
-
-              <div class="row info-actions">
-                <div class="col-xs-10 info">
+          <div class="col-xs-4 actions">
+            <ul>
+              <li class="actions-more"
+                  ng-class="{'active-actions-drop-down': post.showMenu}">
+                <button
+                  ng-click="post.showMenu = !post.showMenu"
+                  ng-blur="post.showMenu = false">
+                  <i class="fa fa-ellipsis-h"></i>
+                </button>
+                <div class="actions-drop-down" ng-show="post.showMenu">
                   <ul>
+                    <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
+                    <li ng-if="post.queued"><a ui-sref="creators.backlog.queues.reorder({id: post.collectionId})">Reorder</a></li>
                     <li>
-                      <span class="poster-name">Marc Holmes</span>
-                      <span ng-if="post.collection">in {{post.collection}}</span>
-                      <span ng-if="!post.collection">to {{post.channel}}</span>
-                    </li>
-                    <li>live in {{post.liveIn}}</li>
-                  </ul>
-                </div>
-                <div class="col-xs-2 actions">
-                  <ul>
-                    <li class="actions-more"
-                        ng-class="{'active-actions-drop-down': post.showMenu}">
-                      <button
-                        ng-click="post.showMenu = !post.showMenu"
-                        ng-blur="post.showMenu = false">
-                        <i class="fa fa-ellipsis-h"></i>
-                      </button>
-                      <div class="actions-drop-down" ng-show="post.showMenu">
-                        <ul>
-                          <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
-                          <li>
-                            <fw-delete-link
-                              item-type="Post"
-                              data-event-title="Post deleted"
-                              data-event-category="Backlog"
-                              delete="delete(post.postId)">
-                              Delete
-                            </fw-delete-link>
-                          </li>
-                        </ul>
-                      </div>
+                      <fw-delete-link
+                        item-type="Post"
+                        data-event-title="Post deleted"
+                        data-event-category="Backlog"
+                        delete="delete(post.postId)">
+                        Delete
+                      </fw-delete-link>
                     </li>
                   </ul>
                 </div>
-              </div>
-
-
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div ng-if="!post.imagePath" class="panel-body jumbo-panel">
-          <div class="full-width-float" ng-class="{'file-post': post.filePath}">
-
-            <div class="row main">
-              <div class="col-xs-12">
-                <a ng-if="post.filePath" class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">
-                  <i class="fa fa-link"></i>
-                  <span>{{post.fileName}}</span>
-                </a>
-                <div ng-if="post.comment" class="comment-preview">
-                  <md ng-model="post.comment"></md>
-                </div>
-              </div>
-            </div>
-
-            <div class="row info-actions">
-              <div class="col-xs-9 info">
-                <ul>
-                  <li>
-                    <span class="poster-name">Marc Holmes</span>
-                    <span ng-if="post.collection">in {{post.collection}}</span>
-                    <span ng-if="!post.collection">to {{post.channel}}</span>
-                  </li>
-                  <li>live in {{post.liveIn}}</li>
-                </ul>
-              </div>
-              <div class="col-xs-3 actions">
-                <ul>
-                  <li class="actions-more"
-                      ng-class="{'active-actions-drop-down': post.showMenu}">
-                    <button
-                      ng-click="post.showMenu = !post.showMenu"
-                      ng-blur="post.showMenu = false">
-                      <i class="fa fa-ellipsis-h"></i>
-                    </button>
-                    <div class="actions-drop-down" ng-show="post.showMenu">
-                      <ul>
-                        <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
-                        <li>
-                          <fw-delete-link
-                            item-type="Post"
-                            data-event-title="Post deleted"
-                            data-event-category="Backlog"
-                            delete="delete(post.postId)">
-                            Delete
-                          </fw-delete-link>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </div>
