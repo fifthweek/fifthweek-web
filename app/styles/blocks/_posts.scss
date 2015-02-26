@@ -7,6 +7,8 @@ $footer-margin:10px;
 $horizontal-rule:23px;
 $queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*0.382)*1.618) */
 $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
+$post-font-size: 14px;
+$post-line-height: 20px;
 
 @mixin li-cancel-first-last-spacing {
   li:first-child {
@@ -71,7 +73,7 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
         margin: 0;
       }
       li, p {
-        font-size: 14px;
+        font-size: $post-font-size;
       }
 
       .info-actions {
@@ -169,41 +171,52 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
 
 .queue .post {
 
-  .comment-preview {
-    display: none;
+  .text {
+    padding-bottom: $panel-margin-lg;
+  }
+
+  .content {
+    > * {
+      display: none;
+    }
+
     p:first-child {
 
-      max-height: $p-line-height * 3; /* Fallback for non-webkit */
-      line-height: $p-line-height; /* Fallback for non-webkit */
+      max-height: $post-line-height * 3; /* Fallback for non-webkit */
+      line-height: $post-line-height; /* Fallback for non-webkit */
       display: block; /* Fallback for non-webkit */
-      display: -webkit-box; /* autoprefixer: off */
+      display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .content-file {
+      display: block;
+    }
+  }
+
+  /* Display only 2 lines of comment for files, to compensate for displaying the file itself */
+  .file-post .content p:first-child {
+    max-height: $post-line-height * 2; /* Fallback for non-webkit */
+    -webkit-line-clamp: 2;
   }
 
   .image-post {
-    position:relative;
-
-    .image-content {
-      margin: 0;
-      float:left;
+    > img:first-child {
+      cursor: pointer;
+      border-radius: 0;
+      border-top-left-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
 
       width:$queued-image-width-lg;
       @media (max-width:$screen-s-max) {
         width:$queued-image-width-sm;
       }
-
-      img {
-        border-radius: 0;
-        border-top-left-radius: $border-radius;
-        border-bottom-left-radius: $border-radius;
-      }
     }
 
-    .image-body {
+    .text {
       position: absolute;
       bottom: 0;
       left:$queued-image-width-lg;
@@ -211,15 +224,6 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
       @media (max-width:$screen-s-max) {
         left:$queued-image-width-sm;
         width:100% - $queued-image-width-sm;
-      }
-    }
-  }
-
-  .file-post {
-    .comment-preview {
-      p:first-child {
-        max-height: $p-line-height * 1; /* Fallback for non-webkit */
-        -webkit-line-clamp: 1;
       }
     }
   }
