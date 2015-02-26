@@ -16,6 +16,12 @@
         };
       });
     })
+    .run(function() {
+      marked.setOptions({
+        breaks: true,
+        sanitize: true
+      });
+    })
     .run(function ($state, states) {
       // This configures the empty state '' to have similar properties
       // to the home state.  Because the site is in the default state briefly

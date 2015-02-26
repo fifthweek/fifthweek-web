@@ -25,6 +25,7 @@
     "angular": false,
     "alert": false,
     "jQuery": false,
+    "marked": false,
     "ApiError": false,
     "FifthweekError": false,
     "InputValidationError": false,

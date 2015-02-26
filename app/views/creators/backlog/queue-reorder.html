@@ -100,7 +100,7 @@
                   <i class="fa fa-link"></i>
                   <span>{{post.fileName}}</span>
                 </a>
-                <p ng-if="post.comment">{{post.comment}}</p>
+                <md ng-if="post.comment" ng-model="post.comment"></md>
               </div>
             </div>
 

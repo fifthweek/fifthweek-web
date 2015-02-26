@@ -38,6 +38,8 @@ module.exports = function(config) {
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/lodash/lodash.js',
       'bower_components/angular-ui-sortable/sortable.js',
+      'bower_components/marked/lib/marked.js',
+      'bower_components/angular-md/dist/angular-md.js',
       'app/scripts/app.js',
       'app/scripts/**/*.js',
       'app/views/**/*.html',

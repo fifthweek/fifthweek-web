@@ -18,7 +18,8 @@ angular
     'angulartics',
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',
-    'angulartics.kissmetrics'
+    'angulartics.kissmetrics',
+    'yaru22.md'
   ])
   .constant('fifthweekConstants', {
     apiBaseUri: window.configuredApiBaseUri,
