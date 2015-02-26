@@ -144,6 +144,9 @@ input[type="button"].btn-block,
 .btn-file {
   position: relative;
   overflow: hidden;
+  @media (max-width:$screen-s-max) {
+    padding: 9px 12px;
+  }
 }
 .btn-file input[type=file] {
   position: absolute;
