@@ -1,0 +1,225 @@
+@import '_base';
+
+$panel-margin-sm:10px;
+$panel-margin-lg:27px;
+$line-height-compensation:5px;
+$footer-margin:10px;
+$horizontal-rule:23px;
+$queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*0.382)*1.618) */
+$queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
+
+@mixin li-cancel-first-last-spacing {
+  li:first-child {
+    margin-left:0;
+    padding-left:0;
+  }
+  li:last-child {
+    margin-right:0;
+    padding-right:0;
+  }
+}
+
+.posts {
+  @import 'actions-drop-down';
+
+  /* temporary until redesign of site template */
+  max-width: 600px;
+
+  .post {
+    @include panel-shadow;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.22); /* Make shadows more subtle around content */
+    border-radius: $border-radius;
+    background: #fff;
+    position: relative;
+    margin-bottom:20px;
+
+    @media (max-width:$screen-ss-max) {
+      margin-left: $main-cont-padding-small;
+      margin-right: $main-cont-padding-small;
+    }
+
+    .text {
+      /* Serious pixel pushing: there should be equal margin in the footer */
+      /* IMPORTANT: Constant LG Top is intentional. */
+      padding: ($panel-margin-lg - $line-height-compensation) $panel-margin-sm (($panel-margin-sm - $line-height-compensation) + 1) $panel-margin-sm;
+      @media (min-width:$screen-s-min) {
+        padding: ($panel-margin-lg - $line-height-compensation) $panel-margin-lg (($panel-margin-lg - $line-height-compensation) + 1) $panel-margin-lg;
+      }
+
+      hr {
+        width:auto;
+        display:block;
+        /* IMPORTANT: Constant LG Top is intentional. */
+        margin-top:$horizontal-rule;
+        margin-bottom:5px;
+        margin-left: $panel-margin-sm * -1;
+        margin-right: $panel-margin-sm * -1;
+        @media (min-width:$screen-s-min) {
+          margin-bottom:$horizontal-rule;
+          margin-left: $panel-margin-lg * -1;
+          margin-right: $panel-margin-lg * -1;
+        }
+
+        &:first-child {
+          display: none;
+        }
+      }
+
+      ul {
+        padding: 0;
+        margin: 0;
+      }
+      li, p {
+        font-size: 14px;
+      }
+
+      .info-actions {
+        @include vcenter;
+        clear:both;
+      }
+
+      .info {
+        .author {
+          float:left;
+          padding-top:4px;
+        }
+
+        > ul {
+          float:left;
+          padding-left: 10px;
+          @media (min-width:$screen-s-min) {
+            padding-left: 16px; /* 10 and 16 are golden rations from 27 - the border */
+          }
+          > li {
+            color:$grey-light-4;
+            font-weight: bold;
+            list-style-type:none;
+            margin-bottom:0;
+
+            .poster-name {
+              color:$grey-light-1;
+            }
+          }
+        }
+      }
+
+      .actions > ul {
+        color:$grey-light-6;
+        float:right;
+        > li {
+          @include inline-block(top);
+          padding:0 5px;
+          margin:0 5px;
+          cursor:pointer;
+          @media (min-width:$screen-xs - 100px) {
+            padding:0 10px;
+            margin:0 10px;
+          }
+
+          button {
+            border:0 none;
+            background:none;
+            padding:0;
+            outline:0 none;
+          }
+
+          &.actions-more {
+            position:relative;
+          }
+        }
+
+        @include li-cancel-first-last-spacing;
+      }
+    }
+  }
+
+  .tagged-post {
+    .non-image-post {
+      padding-top: 32px;
+    }
+
+    .tag {
+      font-size: 12px;
+      position: absolute;
+      top:8px;
+      left:-2px;
+      border-left: 2px solid #bdbdbd;
+      border-radius: 2px;
+      background: $gray-lighter;
+      padding: 3px 6px;
+    }
+
+    .image-post .tag {
+      color:#fff;
+      background: rgba(0,0,0,0.6);
+    }
+  }
+
+  .image-post {
+    > img:first-child {
+      cursor: pointer;
+      border-top-left-radius: $border-radius;
+      border-top-right-radius: $border-radius;
+    }
+  }
+}
+
+
+
+.backlog-queue .post {
+
+  .comment-preview {
+    display: none;
+    p:first-child {
+
+      max-height: $p-line-height * 3; /* Fallback for non-webkit */
+      line-height: $p-line-height; /* Fallback for non-webkit */
+      display: block; /* Fallback for non-webkit */
+      display: -webkit-box; /* autoprefixer: off */
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .image-post {
+    position:relative;
+
+    .image-content {
+      margin: 0;
+      float:left;
+
+      width:$queued-image-width-lg;
+      @media (max-width:$screen-s-max) {
+        width:$queued-image-width-sm;
+      }
+
+      img {
+        border-radius: 0;
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+      }
+    }
+
+    .image-body {
+      position: absolute;
+      bottom: 0;
+      left:$queued-image-width-lg;
+      width:100% - $queued-image-width-lg;
+      @media (max-width:$screen-s-max) {
+        left:$queued-image-width-sm;
+        width:100% - $queued-image-width-sm;
+      }
+    }
+  }
+
+  .file-post {
+    .comment-preview {
+      p:first-child {
+        max-height: $p-line-height * 1; /* Fallback for non-webkit */
+        -webkit-line-clamp: 1;
+      }
+    }
+  }
+}
