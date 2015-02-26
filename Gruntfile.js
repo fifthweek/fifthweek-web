@@ -201,6 +201,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/styles',
           'bower_components'
         ],
+        imagePath: '<%= yeoman.app %>/images',
         sourceMap: true
       },
       dist: {
