@@ -30,41 +30,8 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
   .panel {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.22); /* Make shadows more subtle around content */
   }
-}
-
-.backlog {
 
   .post {
-
-    .publish-info {
-      width:64px;
-      float:left;
-      font-weight: bold;
-      text-align: center;
-      color:$grey-light-1;
-
-      .publish-info-day {
-        font-size: 15px;
-        text-transform: uppercase;
-        margin-bottom:2px;
-      }
-      .publish-info-date {
-        font-size: 12px;
-        margin-bottom: 0;
-      }
-      .publish-info-mode {
-        font-size: 12px;
-      }
-      hr {
-        margin: 6px 0 4px 0;
-        width:20px;
-      }
-
-      @media (max-width:$screen-s-max) {
-        width:18px;
-        margin-top:9px;
-      }
-    }
     .panel {
       margin-left: 80px;
       @media (max-width:$screen-s-max) {
@@ -74,10 +41,13 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
         @include body-padding;
       }
     }
-
     ul {
       padding-left:0;
       margin-bottom:0;
+    }
+
+    .info-actions {
+      @include vbottom;
     }
 
     .info {
@@ -86,7 +56,7 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
       li {
         list-style-type:none;
         margin-bottom:0;
-        @media (min-width:$screen-xs) {
+        @media (min-width:$screen-sm-min) {
           @include inline-block(top);
           &::after {
             @include dot-separator;
@@ -188,46 +158,70 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
   }
 }
 
-.backlog-queue {
-  .post {
-    .image-post {
-      .image-content {
-        margin: 0;
-        float:left;
+.backlog .post .publish-info {
+  width:64px;
+  float:left;
+  font-weight: bold;
+  text-align: center;
+  color:$grey-light-1;
 
-        width:$queued-image-width-lg;
-        @media (max-width:$screen-ss-max) {
-          width:$queued-image-width-sm;
-        }
+  .publish-info-day {
+    font-size: 15px;
+    text-transform: uppercase;
+    margin-bottom:2px;
+  }
+  .publish-info-date {
+    font-size: 12px;
+    margin-bottom: 0;
+  }
+  .publish-info-mode {
+    font-size: 12px;
+  }
+  hr {
+    margin: 6px 0 4px 0;
+    width:20px;
+  }
 
-        img {
-          border-radius: 0;
-          border-top-left-radius: $border-radius;
-          border-bottom-left-radius: $border-radius;
-        }
+  @media (max-width:$screen-s-max) {
+    width:18px;
+    margin-top:9px;
+  }
+}
+
+.backlog-queue .post {
+  .image-post {
+    position:relative;
+
+    .image-content {
+      margin: 0;
+      float:left;
+
+      width:$queued-image-width-lg;
+      @media (max-width:$screen-s-max) {
+        width:$queued-image-width-sm;
       }
 
-      .info {
-        float:left;
-
-
-        width:100% - $queued-image-width-lg;
-        @media (max-width:$screen-ss-max) {
-          width:100% - $queued-image-width-sm;
-        }
-
-        .info-content {
-          position:relative;
-          @include body-padding;
-        }
-
-        ul {
-          position: absolute;
-          bottom: 5px;
-        }
-
+      img {
+        border-radius: 0;
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
       }
     }
 
+    .info {
+      position: absolute;
+      bottom: 0;
+      left:$queued-image-width-lg;
+      width:100% - $queued-image-width-lg;
+      @media (max-width:$screen-s-max) {
+        left:$queued-image-width-sm;
+        width:100% - $queued-image-width-sm;
+      }
+
+
+      .info-content {
+        @include body-padding;
+      }
+    }
   }
 }

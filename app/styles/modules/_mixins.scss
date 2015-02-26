@@ -14,6 +14,10 @@
   align-items: center;
 }
 
+@mixin vbottom {
+  display: flex;
+  align-items: flex-end;
+}
 
 @mixin mobile-nav-scroll ($width){
   .header-navbar-menu-wrap {
