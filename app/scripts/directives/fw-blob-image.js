@@ -10,7 +10,9 @@ angular.module('webApp').directive('fwBlobImage',
       pendingWidth: '@',
       pendingHeight: '@',
       borderRadius: '@',
-      thumbnail: '@'
+      thumbnail: '@',
+      fileUri: '@',
+      containerName: '@'
     },
     templateUrl:'views/partials/blob-image.html',
     link: function(scope/*, element, attrs*/){
@@ -28,6 +30,10 @@ angular.module('webApp').directive('fwBlobImage',
 
         scope.$broadcast(blobImageCtrlConstants.updateEvent, fileUri,  containerName, availableImmediately);
       };
+
+      if(scope.fileUri && scope.containerName){
+        scope.internalControl.update(scope.fileUri, scope.containerName, true);
+      }
     }
   };
 });
