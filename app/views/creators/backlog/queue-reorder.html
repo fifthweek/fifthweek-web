@@ -92,15 +92,13 @@
 
             <div class="row main">
               <div class="col-xs-12">
-                <div ng-if="post.imagePath" class="image-content">
-                  <img ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
-                </div>
-
                 <a ng-if="post.filePath" class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">
                   <i class="fa fa-link"></i>
                   <span>{{post.fileName}}</span>
                 </a>
-                <md ng-if="post.comment" ng-model="post.comment"></md>
+                <div class="comment-preview">
+                  <md ng-if="post.comment" ng-model="post.comment"></md>
+                </div>
               </div>
             </div>
 

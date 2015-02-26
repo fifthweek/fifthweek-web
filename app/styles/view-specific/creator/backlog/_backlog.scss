@@ -224,4 +224,20 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
       }
     }
   }
+
+  .comment-preview {
+    md * {
+      display: none;
+    }
+    p:first-child {
+      max-height: $p-line-height * 3; /* Fallback for non-webkit */
+      line-height: $p-line-height; /* Fallback for non-webkit */
+      display: block; /* Fallback for non-webkit */
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
