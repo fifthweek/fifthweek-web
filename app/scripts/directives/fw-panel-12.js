@@ -6,7 +6,7 @@ angular.module('webApp').directive('fwPanel12', function () {
     transclude: true,
     template:
       '<div class="row">' +
-        '<div class="col-xs-12 col-sm-10 col-md-12">' +
+        '<div class="col-xs-12">' +
           '<div class="panel panel-default">' +
             '<div class="panel-body jumbo-panel">' +
               '<ng-transclude></ng-transclude>' +
