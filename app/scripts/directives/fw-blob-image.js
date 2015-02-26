@@ -18,7 +18,6 @@ angular.module('webApp').directive('fwBlobImage',
     link: function(scope/*, element, attrs*/){
       scope.internalControl = scope.control || {};
       scope.internalControl.update = function(fileUri, containerName, availableImmediately) {
-
         if(!fileUri) {
           scope.$broadcast(blobImageCtrlConstants.updateEvent);
           return;

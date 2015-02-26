@@ -6,11 +6,14 @@ describe('fw-blob-image directive', function(){
   var $rootScope;
   var $compile;
 
+  var controllerInitialize;
+
   beforeEach(function() {
     module('webApp', 'webApp.views');
 
+    controllerInitialize  = jasmine.createSpyObj('controllerInitialize', ['init']);
     module(function($controllerProvider){
-      $controllerProvider.register('blobImageCtrl', function() { return {}; });
+      $controllerProvider.register('blobImageCtrl', function($scope) { controllerInitialize.init($scope); });
     });
 
     inject(function($injector) {
@@ -110,6 +113,80 @@ describe('fw-blob-image directive', function(){
       isolateScope.internalControl.update('uri', 'containerName', true);
 
       expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri/thumb', 'containerName', true);
+    });
+
+    describe('when specifying the uri inline', function(){
+
+      var broadcastUri;
+      var broadcastContainerName;
+      var broadcastAvailableImmediately;
+
+      beforeEach(function(){
+        broadcastUri = undefined;
+        broadcastContainerName = undefined;
+        broadcastAvailableImmediately = undefined;
+
+        controllerInitialize.init.and.callFake(function(s){
+          s.$on(blobImageCtrlConstants.updateEvent, function(event, uri, containerName, availableImmediately){
+            broadcastUri = uri;
+            broadcastContainerName = containerName;
+            broadcastAvailableImmediately = availableImmediately;
+          });
+        });
+      });
+
+      it('should call update immediately if the fileUri and containerName are specified as attributes', function(){
+        var element = angular.element('<fw-blob-image file-uri="uri" container-name="containerName" />');
+        $compile(element)(scope);
+        scope.$digest();
+
+        expect(broadcastUri).toBe('uri');
+        expect(broadcastContainerName).toBe('containerName');
+        expect(broadcastAvailableImmediately).toBe(true);
+      });
+
+      it('should call update immediately with thumbnail if the fileUri and containerName are specified as attributes', function(){
+        var element = angular.element('<fw-blob-image file-uri="uri" container-name="containerName" thumbnail="blah" />');
+        $compile(element)(scope);
+        scope.$digest();
+
+        expect(broadcastUri).toBe('uri/blah');
+        expect(broadcastContainerName).toBe('containerName');
+        expect(broadcastAvailableImmediately).toBe(true);
+      });
+
+      it('should not call update immediately if only the containerName is specified as an attribute', function(){
+        var element = angular.element('<fw-blob-image container-name="containerName" />');
+        $compile(element)(scope);
+        scope.$digest();
+        scope.$apply();
+
+        expect(broadcastUri).toBeUndefined();
+        expect(broadcastContainerName).toBeUndefined();
+        expect(broadcastAvailableImmediately).toBeUndefined();
+      });
+
+      it('should not call update immediately if only the fileUri is specified as an attribute', function(){
+        var element = angular.element('<fw-blob-image file-uri="uri" />');
+        $compile(element)(scope);
+        scope.$digest();
+        scope.$apply();
+
+        expect(broadcastUri).toBeUndefined();
+        expect(broadcastContainerName).toBeUndefined();
+        expect(broadcastAvailableImmediately).toBeUndefined();
+      });
+
+      it('should not call update immediately if neither fileUri nor containerName is specified as an attribute', function(){
+        var element = angular.element('<fw-blob-image />');
+        $compile(element)(scope);
+        scope.$digest();
+        scope.$apply();
+
+        expect(broadcastUri).toBeUndefined();
+        expect(broadcastContainerName).toBeUndefined();
+        expect(broadcastAvailableImmediately).toBeUndefined();
+      });
     });
   });
 
