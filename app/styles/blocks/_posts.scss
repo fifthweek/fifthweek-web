@@ -9,6 +9,7 @@ $queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*
 $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
 $post-font-size: 14px;
 $post-line-height: 20px;
+$reorder-menu-width: 29px;
 
 @mixin li-cancel-first-last-spacing {
   li:first-child {
@@ -75,6 +76,9 @@ $post-line-height: 20px;
       li, p {
         font-size: $post-font-size;
       }
+      li i {
+        font-size: 16px;
+      }
 
       .info-actions {
         @include vcenter;
@@ -124,6 +128,12 @@ $post-line-height: 20px;
             background:none;
             padding:0;
             outline:0 none;
+
+            &:hover {
+              i {
+                color: $link-color;
+              }
+            }
           }
 
           &.actions-more {
@@ -167,12 +177,43 @@ $post-line-height: 20px;
   }
 }
 
-
-
 .queue .post {
+  cursor: move;
+
 
   .text {
     padding-bottom: $panel-margin-lg;
+    padding-right: $reorder-menu-width + $panel-margin-sm;
+    @media (min-width:$screen-s-min) {
+      padding-right: $reorder-menu-width + $panel-margin-lg;
+    }
+
+    .actions {
+      cursor: pointer;
+      border-top-right-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      padding: 15px;
+
+      &:hover {
+        i {
+          color: $link-color;
+        }
+      }
+
+      > ul {
+        margin-top:-10px;
+        position: absolute;
+        top:50%;
+        > li {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
   }
 
   .content {
@@ -218,6 +259,7 @@ $post-line-height: 20px;
 
     .text {
       position: absolute;
+      top: 0;
       bottom: 0;
       left:$queued-image-width-lg;
       width:100% - $queued-image-width-lg;
