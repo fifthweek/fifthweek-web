@@ -4,7 +4,7 @@ $html-name-space:'.page-home';
 
 #{$html-name-space} {
   background:{
-    image:url(home/bg/960-1400.jpg);
+    image:url(../images/home/bg/960-1400.jpg);
     repeat:repeat;
     size:cover;
     attachment:scroll;
@@ -12,7 +12,7 @@ $html-name-space:'.page-home';
   @media (min-width:$screen-md-min) {
     background:{
       repeat:no-repeat;
-      image:url(home/bg/2048.jpg);
+      image:url(../images/home/bg/2048.jpg);
     }
   }
 
