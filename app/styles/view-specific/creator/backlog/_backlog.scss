@@ -19,8 +19,8 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
 
 @mixin body-padding {
   padding: 10px $panel-margin-sm;
-  @media (min-width:$screen-sm-min) {
-    padding: 11px $panel-margin-lg;
+  @media (min-width:$screen-s-min) {
+    padding: 20px $panel-margin-lg;
   }
 }
 
@@ -33,21 +33,27 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
 
   .post {
     .panel {
+      position: relative;
       margin-left: 80px;
       @media (max-width:$screen-s-max) {
-        margin-left: 34px;
+        margin-left: 0;
       }
       .panel-body {
         @include body-padding;
       }
     }
+
+    p {
+      font-size: 14px;
+    }
+
     ul {
       padding-left:0;
       margin-bottom:0;
     }
 
     .info-actions {
-      @include vbottom;
+      @include vcenter;
     }
 
     .info {
@@ -56,17 +62,9 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
       li {
         list-style-type:none;
         margin-bottom:0;
-        @media (min-width:$screen-sm-min) {
-          @include inline-block(top);
-          &::after {
-            @include dot-separator;
-            margin:0 8px;
-          }
-          &:last-child {
-            &::after {
-              display:none;
-            }
-          }
+
+        .poster-name {
+          color:$grey-light-1;
         }
       }
 
@@ -74,17 +72,6 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
         color:$grey-light-4;
         font-weight: bold;
         font-size: 14px;
-      }
-
-      .poster-name {
-        color:$grey-light-1;
-      }
-
-      .channel-collection p {
-        color:$grey-light-1;
-        i {
-          color:$grey-light-4;
-        }
       }
 
       .fa {
@@ -96,7 +83,7 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
       font-size:$p-font-size-large;
       padding:{
         top:$footer-margin;
-        bottom:$footer-margin + 5;
+        bottom:$footer-margin;
       }
     }
 
@@ -133,10 +120,11 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
     .image-content {
 
       /* Todo: implement without negative margins */
-      margin-top:-21px;
+      margin-top:-20px;
       margin-left:$panel-margin-sm * -1;
       margin-right:$panel-margin-sm * -1;
-      @media (min-width:$screen-sm-min) {
+      @media (min-width:$screen-s-min) {
+        margin-top:-30px;
         margin-left:$panel-margin-lg * -1;
         margin-right:$panel-margin-lg * -1;
       }
@@ -158,37 +146,65 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
   }
 }
 
-.backlog .post .publish-info {
-  width:64px;
-  float:left;
-  font-weight: bold;
-  text-align: center;
-  color:$grey-light-1;
+.backlog .post {
+  .publish-info {
+    width: 64px;
+    float: left;
+    font-weight: bold;
+    text-align: center;
+    color: $grey-light-1;
 
-  .publish-info-day {
-    font-size: 15px;
-    text-transform: uppercase;
-    margin-bottom:2px;
-  }
-  .publish-info-date {
-    font-size: 12px;
-    margin-bottom: 0;
-  }
-  .publish-info-mode {
-    font-size: 12px;
-  }
-  hr {
-    margin: 6px 0 4px 0;
-    width:20px;
+    .publish-info-day {
+      font-size: 15px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .publish-info-date {
+      font-size: 12px;
+      margin-bottom: 0;
+    }
   }
 
-  @media (max-width:$screen-s-max) {
-    width:18px;
-    margin-top:9px;
+  .tag {
+    font-size: 12px;
+    position: absolute;
+    top:8px;
+    left:-2px;
+    border-left: 2px solid #bdbdbd;
+    border-radius: 2px;
+    background: $gray-lighter;
+    padding: 3px 6px;
+  }
+
+  .non-image-post .panel-body {
+    padding-top: 34px;
+  }
+
+  .image-post .tag {
+    color:#fff;
+    background: rgba(0,0,0,0.6);
   }
 }
 
 .backlog-queue .post {
+
+  .comment-preview {
+    md * {
+      display: none;
+    }
+    p:first-child {
+
+      max-height: $p-line-height * 3; /* Fallback for non-webkit */
+      line-height: $p-line-height; /* Fallback for non-webkit */
+      display: block; /* Fallback for non-webkit */
+      display: -webkit-box; /* autoprefixer: off */
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
   .image-post {
     position:relative;
 
@@ -218,26 +234,18 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
         width:100% - $queued-image-width-sm;
       }
 
-
       .image-body-padding {
         @include body-padding;
       }
     }
   }
 
-  .comment-preview {
-    md * {
-      display: none;
-    }
-    p:first-child {
-      max-height: $p-line-height * 3; /* Fallback for non-webkit */
-      line-height: $p-line-height; /* Fallback for non-webkit */
-      display: block; /* Fallback for non-webkit */
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
+  .file-post {
+    .comment-preview {
+      p:first-child {
+        max-height: $p-line-height * 1; /* Fallback for non-webkit */
+        -webkit-line-clamp: 1;
+      }
     }
   }
 }

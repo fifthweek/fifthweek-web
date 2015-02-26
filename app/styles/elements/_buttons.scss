@@ -169,25 +169,19 @@ input[type="button"].btn-block,
 }
 
 a.btn-file-download {
-  overflow: hidden;
-  padding-top: 1px;
+  position: relative;
+  display: block;
+  float:left;
+  color:#0A86CF;
+  &:after {
+    position: absolute;
+    content:"\f06b";
+    font-family:'FontAwesome';
+    right: -21px;
+    top:-2px;
+    font-size:17px;
+  }
   &:hover {
-    span, i {
-      color: $link-color;
-    }
-  }
-  span, i {
-    float: left;
-    display:block;
-  }
-  span {
-    font-size: 15px;
-    font-weight: bold;
-    color:$grey-dark;
-  }
-  i {
-    font-size: 24px;
-    margin-right: 7px;
-    color:$grey-light-1;
+    color: $link-color;
   }
 }

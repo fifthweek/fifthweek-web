@@ -14,7 +14,6 @@ angular.module('webApp').controller('queueReorderCtrl',
         date:'21st Jan',
         comment:'Certain internet providers exploit the fact that fill text cannot be recognized by automatic search engines - meaningful information cannot be distinguished from meaningless: Target-generated dummy text mixed with a certain combination of search terms can lead to an increased frequency of visits by search machine users. As a consequence, advertising revenues, which rely on website hits, are increased.',
         channel:'HD Channel',
-        queued:false
       },
       {
         postId: 'b',
@@ -23,7 +22,6 @@ angular.module('webApp').controller('queueReorderCtrl',
         date:'23rd Jan',
         comment:'Looking good :-)',
         channel:'Everyone',
-        queued:false
       },
       {
         postId: 'c',
@@ -33,7 +31,6 @@ angular.module('webApp').controller('queueReorderCtrl',
         comment:'Almost there',
         collection:'Blog',
         imagePath:'images/tmp-queue-thumb.jpg',
-        queued:true
       },
       {
         postId: 'c',
@@ -42,7 +39,6 @@ angular.module('webApp').controller('queueReorderCtrl',
         date:'25th Jan',
         collection:'Side Comic',
         imagePath:'images/tmp-queue-thumb-2.jpg',
-        queued:false
       },
       {
         postId: 'd',
@@ -53,7 +49,16 @@ angular.module('webApp').controller('queueReorderCtrl',
         collection:'Blog',
         filePath:'images/avatar-default.png',
         fileName:'comic-ebook.pdf',
-        queued:true
+      },
+      {
+        postId: 'd',
+        liveIn:'6 days',
+        dayOfWeek:'Mon',
+        date:'26th Jan',
+        comment:'Certain internet providers exploit the fact that fill text cannot be recognized by automatic search engines - meaningful information cannot be distinguished from meaningless: Target-generated dummy text mixed with a certain combination of search terms can lead to an increased frequency of visits by search machine users. As a consequence, advertising revenues, which rely on website hits, are increased.',
+        collection:'Blog',
+        filePath:'images/avatar-default.png',
+        fileName:'another-comic-ebook.pdf',
       },
       {
         postId: 'e',
@@ -62,8 +67,7 @@ angular.module('webApp').controller('queueReorderCtrl',
         date:'26th Jan',
         collection:'Side Comic',
         filePath:'images/avatar-default.png',
-        fileName:'comic-ebook.pdf',
-        queued:true
+        fileName:'something-different-ebook.pdf',
       }
     ];
 
