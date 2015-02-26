@@ -43,6 +43,10 @@ $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W
         padding: ($panel-margin-lg - $line-height-compensation) $panel-margin-lg (($panel-margin-lg - $line-height-compensation) + 1) $panel-margin-lg;
       }
 
+      .content {
+        @include clearfix;
+      }
+
       hr {
         width:auto;
         display:block;
