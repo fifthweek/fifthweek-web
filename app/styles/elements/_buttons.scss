@@ -1,7 +1,7 @@
 @import '_base';
 
 .btn {
-  font-size:15px;
+  font-size:$button-font-size;
   font-weight:bold;
   height:$button-height-base;
 }
