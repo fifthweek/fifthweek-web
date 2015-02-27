@@ -97,63 +97,53 @@ describe('utilities', function() {
 
       it('should throw an error if model is primitive', function() {
         expect(function() {
-          scopeUtilities.defineModelAccessor({
-            ngModel: 'primitive'
-          });
+          scopeUtilities.getAccessor('primitive');
         }).toThrowError(FifthweekError);
       });
 
-      it('should set ngModel to the base object', function() {
+      it('should set root to the base object', function() {
         scope.base = {
           primitive: 'hello'
         };
 
-        scopeUtilities.defineModelAccessor({
-          ngModel: 'base.primitive'
-        });
+        var result = scopeUtilities.getAccessor('base.primitive');
 
-        expect(scope.ngModel).toBe(scope.base);
+        expect(result.root).toBe(scope.base);
       });
 
-      it('should set ngModelAccessor to the accessor object', function() {
+      it('should set accessor to the accessor object', function() {
         scope.base = {
           primitive: 'hello'
         };
 
-        scopeUtilities.defineModelAccessor({
-          ngModel: 'base.primitive'
-        });
+        var result = scopeUtilities.getAccessor('base.primitive');
 
-        expect(scope.ngModelAccessor).toBe('primitive');
+        expect(result.accessor).toBe('primitive');
       });
 
       describe('when property is nested', function() {
-        it('should set ngModel to the base object', function() {
+        it('should set root to the base object', function() {
           scope.base = {
             base2: {
               primitive: 'hello'
             }
           };
 
-          scopeUtilities.defineModelAccessor({
-            ngModel: 'base.base2.primitive'
-          });
+          var result = scopeUtilities.getAccessor('base.base2.primitive');
 
-          expect(scope.ngModel).toBe(scope.base.base2);
+          expect(result.root).toBe(scope.base.base2);
         });
 
-        it('should set ngModelAccessor to the accessor object', function() {
+        it('should set accessor to the accessor object', function() {
           scope.base = {
             base2: {
               primitive: 'hello'
             }
           };
 
-          scopeUtilities.defineModelAccessor({
-            ngModel: 'base.base2.primitive'
-          });
+          var result = scopeUtilities.getAccessor('base.base2.primitive');
 
-          expect(scope.ngModelAccessor).toBe('primitive');
+          expect(result.accessor).toBe('primitive');
         });
       });
     });
@@ -169,9 +159,7 @@ describe('utilities', function() {
     beforeEach(function() {
       scope = {};
       element = {};
-      attrs = {
-        ngModel: 'some.binding'
-      };
+      attrs = {};
       directiveUtilities = utilities.forDirective(scope, element, attrs);
     });
 
@@ -185,6 +173,14 @@ describe('utilities', function() {
         expect(scope.required).toBe(true);
       });
 
+      it('should evaluate isRequired as true if specified without value', function() {
+        attrs.required = '' ;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.isRequired()).toBe(true);
+      });
+
       it('should set "required" to true if specified with "true"', function() {
         attrs.required = true ;
 
@@ -193,10 +189,24 @@ describe('utilities', function() {
         expect(scope.required).toBe(true);
       });
 
+      it('should evaluate isRequired as true if specified with "true"', function() {
+        attrs.required = true ;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.isRequired()).toBe(true);
+      });
+
       it('should set "required" to false if not specified', function() {
         directiveUtilities.scaffoldFormInput();
 
         expect(scope.required).toBe(false);
+      });
+
+      it('should set evaluate isRequired as false if not specified', function() {
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.isRequired()).toBe(false);
       });
 
       it('should set "required" to false if specified with "false"', function() {
@@ -207,6 +217,82 @@ describe('utilities', function() {
         expect(scope.required).toBe(false);
       });
 
+      it('should evaluate isRequired as false if specified with "false"', function() {
+        attrs.required = false ;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.isRequired()).toBe(false);
+      });
+
+      it('should evaluate isRequired as the value of the scope object if specified', function() {
+        scope.a = { b: { c: true } };
+        attrs.ngRequired = 'a.b.c';
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.isRequired()).toBe(true);
+
+        scope.a.b.c = false;
+
+        expect(scope.isRequired()).toBe(false);
+      });
+
+      it('should evaluate isRequired as the value of the expression if specified', function() {
+        scope.a = { b: { c: 'something' } };
+        attrs.ngRequired = 'a.b.c === "something"';
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.isRequired()).toBe(true);
+
+        scope.a.b.c = 'someone';
+
+        expect(scope.isRequired()).toBe(false);
+      });
+
+      it('should evaluate isDisabled as the value of the scope object if specified', function() {
+        scope.a = { b: { c: true } };
+        attrs.ngDisabled = 'a.b.c';
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.isDisabled()).toBe(true);
+
+        scope.a.b.c = false;
+
+        expect(scope.isDisabled()).toBe(false);
+      });
+
+      it('should evaluate isDisabled as the value of the expression if specified', function() {
+        scope.a = { b: { c: true } };
+        attrs.ngDisabled = '!a.b.c';
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.isDisabled()).toBe(false);
+
+        scope.a.b.c = false;
+
+        expect(scope.isDisabled()).toBe(true);
+      });
+
+      it('should set ngModel and ngModelAccessor if specified', function() {
+        scope.a = { b: { c: true } };
+        attrs.ngModel = 'a.b.c';
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.ngModel).toBe(scope.a.b);
+        expect(scope.ngModelAccessor).toBe('c');
+      });
+
+      it('should set not set ngModel and ngModelAccessor if not specified', function() {
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope.ngModel).toBeUndefined();
+        expect(scope.ngModelAccessor).toBeUndefined();
+      });
 
       it('should set "focus" to true if specified without value', function() {
         attrs.focus = '' ;
@@ -261,9 +347,11 @@ describe('utilities', function() {
       });
 
       it('should set "inputId" to kebab-cased equivalent of ngModel', function() {
+        attrs.ngModel = 'a.b.c';
+
         directiveUtilities.scaffoldFormInput();
 
-        expect(scope.inputId).toBe('some-binding');
+        expect(scope.inputId).toBe('a-b-c');
       });
     });
   });

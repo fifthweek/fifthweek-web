@@ -51,14 +51,18 @@ angular.module('webApp')
     service.forScope = function(scope) {
       var scopeUtilities = {};
 
-      scopeUtilities.defineModelAccessor = function(attrs) {
-        var ngModelLength = attrs.ngModel.lastIndexOf('.');
-        if (ngModelLength === -1) {
+      scopeUtilities.getAccessor = function(suppliedValue) {
+        var lastDelimiterIndex = suppliedValue.lastIndexOf('.');
+        if (lastDelimiterIndex === -1) {
           throw new FifthweekError('Must not be bound to primitive');
         }
 
-        scope.ngModel = $parse(attrs.ngModel.substring(0, ngModelLength))(scope);
-        scope.ngModelAccessor = attrs.ngModel.substring(ngModelLength + 1);
+        var root = $parse(suppliedValue.substring(0, lastDelimiterIndex))(scope);
+        var accessor = suppliedValue.substring(lastDelimiterIndex + 1);
+        return {
+          root: root,
+          accessor: accessor
+        };
       };
 
       return scopeUtilities;
@@ -73,8 +77,26 @@ angular.module('webApp')
         scope.placeholder = attrs.placeholder;
         scope.breakpoint = attrs.breakpoint || 'sm';
         scope.label = attrs.label;
-        scope.inputId = attrs.ngModel.replace('.', '-');
-        service.forScope(scope).defineModelAccessor(attrs);
+
+        var scopeService = service.forScope(scope);
+
+        if(attrs.ngModel){
+          scope.inputId = attrs.ngModel.replace(/\./g, '-');
+
+          var modelAccessorInfo = scopeService.getAccessor(attrs.ngModel);
+          scope.ngModel = modelAccessorInfo.root;
+          scope.ngModelAccessor = modelAccessorInfo.accessor;
+        }
+
+        var isRequiredInternal = $parse(attrs.ngRequired);
+        scope.isRequired = function(){
+          return attrs.ngRequired ? isRequiredInternal(scope) : scope.required;
+        };
+
+        var isDisabledInternal = $parse(attrs.ngDisabled);
+        scope.isDisabled = function(){
+          return attrs.ngDisabled ? isDisabledInternal(scope) : false;
+        };
       };
 
       return directiveUtilities;
