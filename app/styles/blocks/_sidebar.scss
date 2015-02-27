@@ -1,6 +1,6 @@
 @import '_base';
 
-$item-margin-tb:7px;
+$item-margin-tb:5px;
 $item-padding-tb:7px;
 $item-padding-lr:21px;
 $item-padding:$item-padding-tb $item-padding-lr;
@@ -53,9 +53,15 @@ $item-padding:$item-padding-tb $item-padding-lr;
       font-size:$p-font-size;
       padding:$item-padding;
       color:$grey-dark;
-      #{$state-active-hover-focus} {
-        color:$white-1;
+      &:hover {
         text-decoration:none;
+        color:$brand-highlight;
+        i {
+          color:$brand-highlight;
+        }
+      }
+      &.active {
+        color:$white-1;
         background:$brand-highlight;
         i {
           color:$white-1;
