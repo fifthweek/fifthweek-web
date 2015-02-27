@@ -4,6 +4,7 @@
   font-size:$button-font-size;
   font-weight:bold;
   height:$button-height-base;
+  border-radius: $input-border-radius;
 }
 
 .btn-default {
@@ -17,8 +18,8 @@
 
 .btn-success {
   #{$state-active-hover-focus} {
-    background:darken($green-light-1, 10%);
-    border-color:darken($green-light-1, 10%);
+    background:darken($brand-success, 10%);
+    border-color:darken($brand-success, 10%);
   }
 }
 
