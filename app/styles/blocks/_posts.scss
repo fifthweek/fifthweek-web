@@ -89,6 +89,14 @@ $reorder-menu-width: 29px;
         .author {
           float:left;
           padding-top:4px;
+
+          .blob-image{
+            .image-area{
+              width: 32px;
+              height: 32px;
+              border-radius: 16px;
+            }
+          }
         }
 
         > ul {
