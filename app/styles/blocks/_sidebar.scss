@@ -37,6 +37,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
   li {
     list-style-type:none;
     padding:$item-margin-tb $item-margin-lr;
+    padding-right: 0;
 
     .fa {
       min-width:17px;
@@ -54,7 +55,10 @@ $item-padding:$item-padding-tb $item-padding-lr;
       font-weight:bold;
       font-size:$p-font-size;
       padding:$item-padding;
+      padding-right: 0;
       color:$grey-dark;
+      border-top-left-radius:$border-radius;
+      border-bottom-left-radius:$border-radius;
       &:hover {
         text-decoration: none;
         color:$link-color;

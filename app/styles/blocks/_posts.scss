@@ -31,7 +31,7 @@ $reorder-menu-width: 29px;
   .post {
     @include panel-shadow;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.22); /* Make shadows more subtle around content */
-    border-radius: $border-radius;
+    border-radius: $post-border-radius;
     background: #fff;
     position: relative;
     margin-bottom:20px;
@@ -179,8 +179,8 @@ $reorder-menu-width: 29px;
   .image-post {
     > img:first-child {
       cursor: pointer;
-      border-top-left-radius: $border-radius;
-      border-top-right-radius: $border-radius;
+      border-top-left-radius: $post-border-radius;
+      border-top-right-radius: $post-border-radius;
     }
   }
 }
@@ -198,8 +198,8 @@ $reorder-menu-width: 29px;
 
     .actions {
       cursor: pointer;
-      border-top-right-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
+      border-top-right-radius: $post-border-radius;
+      border-bottom-right-radius: $post-border-radius;
       position: absolute;
       right: 0;
       top: 0;
@@ -256,8 +256,8 @@ $reorder-menu-width: 29px;
     > img:first-child {
       cursor: pointer;
       border-radius: 0;
-      border-top-left-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
+      border-top-left-radius: $post-border-radius;
+      border-bottom-left-radius: $post-border-radius;
 
       width:$queued-image-width-lg;
       @media (max-width:$screen-s-max) {
