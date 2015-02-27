@@ -35,72 +35,77 @@ describe('access signatures cache', function() {
 
   var defaultTimeToLiveSeconds = 3600;
 
-  var response = {
-    timeToLiveSeconds: defaultTimeToLiveSeconds,
-    publicSignature: {
-      containerName: 'files',
-      uri: 'https://files.fifthweek.com/public',
-      signature: '?abcd',
-      expiry: 1234
-    },
-    privateSignatures: [
-      {
-        creatorId: 'creator1',
-        information: {
-          containerName: 'creator1',
-          uri: 'https://files.fifthweek.com/creator1',
+  var response =
+  {
+    data: {
+      timeToLiveSeconds: defaultTimeToLiveSeconds,
+        publicSignature: {
+        containerName: 'files',
+          uri: 'https://files.fifthweek.com/public',
           signature: '?abcd',
           expiry: 1234
-        }
       },
-      {
-        creatorId: 'creator2',
-        information: {
-          containerName: 'creator2',
-          uri: 'https://files.fifthweek.com/creator2',
-          signature: '?efgh',
-          expiry: 1234
+      privateSignatures: [
+        {
+          creatorId: 'creator1',
+          information: {
+            containerName: 'creator1',
+            uri: 'https://files.fifthweek.com/creator1',
+            signature: '?abcd',
+            expiry: 1234
+          }
+        },
+        {
+          creatorId: 'creator2',
+          information: {
+            containerName: 'creator2',
+            uri: 'https://files.fifthweek.com/creator2',
+            signature: '?efgh',
+            expiry: 1234
+          }
         }
-      }
-    ]
+      ]
+    }
   };
 
-  var response2 = {
-    timeToLiveSeconds: defaultTimeToLiveSeconds,
-    publicSignature: {
-      containerName: 'files',
-      uri: 'https://files.fifthweek.com/public',
-      signature: '?abcd2',
-      expiry: 1234
-    },
-    privateSignatures: [
-      {
-        creatorId: 'creator1',
-        information: {
-          containerName: 'creator1',
-          uri: 'https://files.fifthweek.com/creator1',
-          signature: '?abcd2',
-          expiry: 1234
-        }
+  var response2 =
+  {
+    data: {
+      timeToLiveSeconds: defaultTimeToLiveSeconds,
+      publicSignature: {
+        containerName: 'files',
+        uri: 'https://files.fifthweek.com/public',
+        signature: '?abcd2',
+        expiry: 1234
       },
-      {
-        creatorId: 'creator2',
-        information: {
-          containerName: 'creator2',
-          uri: 'https://files.fifthweek.com/creator2',
-          signature: '?efgh2',
-          expiry: 1234
+      privateSignatures: [
+        {
+          creatorId: 'creator1',
+          information: {
+            containerName: 'creator1',
+            uri: 'https://files.fifthweek.com/creator1',
+            signature: '?abcd2',
+            expiry: 1234
+          }
+        },
+        {
+          creatorId: 'creator2',
+          information: {
+            containerName: 'creator2',
+            uri: 'https://files.fifthweek.com/creator2',
+            signature: '?efgh2',
+            expiry: 1234
+          }
         }
-      }
-    ]
+      ]
+    }
   };
 
   var target;
-  var $httpBackend;
   var $rootScope;
   var $state;
-  var fifthweekConstants;
-  var utilities;
+  var $q;
+  var userAccessSignaturesStub;
   var authenticationService;
   var accessSignaturesCacheConstants;
   var fetchAggregateUserStateConstants;
@@ -109,22 +114,21 @@ describe('access signatures cache', function() {
     authenticationService = {
       currentUser: { userId: undefined }
     };
-    utilities = {};
-    utilities.getHttpError = function(){ return new ApiError(); };
 
     module('webApp', 'stateMock');
 
+    userAccessSignaturesStub = jasmine.createSpyObj('userAccessSignaturesStub', ['getForUser', 'getForVisitor']);
+
     module(function($provide) {
       $provide.value('authenticationService', authenticationService);
-      $provide.value('utilities', utilities);
+      $provide.value('userAccessSignaturesStub', userAccessSignaturesStub);
     });
 
     inject(function($injector) {
       target = $injector.get('accessSignaturesCacheImpl');
-      $httpBackend = $injector.get('$httpBackend');
       $rootScope = $injector.get('$rootScope');
       $state = $injector.get('$state');
-      fifthweekConstants = $injector.get('fifthweekConstants');
+      $q = $injector.get('$q');
       accessSignaturesCacheConstants = $injector.get('accessSignaturesCacheConstants');
       fetchAggregateUserStateConstants = $injector.get('fetchAggregateUserStateConstants');
     });
@@ -133,9 +137,6 @@ describe('access signatures cache', function() {
   });
 
   afterEach(function() {
-    $httpBackend.verifyNoOutstandingExpectation();
-    $httpBackend.verifyNoOutstandingRequest();
-
     jasmine.clock().uninstall();
   });
 
@@ -158,26 +159,26 @@ describe('access signatures cache', function() {
 
     describe('when called for the first time', function(){
       it('should request new signatures', function(){
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response));
 
         var result;
         target.getSignatures().then(function(response){
           result = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
+
+        expect(userAccessSignaturesStub.getForVisitor).toHaveBeenCalled();
       });
 
       it('should return an error if fails to request new signatures on first call', function(){
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(500);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.reject(new ApiError('error')));
 
         var error;
         target.getSignatures().catch(function(response){
           error = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         expect(error).toBeDefined();
@@ -186,30 +187,30 @@ describe('access signatures cache', function() {
 
       it('should request new signatures with a user ID if authenticated', function(){
         authenticationService.currentUser.userId = 'user1';
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri + '/user1').respond(200, response);
+        userAccessSignaturesStub.getForUser.and.returnValue($q.when(response));
 
         var result;
         target.getSignatures().then(function(response){
           result = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
+
+        expect(userAccessSignaturesStub.getForUser).toHaveBeenCalledWith('user1');
       });
 
       it('should return signatures', function(){
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response));
 
         var result;
         target.getSignatures().then(function(response){
           result = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         expect(result).toBeDefined();
-        expect(result).toEqual(response);
+        expect(result).toEqual(response.data);
       });
     });
 
@@ -218,14 +219,13 @@ describe('access signatures cache', function() {
 
         jasmine.clock().mockDate();
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response));
 
         var result1;
         target.getSignatures().then(function(response){
           result1 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         var result2;
@@ -235,25 +235,26 @@ describe('access signatures cache', function() {
 
         $rootScope.$apply();
 
+        expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(1);
+
         expect(result1).toBeDefined();
-        expect(result1).toEqual(response);
+        expect(result1).toEqual(response.data);
 
         expect(result2).toBeDefined();
-        expect(result2).toEqual(response);
+        expect(result2).toEqual(response.data);
       });
 
       it('should not request new signatures if called just before refresh minimum expiry', function(){
 
         jasmine.clock().mockDate();
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response));
 
         var result1;
         target.getSignatures().then(function(response){
           result1 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesCacheConstants.refreshMinimumExpiry);
@@ -265,110 +266,113 @@ describe('access signatures cache', function() {
 
         $rootScope.$apply();
 
+        expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(1);
+
         expect(result1).toBeDefined();
-        expect(result1).toEqual(response);
+        expect(result1).toEqual(response.data);
 
         expect(result2).toBeDefined();
-        expect(result2).toEqual(response);
+        expect(result2).toEqual(response.data);
       });
 
       it('should request new signatures if called just after refresh minimum expiry', function(){
 
         jasmine.clock().mockDate();
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response));
 
         var result1;
         target.getSignatures().then(function(response){
           result1 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesCacheConstants.refreshMinimumExpiry + 1);
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response2);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response2));
 
         var result2;
         target.getSignatures().then(function(response){
           result2 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
+        expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(2);
+
         expect(result1).toBeDefined();
-        expect(result1).toEqual(response);
+        expect(result1).toEqual(response.data);
 
         expect(result2).toBeDefined();
-        expect(result2).toEqual(response2);
+        expect(result2).toEqual(response2.data);
       });
 
       it('should request new signatures if called after expiry', function(){
 
         jasmine.clock().mockDate();
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response));
 
         var result1;
         target.getSignatures().then(function(response){
           result1 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         jasmine.clock().tick(defaultTimeToLiveSeconds * 1000);
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response2);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response2));
 
         var result2;
         target.getSignatures().then(function(response){
           result2 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
+        expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(2);
+
         expect(result1).toBeDefined();
-        expect(result1).toEqual(response);
+        expect(result1).toEqual(response.data);
 
         expect(result2).toBeDefined();
-        expect(result2).toEqual(response2);
+        expect(result2).toEqual(response2.data);
       });
 
       it('should request new signatures if signed in since last request', function(){
 
         jasmine.clock().mockDate();
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response));
 
         var result1;
         target.getSignatures().then(function(response){
           result1 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         authenticationService.currentUser.userId = 'user1';
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri + '/user1').respond(200, response2);
+        userAccessSignaturesStub.getForUser.and.returnValue($q.when(response2));
 
         var result2;
         target.getSignatures().then(function(response){
           result2 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
+        expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(1);
+        expect(userAccessSignaturesStub.getForUser.calls.count()).toBe(1);
+
         expect(result1).toBeDefined();
-        expect(result1).toEqual(response);
+        expect(result1).toEqual(response.data);
 
         expect(result2).toBeDefined();
-        expect(result2).toEqual(response2);
+        expect(result2).toEqual(response2.data);
       });
 
       it('should request new signatures if signed out since last request', function(){
@@ -376,33 +380,34 @@ describe('access signatures cache', function() {
         authenticationService.currentUser.userId = 'user1';
         jasmine.clock().mockDate();
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri+ '/user1').respond(200, response);
+        userAccessSignaturesStub.getForUser.and.returnValue($q.when(response));
 
         var result1;
         target.getSignatures().then(function(response){
           result1 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         authenticationService.currentUser.userId = undefined;
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response2);
+        userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response2));
 
         var result2;
         target.getSignatures().then(function(response){
           result2 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
+        expect(userAccessSignaturesStub.getForUser.calls.count()).toBe(1);
+        expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(1);
+
         expect(result1).toBeDefined();
-        expect(result1).toEqual(response);
+        expect(result1).toEqual(response.data);
 
         expect(result2).toBeDefined();
-        expect(result2).toEqual(response2);
+        expect(result2).toEqual(response2.data);
       });
 
       it('should request new signatures if user changed since last request', function(){
@@ -410,33 +415,35 @@ describe('access signatures cache', function() {
         authenticationService.currentUser.userId = 'user1';
         jasmine.clock().mockDate();
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri+ '/user1').respond(200, response);
+        userAccessSignaturesStub.getForUser.and.returnValue($q.when(response));
 
         var result1;
         target.getSignatures().then(function(response){
           result1 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         authenticationService.currentUser.userId = 'user2';
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri + '/user2').respond(200, response2);
+        userAccessSignaturesStub.getForUser.and.returnValue($q.when(response2));
 
         var result2;
         target.getSignatures().then(function(response){
           result2 = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
+        expect(userAccessSignaturesStub.getForUser.calls.count()).toBe(2);
+        expect(userAccessSignaturesStub.getForUser.calls.first().args[0]).toBe('user1');
+        expect(userAccessSignaturesStub.getForUser.calls.mostRecent().args[0]).toBe('user2');
+
         expect(result1).toBeDefined();
-        expect(result1).toEqual(response);
+        expect(result1).toEqual(response.data);
 
         expect(result2).toBeDefined();
-        expect(result2).toEqual(response2);
+        expect(result2).toEqual(response2.data);
       });
 
       describe('when refreshing fails', function(){
@@ -444,63 +451,63 @@ describe('access signatures cache', function() {
 
           jasmine.clock().mockDate();
 
-          $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+          userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response));
 
           var result1;
           target.getSignatures().then(function(response){
             result1 = response;
           });
 
-          $httpBackend.flush();
           $rootScope.$apply();
 
           jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesCacheConstants.failMinimumExpiry);
 
-          $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(500);
+          userAccessSignaturesStub.getForVisitor.and.returnValue($q.reject(new ApiError('bad')));
 
           var result2;
           target.getSignatures().then(function(response){
             result2 = response;
           });
 
-          $httpBackend.flush();
           $rootScope.$apply();
 
+          expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(2);
+
           expect(result1).toBeDefined();
-          expect(result1).toEqual(response);
+          expect(result1).toEqual(response.data);
 
           expect(result2).toBeDefined();
-          expect(result2).toEqual(response);
+          expect(result2).toEqual(response.data);
         });
 
         it('should error if after the fail minimum expiry', function(){
 
           jasmine.clock().mockDate();
 
-          $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+          userAccessSignaturesStub.getForVisitor.and.returnValue($q.when(response));
 
           var result1;
           target.getSignatures().then(function(response){
             result1 = response;
           });
 
-          $httpBackend.flush();
           $rootScope.$apply();
 
           jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesCacheConstants.failMinimumExpiry + 1);
 
-          $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(500);
+          userAccessSignaturesStub.getForVisitor.and.returnValue($q.reject(new ApiError('bad')));
 
           var error;
           target.getSignatures().catch(function(response){
             error = response;
           });
 
-          $httpBackend.flush();
           $rootScope.$apply();
 
+          expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(2);
+
           expect(result1).toBeDefined();
-          expect(result1).toEqual(response);
+          expect(result1).toEqual(response.data);
 
           expect(error instanceof ApiError).toBeTruthy();
         });
@@ -513,9 +520,10 @@ describe('access signatures cache', function() {
 
         jasmine.clock().mockDate();
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
-
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri + '/user1').respond(200, response2);
+        var deferred1 = $q.defer();
+        var deferred2 = $q.defer();
+        userAccessSignaturesStub.getForVisitor.and.returnValue(deferred1.promise);
+        userAccessSignaturesStub.getForUser.and.returnValue(deferred2.promise);
 
         var result1;
         target.getSignatures().then(function(response){
@@ -529,25 +537,78 @@ describe('access signatures cache', function() {
           result2 = response;
         });
 
-        $httpBackend.flush(1);
+        deferred1.resolve(response);
         $rootScope.$apply();
+
+        expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(1);
+        expect(userAccessSignaturesStub.getForUser.calls.count()).toBe(1);
 
         expect(result1).toBeDefined();
         expect(result2).toBeUndefined();
-        expect(result1).toEqual(response);
+        expect(result1).toEqual(response.data);
 
-        $httpBackend.flush();
+        deferred2.resolve(response2);
         $rootScope.$apply();
 
         expect(result2).toBeDefined();
-        expect(result2).toEqual(response2);
+        expect(result2).toEqual(response2.data);
+      });
+
+      it('should only add the most recent request\'s response to the cache if they return out of order', function(){
+
+        jasmine.clock().mockDate();
+
+        var deferred1 = $q.defer();
+        var deferred2 = $q.defer();
+        userAccessSignaturesStub.getForVisitor.and.returnValue(deferred1.promise);
+        userAccessSignaturesStub.getForUser.and.returnValue(deferred2.promise);
+
+        var result1;
+        target.getSignatures().then(function(response){
+          result1 = response;
+        });
+
+        authenticationService.currentUser.userId = 'user1';
+
+        var result2;
+        target.getSignatures().then(function(response){
+          result2 = response;
+        });
+
+        deferred2.resolve(response2);
+        $rootScope.$apply();
+
+        expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(1);
+        expect(userAccessSignaturesStub.getForUser.calls.count()).toBe(1);
+
+        expect(result1).toBeUndefined();
+        expect(result2).toBeDefined();
+        expect(result2).toEqual(response2.data);
+
+        deferred1.resolve(response);
+        $rootScope.$apply();
+
+        expect(result1).toBeDefined();
+        expect(result1).toEqual(response.data);
+
+        // If result1 was incorrectly cached then the user ID wouldn't match the cache and a new http request would occur.
+        var result3;
+        target.getSignatures().then(function(response){
+          result3 = response;
+        });
+
+        $rootScope.$apply();
+        expect(userAccessSignaturesStub.getForVisitor.calls.count()).toBe(1);
+        expect(userAccessSignaturesStub.getForUser.calls.count()).toBe(1);
+        expect(result3).toEqual(response2.data);
       });
 
       it('should share the previous promise if the user is the same', function(){
 
         jasmine.clock().mockDate();
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri).respond(200, response);
+        var deferred1 = $q.defer();
+        userAccessSignaturesStub.getForVisitor.and.returnValue(deferred1.promise);
 
         var result1;
         target.getSignatures().then(function(response){
@@ -559,13 +620,13 @@ describe('access signatures cache', function() {
           result2 = response;
         });
 
-        $httpBackend.flush();
+        deferred1.resolve(response);
         $rootScope.$apply();
 
         expect(result1).toBeDefined();
-        expect(result1).toEqual(response);
+        expect(result1).toEqual(response.data);
         expect(result2).toBeDefined();
-        expect(result2).toEqual(response);
+        expect(result2).toEqual(response.data);
       });
     });
 
@@ -579,7 +640,7 @@ describe('access signatures cache', function() {
 
         jasmine.clock().mockDate();
 
-        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, { accessSignatures: response });
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, { accessSignatures: response.data });
         $rootScope.$apply();
       });
 
@@ -593,42 +654,40 @@ describe('access signatures cache', function() {
         $rootScope.$apply();
 
         expect(result).toBeDefined();
-        expect(result).toEqual(response);
+        expect(result).toEqual(response.data);
       });
 
       it('should request new signatures if user changes', function(){
 
         authenticationService.currentUser.userId = 'user1';
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri + '/user1').respond(200, response2);
+        userAccessSignaturesStub.getForUser.and.returnValue($q.when(response2));
 
         var result;
         target.getSignatures().then(function(response){
           result = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         expect(result).toBeDefined();
-        expect(result).toEqual(response2);
+        expect(result).toEqual(response2.data);
       });
 
       it('should request new signatures if timeout expires', function(){
 
         jasmine.clock().tick(defaultTimeToLiveSeconds * 1000);
 
-        $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri + '/' + userId).respond(200, response2);
+        userAccessSignaturesStub.getForUser.and.returnValue($q.when(response2));
 
         var result;
         target.getSignatures().then(function(response){
           result = response;
         });
 
-        $httpBackend.flush();
         $rootScope.$apply();
 
         expect(result).toBeDefined();
-        expect(result).toEqual(response2);
+        expect(result).toEqual(response2.data);
       });
 
       describe('when refreshing fails', function(){
@@ -636,18 +695,17 @@ describe('access signatures cache', function() {
 
           jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesCacheConstants.failMinimumExpiry);
 
-          $httpBackend.expectGET(fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri + '/' + userId).respond(500);
+          userAccessSignaturesStub.getForUser.and.returnValue($q.reject(new ApiError('error')));
 
           var result;
           target.getSignatures().then(function(response){
             result = response;
           });
 
-          $httpBackend.flush();
           $rootScope.$apply();
 
           expect(result).toBeDefined();
-          expect(result).toEqual(response);
+          expect(result).toEqual(response.data);
         });
       });
     });

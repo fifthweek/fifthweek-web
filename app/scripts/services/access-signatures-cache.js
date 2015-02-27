@@ -1,8 +1,7 @@
 angular.module('webApp')
   .constant('accessSignaturesCacheConstants', {
     refreshMinimumExpiry: 1000 * 60 * 10,
-    failMinimumExpiry: 1000 * 30,
-    refreshUri: 'userAccessSignatures'
+    failMinimumExpiry: 1000 * 30
   })
   .factory('accessSignaturesCache', function(accessSignaturesCacheImpl){
     'use strict';
@@ -10,7 +9,7 @@ angular.module('webApp')
     return accessSignaturesCacheImpl;
   })
   .factory('accessSignaturesCacheImpl',
-  function($rootScope, $http, $q, fifthweekConstants, authenticationService, utilities, accessSignaturesCacheConstants, fetchAggregateUserStateConstants) {
+  function($rootScope, $q, userAccessSignaturesStub, authenticationService, accessSignaturesCacheConstants, fetchAggregateUserStateConstants) {
     'use strict';
 
     var service = {};
@@ -38,11 +37,6 @@ angular.module('webApp')
         return cache.currentQuery.promise;
       }
 
-      var uri = fifthweekConstants.apiBaseUri + accessSignaturesCacheConstants.refreshUri;
-      if (userId){
-        uri = uri + '/' + userId;
-      }
-
       var id = cache.nextId++;
 
       // Update the current query here before we have the promise,
@@ -55,7 +49,15 @@ angular.module('webApp')
         promise: undefined
       };
 
-      var promise = $http.get(uri).then(function(response) {
+      var promise;
+      if (userId){
+        promise = userAccessSignaturesStub.getForUser(userId);
+      }
+      else {
+        promise = userAccessSignaturesStub.getForVisitor();
+      }
+
+      promise = promise.then(function(response) {
 
         // Only update the cache if the another query hasn't been
         // executed since this one. This could happen when the user logs
@@ -66,7 +68,7 @@ angular.module('webApp')
         }
 
         return $q.when(response.data);
-      }, function(response){
+      }, function(error){
 
         // Only update the cache if the another query hasn't been
         // executed since this one. This could happen when the user logs
@@ -77,7 +79,7 @@ angular.module('webApp')
 
         // If the data in the cache is expired with failMinimumExpiry, we're out of chances to retry.
         if (isExpired(accessSignaturesCacheConstants.failMinimumExpiry)){
-          return $q.reject(utilities.getHttpError(response));
+          return $q.reject(error);
         }
 
         // Otherwise we failed to update the signatures this time, but still have
