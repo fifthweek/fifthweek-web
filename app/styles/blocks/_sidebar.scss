@@ -1,6 +1,7 @@
 @import '_base';
 
-$item-padding-tb:14px;
+$item-margin-tb:7px;
+$item-padding-tb:7px;
 $item-padding-lr:21px;
 $item-padding:$item-padding-tb $item-padding-lr;
 
@@ -34,6 +35,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
   }
   li {
     list-style-type:none;
+    padding:$item-margin-tb 0;
     .fa {
       min-width:17px;
       margin-right:8px;
