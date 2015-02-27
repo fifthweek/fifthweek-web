@@ -1,8 +1,8 @@
 @import '_base';
 
-$item-margin-tb:4px;
+$item-margin-tb:2px;
 $item-margin-lr:20px;
-$item-padding-tb:6px;
+$item-padding-tb:8px;
 $item-padding-lr:10px;
 $item-padding:$item-padding-tb $item-padding-lr;
 
@@ -44,7 +44,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
       color:$icon-default-color;
     }
     hr{
-      margin: 4px 0px;
+      margin: 12px 0px;
       border-color:$grey-light-3;
       border-width: 1px;
     }
@@ -56,10 +56,10 @@ $item-padding:$item-padding-tb $item-padding-lr;
       padding:$item-padding;
       color:$grey-dark;
       &:hover {
-        text-decoration:none;
-        color:$brand-highlight;
+        text-decoration: none;
+        color:$link-color;
         i {
-          color:$brand-highlight;
+          color:$link-color;
         }
       }
       &.active {
