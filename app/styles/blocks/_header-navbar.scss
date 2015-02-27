@@ -7,6 +7,12 @@
   z-index:1030;
 }
 
+.navbar {
+  @media (min-width:$navbar-lg-min) {
+    height: 65px;
+  }
+}
+
 .navbar-fixed-top {
   background:$navbar-default-bg;
   border:0 none;

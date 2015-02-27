@@ -14,6 +14,10 @@ ul.header-navbar-menu {
     padding-left:75px;
   }
 
+  @media (min-width:$screen-md-min) {
+    padding-top: 20px;
+  }
+
 
   li {
     display: inline;
@@ -24,6 +28,11 @@ ul.header-navbar-menu {
       color: $grey-light-4;
       text-transform: uppercase;
       padding-bottom: 14px;
+
+      @media (min-width:$navbar-lg-min) {
+        padding-bottom: 20px;
+      }
+
       &:hover{
         text-decoration: none;
         color: $grey-dark-2;

@@ -227,8 +227,8 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'views/user/posts.html',
         requireSubscription: true,
         data : {
-          pageTitle: 'Posts',
-          headTitle: ': ' + 'Posts',
+          pageTitle: 'Timeline',
+          headTitle: ': ' + 'Timeline',
           access: {
             requireAuthenticated: true
           }
