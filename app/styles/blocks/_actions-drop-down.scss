@@ -30,7 +30,7 @@ $drop-down-width: 110px;
     padding:5px 16px;
     color:$grey-dark;
     font-weight:normal;
-    font-size:14.5px;
+    font-size:$p-font-size;
     text-decoration:none;
     #{$state-hover} {
       background:$white-3;
