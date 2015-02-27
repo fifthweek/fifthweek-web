@@ -2,7 +2,7 @@
   <div ng-include="'views/partials/logo.html'"></div>
   <ul>
     <li ng-repeat="item in navigation">
-      <hr width="100px" ng-if="item.separator" />
+      <hr ng-if="item.separator" />
       <a ng-if="!item.separator"
          class="{{item.color}}"
          ng-class="{active: item.isActive}"

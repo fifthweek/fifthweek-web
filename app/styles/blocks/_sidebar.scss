@@ -1,8 +1,9 @@
 @import '_base';
 
 $item-margin-tb:4px;
-$item-padding-tb:8px;
-$item-padding-lr:21px;
+$item-margin-lr:20px;
+$item-padding-tb:6px;
+$item-padding-lr:10px;
 $item-padding:$item-padding-tb $item-padding-lr;
 
 .sidebar {
@@ -25,7 +26,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
       display:inline-block;
       vertical-align:top;
       width:100%;
-      padding:9px $item-padding-lr;
+      padding:9px $item-padding-lr + $item-margin-lr;
       color:$grey-dark-2;
     }
   }
@@ -35,8 +36,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
   }
   li {
     list-style-type:none;
-    padding:$item-margin-tb 0 $item-margin-tb 10px;
-    margin-right: -2px;
+    padding:$item-margin-tb $item-margin-lr;
 
     .fa {
       min-width:17px;
@@ -44,7 +44,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
       color:$icon-default-color;
     }
     hr{
-      margin: 3px 0px;
+      margin: 4px 0px;
       border-color:$grey-light-3;
       border-width: 1px;
     }
@@ -54,7 +54,6 @@ $item-padding:$item-padding-tb $item-padding-lr;
       font-weight:bold;
       font-size:$p-font-size;
       padding:$item-padding;
-      padding-left: 10px;
       color:$grey-dark;
       &:hover {
         text-decoration:none;
@@ -66,8 +65,6 @@ $item-padding:$item-padding-tb $item-padding-lr;
       &.active {
         color:$white-1;
         background:$brand-highlight;
-        border-right: 2px solid $brand-shadow;
-        border-radius: 2px;
         i {
           color:$white-1;
         }
