@@ -20,7 +20,4 @@
   @media (min-width:$screen-md-min) {
     display:none;
   }
-  #{$state-hover-focus} {
-    color:$navbar-default-link-hover-color;
-  }
 }

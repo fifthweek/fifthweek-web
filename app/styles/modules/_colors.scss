@@ -22,6 +22,7 @@ $white-2:#FEFEFE;
 $white-3:#FBFBFF;
 
 $red-dark-1:#6E2C15;
+$red-dark-2:#d95e40;
 
 $pink-light-1:#EB4D5C;
 
@@ -31,9 +32,7 @@ $yellow-light-1:#FFCF3B;
 
 $green-light-1:#2AB27B;
 
-$blue-dark-1:#27313C;
-$blue-dark-2:#2A3541;
-$blue-dark-3:#2D3E50;
+$blue-dark:#2D3E50;
 
 $blue-light-1:#3D4b5B;
 $blue-light-2:#2C99EE;
@@ -50,10 +49,7 @@ $panel-default-border: $gray-light;
 $panel-default-heading-bg: #ebebeb;
 $navbar-default-bg: #fff;
 $brand-primary:$grey-light-5;
-$navbar-default-link-color: $blue-dark-2;
-$navbar-default-link-hover-color: $blue-light-1;
 $navbar-default-link-active-color: #fff;
-$navbar-default-link-active-bg: $navbar-default-link-color;
 $well-bg: #fff;
 $well-border: $gray-light;
 
@@ -67,3 +63,4 @@ $icon-orange:$orange-light-1;
 $icon-yellow:$yellow-light-1;
 $icon-pink:$pink-light-1;
 $icon-indigo:$indigo-light-1;
+$brand-highlight:$red-dark-2;

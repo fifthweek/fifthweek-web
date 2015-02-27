@@ -38,9 +38,10 @@ body {
 
 #{$left-container} {
   @media (min-width:$screen-md-min) {
-    background:$blue-dark-2;
+    background:#fff;
     width:$sidebar-width;
     min-width:$sidebar-width;
+    border-right:1px solid $grey-light-3;
   }
 }
 
