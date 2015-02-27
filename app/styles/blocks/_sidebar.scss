@@ -49,7 +49,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
       display:inline-block;
       width:100%;
       font-weight:bold;
-      font-size:15px;
+      font-size:$p-font-size;
       padding:$item-padding;
       color:$white-1;
       border-bottom:solid 1px $blue-dark-2;
