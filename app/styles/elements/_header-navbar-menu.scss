@@ -23,13 +23,13 @@ ul.header-navbar-menu {
     a {
       color: $grey-light-4;
       text-transform: uppercase;
-      padding-bottom: 13px;
+      padding-bottom: 14px;
       &:hover{
         text-decoration: none;
         color: $grey-dark-2;
       }
       &.active{
-        border-bottom: 4px solid $brand-highlight;
+        border-bottom: 3px solid $brand-highlight;
         color: $grey-dark-2;
       }
 
@@ -41,10 +41,6 @@ ul.header-navbar-menu {
           font-size: 12px;
           font-weight:bold;
           line-height: 19px;
-        }
-        i {
-          margin-right: 4px;
-          font-size: 18px;
         }
       }
     }

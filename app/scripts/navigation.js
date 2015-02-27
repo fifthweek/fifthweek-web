@@ -39,19 +39,19 @@ angular.module('webApp')
         secondary:
         [
           {
-            name: 'Note',
+            name: 'Write a Note',
             state: states.creators.compose.note.name,
             icon: 'fa fa-quote-left',
             color: 'orange'
           },
           {
-            name: 'Image',
+            name: 'New Image',
             state: states.creators.compose.image.name,
             icon: 'fa fa-image',
             color: 'orange'
           },
           {
-            name: 'File',
+            name: 'New File',
             state: states.creators.compose.file.name,
             icon: 'fa fa-file-o',
             color: 'orange'
@@ -66,7 +66,7 @@ angular.module('webApp')
         secondary:
           [
             {
-              name: 'Future Posts',
+              name: 'Your Future Posts',
               state: states.creators.backlog.futurePosts.name,
               icon: 'fa fa-clock-o',
               color: 'yellow'
@@ -87,7 +87,7 @@ angular.module('webApp')
         secondary:
         [
           {
-            name: 'Landing Page',
+            name: 'Your Landing Page',
             state: states.creators.customize.landingPage.name,
             icon: 'fa fa-arrow-circle-down',
             color: 'green'
@@ -115,7 +115,7 @@ angular.module('webApp')
         secondary:
           [
             {
-              name: 'Account',
+              name: 'Account Settings',
               state: states.account.name,
               icon: 'fa fa-child',
               color: 'blue'
