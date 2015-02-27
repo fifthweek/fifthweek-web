@@ -45,13 +45,13 @@ angular.module('webApp')
             color: 'orange'
           },
           {
-            name: 'New Image',
+            name: 'Share Image',
             state: states.creators.compose.image.name,
             icon: 'fa fa-image',
             color: 'orange'
           },
           {
-            name: 'New File',
+            name: 'Share File',
             state: states.creators.compose.file.name,
             icon: 'fa fa-file-o',
             color: 'orange'
@@ -68,7 +68,7 @@ angular.module('webApp')
             {
               name: 'Your Future Posts',
               state: states.creators.backlog.futurePosts.name,
-              icon: 'fa fa-clock-o',
+              icon: 'fa fa-sort-amount-desc',
               color: 'yellow'
             },
             {
