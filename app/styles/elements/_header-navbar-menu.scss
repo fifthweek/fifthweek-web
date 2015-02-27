@@ -29,38 +29,8 @@ ul.header-navbar-menu {
         color: $grey-dark-2;
       }
       &.active{
-        border-bottom: 4px solid $grey-dark-2;
+        border-bottom: 4px solid $brand-highlight;
         color: $grey-dark-2;
-      }
-      &.blue {
-        &.active{
-          border-color: $icon-blue;
-        }
-      }
-      &.green {
-        &.active{
-          border-color: $icon-green;
-        }
-      }
-      &.orange {
-        &.active{
-          border-color: $icon-orange;
-        }
-      }
-      &.yellow {
-        &.active{
-          border-color: $icon-yellow;
-        }
-      }
-      &.pink {
-        &.active{
-          border-color: $icon-pink;
-        }
-      }
-      &.indigo {
-        &.active{
-          border-color: $icon-indigo;
-        }
       }
 
       span{
