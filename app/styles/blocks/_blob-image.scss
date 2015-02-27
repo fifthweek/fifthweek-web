@@ -1,6 +1,13 @@
 @import '_base';
 
-.blob-image {
+
+.blob-image{
+
+  .image-area{
+    width: 64px;
+    height: 64px;
+    border-radius: 2px;
+  }
 
   .pending-image{
     border: 2px dashed $grey-light-4;
@@ -15,4 +22,9 @@
       font-size: 20px;
     }
   }
+
+  .available-image{
+
+  }
 }
+

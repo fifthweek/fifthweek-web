@@ -5,11 +5,6 @@ angular.module('webApp').directive('fwBlobImage',
   return {
     scope: {
       control: '=',
-      width: '@',
-      height: '@',
-      pendingWidth: '@',
-      pendingHeight: '@',
-      borderRadius: '@',
       thumbnail: '@',
       fileUri: '@',
       containerName: '@'

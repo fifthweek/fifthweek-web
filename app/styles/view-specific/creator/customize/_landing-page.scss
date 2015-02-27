@@ -39,4 +39,16 @@ $html-name-space:'.page-customize-landing';
     }
   }
 
+  .blob-image{
+    .image-area{
+      width: 100%;
+      height: auto;
+      border-radius: 2px;
+    }
+
+    .pending-image{
+      width: 480px;
+      height: 128px;
+    }
+  }
 }
