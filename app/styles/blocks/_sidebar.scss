@@ -1,7 +1,7 @@
 @import '_base';
 
-$item-margin-tb:5px;
-$item-padding-tb:7px;
+$item-margin-tb:4px;
+$item-padding-tb:8px;
 $item-padding-lr:21px;
 $item-padding:$item-padding-tb $item-padding-lr;
 
@@ -35,7 +35,9 @@ $item-padding:$item-padding-tb $item-padding-lr;
   }
   li {
     list-style-type:none;
-    padding:$item-margin-tb 0;
+    padding:$item-margin-tb 0 $item-margin-tb 10px;
+    margin-right: -2px;
+
     .fa {
       min-width:17px;
       margin-right:8px;
@@ -52,6 +54,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
       font-weight:bold;
       font-size:$p-font-size;
       padding:$item-padding;
+      padding-left: 10px;
       color:$grey-dark;
       &:hover {
         text-decoration:none;
@@ -63,6 +66,8 @@ $item-padding:$item-padding-tb $item-padding-lr;
       &.active {
         color:$white-1;
         background:$brand-highlight;
+        border-right: 2px solid $brand-shadow;
+        border-radius: 2px;
         i {
           color:$white-1;
         }
