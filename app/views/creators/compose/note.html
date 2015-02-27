@@ -1,51 +1,60 @@
-<fw-panel12>
+<form novalidate name="form">
+  <fw-panel12>
 
-  <form novalidate name="formCompose" ng-show="!model.postLater">
+    <fw-error-message value="model.errorMessage"></fw-error-message>
 
-    <fw-form-input-note ng-model="model.input.note" required focus></fw-form-input-note>
+    <div ng-show="!model.errorMessage">
+      <div ng-show="!model.postLater">
 
-    <div class="form-group" ng-if="model.channels.length > 1">
-      <fw-form-input-select selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
-    </div>
+        <fw-form-input-note ng-model="model.input.note" required focus></fw-form-input-note>
 
-    <div class="row-btn">
-      <button type="submit"
-              class="btn btn-block btn-success"
-              data-loading-text="Posting..."
-              data-event-title="Note posted"
-              data-event-category="New post"
-              form-name="formCompose"
-              fw-form-submit="postNow()">Post Now</button>
-      <button class="btn btn-default btn-block"
-              form-name="formCompose"
-              fw-form-submit="postLater()">Post Later</button>
-    </div>
-
-  </form>
-
-  <form novalidate name="formSchedule" ng-show="model.postLater">
-
-    <div class="form-group">
-      <div class="row">
-        <div class="col-sm-7">
-          <label>On specific date:</label>
-          <div fw-datepicker></div>
+        <div class="form-group" ng-if="model.channels.length > 1">
+          <fw-form-input-select selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
         </div>
+
+        <div class="row-btn">
+
+          <button type="submit"
+                  class="btn btn-block btn-success"
+                  data-loading-text="Posting..."
+                  data-event-title="Note posted"
+                  data-event-category="New post"
+                  form-name="form"
+                  fw-form-submit="postNow()">Post Now</button>
+
+          <button class="btn btn-default btn-block"
+                  form-name="form"
+                  fw-form-submit="postLater()">Post Later</button>
+        </div>
+
+      </div>
+
+      <div ng-show="model.postLater">
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-7">
+              <label>On specific date:</label>
+              <fw-form-input-datepicker ng-required="model.postLater" ng-model="model.input.date" name="datepicker"></fw-form-input-datepicker>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-btn">
+
+          <button type="submit"
+                  class="btn btn-block btn-success"
+                  data-loading-text="Posting to Backlog..."
+                  data-event-title="Note queued"
+                  data-event-category="New post"
+                  form-name="form"
+                  fw-form-submit="postToBacklog()">Post to Backlog</button>
+
+          <button class="btn btn-default btn-block"
+                  ng-click="cancelPostLater()">Cancel</button>
+        </div>
+
       </div>
     </div>
-
-    <div class="row-btn">
-      <button type="submit"
-             class="btn btn-block btn-success"
-             data-loading-text="Posting to Backlog..."
-             data-event-title="Note queued"
-             data-event-category="New post"
-             form-name="formSchedule"
-             fw-form-submit="postToBacklog()">Post to Backlog</button>
-      <button class="btn btn-default btn-block"
-              ng-click="cancelPostLater()">Cancel</button>
-    </div>
-
-  </form>
-
-</fw-panel12>
+  </fw-panel12>
+</form>

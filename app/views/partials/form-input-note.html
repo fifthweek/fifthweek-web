@@ -8,7 +8,8 @@
         ng-model="ngModel[ngModelAccessor]"
         placeholder="What's happening?"
         focus="{{focus}}"
-        ng-required="required"
+        ng-required="isRequired()"
+        ng-disabled="isDisabled()"
         msd-elastic></textarea>
     </div>
     <div class="col-xs-12">

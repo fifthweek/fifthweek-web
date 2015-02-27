@@ -4,11 +4,8 @@
 
   <fw-panel12 class="page-account-settings">
 
-    <div ng-if="model.errorMessage" class="has-error">
-      <p class="help-block">
-        {{model.errorMessage}}
-      </p>
-    </div>
+    <fw-error-message value="model.errorMessage"></fw-error-message>
+
     <div ng-if="model.isLoading">
       <p>
         <i class="fa fa-refresh fa-spin"></i>
@@ -76,6 +73,7 @@
         <div ng-show="form.submissionSucceeded && form.$pristine" class="alert alert-success" >
           <p><i class="fa fa-check"></i> Saved successfully</p>
         </div>
+        <fw-error-message value="form.message"></fw-error-message>
         <div ng-show="form.message" class="alert alert-danger" id="form-message">
           <p>{{form.message}}</p>
         </div>

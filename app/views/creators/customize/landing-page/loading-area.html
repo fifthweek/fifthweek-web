@@ -1,8 +1,4 @@
-<div ng-if="model.errorMessage" class="has-error">
-  <p class="help-block">
-    {{model.errorMessage}}
-  </p>
-</div>
+<fw-error-message value="model.errorMessage"></fw-error-message>
 <div ng-if="model.isLoading">
   <p>
     <i class="fa fa-refresh fa-spin"></i>

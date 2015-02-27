@@ -1,53 +1,56 @@
 angular.module('webApp').controller(
-  'newNoteCtrl', ['$scope',
-  function($scope) {
+  'newNoteCtrl',
+  function($scope, aggregateUserState) {
     'use strict';
 
-    $scope.model = {
+    var model = {
       postLater: false,
       input: {
-        note: ''
+        note: '',
+        date: ''
+      },
+      errorMessage: undefined
+    };
+
+    $scope.model = model;
+
+    var loadForm = function(){
+      var channels = _.clone(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
+
+      // Simulate having no custom channels.
+      // channels = [ channels[0] ];
+
+      if(channels.length === 0) {
+        model.errorMessage = 'You must create a subscription before posting.';
+        return;
+      }
+
+      if (channels.length > 1) {
+        channels[0].name = 'Share with everyone';
+        for(var i = 1; i < channels.length; ++i){
+          channels[i].name = '"' + channels[i].name + '" Only';
+        }
+
+        model.channels = channels;
+        model.input.selectedChannel = channels[0];
       }
     };
 
-    var channels = [
-      {
-        name:'Share with everyone',
-        value:'channel1' // Default channel
-      },
-      {
-        name:'"Extras Channel" Only',
-        value:'channel2'
-      },
-      {
-        name:'"HD Channel" Only',
-        value:'channel3'
-      }
-    ];
-
-    // Simulate having no custom channels.
-    // channels = [ channels[0] ];
-
-    if (channels.length > 1) {
-      $scope.model.channels = channels;
-      $scope.model.input.selectedChannel = channels[0];
-    }
+    loadForm();
 
     $scope.postNow = function() { };
 
-    $scope.postToBacklog = function() { };
+    $scope.postToBacklog = function()
+    {
+      var date = model.input.date;
+    };
 
     $scope.postLater = function() {
-      $scope.model.postLater = true;
+      model.postLater = true;
     };
 
     $scope.cancelPostLater = function() {
-      $scope.model.postLater = false;
-    };
-
-    //toggle checkboxes 'checked' state
-    $scope.uncheck = function (event) {
-      if ($scope.checked == event.target.value) $scope.checked = false
+      model.postLater = false;
     };
   }
-]);
+);
