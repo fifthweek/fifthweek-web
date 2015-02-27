@@ -61,7 +61,7 @@ angular.module('webApp')
       {
         name: 'Backlog',
         state: states.creators.backlog.name,
-        icon: 'fa fa-sort-amount-desc',
+        icon: 'fa fa-clock-o',
         color: 'yellow',
         secondary:
           [
