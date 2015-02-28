@@ -2,10 +2,11 @@
 
 #{$logo} {
   font:{
-    family:'Oleo Script', cursive;
-    size:26px;
-    weight:300;
+    family: 'Merriweather', serif;
+    size:24px;
+    weight:900;
   }
+  letter-spacing: -1px;
   a {
     color:$white-1;
     #{$state-hover-focus} {
