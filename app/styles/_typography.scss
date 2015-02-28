@@ -58,6 +58,24 @@ h4 {
   &.not-first-child {
     margin-top: 36px;
   }
+  &.text-success {
+    color: $brand-highlight;
+    &:after {
+      content:"\f087";
+      font-family:'FontAwesome';
+      margin-left: 8px;
+      font-weight: normal;
+    }
+  }
+  &.text-warning {
+    color: $brand-highlight;
+    &:after {
+      content:"\f06a";
+      font-family:'FontAwesome';
+      margin-left: 8px;
+      font-weight: normal;
+    }
+  }
 }
 
 h5 {

@@ -24,20 +24,18 @@
 
   </fw-panel12>
 
-  <fw-col7 ng-show="form.submissionSucceeded && !tokenInvalid" id="password-reset-confirmation-success">
-    <div class="jumbo-panel alert alert-success">
+  <fw-panel12 ng-show="form.submissionSucceeded && !tokenInvalid" id="password-reset-confirmation-success">
+    <h4 class="text-success">Password has been reset</h4>
       <p>
-        <strong>Password has been reset.</strong> Please sign in with your new password. <strong><a ui-sref="signIn">Continue to sign in page &raquo;</a></strong>
+        Please sign in with your new password. <strong><a ui-sref="signIn">Continue to sign in page &raquo;</a></strong>
       </p>
-    </div>
-  </fw-col7>
+  </fw-panel12>
 
 </form>
 
-<fw-col7 ng-show="tokenInvalid" id="password-reset-token-invalid">
-  <div class="jumbo-panel alert alert-warning">
-    <p>
-      <strong>This link has expired.</strong> If you need to reset your password, please go to the <strong><a ui-sref="signIn.forgot">forgot your details</a></strong> page.
-    </p>
-  </div>
-</fw-col7>
+<fw-panel12 ng-show="tokenInvalid" id="password-reset-token-invalid">
+  <h4 class="text-warning">This link has expired</h4>
+  <p>
+    If you still need to reset your password, please go to the <strong><a ui-sref="signIn.forgot">forgot your details</a></strong> page.
+  </p>
+</fw-panel12>
