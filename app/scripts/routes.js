@@ -30,7 +30,7 @@ angular.module('routes', ['ui.router'])
     user: {
       name: 'user',
       posts: {
-        name: 'posts'
+        name: 'user.posts'
       }
     },
     creators: {
