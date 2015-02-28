@@ -19,6 +19,32 @@
   }
 }
 
+
+/* Dirty hack to remove unwanted box shadow */
+.header-wrapper {
+  @media (min-width:$navbar-lg-min) {
+    &:after {
+      content: "";
+      position: fixed;
+      left: $sidebar-width - 2px;
+      top: 0;
+      background: #fff;
+      width: 5px;
+      height: $navbar-height-lg;
+      z-index:1040;
+    }
+  }
+}
+
+/* Would be good to create a more general class of 'no header' if we decide to keep this hack */
+.page-home .header-wrapper {
+  @media (min-width:$navbar-lg-min) {
+    &:after {
+      display: none;
+    }
+  }
+}
+
 .navbar {
   height: $navbar-height-sm;
   @media (min-width:$navbar-lg-min) {
