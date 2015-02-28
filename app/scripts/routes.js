@@ -251,7 +251,7 @@ angular.module('routes', ['ui.router'])
         controller: 'createSubscriptionCtrl',
         requireSubscription: false,
         data : {
-          pageTitle: 'Create Your Subscription',
+          pageTitle: 'About Your Subscription',
           headTitle: ': ' + 'Create Subscription',
           access: {
             requireAuthenticated: true

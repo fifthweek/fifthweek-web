@@ -21,7 +21,7 @@ describe('create subscription page', function() {
   describe('header', function() {
 
     it('should contain title', function() {
-      expect(header.title.getText()).toContain('Create Your Subscription'.toUpperCase());
+      expect(header.title.getText()).toContain('About Your Subscription'.toUpperCase());
     });
   });
 
