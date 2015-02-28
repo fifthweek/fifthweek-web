@@ -24,7 +24,7 @@ describe('sign-in - forgot details page', function() {
   describe('header', function() {
 
     it('should contain title', function() {
-      expect(header.title.getText()).toContain('Forgot Your Details?');
+      expect(header.title.getText()).toContain('Forgot Your Details?'.toUpperCase());
     });
   });
 

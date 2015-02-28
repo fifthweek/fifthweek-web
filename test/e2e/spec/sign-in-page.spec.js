@@ -21,7 +21,7 @@ describe('sign-in page', function() {
   describe('header', function() {
 
     it('should contain title', function() {
-      expect(header.title.getText()).toContain('Sign In');
+      expect(header.title.getText()).toContain('Sign In'.toUpperCase());
     });
   });
 
