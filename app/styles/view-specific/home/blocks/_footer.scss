@@ -2,7 +2,7 @@
   @media (min-width:$screen-sm-min) and (min-height:$screen-xs-max - 50px) {
     position:fixed;
     bottom:0;
-    background:rgba(255, 255, 255, 0.1);
+    background:rgba(30, 30, 30, 0.3);
   }
   p {
     @include text-shadow-black;

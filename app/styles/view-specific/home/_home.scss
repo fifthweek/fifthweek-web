@@ -30,13 +30,14 @@ $html-name-space:'.page-home';
     width:125px;
     font-size:25px;
     margin:0;
-    padding:30px 0 20px 15px;
-    opacity:0.5;
+    padding:20px 0 20px 15px;
+    opacity:0.75;
     @media (min-width:$screen-sm-min) {
       font-size:30px;
       width:$sidebar-width;
       text-align:left;
       padding-left:40px;
+      padding-top:30px;
     }
     a {
       color:$white-full;
