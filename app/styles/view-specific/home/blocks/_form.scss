@@ -23,13 +23,39 @@
     margin-top:10px;
   }
   .form-group {
-    margin-bottom: 10px;
+    margin-bottom: 0;
+
+    input {
+      border-top-width: 0;
+      border-radius: 0;
+
+      /* edge-to-edge inputs do not play nicely with other border states, such as focus and in/valid */
+      border-color: $input-border !important;
+      box-shadow: none !important;
+    }
+
     @media (min-width:$screen-md-min) {
       .col-md-6:last-child {
         padding: 0;
       }
     }
   }
+  .input-wrap {
+    :first-child .form-group, > .form-group:first-child {
+      input {
+        border-top-width: 1px;
+        border-top-left-radius: $input-border-radius;
+        border-top-right-radius: $input-border-radius;
+      }
+    }
+    :last-child .form-group, > .form-group:last-child {
+      input {
+        border-bottom-left-radius: $input-border-radius;
+        border-bottom-right-radius: $input-border-radius;
+      }
+    }
+  }
+
   .btn {
     height:auto;
     width:100%;

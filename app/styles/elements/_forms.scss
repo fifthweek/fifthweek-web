@@ -72,7 +72,7 @@ select {
 .form-control,select {
   font-size:$input-font-size;
   padding:$input-padding;
-  border:1px solid $grey-light-5;
+  border:1px solid $input-border;
   border-radius:$input-border-radius;
   -webkit-appearance:none;
   -moz-appearance:none;
@@ -82,6 +82,17 @@ select {
   width:100%;
   max-width:100%;
   font-family:'Lato',sans-serif;
+  &:focus {
+    box-shadow: $form-input-inset-shadow, 0 0 $form-input-focus-shadow rgba(130, 130, 130, 0.3);
+  }
+}
+
+.has-error .form-control:focus {
+  box-shadow: $form-input-inset-shadow, 0 0 $form-input-focus-shadow lighten($state-danger-text, 20%);
+}
+
+.has-success .form-control:focus {
+  box-shadow: $form-input-inset-shadow, 0 0 $form-input-focus-shadow lighten($state-success-text, 20%);
 }
 
 input[type="text"]::-ms-clear,input[type="number"]::-ms-clear,input[type="email"]::-ms-clear,input[type="password"]::-ms-clear,textarea::-ms-clear,select::-ms-clear {

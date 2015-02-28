@@ -43,6 +43,7 @@ $indigo-light-1:#9e7da6;
 
 $state-success-text:#439977;
 $state-success-bg:#e6f2ed;
+$state-danger-bg:#f5e6e6;
 
 $panel-default-border: $gray-light;
 $panel-default-heading-bg: #ebebeb;
@@ -60,3 +61,7 @@ $brand-highlight-3:#593e54;
 $link-color: $brand-highlight-2;
 $brand-success:$brand-highlight-3;
 
+
+//Forms
+$input-border-focus:$grey-dark-2;
+$input-border:$grey-light-5;

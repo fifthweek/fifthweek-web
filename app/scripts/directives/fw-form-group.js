@@ -4,6 +4,7 @@ angular.module('webApp').directive('fwFormGroup', function (domUtilities) {
   return {
     restrict: 'E',
     transclude: true,
+    replace:true,
     scope: true,
     templateUrl: 'views/partials/form-group.html',
     link: {
