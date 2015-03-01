@@ -7,10 +7,10 @@ angular.module('webApp').directive('fwSetSidebarEnabledFromState',
       link:function (scope, element/*, attrs*/) {
 
         var apply = function(state){
-          if(state.data && state.data.disableSidebar){
-            element.addClass('sidebar-disabled');
+          if(state.data && state.data.navigationHidden){
+            element.addClass('navigation-hidden');
           } else {
-            element.removeClass('sidebar-disabled');
+            element.removeClass('navigation-hidden');
           }
         };
 

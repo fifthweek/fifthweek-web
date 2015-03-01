@@ -37,7 +37,7 @@
       // copying the page css class would cause the landing page background to be downloaded
       // even if we were going directly to a deep link.
       emptyState.data = {
-        disableSidebar: homeState.data.disableSidebar,
+        navigationHidden: homeState.data.navigationHidden,
         bodyClass: 'page-empty'
       };
     })

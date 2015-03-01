@@ -36,7 +36,7 @@
   }
 }
 
-.sidebar-disabled .header-wrapper {
+.navigation-hidden .header-wrapper {
   @media (min-width:$navbar-lg-min) {
     &:after {
       display: none;

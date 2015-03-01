@@ -133,7 +133,7 @@ angular.module('routes', ['ui.router'])
         controller: 'HomeCtrl',
         data: {
           pageTitle: 'Home',
-          disableSidebar: true,
+          navigationHidden: true,
           bodyClass: 'page-home',
           access: {
             requireUnauthenticated: true
@@ -223,12 +223,14 @@ angular.module('routes', ['ui.router'])
         }
       })
       .state(states.user.posts.name, {
-        url: '/posts',
+        url: '/landing-page',
         templateUrl: 'views/user/posts.html',
         requireSubscription: true,
         data : {
           pageTitle: 'Timeline',
           headTitle: ': ' + 'Timeline',
+          navigationHidden: true,
+          bodyClass: 'page-landing-2',
           access: {
             requireAuthenticated: true
           }
@@ -266,7 +268,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Landing page',
           headTitle: ': ' + 'Landing page',
-          disableSidebar: true,
+          navigationHidden: true,
           bodyClass: 'page-landing',
           access: {
             requireAuthenticated: false // Disable the inherited access requirement.

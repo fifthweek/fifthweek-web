@@ -4,31 +4,31 @@ describe('state-sidebar-enablement directive', function(){
   describe('when created', function(){
 
     it('should check the current state and enable sidebar if required', function(){
-      state.data.disableSidebar = false;
+      state.data.navigationHidden = false;
 
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state class="sidebar-disabled"/>');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state class="navigation-hidden"/>');
       $compile(element)(scope);
       scope.$digest();
 
-      expect(element.hasClass('sidebar-disabled')).toBeFalsy();
+      expect(element.hasClass('navigation-hidden')).toBeFalsy();
     });
 
     it('should check the current state and enable sidebar if not specified', function(){
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state class="sidebar-disabled"/>');
+      var element = angular.element('<span fw-set-sidebar-enabled-from-state class="navigation-hidden"/>');
       $compile(element)(scope);
       scope.$digest();
 
-      expect(element.hasClass('sidebar-disabled')).toBeFalsy();
+      expect(element.hasClass('navigation-hidden')).toBeFalsy();
     });
 
     it('should check the current state and disable the sidebar if required', function(){
-      state.data.disableSidebar = true;
+      state.data.navigationHidden = true;
 
       var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
-      expect(element.hasClass('sidebar-disabled')).toBeTruthy();
+      expect(element.hasClass('navigation-hidden')).toBeTruthy();
     });
 
     it('should check attach to the $stateChangeSuccess event', function(){
@@ -56,67 +56,67 @@ describe('state-sidebar-enablement directive', function(){
   describe('when state changes', function(){
 
     it('should enable the sidebar if required', function(){
-      state.data.disableSidebar = true;
+      state.data.navigationHidden = true;
 
       var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
-      expect(element.hasClass('sidebar-disabled')).toBeTruthy();
+      expect(element.hasClass('navigation-hidden')).toBeTruthy();
 
-      var toState = {data: {disableSidebar: false}};
+      var toState = {data: {navigationHidden: false}};
       var fromState = state;
       scope.$broadcast(uiRouterConstants.stateChangeSuccessEvent, toState, undefined, fromState);
 
-      expect(element.hasClass('sidebar-disabled')).toBeFalsy();
+      expect(element.hasClass('navigation-hidden')).toBeFalsy();
     });
 
     it('should disable the sidebar if required', function(){
-      state.data.disableSidebar = false;
+      state.data.navigationHidden = false;
 
       var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
-      expect(element.hasClass('sidebar-disabled')).toBeFalsy();
+      expect(element.hasClass('navigation-hidden')).toBeFalsy();
 
-      var toState = {data: {disableSidebar: true}};
+      var toState = {data: {navigationHidden: true}};
       var fromState = state;
       scope.$broadcast(uiRouterConstants.stateChangeSuccessEvent, toState, undefined, fromState);
 
-      expect(element.hasClass('sidebar-disabled')).toBeTruthy();
+      expect(element.hasClass('navigation-hidden')).toBeTruthy();
     });
 
     it('should keep the sidebar enabled if required by both states', function(){
-      state.data.disableSidebar = false;
+      state.data.navigationHidden = false;
 
       var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
-      expect(element.hasClass('sidebar-disabled')).toBeFalsy();
+      expect(element.hasClass('navigation-hidden')).toBeFalsy();
 
-      var toState = {data: {disableSidebar: false}};
+      var toState = {data: {navigationHidden: false}};
       var fromState = state;
       scope.$broadcast(uiRouterConstants.stateChangeSuccessEvent, toState, undefined, fromState);
 
-      expect(element.hasClass('sidebar-disabled')).toBeFalsy();
+      expect(element.hasClass('navigation-hidden')).toBeFalsy();
     });
 
     it('should keep the sidebar disabled if required by both states', function(){
-      state.data.disableSidebar = true;
+      state.data.navigationHidden = true;
 
       var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
-      expect(element.hasClass('sidebar-disabled')).toBeTruthy();
+      expect(element.hasClass('navigation-hidden')).toBeTruthy();
 
-      var toState = {data: {disableSidebar: true}};
+      var toState = {data: {navigationHidden: true}};
       var fromState = state;
       scope.$broadcast(uiRouterConstants.stateChangeSuccessEvent, toState, undefined, fromState);
 
-      expect(element.hasClass('sidebar-disabled')).toBeTruthy();
+      expect(element.hasClass('navigation-hidden')).toBeTruthy();
     });
 
     var scope;

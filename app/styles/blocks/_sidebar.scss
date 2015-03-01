@@ -100,7 +100,7 @@ $item-padding:$item-padding-tb $item-padding-lr;
   }
 }
 
-.sidebar-disabled {
+.navigation-hidden {
   #{$left-container} {
     display:none;
   }

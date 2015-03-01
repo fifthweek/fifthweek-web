@@ -1,6 +1,6 @@
 @import '_base';
 
-#{$logo} {
+#{$logo}, #{$logo-sm} {
   font:{
     family: 'Merriweather', serif;
     size:24px;
@@ -21,4 +21,7 @@
   @media (min-width:$screen-md-min) {
     display:none;
   }
+}
+#{$logo-sm} {
+  @include text-shadow-black-soft;
 }
