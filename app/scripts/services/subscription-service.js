@@ -39,14 +39,25 @@ angular.module('webApp')
       // We need to store the user ID before posting the new subscription data
       // because it could change during the call.
       var subscriptionUserId = authenticationService.currentUser.userId;
-      return subscriptionStub.postSubscription(subscriptionData).then(function(response) {
-        aggregateUserState.updateFromDelta(
-          subscriptionUserId,
-          {
-            creatorStatus: {
-              subscriptionId: response.data
-            }
-          });
+      return subscriptionStub.postSubscription(subscriptionData)
+        .then(function(response) {
+          var subscriptionId = response.data;
+          aggregateUserState.updateFromDelta(
+            subscriptionUserId,
+            {
+              creatorStatus: {
+                subscriptionId: subscriptionId
+              },
+              createdChannelsAndCollections: {
+                channels: [
+                  {
+                    channelId: subscriptionId,
+                    name: undefined,
+                    collections: []
+                  }
+                ]
+              }
+            });
       });
     };
 

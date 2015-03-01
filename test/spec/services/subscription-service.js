@@ -137,6 +137,15 @@ describe('subscription service', function() {
         {
           creatorStatus: {
             subscriptionId: subscriptionId
+          },
+          createdChannelsAndCollections: {
+            channels: [
+              {
+                channelId: subscriptionId,
+                name: undefined,
+                collections: []
+              }
+            ]
           }
         });
     });
@@ -156,6 +165,15 @@ describe('subscription service', function() {
         {
           creatorStatus: {
             subscriptionId: subscriptionId
+          },
+          createdChannelsAndCollections: {
+            channels: [
+              {
+                channelId: subscriptionId,
+                name: undefined,
+                collections: []
+              }
+            ]
           }
         });
     });
