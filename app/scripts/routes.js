@@ -292,7 +292,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.compose.note.name, {
         url: '/note',
         templateUrl: 'views/creators/compose/note.html',
-        controller: 'newNoteCtrl',
+        controller: 'composeNoteCtrl',
         requireSubscription: true,
         data : {
           pageTitle: ' Note',

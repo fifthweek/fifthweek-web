@@ -1,14 +1,22 @@
-<form novalidate name="form">
-  <fw-panel12>
+<fw-panel12>
 
-    <fw-error-message value="model.errorMessage"></fw-error-message>
+  <fw-error-message value="model.errorMessage"></fw-error-message>
 
-    <div ng-show="!model.errorMessage">
-      <div ng-show="!model.postLater">
+  <div ng-if="model.submissionSucceeded">
+    <div class="alert alert-success" >
+      <p><i class="fa fa-check"></i> Posted successfully</p>
+    </div>
+    <button class="btn btn-default btn-block"
+            ng-click="postAnother()">Post Another</button>
+  </div>
+
+  <div ng-show="!model.errorMessage && !model.submissionSucceeded">
+    <div ng-show="!model.postLater">
+      <form novalidate name="contentForm">
 
         <fw-form-input-note ng-model="model.input.note" required focus></fw-form-input-note>
 
-        <div class="form-group" ng-if="model.channels.length > 1">
+        <div ng-if="model.channels.length > 1">
           <fw-form-input-select selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
         </div>
 
@@ -19,26 +27,24 @@
                   data-loading-text="Posting..."
                   data-event-title="Note posted"
                   data-event-category="New post"
-                  form-name="form"
+                  form-name="contentForm"
                   fw-form-submit="postNow()">Post Now</button>
 
+          <!-- Note we use fw-form-submit here to take advantage of the form validity check -->
           <button class="btn btn-default btn-block"
-                  form-name="form"
+                  form-name="contentForm"
+                  ng-disabled="contentForm.isSubmitting"
                   fw-form-submit="postLater()">Post Later</button>
         </div>
 
-      </div>
+      </form>
+    </div>
 
-      <div ng-show="model.postLater">
+    <div ng-show="model.postLater">
+      <form novalidate name="scheduleForm">
 
-        <div class="form-group">
-          <div class="row">
-            <div class="col-sm-7">
-              <label>On specific date:</label>
-              <fw-form-input-datepicker ng-required="model.postLater" ng-model="model.input.date" name="datepicker"></fw-form-input-datepicker>
-            </div>
-          </div>
-        </div>
+        <label>On specific date:</label>
+        <fw-form-input-datepicker ng-required="model.postLater" ng-model="model.input.date"></fw-form-input-datepicker>
 
         <div class="row-btn">
 
@@ -47,14 +53,16 @@
                   data-loading-text="Posting to Backlog..."
                   data-event-title="Note queued"
                   data-event-category="New post"
-                  form-name="form"
+                  form-name="scheduleForm"
                   fw-form-submit="postToBacklog()">Post to Backlog</button>
 
+          <!-- Note we do not use fw-form-submit here because we don't care about validity -->
           <button class="btn btn-default btn-block"
+                  ng-disabled="scheduleForm.isSubmitting"
                   ng-click="cancelPostLater()">Cancel</button>
         </div>
 
-      </div>
+      </form>
     </div>
-  </fw-panel12>
-</form>
+  </div>
+</fw-panel12>

@@ -1,9 +1,10 @@
 angular.module('webApp').controller(
-  'newNoteCtrl',
-  function($scope, aggregateUserState) {
+  'composeNoteCtrl',
+  function($scope, $state, postsStub, composeService, utilities, logService) {
     'use strict';
 
     var model = {
+      isSubmitted: false,
       postLater: false,
       input: {
         note: '',
@@ -15,34 +16,44 @@ angular.module('webApp').controller(
     $scope.model = model;
 
     var loadForm = function(){
-      var channels = _.clone(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
-
-      // Simulate having no custom channels.
-      // channels = [ channels[0] ];
-
-      if(channels.length === 0) {
-        model.errorMessage = 'You must create a subscription before posting.';
-        return;
-      }
-
-      if (channels.length > 1) {
-        channels[0].name = 'Share with everyone';
-        for(var i = 1; i < channels.length; ++i){
-          channels[i].name = '"' + channels[i].name + '" Only';
-        }
-
-        model.channels = channels;
-        model.input.selectedChannel = channels[0];
-      }
+      composeService.getChannelsForSelection()
+        .then(function(channels){
+          model.channels = channels;
+          model.input.selectedChannel = channels[0];
+        })
+        .catch(function(error){
+          logService.error(error);
+          model.errorMessage = utilities.getFriendlyErrorMessage(error);
+        });
     };
 
     loadForm();
 
-    $scope.postNow = function() { };
+    var postNote = function(data){
+      return postsStub.postNote(data)
+        .then(function(){
+          model.submissionSucceeded = true;
+        });
+    };
+
+    $scope.postNow = function() {
+      var data = {
+        channelId: model.input.selectedChannel.channelId,
+        note: model.input.note
+      };
+
+      return postNote(data);
+    };
 
     $scope.postToBacklog = function()
     {
-      var date = model.input.date;
+      var data = {
+        channelId: model.input.selectedChannel.channelId,
+        note: model.input.note,
+        scheduledPostTime: model.input.date
+      };
+
+      return postNote(data);
     };
 
     $scope.postLater = function() {
@@ -52,5 +63,9 @@ angular.module('webApp').controller(
     $scope.cancelPostLater = function() {
       model.postLater = false;
     };
+
+    $scope.postAnother = function(){
+      $state.forceReload();
+    }
   }
 );
