@@ -3,6 +3,7 @@
 $html-name-space:'.page-timeline';
 $header-image-height:410px;
 $header-image-height-sm:300px;
+$header-image-height-xs:250px;
 $header-height:108px;
 
 #{$html-name-space} {
@@ -22,7 +23,10 @@ $header-height:108px;
     right:0;
     background-size: cover;
     background-position: center center;
-    height:$header-image-height-sm;
+    height:$header-image-height-xs;
+    @media (min-width:$screen-ss-min) {
+      height:$header-image-height-sm;
+    }
     @media (min-width:$screen-s-min) {
       height:$header-image-height;
     }
@@ -86,16 +90,26 @@ $header-height:108px;
     }
     img {
       display:block;
-      margin: -45px auto 0 auto;
+      margin: -25px auto 0 auto;
       width:70%;
       height:auto;
       border-radius: $post-border-radius;
       box-shadow: $post-shadow;
-      @media (max-width:$screen-sm-max) {
-        margin-top: -20px;
+      @media (min-width:$screen-ss-min) {
+        width:60%;
+        margin-top:0;
       }
       @media (min-width:$screen-s-min) {
         width:100%;
+        margin-right:-30px;
+        margin-top:-20px;
+      }
+      @media (min-width:$screen-sm-min) {
+        margin-top:-20px;
+      }
+      @media (min-width:$screen-lg-min + 70px) {
+        margin-top:-45px;
+        margin-right:0;
       }
     }
   }
@@ -111,8 +125,11 @@ $header-height:108px;
     }
     .left-margin-offset {
       position:relative;
-      margin-left: -16%;
-      margin-right: 16%;
+
+      @media (min-width:$screen-lg-min) {
+        margin-left: -16%;
+        margin-right: 16%;
+      }
     }
   }
 }

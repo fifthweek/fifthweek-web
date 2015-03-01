@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-8 col-sm-offset-4 posts">
+      <div class="col-lg-8 col-lg-offset-4 posts">
         <div class="post" ng-repeat="post in posts">
           <div ng-class="{'non-image-post': !post.imagePath, 'image-post': post.imagePath}">
             <img ng-if="post.imagePath" ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
