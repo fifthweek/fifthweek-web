@@ -24,6 +24,7 @@
     @media (max-width:$width + 10px) {
       overflow-y:hidden;
       overflow-x:visible;
+      height:50px;
     }
   }
   ul.header-navbar-menu {

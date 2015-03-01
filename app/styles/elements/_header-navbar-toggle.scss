@@ -17,7 +17,7 @@
   border:0 none;
   font-size:12px;
   #{$state-hover-focus} {
-    background:none !important;
+    background:$white-full !important;
   }
   //overide bootstrap default
   @media (min-width:$screen-sm-min) {
