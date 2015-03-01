@@ -6,13 +6,14 @@ angular.module('webApp').directive('fwFormGroup', function (domUtilities) {
     transclude: true,
     replace:true,
     scope: true,
+    require: '^form',
     templateUrl: 'views/partials/form-group.html',
     link: {
-      pre: function(scope, element) {
+      pre: function(scope, element, attrs, formCtrl) {
 
         // Allow optimisation through explicit specification of which elements to use.
         var inputName = element.inputName;
-        var formName = element.formName;
+        var formName = formCtrl.$name;
 
         scope.getInputName = function() {
           if (!inputName) {
@@ -28,10 +29,6 @@ angular.module('webApp').directive('fwFormGroup', function (domUtilities) {
         };
 
         scope.getFormName = function() {
-          if (!formName) {
-            formName = domUtilities.ancestor('FORM', element).attr('name');
-          }
-
           return formName;
         };
       },
