@@ -9,11 +9,21 @@
     )
     .config(function($provide){
       $provide.decorator('$exceptionHandler', function($delegate, logService) {
-
         return function (exception, cause) {
           $delegate(exception, cause);
           logService.logUnhandledError(exception, cause);
         };
+      });
+
+      $provide.decorator('$state', function($delegate, $stateParams) {
+        $delegate.forceReload = function() {
+          return $delegate.go($delegate.current, $stateParams, {
+            reload: true,
+            inherit: false,
+            notify: true
+          });
+        };
+        return $delegate;
       });
     })
     .run(function() {
