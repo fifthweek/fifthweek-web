@@ -64,13 +64,16 @@ $header-height:108px;
       font-weight:bold;
       letter-spacing: -1.8px;
       margin-top:0;
-      padding-top:17px;
+      padding-top:40px;
       margin-bottom: 5px;
+      @media (min-width:$screen-s-min) {
+        padding-top:17px;
+      }
     }
     h3 {
       font-size: 24px;
       font-weight: normal;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       @media (min-width:$screen-s-min) {
         margin-bottom: 40px;
       }
@@ -89,13 +92,10 @@ $header-height:108px;
         margin-bottom: 66px;
       }
     }
-    img {
-      display:block;
+    .creator {
+      position: relative;
       margin: -25px auto 0 auto;
       width:70%;
-      height:auto;
-      border-radius: $post-border-radius;
-      box-shadow: $post-shadow;
       @media (min-width:$screen-ss-min) {
         width:60%;
         margin-top:0;
@@ -106,12 +106,42 @@ $header-height:108px;
         margin-top:-20px;
       }
       @media (min-width:$screen-sm-min) {
-        margin-top:-20px;
+        margin-top:-35px;
       }
       @media (min-width:$screen-lg-min + 70px) {
         margin-top:-45px;
         margin-right:0;
       }
+    }
+    img {
+      width:100%;
+      height:auto;
+      border-radius: $post-border-radius;
+      box-shadow: $post-shadow;
+    }
+    #subscribe-button {
+      text-transform: uppercase;
+      font-size: $p-font-size;
+      font-weight: 200;
+      letter-spacing: 1px;
+      color:#fff;
+      background-color: $brand-highlight;
+      box-shadow: $post-shadow;
+      border:none;
+      height: auto;
+      padding: 10px 22px;
+      margin:-20px auto 0;
+      display: block;
+      width:auto;
+      &:after {
+        content:"\f00c";
+        font-family:'FontAwesome';
+        margin-left: 8px;
+      }
+    }
+    .subscribe-button-wrapper {
+      position: absolute;
+      width:100%;
     }
   }
   .main-content {
