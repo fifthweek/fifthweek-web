@@ -81,11 +81,7 @@
                             ng-value="scheduleModes.scheduled" /> On specific date:</label>
             </div>
 
-            <div class="row">
-              <div class="col-sm-7">
-                <div fw-datepicker ng-disabled="model.scheduleMode !== scheduleModes.scheduled" ng-required="true"></div>
-              </div>
-            </div>
+            <fw-form-input-datepicker ng-disabled="model.scheduleMode !== scheduleModes.scheduled" ng-required="true"></fw-form-input-datepicker>
           </section>
         </fw-form-subsection>
       </div>
