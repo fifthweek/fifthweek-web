@@ -70,3 +70,13 @@ body {
   */
   max-width:650px;
 }
+
+.navigation-hidden {
+  .main-container {
+    max-width:100%;
+    margin-top:0;
+  }
+  .navbar-fixed-top {
+    display:none;
+  }
+}

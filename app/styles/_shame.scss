@@ -1,18 +1,3 @@
-//shame/misc, temp styles - TBC
-//full width pages (can be improved if/when there are multiples)
-.page-landing {
-  .main-container {
-    max-width:100%;
-  }
-}
-
-//pages with no top navbar (can be improved if/when there are multiples)
-.page-landing {
-  .navbar-fixed-top {
-    display:none;
-  }
-}
-
 #{$right-container} .nav-tabs {
   padding-left:0;
   li {
