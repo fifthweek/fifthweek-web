@@ -24,9 +24,10 @@ ul.header-navbar-menu {
     font-size: 14px; //this hack removes excess height
 
     a {
-      color: $grey-light-4;
-      text-transform: uppercase;
-      padding-bottom: 14px;
+      color:$grey-light-4;
+      text-transform:uppercase;
+      padding-bottom:14px;
+      outline:0 none;
 
       @media (min-width:$navbar-lg-min) {
         padding-bottom: 20px;
