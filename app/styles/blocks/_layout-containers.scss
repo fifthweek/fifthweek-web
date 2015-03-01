@@ -79,4 +79,7 @@ body {
   .navbar-fixed-top {
     display:none;
   }
+  #{$right-container} {
+    padding:0;
+  }
 }
