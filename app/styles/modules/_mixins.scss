@@ -84,3 +84,12 @@
   -webkit-transition-delay: $transition-delay;
   transition-delay: $transition-delay;
 }
+
+@mixin post-left-right-padding {
+  padding-left: $post-margin-sm;
+  padding-right: $post-margin-sm;
+  @media (min-width:$screen-s-min) {
+    padding-left: $post-margin-lg;
+    padding-right: $post-margin-lg;
+  }
+}

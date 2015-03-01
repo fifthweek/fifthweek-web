@@ -1,6 +1,6 @@
 <fw-breadcrumb current="{{model.collectionName}}"></fw-breadcrumb>
 
-<div class="posts queue restore-row-behaviour" ui-sortable>
+<div class="posts posts-with-margin queue restore-row-behaviour" ui-sortable>
   <div class="post tagged-post" ng-repeat="post in posts">
     <div ng-class="{'non-image-post': !post.imagePath, 'image-post': post.imagePath, 'file-post': post.filePath}">
       <img ng-if="post.imagePath" ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>

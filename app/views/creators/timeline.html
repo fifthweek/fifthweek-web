@@ -7,9 +7,78 @@
       <fw-blob-image control="blobImage" thumbnail="600x600-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
     </div>
     <div class="col-s-8">
-      <h2>Lawrence Wagerfield</h2>
-      <h3>Web Comics and More</h3>
-      <h4>Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here! And here's another line.</h4>
+      <div class="header-text">
+        <h2>Marc Holmes</h2>
+        <h3>Web Comics and More</h3>
+        <h4>Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here! And here's another line.</h4>
+      </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-4 posts">
+      <div class="post" ng-repeat="post in posts">
+        <div ng-class="{'non-image-post': !post.imagePath, 'image-post': post.imagePath}">
+          <img ng-if="post.imagePath" ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
+
+          <div class="text">
+            <div class="content" ng-if="post.comment || post.filePath">
+              <md ng-model="post.comment" ng-if="post.comment"></md>
+
+              <p ng-if="post.filePath">
+                <a class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">
+                  {{post.fileName}}
+                </a>
+              </p>
+            </div>
+
+            <hr />
+
+            <div class="row info-actions">
+              <div class="col-xs-8 info">
+                <div class="author">
+                  <fw-blob-image control="blobImage" thumbnail="128x128-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
+                </div>
+                <ul>
+                  <li>
+                    <span class="poster-name">Marc Holmes</span>
+                    <span ng-if="post.collection">in {{post.collection}}</span>
+                    <span ng-if="!post.collection">to {{post.channel}}</span>
+                  </li>
+                  <li>{{post.liveIn}} ago</li>
+                </ul>
+              </div>
+              <div class="col-xs-4 actions">
+                <ul>
+                  <li class="actions-more"
+                      ng-class="{'active-actions-drop-down': post.showMenu}">
+                    <button
+                      ng-click="post.showMenu = !post.showMenu"
+                      ng-blur="post.showMenu = false">
+                      <i class="fa fa-ellipsis-h"></i>
+                    </button>
+                    <div class="actions-drop-down" ng-show="post.showMenu">
+                      <ul>
+                        <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
+                        <li>
+                          <fw-delete-link
+                            item-type="Post"
+                            data-event-title="Post deleted"
+                            data-event-category="Backlog"
+                            delete="delete(post.postId)">
+                            Delete
+                          </fw-delete-link>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

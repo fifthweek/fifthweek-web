@@ -42,6 +42,10 @@ $header-height:108px;
       }
     }
 
+    .header-text {
+      @include post-left-right-padding;
+    }
+
     h2, h3 {
       color: $grey-dark-4;
       text-align: center;
@@ -75,7 +79,7 @@ $header-height:108px;
       text-shadow: 0.5px 0.5px 0 #c8c8c8;
       line-height: 20px;
       padding: 0;
-      margin: 0;
+      margin: 0 0 100px;
       @media (min-width:$screen-s-min) {
         text-align:left;
       }
@@ -98,7 +102,7 @@ $header-height:108px;
   .main-content {
     padding: 0 $main-cont-padding-small;
     margin:0 auto;
-    max-width:915px; /* Creates a col-8 with width of 600px for posts */
+    max-width:945px; /* Creates a col-8 with width of 600px for posts */
     .col-s-4:first-child { /* must make up normal width of 33.3333333333% */
       @media (min-width:$screen-sm-min) {
         margin-left: 3.66666666666%;
