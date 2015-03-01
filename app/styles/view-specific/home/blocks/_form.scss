@@ -34,11 +34,25 @@
       box-shadow: none !important;
     }
 
-    @media (min-width:$screen-md-min) {
-      .col-md-6:last-child {
-        padding: 0;
+    .row > * {
+      // Remove BS default to prevent validation column adding an unwanted
+      // pixel space between the edge-to-edge inputs.
+      min-height: 0;
+      @media (max-width:$screen-sm-max) {
+        .help-block {
+          margin-bottom: 10px;
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+        }
+      }
+      @media (min-width:$screen-md-min) {
+        &:last-child {
+          padding: 0;
+        }
       }
     }
+
+
   }
   .input-wrap {
     :first-child .form-group, > .form-group:first-child {
