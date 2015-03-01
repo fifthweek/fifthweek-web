@@ -19,7 +19,7 @@ ul.nav-tabs > li {
 
   &.active {
     > a, > a:hover, > a:focus {
-      @include panel-shadow;
+      box-shadow: $panel-shadow;
       border-color:transparent;
 
       /* World's hackiest hack? */

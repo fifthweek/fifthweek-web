@@ -41,6 +41,10 @@ $input-border-radius:$border-radius;
 $panel-border-radius:3px;
 $post-border-radius:6px;
 
+//shadow
+$panel-shadow:0 0.8px 3px 0 rgba(0, 0, 0, 0.22);
+$post-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.22); /* Posts intentionally have a more subtle shadow than forms/panels */
+
 //forms
 $input-padding:9px 12px;
 $button-font-size:14.5px;

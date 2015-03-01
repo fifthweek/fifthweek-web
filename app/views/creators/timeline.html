@@ -1,16 +1,15 @@
-<div class="landing-header">
-  <div class="img-wrap">
-    <img ng-src="images/creator/landing-page/header-default.jpg" alt="Slackbot Introduction"/>
-    <div class="overlay"></div>
-    <div class="content">
-      <div class="avatar-wrap">
-        <img ng-src="images/avatar-default-large.png" class="avatar" alt="Slackbot"/>
-      </div>
-      <h2 class="hidden-xs visible-sm visible-md visible-lg">Slackbot</h2>
-      <h3 class="hidden-xs visible-sm visible-md visible-lg">Web Comics and more</h3>
+<div class="header-image" style="background-image:url('images/creator/landing-page/header-default.jpg')">
+  <div ng-include="'views/partials/logo-sm.html'"></div>
+</div>
+<div class="main-content restore-row-behaviour">
+  <div class="row header">
+    <div class="col-s-4">
+      <fw-blob-image control="blobImage" thumbnail="600x600-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
+    </div>
+    <div class="col-s-8">
+      <h2>Lawrence Wagerfield</h2>
+      <h3>Web Comics and More</h3>
+      <h4>Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here! And here's another line.</h4>
     </div>
   </div>
-  <h2>Slackbot</h2>
-  <h3>Web Comics and more</h3>
 </div>
-<div ng-include="'views/partials/logo-sm.html'"></div>
