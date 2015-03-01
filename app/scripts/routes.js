@@ -29,8 +29,8 @@ angular.module('routes', ['ui.router'])
     },
     user: {
       name: 'user',
-      posts: {
-        name: 'user.posts'
+      timeline: {
+        name: 'user.timeline'
       }
     },
     creators: {
@@ -214,23 +214,23 @@ angular.module('routes', ['ui.router'])
       .state(states.user.name, {
         abstract: false,
         url: '/my',
-        templateUrl: 'views/user/index.html',
-        redirectTo: states.user.posts.name,
+        templateUrl: 'views/creators/index.html',
+        redirectTo: states.user.timeline.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.user.posts.name, {
+      .state(states.user.timeline.name, {
         url: '/landing-page',
-        templateUrl: 'views/user/posts.html',
+        templateUrl: 'views/creators/timeline.html',
         requireSubscription: true,
         data : {
           pageTitle: 'Timeline',
           headTitle: ': ' + 'Timeline',
           navigationHidden: true,
-          bodyClass: 'page-landing-2',
+          bodyClass: 'page-timeline',
           access: {
             requireAuthenticated: true
           }

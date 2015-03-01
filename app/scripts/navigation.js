@@ -18,7 +18,7 @@ angular.module('webApp')
       {
         name: function() { return authenticationService.currentUser.username; },
         id: 'Username',
-        state: states.user.posts.name,
+        state: states.user.timeline.name,
         icon: 'fa fa-user',
         color: 'pink'
       },
