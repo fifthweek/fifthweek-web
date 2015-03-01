@@ -20,21 +20,17 @@ $reorder-menu-width: 29px;
   }
 }
 
-.posts-with-margin {
-  padding-left: $main-cont-padding-small;
-  padding-right: $main-cont-padding-small;
-}
-
 .posts {
   @import 'actions-drop-down';
+  margin: 0 auto;
+  max-width: $post-max-width;
 
   .post {
-    max-width: $post-max-width;
     box-shadow: $post-shadow;
     border-radius: $post-border-radius;
     background: #fff;
     position: relative;
-    margin: 0 auto 20px;
+    margin-bottom: 20px;
 
     .text {
       @include post-left-right-padding;

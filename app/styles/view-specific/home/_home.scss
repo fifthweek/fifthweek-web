@@ -3,6 +3,12 @@
 $html-name-space:'.page-home';
 
 #{$html-name-space} {
+
+  /* Legacy hack: this is the only page which does this now */
+  .row {
+    margin:0;
+  }
+
   background:{
     image:image-url('home/bg/960-1400.jpg');
     repeat:repeat;

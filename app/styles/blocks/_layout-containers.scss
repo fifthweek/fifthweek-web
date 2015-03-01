@@ -9,10 +9,6 @@ body {
   overflow-x:hidden;
 }
 
-.row {
-  margin:0;
-}
-
 .panel-body,
 .footer {
   .row {
@@ -55,20 +51,16 @@ body {
 .main-container {
   margin-top:81px;
   padding-bottom: 80px; /* Allow users to bring bottom of a scrolling page further into view */
-
   @media (min-width:$navbar-lg-min) {
     margin-top:96px;
   }
 
-  //ensure vimeo embeds do not overlay header nav
-  /*
-  position:relative;
-  z-index:-1;
-  @media(min-width:992px) {
-    z-index:1;
+  max-width:630px;
+
+  > div {
+    padding-left: $main-cont-padding-small;
+    padding-right: $main-cont-padding-small;
   }
-  */
-  max-width:650px;
 }
 
 .navigation-hidden {
