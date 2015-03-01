@@ -1,25 +1,34 @@
-<div ng-controller="datepickerCtrl">
-  <div class="input-group">
-    <input type="text"
-           name="datepicker"
-           class="form-control"
-           datepicker-popup="{{format}}"
-           ng-model="ngModel[ngModelAccessor]"
-           is-open="opened"
-           ng-click="open($event)"
-           min-date="minDate"
-           datepicker-options="dateOptions"
-           date-disabled="disabled(date, mode)"
-           ng-required="isRequired()"
-           ng-disabled="isDisabled()"
-           close-text="Close" />
-    <span class="input-group-btn" >
-      <button type="button"
-              class="btn btn-default"
-              ng-click="open($event)"
-              ng-disabled="isDisabled()">
-              <i class="glyphicon glyphicon-calendar"></i>
-      </button>
-    </span>
-  </div>
+<div ng-controller="datepickerCtrl" class="fw-datepicker">
+  <fw-form-group input-name="datepicker">
+    <div class="row">
+      <div class="col-xs-7">
+        <div class="input-group">
+          <input type="text"
+               name="datepicker"
+               class="form-control"
+               datepicker-popup="{{format}}"
+               ng-model="ngModel[ngModelAccessor]"
+               is-open="opened"
+               ng-click="open($event)"
+               min-date="minDate"
+               datepicker-options="dateOptions"
+               date-disabled="disabled(date, mode)"
+               ng-required="isRequired()"
+               ng-disabled="isDisabled()"
+               close-text="Close" />
+        <span class="input-group-btn" >
+          <button type="button"
+                  class="btn btn-default"
+                  ng-click="open($event)"
+                  ng-disabled="isDisabled()">
+                  <i class="glyphicon glyphicon-calendar"></i>
+          </button>
+        </span>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <p fw-form-input-invalid-p="required">Please select a date.</p>
+      </div>
+    </div>
+  </fw-form-group>
 </div>
