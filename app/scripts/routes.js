@@ -505,7 +505,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Help',
           headTitle: ': ' + 'Help',
-          bodyClass: 'page-help',
+          bodyClass: 'page-help'
         }
       })
       .state(states.help.faq.name, {

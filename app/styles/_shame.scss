@@ -46,3 +46,8 @@
 .page-help {
   @include mobile-nav-scroll(360px);
 }
+
+.page-creators-compose {
+  @include mobile-nav-scroll(440px);
+}
+
