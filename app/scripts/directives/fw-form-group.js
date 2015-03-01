@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwFormGroup', function (domUtilities) {
+angular.module('webApp').directive('fwFormGroup', function () {
   'use strict';
 
   return {
