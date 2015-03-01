@@ -51,3 +51,8 @@
   @include mobile-nav-scroll(440px);
 }
 
+.page-customize,
+.page-customize-landing {
+  border:solid 2px orange;
+  @include mobile-nav-scroll(490px);
+}

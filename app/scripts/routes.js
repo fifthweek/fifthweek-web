@@ -388,6 +388,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Customize',
           headTitle: ': ' + 'Customize',
+          bodyClass: 'page-customize',
           access: {
             requireAuthenticated: true
           }
