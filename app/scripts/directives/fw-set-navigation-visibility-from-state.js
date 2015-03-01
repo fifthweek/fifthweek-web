@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwSetSidebarEnabledFromState',
+angular.module('webApp').directive('fwSetNavigationVisibilityFromState',
   function ($state, uiRouterConstants) {
     'use strict';
 

@@ -1,4 +1,4 @@
-describe('state-sidebar-enablement directive', function(){
+describe('state-navigation-visibility directive', function(){
   'use strict';
 
   describe('when created', function(){
@@ -6,7 +6,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should check the current state and enable sidebar if required', function(){
       state.data.navigationHidden = false;
 
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state class="navigation-hidden"/>');
+      var element = angular.element('<span fw-set-navigation-visibility-from-state class="navigation-hidden"/>');
       $compile(element)(scope);
       scope.$digest();
 
@@ -14,7 +14,7 @@ describe('state-sidebar-enablement directive', function(){
     });
 
     it('should check the current state and enable sidebar if not specified', function(){
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state class="navigation-hidden"/>');
+      var element = angular.element('<span fw-set-navigation-visibility-from-state class="navigation-hidden"/>');
       $compile(element)(scope);
       scope.$digest();
 
@@ -24,7 +24,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should check the current state and disable the sidebar if required', function(){
       state.data.navigationHidden = true;
 
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
+      var element = angular.element('<span fw-set-navigation-visibility-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -35,7 +35,7 @@ describe('state-sidebar-enablement directive', function(){
 
       spyOn(scope, '$on');
 
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
+      var element = angular.element('<span fw-set-navigation-visibility-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -58,7 +58,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should enable the sidebar if required', function(){
       state.data.navigationHidden = true;
 
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
+      var element = angular.element('<span fw-set-navigation-visibility-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -74,7 +74,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should disable the sidebar if required', function(){
       state.data.navigationHidden = false;
 
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
+      var element = angular.element('<span fw-set-navigation-visibility-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -90,7 +90,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should keep the sidebar enabled if required by both states', function(){
       state.data.navigationHidden = false;
 
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
+      var element = angular.element('<span fw-set-navigation-visibility-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -106,7 +106,7 @@ describe('state-sidebar-enablement directive', function(){
     it('should keep the sidebar disabled if required by both states', function(){
       state.data.navigationHidden = true;
 
-      var element = angular.element('<span fw-set-sidebar-enabled-from-state />');
+      var element = angular.element('<span fw-set-navigation-visibility-from-state />');
       $compile(element)(scope);
       scope.$digest();
 
