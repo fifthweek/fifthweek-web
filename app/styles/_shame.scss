@@ -33,26 +33,3 @@
     margin-right: -15px;
   }
 }
-
-
-
-
-////////
-////////
-//mobile navbar scrolling - WIP
-////////
-////////
-
-.page-help {
-  @include mobile-nav-scroll(360px);
-}
-
-.page-creators-compose {
-  @include mobile-nav-scroll(440px);
-}
-
-.page-customize,
-.page-customize-landing {
-  border:solid 2px orange;
-  @include mobile-nav-scroll(490px);
-}

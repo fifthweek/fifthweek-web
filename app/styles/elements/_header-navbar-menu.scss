@@ -59,3 +59,17 @@ ul.header-navbar-menu {
     }
   }
 }
+
+//mobile navbar scrolling page specifics
+.page-help {
+  @include mobile-nav-scroll(360px);
+}
+
+.page-creators-compose {
+  @include mobile-nav-scroll(440px);
+}
+
+.page-customize,
+.page-customize-landing {
+  @include mobile-nav-scroll(490px);
+}
