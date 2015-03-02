@@ -6,15 +6,15 @@ describe('compose note controller', function () {
   var target;
 
   var $state;
-  var postUtilities;
+  var composeUtilities;
   var postsStub;
   var logService;
   var utilities;
 
   beforeEach(function() {
 
-    $state = jasmine.createSpyObj('$state', ['forceReload']);
-    postUtilities = jasmine.createSpyObj('postUtilities', ['getChannelsForSelection']);
+    $state = jasmine.createSpyObj('$state', ['reload']);
+    composeUtilities = jasmine.createSpyObj('composeUtilities', ['getChannelsForSelection']);
     postsStub = jasmine.createSpyObj('postsStub', ['postNote']);
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
@@ -22,7 +22,7 @@ describe('compose note controller', function () {
     module('webApp');
     module(function($provide) {
       $provide.value('$state', $state);
-      $provide.value('postUtilities', postUtilities);
+      $provide.value('composeUtilities', composeUtilities);
       $provide.value('postsStub', postsStub);
       $provide.value('logService', logService);
       $provide.value('utilities', utilities);
@@ -44,12 +44,12 @@ describe('compose note controller', function () {
 
     describe('when initializing the model', function(){
       beforeEach(function(){
-        postUtilities.getChannelsForSelection.and.returnValue($q.when([]));
+        composeUtilities.getChannelsForSelection.and.returnValue($q.when([]));
         createController();
       });
 
-      it('should set isSubmitted to false', function(){
-        expect($scope.model.isSubmitted).toBe(false);
+      it('should set submissionSucceeded to false', function(){
+        expect($scope.model.submissionSucceeded).toBe(false);
       });
 
       it('should set postLater to false', function(){
@@ -71,7 +71,7 @@ describe('compose note controller', function () {
 
       beforeEach(function(){
         channels = [{name: 'a'}, {name: 'b'}];
-        postUtilities.getChannelsForSelection.and.returnValue($q.when(channels));
+        composeUtilities.getChannelsForSelection.and.returnValue($q.when(channels));
         createController();
         $scope.$apply();
       });
@@ -87,7 +87,7 @@ describe('compose note controller', function () {
 
     describe('when getChannelsForSelection fails', function(){
       beforeEach(function(){
-        postUtilities.getChannelsForSelection.and.returnValue($q.reject('error'));
+        composeUtilities.getChannelsForSelection.and.returnValue($q.reject('error'));
         utilities.getFriendlyErrorMessage.and.returnValue('friendly');
         createController();
         $scope.$apply();
@@ -108,7 +108,7 @@ describe('compose note controller', function () {
 
     beforeEach(function(){
       channels = [{name: 'a', channelId: '1'}, {name: 'b', channelId: 2}];
-      postUtilities.getChannelsForSelection.and.returnValue($q.when(channels));
+      composeUtilities.getChannelsForSelection.and.returnValue($q.when(channels));
       createController();
       $scope.$apply();
 
@@ -213,7 +213,7 @@ describe('compose note controller', function () {
       });
 
       it('should set postLater to false', function(){
-        expect($state.forceReload).toHaveBeenCalled();
+        expect($state.reload).toHaveBeenCalled();
       });
     });
   });

@@ -1,0 +1,20 @@
+@import '_base';
+
+$html-name-space:'.page-creators-compose-image';
+
+#{$html-name-space} {
+
+  .blob-image{
+    .image-area{
+      width: auto;
+      height: auto;
+      max-width: 300px;
+      max-height: 300px;
+    }
+
+    .pending-image{
+      width: 300px;
+      height: 200px;
+    }
+  }
+}

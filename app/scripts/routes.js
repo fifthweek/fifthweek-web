@@ -291,7 +291,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.compose.image.name, {
         url: '/image',
         templateUrl: 'views/creators/compose/image.html',
-        controller: 'newImageCtrl',
+        controller: 'composeImageCtrl',
         requireSubscription: true,
         data : {
           pageTitle: ' Image',

@@ -1,66 +1,126 @@
-angular.module('webApp').controller('newImageCtrl',
-  function($scope) {
+angular.module('webApp').controller('composeImageCtrl',
+  function($q, $scope, $state, postsStub, collectionStub, composeUtilities, utilities, logService) {
     'use strict';
 
-    $scope.model = {
-      uploaded: false,
-      postToQueue: true,
+    var model = {
+      submissionSucceeded: false,
+      imageUploaded: false,
       postLater: false,
+      postToQueue: true,
+      createCollection: false,
       input: {
+        fileId: undefined,
         comment: '',
-        fileId: ''
-      }
-    };
-
-    var collections = [
-      {
-        name:'Blog',
-        value:'collection1'
+        date: '',
+        newCollectionName: '',
+        selectedCollection: undefined,
+        selectedChannel: undefined
       },
-      {
-        name:'Wallpapers (HD Channel)',
-        value:'collection2'
-      },
-      {
-        name:'Side Comic (Extras Channel)',
-        value:'collection3'
-      }
-    ];
-
-    // Simulate first post (no collections created).
-    collections = [];
-
-    $scope.model.collections = collections;
-    if (collections.length > 0) {
-      $scope.model.input.selectedCollection = collections[0];
-    }
-    else {
-      $scope.model.input.newCollectionName = '';
-    }
-
-    $scope.postNow = function() { };
-
-    $scope.postToBacklog = function() { };
-
-    $scope.postLater = function() {
-      $scope.model.postLater = true;
+      errorMessage: undefined
     };
 
-    $scope.cancelPostLater = function() {
-      $scope.model.postLater = false;
+    $scope.model = model;
+
+    var loadChannelsAndCollections = function(){
+      composeUtilities.getChannelsAndCollectionsForSelection()
+        .then(function(result){
+          model.collections = result.collections;
+          model.channels = result.channels;
+
+          model.input.selectedChannel = result.channels[0];
+
+          if (model.collections.length > 0) {
+            model.input.selectedCollection = model.collections[0];
+          }
+          else {
+            model.createCollection = true;
+          }
+        })
+        .catch(function(error){
+          logService.error(error);
+          model.errorMessage = utilities.getFriendlyErrorMessage(error);
+        });
     };
 
-    //toggle checkboxes 'checked' state
-    $scope.uncheck = function (event) {
-      if ($scope.checked == event.target.value) $scope.checked = false
-    };
+    loadChannelsAndCollections();
 
     $scope.blobImage = {};
 
     $scope.onUploadComplete = function(data) {
-      $scope.model.uploaded = true;
-      $scope.model.input.fileId = data.fileId;
+      model.imageUploaded = true;
+      model.input.fileId = data.fileId;
       $scope.blobImage.update(data.fileUri, data.containerName);
     };
+
+    var shouldCreateCollection = function(){
+      if(model.createCollection) {
+        return true;
+      }
+
+      return model.input.selectedCollection.isNewCollection;
+    };
+
+    var getCollectionId = function(){
+      if(shouldCreateCollection()) {
+        return collectionStub
+          .postCollection({
+            channelId: model.input.selectedChannel.channelId,
+            name: model.input.newCollectionName
+          })
+          .then(function(result){
+            return result.data;
+          });
+      }
+
+      return $q.when(model.input.selectedCollection.collectionId);
+    };
+
+    var postImage = function(data){
+      return postsStub.postImage(data)
+        .then(function(){
+          model.submissionSucceeded = true;
+        });
+    };
+
+    $scope.postNow = function() {
+      return getCollectionId()
+        .then(function(collectionId){
+          var data = {
+            collectionId: collectionId,
+            imageFileId: model.input.fileId,
+            comment: model.input.comment,
+            isQueued: false
+          };
+
+          return postImage(data);
+        });
+    };
+
+    $scope.postToBacklog = function() {
+      return getCollectionId()
+        .then(function(collectionId){
+          var data = {
+            collectionId: collectionId,
+            imageFileId: model.input.fileId,
+            comment: model.input.comment,
+            isQueued: model.postToQueue,
+            scheduledPostTime: model.postToQueue ? undefined : model.input.date
+          };
+
+          return postImage(data);
+        });
+    };
+
+    $scope.postLater = function() {
+      model.postLater = true;
+    };
+
+    $scope.cancelPostLater = function() {
+      model.postLater = false;
+    };
+
+    $scope.postAnother = function(){
+      $state.reload();
+    }
   }
 );

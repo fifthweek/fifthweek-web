@@ -1,10 +1,10 @@
 angular.module('webApp').controller(
   'composeNoteCtrl',
-  function($scope, $state, postsStub, postUtilities, utilities, logService) {
+  function($scope, $state, postsStub, composeUtilities, utilities, logService) {
     'use strict';
 
     var model = {
-      isSubmitted: false,
+      submissionSucceeded: false,
       postLater: false,
       input: {
         note: '',
@@ -16,7 +16,7 @@ angular.module('webApp').controller(
     $scope.model = model;
 
     var loadForm = function(){
-      postUtilities.getChannelsForSelection()
+      composeUtilities.getChannelsForSelection()
         .then(function(channels){
           model.channels = channels;
           model.input.selectedChannel = channels[0];
