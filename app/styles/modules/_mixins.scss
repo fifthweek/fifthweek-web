@@ -94,6 +94,19 @@
   transition-delay: $transition-delay;
 }
 
+@mixin post-top-bottom-padding {
+  $line-height-compensation: 5px;
+
+  // Remains constant.
+  padding-top: ($post-margin-lg - $line-height-compensation);
+
+  // Extra 1px bottom padding causes equal margin with the post footer content.
+  padding-bottom: (($post-margin-sm - $line-height-compensation) + 1);
+  @media (min-width:$screen-s-min) {
+    padding-bottom: (($post-margin-lg - $line-height-compensation) + 1);
+  }
+}
+
 @mixin post-left-right-padding {
   padding-left: $post-margin-sm;
   padding-right: $post-margin-sm;
@@ -101,4 +114,9 @@
     padding-left: $post-margin-lg;
     padding-right: $post-margin-lg;
   }
+}
+
+@mixin post-padding {
+  @include post-top-bottom-padding;
+  @include post-left-right-padding;
 }

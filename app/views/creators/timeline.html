@@ -45,31 +45,33 @@
           <div class="posts" ng-if="!model.subscribed">
 
             <h5><span>What You'll Get</span></h5>
-            <div class="pseudo-post-text">
-              <div class="row" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
-                <div class="col-sm-8 name">
-                  <form>
-                    <label>
-                      <input type="checkbox"
-                             ng-model="channel.checked"
-                             ng-checked="channel.checked"
-                             ng-change="checkboxHandler()">
-                      <h5>{{channel.title}} Subscription</h5>
-                    </label>
-                  </form>
-                </div>
-                <div class="col-sm-4 price">
-                  <p>&#36;{{channel.price}}/week</p>
-                </div>
-                <div class="col-sm-8">
-                  <ul>
-                    <li ng-repeat="descriptionLine in channel.descriptionLines">{{descriptionLine}}</li>
-                  </ul>
+            <div class="pseudo-post-text channels">
+              <div ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last, checked:channel.checked}">
+                <div class="row">
+                  <div class="col-sm-8 name">
+                    <form>
+                      <label>
+                        <input type="checkbox"
+                               ng-model="channel.checked"
+                               ng-checked="channel.checked"
+                               ng-change="checkboxHandler()">
+                        <h6>{{channel.title}} Subscription</h6>
+                      </label>
+                    </form>
+                  </div>
+                  <div class="col-sm-4 price">
+                    <p>&#36;{{channel.price}}/week</p>
+                  </div>
+                  <div class="col-sm-8">
+                    <ul>
+                      <li ng-repeat="descriptionLine in channel.descriptionLines">{{descriptionLine}}</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <h5><span>About</span></h5>
+            <h5><span>More Info</span></h5>
             <div class="pseudo-post-text" ng-if="!model.videoUrl">
               <p>{{model.fullDescription}}</p>
             </div>

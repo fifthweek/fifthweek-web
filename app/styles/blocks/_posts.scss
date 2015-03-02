@@ -1,6 +1,5 @@
 @import '_base';
 
-$line-height-compensation:5px;
 $footer-margin:10px;
 $horizontal-rule:23px;
 $queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*0.382)*1.618) */
@@ -46,19 +45,6 @@ $reorder-menu-width: 29px;
         right:0px;
       }
     }
-
-
-  }
-}
-
-@mixin post-padding {
-  @include post-left-right-padding;
-  /* Serious pixel pushing: there should be equal margin in the footer */
-  /* IMPORTANT: Constant LG Top is intentional. */
-  padding-top: ($post-margin-lg - $line-height-compensation);
-  padding-bottom: (($post-margin-sm - $line-height-compensation) + 1);
-  @media (min-width:$screen-s-min) {
-    padding-bottom: (($post-margin-lg - $line-height-compensation) + 1);
   }
 }
 

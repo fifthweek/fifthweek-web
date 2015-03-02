@@ -210,5 +210,58 @@ $header-height:108px;
         background: $grey-dark;
       }
     }
+    .channels {
+      .row {
+        label {
+          margin: 0;
+          position: relative;
+        }
+        input {
+          margin: 0;
+          position: absolute;
+          top: 0;
+        }
+        h6 {
+          position: absolute;
+          top: 0;
+          left: 35px;
+          font-size: $p-font-size;
+          font-weight: bold;
+          display: inline;
+          line-height: $p-line-height-hug;
+        }
+        .price {
+          text-align: right;
+          line-height: $p-line-height-hug;
+        }
+        ul {
+          padding: 15px 0 20px 52px;
+
+          li {
+            margin-bottom: 5px;
+            padding-left: 12px;
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+        &:last-child {
+          ul {
+            padding-bottom: 0;
+          }
+        }
+      }
+      .checked {
+        background-color: #ecf1f9;
+        &:first-child {
+          border-top-left-radius: $post-border-radius;
+          border-top-right-radius: $post-border-radius;
+        }
+        &:last-child {
+          border-bottom-left-radius: $post-border-radius;
+          border-bottom-right-radius: $post-border-radius;
+        }
+      }
+    }
   }
 }
