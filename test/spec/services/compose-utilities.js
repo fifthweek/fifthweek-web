@@ -425,7 +425,7 @@ describe('compose utilities', function(){
           expect(result.channels[1].someKey).toBe('someValue2');
           expect(result.channels[2].someKey).toBe('someValue3');
         });
-      })
+      });
     });
   });
 
@@ -435,6 +435,6 @@ describe('compose utilities', function(){
       target.createCollection(scope);
       expect($modal.open).toHaveBeenCalled();
       expect($modal.open.calls.first().args[0].scope).toBe(scope);
-    })
+    });
   });
 });
