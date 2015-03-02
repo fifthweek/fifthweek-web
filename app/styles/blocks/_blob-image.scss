@@ -21,6 +21,10 @@
     border-radius: $border-radius;
   }
 
+  img.image-area {
+    width:100%; // Left and top do not scale the image beyond its native size.
+  }
+
   .pending-image {
     border: 2px dashed $grey-light-4;
     box-sizing: border-box;
