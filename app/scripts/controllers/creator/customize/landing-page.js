@@ -28,7 +28,7 @@ angular.module('webApp').controller(
       return subscriptionStub.getSubscription(subscriptionId)
         .then(function(result){
           var data = result.data;
-          model.settings = _.clone(data);
+          model.settings = _.cloneDeep(data);
           delete model.settings.headerImage;
 
           if(data.headerImage){

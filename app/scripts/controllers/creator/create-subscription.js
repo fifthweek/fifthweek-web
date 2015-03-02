@@ -9,7 +9,7 @@ angular.module('webApp').controller('createSubscriptionCtrl',
     };
 
     var buildDTO = function() {
-      var newSubscriptionData = _.clone($scope.newSubscriptionData);
+      var newSubscriptionData = _.cloneDeep($scope.newSubscriptionData);
       newSubscriptionData.basePrice = Math.round(newSubscriptionData.basePrice * 100);
       return newSubscriptionData;
     };

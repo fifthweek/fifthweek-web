@@ -45,7 +45,7 @@ angular.module('webApp').controller('manageCollectionCtrl', function($scope, $st
   };
 
   $scope.manageReleaseTime = function(releaseTime) {
-    $scope.model.stagedReleaseTime = _.clone(releaseTime);
+    $scope.model.stagedReleaseTime = _.cloneDeep(releaseTime);
     $scope.model.selectedReleaseTime = releaseTime;
   };
 

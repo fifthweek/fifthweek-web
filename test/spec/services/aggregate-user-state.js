@@ -69,7 +69,7 @@ describe('aggregate user state', function() {
   });
 
   var getExpectedState = function(newUserId, state){
-    var newState = _.clone(state);
+    var newState = _.cloneDeep(state);
     newState.userId = newUserId;
     delete newState.accessSignatures;
     return newState;
@@ -123,7 +123,7 @@ describe('aggregate user state', function() {
       var newUserStateCopy;
       beforeEach(function(){
         expectedState = getExpectedState(userId, newUserState);
-        newUserStateCopy = _.clone(newUserState);
+        newUserStateCopy = _.cloneDeep(newUserState);
         spyOn($rootScope, '$broadcast').and.callThrough();
         $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
         $rootScope.$apply();
@@ -157,7 +157,7 @@ describe('aggregate user state', function() {
       var newUserStateCopy;
       beforeEach(function(){
         expectedState = getExpectedState(undefined, newUserState);
-        newUserStateCopy = _.clone(newUserState);
+        newUserStateCopy = _.cloneDeep(newUserState);
         spyOn($rootScope, '$broadcast').and.callThrough();
         $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, newUserState);
         $rootScope.$apply();
@@ -305,8 +305,8 @@ describe('aggregate user state', function() {
           existing = target.currentValue;
           delta = { some: { complex: 'foo'}, bar: 5};
           expected = getExpectedState(userId, { some: { complex: 'foo', unchanged: true }, bar:5});
-          existingCopy = _.clone(target.currentValue);
-          deltaCopy = _.clone(delta);
+          existingCopy = _.cloneDeep(target.currentValue);
+          deltaCopy = _.cloneDeep(delta);
 
           spyOn($rootScope, '$broadcast').and.callThrough();
 
