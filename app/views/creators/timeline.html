@@ -42,33 +42,36 @@
       </div>
       <div class="row">
         <div class="col-lg-8 col-lg-offset-4">
-          <div ng-if="!model.subscribed">
+          <div class="posts" ng-if="!model.subscribed">
             <h5><span>What You'll Get</span></h5>
-            <div class="panel panel-default subscription-panel" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
-              <div class="panel-body jumbo-panel">
-                <div class="row">
-                  <div class="col-sm-8 name">
-                    <form>
-                      <label>
-                        <input type="checkbox"
-                               ng-model="channel.checked"
-                               ng-checked="channel.checked"
-                               ng-change="checkboxHandler()">
-                        <h5>{{channel.title}} Subscription</h5>
-                      </label>
-                    </form>
-                  </div>
-                  <div class="col-sm-4 price">
-                    <p>&#36;{{channel.price}}/week</p>
-                  </div>
+            <div class="pseudo-post-text" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
+              <div class="row">
+                <div class="col-sm-8 name">
+                  <form>
+                    <label>
+                      <input type="checkbox"
+                             ng-model="channel.checked"
+                             ng-checked="channel.checked"
+                             ng-change="checkboxHandler()">
+                      <h5>{{channel.title}} Subscription</h5>
+                    </label>
+                  </form>
                 </div>
-                <div class="col-sm-8">
-                  <ul>
-                    <li>Item 1</li>
-                    <li>Item 2</li>
-                  </ul>
+                <div class="col-sm-4 price">
+                  <p>&#36;{{channel.price}}/week</p>
                 </div>
               </div>
+              <div class="col-sm-8">
+                <ul>
+                  <li>Item 1</li>
+                  <li>Item 2</li>
+                </ul>
+              </div>
+            </div>
+
+            <h5><span>About</span></h5>
+            <div class="pseudo-post-text">
+              <p>Display when creator does not have a video.</p>
             </div>
           </div>
 

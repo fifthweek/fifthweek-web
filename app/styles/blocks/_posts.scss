@@ -7,6 +7,7 @@ $queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*
 $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
 $post-font-size: 14px;
 $post-line-height: 20px;
+$post-bottom-margin: 20px;
 $reorder-menu-width: 29px;
 
 @mixin li-cancel-first-last-spacing {
@@ -38,8 +39,10 @@ $reorder-menu-width: 29px;
 }
 
 .pseudo-post-text {
+  @include clearfix;
   @include post-border;
   @include post-padding;
+  margin-bottom: $post-bottom-margin;
 }
 
 .posts {
@@ -50,7 +53,7 @@ $reorder-menu-width: 29px;
   .post {
     @include post-border;
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: $post-bottom-margin;
 
     .text {
       @include post-padding;
