@@ -39,15 +39,9 @@ $html-name-space:'.page-customize-landing';
     }
   }
 
-  .blob-image{
-    .image-area{
-      width: 100%;
-      height: auto;
-    }
-
-    .pending-image{
-      width: 480px;
-      height: 128px;
+  .blob-image {
+    .vertical-aspect-ratio {
+      padding-top: 27.33333333%;
     }
   }
 }

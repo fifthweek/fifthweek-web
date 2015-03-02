@@ -51,7 +51,7 @@ $header-height:108px;
         content:' ';
         display:block;
         position: absolute;
-        left:15%;
+        left:8%;
         width:10000px; /* Arbitrarily large */
         height:$header-height;
         background: rgba(52,52,44,0.5);
@@ -125,12 +125,15 @@ $header-height:108px;
       @media (min-width:($screen-lg-min + 70px)) {
         margin-right:0;
       }
-      img {
-        width:100%;
-        height:auto;
-        border-radius: $post-border-radius;
-        box-shadow: $post-shadow;
+      .blob-image {
+        .image-area {
+          border-radius: $post-border-radius;
+        }
+        .pending-image {
+          border:none;
+        }
       }
+
       button {
         font-size: $p-font-size;
         color:#fff;
@@ -148,6 +151,7 @@ $header-height:108px;
         span {
           font-weight: bold;
           font-size:13px;
+          margin-left:5px;
         }
       }
       #subscribed-button {
@@ -195,8 +199,6 @@ $header-height:108px;
         margin-right: 16%;
       }
     }
-  }
-  .posts {
     h5 {
       text-transform: uppercase;
       font-size: $p-font-size;

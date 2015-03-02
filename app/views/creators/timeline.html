@@ -12,13 +12,13 @@
           <div class="creator">
             <fw-blob-image control="blobImage" thumbnail="600x600-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
             <div class="subscribe-button-wrapper">
-              <div ng-if="modal.subscribed" class="subscribed">
+              <div ng-if="model.subscribed" class="subscribed">
                 <button id="subscribed-button"
                         class="btn btn-block"
                         type="submit">Subscribed</button>
                 <p>1 Subscriber</p>
               </div>
-              <div ng-if="!modal.subscribed" class="subscribe">
+              <div ng-if="!model.subscribed" class="subscribe">
                 <button id="subscribe-button"
                         class="btn btn-block"
                         type="submit"
@@ -26,7 +26,7 @@
                         data-event-category="Timeline"
                         data-loading-text="Subscribing..."
                         can-submit="true"
-                        fw-form-submit="subscribe()">Subscribe <span>&#36;{{modal.totalPrice}}/week</span></button>
+                        fw-form-submit="subscribe()">Subscribe <span>&#36;{{model.totalPrice}}/week</span></button>
                 <p>No commitments. Cancel anytime.</p>
               </div>
             </div>
@@ -42,8 +42,38 @@
       </div>
       <div class="row">
         <div class="col-lg-8 col-lg-offset-4">
-          <div class="posts">
-            <div ng-repeat="post in modal.posts">
+          <div ng-if="!model.subscribed">
+            <h5><span>What You'll Get</span></h5>
+            <div class="panel panel-default subscription-panel" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
+              <div class="panel-body jumbo-panel">
+                <div class="row">
+                  <div class="col-sm-8 name">
+                    <form>
+                      <label>
+                        <input type="checkbox"
+                               ng-model="channel.checked"
+                               ng-checked="channel.checked"
+                               ng-change="checkboxHandler()">
+                        <h5>{{channel.title}} Subscription</h5>
+                      </label>
+                    </form>
+                  </div>
+                  <div class="col-sm-4 price">
+                    <p>&#36;{{channel.price}}/week</p>
+                  </div>
+                </div>
+                <div class="col-sm-8">
+                  <ul>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="posts" ng-if="model.subscribed">
+            <div ng-repeat="post in model.posts">
               <h5 ng-if="post.dayGrouping"><span>{{post.dayGrouping}}</span></h5>
               <div class="post">
                 <div ng-class="{'non-image-post': !post.imagePath, 'image-post': post.imagePath}">

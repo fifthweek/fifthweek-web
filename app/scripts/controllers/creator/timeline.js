@@ -2,7 +2,7 @@ angular.module('webApp').controller('timelineCtrl',
   function($scope, $sanitize, postInteractions) {
     'use strict';
 
-    $scope.modal = {
+    $scope.model = {
       subscribed: false,
       channels: {
         basic: {
@@ -111,7 +111,7 @@ angular.module('webApp').controller('timelineCtrl',
 
     $scope.$watch('modal.channels', function() {
 
-      $scope.modal.totalPrice = _($scope.modal.channels)
+      $scope.model.totalPrice = _($scope.model.channels)
         .filter(function(channel) {
           return channel.checked === true;
         })
