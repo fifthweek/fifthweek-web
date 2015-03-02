@@ -1,13 +1,20 @@
-/// <reference path='../angular.module('webApp')js' />
-
 angular.module('webApp')
-  .factory('postUtilities',
-  function($q, aggregateUserState) {
+  .factory('composeUtilities',
+  function($q, aggregateUserState, $modal) {
     'use strict';
 
     var service = {};
 
-    var getChannels = function(){
+    var getCollectionNameForSelection = function(channel, collection){
+      if(!channel.name){
+        return collection.name;
+      }
+      else{
+        return collection.name + ' (' + channel.name + ')';
+      }
+    };
+
+    var getChannelsAndCollections = function(){
       if(!aggregateUserState.currentValue){
         return $q.reject(new FifthweekError('No aggregate state found.'));
       }
@@ -22,7 +29,7 @@ angular.module('webApp')
     };
 
     var getChannelsForSelectionInner = function(channels){
-      channels = _.clone(channels);
+      channels = _.cloneDeep(channels);
       channels[0].name = 'Share with everyone';
 
       for(var i = 1; i < channels.length; ++i){
@@ -39,9 +46,9 @@ angular.module('webApp')
         var channel = channels[channelIndex];
         if(channel.collections){
           for(var collectionIndex = 0; collectionIndex < channel.collections.length; ++collectionIndex){
-            var collection = _.clone(channel.collections[collectionIndex]);
+            var collection = _.cloneDeep(channel.collections[collectionIndex]);
             if(channelIndex !== 0){
-              collection.name = collection.name + ' (' + channel.name + ')';
+              collection.name = getCollectionNameForSelection(channel, collection);
             }
             collections.push(collection);
           }
@@ -51,9 +58,13 @@ angular.module('webApp')
       return collections;
     };
 
+    service.getCollectionNameForSelection = function(channel, collection){
+      return getCollectionNameForSelection(channel, collection);
+    };
+
     service.getChannelsForSelection = function(){
       try{
-        return getChannels().then(function(channels){
+        return getChannelsAndCollections().then(function(channels){
           return $q.when(getChannelsForSelectionInner(channels));
         });
       }
@@ -64,7 +75,7 @@ angular.module('webApp')
 
     service.getCollectionsForSelection = function(){
       try{
-        return getChannels().then(function(channels){
+        return getChannelsAndCollections().then(function(channels){
           return $q.when(getCollectionsForSelectionInner(channels));
         });
       }
@@ -75,7 +86,7 @@ angular.module('webApp')
 
     service.getChannelsAndCollectionsForSelection = function(){
       try{
-        return getChannels().then(function(channels){
+        return getChannelsAndCollections().then(function(channels){
           return $q.when({
             channels: getChannelsForSelectionInner(channels),
             collections: getCollectionsForSelectionInner(channels)
@@ -85,6 +96,14 @@ angular.module('webApp')
       catch(error){
         return $q.reject(new FifthweekError(error));
       }
+    };
+
+    service.createCollection = function($scope) {
+      $modal.open({
+        controller: 'backlogPostEditCtrl',
+        templateUrl: 'views/creators/compose/create-collection.html',
+        scope: $scope
+      });
     };
 
     return service;
