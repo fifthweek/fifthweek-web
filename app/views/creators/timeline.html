@@ -1,111 +1,121 @@
-<div class="header-image" style="background-image:url('images/creator/landing-page/header-default.jpg')">
-  <div ng-include="'views/partials/logo-sm.html'"></div>
-</div>
-<div class="main-content">
-  <div class="left-margin-offset">
-    <div class="row header">
-      <div class="col-s-4">
-        <div class="creator">
-          <fw-blob-image control="blobImage" thumbnail="600x600-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
-          <div class="subscribe-button-wrapper">
-            <div ng-if="modal.subscribed" class="subscribed">
-              <button id="subscribed-button"
-                      class="btn btn-block"
-                      type="submit">Subscribed</button>
-              <p>1 Subscriber</p>
-            </div>
-            <div ng-if="!modal.subscribed" class="subscribe">
-              <button id="subscribe-button"
-                      class="btn btn-block"
-                      type="submit">Subscribe</button>
-              <p>No commitments. Cancel anytime.</p>
+<form novalidate
+      name="form"
+      role="form">
+
+  <div class="header-image" style="background-image:url('images/creator/landing-page/header-default.jpg')">
+    <div ng-include="'views/partials/logo-sm.html'"></div>
+  </div>
+  <div class="main-content">
+    <div class="left-margin-offset">
+      <div class="row header">
+        <div class="col-s-4">
+          <div class="creator">
+            <fw-blob-image control="blobImage" thumbnail="600x600-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
+            <div class="subscribe-button-wrapper">
+              <div ng-if="modal.subscribed" class="subscribed">
+                <button id="subscribed-button"
+                        class="btn btn-block"
+                        type="submit">Subscribed</button>
+                <p>1 Subscriber</p>
+              </div>
+              <div ng-if="!modal.subscribed" class="subscribe">
+                <button id="subscribe-button"
+                        class="btn btn-block"
+                        type="submit"
+                        data-event-title="Subscribed"
+                        data-event-category="Timeline"
+                        data-loading-text="Subscribing..."
+                        can-submit="true"
+                        fw-form-submit="subscribe()">Subscribe <span>&#36;{{modal.totalPrice}}/week</span></button>
+                <p>No commitments. Cancel anytime.</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-s-8">
-        <div class="header-text">
-          <h2>Marc Holmes</h2>
-          <h3>Web Comics and More</h3>
-          <h4>Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here! And here's another line.</h4>
+        <div class="col-s-8">
+          <div class="header-text">
+            <h2>Marc Holmes</h2>
+            <h3>Web Comics and More</h3>
+            <h4>Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here! And here's another line.</h4>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-4">
-        <div class="posts">
-          <div ng-repeat="post in posts">
-            <h5 ng-if="post.dayGrouping"><span>{{post.dayGrouping}}</span></h5>
-            <div class="post">
-              <div ng-class="{'non-image-post': !post.imagePath, 'image-post': post.imagePath}">
-                <img ng-if="post.imagePath" ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-4">
+          <div class="posts">
+            <div ng-repeat="post in modal.posts">
+              <h5 ng-if="post.dayGrouping"><span>{{post.dayGrouping}}</span></h5>
+              <div class="post">
+                <div ng-class="{'non-image-post': !post.imagePath, 'image-post': post.imagePath}">
+                  <img ng-if="post.imagePath" ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
 
-                <div class="text">
-                  <div class="content" ng-if="post.comment || post.filePath">
-                    <md ng-model="post.comment" ng-if="post.comment"></md>
+                  <div class="text">
+                    <div class="content" ng-if="post.comment || post.filePath">
+                      <md ng-model="post.comment" ng-if="post.comment"></md>
 
-                    <p ng-if="post.filePath">
-                      <a class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">
-                        {{post.fileName}}
-                      </a>
-                    </p>
-                  </div>
+                      <p ng-if="post.filePath">
+                        <a class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">
+                          {{post.fileName}}
+                        </a>
+                      </p>
+                    </div>
 
-                  <hr />
+                    <hr />
 
-                  <div class="row info-actions">
-                    <div class="col-xs-8 info">
-                      <div class="author">
-                        <fw-blob-image control="blobImage" thumbnail="128x128-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
+                    <div class="row info-actions">
+                      <div class="col-xs-8 info">
+                        <div class="author">
+                          <fw-blob-image control="blobImage" thumbnail="128x128-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
+                        </div>
+                        <ul>
+                          <li>
+                            <span class="poster-name">Marc Holmes</span>
+                            <span ng-if="post.collection">in {{post.collection}}</span>
+                            <span ng-if="!post.collection">to {{post.channel}}</span>
+                          </li>
+                          <li>{{post.liveIn}} ago</li>
+                        </ul>
                       </div>
-                      <ul>
-                        <li>
-                          <span class="poster-name">Marc Holmes</span>
-                          <span ng-if="post.collection">in {{post.collection}}</span>
-                          <span ng-if="!post.collection">to {{post.channel}}</span>
-                        </li>
-                        <li>{{post.liveIn}} ago</li>
-                      </ul>
-                    </div>
-                    <div class="col-xs-4 actions">
-                      <ul>
-                        <li>
-                          <button>
-                            <i class="fa fa-comment-o"></i>
-                          </button>
-                        </li>
-                        <li>
-                          <button>
-                            <i class="fa fa-heart-o" ng-click="post.liked = !post.liked" ng-class="{'fa-heart-o': !post.liked, 'fa-heart': post.liked}"></i>
-                          </button>
-                        </li>
-                        <li class="actions-more"
-                            ng-class="{'active-actions-drop-down': post.showMenu}">
-                          <button
-                            ng-click="post.showMenu = !post.showMenu"
-                            ng-blur="post.showMenu = false">
-                            <i class="fa fa-ellipsis-h"></i>
-                          </button>
-                          <div class="actions-drop-down" ng-show="post.showMenu">
-                            <ul>
-                              <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
-                              <li>
-                                <fw-delete-link
-                                  item-type="Post"
-                                  data-event-title="Post deleted"
-                                  data-event-category="Backlog"
-                                  delete="delete(post.postId)">
-                                  Delete
-                                </fw-delete-link>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
+                      <div class="col-xs-4 actions">
+                        <ul>
+                          <li>
+                            <button>
+                              <i class="fa fa-comment-o"></i>
+                            </button>
+                          </li>
+                          <li>
+                            <button>
+                              <i class="fa fa-heart-o" ng-click="post.liked = !post.liked" ng-class="{'fa-heart-o': !post.liked, 'fa-heart': post.liked}"></i>
+                            </button>
+                          </li>
+                          <li class="actions-more"
+                              ng-class="{'active-actions-drop-down': post.showMenu}">
+                            <button
+                              ng-click="post.showMenu = !post.showMenu"
+                              ng-blur="post.showMenu = false">
+                              <i class="fa fa-ellipsis-h"></i>
+                            </button>
+                            <div class="actions-drop-down" ng-show="post.showMenu">
+                              <ul>
+                                <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
+                                <li>
+                                  <fw-delete-link
+                                    item-type="Post"
+                                    data-event-title="Post deleted"
+                                    data-event-category="Backlog"
+                                    delete="delete(post.postId)">
+                                    Delete
+                                  </fw-delete-link>
+                                </li>
+                              </ul>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
 
+                </div>
               </div>
             </div>
           </div>
@@ -113,4 +123,5 @@
       </div>
     </div>
   </div>
-</div>
+
+</form>

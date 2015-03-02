@@ -5,18 +5,17 @@ angular.module('webApp').directive('fwFormSubmit',
 
   return {
     restrict: 'A',
+    require: '^form',
     scope: {
-      formName: '=',
       canSubmit: '&',
       fwFormSubmit: '&'
     },
-    link: function(scope, element, attrs) {
+    link: function(scope, element, attrs, form) {
       var canSubmit = attrs.canSubmit ? scope.canSubmit : null;
-      var form = scope.formName;
       var submit = scope.fwFormSubmit;
 
       if (form === undefined) {
-        throw new FifthweekError('"formName" attribute must match an existing form\'s name');
+        throw new FifthweekError('Must be within a form');
       }
 
       if (!_.isFunction(submit)) {

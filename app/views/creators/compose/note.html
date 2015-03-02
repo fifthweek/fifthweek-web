@@ -27,12 +27,10 @@
                   data-loading-text="Posting..."
                   data-event-title="Note posted"
                   data-event-category="New post"
-                  form-name="contentForm"
                   fw-form-submit="postNow()">Post Now</button>
 
           <!-- Note we use fw-form-submit here to take advantage of the form validity check -->
           <button class="btn btn-default btn-block"
-                  form-name="contentForm"
                   ng-disabled="contentForm.isSubmitting"
                   fw-form-submit="postLater()">Post Later</button>
         </div>
@@ -53,7 +51,6 @@
                   data-loading-text="Posting to Backlog..."
                   data-event-title="Note queued"
                   data-event-category="New post"
-                  form-name="scheduleForm"
                   fw-form-submit="postToBacklog()">Post to Backlog</button>
 
           <!-- Note we do not use fw-form-submit here because we don't care about validity -->

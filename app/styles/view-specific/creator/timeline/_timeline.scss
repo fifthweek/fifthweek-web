@@ -132,7 +132,6 @@ $header-height:108px;
         box-shadow: $post-shadow;
       }
       button {
-        text-transform: uppercase;
         font-size: $p-font-size;
         color:#fff;
         box-shadow: $post-shadow;
@@ -145,8 +144,15 @@ $header-height:108px;
       }
       #subscribe-button {
         background-color: $blue-light-4;
+        font-weight: normal;
+        span {
+          font-weight: bold;
+          font-size:13px;
+        }
       }
       #subscribed-button {
+        text-transform: uppercase;
+
         font-weight: 200;
         letter-spacing: 1px;
         background-color: $brand-highlight;

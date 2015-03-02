@@ -39,10 +39,8 @@
                 data-loading-text="Posting..."
                 data-event-title="Image posted"
                 data-event-category="New post"
-                form-name="formCompose"
                 fw-form-submit="postNow()">Post Now</button>
         <button class="btn btn-default btn-block"
-                form-name="formCompose"
                 fw-form-submit="postLater()">Post Later</button>
       </div>
     </div>
@@ -73,7 +71,6 @@
               data-loading-text="Posting to Backlog..."
               data-event-title="Image queued"
               data-event-category="New post"
-              form-name="formSchedule"
               fw-form-submit="postToBacklog()">Post to Backlog</button>
       <button class="btn btn-default btn-block"
               ng-click="cancelPostLater()">Cancel</button>

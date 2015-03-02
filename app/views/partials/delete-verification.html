@@ -28,7 +28,6 @@
         data-loading-text="Deleting..."
         data-event-title="{{model.dataEventTitle}}"
         data-event-category="{{model.dataEventCategory}}"
-        form-name="verifiedDeleteForm"
         ng-disabled="model.item !== model.confirmationText"
         fw-form-submit="confirmDelete()">I understand, delete this {{model.itemTypeLowered}}</button>
     </form-buttons>
@@ -54,7 +53,6 @@
         data-loading-text="Deleting..."
         data-event-title="{{model.dataEventTitle}}"
         data-event-category="{{model.dataEventCategory}}"
-        form-name="unverifiedDeleteForm"
         can-submit="true"
         fw-form-submit="confirmDelete()">Delete {{model.itemType}}</button>
     </form-buttons>
