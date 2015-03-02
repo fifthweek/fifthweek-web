@@ -6,7 +6,7 @@ describe('compose note controller', function () {
   var target;
 
   var $state;
-  var composeService;
+  var postUtilities;
   var postsStub;
   var logService;
   var utilities;
@@ -14,7 +14,7 @@ describe('compose note controller', function () {
   beforeEach(function() {
 
     $state = jasmine.createSpyObj('$state', ['forceReload']);
-    composeService = jasmine.createSpyObj('composeService', ['getChannelsForSelection']);
+    postUtilities = jasmine.createSpyObj('postUtilities', ['getChannelsForSelection']);
     postsStub = jasmine.createSpyObj('postsStub', ['postNote']);
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
@@ -22,7 +22,7 @@ describe('compose note controller', function () {
     module('webApp');
     module(function($provide) {
       $provide.value('$state', $state);
-      $provide.value('composeService', composeService);
+      $provide.value('postUtilities', postUtilities);
       $provide.value('postsStub', postsStub);
       $provide.value('logService', logService);
       $provide.value('utilities', utilities);
@@ -44,7 +44,7 @@ describe('compose note controller', function () {
 
     describe('when initializing the model', function(){
       beforeEach(function(){
-        composeService.getChannelsForSelection.and.returnValue($q.when([]));
+        postUtilities.getChannelsForSelection.and.returnValue($q.when([]));
         createController();
       });
 
@@ -71,7 +71,7 @@ describe('compose note controller', function () {
 
       beforeEach(function(){
         channels = [{name: 'a'}, {name: 'b'}];
-        composeService.getChannelsForSelection.and.returnValue($q.when(channels));
+        postUtilities.getChannelsForSelection.and.returnValue($q.when(channels));
         createController();
         $scope.$apply();
       });
@@ -87,7 +87,7 @@ describe('compose note controller', function () {
 
     describe('when getChannelsForSelection fails', function(){
       beforeEach(function(){
-        composeService.getChannelsForSelection.and.returnValue($q.reject('error'));
+        postUtilities.getChannelsForSelection.and.returnValue($q.reject('error'));
         utilities.getFriendlyErrorMessage.and.returnValue('friendly');
         createController();
         $scope.$apply();
@@ -108,7 +108,7 @@ describe('compose note controller', function () {
 
     beforeEach(function(){
       channels = [{name: 'a', channelId: '1'}, {name: 'b', channelId: 2}];
-      composeService.getChannelsForSelection.and.returnValue($q.when(channels));
+      postUtilities.getChannelsForSelection.and.returnValue($q.when(channels));
       createController();
       $scope.$apply();
 

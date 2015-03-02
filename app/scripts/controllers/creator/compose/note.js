@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'composeNoteCtrl',
-  function($scope, $state, postsStub, composeService, utilities, logService) {
+  function($scope, $state, postsStub, postUtilities, utilities, logService) {
     'use strict';
 
     var model = {
@@ -16,7 +16,7 @@ angular.module('webApp').controller(
     $scope.model = model;
 
     var loadForm = function(){
-      composeService.getChannelsForSelection()
+      postUtilities.getChannelsForSelection()
         .then(function(channels){
           model.channels = channels;
           model.input.selectedChannel = channels[0];
@@ -65,7 +65,7 @@ angular.module('webApp').controller(
     };
 
     $scope.postAnother = function(){
-      $state.forceReload();
+      $state.reload();
     }
   }
 );
