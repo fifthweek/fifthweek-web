@@ -18,6 +18,12 @@ $header-height:108px;
     top: 12px;
     left: $main-cont-padding-small;
     z-index: 1;
+    background-color: #111;
+    border-radius: 1px;
+    width:39px;
+    height:39px;
+    text-align: center;
+    padding-top: 9px;
     @media (min-width:$screen-s-min) {
       left: 27px;
     }
