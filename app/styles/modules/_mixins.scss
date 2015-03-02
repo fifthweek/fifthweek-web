@@ -43,6 +43,15 @@
   }
 }
 
+@mixin remove-blob-image-styling {
+  .fa {
+    display:none;
+  }
+  .pending-image {
+    border:none;
+  }
+}
+
 @mixin inline-block($v-align) {
   display:inline-block;
   vertical-align:$v-align;

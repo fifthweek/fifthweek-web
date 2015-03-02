@@ -126,11 +126,11 @@ $header-height:108px;
         margin-right:0;
       }
       .blob-image {
+        @include remove-blob-image-styling;
+        background: $body-bg;
+        border-radius: $post-border-radius;
         .image-area {
           border-radius: $post-border-radius;
-        }
-        .pending-image {
-          border:none;
         }
       }
 

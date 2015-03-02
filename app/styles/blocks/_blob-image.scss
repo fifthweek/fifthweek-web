@@ -5,6 +5,8 @@
   display: inline-block;
   position: relative;
   width: 100%;
+  background: #fff;
+  border-radius: $border-radius;
 
   .vertical-aspect-ratio {
     padding-top: 100%; /* Default ratio is square (so 64x64 including default width) */
@@ -16,13 +18,11 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: $body-bg;
     border-radius: $border-radius;
   }
 
   .pending-image {
     border: 2px dashed $grey-light-4;
-    background: #fff;
     box-sizing: border-box;
     font-size: 16px;
 
