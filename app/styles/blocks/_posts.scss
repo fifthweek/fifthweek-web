@@ -30,7 +30,24 @@ $reorder-menu-width: 29px;
     width: 100%;
   }
   > .video:first-child {
-    padding-bottom:56.25% /* 16x9 */
+    padding-bottom:56.25%; /* 16x9 */
+    .video-radius-fix {
+      img {
+        width:6px;
+      }
+      img:first-child {
+        position: absolute;
+        top:0px;
+        left:0px;
+      }
+      img:last-child {
+        position: absolute;
+        top:0px;
+        right:0px;
+      }
+    }
+
+
   }
 }
 
