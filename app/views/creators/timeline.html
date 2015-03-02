@@ -60,6 +60,16 @@
                     </div>
                     <div class="col-xs-4 actions">
                       <ul>
+                        <li>
+                          <button>
+                            <i class="fa fa-comment-o"></i>
+                          </button>
+                        </li>
+                        <li>
+                          <button>
+                            <i class="fa fa-heart-o" ng-click="post.liked = !post.liked" ng-class="{'fa-heart-o': !post.liked, 'fa-heart': post.liked}"></i>
+                          </button>
+                        </li>
                         <li class="actions-more"
                             ng-class="{'active-actions-drop-down': post.showMenu}">
                           <button
