@@ -106,7 +106,7 @@ angular.module('webApp').controller('timelineCtrl',
     };
 
     $scope.subscribe = function() {
-      $scope.modal.subscribed = true;
+      $scope.model.subscribed = true;
     };
 
     $scope.$watch('modal.channels', function() {
