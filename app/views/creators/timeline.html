@@ -8,10 +8,18 @@
         <div class="creator">
           <fw-blob-image control="blobImage" thumbnail="600x600-crop" file-uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
           <div class="subscribe-button-wrapper">
-            <button id="subscribe-button"
-                    class="btn btn-block"
-                    type="submit">Subscribed</button>
-            <p>1 Subscriber</p>
+            <div ng-if="modal.subscribed" class="subscribed">
+              <button id="subscribed-button"
+                      class="btn btn-block"
+                      type="submit">Subscribed</button>
+              <p>1 Subscriber</p>
+            </div>
+            <div ng-if="!modal.subscribed" class="subscribe">
+              <button id="subscribe-button"
+                      class="btn btn-block"
+                      type="submit">Subscribe</button>
+              <p>No commitments. Cancel anytime.</p>
+            </div>
           </div>
         </div>
       </div>

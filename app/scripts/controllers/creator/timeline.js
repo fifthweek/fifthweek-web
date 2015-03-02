@@ -2,6 +2,9 @@ angular.module('webApp').controller('timelineCtrl',
   function($scope, $sanitize, postInteractions) {
     'use strict';
 
+    $scope.modal = {
+      subscribed: false
+    };
     $scope.posts = [
       {
         postId: 'a',

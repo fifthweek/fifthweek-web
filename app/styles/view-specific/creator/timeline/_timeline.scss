@@ -18,7 +18,7 @@ $header-height:108px;
     top: 12px;
     left: $main-cont-padding-small;
     z-index: 1;
-    background-color: #111;
+    background-color: $black-off;
     border-radius: 1px;
     width:39px;
     height:39px;
@@ -131,20 +131,26 @@ $header-height:108px;
         border-radius: $post-border-radius;
         box-shadow: $post-shadow;
       }
-      #subscribe-button {
+      button {
         text-transform: uppercase;
         font-size: $p-font-size;
-        font-weight: 200;
-        letter-spacing: 1px;
         color:#fff;
-        background-color: $brand-highlight;
         box-shadow: $post-shadow;
         border:none;
         height: auto;
-        padding: 10px 15px 10px 20px;
+        padding: 10px 20px;
         margin:-20px auto 0;
         display: block;
         width:auto;
+      }
+      #subscribe-button {
+        background-color: $blue-light-4;
+      }
+      #subscribed-button {
+        font-weight: 200;
+        letter-spacing: 1px;
+        background-color: $brand-highlight;
+        padding-right: 15px;
         &:after {
           content:"\f00c";
           font-family:'FontAwesome';
@@ -158,11 +164,12 @@ $header-height:108px;
       p {
         @include light-text;
         text-align:center;
-        text-transform: uppercase;
         padding-top: 15px;
       }
+      .subscribed {
+        text-transform: uppercase;
+      }
     }
-
   }
   .main-content {
     padding: 0 $main-cont-padding-small;
