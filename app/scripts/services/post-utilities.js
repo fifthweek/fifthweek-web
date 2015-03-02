@@ -1,7 +1,7 @@
 /// <reference path='../angular.module('webApp')js' />
 
 angular.module('webApp')
-  .factory('composeService',
+  .factory('postUtilities',
   function($q, aggregateUserState) {
     'use strict';
 
