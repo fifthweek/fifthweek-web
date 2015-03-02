@@ -282,6 +282,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: ' Note',
           headTitle: ': ' + 'New Note',
+          bodyClass: 'page-creators-compose-note',
           access: {
             requireAuthenticated: true
           }
@@ -295,6 +296,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: ' Image',
           headTitle: ': ' + 'New Image',
+          bodyClass: 'page-creators-compose-image',
           access: {
             requireAuthenticated: true
           }
@@ -306,7 +308,11 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' File',
-          headTitle: ': ' + 'New File'
+          headTitle: ': ' + 'New File',
+          bodyClass: 'page-creators-compose-file',
+          access: {
+            requireAuthenticated: true
+          }
         }
       })
       .state(states.creators.backlog.name, {
