@@ -109,7 +109,7 @@ angular.module('webApp').controller('timelineCtrl',
       $scope.model.subscribed = true;
     };
 
-    $scope.$watch('modal.channels', function() {
+    $scope.$watch('model.channels', function() {
 
       $scope.model.totalPrice = _($scope.model.channels)
         .filter(function(channel) {
