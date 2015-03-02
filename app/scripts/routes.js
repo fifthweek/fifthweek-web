@@ -261,21 +261,6 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.landingPage.name, {
-        url: '/landing-page',
-        templateUrl: 'views/creators/landing-page.html',
-        controller: 'landingPageCtrl',
-        requireSubscription: true,
-        data : {
-          pageTitle: 'Landing page',
-          headTitle: ': ' + 'Landing page',
-          navigationHidden: true,
-          bodyClass: 'page-landing',
-          access: {
-            requireAuthenticated: false // Disable the inherited access requirement.
-          }
-        }
-      })
       .state(states.creators.compose.name, {
         url: '/compose',
         templateUrl: 'views/creators/compose/index.html',
