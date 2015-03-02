@@ -10,16 +10,27 @@ angular.module('webApp').controller('timelineCtrl',
         basic: {
           title:'Basic',
           price:'0.50',
+          descriptionLines: [
+            'Exclusive News Feed',
+            'Eternal Gratitude'
+          ],
           checked:true
         },
         extras: {
           title:'Extras',
           price:'0.75',
+          descriptionLines: [
+            'Side Comic',
+            'Wall Papers'
+          ],
           checked:false
         },
         superExtras: {
           title:'Super Extras',
-          price:'9.25',
+          price:'0.30',
+          descriptionLines: [
+            'Print Quality Signed Comics'
+          ],
           checked:false
         }
       },
