@@ -1,9 +1,11 @@
 angular.module('webApp').controller('timelineCtrl',
-  function($scope, $sanitize, postInteractions) {
+  function($scope, $sce, postInteractions) {
     'use strict';
 
     $scope.model = {
       subscribed: false,
+      videoUrl: $sce.trustAsResourceUrl('//player.vimeo.com/video/114229222'),
+      fullDescription: 'Hello there!',
       channels: {
         basic: {
           title:'Basic',
@@ -91,7 +93,6 @@ angular.module('webApp').controller('timelineCtrl',
         }
       ]
     };
-
 
     $scope.viewImage = function (post) {
       postInteractions.viewImage(post.imagePath, true);

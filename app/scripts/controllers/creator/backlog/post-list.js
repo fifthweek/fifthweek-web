@@ -1,5 +1,5 @@
 angular.module('webApp').controller('backlogPostListCtrl',
-  function($scope, $sanitize, postInteractions) {
+  function($scope, postInteractions) {
     'use strict';
 
     $scope.posts = [

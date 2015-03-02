@@ -10,21 +10,28 @@ $post-line-height: 20px;
 $post-bottom-margin: 20px;
 $reorder-menu-width: 29px;
 
-@mixin li-cancel-first-last-spacing {
-  li:first-child {
-    margin-left:0;
-    padding-left:0;
-  }
-  li:last-child {
-    margin-right:0;
-    padding-right:0;
-  }
-}
-
-@mixin post-border {
+@mixin post-core {
+  position: relative;
   box-shadow: $post-shadow;
   border-radius: $post-border-radius;
   background: #fff;
+  margin-bottom: $post-bottom-margin;
+}
+
+@mixin post-border-top-radius {
+  border-top-left-radius: $post-border-radius;
+  border-top-right-radius: $post-border-radius;
+}
+
+@mixin post-visual {
+  > img:first-child, > .video:first-child iframe {
+    @include post-border-top-radius;
+    cursor: pointer;
+    width: 100%;
+  }
+  > .video:first-child {
+    padding-bottom:56.25% /* 16x9 */
+  }
 }
 
 @mixin post-padding {
@@ -38,11 +45,30 @@ $reorder-menu-width: 29px;
   }
 }
 
+@mixin li-cancel-first-last-spacing {
+  li:first-child {
+    margin-left:0;
+    padding-left:0;
+  }
+  li:last-child {
+    margin-right:0;
+    padding-right:0;
+  }
+}
+
 .pseudo-post-text {
   @include clearfix;
-  @include post-border;
+  @include post-core;
   @include post-padding;
-  margin-bottom: $post-bottom-margin;
+}
+
+.pseudo-post-video, .pseudo-post-image {
+  @include post-core;
+  @include post-visual;
+  .text {
+    @include clearfix;
+    @include post-padding;
+  }
 }
 
 .posts {
@@ -51,9 +77,7 @@ $reorder-menu-width: 29px;
   max-width: $post-max-width;
 
   .post {
-    @include post-border;
-    position: relative;
-    margin-bottom: $post-bottom-margin;
+    @include post-core;
 
     .text {
       @include post-padding;
@@ -188,17 +212,12 @@ $reorder-menu-width: 29px;
   }
 
   .image-post {
-    > img:first-child {
-      cursor: pointer;
-      border-top-left-radius: $post-border-radius;
-      border-top-right-radius: $post-border-radius;
-    }
+    @include post-visual;
   }
 }
 
 .queue .post {
   cursor: move;
-
 
   .text {
     padding-bottom: $post-margin-lg;

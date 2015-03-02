@@ -43,6 +43,7 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-4">
           <div class="posts" ng-if="!model.subscribed">
+
             <h5><span>What You'll Get</span></h5>
             <div class="pseudo-post-text" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
               <div class="row">
@@ -70,9 +71,18 @@
             </div>
 
             <h5><span>About</span></h5>
-            <div class="pseudo-post-text">
-              <p>Display when creator does not have a video.</p>
+            <div class="pseudo-post-text" ng-if="!model.videoUrl">
+              <p>{{model.fullDescription}}</p>
             </div>
+            <div class="pseudo-post-video" ng-if="model.videoUrl">
+              <div class="video">
+                <iframe id="home-modal-video" vimeo-video title="Creator Journey" src="{{model.videoUrl}}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+              </div>
+              <div class="text">
+                <p>{{model.fullDescription}}</p>
+              </div>
+            </div>
+
           </div>
 
           <div class="posts" ng-if="model.subscribed">
