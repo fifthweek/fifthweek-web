@@ -305,6 +305,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.compose.file.name, {
         url: '/file',
         templateUrl: 'views/creators/compose/file.html',
+        controller: 'composeFileCtrl',
         requireSubscription: true,
         data : {
           pageTitle: ' File',
