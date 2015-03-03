@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group form-input-select-collection">
   <div class="row">
     <div class="col-xs-12 col-s-7 col-sm-6">
       <div class="select">
@@ -6,11 +6,9 @@
       </div>
     </div>
     <div class="col-xs-12 col-s-5 col-sm-6">
-      <div class="select">
-        <button class="btn btn-default btn-block"
-                ng-disabled="createNewCollectionDisabled"
-                ng-click="createNewCollection()">Create New Collection</button>
-      </div>
+      <button class="btn btn-link create-collection-link"
+              ng-disabled="createNewCollectionDisabled"
+              ng-click="createNewCollection()">Create New Collection</button>
     </div>
   </div>
 </div>
