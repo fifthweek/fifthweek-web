@@ -54,7 +54,7 @@ $header-height:108px;
         left:50%;
         right:0;
         height:$header-height;
-        background: rgba(52,52,44,0.5);
+        background: $image-overlay;
         margin-left:-200px;
         @media (min-width:$screen-lg-min) {
           margin-left:-400px;
@@ -136,7 +136,7 @@ $header-height:108px;
         min-width: 176px; /* Ensures button is never wider than image */
         .image-area {
           border-radius: $post-border-radius;
-          box-shadow: $post-shadow;
+          box-shadow: 0 2px 9px $image-overlay;
         }
       }
 
