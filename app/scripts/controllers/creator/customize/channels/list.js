@@ -2,7 +2,7 @@ angular.module('webApp').controller('listChannelsCtrl', function($scope, $q, agg
   'use strict';
 
   $scope.model = {};
-  
+
   aggregateUserStateUtilities.getChannelsAndCollections()
     .then(function(channels) {
       $scope.model = {
