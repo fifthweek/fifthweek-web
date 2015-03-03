@@ -1,5 +1,5 @@
 angular.module('webApp').controller('composeImageCtrl',
-  function($q, $scope, $state, postsStub, collectionStub, composeUtilities, utilities, logService) {
+  function($q, $scope, $state, postsStub, composeUtilities) {
     'use strict';
 
     var model = {
@@ -21,28 +21,7 @@ angular.module('webApp').controller('composeImageCtrl',
 
     $scope.model = model;
 
-    var loadChannelsAndCollections = function(){
-      composeUtilities.getChannelsAndCollectionsForSelection()
-        .then(function(result){
-          model.collections = result.collections;
-          model.channels = result.channels;
-
-          model.input.selectedChannel = result.channels[0];
-
-          if (model.collections.length > 0) {
-            model.input.selectedCollection = model.collections[0];
-          }
-          else {
-            model.createCollection = true;
-          }
-        })
-        .catch(function(error){
-          logService.error(error);
-          model.errorMessage = utilities.getFriendlyErrorMessage(error);
-        });
-    };
-
-    loadChannelsAndCollections();
+    composeUtilities.loadChannelsAndCollectionsIntoModel(model);
 
     $scope.blobImage = {};
 
@@ -50,29 +29,6 @@ angular.module('webApp').controller('composeImageCtrl',
       model.imageUploaded = true;
       model.input.fileId = data.fileId;
       $scope.blobImage.update(data.fileUri, data.containerName);
-    };
-
-    var shouldCreateCollection = function(){
-      if(model.createCollection) {
-        return true;
-      }
-
-      return model.input.selectedCollection.isNewCollection;
-    };
-
-    var getCollectionId = function(){
-      if(shouldCreateCollection()) {
-        return collectionStub
-          .postCollection({
-            channelId: model.input.selectedChannel.channelId,
-            name: model.input.newCollectionName
-          })
-          .then(function(result){
-            return result.data;
-          });
-      }
-
-      return $q.when(model.input.selectedCollection.collectionId);
     };
 
     var postImage = function(data){
@@ -83,7 +39,7 @@ angular.module('webApp').controller('composeImageCtrl',
     };
 
     $scope.postNow = function() {
-      return getCollectionId()
+      return composeUtilities.getCollectionIdAndCreateCollectionIfRequired(model)
         .then(function(collectionId){
           var data = {
             collectionId: collectionId,
@@ -97,7 +53,7 @@ angular.module('webApp').controller('composeImageCtrl',
     };
 
     $scope.postToBacklog = function() {
-      return getCollectionId()
+      return composeUtilities.getCollectionIdAndCreateCollectionIfRequired(model)
         .then(function(collectionId){
           var data = {
             collectionId: collectionId,
@@ -121,6 +77,10 @@ angular.module('webApp').controller('composeImageCtrl',
 
     $scope.postAnother = function(){
       $state.reload();
-    }
+    };
+
+    $scope.createNewCollection = function(){
+      composeUtilities.showCreateCollectionDialog($scope);
+    };
   }
 );

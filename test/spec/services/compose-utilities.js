@@ -4,6 +4,11 @@ describe('compose utilities', function(){
   var $q;
   var $rootScope;
   var aggregateUserState;
+  var logService;
+  var utilities;
+  var aggregateUserStateUtilities;
+  var authenticationService;
+  var collectionStub;
   var $modal;
   var target;
 
@@ -11,11 +16,21 @@ describe('compose utilities', function(){
     module('webApp');
 
     aggregateUserState = {};
+    authenticationService = {};
     $modal = jasmine.createSpyObj('$modal', ['open']);
+    logService = jasmine.createSpyObj('logService', ['error']);
+    utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
+    aggregateUserStateUtilities = jasmine.createSpyObj('aggregateUserStateUtilities', ['mergeNewCollection']);
+    collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection']);
 
     module(function($provide) {
       $provide.value('aggregateUserState', aggregateUserState);
       $provide.value('$modal', $modal);
+      $provide.value('logService', logService);
+      $provide.value('utilities', utilities);
+      $provide.value('aggregateUserStateUtilities', aggregateUserStateUtilities);
+      $provide.value('authenticationService', authenticationService);
+      $provide.value('collectionStub', collectionStub);
     });
 
     inject(function($injector) {
@@ -429,12 +444,275 @@ describe('compose utilities', function(){
     });
   });
 
+  describe('when calling loadChannelsAndCollectionsIntoModel', function(){
+    var model;
+
+    beforeEach(function(){
+      model = { input: {} };
+      target.getChannelsAndCollectionsForSelection = jasmine.createSpy('getChannelsAndCollectionsForSelection');
+    });
+
+    describe('when getChannelsAndCollectionsForSelection succeeds', function(){
+      var channelsAndCollections;
+
+      beforeEach(function(){
+        channelsAndCollections = {channels: [{name: 'a'}, {name: 'b'}], collections: [{name: 'x'}, {name: 'y'}]};
+        target.getChannelsAndCollectionsForSelection.and.returnValue($q.when(channelsAndCollections));
+        target.loadChannelsAndCollectionsIntoModel(model);
+        $rootScope.$apply();
+      });
+
+      it('should populate the channels in the model', function(){
+        expect(model.channels).toEqual(channelsAndCollections.channels);
+      });
+
+      it('should populate the collections in the model', function(){
+        expect(model.collections).toEqual(channelsAndCollections.collections);
+      });
+
+      it('should select the first channel', function(){
+        expect(model.input.selectedChannel).toEqual(channelsAndCollections.channels[0]);
+      });
+
+      it('should select the first collection', function(){
+        expect(model.input.selectedCollection).toEqual(channelsAndCollections.collections[0]);
+      });
+
+      it('should set createCollection to false', function(){
+        expect(model.createCollection).toBe(false);
+      });
+    });
+
+    describe('when getChannelsAndCollectionsForSelection succeeds with no collections', function(){
+      var channelsAndCollections;
+
+      beforeEach(function(){
+        channelsAndCollections = {channels: [{name: 'a'}, {name: 'b'}], collections: []};
+        target.getChannelsAndCollectionsForSelection.and.returnValue($q.when(channelsAndCollections));
+        target.loadChannelsAndCollectionsIntoModel(model);
+        $rootScope.$apply();
+      });
+
+      it('should populate the channels in the model', function(){
+        expect(model.channels).toEqual(channelsAndCollections.channels);
+      });
+
+      it('should populate the collections in the model', function(){
+        expect(model.collections).toEqual(channelsAndCollections.collections);
+      });
+
+      it('should select the first channel', function(){
+        expect(model.input.selectedChannel).toEqual(channelsAndCollections.channels[0]);
+      });
+
+      it('should set the selected collection to undefined', function(){
+        expect(model.input.selectedCollection).toBeUndefined();
+      });
+
+      it('should set createCollection to true', function(){
+        expect(model.createCollection).toBe(true);
+      });
+    });
+
+    describe('when getChannelsAndCollectionsForSelection fails', function(){
+      beforeEach(function(){
+        target.getChannelsAndCollectionsForSelection.and.returnValue($q.reject('error'));
+        utilities.getFriendlyErrorMessage.and.returnValue('friendly');
+        target.loadChannelsAndCollectionsIntoModel(model);
+        $rootScope.$apply();
+      });
+
+      it('should log the error', function(){
+        expect(logService.error).toHaveBeenCalledWith('error');
+      });
+
+      it('should display a friendly error message', function(){
+        expect(model.errorMessage).toBe('friendly');
+      });
+    });
+  });
+
+  describe('when calling getCollectionIdAndCreateCollectionIfRequired', function(){
+    var model;
+
+    beforeEach(function(){
+      model = {};
+
+      authenticationService.currentUser = { userId: 'userId' };
+      collectionStub.postCollection.and.returnValue($q.when({ data: 'collectionId' }));
+    });
+
+    describe('when an existing collection is selected', function() {
+      var result;
+
+      beforeEach(function(){
+        model.createCollection = false;
+        model.input = {
+          newCollectionName: 'newCollection',
+          selectedCollection: {
+            collectionId: 'existingCollectionId'
+          },
+          selectedChannel: {
+            channelId: 'channelId'
+          }
+        };
+
+        target.getCollectionIdAndCreateCollectionIfRequired(model).then(function(r){ result = r; });
+        $rootScope.$apply();
+      });
+
+      it('should not post a new collection', function(){
+        expect(collectionStub.postCollection).not.toHaveBeenCalled();
+      });
+
+      it('should not merge the data into the new collection', function(){
+        expect(aggregateUserStateUtilities.mergeNewCollection).not.toHaveBeenCalled();
+      });
+
+      it('should return the existing collection id', function(){
+        expect(result).toBe('existingCollectionId');
+      });
+    });
+
+    describe('when createCollection is true', function() {
+      var result;
+
+      beforeEach(function(){
+        model.createCollection = true;
+        model.input = {
+          newCollectionName: 'newCollection',
+          selectedChannel: {
+            channelId: 'channelId'
+          }
+        };
+
+        target.getCollectionIdAndCreateCollectionIfRequired(model).then(function(r){ result = r; });
+        $rootScope.$apply();
+      });
+
+      it('should post a new collection', function(){
+        expect(collectionStub.postCollection.calls.count()).toBe(1);
+        expect(collectionStub.postCollection).toHaveBeenCalledWith({
+          channelId: 'channelId',
+          name: 'newCollection'
+        });
+      });
+
+      it('should merge the data into the new collection', function(){
+        expect(aggregateUserStateUtilities.mergeNewCollection.calls.count()).toBe(1);
+        expect(aggregateUserStateUtilities.mergeNewCollection).toHaveBeenCalledWith('userId', 'channelId', 'collectionId', 'newCollection');
+      });
+
+      it('should return the new collection id', function(){
+        expect(result).toBe('collectionId');
+      });
+    });
+
+    describe('when the selected collection is a new collection', function() {
+      var result;
+
+      beforeEach(function(){
+        model.input = {
+          newCollectionName: 'newCollection',
+          selectedCollection: {
+            isNewCollection: true
+          },
+          selectedChannel: {
+            channelId: 'channelId'
+          }
+        };
+
+        target.getCollectionIdAndCreateCollectionIfRequired(model).then(function(r){ result = r; });
+        $rootScope.$apply();
+      });
+
+      it('should post a new collection', function(){
+        expect(collectionStub.postCollection.calls.count()).toBe(1);
+        expect(collectionStub.postCollection).toHaveBeenCalledWith({
+          channelId: 'channelId',
+          name: 'newCollection'
+        });
+      });
+
+      it('should merge the data into the new collection', function(){
+        expect(aggregateUserStateUtilities.mergeNewCollection.calls.count()).toBe(1);
+        expect(aggregateUserStateUtilities.mergeNewCollection).toHaveBeenCalledWith('userId', 'channelId', 'collectionId', 'newCollection');
+      });
+
+      it('should return the new collection id', function(){
+        expect(result).toBe('collectionId');
+      });
+    });
+
+
+    describe('when postCollection fails', function() {
+      var error;
+
+      beforeEach(function(){
+        model.createCollection = true;
+        model.input = {
+          newCollectionName: 'newCollection',
+          selectedChannel: {
+            channelId: 'channelId'
+          }
+        };
+
+        aggregateUserStateUtilities.mergeNewCollection.and.returnValue($q.reject('error'));
+
+        target.getCollectionIdAndCreateCollectionIfRequired(model).catch(function(e){ error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
+      });
+    });
+
+    describe('when mergeNewCollection fails', function() {
+      var error;
+
+      beforeEach(function(){
+        model.createCollection = true;
+        model.input = {
+          newCollectionName: 'newCollection',
+          selectedChannel: {
+            channelId: 'channelId'
+          }
+        };
+
+        collectionStub.postCollection.and.returnValue($q.reject('error'));
+
+        target.getCollectionIdAndCreateCollectionIfRequired(model).catch(function(e){ error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should not merge the data into the new collection', function(){
+        expect(aggregateUserStateUtilities.mergeNewCollection).not.toHaveBeenCalled();
+      });
+
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
+      });
+    });
+  });
+
   describe('when calling createCollection', function(){
+
+    var scope;
+    var result;
+    beforeEach(function(){
+      scope = {};
+      $modal.open.and.returnValue('result');
+      result = target.showCreateCollectionDialog(scope);
+    });
+
     it('should open a modal dialog', function(){
-      var scope = {};
-      target.createCollection(scope);
       expect($modal.open).toHaveBeenCalled();
       expect($modal.open.calls.first().args[0].scope).toBe(scope);
+    });
+
+    it('should result the modal object', function(){
+      expect(result).toBe('result');
     });
   });
 });

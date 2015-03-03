@@ -10,11 +10,16 @@ $html-name-space:'.page-creators-compose-image';
       height: auto;
       max-width: 300px;
       max-height: 300px;
+      position: static;
     }
 
     .pending-image{
       width: 300px;
       height: 200px;
+    }
+
+    .vertical-aspect-ratio{
+      padding-top: 0px;
     }
   }
 }
