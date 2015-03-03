@@ -1,6 +1,6 @@
 angular.module('webApp')
   .factory('composeUtilities',
-  function($q, $modal, aggregateUserState, aggregateUserStateUtilities, utilities, logService, authenticationService, collectionStub) {
+  function($q, $modal, aggregateUserStateUtilities, utilities, logService, authenticationService, collectionStub) {
     'use strict';
 
     var service = {};
@@ -25,22 +25,7 @@ angular.module('webApp')
       }
     };
 
-    var getChannelsAndCollections = function(){
-      if(!aggregateUserState.currentValue){
-        return $q.reject(new FifthweekError('No aggregate state found.'));
-      }
-
-      var channels = aggregateUserState.currentValue.createdChannelsAndCollections.channels;
-
-      if(channels.length === 0) {
-        return $q.reject(new DisplayableError('You must create a subscription before posting.'));
-      }
-
-      return $q.when(channels);
-    };
-
     var getChannelsForSelectionInner = function(channels){
-      channels = _.cloneDeep(channels);
       channels[0].originalName = channels[0].name;
       channels[0].name = 'Share with everyone';
 
@@ -59,7 +44,7 @@ angular.module('webApp')
         var channel = channels[channelIndex];
         if(channel.collections){
           for(var collectionIndex = 0; collectionIndex < channel.collections.length; ++collectionIndex){
-            var collection = _.cloneDeep(channel.collections[collectionIndex]);
+            var collection = channel.collections[collectionIndex];
             collection.originalName = collection.name;
             if(channelIndex !== 0){
               collection.name = getCollectionNameForSelection(channel, collection);
@@ -77,39 +62,27 @@ angular.module('webApp')
     };
 
     service.getChannelsForSelection = function(){
-      try{
-        return getChannelsAndCollections().then(function(channels){
+      return aggregateUserStateUtilities.getChannelsAndCollections()
+        .then(function(channels){
           return $q.when(getChannelsForSelectionInner(channels));
         });
-      }
-      catch(error){
-        return $q.reject(new FifthweekError(error));
-      }
     };
 
     service.getCollectionsForSelection = function(){
-      try{
-        return getChannelsAndCollections().then(function(channels){
+      return aggregateUserStateUtilities.getChannelsAndCollections()
+        .then(function(channels){
           return $q.when(getCollectionsForSelectionInner(channels));
         });
-      }
-      catch(error){
-        return $q.reject(new FifthweekError(error));
-      }
     };
 
     service.getChannelsAndCollectionsForSelection = function(){
-      try{
-        return getChannelsAndCollections().then(function(channels){
+      return aggregateUserStateUtilities.getChannelsAndCollections()
+        .then(function(channels){
           return $q.when({
             channels: getChannelsForSelectionInner(channels),
             collections: getCollectionsForSelectionInner(channels)
           });
-        });
-      }
-      catch(error){
-        return $q.reject(new FifthweekError(error));
-      }
+      });
     };
 
     service.loadChannelsAndCollectionsIntoModel = function(model){

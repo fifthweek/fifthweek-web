@@ -28,6 +28,28 @@ angular.module('webApp')
       return $q.when();
     };
 
+
+    service.getChannelsAndCollections = function(){
+      try {
+        if (!aggregateUserState.currentValue) {
+          return $q.reject(new FifthweekError('No aggregate state found.'));
+        }
+
+        var channels = aggregateUserState.currentValue.createdChannelsAndCollections.channels;
+
+        if (channels.length === 0) {
+          return $q.reject(new DisplayableError('You must create a subscription.'));
+        }
+
+        channels = _.cloneDeep(channels);
+
+        return $q.when(channels);
+      }
+      catch(error){
+        return $q.reject(new FifthweekError(error));
+      }
+    };
+
     return service;
   }
 );

@@ -3,7 +3,6 @@ describe('compose utilities', function(){
 
   var $q;
   var $rootScope;
-  var aggregateUserState;
   var logService;
   var utilities;
   var aggregateUserStateUtilities;
@@ -15,16 +14,14 @@ describe('compose utilities', function(){
   beforeEach(function() {
     module('webApp');
 
-    aggregateUserState = {};
     authenticationService = {};
     $modal = jasmine.createSpyObj('$modal', ['open']);
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
-    aggregateUserStateUtilities = jasmine.createSpyObj('aggregateUserStateUtilities', ['mergeNewCollection']);
+    aggregateUserStateUtilities = jasmine.createSpyObj('aggregateUserStateUtilities', ['mergeNewCollection', 'getChannelsAndCollections']);
     collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection']);
 
     module(function($provide) {
-      $provide.value('aggregateUserState', aggregateUserState);
       $provide.value('$modal', $modal);
       $provide.value('logService', logService);
       $provide.value('utilities', utilities);
@@ -54,51 +51,15 @@ describe('compose utilities', function(){
 
   describe('when calling getChannelsForSelection', function(){
 
-    describe('when an unexpected error occurs', function(){
-      it('should convert the error into a rejected promise', function(){
-        // This structure should not occur, so the service will trip up and throw an exception.
-        aggregateUserState.currentValue = { createdChannelsAndCollections: undefined };
-
-        target.getChannelsForSelection()
-          .then(function(){
-            fail('this should not occur');
-          })
-          .catch(function(error){
-            expect(error instanceof FifthweekError).toBeTruthy();
-          });
-
-        $rootScope.$apply();
-      });
-    });
-
-    describe('when there is no current aggregate state', function(){
+    describe('when getChannelsAndCollections fails', function(){
       it('should return the error', function(){
-        aggregateUserState.currentValue = undefined;
-
+        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.reject('error'));
         target.getChannelsForSelection()
           .then(function(){
             fail('this should not occur');
           })
           .catch(function(error){
-            expect(error instanceof FifthweekError).toBeTruthy();
-            expect(error.message).toBe('No aggregate state found.');
-          });
-
-        $rootScope.$apply();
-      });
-    });
-
-    describe('when there are no channels', function(){
-      it('should return a displayable error', function(){
-        aggregateUserState.currentValue = { createdChannelsAndCollections: { channels: [] }};
-
-        target.getChannelsForSelection()
-          .then(function(){
-            fail('this should not occur');
-          })
-          .catch(function(error){
-            expect(error instanceof DisplayableError).toBeTruthy();
-            expect(error.message).toBe('You must create a subscription before posting.');
+            expect(error).toBe('error');
           });
 
         $rootScope.$apply();
@@ -108,8 +69,6 @@ describe('compose utilities', function(){
     describe('when the aggregate state is valid', function(){
 
       var inputChannels;
-      var inputChannelsClone;
-
       var result;
 
       beforeEach(function(){
@@ -127,8 +86,8 @@ describe('compose utilities', function(){
             someKey: 'someValue3'
           }
         ];
-        inputChannelsClone = _.cloneDeep(inputChannels);
-        aggregateUserState.currentValue = { createdChannelsAndCollections: { channels: inputChannels }};
+
+        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
 
         target.getChannelsForSelection()
           .then(function(r){
@@ -156,73 +115,30 @@ describe('compose utilities', function(){
         expect(result[1].someKey).toBe('someValue2');
         expect(result[2].someKey).toBe('someValue3');
       });
-
-      it('should not modify the input channels', function(){
-        expect(inputChannels).toEqual(inputChannelsClone);
-        expect(inputChannels).not.toEqual(result);
-      });
     });
 
   });
 
   describe('when calling getCollectionsForSelection', function(){
 
-    describe('when an unexpected error occurs', function(){
-      it('should convert the error into a rejected promise', function(){
-        // This structure should not occur, so the service will trip up and throw an exception.
-        aggregateUserState.currentValue = { createdChannelsAndCollections: undefined };
-
-        target.getCollectionsForSelection()
-          .then(function(){
-            fail('this should not occur');
-          })
-          .catch(function(error){
-            expect(error instanceof FifthweekError).toBeTruthy();
-          });
-
-        $rootScope.$apply();
-      });
-    });
-
-    describe('when there is no current aggregate state', function(){
+    describe('when getChannelsAndCollections fails', function(){
       it('should return the error', function(){
-        aggregateUserState.currentValue = undefined;
-
+        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.reject('error'));
         target.getCollectionsForSelection()
           .then(function(){
             fail('this should not occur');
           })
           .catch(function(error){
-            expect(error instanceof FifthweekError).toBeTruthy();
-            expect(error.message).toBe('No aggregate state found.');
+            expect(error).toBe('error');
           });
 
         $rootScope.$apply();
       });
     });
 
-    describe('when there are no channels', function(){
-      it('should return a displayable error', function(){
-        aggregateUserState.currentValue = { createdChannelsAndCollections: { channels: [] }};
-
-        target.getCollectionsForSelection()
-          .then(function(){
-            fail('this should not occur');
-          })
-          .catch(function(error){
-            expect(error instanceof DisplayableError).toBeTruthy();
-            expect(error.message).toBe('You must create a subscription before posting.');
-          });
-
-        $rootScope.$apply();
-      });
-    });
-
-    describe('when the aggregate state is valid', function(){
+    describe('when getChannelsAndCollections succeeds', function(){
 
       var inputChannels;
-      var inputChannelsClone;
-
       var result;
 
       beforeEach(function(){
@@ -256,8 +172,8 @@ describe('compose utilities', function(){
             someKey: 'someValue3'
           }
         ];
-        inputChannelsClone = _.cloneDeep(inputChannels);
-        aggregateUserState.currentValue = { createdChannelsAndCollections: { channels: inputChannels }};
+
+        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
 
         target.getCollectionsForSelection()
           .then(function(r){
@@ -285,61 +201,21 @@ describe('compose utilities', function(){
         expect(result[1].someKey).toBe('someValueOneB');
         expect(result[2].someKey).toBe('someValueTwoA');
       });
-
-      it('should not modify the input channels', function(){
-        expect(inputChannels).toEqual(inputChannelsClone);
-      });
     });
 
   });
 
   describe('when calling getChannelsAndCollectionsForSelection', function(){
 
-    describe('when an unexpected error occurs', function(){
-      it('should convert the error into a rejected promise', function(){
-        // This structure should not occur, so the service will trip up and throw an exception.
-        aggregateUserState.currentValue = { createdChannelsAndCollections: undefined };
-
-        target.getChannelsAndCollectionsForSelection()
-          .then(function(){
-            fail('this should not occur');
-          })
-          .catch(function(error){
-            expect(error instanceof FifthweekError).toBeTruthy();
-          });
-
-        $rootScope.$apply();
-      });
-    });
-
-    describe('when there is no current aggregate state', function(){
+    describe('when getChannelsAndCollections fails', function(){
       it('should return the error', function(){
-        aggregateUserState.currentValue = undefined;
-
+        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.reject('error'));
         target.getChannelsAndCollectionsForSelection()
           .then(function(){
             fail('this should not occur');
           })
           .catch(function(error){
-            expect(error instanceof FifthweekError).toBeTruthy();
-            expect(error.message).toBe('No aggregate state found.');
-          });
-
-        $rootScope.$apply();
-      });
-    });
-
-    describe('when there are no channels', function(){
-      it('should return a displayable error', function(){
-        aggregateUserState.currentValue = { createdChannelsAndCollections: { channels: [] }};
-
-        target.getChannelsAndCollectionsForSelection()
-          .then(function(){
-            fail('this should not occur');
-          })
-          .catch(function(error){
-            expect(error instanceof DisplayableError).toBeTruthy();
-            expect(error.message).toBe('You must create a subscription before posting.');
+            expect(error).toBe('error');
           });
 
         $rootScope.$apply();
@@ -349,8 +225,6 @@ describe('compose utilities', function(){
     describe('when the aggregate state is valid', function(){
 
       var inputChannels;
-      var inputChannelsClone;
-
       var result;
 
       beforeEach(function(){
@@ -384,8 +258,8 @@ describe('compose utilities', function(){
             someKey: 'someValue3'
           }
         ];
-        inputChannelsClone = _.cloneDeep(inputChannels);
-        aggregateUserState.currentValue = { createdChannelsAndCollections: { channels: inputChannels }};
+
+        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
 
         target.getChannelsAndCollectionsForSelection()
           .then(function(r){
@@ -393,10 +267,6 @@ describe('compose utilities', function(){
           });
 
         $rootScope.$apply();
-      });
-
-      it('should not modify the input channels', function(){
-        expect(inputChannels).toEqual(inputChannelsClone);
       });
 
       describe('when testing collections', function(){

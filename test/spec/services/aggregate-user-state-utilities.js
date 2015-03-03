@@ -311,4 +311,112 @@ describe('aggregate user state utilities', function(){
       });
     });
   });
+
+  describe('when getChannelsAndCollections is called', function(){
+
+    describe('when an unexpected error occurs', function(){
+      it('should convert the error into a rejected promise', function(){
+        // This structure should not occur, so the service will trip up and throw an exception.
+        aggregateUserState.currentValue = { createdChannelsAndCollections: undefined };
+
+        target.getChannelsAndCollections()
+          .then(function(){
+            fail('this should not occur');
+          })
+          .catch(function(error){
+            expect(error instanceof FifthweekError).toBeTruthy();
+          });
+
+        $rootScope.$apply();
+      });
+    });
+
+    describe('when there is no current aggregate state', function(){
+      it('should return the error', function(){
+        aggregateUserState.currentValue = undefined;
+
+        target.getChannelsAndCollections()
+          .then(function(){
+            fail('this should not occur');
+          })
+          .catch(function(error){
+            expect(error instanceof FifthweekError).toBeTruthy();
+            expect(error.message).toBe('No aggregate state found.');
+          });
+
+        $rootScope.$apply();
+      });
+    });
+
+    describe('when there are no channels', function(){
+      it('should return a displayable error', function(){
+        aggregateUserState.currentValue = { createdChannelsAndCollections: { channels: [] }};
+
+        target.getChannelsAndCollections()
+          .then(function(){
+            fail('this should not occur');
+          })
+          .catch(function(error){
+            expect(error instanceof DisplayableError).toBeTruthy();
+            expect(error.message).toBe('You must create a subscription.');
+          });
+
+        $rootScope.$apply();
+      });
+    });
+
+    describe('when the aggregate state is valid', function(){
+
+      var result;
+
+      beforeEach(function(){
+        var inputChannels = [
+          {
+            name: 'one',
+            someKey: 'someValue1',
+            collections: [
+              {
+                name: 'oneA',
+                someKey: 'someValueOneA'
+              },
+              {
+                name: 'oneB',
+                someKey: 'someValueOneB'
+              }
+            ]
+          },
+          {
+            name: 'two',
+            someKey: 'someValue2',
+            collections: [
+              {
+                name: 'twoA',
+                someKey: 'someValueTwoA'
+              }
+            ]
+          }
+        ];
+
+        aggregateUserState.currentValue = { createdChannelsAndCollections: { channels: inputChannels }};
+
+        target.getChannelsAndCollections()
+          .then(function(r){
+            result = r;
+          });
+
+        $rootScope.$apply();
+      });
+
+      it('should return a list of channels that matches the aggregate state', function(){
+        expect(result).toEqual(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
+      });
+
+      it('should return a deep clone of the channels in the aggregate user state', function(){
+        expect(result).not.toBe(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
+
+        result[0].collections[0].name = 'new';
+        expect(aggregateUserState.currentValue.createdChannelsAndCollections.channels[0].collections[0].name).toBe('oneA');
+      });
+    });
+  });
 });
