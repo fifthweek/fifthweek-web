@@ -24,7 +24,7 @@ angular.module('webApp').controller('listChannelsCtrl', function($scope, $q, agg
         channels: _.map(channels, function(channel) {
           return {
             id: channel.channelId,
-            name: channel.name || 'Base Channel',
+            name: channel.name,
             price: (channel.priceInUsCentsPerWeek / 100).toFixed(2),
             description: channel.description.split('\n')
           };
