@@ -483,6 +483,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.customize.channels.list.name, {
         url: '',
         templateUrl: 'views/creators/customize/channels/list.html',
+        controller: 'listChannelsCtrl',
         requireSubscription: true,
         data : {
           pageTitle: 'Channels',
