@@ -136,6 +136,7 @@ $header-height:108px;
         min-width: 176px; /* Ensures button is never wider than image */
         .image-area {
           border-radius: $post-border-radius;
+          box-shadow: $post-shadow;
         }
       }
 
