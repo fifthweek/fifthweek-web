@@ -1,24 +1,9 @@
-angular.module('webApp').controller('listChannelsCtrl', function($scope, $q, aggregateUserState, errorFacade) {
+angular.module('webApp').controller('listChannelsCtrl', function($scope, $q, aggregateUserStateUtilities, errorFacade) {
   'use strict';
 
   $scope.model = {};
-
-  // Extract into utilities
-  var getChannelsAndCollections = function() {
-    if(!aggregateUserState.currentValue){
-      return $q.reject(new FifthweekError('No aggregate state found.'));
-    }
-
-    var channels = aggregateUserState.currentValue.createdChannelsAndCollections.channels;
-
-    if(channels.length === 0) {
-      return $q.reject(new DisplayableError('You must create a subscription before posting.'));
-    }
-
-    return $q.when(channels);
-  };
-
-  getChannelsAndCollections()
+  
+  aggregateUserStateUtilities.getChannelsAndCollections()
     .then(function(channels) {
       $scope.model = {
         channels: _.map(channels, function(channel) {
