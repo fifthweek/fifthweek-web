@@ -14,24 +14,22 @@ angular.module('webApp')
     };
 
     var getCollectionNameForSelection = function(channel, collection){
-      var channelName = getOriginalName(channel);
       var collectionName = getOriginalName(collection);
 
-      if(!channelName){
+      if(channel.isDefault){
         return collectionName;
       }
-      else{
+      else {
+        var channelName = getOriginalName(channel);
         return collectionName + ' (' + channelName + ')';
       }
     };
 
     var getChannelsForSelectionInner = function(channels){
-      channels[0].originalName = channels[0].name;
-      channels[0].name = 'Share with everyone';
-
-      for(var i = 1; i < channels.length; ++i){
-        channels[i].originalName = channels[i].name;
-        channels[i].name = '"' + channels[i].name + '" Only';
+      for(var i = 0; i < channels.length; ++i){
+        var channel = channels[i];
+        channel.originalName = channel.name;
+        channel.name = channel.isDefault ? 'Share with everyone' : '"' + channel.name + '" Only';
       }
 
       return channels;
@@ -46,9 +44,7 @@ angular.module('webApp')
           for(var collectionIndex = 0; collectionIndex < channel.collections.length; ++collectionIndex){
             var collection = channel.collections[collectionIndex];
             collection.originalName = collection.name;
-            if(channelIndex !== 0){
-              collection.name = getCollectionNameForSelection(channel, collection);
-            }
+            collection.name = getCollectionNameForSelection(channel, collection);
             collections.push(collection);
           }
         }

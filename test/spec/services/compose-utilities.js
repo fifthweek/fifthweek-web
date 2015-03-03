@@ -38,13 +38,13 @@ describe('compose utilities', function(){
   });
 
   describe('when calling getCollectionNameForSelection', function(){
-    it('should return the collection name if channel does not have a name', function(){
-      var result = target.getCollectionNameForSelection({}, {name: 'collection'});
+    it('should return the collection name if channel is default', function(){
+      var result = target.getCollectionNameForSelection({isDefault: true}, {name: 'collection'});
       expect(result).toBe('collection');
     });
 
-    it('should return the collection name and channel name if channel does have a name', function(){
-      var result = target.getCollectionNameForSelection({name: 'channel'}, {name: 'collection'});
+    it('should return the collection name and channel name if channel is not default', function(){
+      var result = target.getCollectionNameForSelection({isDefault: false, name: 'channel'}, {name: 'collection'});
       expect(result).toBe('collection (channel)');
     });
   });
@@ -75,15 +75,18 @@ describe('compose utilities', function(){
         inputChannels = [
           {
             name: 'one',
-            someKey: 'someValue1'
+            someKey: 'someValue1',
+            isDefault: true
           },
           {
             name: 'two',
-            someKey: 'someValue2'
+            someKey: 'someValue2',
+            isDefault: false
           },
           {
             name: 'three',
-            someKey: 'someValue3'
+            someKey: 'someValue3',
+            isDefault: false
           }
         ];
 
@@ -101,7 +104,7 @@ describe('compose utilities', function(){
         expect(result.length).toBe(3);
       });
 
-      it('should set the first channel name to be "Share with everyone"', function(){
+      it('should set the default channel name to be "Share with everyone"', function(){
         expect(result[0].name).toBe('Share with everyone');
       });
 
@@ -146,6 +149,7 @@ describe('compose utilities', function(){
           {
             name: 'one',
             someKey: 'someValue1',
+            isDefault: true,
             collections: [
               {
                 name: 'oneA',
@@ -160,6 +164,7 @@ describe('compose utilities', function(){
           {
             name: 'two',
             someKey: 'someValue2',
+            isDefault: false,
             collections: [
               {
                 name: 'twoA',
@@ -169,7 +174,8 @@ describe('compose utilities', function(){
           },
           {
             name: 'three',
-            someKey: 'someValue3'
+            someKey: 'someValue3',
+            isDefault: false
           }
         ];
 
@@ -187,7 +193,7 @@ describe('compose utilities', function(){
         expect(result.length).toBe(3);
       });
 
-      it('should set the name of collections on the default channel to the collection name', function(){
+      it('should set the name of collections in the default channel to the collection name', function(){
         expect(result[0].name).toBe('oneA');
         expect(result[1].name).toBe('oneB');
       });
@@ -232,6 +238,7 @@ describe('compose utilities', function(){
           {
             name: 'one',
             someKey: 'someValue1',
+            isDefault: true,
             collections: [
               {
                 name: 'oneA',
@@ -246,6 +253,7 @@ describe('compose utilities', function(){
           {
             name: 'two',
             someKey: 'someValue2',
+            isDefault: false,
             collections: [
               {
                 name: 'twoA',
@@ -255,6 +263,7 @@ describe('compose utilities', function(){
           },
           {
             name: 'three',
+            isDefault: false,
             someKey: 'someValue3'
           }
         ];
@@ -296,7 +305,7 @@ describe('compose utilities', function(){
           expect(result.channels.length).toBe(3);
         });
 
-        it('should set the first channel name to be "Share with everyone"', function(){
+        it('should set the default channel name to be "Share with everyone"', function(){
           expect(result.channels[0].name).toBe('Share with everyone');
         });
 
