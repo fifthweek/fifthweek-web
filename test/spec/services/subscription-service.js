@@ -33,6 +33,8 @@ describe('subscription service factory', function(){
 describe('subscription service', function() {
   'use strict';
 
+  var defaultChannelName = 'Basic Subscription';
+  var defaultChannelDescription = 'Exclusive News Feed\nEarly Updates on New Releases';
   var subscriptionId = 'subscriptionId';
   var subscriptionData = 'subscriptionData';
   var error = 'error';
@@ -142,7 +144,9 @@ describe('subscription service', function() {
             channels: [
               {
                 channelId: subscriptionId,
-                name: undefined,
+                name: defaultChannelName,
+                description: defaultChannelDescription,
+                isDefault: true,
                 collections: []
               }
             ]
@@ -170,7 +174,9 @@ describe('subscription service', function() {
             channels: [
               {
                 channelId: subscriptionId,
-                name: undefined,
+                name: defaultChannelName,
+                description: defaultChannelDescription,
+                isDefault: true,
                 collections: []
               }
             ]
