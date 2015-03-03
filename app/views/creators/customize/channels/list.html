@@ -1,10 +1,14 @@
 <div class="page-customize-channels">
 
-  <fw-managed-list item-name="channel" items="model.channels" new-item-state="creators.customize.channels.new" manage-item-state="creators.customize.channels.manage">
+  <fw-managed-list ng-if="!model.errorMessage" item-name="channel" items="model.channels" new-item-state="creators.customize.channels.new" manage-item-state="creators.customize.channels.manage">
     <h5><a href>{{item.name}}</a> <span class="tail">${{item.price}}</span></h5>
     <ul>
       <li ng-repeat="description in item.description">{{description}}</li>
     </ul>
   </fw-managed-list>
+
+  <div ng-if="model.errorMessage" class="alert alert-danger sub-form-alert" id="sign-in-message">
+    <p>{{model.errorMessage}}</p>
+  </div>
 
 </div>

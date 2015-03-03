@@ -95,6 +95,27 @@ select {
   box-shadow: $form-input-inset-shadow, 0 0 $form-input-focus-shadow lighten($state-success-text, 20%);
 }
 
+.alert-success, .alert-danger {
+  p:before {
+    vertical-align: middle;
+    font-family:'FontAwesome';
+    line-height: $p-line-height;
+  }
+}
+
+.alert-success p:before {
+  content:"\f00c";
+  font-size:17px;
+  margin-right: 12px;
+
+}
+
+.alert-danger p:before {
+  content:"\f06a";
+  font-size:18px;
+  margin-right: 13px;
+}
+
 input[type="text"]::-ms-clear,input[type="number"]::-ms-clear,input[type="email"]::-ms-clear,input[type="password"]::-ms-clear,textarea::-ms-clear,select::-ms-clear {
   display:none
 }
