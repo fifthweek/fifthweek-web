@@ -1,7 +1,6 @@
 var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var ChannelAddPage = require('../../../pages/creators/customize/channel-add.page.js');
 var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
 
 describe('channel list form', function() {
@@ -13,31 +12,32 @@ describe('channel list form', function() {
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
   var header = new HeaderCustomizePage();
-  var channelAddPage = new ChannelAddPage();
   var page = new ChannelListPage();
 
   it('should run once before all', function() {
     var context = commonWorkflows.createSubscription();
     registration = context.registration;
     subscription = context.subscription;
+    navigateToPage();
+
   });
 
   it('should allow new channels to be created', function () {
-    navigateToPage();
-    page.addChannelButton.click();
-
-    expect(browser.getCurrentUrl()).toContain(channelAddPage.pageUrl);
+    expect(page.addChannelButton.isDisplayed()).toBe(true);
   });
 
-  it('should contain the base channel after registering', function () {
-    navigateToPage();
+  it('should contain the default channel after registering', function () {
     expectBaseChannel();
   });
 
-  it('should contain the base channel after registering, after signing back in', function () {
+  it('should contain the default channel after registering, after signing back in', function () {
     commonWorkflows.reSignIn(registration);
     navigateToPage();
     expectBaseChannel();
+  });
+
+  it('should allow default channel to be edited', function () {
+    expect(page.getEditChannelButton(0).isDisplayed()).toBe(true);
   });
 
   var navigateToPage = function() {
