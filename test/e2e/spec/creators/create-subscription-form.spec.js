@@ -1,6 +1,7 @@
 var TestKit = require('../../test-kit.js');
 var RegisterPage = require('../../pages/register.page.js');
 var SignOutPage = require('../../pages/sign-out.page.js');
+var TaglineInputPage = require('../../pages/tagline-input.page.js');
 var ChannelPriceInputPage = require('../../pages/channel-price-input.page.js');
 var CreateSubscriptionPage = require('../../pages/creators/create-subscription.page.js');
 
@@ -10,6 +11,7 @@ describe('create subscription form', function() {
   var testKit = new TestKit();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
+  var taglineInputPage = new TaglineInputPage();
   var channelPriceInputPage = new ChannelPriceInputPage();
   var page = new CreateSubscriptionPage();
 
@@ -29,82 +31,60 @@ describe('create subscription form', function() {
 
     it('should allow a new subscription to be created', function(){
       page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
     });
 
     it('should not require base price to be entered', function(){
       page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
     });
 
     it('should allow subscription names with 1 characters or more', function(){
       page.nameTextBox.sendKeys('1');
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
-    });
-
-    it('should allow taglines with 5 characters or more', function(){
-      page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys('12345');
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
-    });
-
-    it('should allow base prices of 1 cent or more', function(){
-      page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(page.newTagline());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('0.01');
     });
 
     it('should allow subscription names with punctuation (1 of 2)', function(){
       page.nameTextBox.sendKeys(testKit.punctuation33.substring(0, 20));
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
     });
 
     it('should allow subscription names with punctuation (2 of 2)', function(){
       page.nameTextBox.sendKeys(testKit.punctuation33.substring(20));
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
     });
 
     it('should allow subscription names with numbers', function(){
       page.nameTextBox.sendKeys('1234567890');
-      page.taglineTextBox.sendKeys(page.newTagline());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
-    });
-
-    it('should allow taglines with numbers', function(){
-      page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys('1234567890');
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
     });
 
     it('should allow subscription names with trailing and leading whitespace', function(){
       page.nameTextBox.sendKeys(' ' + page.newName() + ' ');
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
     });
 
-    it('should allow taglines with trailing and leading whitespace', function(){
+    taglineInputPage.includeHappyPaths(page.taglineTextBox, function() {
       page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(' ' + page.newTagline() + ' ');
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
     });
 
     channelPriceInputPage.includeHappyPaths(page.basePriceTextBox, function() {
       page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
     });
   });
 
@@ -121,7 +101,7 @@ describe('create subscription form', function() {
     });
 
     it('requires subscription name', function(){
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
       page.submitButton.click();
@@ -129,52 +109,28 @@ describe('create subscription form', function() {
       testKit.assertRequired(page.helpMessages, 'name');
     });
 
-    it('requires tagline', function(){
-      page.nameTextBox.sendKeys(page.newName());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
-      page.submitButton.click();
-
-      testKit.assertRequired(page.helpMessages, 'tagline');
-    });
-
-    it('should not allow taglines with fewer than 5 characters', function(){
-      page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys('1234');
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
-      page.submitButton.click();
-
-      testKit.assertMinLength(page.helpMessages, 5);
-    });
 
     it('should not allow subscription names with over than 25 characters', function(){
       var maxLength = 25;
       var overSizedValue = new Array(maxLength + 2).join('x'); // Produces maxLength+1 chars
 
       page.nameTextBox.sendKeys(overSizedValue);
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
 
       testKit.assertMaxLength(page.helpMessages, page.nameTextBox, overSizedValue, maxLength);
     });
 
-    it('should not allow taglines with over than 55 characters', function(){
-      var maxLength = 55;
-      var overSizedValue = new Array(maxLength + 2).join('x'); // Produces maxLength+1 chars
-
+    taglineInputPage.includeSadPaths(page.taglineTextBox, page.submitButton, page.helpMessages, function() {
       page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(overSizedValue);
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
-
-      testKit.assertMaxLength(page.helpMessages, page.taglineTextBox, overSizedValue, maxLength);
     });
 
     channelPriceInputPage.includeSadPaths(page.basePriceTextBox, page.submitButton, page.helpMessages, function() {
       page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(page.newTagline());
+      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
     });
   });
 });

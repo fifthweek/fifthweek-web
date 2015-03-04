@@ -13,9 +13,6 @@ CreateSubscriptionPage.prototype = Object.create({}, {
   newName: { value: function() {
     return 'Captain Phil #' + Math.round(Math.random() * 1000);
   }},
-  newTagline: { value: function() {
-    return 'You gotta be kitten me #' + Math.round(Math.random() * 1000);
-  }},
   newBasePrice: { value: function() {
     return (Math.random() * 10).toFixed(2);
   }},
