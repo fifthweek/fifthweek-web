@@ -1,10 +1,6 @@
-var HomePage = require('../../../pages/home.page.js');
-var RegisterPage = require('../../../pages/register.page.js');
-var SignOutPage = require('../../../pages/sign-out.page.js');
-var SignInPage = require('../../../pages/sign-in.page.js');
+var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var CreateSubscriptionPage = require('../../../pages/creators/create-subscription.page.js');
 var ChannelAddPage = require('../../../pages/creators/customize/channel-add.page.js');
 var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
 
@@ -14,20 +10,16 @@ describe('channel list form', function() {
   var registration;
   var subscription;
 
-  var homePage = new HomePage();
-  var signOutPage = new SignOutPage();
-  var signInPage = new SignInPage();
-  var registerPage = new RegisterPage();
-  var createSubscriptionPage = new CreateSubscriptionPage();
-  var channelAddPage = new ChannelAddPage();
+  var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
   var header = new HeaderCustomizePage();
+  var channelAddPage = new ChannelAddPage();
   var page = new ChannelListPage();
 
   it('should run once before all', function() {
-    signOutPage.signOutAndGoHome();
-    registration = registerPage.registerSuccessfully();
-    subscription = createSubscriptionPage.submitSuccessfully();
+    var context = commonWorkflows.createSubscription();
+    registration = context.registration;
+    subscription = context.subscription;
   });
 
   it('should allow new channels to be created', function () {
@@ -43,9 +35,7 @@ describe('channel list form', function() {
   });
 
   it('should contain the base channel after registering, after signing back in', function () {
-    signOutPage.signOutAndGoHome();
-    homePage.signInLink.click();
-    signInPage.signInSuccessfully(registration.username, registration.password);
+    commonWorkflows.reSignIn(registration);
     navigateToPage();
     expectBaseChannel();
   });
