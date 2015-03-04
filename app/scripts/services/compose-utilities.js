@@ -1,6 +1,6 @@
 angular.module('webApp')
   .factory('composeUtilities',
-  function($q, $modal, aggregateUserStateUtilities, channelRepositoryFactory, utilities, logService, collectionStub) {
+  function($q, $modal, channelRepositoryFactory, utilities, logService, collectionStub) {
     'use strict';
 
     var service = {};
