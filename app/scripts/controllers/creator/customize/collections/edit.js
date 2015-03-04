@@ -1,4 +1,4 @@
-angular.module('webApp').controller('manageCollectionCtrl', function($scope, $state, states) {
+angular.module('webApp').controller('editCollectionCtrl', function($scope, $state, states) {
   'use strict';
 
   $scope.model = {

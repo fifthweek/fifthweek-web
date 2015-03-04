@@ -78,8 +78,8 @@ angular.module('routes', ['ui.router'])
           new: {
             name: 'creators.customize.collections.new'
           },
-          manage: {
-            name: 'creators.customize.collections.manage'
+          edit: {
+            name: 'creators.customize.collections.edit'
           },
           list: {
             name: 'creators.customize.collections.list'
@@ -90,8 +90,8 @@ angular.module('routes', ['ui.router'])
           new: {
             name: 'creators.customize.channels.new'
           },
-          manage: {
-            name: 'creators.customize.channels.manage'
+          edit: {
+            name: 'creators.customize.channels.edit'
           },
           list: {
             name: 'creators.customize.channels.list'
@@ -423,13 +423,13 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.customize.collections.manage.name, {
+      .state(states.creators.customize.collections.edit.name, {
         url: '/{id}',
-        templateUrl: 'views/creators/customize/collections/manage.html',
-        controller: 'manageCollectionCtrl',
+        templateUrl: 'views/creators/customize/collections/edit.html',
+        controller: 'editCollectionCtrl',
         requireSubscription: true,
         data : {
-          headTitle: ': ' + 'Manage Collection',
+          headTitle: ': ' + 'Edit Collection',
           access: {
             requireAuthenticated: true
           }
@@ -469,13 +469,13 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.customize.channels.manage.name, {
+      .state(states.creators.customize.channels.edit.name, {
         url: '/{id}',
-        templateUrl: 'views/creators/customize/channels/manage.html',
-        controller: 'manageChannelCtrl',
+        templateUrl: 'views/creators/customize/channels/edit.html',
+        controller: 'editChannelCtrl',
         requireSubscription: true,
         data : {
-          headTitle: ': ' + 'Manage Channel',
+          headTitle: ': ' + 'Edit Channel',
           access: {
             requireAuthenticated: true
           }

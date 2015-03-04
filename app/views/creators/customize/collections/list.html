@@ -4,7 +4,7 @@
   {id:'c', name:'Wallpapers', channel:'Extras Channel', schedule:['Tuesday', 'Thursday']}
 ]">
 
-  <fw-managed-list item-name="collection" items="collections" new-item-state="creators.customize.collections.new" manage-item-state="creators.customize.collections.manage">
+  <fw-managed-list item-name="collection" items="collections" new-item-state="creators.customize.collections.new" manage-item-state="creators.customize.collections.edit">
     <h5>
       <a href>{{item.name}}</a>
       <span class="tail" ng-if="item.channel !== undefined">{{item.channel}}</span>

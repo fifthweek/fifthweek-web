@@ -1,4 +1,4 @@
-angular.module('webApp').controller('manageChannelCtrl', function($scope, $state, states) {
+angular.module('webApp').controller('editChannelCtrl', function($scope, $state, states) {
   'use strict';
 
   $scope.delete = function() {
