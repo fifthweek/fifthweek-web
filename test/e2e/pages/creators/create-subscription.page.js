@@ -26,6 +26,7 @@ CreateSubscriptionPage.prototype = Object.create({}, {
 
     this.nameTextBox.sendKeys(name);
     this.taglineTextBox.sendKeys(tagline);
+    this.basePriceTextBox.clear();
     this.basePriceTextBox.sendKeys(basePrice);
     this.submitButton.click();
 

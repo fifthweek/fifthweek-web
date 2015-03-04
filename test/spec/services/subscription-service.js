@@ -35,8 +35,9 @@ describe('subscription service', function() {
 
   var defaultChannelName = 'Basic Subscription';
   var defaultChannelDescription = 'Exclusive News Feed\nEarly Updates on New Releases';
+  var basePrice = '1.99';
   var subscriptionId = 'subscriptionId';
-  var subscriptionData = 'subscriptionData';
+  var subscriptionData = { basePrice: basePrice };
   var error = 'error';
   var userId = 'user_id';
 
@@ -145,6 +146,7 @@ describe('subscription service', function() {
               {
                 channelId: subscriptionId,
                 name: defaultChannelName,
+                priceInUsCentsPerWeek: basePrice,
                 description: defaultChannelDescription,
                 isDefault: true,
                 collections: []
@@ -175,6 +177,7 @@ describe('subscription service', function() {
               {
                 channelId: subscriptionId,
                 name: defaultChannelName,
+                priceInUsCentsPerWeek: basePrice,
                 description: defaultChannelDescription,
                 isDefault: true,
                 collections: []

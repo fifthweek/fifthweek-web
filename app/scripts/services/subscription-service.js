@@ -52,6 +52,7 @@ angular.module('webApp')
                 channels: [
                   {
                     channelId: subscriptionId,
+                    priceInUsCentsPerWeek: subscriptionData.basePrice,
                     isDefault: true,
                     collections: [],
 
