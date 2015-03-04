@@ -152,7 +152,41 @@ describe('channel repository factory', function(){
     });
   });
 
-  describe('when getChannelsAndCollections is called', function(){
+  describe('when creating a collection', function() {
+    var collectionId = 'collectionId';
+    var collectionName = 'collectionName';
+    var channel;
+    var updateChannel;
+    beforeEach(function() {
+      channel = { collections: [] };
+      // Spy on own method. The method under test could go into a new higher-level object, but it's included within
+      // this object for simplicity. However, we test it as though we have pulled it out, mocking away its dependencies
+      // like so:
+      updateChannel = target.updateChannel;
+      target.updateChannel = function(channelId, applyChanges) {
+        applyChanges(channel);
+      };
+
+      spyOn(target, 'updateChannel').and.callThrough();
+    });
+
+    afterEach(function() {
+      // Restore original implementation.
+      target.updateChannel = updateChannel;
+    });
+
+    it('should append the new collection onto the channel\'s list of collections', function() {
+      target.createCollection(channelId, collectionId, collectionName);
+
+      expect(target.updateChannel.calls.mostRecent().args[0]).toBe(channelId);
+      expect(channel.collections).toEqual([{
+        collectionId: collectionId,
+        name: collectionName
+      }]);
+    });
+  });
+
+  describe('when retrieving channels with collections', function(){
 
     describe('when an unexpected error occurs', function(){
       it('should convert the error into a rejected promise', function(){
