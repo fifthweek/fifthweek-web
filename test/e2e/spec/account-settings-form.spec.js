@@ -39,21 +39,10 @@ describe('account settings form', function() {
 
       afterEach(function() {
         page.saveChangesButton.click();
-
-        // Test page behaviour
         expect(page.savedSuccessfullyMessage.isDisplayed()).toBe(true);
         expect(page.saveChangesButton.isEnabled()).toBe(false);
 
-        // Reset state
-        page.emailTextBox.clear();
-        page.emailTextBox.sendKeys(registration.email);
-        page.usernameTextBox.clear();
-        page.usernameTextBox.sendKeys(registration.username);
-        page.passwordTextBox.clear();
-
-        // Test page behaviour
-        expect(page.savedSuccessfullyMessage.isDisplayed()).toBe(false);
-        expect(page.saveChangesButton.isEnabled()).toBe(true);
+        browser.refresh();
       });
 
       it('should allow the user to change their email', function(){
@@ -74,11 +63,7 @@ describe('account settings form', function() {
     });
 
     afterEach(function() {
-      page.emailTextBox.clear();
-      page.emailTextBox.sendKeys(registration.email);
-      page.usernameTextBox.clear();
-      page.usernameTextBox.sendKeys(registration.username);
-      page.passwordTextBox.clear();
+      browser.refresh();
     });
 
     it('requires email address', function(){
@@ -102,14 +87,24 @@ describe('account settings form', function() {
       navigateToPage();
     });
 
+    it('should disable the submit button until changes are made', function(){
+      expect(page.saveChangesButton.isEnabled()).toBe(false);
+    });
+
     it('should display a thumbnail', function(){
       expect(page.noProfileImage.isDisplayed()).toBe(true);
       page.setFileInput('../sample-image.jpg');
-      browser.wait(page.profileImage.isDisplayed);
+      browser.wait(function(){
+        return page.profileImage.isPresent();
+      });
       expect(page.profileImage.isDisplayed()).toBe(true);
     });
 
-    it('should persist changes', function(){
+    it('should enable the submit button after setting the profile image', function(){
+      expect(page.saveChangesButton.isEnabled()).toBe(true);
+    });
+
+    it('should save changes to text fields', function() {
       registration.email = 'phil+' + registration.email;
       page.emailTextBox.clear();
       page.emailTextBox.sendKeys(registration.email);
@@ -125,11 +120,21 @@ describe('account settings form', function() {
       page.saveChangesButton.click();
       expect(page.savedSuccessfullyMessage.isDisplayed()).toBe(true);
       expect(page.saveChangesButton.isEnabled()).toBe(false);
+    });
 
+    it('should reset the submit button and success message status on next change', function(){
+      page.usernameTextBox.clear();
+      expect(page.savedSuccessfullyMessage.isDisplayed()).toBe(false);
+      expect(page.saveChangesButton.isEnabled()).toBe(true);
+    });
+
+    it('should persist new settings between sessions', function(){
       commonWorkflows.reSignIn(registration);
       sidebar.settingsLink.click();
 
-      browser.wait(page.profileImage.isDisplayed);
+      browser.wait(function(){
+        return page.profileImage.isPresent();
+      });
       expect(page.profileImage.isDisplayed()).toBe(true);
 
       expect(page.emailTextBox.getAttribute('value')).toBe(registration.email);
