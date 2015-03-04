@@ -4,7 +4,7 @@ exports.config = {
 
   // Developers can override and check-in. This is only used by other developers
   // to debug specific tests and will be frequently overwritten.
-  specs: ['e2e/spec/**/channel-list-page.spec.js'],
+  specs: ['e2e/spec/**/channel-edit-page.spec.js'],
 
   capabilities: {
     browserName: 'firefox'

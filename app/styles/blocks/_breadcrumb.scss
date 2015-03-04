@@ -1,16 +1,17 @@
 @import '_base';
 
-h4.bread-crumb {
-  font-size: 19px;
-  font-weight: normal;
+#breadcrumb {
+  font-size: $p-font-size;
+  font-weight: bold;
+  margin: -6px 0 25px 0;
   color:$grey-dark-2;
 
   i {
     margin:0 7px 0 9px;
   }
 
-  a {
-    color:$grey-dark;
+  a.item {
+    color:$grey-dark-2;
     #{$state-active-hover-focus} {
       text-decoration: none;
       color: $link-color;
@@ -21,5 +22,9 @@ h4.bread-crumb {
         margin:0 3px 0 0;
       }
     }
+  }
+
+  span.item span {
+    color: $link-color;
   }
 }

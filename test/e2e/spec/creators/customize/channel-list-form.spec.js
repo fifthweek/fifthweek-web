@@ -48,9 +48,8 @@ describe('channel list form', function() {
     expect(page.channels.count()).toBe(1);
 
     var defaultChannelText = page.getChannel(0).getText();
-    expect(defaultChannelText).toContain('Basic Subscription');
+    expect(defaultChannelText).toContain(page.defaultChannelName);
     expect(defaultChannelText).toContain('$' + subscription.basePrice);
-    expect(defaultChannelText).toContain('Exclusive News Feed');
-    expect(defaultChannelText).toContain('Early Updates on New Releases');
+    expect(defaultChannelText).toContain(page.defaultChannelDescription);
   };
 });
