@@ -1,5 +1,13 @@
 'use strict';
 
+var SubscriptionNameInputPage = require('../../pages/subscription-name-input.page.js');
+var TaglineInputPage = require('../../pages/tagline-input.page.js');
+var ChannelPriceInputPage = require('../../pages/channel-price-input.page.js');
+
+var subscriptionNameInputPage = new SubscriptionNameInputPage();
+var taglineInputPage = new TaglineInputPage();
+var channelPriceInputPage = new ChannelPriceInputPage();
+
 var CreateSubscriptionPage = function() {};
 
 CreateSubscriptionPage.prototype = Object.create({}, {
@@ -10,13 +18,10 @@ CreateSubscriptionPage.prototype = Object.create({}, {
   submitButton: { get: function () { return element(by.id('create-subscription-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#createSubscriptionForm .help-block')); }},
   nextPageUrl: { get: function () { return '/creators/compose/note'; }}, // Todo: replace with page object
-  newName: { value: function() {
-    return 'Captain Phil #' + Math.round(Math.random() * 1000);
-  }},
   submitSuccessfully: { value: function() {
-    var name = this.newName();
-    var tagline = this.newTagline();
-    var basePrice = this.newBasePrice();
+    var name = subscriptionNameInputPage.newName();
+    var tagline = taglineInputPage.newTagline();
+    var basePrice = channelPriceInputPage.newPrice();
 
     this.nameTextBox.sendKeys(name);
     this.taglineTextBox.sendKeys(tagline);

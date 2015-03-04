@@ -22,7 +22,7 @@ ChannelPriceInputPage.prototype = Object.create({},
   includeSadPaths: { value: function(input, button, helpMessages, populateOtherInputsWithValidData, isOptional) {
 
     if(!isOptional) {
-      it('requires password', function () {
+      it('requires price', function () {
         populateOtherInputsWithValidData();
         input.clear();
 
@@ -32,7 +32,7 @@ ChannelPriceInputPage.prototype = Object.create({},
       });
     }
 
-    it('should not allow a base price of 0', function(){
+    it('should not allow a price of 0', function(){
       populateOtherInputsWithValidData();
       input.clear();
       input.sendKeys('0');
