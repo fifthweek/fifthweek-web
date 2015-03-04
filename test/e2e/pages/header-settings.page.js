@@ -10,11 +10,11 @@ HeaderSettingsPage.prototype = Object.create(HeaderPage.prototype, {
   includeBasicTests: { value: function(highlightedLink) {
     this.includeBasicTestsBase(highlightedLink, [
       {
-        name: 'account settings',
+        name: 'Account Settings',
         element: this.accountSettingsLink
       },
       {
-        name: 'sign out',
+        name: 'Sign Out',
         element: this.signOutLink
       }
     ]);

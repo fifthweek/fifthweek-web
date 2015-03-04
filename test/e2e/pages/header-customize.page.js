@@ -10,15 +10,15 @@ HeaderCustomizePage.prototype = Object.create(HeaderPage.prototype, {
   includeBasicTests: { value: function(highlightedLink) {
     this.includeBasicTestsBase(highlightedLink, [
       {
-        name: 'landing page',
+        name: 'Landing Page',
         element: this.landingPageLink
       },
       {
-        name: 'channels',
+        name: 'Channels',
         element: this.channelsLink
       },
       {
-        name: 'collections',
+        name: 'Collections',
         element: this.collectionsLink
       }
     ]);

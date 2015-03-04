@@ -16,7 +16,7 @@ HeaderPage.prototype = Object.create({}, {
 
       for (var i = 0; i < links.length; i++) {
         var link = links[i];
-        it('should link to ' + link.name, function() {
+        it('should contain "' + link.name + '" link', function() {
           expect(link.element.isDisplayed()).toBe(true);
         });
       }
