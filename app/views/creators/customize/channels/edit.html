@@ -29,8 +29,10 @@
               data-event-title="Channel edited"
               data-event-category="Customization"
               fw-form-submit="save()">Save</button>
-            <button class="btn btn-default btn-block"
-                    ui-sref="creators.customize.channels">Cancel</button>
+            <button
+              id="cancel-button"
+              class="btn btn-default btn-block"
+              ui-sref="creators.customize.channels">Cancel</button>
           </div>
           <div class="col-s-4" ng-if="!model.channel.isDefault">
             <fw-form-input-delete
