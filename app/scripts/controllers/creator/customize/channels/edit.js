@@ -1,4 +1,4 @@
-angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $state, aggregateUserStateUtilities, errorFacade) {
+angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $state, aggregateUserState, aggregateUserStateUtilities, channelStub, errorFacade) {
   'use strict';
 
   var channelId = $state.params.id;
@@ -26,6 +26,19 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
         $scope.model.errorMessage = message;
       });
     });
+
+  //$scope.save = function() {
+  //  var channelData = {};
+  //  return channelStub.putChannel(channelId, channelData)
+  //    .then(function() {
+  //
+  //      var newChannels = _.cloneDeep(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
+  //      var channel = _.find(newChannels, { 'channelId': channelId });
+  //      if(!channel){
+  //        return $q.reject(new FifthweekError('Channel not found in aggregate state.'));
+  //      }
+  //    });
+  //};
 
   $scope.delete = function() {
     $state.go(states.creators.customize.channels.name);
