@@ -54,6 +54,17 @@ describe('edit channel form', function() {
 
       expectDefaultChannelValues();
     });
+
+    it('should allow user to cancel when form is invalid', function() {
+      page.nameTextBox.clear();
+      page.descriptionTextBox.clear();
+      page.priceTextBox.clear();
+
+      page.cancelButton.click();
+      channelListPage.getEditChannelButton(0).click();
+
+      expectDefaultChannelValues();
+    });
   });
 
   //describe('when editing a non-default channel', function() {
