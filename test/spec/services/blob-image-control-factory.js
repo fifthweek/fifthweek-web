@@ -112,5 +112,5 @@ describe('error facade', function() {
 
       expect(updateHandler).toHaveBeenCalledWith('g', 'h', 'i');
     });
-  })
+  });
 });
