@@ -12,8 +12,14 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $state, 
       }
 
       $scope.model.channel = _.cloneDeep($scope.model.savedChannel);
+
+      // Map price.
       $scope.model.channel.price = ($scope.model.channel.priceInUsCentsPerWeek / 100).toFixed(2);
       delete $scope.model.channel.priceInUsCentsPerWeek;
+
+      // Map visibility.
+      $scope.model.channel.hidden = !$scope.model.channel.isVisibleToNonSubscribers;
+      delete $scope.model.channel.isVisibleToNonSubscribers;
     })
     .catch(function(error) {
       return errorFacade.handleError(error, function(message) {
