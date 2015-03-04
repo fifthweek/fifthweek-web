@@ -91,8 +91,15 @@ describe('account settings form', function() {
       expect(page.saveChangesButton.isEnabled()).toBe(false);
     });
 
-    it('should display a thumbnail', function(){
+    it('should display current account settings', function(){
       expect(page.noProfileImage.isDisplayed()).toBe(true);
+      expect(page.fileUploadButton.isDisplayed()).toBe(true);
+      expect(page.emailTextBox.getAttribute('value')).toBe(registration.email);
+      expect(page.usernameTextBox.getAttribute('value')).toBe(registration.username);
+      expect(page.passwordTextBox.getAttribute('value')).toBe('');
+    });
+
+    it('should display a thumbnail', function(){
       page.setFileInput('../sample-image.jpg');
       browser.wait(function(){
         return page.profileImage.isPresent();

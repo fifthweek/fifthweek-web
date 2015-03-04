@@ -4,6 +4,7 @@ var AccountPage = function() {};
 
 AccountPage.prototype = Object.create({}, {
   fileInput: { get: function() { return element(by.css('#file-upload-button-area input')); }},
+  fileUploadButton: { get: function() { return element(by.css('#file-upload-button-area .btn')); }},
   profileImage: { get: function(){ return element(by.css('.available-image')); }},
   noProfileImage: { get: function(){ return element(by.css('.blank-area')); }},
   emailTextBox: { get: function(){ return element(by.model('model.accountSettings.email')); }},
