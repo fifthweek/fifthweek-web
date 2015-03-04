@@ -30,9 +30,7 @@ describe('edit channel form', function() {
     });
 
     it('should initialise with the correct properties', function() {
-      expect(page.nameTextBox.getAttribute('value')).toBe(channelListPage.defaultChannelName);
-      expect(page.descriptionTextBox.getAttribute('value')).toBe(channelListPage.defaultChannelDescription);
-      expect(page.priceTextBox.getAttribute('value')).toBe(subscription.basePrice);
+      expectDefaultChannelValues();
     });
 
     it('should not give you the option to delete the channel', function() {
@@ -41,6 +39,20 @@ describe('edit channel form', function() {
 
     it('should not give you the option to hide the channel', function() {
       expect(page.hiddenCheckboxCount).toBe(0);
+    });
+
+    it('should discard changes when user cancels', function() {
+      page.nameTextBox.clear();
+      page.nameTextBox.sendKeys('New Value');
+      page.descriptionTextBox.clear();
+      page.descriptionTextBox.sendKeys('New Value');
+      page.priceTextBox.clear();
+      page.priceTextBox.sendKeys(subscription.basePrice + 2.55);
+
+      page.cancelButton.click();
+      channelListPage.getEditChannelButton(0).click();
+
+      expectDefaultChannelValues();
     });
   });
 
@@ -56,4 +68,10 @@ describe('edit channel form', function() {
   //
   //  });
   //});
+
+  var expectDefaultChannelValues = function() {
+    expect(page.nameTextBox.getAttribute('value')).toBe(channelListPage.defaultChannelName);
+    expect(page.descriptionTextBox.getAttribute('value')).toBe(channelListPage.defaultChannelDescription);
+    expect(page.priceTextBox.getAttribute('value')).toBe(subscription.basePrice);
+  }
 });
