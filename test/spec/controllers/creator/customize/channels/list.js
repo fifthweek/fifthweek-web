@@ -29,7 +29,7 @@ describe('channel list controller', function () {
     target = $controller('listChannelsCtrl', { $scope: $scope });
   };
 
-  it('should return channels from user state', function() {
+  it('should expose channels from user state', function() {
     aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when([
       {
         channelId: 'A',
@@ -44,8 +44,10 @@ describe('channel list controller', function () {
         description: 'Foo'
       }
     ]));
+
     initializeTarget();
     $scope.$apply();
+
     expect($scope.model.channels).toEqual([
       {
         id: 'A',
@@ -64,8 +66,10 @@ describe('channel list controller', function () {
 
   it('should display any error messages', function() {
     aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.reject('error'));
+
     initializeTarget();
     $scope.$apply();
+
     expect($scope.model.errorMessage).toBe(errorFacade.expectedMessage('error'));
   });
 });

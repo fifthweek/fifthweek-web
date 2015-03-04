@@ -1,4 +1,4 @@
-angular.module('webApp').controller('editChannelCtrl', function($scope, $state, aggregateUserStateUtilities, errorFacade) {
+angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $state, aggregateUserStateUtilities, errorFacade) {
   'use strict';
 
   var channelId = $state.params.id;
@@ -8,7 +8,7 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $state, 
     .then(function(channels) {
       $scope.model.savedChannel = _.find(channels, { channelId: channelId });
       if (!$scope.model.savedChannel) {
-        throw new FifthweekError('Channel does not exist');
+        return $q.reject(new FifthweekError('Channel does not exist'));
       }
 
       $scope.model.channel = _.cloneDeep($scope.model.savedChannel);
