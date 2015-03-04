@@ -31,88 +31,98 @@ describe('fw-blob-image directive', function(){
       scope = $rootScope.$new();
     });
 
-    it('should create a control with an update function on the scope if it does not exist', function(){
+    it('should not initialize the control with an update function on the scope if it does not exist', function(){
       var element = angular.element('<fw-blob-image />');
       $compile(element)(scope);
       scope.$digest();
 
-      expect(element.isolateScope().internalControl).toBeDefined();
-      expect(element.isolateScope().internalControl.update).toBeDefined();
+      expect(element.isolateScope().control).not.toBeDefined();
     });
 
     it('should assign a control value on the scope from attribute if control attribute exists', function(){
       scope.something = {
-        a: 'a'
+        a: 'a',
+        initialize: function(){}
       };
 
       var element = angular.element('<fw-blob-image control="something" />');
       $compile(element)(scope);
       scope.$digest();
 
-      expect(element.isolateScope().internalControl).toBeDefined();
-      expect(element.isolateScope().internalControl.a).toBeDefined();
+      expect(element.isolateScope().control).toBeDefined();
+      expect(element.isolateScope().control.a).toBeDefined();
     });
 
-    it('should add an update function to the control variable', function(){
-      scope.something = {};
-      var element = angular.element('<fw-blob-image control="something" />');
-      $compile(element)(scope);
-      scope.$digest();
+    describe('when a control variable exists', function(){
+      beforeEach(function(){
+        scope.control = {};
 
-      expect(element.isolateScope().internalControl).toBeDefined();
-      expect(element.isolateScope().internalControl.update).toBeDefined();
-    });
+        scope.control.initialize = function(handler){
+          scope.control.update = handler;
+        };
 
-    it('should broadcast an event when update is called', function(){
-      var element = angular.element('<fw-blob-image />');
-      $compile(element)(scope);
-      scope.$digest();
+        spyOn(scope.control, 'initialize').and.callThrough();
+      });
 
-      var isolateScope = element.isolateScope();
-      spyOn(isolateScope, '$broadcast');
+      it('should initialize the control variable', function(){
+        var element = angular.element('<fw-blob-image control="control" />');
+        $compile(element)(scope);
+        scope.$digest();
 
-      isolateScope.internalControl.update('uri', 'containerName', true);
+        expect(scope.control.initialize).toHaveBeenCalled();
+      });
 
-      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri', 'containerName', true);
-    });
+      it('should broadcast an event when update is called', function(){
+        var element = angular.element('<fw-blob-image control="control" />');
+        $compile(element)(scope);
+        scope.$digest();
 
-    it('should broadcast an event when update is called without the availableImmediately parameter', function(){
-      var element = angular.element('<fw-blob-image />');
-      $compile(element)(scope);
-      scope.$digest();
+        var isolateScope = element.isolateScope();
+        spyOn(isolateScope, '$broadcast');
 
-      var isolateScope = element.isolateScope();
-      spyOn(isolateScope, '$broadcast');
+        scope.control.update('uri', 'containerName', true);
 
-      isolateScope.internalControl.update('uri', 'containerName');
+        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri', 'containerName', true);
+      });
 
-      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri', 'containerName', undefined);
-    });
+      it('should broadcast an event when update is called without the availableImmediately parameter', function(){
+        var element = angular.element('<fw-blob-image control="control" />');
+        $compile(element)(scope);
+        scope.$digest();
 
-    it('should broadcast an event when update is called without any parameters', function(){
-      var element = angular.element('<fw-blob-image />');
-      $compile(element)(scope);
-      scope.$digest();
+        var isolateScope = element.isolateScope();
+        spyOn(isolateScope, '$broadcast');
 
-      var isolateScope = element.isolateScope();
-      spyOn(isolateScope, '$broadcast');
+        scope.control.update('uri', 'containerName');
 
-      isolateScope.internalControl.update();
+        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri', 'containerName', undefined);
+      });
 
-      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent);
-    });
+      it('should broadcast an event when update is called without any parameters', function(){
+        var element = angular.element('<fw-blob-image control="control" />');
+        $compile(element)(scope);
+        scope.$digest();
 
-    it('should broadcast an event with the thumbnail url when update is called and thumbnail is specified', function(){
-      var element = angular.element('<fw-blob-image thumbnail="thumb" />');
-      $compile(element)(scope);
-      scope.$digest();
+        var isolateScope = element.isolateScope();
+        spyOn(isolateScope, '$broadcast');
 
-      var isolateScope = element.isolateScope();
-      spyOn(isolateScope, '$broadcast');
+        scope.control.update();
 
-      isolateScope.internalControl.update('uri', 'containerName', true);
+        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent);
+      });
 
-      expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri/thumb', 'containerName', true);
+      it('should broadcast an event with the thumbnail url when update is called and thumbnail is specified', function(){
+        var element = angular.element('<fw-blob-image control="control" thumbnail="thumb" />');
+        $compile(element)(scope);
+        scope.$digest();
+
+        var isolateScope = element.isolateScope();
+        spyOn(isolateScope, '$broadcast');
+
+        scope.control.update('uri', 'containerName', true);
+
+        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'uri/thumb', 'containerName', true);
+      });
     });
 
     describe('when specifying the uri inline', function(){

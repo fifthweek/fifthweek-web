@@ -11,8 +11,8 @@ angular.module('webApp').directive('fwBlobImage',
     },
     templateUrl:'views/partials/blob-image.html',
     link: function(scope/*, element, attrs*/){
-      scope.internalControl = scope.control || {};
-      scope.internalControl.update = function(fileUri, containerName, availableImmediately) {
+
+      var updateHandler = function(fileUri, containerName, availableImmediately) {
         if(!fileUri) {
           scope.$broadcast(blobImageCtrlConstants.updateEvent);
           return;
@@ -25,8 +25,12 @@ angular.module('webApp').directive('fwBlobImage',
         scope.$broadcast(blobImageCtrlConstants.updateEvent, fileUri,  containerName, availableImmediately);
       };
 
+      if(scope.control){
+        scope.control.initialize(updateHandler);
+      }
+
       if(scope.fileUri && scope.containerName){
-        scope.internalControl.update(scope.fileUri, scope.containerName, true);
+        updateHandler(scope.fileUri, scope.containerName, true);
       }
     }
   };

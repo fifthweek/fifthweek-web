@@ -1,5 +1,5 @@
 angular.module('webApp')
-  .controller('AccountCtrl', function ($scope, $q, authenticationService, accountSettingsStub, logService, utilities) {
+  .controller('AccountCtrl', function ($scope, $q, authenticationService, accountSettingsStub, logService, utilities, blobImageControlFactory) {
     'use strict';
 
     var model = {
@@ -40,7 +40,7 @@ angular.module('webApp')
         });
     };
 
-    $scope.blobImage = {};
+    $scope.blobImage = blobImageControlFactory.createControl();
     $scope.model = model;
 
     loadForm();

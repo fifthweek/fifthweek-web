@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'customizeLandingPageCtrl',
-  function($scope, $q, authenticationService, aggregateUserState, subscriptionStub, logService, utilities) {
+  function($scope, $q, authenticationService, aggregateUserState, subscriptionStub, logService, utilities, blobImageControlFactory) {
     'use strict';
 
     var model = {
@@ -50,7 +50,7 @@ angular.module('webApp').controller(
         });
     };
 
-    $scope.blobImage = {};
+    $scope.blobImage = blobImageControlFactory.createControl();
     $scope.model = model;
 
     loadForm();

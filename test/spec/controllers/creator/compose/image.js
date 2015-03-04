@@ -7,18 +7,26 @@ describe('compose image controller', function () {
 
   var $state;
   var composeUtilities;
+  var blobImageControlFactory;
   var postsStub;
+
+  var defaultBlobControl;
 
   beforeEach(function() {
 
     $state = jasmine.createSpyObj('$state', ['reload']);
     composeUtilities = jasmine.createSpyObj('composeUtilities', ['loadChannelsAndCollectionsIntoModel', 'getCollectionIdAndCreateCollectionIfRequired', 'showCreateCollectionDialog']);
+    blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
     postsStub = jasmine.createSpyObj('postsStub', ['postImage']);
+
+    defaultBlobControl = { control: true };
+    blobImageControlFactory.createControl.and.returnValue(defaultBlobControl);
 
     module('webApp');
     module(function($provide) {
       $provide.value('$state', $state);
       $provide.value('composeUtilities', composeUtilities);
+      $provide.value('blobImageControlFactory', blobImageControlFactory);
       $provide.value('postsStub', postsStub);
     });
 
@@ -65,8 +73,9 @@ describe('compose image controller', function () {
         expect($scope.model.errorMessage).toBeUndefined();
       });
 
-      it('should set blobImage to an empty object', function(){
-        expect($scope.blobImage).toEqual({});
+      it('should set blobImage to a new control object', function(){
+        expect(blobImageControlFactory.createControl).toHaveBeenCalled();
+        expect($scope.blobImage).toEqual(defaultBlobControl);
       });
 
       it('should set the inputs to empty', function(){

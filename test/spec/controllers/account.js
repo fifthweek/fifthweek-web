@@ -9,6 +9,9 @@ describe('account controller', function () {
   var accountSettingsStub;
   var logService;
   var utilities;
+  var blobImageControlFactory;
+
+  var defaultBlobControl;
 
   beforeEach(function() {
 
@@ -16,6 +19,10 @@ describe('account controller', function () {
     accountSettingsStub = jasmine.createSpyObj('accountSettingsStub', ['get', 'put']);
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
+    blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
+
+    defaultBlobControl = { control: true };
+    blobImageControlFactory.createControl.and.returnValue(defaultBlobControl);
 
     module('webApp');
     module(function($provide) {
@@ -23,6 +30,7 @@ describe('account controller', function () {
       $provide.value('accountSettingsStub', accountSettingsStub);
       $provide.value('logService', logService);
       $provide.value('utilities', utilities);
+      $provide.value('blobImageControlFactory', blobImageControlFactory);
     });
 
     inject(function ($injector) {
@@ -72,6 +80,11 @@ describe('account controller', function () {
 
       it('should load the current user settings', function(){
         expect($scope.model.isLoading).toBe(true);
+      });
+
+      it('should set blobImage to a new control object', function(){
+        expect(blobImageControlFactory.createControl).toHaveBeenCalled();
+        expect($scope.blobImage).toEqual(defaultBlobControl);
       });
     });
 

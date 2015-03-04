@@ -1,5 +1,5 @@
 angular.module('webApp').controller('composeImageCtrl',
-  function($q, $scope, $state, postsStub, composeUtilities) {
+  function($q, $scope, $state, postsStub, composeUtilities, blobImageControlFactory) {
     'use strict';
 
     var model = {
@@ -23,7 +23,7 @@ angular.module('webApp').controller('composeImageCtrl',
 
     composeUtilities.loadChannelsAndCollectionsIntoModel(model);
 
-    $scope.blobImage = {};
+    $scope.blobImage = blobImageControlFactory.createControl();
 
     $scope.onUploadComplete = function(data) {
       model.imageUploaded = true;

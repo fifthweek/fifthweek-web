@@ -10,6 +10,9 @@ describe('customize landing page controller', function () {
   var subscriptionStub;
   var logService;
   var utilities;
+  var blobImageControlFactory;
+
+  var defaultBlobControl;
 
   beforeEach(function() {
 
@@ -18,6 +21,10 @@ describe('customize landing page controller', function () {
     subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['getSubscription', 'putSubscription']);
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
+    blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
+
+    defaultBlobControl = { control: true };
+    blobImageControlFactory.createControl.and.returnValue(defaultBlobControl);
 
     module('webApp');
     module(function($provide) {
@@ -26,6 +33,7 @@ describe('customize landing page controller', function () {
       $provide.value('subscriptionStub', subscriptionStub);
       $provide.value('logService', logService);
       $provide.value('utilities', utilities);
+      $provide.value('blobImageControlFactory', blobImageControlFactory);
     });
 
     inject(function ($injector) {
@@ -79,6 +87,11 @@ describe('customize landing page controller', function () {
 
       it('should load the current settings', function(){
         expect($scope.model.isLoading).toBe(true);
+      });
+
+      it('should set blobImage to a new control object', function(){
+        expect(blobImageControlFactory.createControl).toHaveBeenCalled();
+        expect($scope.blobImage).toEqual(defaultBlobControl);
       });
     });
 
