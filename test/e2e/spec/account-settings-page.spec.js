@@ -23,52 +23,10 @@ describe('account settings page', function() {
   });
 
   describe('header', function() {
-
-    it('should contain the correct number of links', function() {
-      expect(header.navigationLinks.count()).toBe(2);
-    });
-
-    it('should contain account settings', function() {
-      expect(header.accountSettingsLink.getAttribute('class')).toContain('active');
-    });
-
-    it('should contain sign out', function() {
-      expect(header.signOutLink.isDisplayed()).toBe(true);
-    });
+    header.includeBasicTests(header.accountSettingsLink);
   });
 
   describe('sidebar', function() {
-
-    it('should contain the correct number of links', function () {
-      expect(sidebar.links.count()).toBe(6);
-    });
-
-    it('should contain highlighted link for current page', function () {
-      expect(sidebar.settingsLink.getAttribute('class')).toContain('active');
-    });
-
-    it('should contain "Username" link', function () {
-      expect(sidebar.usernameLink.isDisplayed()).toBe(true);
-    });
-
-    it('should contain "Settings" link', function () {
-      expect(sidebar.newPostLink.isDisplayed()).toBe(true);
-    });
-
-    it('should contain "Backlog" link', function () {
-      expect(sidebar.backlogLink.isDisplayed()).toBe(true);
-    });
-
-    it('should contain "Customize" link', function () {
-      expect(sidebar.customizeLink.isDisplayed()).toBe(true);
-    });
-
-    it('should contain "Settings" link', function () {
-      expect(sidebar.settingsLink.isDisplayed()).toBe(true);
-    });
-
-    it('should contain "Help" link', function () {
-      expect(sidebar.helpLink.isDisplayed()).toBe(true);
-    });
+    sidebar.includeEstablishedCreatorTests(sidebar.settingsLink);
   });
 });
