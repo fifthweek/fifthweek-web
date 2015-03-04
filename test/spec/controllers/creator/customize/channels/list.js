@@ -6,15 +6,17 @@ describe('channel list controller', function () {
   var $controller;
   var target;
 
-  var aggregateUserStateUtilities;
+  var channelRepositoryFactory;
+  var channelRepository;
   var errorFacade;
 
   beforeEach(function() {
-    aggregateUserStateUtilities = jasmine.createSpyObj('aggregateUserStateUtilities', ['getChannelsAndCollections']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelsAndCollections']);
+    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
 
     module('webApp', 'errorFacadeMock');
     module(function($provide) {
-      $provide.value('aggregateUserStateUtilities', aggregateUserStateUtilities);
+      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
     });
 
     inject(function ($injector) {
@@ -30,7 +32,7 @@ describe('channel list controller', function () {
   };
 
   it('should expose channels from user state', function() {
-    aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when([
+    channelRepository.getChannelsAndCollections.and.returnValue($q.when([
       {
         channelId: 'A',
         name: 'channel A',
@@ -65,7 +67,7 @@ describe('channel list controller', function () {
   });
 
   it('should display any error messages', function() {
-    aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.reject('error'));
+    channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
 
     initializeTarget();
     $scope.$apply();

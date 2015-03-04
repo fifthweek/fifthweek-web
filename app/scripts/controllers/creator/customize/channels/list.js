@@ -1,9 +1,10 @@
-angular.module('webApp').controller('listChannelsCtrl', function($scope, aggregateUserStateUtilities, errorFacade) {
+angular.module('webApp').controller('listChannelsCtrl', function($scope, channelRepositoryFactory, errorFacade) {
   'use strict';
 
+  var channelRepository = channelRepositoryFactory.forCurrentUser();
   $scope.model = {};
 
-  aggregateUserStateUtilities.getChannelsAndCollections()
+  channelRepository.getChannelsAndCollections()
     .then(function(channels) {
       $scope.model.channels = _.map(
         channels,

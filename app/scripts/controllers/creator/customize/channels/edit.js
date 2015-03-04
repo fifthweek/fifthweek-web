@@ -1,10 +1,11 @@
-angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $state, aggregateUserState, aggregateUserStateUtilities, channelStub, errorFacade) {
+angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $state, aggregateUserState, channelRepositoryFactory, channelStub, errorFacade) {
   'use strict';
 
+  var channelRepository = channelRepositoryFactory.forCurrentUser();
   var channelId = $state.params.id;
   $scope.model = {};
 
-  aggregateUserStateUtilities.getChannelsAndCollections()
+  channelRepository.getChannelsAndCollections()
     .then(function(channels) {
       $scope.model.savedChannel = _.find(channels, { channelId: channelId });
       if (!$scope.model.savedChannel) {

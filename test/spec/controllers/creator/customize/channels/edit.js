@@ -11,11 +11,13 @@ describe('edit channel controller', function () {
   var $controller;
   var target;
 
-  var aggregateUserStateUtilities;
+  var channelRepositoryFactory;
+  var channelRepository;
   var errorFacade;
 
   beforeEach(function() {
-    aggregateUserStateUtilities = jasmine.createSpyObj('aggregateUserStateUtilities', ['getChannelsAndCollections']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelsAndCollections']);
+    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
     $state = { params: { id: currentChannelId } };
     currentChannel = {
       channelId: currentChannelId,
@@ -37,7 +39,7 @@ describe('edit channel controller', function () {
 
     module('webApp', 'errorFacadeMock');
     module(function($provide) {
-      $provide.value('aggregateUserStateUtilities', aggregateUserStateUtilities);
+      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
       $provide.value('$state', $state);
     });
 
@@ -54,7 +56,7 @@ describe('edit channel controller', function () {
   };
 
   it('should expose the specified channel from user state', function() {
-    aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when(channels));
+    channelRepository.getChannelsAndCollections.and.returnValue($q.when(channels));
 
     initializeTarget();
     $scope.$apply();
@@ -71,7 +73,7 @@ describe('edit channel controller', function () {
   });
 
   it('should expose the specified channel from user state, as a clone', function() {
-    aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when(channels));
+    channelRepository.getChannelsAndCollections.and.returnValue($q.when(channels));
 
     initializeTarget();
     $scope.$apply();
@@ -82,7 +84,7 @@ describe('edit channel controller', function () {
   });
 
   it('should display an error when no channels match the one specified', function() {
-    aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when([]));
+    channelRepository.getChannelsAndCollections.and.returnValue($q.when([]));
 
     initializeTarget();
     $scope.$apply();
@@ -91,7 +93,7 @@ describe('edit channel controller', function () {
   });
 
   it('should display any error messages', function() {
-    aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.reject('error'));
+    channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
 
     initializeTarget();
     $scope.$apply();

@@ -4,7 +4,7 @@ angular.module('webApp')
     'use strict';
 
     var service = {};
-    
+
     service.mergeNewCollection = function(userId, channelId, collectionId, collectionName){
       var newChannels = _.cloneDeep(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
       var channel = _.find(newChannels, { 'channelId': channelId });
