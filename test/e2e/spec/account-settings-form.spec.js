@@ -141,4 +141,36 @@ describe('account settings form', function() {
       expect(page.usernameTextBox.getAttribute('value')).toBe(registration.username);
     });
   });
+
+  describe('when setting form to known data and cancelling', function(){
+
+    it('should run once before all', function() {
+      navigateToPage();
+    });
+
+    it('should not persist settings', function(){
+      page.setFileInput('../sample-image.jpg');
+      browser.wait(function(){
+        return page.profileImage.isPresent();
+      });
+      expect(page.profileImage.isDisplayed()).toBe(true);
+
+      page.emailTextBox.clear();
+      page.emailTextBox.sendKeys('phil+' + registration.email);
+
+      page.usernameTextBox.clear();
+      page.usernameTextBox.sendKeys('ph_' + registration.username.substring(3));
+
+      page.passwordTextBox.clear();
+      page.passwordTextBox.sendKeys('phil-the-cat');
+
+      sidebar.helpLink.click();
+      sidebar.settingsLink.click();
+
+      expect(page.noProfileImage.isDisplayed()).toBe(true);
+      expect(page.emailTextBox.getAttribute('value')).toBe(registration.email);
+      expect(page.usernameTextBox.getAttribute('value')).toBe(registration.username);
+      expect(page.passwordTextBox.getAttribute('value')).toBe('');
+    });
+  });
 });
