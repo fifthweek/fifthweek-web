@@ -7,6 +7,9 @@ var ChannelPriceInputPage = function() {};
 
 ChannelPriceInputPage.prototype = Object.create({},
 {
+  newPrice: { value: function() {
+    return (Math.random() * 10).toFixed(2);
+  }},
   // All happy paths in a suite typically share the same post-condition, which can be extracted into a afterEach.
   // This is why button clicks and expectations are not set here.
   includeHappyPaths: { value: function(input, populateOtherInputsWithValidData) {

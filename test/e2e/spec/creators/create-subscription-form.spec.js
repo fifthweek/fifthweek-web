@@ -33,7 +33,7 @@ describe('create subscription form', function() {
       page.nameTextBox.sendKeys(page.newName());
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     it('should not require base price to be entered', function(){
@@ -45,41 +45,41 @@ describe('create subscription form', function() {
       page.nameTextBox.sendKeys('1');
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     it('should allow subscription names with punctuation (1 of 2)', function(){
       page.nameTextBox.sendKeys(testKit.punctuation33.substring(0, 20));
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     it('should allow subscription names with punctuation (2 of 2)', function(){
       page.nameTextBox.sendKeys(testKit.punctuation33.substring(20));
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     it('should allow subscription names with numbers', function(){
       page.nameTextBox.sendKeys('1234567890');
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     it('should allow subscription names with trailing and leading whitespace', function(){
       page.nameTextBox.sendKeys(' ' + page.newName() + ' ');
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     taglineInputPage.includeHappyPaths(page.taglineTextBox, function() {
       page.nameTextBox.sendKeys(page.newName());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     channelPriceInputPage.includeHappyPaths(page.basePriceTextBox, function() {
@@ -103,7 +103,7 @@ describe('create subscription form', function() {
     it('requires subscription name', function(){
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
       page.submitButton.click();
 
       testKit.assertRequired(page.helpMessages, 'name');
@@ -117,7 +117,7 @@ describe('create subscription form', function() {
       page.nameTextBox.sendKeys(overSizedValue);
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
 
       testKit.assertMaxLength(page.helpMessages, page.nameTextBox, overSizedValue, maxLength);
     });
@@ -125,7 +125,7 @@ describe('create subscription form', function() {
     taglineInputPage.includeSadPaths(page.taglineTextBox, page.submitButton, page.helpMessages, function() {
       page.nameTextBox.sendKeys(page.newName());
       page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(page.newBasePrice());
+      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     channelPriceInputPage.includeSadPaths(page.basePriceTextBox, page.submitButton, page.helpMessages, function() {
