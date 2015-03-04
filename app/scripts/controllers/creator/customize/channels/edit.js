@@ -1,4 +1,4 @@
-angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $state, aggregateUserState, channelRepositoryFactory, channelStub, errorFacade) {
+angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $state, states, aggregateUserState, channelRepositoryFactory, channelStub, errorFacade) {
   'use strict';
 
   var channelRepository = channelRepositoryFactory.forCurrentUser();
@@ -28,20 +28,30 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
       });
     });
 
-  //$scope.save = function() {
-  //  var channelData = {};
-  //  return channelStub.putChannel(channelId, channelData)
-  //    .then(function() {
-  //
-  //      var newChannels = _.cloneDeep(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
-  //      var channel = _.find(newChannels, { 'channelId': channelId });
-  //      if(!channel){
-  //        return $q.reject(new FifthweekError('Channel not found in aggregate state.'));
-  //      }
-  //    });
-  //};
+  $scope.previousState = states.creators.customize.channels.name;
+
+  $scope.save = function() {
+    var channel = $scope.model.channel;
+    var channelData = {
+      name: channel.name,
+      description: channel.description,
+      price: channel.price * 100,
+      isVisibleToNonSubscribers: !channel.hidden
+    };
+    return channelStub.putChannel(channelId, channelData)
+      .then(function() {
+        channelRepository.updateChannel(channelId, function(channel) {
+          channel.name = channelData.name;
+          channel.description = channelData.description;
+          channel.priceInUsCentsPerWeek = channelData.price;
+          channel.isVisibleToNonSubscribers = channelData.isVisibleToNonSubscribers;
+        });
+
+        $state.go($scope.previousState);
+      });
+  };
 
   $scope.delete = function() {
-    $state.go(states.creators.customize.channels.name);
+    $state.go($scope.previousState);
   };
 });
