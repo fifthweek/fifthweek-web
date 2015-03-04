@@ -16,26 +16,26 @@ UsernameInputPage.prototype = Object.create({},
     var self = this;
 
     it('should allow numbers in username', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
       input.sendKeys('1' + self.newUsername());
     });
 
     it('should allow underscores in username', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
       input.sendKeys('a_A' + self.newUsername());
     });
 
     it('should allow leading and trailing spaces in username', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
       input.sendKeys(' ' + self.newUsername() + ' ');
     });
 
     it('should allow lowercase and uppercase characters in username', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
       input.sendKeys('aA' + self.newUsername());
     });
   }},
@@ -43,8 +43,8 @@ UsernameInputPage.prototype = Object.create({},
     var self = this;
 
     it('requires username', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
 
       button.click();
 
@@ -52,8 +52,8 @@ UsernameInputPage.prototype = Object.create({},
     });
 
     it('should not allow spaces in username', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
       input.sendKeys('a ' + self.newUsername());
 
       button.click();
@@ -63,8 +63,8 @@ UsernameInputPage.prototype = Object.create({},
     });
 
     it('should not allow forbidden characters in username', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
       input.sendKeys('a!' + self.newUsername());
 
       button.click();
@@ -74,8 +74,8 @@ UsernameInputPage.prototype = Object.create({},
     });
 
     it('should not allow usernames with fewer than 2 characters', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
       input.sendKeys('a');
 
       button.click();

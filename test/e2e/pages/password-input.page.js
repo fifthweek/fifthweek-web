@@ -11,8 +11,8 @@ PasswordInputPage.prototype = Object.create({},
   // This is why button clicks and expectations are not set here.
   includeHappyPaths: { value: function(input, populateOtherInputsWithValidData) {
     it('should allow password with 6 characters or more', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
       input.sendKeys('123456');
     });
   }},
@@ -20,8 +20,8 @@ PasswordInputPage.prototype = Object.create({},
 
     if(!isOptional) {
       it('requires password', function () {
-        input.clear();
         populateOtherInputsWithValidData();
+        input.clear();
 
         button.click();
 
@@ -30,8 +30,8 @@ PasswordInputPage.prototype = Object.create({},
     }
 
     it('should not allow passwords with fewer than 6 characters', function(){
-      input.clear();
       populateOtherInputsWithValidData();
+      input.clear();
       input.sendKeys('pass');
 
       button.click();

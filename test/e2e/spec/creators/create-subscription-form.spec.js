@@ -1,6 +1,7 @@
 var TestKit = require('../../test-kit.js');
 var RegisterPage = require('../../pages/register.page.js');
 var SignOutPage = require('../../pages/sign-out.page.js');
+var ChannelPriceInputPage = require('../../pages/channel-price-input.page.js');
 var CreateSubscriptionPage = require('../../pages/creators/create-subscription.page.js');
 
 describe('create subscription form', function() {
@@ -9,6 +10,7 @@ describe('create subscription form', function() {
   var testKit = new TestKit();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
+  var channelPriceInputPage = new ChannelPriceInputPage();
   var page = new CreateSubscriptionPage();
 
   describe('happy path', function () {
@@ -99,6 +101,11 @@ describe('create subscription form', function() {
       page.basePriceTextBox.clear();
       page.basePriceTextBox.sendKeys(page.newBasePrice());
     });
+
+    channelPriceInputPage.includeHappyPaths(page.basePriceTextBox, function() {
+      page.nameTextBox.sendKeys(page.newName());
+      page.taglineTextBox.sendKeys(page.newTagline());
+    });
   });
 
   describe('sad path', function () {
@@ -129,15 +136,6 @@ describe('create subscription form', function() {
       page.submitButton.click();
 
       testKit.assertRequired(page.helpMessages, 'tagline');
-    });
-
-    it('requires base price', function(){
-      page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(page.newTagline());
-      page.basePriceTextBox.clear();
-      page.submitButton.click();
-
-      testKit.assertRequired(page.helpMessages, 'price');
     });
 
     it('should not allow taglines with fewer than 5 characters', function(){
@@ -174,45 +172,9 @@ describe('create subscription form', function() {
       testKit.assertMaxLength(page.helpMessages, page.taglineTextBox, overSizedValue, maxLength);
     });
 
-    it('should not allow a base price of 0', function(){
+    channelPriceInputPage.includeSadPaths(page.basePriceTextBox, page.submitButton, page.helpMessages, function() {
       page.nameTextBox.sendKeys(page.newName());
       page.taglineTextBox.sendKeys(page.newTagline());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('0');
-      page.submitButton.click();
-
-      testKit.assertSingleValidationMessage(page.helpMessages, 'Must be at least one cent.');
-    });
-
-    it('should not allow a base price of 0', function(){
-      page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(page.newTagline());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('0');
-      page.submitButton.click();
-
-      testKit.assertSingleValidationMessage(page.helpMessages, 'Must be at least one cent.');
-    });
-
-    it('should not allow non-monetary values', function(){
-      page.nameTextBox.sendKeys(page.newName());
-      page.taglineTextBox.sendKeys(page.newTagline());
-
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('abc');
-      expect(page.basePriceTextBox.getAttribute('value')).toBe('');
-
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('123abc');
-      expect(page.basePriceTextBox.getAttribute('value')).toBe('123');
-
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('abc123abc');
-      expect(page.basePriceTextBox.getAttribute('value')).toBe('123');
-
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys('1.2.3');
-      expect(page.basePriceTextBox.getAttribute('value')).toBe('1.23');
     });
   });
 });
