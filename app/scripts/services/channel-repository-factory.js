@@ -40,6 +40,15 @@ angular.module('webApp')
           return $q.when();
         };
 
+        service.createCollection = function(channelId, collectionId, collectionName){
+          return service.updateChannel(channelId, function(channel) {
+            channel.collections.push({
+              collectionId: collectionId,
+              name: collectionName
+            });
+          });
+        };
+
         service.getChannelsAndCollections = function(){
           try {
             if (!aggregateUserState.currentValue) {

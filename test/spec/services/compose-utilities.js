@@ -5,7 +5,8 @@ describe('compose utilities', function(){
   var $rootScope;
   var logService;
   var utilities;
-  var aggregateUserStateUtilities;
+  var channelRepositoryFactory;
+  var channelRepository;
   var authenticationService;
   var collectionStub;
   var $modal;
@@ -18,14 +19,15 @@ describe('compose utilities', function(){
     $modal = jasmine.createSpyObj('$modal', ['open']);
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
-    aggregateUserStateUtilities = jasmine.createSpyObj('aggregateUserStateUtilities', ['mergeNewCollection', 'getChannelsAndCollections']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['createCollection', 'getChannelsAndCollections']);
+    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
     collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection']);
 
     module(function($provide) {
       $provide.value('$modal', $modal);
       $provide.value('logService', logService);
       $provide.value('utilities', utilities);
-      $provide.value('aggregateUserStateUtilities', aggregateUserStateUtilities);
+      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
       $provide.value('authenticationService', authenticationService);
       $provide.value('collectionStub', collectionStub);
     });
@@ -53,7 +55,7 @@ describe('compose utilities', function(){
 
     describe('when getChannelsAndCollections fails', function(){
       it('should return the error', function(){
-        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.reject('error'));
+        channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
         target.getChannelsForSelection()
           .then(function(){
             fail('this should not occur');
@@ -90,7 +92,7 @@ describe('compose utilities', function(){
           }
         ];
 
-        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
+        channelRepository.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
 
         target.getChannelsForSelection()
           .then(function(r){
@@ -126,7 +128,7 @@ describe('compose utilities', function(){
 
     describe('when getChannelsAndCollections fails', function(){
       it('should return the error', function(){
-        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.reject('error'));
+        channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
         target.getCollectionsForSelection()
           .then(function(){
             fail('this should not occur');
@@ -179,7 +181,7 @@ describe('compose utilities', function(){
           }
         ];
 
-        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
+        channelRepository.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
 
         target.getCollectionsForSelection()
           .then(function(r){
@@ -215,7 +217,7 @@ describe('compose utilities', function(){
 
     describe('when getChannelsAndCollections fails', function(){
       it('should return the error', function(){
-        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.reject('error'));
+        channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
         target.getChannelsAndCollectionsForSelection()
           .then(function(){
             fail('this should not occur');
@@ -268,7 +270,7 @@ describe('compose utilities', function(){
           }
         ];
 
-        aggregateUserStateUtilities.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
+        channelRepository.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
 
         target.getChannelsAndCollectionsForSelection()
           .then(function(r){
@@ -445,7 +447,7 @@ describe('compose utilities', function(){
       });
 
       it('should not merge the data into the new collection', function(){
-        expect(aggregateUserStateUtilities.mergeNewCollection).not.toHaveBeenCalled();
+        expect(channelRepository.createCollection).not.toHaveBeenCalled();
       });
 
       it('should return the existing collection id', function(){
@@ -478,8 +480,8 @@ describe('compose utilities', function(){
       });
 
       it('should merge the data into the new collection', function(){
-        expect(aggregateUserStateUtilities.mergeNewCollection.calls.count()).toBe(1);
-        expect(aggregateUserStateUtilities.mergeNewCollection).toHaveBeenCalledWith('userId', 'channelId', 'collectionId', 'newCollection');
+        expect(channelRepository.createCollection.calls.count()).toBe(1);
+        expect(channelRepository.createCollection).toHaveBeenCalledWith('channelId', 'collectionId', 'newCollection');
       });
 
       it('should return the new collection id', function(){
@@ -514,8 +516,8 @@ describe('compose utilities', function(){
       });
 
       it('should merge the data into the new collection', function(){
-        expect(aggregateUserStateUtilities.mergeNewCollection.calls.count()).toBe(1);
-        expect(aggregateUserStateUtilities.mergeNewCollection).toHaveBeenCalledWith('userId', 'channelId', 'collectionId', 'newCollection');
+        expect(channelRepository.createCollection.calls.count()).toBe(1);
+        expect(channelRepository.createCollection).toHaveBeenCalledWith('channelId', 'collectionId', 'newCollection');
       });
 
       it('should return the new collection id', function(){
@@ -536,7 +538,7 @@ describe('compose utilities', function(){
           }
         };
 
-        aggregateUserStateUtilities.mergeNewCollection.and.returnValue($q.reject('error'));
+        channelRepository.createCollection.and.returnValue($q.reject('error'));
 
         target.getCollectionIdAndCreateCollectionIfRequired(model).catch(function(e){ error = e; });
         $rootScope.$apply();
@@ -566,7 +568,7 @@ describe('compose utilities', function(){
       });
 
       it('should not merge the data into the new collection', function(){
-        expect(aggregateUserStateUtilities.mergeNewCollection).not.toHaveBeenCalled();
+        expect(channelRepository.createCollection).not.toHaveBeenCalled();
       });
 
       it('should propagate the error', function(){

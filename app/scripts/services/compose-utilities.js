@@ -1,6 +1,6 @@
 angular.module('webApp')
   .factory('composeUtilities',
-  function($q, $modal, aggregateUserStateUtilities, utilities, logService, authenticationService, collectionStub) {
+  function($q, $modal, aggregateUserStateUtilities, channelRepositoryFactory, utilities, logService, collectionStub) {
     'use strict';
 
     var service = {};
@@ -58,21 +58,24 @@ angular.module('webApp')
     };
 
     service.getChannelsForSelection = function(){
-      return aggregateUserStateUtilities.getChannelsAndCollections()
+      var channelRepository = channelRepositoryFactory.forCurrentUser();
+      return channelRepository.getChannelsAndCollections()
         .then(function(channels){
           return $q.when(getChannelsForSelectionInner(channels));
         });
     };
 
     service.getCollectionsForSelection = function(){
-      return aggregateUserStateUtilities.getChannelsAndCollections()
+      var channelRepository = channelRepositoryFactory.forCurrentUser();
+      return channelRepository.getChannelsAndCollections()
         .then(function(channels){
           return $q.when(getCollectionsForSelectionInner(channels));
         });
     };
 
     service.getChannelsAndCollectionsForSelection = function(){
-      return aggregateUserStateUtilities.getChannelsAndCollections()
+      var channelRepository = channelRepositoryFactory.forCurrentUser();
+      return channelRepository.getChannelsAndCollections()
         .then(function(channels){
           return $q.when({
             channels: getChannelsForSelectionInner(channels),
@@ -113,7 +116,7 @@ angular.module('webApp')
 
     service.getCollectionIdAndCreateCollectionIfRequired = function(model){
       if(shouldCreateCollection(model)) {
-        var userId = authenticationService.currentUser.userId;
+        var channelRepository = channelRepositoryFactory.forCurrentUser();
         var channelId = model.input.selectedChannel.channelId;
         var collectionName = model.input.newCollectionName;
         var collectionId;
@@ -124,7 +127,7 @@ angular.module('webApp')
           })
           .then(function(response){
             collectionId = response.data;
-            return aggregateUserStateUtilities.mergeNewCollection(userId, channelId, collectionId, collectionName);
+            return channelRepository.createCollection(channelId, collectionId, collectionName);
           })
           .then(function(){
             return collectionId;
