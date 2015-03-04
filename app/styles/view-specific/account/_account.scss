@@ -3,11 +3,3 @@
 @import 'signin/_signin';
 @import 'register/_register';
 @import 'settings/_settings';
-
-$html-name-space:'.page-account';
-
-#{$html-name-space} {
-  .blob-image{
-    width: 128px;
-  }
-}

@@ -1,8 +1,9 @@
 <form novalidate
+      id="accountSettingsForm"
       role="form"
       name="form">
 
-  <fw-panel12 class="page-account-settings">
+  <fw-panel12>
 
     <fw-error-message value="model.errorMessage"></fw-error-message>
 
@@ -25,9 +26,9 @@
       </div>
 
       <fw-form-group>
+        <label for="email">Email</label>
         <div class="row">
           <div class="col-md-6">
-            <label for="email">Email</label>
             <div fw-form-input-glyphs>
               <input type="email" id="email" class="form-control" name="email" placeholder="Email"
                      ng-model="model.accountSettings.email"
@@ -41,9 +42,9 @@
       </fw-form-group>
 
       <fw-form-group>
+        <label for="username">Username</label>
         <div class="row">
           <div class="col-md-6">
-            <label for="username">Username</label>
             <div fw-form-input-glyphs>
               <input type="text" id="username" class="form-control" name="username" placeholder="Username"
                      ng-model="model.accountSettings.username"

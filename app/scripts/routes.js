@@ -205,7 +205,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'My Account',
           headTitle: ': ' + 'My Account',
-          bodyClass: 'page-account',
+          bodyClass: 'page-account-settings',
           access: {
             requireAuthenticated: true
           }
