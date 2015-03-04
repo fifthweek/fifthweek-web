@@ -19,7 +19,6 @@ describe('channel list form', function() {
     registration = context.registration;
     subscription = context.subscription;
     navigateToPage();
-
   });
 
   it('should allow new channels to be created', function () {
