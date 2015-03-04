@@ -1,12 +1,6 @@
-<div ng-init="model = {
-  savedName: 'Base Channel',
-  name: 'Base Channel',
-  description: 'Backstage News Feed\nEternal Gratitude',
-  hidden: false,
-  price: '1.00'
-}">
+<div>
 
-<fw-breadcrumb current="{{model.savedName}}"></fw-breadcrumb>
+<fw-breadcrumb current="{{model.savedChannel.name}}"></fw-breadcrumb>
 
   <fw-panel12>
 
@@ -15,13 +9,13 @@
           name="form">
 
       <label>Name</label>
-      <fw-form-input-channel-name ng-model="model.name" placeholder="Channel name" required focus></fw-form-input-channel-name>
+      <fw-form-input-channel-name ng-model="model.channel.name" placeholder="Channel name" required focus></fw-form-input-channel-name>
 
       <label>Description</label>
-      <fw-form-input-channel-description ng-model="model.description" required></fw-form-input-channel-description>
+      <fw-form-input-channel-description ng-model="model.channel.description" required></fw-form-input-channel-description>
 
       <label>Subscription price</label>
-      <fw-form-input-channel-price ng-model="model.price" required></fw-form-input-channel-price>
+      <fw-form-input-channel-price ng-model="model.channel.price" required></fw-form-input-channel-price>
       <fw-form-input-channel-visibility ng-model="model.hidden" required></fw-form-input-channel-visibility>
 
       <div class="row-btn">
@@ -37,7 +31,7 @@
             <button class="btn btn-default btn-block"
                     ui-sref="creators.customize.channels">Cancel</button>
           </div>
-          <div class="col-s-4">
+          <div class="col-s-4" ng-if="!model.channel.isDefault">
             <fw-form-input-delete
               item="model.savedName"
               item-type="Channel"
