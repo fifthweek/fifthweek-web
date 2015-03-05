@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var HeaderPage = function() {};
 
 HeaderPage.prototype = Object.create({}, {
@@ -14,12 +15,11 @@ HeaderPage.prototype = Object.create({}, {
         expect(self.navigationLinks.count()).toBe(links.length);
       });
 
-      for (var i = 0; i < links.length; i++) {
-        var link = links[i];
+      _.forEach(links, function(link) {
         it('should contain "' + link.name + '" link', function() {
           expect(link.element.isDisplayed()).toBe(true);
         });
-      }
+      });
 
       if(highlightedLink){
         it('should highlight the current page', function() {

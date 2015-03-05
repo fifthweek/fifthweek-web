@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var BreadcrumbPage = function() {};
 
 BreadcrumbPage.prototype = Object.create({}, {
@@ -19,10 +20,7 @@ BreadcrumbPage.prototype = Object.create({}, {
         expectBreadcrumbText(pageTitles.length);
       });
 
-      for (var i = 0; i < pageTitles.length - 1; i++) {
-        var index = i;
-        var pageTitle = pageTitles[i];
-
+      _.forEach(_.initial(pageTitles), function(pageTitle, index) {
         it('should contain "' + pageTitle + '" link', function() {
           var link = element(by.css('#breadcrumb a.item:nth-child(' + (index + 1) + ')'));
 
@@ -45,7 +43,7 @@ BreadcrumbPage.prototype = Object.create({}, {
             expectBreadcrumbText(index + 1);
           });
         }
-      }
+      });
     });
   }}
 });

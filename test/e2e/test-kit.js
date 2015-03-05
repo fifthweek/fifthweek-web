@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var TestKit = function() {};
 
 TestKit.prototype = Object.create({}, {
@@ -38,6 +39,28 @@ TestKit.prototype = Object.create({}, {
       browser.waitForAngular(); // Not automatically awaited on get.
       return browser.get(path).then(function() {
         return path;
+      });
+    });
+  }},
+  itShouldHaveWellBehavedSubmitButton: { value: function(button, actions) {
+    describe('submit button', function() {
+
+      it('should be disabled until changes are made', function(){
+        expect(button.isEnabled()).toBe(false);
+      });
+
+      _.forEach(actions, function(action) {
+        it('should become enabled after ' + action.name, function(){
+          if (_.isFunction(action.act)) {
+            action.act();
+          }
+          else if (action.textbox) {
+            action.textbox.clear();
+          }
+
+          expect(button.isEnabled()).toBe(true);
+          browser.refresh();
+        });
       });
     });
   }}
