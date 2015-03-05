@@ -73,15 +73,6 @@ describe('create subscription form', function() {
       browser.refresh();
     });
 
-    it('requires subscription name', function(){
-      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
-      page.submitButton.click();
-
-      testKit.assertRequired(page.helpMessages, 'name');
-    });
-
     subscriptionNameInputPage.includeSadPaths(page.nameTextBox, page.submitButton, page.helpMessages, function() {
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
       page.basePriceTextBox.clear();

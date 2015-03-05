@@ -3,6 +3,8 @@ var TestKit = require('../../../test-kit.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var LandingPagePage = require('../../../pages/creators/customize/landing-page.page.js');
+var SubscriptionNameInputPage = require('../../../pages/subscription-name-input.page.js');
+var TaglineInputPage = require('../../../pages/tagline-input.page.js');
 
 describe('customize landing page form', function() {
   'use strict';
@@ -15,6 +17,8 @@ describe('customize landing page form', function() {
   var header = new HeaderCustomizePage();
   var page = new LandingPagePage();
   var testKit = new TestKit();
+  var subscriptionNameInputPage = new SubscriptionNameInputPage();
+  var taglineInputPage = new TaglineInputPage();
 
   var validVideo = 'https://www.youtube.com/watch?v=vEQrP3bGX8k';
   var validDescription = 'In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content that could be distracting with placeholder text may allow viewers to focus on graphic aspects such as font, typography, and page layout. It also reduces the need for the designer to come up with meaningful text, as they can instead use hastily generated lorem ipsum text.';
@@ -237,6 +241,10 @@ describe('customize landing page form', function() {
         browser.refresh();
       });
 
+      subscriptionNameInputPage.includeHappyPaths(page.subscriptionNameTextBox, function() {});
+
+      taglineInputPage.includeHappyPaths(page.taglineTextBox, function() {});
+
       it('should allow symbols in introductions', function(){
         page.basicsTabLink.click();
         page.introductionTextBox.clear();
@@ -303,6 +311,10 @@ describe('customize landing page form', function() {
     afterEach(function(){
       browser.refresh();
     });
+
+    subscriptionNameInputPage.includeSadPaths(page.subscriptionNameTextBox, page.basicsSubmitButton, page.helpMessages, function() {});
+
+    taglineInputPage.includeSadPaths(page.taglineTextBox, page.basicsSubmitButton, page.helpMessages, function() {});
 
     it('should not allow an empty introduction', function(){
       page.basicsTabLink.click();
