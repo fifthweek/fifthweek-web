@@ -31,6 +31,16 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
   headerImageSuccessMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(2) .alert-success')); }},
   fullDescriptionSuccessMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(3) .alert-success')); }},
 
+  basicsInvalidMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(1) .form-invalid-message')); }},
+  headerImageInvalidMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(2) .form-invalid-message')); }},
+  fullDescriptionInvalidMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(3) .form-invalid-message')); }},
+
+  basicsErrorMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(1) .form-message')); }},
+  headerImageErrorMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(2) .form-message')); }},
+  fullDescriptionErrorMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(3) .form-message')); }},
+
+  helpMessages: { get: function () { return element.all(by.css('#customizeLandingPageForm .help-block')); }},
+
   pageUrl: { get: function () { return '/creators/customize/landingpage'; }},
 
   setFileInput: { value: function(filePath) {

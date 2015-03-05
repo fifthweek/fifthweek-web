@@ -2,10 +2,10 @@
   <div ng-show="form.submissionSucceeded && form.$pristine" class="alert alert-success" >
     <p>Saved successfully</p>
   </div>
-  <div ng-show="form.message" class="alert alert-danger" id="form-message">
+  <div ng-show="form.message" class="alert alert-danger form-message">
     <p>{{form.message}}</p>
   </div>
-  <div ng-show="form.hasAttemptedSubmit && !form.$valid" class="alert alert-danger" id="form-invalid-message">
+  <div ng-show="form.hasAttemptedSubmit && !form.$valid" class="alert alert-danger form-invalid-message">
     <p>Please correct all invalid fields before proceeding.</p>
   </div>
   <input type="submit"
