@@ -49,7 +49,8 @@ ddescribe('edit channel form', function() {
       }
     };
     var navigateToPage = function() {
-      return channelListPage.getEditChannelButton(isDefault ? 0 : 1).click();
+      var editChannelButton = channelListPage.getEditChannelButton(isDefault ? 0 : 1);
+      editChannelButton.click();
     };
 
     it('should run once before all', function() {
