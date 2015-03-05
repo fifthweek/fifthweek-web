@@ -12,7 +12,8 @@ ChannelDescriptionInputPage.prototype = Object.create({},
       return 'Cool stuff #' + Math.round(Math.random() * 1000);
     }},
     newDescription: { value: function() {
-      var lines = _.times(Math.round((Math.random() * 5) + 1), function() {
+      var lineCount = Math.round((Math.random() * 5) + 1);
+      var lines = _.times(lineCount, function() {
         return this.newDescriptionLine();
       }, this);
 
