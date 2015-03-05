@@ -9,7 +9,7 @@ var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
 var ChannelEditPage = require('../../../pages/creators/customize/channel-edit.page.js');
 
-ddescribe('edit channel form', function() {
+describe('edit channel form', function() {
   'use strict';
 
   var registration;

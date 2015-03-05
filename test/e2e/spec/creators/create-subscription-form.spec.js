@@ -55,12 +55,7 @@ describe('create subscription form', function() {
       page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
-    testKit.includeHappyPaths(page, inputs, 'basePriceTextBox', channelPriceInputPage);
-
-    channelPriceInputPage.includeHappyPaths(page.basePriceTextBox, function() {
-      page.nameTextBox.sendKeys(subscriptionNameInputPage.newName());
-      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
-    });
+    testKit.includeHappyPaths(page, page.inputs, 'basePriceTextBox', channelPriceInputPage);
   });
 
   describe('sad path', function () {
