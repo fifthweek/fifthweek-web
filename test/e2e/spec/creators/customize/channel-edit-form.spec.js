@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var TestKit = require('../../../test-kit.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var ChannelNameInputPage = require('../../../pages/channel-name-input.page.js');
@@ -34,34 +35,25 @@ ddescribe('edit channel form', function() {
 
   var describeForm = function(isDefault) {
     var initialValues;
-
-    var navigateToPage = function() {
-      if (isDefault) {
-        channelListPage.getEditChannelButton(0).click();
-      }
-      else {
-        channelListPage.getEditChannelButton(1).click();
-      }
-    };
-
-    var expectFormValues = function(values) {
-      expect(page.nameTextBox.getAttribute('value')).toBe(values.name);
-      expect(page.descriptionTextBox.getAttribute('value')).toBe(values.description);
-      expect(page.priceTextBox.getAttribute('value')).toBe(values.price);
+    var inputs = isDefault ? _.reject(page.inputs, {name: 'hiddenCheckbox'}) : page.inputs;
+    var determineCorrectInitialValues = function() {
+      initialValues = {
+        nameTextBox: isDefault ? channelListPage.defaultChannelName : 'Not Implemented',
+        descriptionTextBox: isDefault ? channelListPage.defaultChannelDescription : 'Not Implemented',
+        priceTextBox: isDefault ? subscription.basePrice : 'Not Implemented'
+      };
 
       if (!isDefault) {
+        initialValues.hiddenCheckbox = 'Not Implemented';
         throw 'Not Implemented';
       }
     };
+    var navigateToPage = function() {
+      return channelListPage.getEditChannelButton(isDefault ? 0 : 1).click();
+    };
 
     it('should run once before all', function() {
-      initialValues = {
-        name: isDefault ? channelListPage.defaultChannelName : 'Not Implemented',
-        description: isDefault ? channelListPage.defaultChannelDescription : 'Not Implemented',
-        price: isDefault ? subscription.basePrice : 'Not Implemented',
-        hidden: 'Not Implemented'
-      };
-
+      determineCorrectInitialValues();
       navigateToPage();
     });
 
@@ -74,67 +66,41 @@ ddescribe('edit channel form', function() {
     });
 
     it('should initialise with the correct properties', function() {
-      expectFormValues(initialValues);
+      testKit.expectFormValues(page, inputs, initialValues);
     });
 
     it('should discard changes when user cancels', function() {
-      page.nameTextBox.clear();
-      page.nameTextBox.sendKeys(channelNameInputPage.newName());
-      page.descriptionTextBox.clear();
-      page.descriptionTextBox.sendKeys(channelDescriptionInputPage.newDescription());
-      page.priceTextBox.clear();
-      page.priceTextBox.sendKeys(channelPriceInputPage.newPrice());
-
-      if (!isDefault) {
-        page.hiddenCheckbox.click();
-      }
+      testKit.setFormValues(page, inputs);
 
       page.cancelButton.click();
-      channelListPage.getEditChannelButton(0).click();
+      navigateToPage();
 
-      expectFormValues(initialValues);
+      testKit.expectFormValues(page, inputs, initialValues);
     });
 
     it('should allow user to cancel when form is invalid', function() {
-      page.nameTextBox.clear();
-      page.descriptionTextBox.clear();
-      page.priceTextBox.clear();
+      testKit.clearForm(page, inputs);
 
       page.cancelButton.click();
-      channelListPage.getEditChannelButton(0).click();
+      navigateToPage();
 
-      expectFormValues(initialValues);
+      testKit.expectFormValues(page, inputs, initialValues);
     });
 
-    describe('when submitting with valid input', function() {
-      var newValues;
+    describe('on successful submission', function() {
+      var newFormValues;
 
       it('should run once before all', function() {
-        newValues = {
-          name: channelNameInputPage.newName(),
-          description: channelDescriptionInputPage.newDescription(),
-          price: channelPriceInputPage.newPrice(),
-          hidden: !initialValues.hidden
-        };
-
-        page.nameTextBox.clear();
-        page.nameTextBox.sendKeys(newValues.name);
-        page.descriptionTextBox.clear();
-        page.descriptionTextBox.sendKeys(newValues.description);
-        page.priceTextBox.clear();
-        page.priceTextBox.sendKeys(newValues.price);
-
-        if (!isDefault) {
-          page.hiddenCheckbox.click();
-        }
-
+        testKit.setFormValues(page, inputs).then(function(generatedFormValues) {
+          newFormValues = generatedFormValues;
+        });
         page.saveButton.click();
-        browser.waitForAngular(); // Not sure why this is required :(
-        channelListPage.getEditChannelButton(0).click();
+        browser.waitForAngular(); // Seems to be required.
+        navigateToPage();
       });
 
       it('should persist the changes', function() {
-        expectFormValues(newValues);
+        testKit.expectFormValues(page, inputs, newFormValues);
       });
 
       it('should persist the changes, between sessions', function() {
@@ -142,11 +108,26 @@ ddescribe('edit channel form', function() {
         sidebar.customizeLink.click();
         header.channelsLink.click();
         navigateToPage();
-        expectFormValues(newValues);
+        testKit.expectFormValues(page, inputs, newFormValues);
       });
     });
 
-    describe('when submitting with invalid input', function() {
+    describe('when validating good input', function() {
+      var newFormValues;
+
+      afterEach(function() {
+        page.saveButton.click();
+        browser.waitForAngular(); // Seems to be required.
+        navigateToPage();
+        testKit.expectFormValues(page, inputs, newFormValues);
+      });
+
+      testKit.includeHappyPaths(page, inputs, 'priceTextBox', channelPriceInputPage).then(function(generatedFormValues) {
+        newFormValues = generatedFormValues;
+      });
+    });
+
+    describe('when validating bad input', function() {
 
     });
 

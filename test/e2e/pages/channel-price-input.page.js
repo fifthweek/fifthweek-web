@@ -12,11 +12,9 @@ ChannelPriceInputPage.prototype = Object.create({},
   }},
   // All happy paths in a suite typically share the same post-condition, which can be extracted into a afterEach.
   // This is why button clicks and expectations are not set here.
-  includeHappyPaths: { value: function(input, populateOtherInputsWithValidData) {
-    it('should allow prices of 1 cent or more', function(){
-      populateOtherInputsWithValidData();
-      input.clear();
-      input.sendKeys('0.01');
+  includeHappyPaths: { value: function(applyValue) {
+    it('should allow prices of 1 cent or more', function() {
+      applyValue('0.01');
     });
   }},
   includeSadPaths: { value: function(input, button, helpMessages, populateOtherInputsWithValidData, isOptional) {
