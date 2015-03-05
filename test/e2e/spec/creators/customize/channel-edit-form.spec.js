@@ -67,7 +67,7 @@ describe('edit channel form', function() {
     });
 
     it('should initialise with the correct properties', function() {
-      testKit.expectFormValues(page, inputs, initialValues);
+      testKit.expectFormValues(page, initialValues);
     });
 
     it('should discard changes when user cancels', function() {
@@ -76,7 +76,7 @@ describe('edit channel form', function() {
       page.cancelButton.click();
       navigateToPage();
 
-      testKit.expectFormValues(page, inputs, initialValues);
+      testKit.expectFormValues(page, initialValues);
     });
 
     it('should allow user to cancel when form is invalid', function() {
@@ -85,7 +85,7 @@ describe('edit channel form', function() {
       page.cancelButton.click();
       navigateToPage();
 
-      testKit.expectFormValues(page, inputs, initialValues);
+      testKit.expectFormValues(page, initialValues);
     });
 
     describe('on successful submission', function() {
@@ -99,7 +99,7 @@ describe('edit channel form', function() {
       });
 
       it('should persist the changes', function() {
-        testKit.expectFormValues(page, inputs, newFormValues);
+        testKit.expectFormValues(page, newFormValues);
       });
 
       it('should persist the changes, between sessions', function() {
@@ -107,7 +107,7 @@ describe('edit channel form', function() {
         sidebar.customizeLink.click();
         header.channelsLink.click();
         navigateToPage();
-        testKit.expectFormValues(page, inputs, newFormValues);
+        testKit.expectFormValues(page, newFormValues);
       });
     });
 
@@ -118,10 +118,10 @@ describe('edit channel form', function() {
         page.saveButton.click();
         browser.waitForAngular(); // Seems to be required.
         navigateToPage();
-        testKit.expectFormValues(page, inputs, newFormValues);
+        testKit.expectFormValues(page, newFormValues);
       });
 
-      testKit.includeHappyPaths(page, inputs, 'priceTextBox', channelPriceInputPage, function(generatedFormValues) {
+      testKit.includeHappyPaths(page, inputs, 'priceTextBox', channelPriceInputPage, false, function(generatedFormValues) {
         newFormValues = generatedFormValues;
       });
     });

@@ -43,18 +43,8 @@ describe('create subscription form', function() {
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
     });
 
-    subscriptionNameInputPage.includeHappyPaths(page.nameTextBox, function() {
-      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
-    });
-
-    taglineInputPage.includeHappyPaths(page.taglineTextBox, function() {
-      page.nameTextBox.sendKeys(subscriptionNameInputPage.newName());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
-    });
-
+    testKit.includeHappyPaths(page, page.inputs, 'nameTextBox', subscriptionNameInputPage);
+    testKit.includeHappyPaths(page, page.inputs, 'taglineTextBox', taglineInputPage);
     testKit.includeHappyPaths(page, page.inputs, 'basePriceTextBox', channelPriceInputPage);
   });
 

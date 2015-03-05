@@ -50,13 +50,17 @@ TestKit.prototype = Object.create({}, {
       }
     });
   }},
-  setFormValues: { value: function(page, inputs, nonDefaultValues) {
+  setFormValues: { value: function(page, inputs, values, setDefaultValues) {
+    if (setDefaultValues === undefined) {
+      setDefaultValues = true;
+    }
+
     var newValues = {};
 
     // If non-default values are provided, make sure they actually correspond to existing inputs rather than silently
     // ignoring them.
-    if (nonDefaultValues) {
-      _.forOwn(nonDefaultValues, function (value, key) {
+    if (values) {
+      _.forOwn(values, function (value, key) {
         if (!_.some(inputs, {name: key})) {
           throw 'The given value "' + key + '" does not match any of the inputs';
         }
@@ -65,32 +69,33 @@ TestKit.prototype = Object.create({}, {
 
     _.forEach(inputs, function(input) {
       var inputName = input.name;
-      var value = (nonDefaultValues && nonDefaultValues[inputName] !== undefined) ? nonDefaultValues[inputName] : input.newValue();
-      newValues[inputName] = value;
+      var valueSpecified = values && values[inputName] !== undefined;
 
-      if (_.endsWith(inputName, 'TextBox')) {
-        page[inputName].clear();
-        page[inputName].sendKeys(value);
-      }
-      else if (_.endsWith(inputName, 'Checkbox')) {
-        page[inputName].isSelected().then(function(currentValue) {
-          if (currentValue != value)  {
-            page[inputName].click();
-          }
-        });
-      }
-      else {
-        throw 'Unknown inputName type: ' + inputName;
+      if (setDefaultValues || valueSpecified) {
+        var value = valueSpecified ? values[inputName] : input.newValue();
+        newValues[inputName] = value;
+
+        if (_.endsWith(inputName, 'TextBox')) {
+          page[inputName].clear();
+          page[inputName].sendKeys(value);
+        }
+        else if (_.endsWith(inputName, 'Checkbox')) {
+          page[inputName].isSelected().then(function(currentValue) {
+            if (currentValue != value)  {
+              page[inputName].click();
+            }
+          });
+        }
+        else {
+          throw 'Unknown inputName type: ' + inputName;
+        }
       }
     });
 
     return newValues;
   }},
-  expectFormValues: { value: function(page, inputs, values) {
-    _.forEach(inputs, function(input) {
-      var inputName = input.name;
-      var value = values[inputName];
-
+  expectFormValues: { value: function(page, values) {
+    _.forOwn(values, function(value, inputName) {
       if (_.endsWith(inputName, 'TextBox')) {
         expect(page[inputName].getAttribute('value')).toBe(value);
       }
@@ -127,12 +132,16 @@ TestKit.prototype = Object.create({}, {
       });
     });
   }},
-  includeHappyPaths: { value: function(page, inputs, inputName, inputPage, saveNewValues) {
+  includeHappyPaths: { value: function(page, inputs, inputName, inputPage, allNewValues, saveNewValues) {
+    if (allNewValues === undefined) {
+      allNewValues = true;
+    }
+
     var self = this;
     inputPage.includeHappyPaths(function(newValue) {
       var valuesToTest = {};
       valuesToTest[inputName] = newValue;
-      var newFormValues = self.setFormValues(page, inputs, valuesToTest);
+      var newFormValues = self.setFormValues(page, inputs, valuesToTest, allNewValues);
 
       if (_.isFunction(saveNewValues)) {
         saveNewValues(newFormValues)

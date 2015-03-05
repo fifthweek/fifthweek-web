@@ -12,25 +12,19 @@ TaglineInputPage.prototype = Object.create({},
   }},
   // All happy paths in a suite typically share the same post-condition, which can be extracted into a afterEach.
   // This is why button clicks and expectations are not set here.
-  includeHappyPaths: { value: function(input, populateOtherInputsWithValidData) {
+  includeHappyPaths: { value: function(applyValue) {
     var self = this;
 
     it('should allow taglines with 5 characters or more', function(){
-      populateOtherInputsWithValidData();
-      input.clear();
-      input.sendKeys('12345');
+      applyValue('12345');
     });
 
     it('should allow taglines with numbers', function(){
-      populateOtherInputsWithValidData();
-      input.clear();
-      input.sendKeys('1234567890');
+      applyValue('1234567890');
     });
 
     it('should allow taglines with trailing and leading whitespace', function(){
-      populateOtherInputsWithValidData();
-      input.clear();
-      input.sendKeys(' ' + self.newTagline() + ' ');
+      applyValue(' ' + self.newTagline() + ' ');
     });
   }},
   includeSadPaths: { value: function(input, button, helpMessages, populateOtherInputsWithValidData, isOptional) {
