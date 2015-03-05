@@ -4,6 +4,7 @@ node_js:
 branches:
   only:
   - master
+  - restyle
 env:
   global:
   - secure: d74TeeWKxyF3U6y0+G+P4qF+D+TGtpT1GfG1ruZe+dog8ESesSLJBiigua81DPwMOlRatFAecF/hGOFQjw7L/xEvKFu65zHrD6RNUIE/A4gi7ohnbl8UW6q8grX89GzhqLeH0s93c8VhWPMRXgDrG+dK5SQ0SbcTxCldurB3ZD0=
