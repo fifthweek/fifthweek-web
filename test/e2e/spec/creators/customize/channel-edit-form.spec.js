@@ -129,7 +129,7 @@ ddescribe('edit channel form', function() {
         }
 
         page.saveButton.click();
-        browser.waitForAngular();
+        browser.waitForAngular(); // Not sure why this is required :(
         channelListPage.getEditChannelButton(0).click();
       });
 
