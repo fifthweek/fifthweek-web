@@ -35,6 +35,7 @@ ChannelEditPage.prototype = Object.create({}, {
       newValue: function() { return  Math.random() > 0.5; }
     }
   ]},
+  helpMessages: { get: function () { return element.all(by.css('#editChannelForm .help-block')); }},
   saveButton: { get: function () { return element(by.id('save-channel-button')); }},
   cancelButton: { get: function () { return element(by.id('cancel-button')); }},
   deleteButtonSelector: { get: function () { return by.id('delete-channel-link'); }},

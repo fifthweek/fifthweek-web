@@ -107,28 +107,25 @@ TestKit.prototype = Object.create({}, {
       }
     });
   }},
-  itShouldHaveWellBehavedSubmitButton: { value: function(button, actions) {
-    describe('submit button', function() {
+  itShouldHaveWellBehavedSubmitButton: { value: function(page, inputs, button) {
+    it('should be disabled until changes are made', function(){
+      expect(button.isEnabled()).toBe(false);
+    });
 
-      it('should be disabled until changes are made', function(){
-        expect(button.isEnabled()).toBe(false);
-      });
+    _.forEach(inputs, function(input) {
+      var inputName = input.name;
+      it('should become enabled after changing "' + inputName + '"', function(){
+        if (_.endsWith(inputName, 'TextBox')) {
+          page[inputName].clear();
+        }
+        else if (_.endsWith(inputName, 'Checkbox')) {
+          page[inputName].click();
+        }
+        else {
+          throw 'Unknown inputName type: ' + inputName;
+        }
 
-      _.forEach(actions, function(action) {
-        it('should become enabled after ' + action.name, function(){
-          if (_.isFunction(action.act)) {
-            action.act();
-          }
-          else if (action.textbox) {
-            action.textbox.clear();
-          }
-          else if (action.checkbox) {
-            action.checkbox.click();
-          }
-
-          expect(button.isEnabled()).toBe(true);
-          browser.refresh();
-        });
+        expect(button.isEnabled()).toBe(true);
       });
     });
   }},

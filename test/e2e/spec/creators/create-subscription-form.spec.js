@@ -62,14 +62,10 @@ describe('create subscription form', function() {
 
     subscriptionNameInputPage.includeSadPaths(page.nameTextBox, page.submitButton, page.helpMessages, function() {
       page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     taglineInputPage.includeSadPaths(page.taglineTextBox, page.submitButton, page.helpMessages, function() {
       page.nameTextBox.sendKeys(subscriptionNameInputPage.newName());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
     });
 
     channelPriceInputPage.includeSadPaths(page.basePriceTextBox, page.submitButton, page.helpMessages, function() {

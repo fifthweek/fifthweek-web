@@ -135,32 +135,24 @@ describe('edit channel form', function() {
     });
 
     describe('when validating bad input', function() {
+      afterEach(function() {
+        header.channelsLink.click(); // Reset form state.
+        navigateToPage();
+      });
 
+      channelNameInputPage.includeSadPaths(page.nameTextBox, page.saveButton, page.helpMessages, function() {});
+      channelDescriptionInputPage.includeSadPaths(page.descriptionTextBox, page.saveButton, page.helpMessages, function() {});
+      channelPriceInputPage.includeSadPaths(page.priceTextBox, page.saveButton, page.helpMessages, function() {});
     });
 
-    var formActions = [
-      {
-        name: 'changing the name',
-        textbox: page.nameTextBox
-      },
-      {
-        name: 'changing the description',
-        textbox: page.descriptionTextBox
-      },
-      {
-        name: 'changing the price',
-        textbox: page.priceTextBox
-      }
-    ];
-
-    if (!isDefault) {
-      formActions.push({
-        name: 'changing the visibility',
-        checkbox: page.hiddenCheckbox
+    describe('submit button', function() {
+      afterEach(function () {
+        header.channelsLink.click(); // Reset form state.
+        navigateToPage();
       });
-    }
 
-    testKit.itShouldHaveWellBehavedSubmitButton(page.saveButton, formActions);
+      testKit.itShouldHaveWellBehavedSubmitButton(page, inputs, page.saveButton);
+    });
   };
 
   describe('when editing the default channel', function() {
