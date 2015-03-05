@@ -461,6 +461,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.customize.channels.new.name, {
         url: '/new',
         templateUrl: 'views/creators/customize/channels/new.html',
+        controller: 'newChannelCtrl',
         requireSubscription: true,
         data : {
           headTitle: ': ' + 'Create Channel',
