@@ -121,15 +121,15 @@ describe('edit channel form', function() {
         testKit.expectFormValues(page, newFormValues);
       });
 
-      testKit.includeHappyPaths(page, inputs, 'nameTextBox', channelNameInputPage, false, function(generatedFormValues) {
+      testKit.includeHappyPaths(page, channelNameInputPage, 'nameTextBox', null, function(generatedFormValues) {
         newFormValues = generatedFormValues;
       });
 
-      testKit.includeHappyPaths(page, inputs, 'descriptionTextBox', channelDescriptionInputPage, false, function(generatedFormValues) {
+      testKit.includeHappyPaths(page, channelDescriptionInputPage, 'descriptionTextBox', null, function(generatedFormValues) {
         newFormValues = generatedFormValues;
       });
 
-      testKit.includeHappyPaths(page, inputs, 'priceTextBox', channelPriceInputPage, false, function(generatedFormValues) {
+      testKit.includeHappyPaths(page, channelPriceInputPage, 'priceTextBox', null, function(generatedFormValues) {
         newFormValues = generatedFormValues;
       });
     });

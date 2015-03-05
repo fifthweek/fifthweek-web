@@ -50,45 +50,44 @@ TestKit.prototype = Object.create({}, {
       }
     });
   }},
-  setFormValues: { value: function(page, inputs, values, setDefaultValues) {
-    if (setDefaultValues === undefined) {
-      setDefaultValues = true;
-    }
-
+  setFormValues: { value: function(page, inputsNeedingValues, values) {
     var newValues = {};
 
-    // If non-default values are provided, make sure they actually correspond to existing inputs rather than silently
-    // ignoring them.
     if (values) {
-      _.forOwn(values, function (value, key) {
-        if (!_.some(inputs, {name: key})) {
-          throw 'The given value "' + key + '" does not match any of the inputs';
+      _.forOwn(values, function (value, inputName) {
+        if (page[inputName] === undefined) {
+          throw 'The given input "' + inputName + '" does not exist in the page object';
+        }
+      });
+
+      _.forOwn(values, function(value, inputName) {
+        newValues[inputName] = value;
+      });
+    }
+
+    if (inputsNeedingValues) {
+      _.forEach(inputsNeedingValues, function(input) {
+        var inputName = input.name;
+        if (newValues[inputName] === undefined) {
+          newValues[inputName] = input.newValue();
         }
       });
     }
 
-    _.forEach(inputs, function(input) {
-      var inputName = input.name;
-      var valueSpecified = values && values[inputName] !== undefined;
-
-      if (setDefaultValues || valueSpecified) {
-        var value = valueSpecified ? values[inputName] : input.newValue();
-        newValues[inputName] = value;
-
-        if (_.endsWith(inputName, 'TextBox')) {
-          page[inputName].clear();
-          page[inputName].sendKeys(value);
-        }
-        else if (_.endsWith(inputName, 'Checkbox')) {
-          page[inputName].isSelected().then(function(currentValue) {
-            if (currentValue != value)  {
-              page[inputName].click();
-            }
-          });
-        }
-        else {
-          throw 'Unknown inputName type: ' + inputName;
-        }
+    _.forOwn(newValues, function(newValue, inputName) {
+      if (_.endsWith(inputName, 'TextBox')) {
+        page[inputName].clear();
+        page[inputName].sendKeys(newValue);
+      }
+      else if (_.endsWith(inputName, 'Checkbox')) {
+        page[inputName].isSelected().then(function(currentValue) {
+          if (currentValue != newValue) {
+            page[inputName].click();
+          }
+        });
+      }
+      else {
+        throw 'Unknown inputName type: ' + inputName;
       }
     });
 
@@ -129,16 +128,12 @@ TestKit.prototype = Object.create({}, {
       });
     });
   }},
-  includeHappyPaths: { value: function(page, inputs, inputName, inputPage, allNewValues, saveNewValues) {
-    if (allNewValues === undefined) {
-      allNewValues = true;
-    }
-
+  includeHappyPaths: { value: function(page, inputPage, inputName, inputsNeedingValues, saveNewValues) {
     var self = this;
     inputPage.includeHappyPaths(function(newValue, newValueNormalized) {
       var valuesToTest = {};
       valuesToTest[inputName] = newValue;
-      var newFormValues = self.setFormValues(page, inputs, valuesToTest, allNewValues);
+      var newFormValues = self.setFormValues(page, inputsNeedingValues, valuesToTest);
 
       if (newValueNormalized) {
         // Input page object has stated that the persisted value is expected to be different from the one entered.

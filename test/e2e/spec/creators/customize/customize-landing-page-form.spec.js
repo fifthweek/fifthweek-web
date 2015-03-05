@@ -228,10 +228,6 @@ describe('customize landing page form', function() {
     });
 
     describe('happy path', function(){
-      beforeEach(function(){
-
-      });
-
       afterEach(function(){
         page.basicsTabLink.click();
         page.basicsSubmitButton.click();
@@ -241,9 +237,8 @@ describe('customize landing page form', function() {
         browser.refresh();
       });
 
-      subscriptionNameInputPage.includeHappyPaths(page.subscriptionNameTextBox, function() {});
-
-      taglineInputPage.includeHappyPaths(page.taglineTextBox, function() {});
+      testKit.includeHappyPaths(page, subscriptionNameInputPage, 'subscriptionNameTextBox');
+      testKit.includeHappyPaths(page, taglineInputPage, 'taglineTextBox');
 
       it('should allow symbols in introductions', function(){
         page.basicsTabLink.click();
