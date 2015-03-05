@@ -57,6 +57,9 @@ TestKit.prototype = Object.create({}, {
           else if (action.textbox) {
             action.textbox.clear();
           }
+          else if (action.checkbox) {
+            action.checkbox.click();
+          }
 
           expect(button.isEnabled()).toBe(true);
           browser.refresh();
