@@ -33,6 +33,8 @@ ddescribe('edit channel form', function() {
   });
 
   var describeForm = function(isDefault) {
+    var initialValues;
+
     var navigateToPage = function() {
       if (isDefault) {
         channelListPage.getEditChannelButton(0).click();
@@ -42,18 +44,26 @@ ddescribe('edit channel form', function() {
       }
     };
 
-    var expectInitialValues = function() {
-      if (isDefault) {
-        expect(page.nameTextBox.getAttribute('value')).toBe(channelListPage.defaultChannelName);
-        expect(page.descriptionTextBox.getAttribute('value')).toBe(channelListPage.defaultChannelDescription);
-        expect(page.priceTextBox.getAttribute('value')).toBe(subscription.basePrice);
-      }
-      else {
+    var expectFormValues = function(values) {
+      expect(page.nameTextBox.getAttribute('value')).toBe(values.name);
+      expect(page.descriptionTextBox.getAttribute('value')).toBe(values.description);
+      expect(page.priceTextBox.getAttribute('value')).toBe(values.price);
+
+      if (!isDefault) {
         throw 'Not Implemented';
       }
     };
 
-    it('should run once before all', navigateToPage);
+    it('should run once before all', function() {
+      initialValues = {
+        name: isDefault ? channelListPage.defaultChannelName : 'Not Implemented',
+        description: isDefault ? channelListPage.defaultChannelDescription : 'Not Implemented',
+        price: isDefault ? subscription.basePrice : 'Not Implemented',
+        hidden: 'Not Implemented'
+      };
+
+      navigateToPage();
+    });
 
     it('should ' + (isDefault ? 'not' : '') + ' give you the option to delete the channel', function() {
       expect(page.deleteButtonCount).toBe(isDefault ? 0 : 1);
@@ -64,7 +74,7 @@ ddescribe('edit channel form', function() {
     });
 
     it('should initialise with the correct properties', function() {
-      expectInitialValues();
+      expectFormValues(initialValues);
     });
 
     it('should discard changes when user cancels', function() {
@@ -82,7 +92,7 @@ ddescribe('edit channel form', function() {
       page.cancelButton.click();
       channelListPage.getEditChannelButton(0).click();
 
-      expectInitialValues();
+      expectFormValues(initialValues);
     });
 
     it('should allow user to cancel when form is invalid', function() {
@@ -93,16 +103,38 @@ ddescribe('edit channel form', function() {
       page.cancelButton.click();
       channelListPage.getEditChannelButton(0).click();
 
-      expectInitialValues();
+      expectFormValues(initialValues);
     });
 
     describe('when submitting with valid input', function() {
-      it('should run once before all', function() {
+      var newValues;
 
+      it('should run once before all', function() {
+        newValues = {
+          name: channelNameInputPage.newName(),
+          description: channelDescriptionInputPage.newDescription(),
+          price: channelPriceInputPage.newPrice(),
+          hidden: !initialValues.hidden
+        };
+
+        page.nameTextBox.clear();
+        page.nameTextBox.sendKeys(newValues.name);
+        page.descriptionTextBox.clear();
+        page.descriptionTextBox.sendKeys(newValues.description);
+        page.priceTextBox.clear();
+        page.priceTextBox.sendKeys(newValues.price);
+
+        if (!isDefault) {
+          page.hiddenCheckbox.click();
+        }
+
+        page.saveButton.click();
+        browser.waitForAngular();
+        channelListPage.getEditChannelButton(0).click();
       });
 
       it('should persist the changes', function() {
-
+        expectFormValues(newValues);
       });
 
       it('should persist the changes, between sessions', function() {
@@ -110,6 +142,7 @@ ddescribe('edit channel form', function() {
         sidebar.customizeLink.click();
         header.channelsLink.click();
         navigateToPage();
+        expectFormValues(newValues);
       });
     });
 
