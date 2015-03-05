@@ -65,6 +65,16 @@ describe('edit channel form', function() {
 
       expectDefaultChannelValues();
     });
+
+    describe('when submitting with valid input', function() {
+      it('should persist the changes', function() {
+
+      });
+    });
+
+    describe('when submitting with invalid input', function() {
+
+    });
   });
 
   //describe('when editing a non-default channel', function() {
