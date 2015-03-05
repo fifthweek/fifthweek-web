@@ -23,37 +23,28 @@ ChannelDescriptionInputPage.prototype = Object.create({},
     }},
     // All happy paths in a suite typically share the same post-condition, which can be extracted into a afterEach.
     // This is why button clicks and expectations are not set here.
-    includeHappyPaths: { value: function(input, populateOtherInputsWithValidData) {
+    includeHappyPaths: { value: function(applyValue) {
       var self = this;
 
       it('should allow channel descriptions with 1 characters or more', function(){
-        populateOtherInputsWithValidData();
-        input.clear();
-        input.sendKeys('1');
+        applyValue('1');
       });
 
       it('should allow channel descriptions with punctuation', function(){
-        populateOtherInputsWithValidData();
-        input.clear();
-        input.sendKeys(testKit.punctuation33);
+        applyValue(testKit.punctuation33);
       });
 
       it('should allow channel descriptions with numbers', function(){
-        populateOtherInputsWithValidData();
-        input.clear();
-        input.sendKeys('1234567890');
+        applyValue('1234567890');
       });
 
       it('should allow channel descriptions with new lines', function(){
-        populateOtherInputsWithValidData();
-        input.clear();
-        input.sendKeys(self.newDescriptionLine() + '\n' + self.newDescriptionLine());
+        applyValue(self.newDescriptionLine() + '\n' + self.newDescriptionLine());
       });
 
       it('should allow channel descriptions with trailing and leading whitespace', function(){
-        populateOtherInputsWithValidData();
-        input.clear();
-        input.sendKeys(' ' + self.newDescription() + ' ');
+        var normalizedValue = self.newDescription();
+        applyValue(' ' + normalizedValue + ' ', normalizedValue);
       });
     }},
     includeSadPaths: { value: function(input, button, helpMessages, populateOtherInputsWithValidData, isOptional) {

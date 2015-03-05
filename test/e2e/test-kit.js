@@ -138,10 +138,15 @@ TestKit.prototype = Object.create({}, {
     }
 
     var self = this;
-    inputPage.includeHappyPaths(function(newValue) {
+    inputPage.includeHappyPaths(function(newValue, newValueNormalized) {
       var valuesToTest = {};
       valuesToTest[inputName] = newValue;
       var newFormValues = self.setFormValues(page, inputs, valuesToTest, allNewValues);
+
+      if (newValueNormalized) {
+        // Input page object has stated that the persisted value is expected to be different from the one entered.
+        newFormValues[inputName] = newValueNormalized;
+      }
 
       if (_.isFunction(saveNewValues)) {
         saveNewValues(newFormValues)
