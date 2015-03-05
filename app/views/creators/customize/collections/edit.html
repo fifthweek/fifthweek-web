@@ -47,6 +47,8 @@
               data-loading-text="Saving..."
               data-event-title="Collection edited"
               data-event-category="Customization"
+              ng-disabled="!mainFormDirty() || manageCollectionForm.isSubmitting"
+              can-submit="manageCollectionForm.$valid && mainFormDirty()"
               fw-form-submit="save()">Save Changes</button>
             <button class="btn btn-default btn-block"
                     ui-sref="creators.customize.collections">Cancel</button>
@@ -65,10 +67,11 @@
     </fw-panel12>
   </form>
 
+  <!-- Sub-forms use NG-IF to ensure their state is cleared on exit -->
   <form novalidate
         role="form"
         name="newReleaseTimeForm"
-        ng-show="model.addingReleaseTime">
+        ng-if="model.addingReleaseTime">
 
     <fw-breadcrumb
       current="New Release Time"
@@ -91,10 +94,11 @@
 
   </form>
 
+  <!-- Sub-forms use NG-IF to ensure their state is cleared on exit -->
   <form novalidate
         role="form"
         name="manageReleaseTimeForm"
-        ng-show="model.selectedReleaseTime">
+        ng-if="model.selectedReleaseTime">
 
     <fw-breadcrumb
       current="Edit Release Time"
@@ -109,6 +113,7 @@
           <button
             id="save-release-time-button"
             class="btn btn-block btn-success"
+            ng-disabled="manageReleaseTimeForm.$pristine || manageReleaseTimeForm.isSubmitting"
             ng-click="saveReleaseTime()">Update Release Time</button>
           <button
             class="btn btn-default btn-block"

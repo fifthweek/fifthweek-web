@@ -28,6 +28,7 @@
               data-loading-text="Saving..."
               data-event-title="Channel edited"
               data-event-category="Customization"
+              ng-disabled="form.$pristine || form.isSubmitting"
               fw-form-submit="save()">Save Changes</button>
             <button
               id="cancel-button"

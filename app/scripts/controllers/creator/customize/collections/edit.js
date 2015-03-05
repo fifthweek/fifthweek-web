@@ -5,6 +5,7 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
     id: 'a',
     savedName: 'Side Comic',
     name: 'Side Comic',
+    releaseTimesDirty: false,
     schedule: [
       {
         id: 1,
@@ -40,6 +41,10 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
 
   $scope.model.selectedChannel = $scope.model.channels[1];
 
+  $scope.mainFormDirty = function() {
+    return $scope.manageCollectionForm.$dirty || $scope.model.releaseTimesDirty;
+  };
+
   $scope.timeChanged = function() {
 
   };
@@ -50,12 +55,14 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
   };
 
   $scope.saveReleaseTime = function() {
+    $scope.model.releaseTimesDirty = true;
     _.merge($scope.model.selectedReleaseTime, $scope.model.stagedReleaseTime);
     $scope.model.selectedReleaseTime = null;
   };
 
   $scope.addReleaseTime = function() {
     // To-do: add to release times.
+    $scope.model.releaseTimesDirty = true;
     $scope.model.addingReleaseTime = false;
   };
 
