@@ -43,14 +43,12 @@ TestKit.prototype = Object.create({}, {
     });
   }},
   clearForm: { value: function(page, inputs) {
-    var promises = _.map(inputs, function(input) {
+    _.forEach(inputs, function(input) {
       var inputName = input.name;
       if (_.endsWith(inputName, 'TextBox')) {
-        return page[inputName].clear();
+        page[inputName].clear();
       }
     });
-
-    return protractor.promise.all(promises);
   }},
   setFormValues: { value: function(page, inputs, nonDefaultValues) {
     var newValues = {};
@@ -65,20 +63,19 @@ TestKit.prototype = Object.create({}, {
       });
     }
 
-    var promises = _.map(inputs, function(input) {
+    _.forEach(inputs, function(input) {
       var inputName = input.name;
       var value = (nonDefaultValues && nonDefaultValues[inputName] !== undefined) ? nonDefaultValues[inputName] : input.newValue();
       newValues[inputName] = value;
 
       if (_.endsWith(inputName, 'TextBox')) {
-        return page[inputName].clear().then(function() {
-          return page[inputName].sendKeys(value);
-        });
+        page[inputName].clear();
+        page[inputName].sendKeys(value);
       }
       else if (_.endsWith(inputName, 'Checkbox')) {
-        return page[inputName].isSelected().then(function(currentValue) {
+        page[inputName].isSelected().then(function(currentValue) {
           if (currentValue != value)  {
-            return page[inputName].click();
+            page[inputName].click();
           }
         });
       }
@@ -87,12 +84,9 @@ TestKit.prototype = Object.create({}, {
       }
     });
 
-    return protractor.promise.all(promises).then(function() {
-      return newValues;
-    });
+    return newValues;
   }},
   expectFormValues: { value: function(page, inputs, values) {
-    // expect(...).X does not return a promise, so no waiting is required.
     _.forEach(inputs, function(input) {
       var inputName = input.name;
       var value = values[inputName];
@@ -133,19 +127,17 @@ TestKit.prototype = Object.create({}, {
       });
     });
   }},
-  includeHappyPaths: { value: function(page, inputs, inputName, inputPage) {
+  includeHappyPaths: { value: function(page, inputs, inputName, inputPage, saveNewValues) {
     var self = this;
-    var deferred = protractor.promise.defer();
-
     inputPage.includeHappyPaths(function(newValue) {
       var valuesToTest = {};
       valuesToTest[inputName] = newValue;
-      return self.setFormValues(page, inputs, valuesToTest).then(function(generatedFormValues) {
-        deferred.fulfill(generatedFormValues);
-      });
-    });
+      var newFormValues = self.setFormValues(page, inputs, valuesToTest);
 
-    return deferred.promise;
+      if (_.isFunction(saveNewValues)) {
+        saveNewValues(newFormValues)
+      }
+    });
   }}
 });
 

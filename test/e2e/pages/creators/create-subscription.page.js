@@ -1,6 +1,6 @@
 'use strict';
 
-var TestKit = require('../../../test-kit.js');
+var TestKit = require('../../test-kit.js');
 var SubscriptionNameInputPage = require('../../pages/subscription-name-input.page.js');
 var TaglineInputPage = require('../../pages/tagline-input.page.js');
 var ChannelPriceInputPage = require('../../pages/channel-price-input.page.js');
@@ -35,17 +35,13 @@ CreateSubscriptionPage.prototype = Object.create({}, {
   helpMessages: { get: function () { return element.all(by.css('#createSubscriptionForm .help-block')); }},
   nextPageUrl: { get: function () { return '/creators/compose/note'; }}, // Todo: replace with page object
   submitSuccessfully: { value: function() {
-    var self = this;
-
-    return testKit.setFormValues(this, this.inputs).then(function(newValues) {
-      return self.submitButton.click().then(function() {
-        return {
-          name: newValues.nameTextBox,
-          tagline: newValues.taglineTextBox,
-          basePrice: newValues.basePriceTextBox
-        };
-      });
-    });
+    var formValues = testKit.setFormValues(this, this.inputs);
+    this.submitButton.click();
+    return {
+      name: formValues.nameTextBox,
+      tagline: formValues.taglineTextBox,
+      basePrice: formValues.basePriceTextBox
+    };
   }}
 });
 

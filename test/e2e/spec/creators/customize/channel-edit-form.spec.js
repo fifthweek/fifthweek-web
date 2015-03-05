@@ -91,9 +91,7 @@ ddescribe('edit channel form', function() {
       var newFormValues;
 
       it('should run once before all', function() {
-        testKit.setFormValues(page, inputs).then(function(generatedFormValues) {
-          newFormValues = generatedFormValues;
-        });
+        newFormValues = testKit.setFormValues(page, inputs);
         page.saveButton.click();
         browser.waitForAngular(); // Seems to be required.
         navigateToPage();
@@ -122,7 +120,7 @@ ddescribe('edit channel form', function() {
         testKit.expectFormValues(page, inputs, newFormValues);
       });
 
-      testKit.includeHappyPaths(page, inputs, 'priceTextBox', channelPriceInputPage).then(function(generatedFormValues) {
+      testKit.includeHappyPaths(page, inputs, 'priceTextBox', channelPriceInputPage, function(generatedFormValues) {
         newFormValues = generatedFormValues;
       });
     });
