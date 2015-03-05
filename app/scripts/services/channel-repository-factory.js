@@ -16,6 +16,30 @@ angular.module('webApp')
           return aggregateUserState.currentValue.userId !== currentUserId;
         };
 
+        service.createChannel = function(newChannel){
+          if (userChanged()) {
+            return $q.when();
+          }
+
+          var newChannels = _.cloneDeep(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
+          var exitingChannel = _.find(newChannels, { 'channelId': newChannel.channelId });
+          if(exitingChannel){
+            return $q.reject(new FifthweekError('Channel already exists in aggregate state.'));
+          }
+
+          newChannels.push(newChannel);
+
+          aggregateUserState.updateFromDelta(
+            currentUserId,
+            {
+              createdChannelsAndCollections: {
+                channels: newChannels
+              }
+            });
+
+          return $q.when();
+        };
+
         service.updateChannel = function(channelId, applyChanges){
           if (userChanged()) {
             return $q.when();
