@@ -73,7 +73,7 @@ angular.module('webApp')
       var parentObject = utilities.getValue(newUserState, _.initial(keySegments));
 
       if (parentObject === undefined) {
-        throw new FifthweekError('Parent object for "' + key + "' does not exist in existing aggregate state");
+        throw new FifthweekError('Parent object for "' + key + '" does not exist in existing aggregate state');
       }
 
       parentObject[_.last(keySegments)] = userStateDelta;
