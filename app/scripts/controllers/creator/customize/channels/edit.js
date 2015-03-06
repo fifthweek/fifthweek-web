@@ -36,14 +36,14 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
     };
     return channelStub.putChannel(channelId, channelData)
       .then(function() {
-        channelRepository.updateChannel(channelId, function(channel) {
+        return channelRepository.updateChannel(channelId, function(channel) {
           channel.name = channelData.name;
           channel.description = channelData.description;
           channel.priceInUsCentsPerWeek = channelData.price;
           channel.isVisibleToNonSubscribers = channelData.isVisibleToNonSubscribers;
+        }).then(function() {
+          $state.go($scope.previousState);
         });
-
-        $state.go($scope.previousState);
       });
   };
 

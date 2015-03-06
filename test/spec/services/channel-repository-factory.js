@@ -68,7 +68,7 @@ describe('channel repository factory', function(){
       target.updateChannels(applyChanges);
 
       expect(applyChanges).toHaveBeenCalledWith(channels);
-      expect(masterRepository.set.calls.mostRecent().args[0]).toBe('createdChannelsAndCollections.channels');
+      expect(masterRepository.set).toHaveBeenCalledWith('createdChannelsAndCollections.channels', jasmine.any(Function));
     });
   });
 
