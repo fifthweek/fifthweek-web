@@ -106,16 +106,16 @@ describe('edit channel form', function() {
     });
   });
 
-  //describe('when validating bad input', function() {
-  //  afterEach(function() {
-  //    header.channelsLink.click(); // Reset form state.
-  //    channelListPage.addChannelButton.click();
-  //  });
-  //
-  //  //channelNameInputPage.includeSadPaths(page.nameTextBox, page.createButton, page.helpMessages, function() {});
-  //  //channelDescriptionInputPage.includeSadPaths(page.descriptionTextBox, page.createButton, page.helpMessages, function() {});
-  //  //channelPriceInputPage.includeSadPaths(page.priceTextBox, page.createButton, page.helpMessages, function() {});
-  //});
+  describe('when validating bad input', function() {
+    afterEach(function() {
+      header.channelsLink.click(); // Reset form state.
+      channelListPage.addChannelButton.click();
+    });
+
+    testKit.includeSadPaths(page, page.createButton, page.helpMessages, channelNameInputPage, 'nameTextBox', page.inputs);
+    testKit.includeSadPaths(page, page.createButton, page.helpMessages, channelDescriptionInputPage, 'descriptionTextBox', page.inputs);
+    testKit.includeSadPaths(page, page.createButton, page.helpMessages, channelPriceInputPage, 'priceTextBox', page.inputs);
+  });
 
   var expectChangesAppliedAndNavigateToPage = function(newFormValues, index) {
     channelListPage.waitForPage();

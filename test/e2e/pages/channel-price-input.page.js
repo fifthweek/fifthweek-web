@@ -17,11 +17,10 @@ ChannelPriceInputPage.prototype = Object.create({},
       applyValue('0.01');
     });
   }},
-  includeSadPaths: { value: function(input, button, helpMessages, populateOtherInputsWithValidData, isOptional) {
+  includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
 
     if(!isOptional) {
       it('requires price', function () {
-        populateOtherInputsWithValidData();
         input.clear();
 
         button.click();
@@ -31,7 +30,6 @@ ChannelPriceInputPage.prototype = Object.create({},
     }
 
     it('should not allow a price of 0', function(){
-      populateOtherInputsWithValidData();
       input.clear();
       input.sendKeys('0');
 
@@ -41,8 +39,6 @@ ChannelPriceInputPage.prototype = Object.create({},
     });
 
     it('should not allow non-monetary values', function(){
-      populateOtherInputsWithValidData();
-
       input.clear();
       input.sendKeys('abc');
       expect(input.getAttribute('value')).toBe('');

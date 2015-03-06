@@ -139,9 +139,9 @@ describe('edit channel form', function() {
         navigateToPage();
       });
 
-      channelNameInputPage.includeSadPaths(page.nameTextBox, page.saveButton, page.helpMessages, function() {});
-      channelDescriptionInputPage.includeSadPaths(page.descriptionTextBox, page.saveButton, page.helpMessages, function() {});
-      channelPriceInputPage.includeSadPaths(page.priceTextBox, page.saveButton, page.helpMessages, function() {});
+      testKit.includeSadPaths(page, page.saveButton, page.helpMessages, channelNameInputPage, 'nameTextBox');
+      testKit.includeSadPaths(page, page.saveButton, page.helpMessages, channelDescriptionInputPage, 'descriptionTextBox');
+      testKit.includeSadPaths(page, page.saveButton, page.helpMessages, channelPriceInputPage, 'priceTextBox');
     });
 
     describe('submit button', function() {

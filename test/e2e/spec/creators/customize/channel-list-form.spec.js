@@ -6,6 +6,9 @@ var ChannelListPage = require('../../../pages/creators/customize/channel-list.pa
 describe('channel list form', function() {
   'use strict';
 
+  // NOTE:
+  // Tests for non-default channels are covered by the 'add channel' specification.
+
   var registration;
   var subscription;
 

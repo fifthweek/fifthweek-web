@@ -35,11 +35,10 @@ SubscriptionNameInputPage.prototype = Object.create({},
       applyValue(' ' + self.newName() + ' ');
     });
   }},
-  includeSadPaths: { value: function(input, button, helpMessages, populateOtherInputsWithValidData, isOptional) {
+  includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
 
     if(!isOptional) {
       it('requires subscription name', function () {
-        populateOtherInputsWithValidData();
         input.clear();
 
         button.click();
@@ -49,7 +48,6 @@ SubscriptionNameInputPage.prototype = Object.create({},
     }
 
     it('should not allow subscription names with over than 25 characters', function(){
-      populateOtherInputsWithValidData();
       input.clear();
 
       var maxLength = 25;

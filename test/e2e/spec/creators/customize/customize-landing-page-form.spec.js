@@ -305,9 +305,8 @@ describe('customize landing page form', function() {
         browser.refresh();
       });
 
-      subscriptionNameInputPage.includeSadPaths(page.subscriptionNameTextBox, page.basicsSubmitButton, page.helpMessages, function() {});
-
-      taglineInputPage.includeSadPaths(page.taglineTextBox, page.basicsSubmitButton, page.helpMessages, function() {});
+      testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, subscriptionNameInputPage, 'subscriptionNameTextBox');
+      testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, taglineInputPage, 'taglineTextBox');
 
       it('should not allow an empty introduction', function(){
         page.basicsTabLink.click();

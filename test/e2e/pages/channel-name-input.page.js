@@ -32,11 +32,10 @@ ChannelNameInputPage.prototype = Object.create({},
         applyValue(' ' + normalizedValue + ' ', normalizedValue);
       });
     }},
-    includeSadPaths: { value: function(input, button, helpMessages, populateOtherInputsWithValidData, isOptional) {
+    includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
 
       if(!isOptional) {
         it('requires channel name', function () {
-          populateOtherInputsWithValidData();
           input.clear();
 
           button.click();
@@ -46,7 +45,6 @@ ChannelNameInputPage.prototype = Object.create({},
       }
 
       it('should not allow channel names with over than 50 characters', function(){
-        populateOtherInputsWithValidData();
         input.clear();
 
         var maxLength = 50;

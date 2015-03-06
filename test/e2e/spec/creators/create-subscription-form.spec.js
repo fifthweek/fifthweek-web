@@ -60,17 +60,8 @@ describe('create subscription form', function() {
       browser.refresh();
     });
 
-    subscriptionNameInputPage.includeSadPaths(page.nameTextBox, page.submitButton, page.helpMessages, function() {
-      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
-    });
-
-    taglineInputPage.includeSadPaths(page.taglineTextBox, page.submitButton, page.helpMessages, function() {
-      page.nameTextBox.sendKeys(subscriptionNameInputPage.newName());
-    });
-
-    channelPriceInputPage.includeSadPaths(page.basePriceTextBox, page.submitButton, page.helpMessages, function() {
-      page.nameTextBox.sendKeys(subscriptionNameInputPage.newName());
-      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
-    });
+    testKit.includeSadPaths(page, page.submitButton, page.helpMessages, subscriptionNameInputPage, 'nameTextBox', page.inputs);
+    testKit.includeSadPaths(page, page.submitButton, page.helpMessages, taglineInputPage, 'taglineTextBox', page.inputs);
+    testKit.includeSadPaths(page, page.submitButton, page.helpMessages, channelPriceInputPage, 'basePriceTextBox', page.inputs);
   });
 });

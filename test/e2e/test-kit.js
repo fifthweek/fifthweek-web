@@ -136,19 +136,43 @@ TestKit.prototype = Object.create({}, {
   }},
   includeHappyPaths: { value: function(page, inputPage, inputName, inputsNeedingValues, saveNewValues) {
     var self = this;
-    inputPage.includeHappyPaths(function(newValue, newValueNormalized) {
-      var valuesToTest = {};
-      valuesToTest[inputName] = newValue;
-      var newFormValues = self.setFormValues(page, inputsNeedingValues, valuesToTest);
 
-      if (newValueNormalized) {
-        // Input page object has stated that the persisted value is expected to be different from the one entered.
-        newFormValues[inputName] = newValueNormalized;
+    describe('for "' + inputName + '"', function() {
+
+      inputPage.includeHappyPaths(function (newValue, newValueNormalized) {
+        var valuesToTest = {};
+        valuesToTest[inputName] = newValue;
+        var newFormValues = self.setFormValues(page, inputsNeedingValues, valuesToTest);
+
+        if (newValueNormalized) {
+          // Input page object has stated that the persisted value is expected to be different from the one entered.
+          newFormValues[inputName] = newValueNormalized;
+        }
+
+        if (_.isFunction(saveNewValues)) {
+          saveNewValues(newFormValues)
+        }
+      });
+
+    });
+  }},
+  includeSadPaths: { value: function(page, button, helpMessages, inputPage, inputName, inputsNeedingValues, isOptional) {
+    var self = this;
+
+    describe('for "' + inputName + '"', function() {
+
+      if (inputsNeedingValues) {
+        var inputsExcludingOneUnderTest = _.reject(inputsNeedingValues, { name: inputName });
+        if (inputsExcludingOneUnderTest.length > 0) {
+
+          beforeEach(function() {
+            self.setFormValues(page, inputsExcludingOneUnderTest);
+          });
+
+        }
       }
 
-      if (_.isFunction(saveNewValues)) {
-        saveNewValues(newFormValues)
-      }
+      inputPage.includeSadPaths(page[inputName], button, helpMessages, isOptional);
     });
   }}
 });
