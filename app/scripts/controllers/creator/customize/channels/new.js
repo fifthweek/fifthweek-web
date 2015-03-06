@@ -25,6 +25,7 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
     return channelStub.postChannel(channelData)
       .then(function(response) {
         var channelId = response.data;
+        channelData.collections = [];
         channelData.channelId = channelId;
         channelData.priceInUsCentsPerWeek = channelData.price;
         delete channelData.price;
