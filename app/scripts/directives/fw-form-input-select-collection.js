@@ -7,7 +7,8 @@ angular.module('webApp').directive('fwFormInputSelectCollection', function () {
       items:'=',
       selectedItem:'=',
       createNewCollectionDisabled:'=',
-      createNewCollection:'&'
+      createNewCollection:'&',
+      id:'@'
     },
     templateUrl:'views/partials/form-input-select-collection.html'
   };

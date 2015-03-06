@@ -12,12 +12,12 @@
 
   <div ng-show="!model.errorMessage && !model.submissionSucceeded">
     <div ng-show="!model.postLater">
-      <form novalidate name="contentForm">
+      <form novalidate name="contentForm" id="content-form">
 
         <fw-form-input-note ng-model="model.input.note" required focus></fw-form-input-note>
 
         <div ng-if="model.channels.length > 1">
-          <fw-form-input-select selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
+          <fw-form-input-select id="model-input-selected-channel" selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
         </div>
 
         <div class="row-btn">
@@ -39,7 +39,7 @@
     </div>
 
     <div ng-show="model.postLater">
-      <form novalidate name="scheduleForm">
+      <form novalidate name="scheduleForm" id="schedule-form">
 
         <label>On specific date:</label>
         <fw-form-input-datepicker ng-model="model.input.date" required></fw-form-input-datepicker>

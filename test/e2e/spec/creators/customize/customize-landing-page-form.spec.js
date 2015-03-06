@@ -218,7 +218,7 @@ describe('customize landing page form', function() {
     });
   });
 
-  describe('when validating against good input', function() {
+  describe('when validating inputs', function() {
 
     it('should run once before all', function() {
       var context = commonWorkflows.createSubscription();
@@ -255,7 +255,6 @@ describe('customize landing page form', function() {
       it('should allow empty descriptions', function(){
         page.fullDescriptionTabLink.click();
         page.descriptionTextBox.clear();
-
       });
 
       it('should allow YouTube video urls', function(){
@@ -281,113 +280,113 @@ describe('customize landing page form', function() {
         page.videoTextBox.clear();
       });
     });
+
+    describe('sad path', function() {
+
+      var verifyInvalidMessage = function(){
+        page.headerImageTabLink.click();
+        expect(page.headerImageInvalidMessage.isDisplayed()).toBe(true);
+        expect(page.headerImageSubmitButton.isEnabled()).toBe(true);
+
+        page.basicsTabLink.click();
+        expect(page.basicsInvalidMessage.isDisplayed()).toBe(true);
+        expect(page.basicsSubmitButton.isEnabled()).toBe(true);
+
+        page.fullDescriptionTabLink.click();
+        expect(page.fullDescriptionInvalidMessage.isDisplayed()).toBe(true);
+        expect(page.fullDescriptionSubmitButton.isEnabled()).toBe(true);
+      };
+
+      beforeEach(function(){
+
+      });
+
+      afterEach(function(){
+        browser.refresh();
+      });
+
+      subscriptionNameInputPage.includeSadPaths(page.subscriptionNameTextBox, page.basicsSubmitButton, page.helpMessages, function() {});
+
+      taglineInputPage.includeSadPaths(page.taglineTextBox, page.basicsSubmitButton, page.helpMessages, function() {});
+
+      it('should not allow an empty introduction', function(){
+        page.basicsTabLink.click();
+        page.introductionTextBox.clear();
+
+        page.basicsSubmitButton.click();
+
+        testKit.assertSingleValidationMessage(page.helpMessages,
+          'An introduction is required.');
+
+        verifyInvalidMessage();
+      });
+
+      it('should not allow an introduction less than 15 characters', function(){
+        page.basicsTabLink.click();
+        page.introductionTextBox.clear();
+        var underSizedValue = new Array(15).join( 'a' );
+        page.introductionTextBox.sendKeys(underSizedValue);
+
+        page.basicsSubmitButton.click();
+
+        testKit.assertSingleValidationMessage(page.helpMessages,
+          'Must be at least 15 characters.');
+
+        verifyInvalidMessage();
+      });
+
+      it('should not allow an introduction more than 250 characters', function(){
+        page.basicsTabLink.click();
+        page.introductionTextBox.clear();
+        var overSizedValue = new Array(252).join( 'a' );
+        page.introductionTextBox.sendKeys(overSizedValue);
+
+        testKit.assertMaxLength(page.helpMessages, page.introductionTextBox, overSizedValue, 250);
+      });
+
+      it('should not allow invalid urls', function(){
+        page.fullDescriptionTabLink.click();
+        page.videoTextBox.clear();
+        page.videoTextBox.sendKeys('abc');
+
+        page.fullDescriptionSubmitButton.click();
+
+        expect(page.videoTextBox.getAttribute('class')).toContain('ng-invalid');
+
+        verifyInvalidMessage();
+      });
+
+      it('should not allow urls over 100 characters', function(){
+        page.fullDescriptionTabLink.click();
+        page.descriptionTextBox.clear();
+
+        var overSizedValue = 'http://youtu.be/K3p0EFtJIn8' + new Array(102).join( 'a' );
+        page.videoTextBox.sendKeys(overSizedValue);
+
+        testKit.assertMaxLength(page.helpMessages, page.videoTextBox, overSizedValue, 100);
+      });
+
+      it('should not allow random urls', function(){
+        page.fullDescriptionTabLink.click();
+        page.videoTextBox.clear();
+        page.videoTextBox.sendKeys('http://en.wikipedia.org/wiki/Lorem_ipsum');
+
+        page.fullDescriptionSubmitButton.click();
+
+        expect(page.fullDescriptionErrorMessage.isDisplayed()).toBe(true);
+        expect(page.fullDescriptionErrorMessage.getText()).toBe('Must be from Vimeo or YouTube');
+      });
+
+      it('should not allow descriptions over 2000 characters', function(){
+        page.fullDescriptionTabLink.click();
+        page.descriptionTextBox.clear();
+
+        var overSizedValue = new Array(2002).join( 'a' );
+        page.descriptionTextBox.sendKeys(overSizedValue);
+
+        testKit.assertMaxLength(page.helpMessages, page.descriptionTextBox, overSizedValue, 2000);
+      });
+    });
   });
 
-  describe('when validating against bad input', function() {
-
-    var verifyInvalidMessage = function(){
-      page.headerImageTabLink.click();
-      expect(page.headerImageInvalidMessage.isDisplayed()).toBe(true);
-      expect(page.headerImageSubmitButton.isEnabled()).toBe(true);
-
-      page.basicsTabLink.click();
-      expect(page.basicsInvalidMessage.isDisplayed()).toBe(true);
-      expect(page.basicsSubmitButton.isEnabled()).toBe(true);
-
-      page.fullDescriptionTabLink.click();
-      expect(page.fullDescriptionInvalidMessage.isDisplayed()).toBe(true);
-      expect(page.fullDescriptionSubmitButton.isEnabled()).toBe(true);
-    };
-
-    beforeEach(function(){
-
-    });
-
-    afterEach(function(){
-      browser.refresh();
-    });
-
-    subscriptionNameInputPage.includeSadPaths(page.subscriptionNameTextBox, page.basicsSubmitButton, page.helpMessages, function() {});
-
-    taglineInputPage.includeSadPaths(page.taglineTextBox, page.basicsSubmitButton, page.helpMessages, function() {});
-
-    it('should not allow an empty introduction', function(){
-      page.basicsTabLink.click();
-      page.introductionTextBox.clear();
-
-      page.basicsSubmitButton.click();
-
-      testKit.assertSingleValidationMessage(page.helpMessages,
-        'An introduction is required.');
-
-      verifyInvalidMessage();
-    });
-
-    it('should not allow an introduction less than 15 characters', function(){
-      page.basicsTabLink.click();
-      page.introductionTextBox.clear();
-      var underSizedValue = new Array(15).join( 'a' );
-      page.introductionTextBox.sendKeys(underSizedValue);
-
-      page.basicsSubmitButton.click();
-
-      testKit.assertSingleValidationMessage(page.helpMessages,
-        'Must be at least 15 characters.');
-
-      verifyInvalidMessage();
-    });
-
-    it('should not allow an introduction more than 250 characters', function(){
-      page.basicsTabLink.click();
-      page.introductionTextBox.clear();
-      var overSizedValue = new Array(252).join( 'a' );
-      page.introductionTextBox.sendKeys(overSizedValue);
-
-      testKit.assertMaxLength(page.helpMessages, page.introductionTextBox, overSizedValue, 250);
-    });
-
-    it('should not allow invalid urls', function(){
-      page.fullDescriptionTabLink.click();
-      page.videoTextBox.clear();
-      page.videoTextBox.sendKeys('abc');
-
-      page.fullDescriptionSubmitButton.click();
-
-      expect(page.videoTextBox.getAttribute('class')).toContain('ng-invalid');
-
-      verifyInvalidMessage();
-    });
-
-    it('should not allow urls over 100 characters', function(){
-      page.fullDescriptionTabLink.click();
-      page.descriptionTextBox.clear();
-
-      var overSizedValue = 'http://youtu.be/K3p0EFtJIn8' + new Array(102).join( 'a' );
-      page.videoTextBox.sendKeys(overSizedValue);
-
-      testKit.assertMaxLength(page.helpMessages, page.videoTextBox, overSizedValue, 100);
-    });
-
-    it('should not allow random urls', function(){
-      page.fullDescriptionTabLink.click();
-      page.videoTextBox.clear();
-      page.videoTextBox.sendKeys('http://en.wikipedia.org/wiki/Lorem_ipsum');
-
-      page.fullDescriptionSubmitButton.click();
-
-      expect(page.fullDescriptionErrorMessage.isDisplayed()).toBe(true);
-      expect(page.fullDescriptionErrorMessage.getText()).toBe('Must be from Vimeo or YouTube');
-    });
-
-    it('should not allow descriptions over 2000 characters', function(){
-      page.fullDescriptionTabLink.click();
-      page.descriptionTextBox.clear();
-
-      var overSizedValue = new Array(2002).join( 'a' );
-      page.descriptionTextBox.sendKeys(overSizedValue);
-
-      testKit.assertMaxLength(page.helpMessages, page.descriptionTextBox, overSizedValue, 2000);
-    });
-
-  });
 });

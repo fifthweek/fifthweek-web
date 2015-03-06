@@ -12,7 +12,7 @@
 
   <div ng-show="!model.errorMessage && !model.submissionSucceeded">
     <div ng-show="!model.postLater">
-      <form novalidate name="contentForm">
+      <form novalidate name="contentForm" id="content-form">
 
         <div class="form-group-file">
           <label>Post an Image</label>
@@ -32,12 +32,13 @@
           <div ng-if="!model.createCollection">
             <label>Collection</label>
             <fw-form-input-select-collection
+              id="model-input-selected-collection"
               selected-item="model.input.selectedCollection" items="model.collections"
               create-new-collection-disabled="contentForm.isSubmitting"
               create-new-collection="createNewCollection()"></fw-form-input-select-collection>
           </div>
 
-          <div ng-if="model.createCollection">
+          <div ng-if="model.createCollection" id="new-collection-area">
             <label>Collection</label>
             <fw-form-input-collection-name ng-model="model.input.newCollectionName" placeholder="New collection name" ng-required="model.createCollection" show-help></fw-form-input-collection-name>
             <fw-form-input-select ng-if="model.channels.length > 1" selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
@@ -64,7 +65,7 @@
     </div>
 
     <div ng-show="model.postLater">
-      <form novalidate name="scheduleForm">
+      <form novalidate name="scheduleForm" id="schedule-form">
 
         <div class="form-group">
           <div class="radio">

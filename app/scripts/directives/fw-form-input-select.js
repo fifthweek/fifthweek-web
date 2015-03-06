@@ -5,7 +5,8 @@ angular.module('webApp').directive('fwFormInputSelect', function () {
     restrict: 'E',
     scope: {
       items:'=',
-      selectedItem:'='
+      selectedItem:'=',
+      id:'@'
     },
     templateUrl:'views/partials/form-input-select.html'
   };
