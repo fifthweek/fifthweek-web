@@ -40,13 +40,11 @@ angular.module('webApp')
 
       for(var channelIndex = 0; channelIndex < channels.length; ++channelIndex){
         var channel = channels[channelIndex];
-        if(channel.collections){
-          for(var collectionIndex = 0; collectionIndex < channel.collections.length; ++collectionIndex){
-            var collection = channel.collections[collectionIndex];
-            collection.originalName = collection.name;
-            collection.name = getCollectionNameForSelection(channel, collection);
-            collections.push(collection);
-          }
+        for(var collectionIndex = 0; collectionIndex < channel.collections.length; ++collectionIndex){
+          var collection = channel.collections[collectionIndex];
+          collection.originalName = collection.name;
+          collection.name = getCollectionNameForSelection(channel, collection);
+          collections.push(collection);
         }
       }
 

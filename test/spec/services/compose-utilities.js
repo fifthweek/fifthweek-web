@@ -177,7 +177,8 @@ describe('compose utilities', function(){
           {
             name: 'three',
             someKey: 'someValue3',
-            isDefault: false
+            isDefault: false,
+            collections: []
           }
         ];
 
@@ -266,7 +267,8 @@ describe('compose utilities', function(){
           {
             name: 'three',
             isDefault: false,
-            someKey: 'someValue3'
+            someKey: 'someValue3',
+            collections: []
           }
         ];
 
