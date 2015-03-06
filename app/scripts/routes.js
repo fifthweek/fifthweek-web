@@ -290,7 +290,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.compose.image.name, {
         url: '/image',
-        templateUrl: 'views/creators/compose/image.html',
+        templateUrl: 'views/creators/compose/upload.html',
         controller: 'composeImageCtrl',
         requireSubscription: true,
         data : {
@@ -304,7 +304,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.compose.file.name, {
         url: '/file',
-        templateUrl: 'views/creators/compose/file.html',
+        templateUrl: 'views/creators/compose/upload.html',
         controller: 'composeFileCtrl',
         requireSubscription: true,
         data : {

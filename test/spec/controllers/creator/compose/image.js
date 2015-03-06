@@ -5,27 +5,27 @@ describe('compose image controller', function () {
   var $scope;
   var target;
 
-  var $state;
-  var composeUtilities;
+  var composeUploadDelegate;
   var blobImageControlFactory;
   var postsStub;
 
-  var defaultBlobControl;
+  var control;
 
   beforeEach(function() {
 
-    $state = jasmine.createSpyObj('$state', ['reload']);
-    composeUtilities = jasmine.createSpyObj('composeUtilities', ['loadChannelsAndCollectionsIntoModel', 'getCollectionIdAndCreateCollectionIfRequired', 'showCreateCollectionDialog']);
+    composeUploadDelegate = jasmine.createSpyObj('composeUploadDelegate', ['initialize']);
     blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
-    postsStub = jasmine.createSpyObj('postsStub', ['postImage']);
+    postsStub = jasmine.createSpyObj('postsStub', ['postFile']);
 
-    defaultBlobControl = { control: true };
-    blobImageControlFactory.createControl.and.returnValue(defaultBlobControl);
+    control = {
+      update: jasmine.createSpy('update')
+    };
+
+    blobImageControlFactory.createControl.and.returnValue(control);
 
     module('webApp');
     module(function($provide) {
-      $provide.value('$state', $state);
-      $provide.value('composeUtilities', composeUtilities);
+      $provide.value('composeUploadDelegate', composeUploadDelegate);
       $provide.value('blobImageControlFactory', blobImageControlFactory);
       $provide.value('postsStub', postsStub);
     });
@@ -42,262 +42,43 @@ describe('compose image controller', function () {
     });
   };
 
-  describe('when creating', function(){
+  describe('when created', function(){
 
-    describe('when initializing the model', function(){
-      beforeEach(function(){
-        createController();
-      });
+    beforeEach(function(){
+      createController();
+    });
 
-      it('should set submissionSucceeded to false', function(){
-        expect($scope.model.submissionSucceeded).toBe(false);
-      });
+    it('should set uploadFormFile to image', function(){
+      expect($scope.uploadFormFile).toBe('image');
+    });
 
-      it('should set imageUploaded to false', function(){
-        expect($scope.model.imageUploaded).toBe(false);
-      });
+    it('should create the blob image control', function(){
+      expect(blobImageControlFactory.createControl).toHaveBeenCalled();
+      expect($scope.blobImage).toBe(control);
+    });
 
-      it('should set postLater to false', function(){
-        expect($scope.model.postLater).toBe(false);
-      });
-
-      it('should set postToQueue to true', function(){
-        expect($scope.model.postToQueue).toBe(true);
-      });
-
-      it('should set createCollection to false', function(){
-        expect($scope.model.createCollection).toBe(false);
-      });
-
-      it('should set the error message to undefined', function(){
-        expect($scope.model.errorMessage).toBeUndefined();
-      });
-
-      it('should set blobImage to a new control object', function(){
-        expect(blobImageControlFactory.createControl).toHaveBeenCalled();
-        expect($scope.blobImage).toEqual(defaultBlobControl);
-      });
-
-      it('should set the inputs to empty', function(){
-        expect($scope.model.input.fileId).toBeUndefined();
-        expect($scope.model.input.comment).toBe('');
-        expect($scope.model.input.date).toBe('');
-        expect($scope.model.input.newCollectionName).toBe('');
-        expect($scope.model.input.selectedCollection).toBeUndefined();
-        expect($scope.model.input.selectedChannel).toBeUndefined();
-      });
-
-      it('should load channels and collections into the model', function(){
-        expect(composeUtilities.loadChannelsAndCollectionsIntoModel).toHaveBeenCalledWith($scope.model);
-      });
+    it('should initialize the composeUploadDelegate', function(){
+      expect(composeUploadDelegate.initialize).toHaveBeenCalled();
+      expect(composeUploadDelegate.initialize.calls.first().args[0]).toBe($scope);
+      expect(composeUploadDelegate.initialize.calls.first().args[1]).toBeDefined();
+      expect(composeUploadDelegate.initialize.calls.first().args[2]).toBe(postsStub.postImage);
     });
   });
 
-  describe('when created', function(){
-    var channelsAndCollections;
+  describe('when calling onUploadComplete delegate', function(){
 
+    var delegate;
     beforeEach(function(){
-      channelsAndCollections = {
-        channels: [{name: 'a', channelId: '1'}, {name: 'b', channelId: '2'}],
-        collections: [{name: 'x', collectionId: '3'}, {name: 'y', collectionId: '4'}]
-      };
-
-      composeUtilities.loadChannelsAndCollectionsIntoModel.and.callFake(function(){
-        $scope.model.channels = channelsAndCollections.channels;
-        $scope.model.collections = channelsAndCollections.collections;
-        $scope.model.input.selectedChannel = $scope.model.channels[0];
-        $scope.model.input.selectedCollection = $scope.model.collections[0];
-      });
-
-      composeUtilities.getCollectionIdAndCreateCollectionIfRequired.and.returnValue($q.when('5'));
-
       createController();
-      $scope.$apply();
-
-      $scope.blobImage = jasmine.createSpyObj('blobImage', ['update']);
-
-      $scope.model.imageUploaded = true;
-      $scope.model.input.fileId = 'fileId';
-      $scope.model.input.comment = 'comment';
-      $scope.model.input.date = 'date';
-    });
-
-    describe('when calling postNow', function(){
-      describe('when postImage succeeds', function(){
-        beforeEach(function(){
-          postsStub.postImage.and.returnValue($q.when());
-          $scope.postNow();
-          $scope.$apply();
-        });
-
-        it('should call getCollectionIdAndCreateCollectionIfRequired with the current model', function() {
-          expect(composeUtilities.getCollectionIdAndCreateCollectionIfRequired).toHaveBeenCalledWith($scope.model);
-        });
-
-        it('should send the data without any date', function(){
-          expect(postsStub.postImage.calls.count()).toBe(1);
-          expect(postsStub.postImage).toHaveBeenCalledWith({
-            collectionId: '5',
-            imageFileId: 'fileId',
-            comment: 'comment',
-            isQueued: false
-          });
-        });
-
-        it('should set submissionSucceeded to true', function(){
-          expect($scope.model.submissionSucceeded).toBe(true);
-        })
-      });
-
-      describe('when getCollectionIdAndCreateCollectionIfRequired fails', function(){
-        var error;
-        beforeEach(function(){
-          composeUtilities.getCollectionIdAndCreateCollectionIfRequired.and.returnValue($q.reject('error'));
-          $scope.postNow().catch(function(e){ error = e; });
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
-        });
-      });
-
-      describe('when postImage fails', function(){
-        var error;
-        beforeEach(function(){
-          postsStub.postImage.and.returnValue($q.reject('error'));
-          $scope.postNow().catch(function(e){ error = e; });
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
-        });
+      delegate = composeUploadDelegate.initialize.calls.first().args[1];
+      delegate({
+        fileUri: 'fileUri',
+        containerName: 'containerName'
       });
     });
 
-    describe('when calling postToBacklog', function(){
-      describe('when postImage succeeds', function(){
-        beforeEach(function(){
-          postsStub.postImage.and.returnValue($q.when());
-          $scope.postToBacklog();
-          $scope.$apply();
-        });
-
-        it('should call getCollectionIdAndCreateCollectionIfRequired with the current model', function() {
-          expect(composeUtilities.getCollectionIdAndCreateCollectionIfRequired).toHaveBeenCalledWith($scope.model);
-        });
-
-        it('should send the data with a no date and isQueued set to true', function(){
-          expect(postsStub.postImage.calls.count()).toBe(1);
-          expect(postsStub.postImage).toHaveBeenCalledWith({
-            collectionId: '5',
-            imageFileId: 'fileId',
-            comment: 'comment',
-            isQueued: true,
-            scheduledPostTime: undefined
-          });
-        });
-
-        it('should set submissionSucceeded to true', function(){
-          expect($scope.model.submissionSucceeded).toBe(true);
-        })
-      });
-
-      describe('when getCollectionIdAndCreateCollectionIfRequired fails', function(){
-        var error;
-        beforeEach(function(){
-          composeUtilities.getCollectionIdAndCreateCollectionIfRequired.and.returnValue($q.reject('error'));
-          $scope.postNow().catch(function(e){ error = e; });
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
-        });
-      });
-
-      describe('when postImage fails', function(){
-        var error;
-        beforeEach(function(){
-          postsStub.postImage.and.returnValue($q.reject('error'));
-          $scope.postNow().catch(function(e){ error = e; });
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
-        });
-      });
-    });
-
-    describe('when calling postToBacklog and postToQueue is false', function() {
-      beforeEach(function(){
-        $scope.model.postToQueue = false;
-        postsStub.postImage.and.returnValue($q.when());
-        $scope.postToBacklog();
-        $scope.$apply();
-      });
-
-      it('should send the data with a date', function(){
-        expect(postsStub.postImage.calls.count()).toBe(1);
-        expect(postsStub.postImage).toHaveBeenCalledWith({
-          collectionId: '5',
-          imageFileId: 'fileId',
-          comment: 'comment',
-          isQueued: false,
-          scheduledPostTime: 'date'
-        });
-      });
-    });
-
-    describe('when postLater is called', function(){
-      beforeEach(function(){
-        $scope.postLater();
-      });
-
-      it('should set postLater to true', function(){
-        expect($scope.model.postLater).toBe(true);
-      });
-    });
-
-    describe('when cancelPostLater is called', function(){
-      beforeEach(function(){
-        $scope.cancelPostLater();
-      });
-
-      it('should set postLater to false', function(){
-        expect($scope.model.postLater).toBe(false);
-      });
-    });
-
-    describe('when postAnother is called', function(){
-      beforeEach(function(){
-        $scope.postAnother();
-      });
-
-      it('should set postLater to false', function(){
-        expect($state.reload).toHaveBeenCalled();
-      });
-    });
-
-    describe('when onUploadComplete is called', function(){
-      beforeEach(function(){
-        $scope.model.imageUploaded = false;
-        $scope.onUploadComplete({fileId: 'fileId2', fileUri: 'uri', containerName: 'containerName'});
-      });
-
-      it('should set imageUploaded to true', function(){
-        expect($scope.model.imageUploaded).toBe(true);
-      });
-
-      it('should set fileId to the new fileId', function(){
-        expect($scope.model.input.fileId).toBe('fileId2');
-      });
-
-      it('should call blobImage.update with the uri and container name', function(){
-        expect($scope.blobImage.update).toHaveBeenCalledWith('uri', 'containerName');
-      });
+    it('should update the blob image', function(){
+      expect(control.update).toHaveBeenCalledWith('fileUri', 'containerName');
     });
   });
 });

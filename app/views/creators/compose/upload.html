@@ -1,0 +1,96 @@
+<fw-panel12>
+
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <div ng-if="model.submissionSucceeded">
+    <div class="alert alert-success" >
+      <p>{{model.postLater ? (model.postToQueue ? 'Queued' : 'Scheduled') : 'Posted'}} successfully</p>
+    </div>
+    <button class="btn btn-default btn-block"
+            ng-click="postAnother()">Post Another</button>
+  </div>
+
+  <div ng-show="!model.errorMessage && !model.submissionSucceeded">
+    <div ng-show="!model.postLater">
+      <form novalidate name="contentForm" id="content-form">
+
+        <div ng-include="'views/creators/compose/' + uploadFormFile + '.html'"></div>
+
+        <div ng-if="model.fileUploaded">
+          <fw-form-input-comment ng-model="model.input.comment" placeholder="Add a comment, if you like" focus></fw-form-input-comment>
+
+          <div ng-if="!model.createCollection">
+            <label>Collection</label>
+            <fw-form-input-select-collection
+              id="model-input-selected-collection"
+              selected-item="model.input.selectedCollection" items="model.collections"
+              create-new-collection-disabled="contentForm.isSubmitting"
+              create-new-collection="createNewCollection()"></fw-form-input-select-collection>
+          </div>
+
+          <div ng-if="model.createCollection" id="new-collection-area">
+            <label>Collection</label>
+            <fw-form-input-collection-name ng-model="model.input.newCollectionName" placeholder="New collection name" ng-required="model.createCollection" show-help></fw-form-input-collection-name>
+            <fw-form-input-select ng-if="model.channels.length > 1" selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
+          </div>
+
+          <fw-error-message value="contentForm.message"></fw-error-message>
+
+          <div class="row-btn">
+            <button type="submit"
+                    class="btn btn-block btn-success"
+                    data-loading-text="Posting..."
+                    data-event-title="Image posted"
+                    data-event-category="New post"
+                    can-submit="contentForm.$valid"
+                    fw-form-submit="postNow()">Post Now</button>
+
+            <button class="btn btn-default btn-block"
+                    ng-disabled="contentForm.isSubmitting"
+                    can-submit="contentForm.$valid"
+                    fw-form-submit="postLater()">Post Later</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div ng-show="model.postLater">
+      <form novalidate name="scheduleForm" id="schedule-form">
+
+        <div class="form-group">
+          <div class="radio">
+            <label><input type="radio"
+                          ng-model="model.postToQueue"
+                          ng-value="true"/> After other posts in queue (will appear Wednesday 7th Jan)</label>
+          </div>
+
+          <div class="radio">
+            <label><input type="radio"
+                          ng-model="model.postToQueue"
+                          ng-value="false" /> On specific date:</label>
+          </div>
+
+          <fw-form-input-datepicker ng-model="model.input.date" ng-disabled="model.postToQueue" ng-required="!model.postToQueue"></fw-form-input-datepicker>
+        </div>
+
+        <fw-error-message value="scheduleForm.message"></fw-error-message>
+
+        <div class="row-btn">
+          <button type="submit"
+                  class="btn btn-block btn-success"
+                  data-loading-text="Posting to Backlog..."
+                  data-event-title="Image queued"
+                  data-event-category="New post"
+                  can-submit="scheduleForm.$valid"
+                  fw-form-submit="postToBacklog()">Post to Backlog</button>
+
+          <!-- Note we do not use fw-form-submit here because we don't care about validity -->
+          <button class="btn btn-default btn-block"
+                  ng-disabled="scheduleForm.isSubmitting"
+                  ng-click="cancelPostLater()">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</fw-panel12>
