@@ -100,6 +100,10 @@ TestKit.prototype = Object.create({}, {
     }, {});
   }},
   expectFormValues: { value: function(page, values) {
+    if (!values) {
+      throw 'Must provide form values';
+    }
+
     _.forOwn(values, function(value, inputName) {
       if (_.endsWith(inputName, 'TextBox')) {
         expect(page[inputName].getAttribute('value')).toBe(value);

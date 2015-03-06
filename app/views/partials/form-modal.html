@@ -1,5 +1,5 @@
-<h4>
-  <a class="btn-close" href ng-click="$close()">
+<h4 id="modal-title">
+  <a id="modal-cross-button" class="btn-close" href ng-click="$close()">
     <i class="fa fa-close"></i>
   </a>
   {{name}}
@@ -11,6 +11,8 @@
 
 <div class="row-btn">
   <form-buttons-placeholder></form-buttons-placeholder>
-  <button class="btn btn-default btn-block"
-          ng-click="$close()">Cancel</button>
+  <button
+    id="modal-cancel-button"
+    class="btn btn-default btn-block"
+    ng-click="$close()">Cancel</button>
 </div>

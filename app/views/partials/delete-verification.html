@@ -6,7 +6,7 @@
     <form-body>
       <h5>Are you ABSOLUTELY sure?</h5>
       <p>
-        This action CANNOT be undone. This will permanently delete <strong>{{model.item}}</strong>. All associated content and comments will be removed.
+        This action CANNOT be undone. This will permanently delete <strong id="delete-hint">{{model.item}}</strong>. All associated content and comments will be removed.
       </p>
 
       <div class="form-group">
@@ -23,7 +23,7 @@
     </form-body>
     <form-buttons>
       <button
-        id="delete-model.item-verified-button"
+        id="delete-item-verified-button"
         class="btn btn-block btn-danger"
         data-loading-text="Deleting..."
         data-event-title="{{model.dataEventTitle}}"
@@ -48,7 +48,7 @@
     </form-body>
     <form-buttons>
       <button
-        id="delete-model.item-unverified-button"
+        id="delete-item-unverified-button"
         class="btn btn-block btn-danger"
         data-loading-text="Deleting..."
         data-event-title="{{model.dataEventTitle}}"
