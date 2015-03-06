@@ -74,18 +74,14 @@ describe('channel repository factory', function(){
 
   describe('when creating a channel', function() {
     var channels;
-    var updateChannels;
     var existingChannel = {channelId: 'existingId'};
 
     // Swap own implementation for spy.
     beforeEach(function() {
       channels = [existingChannel];
-      updateChannels = target.updateChannels;
-      target.updateChannels = function(applyChanges) {
+      spyOn(target, 'updateChannels').and.callFake(function(applyChanges) {
         return applyChanges(channels);
-      };
-
-      spyOn(target, 'updateChannels').and.callThrough();
+      });
     });
 
     it('should throw an error if channel already exists', function() {
@@ -112,18 +108,14 @@ describe('channel repository factory', function(){
 
   describe('when updating a channel', function() {
     var channels;
-    var updateChannels;
     var existingChannel = {channelId: 'existingId'};
 
     // Swap own implementation for spy.
     beforeEach(function() {
       channels = [existingChannel];
-      updateChannels = target.updateChannels;
-      target.updateChannels = function(applyChanges) {
+      spyOn(target, 'updateChannels').and.callFake(function(applyChanges) {
         return applyChanges(channels);
-      };
-
-      spyOn(target, 'updateChannels').and.callThrough();
+      });
     });
 
     it('should throw an error if channel does not exist', function() {
@@ -148,20 +140,43 @@ describe('channel repository factory', function(){
     });
   });
 
-  describe('when getting a channel', function() {
+  describe('when deleting a channel', function() {
     var channels;
-    var getChannels;
     var existingChannel = {channelId: 'existingId'};
 
     // Swap own implementation for spy.
     beforeEach(function() {
       channels = [existingChannel];
-      getChannels = target.getChannels;
-      target.getChannels = function() {
-        return $q.when(channels);
-      };
+      spyOn(target, 'updateChannels').and.callFake(function(applyChanges) {
+        return applyChanges(channels);
+      });
+    });
 
-      spyOn(target, 'getChannels').and.callThrough();
+    it('should delete the channel from the channel list', function() {
+      target.deleteChannel('existingId');
+      $rootScope.$apply();
+
+      expect(channels).toEqual([]);
+    });
+
+    it('should have no effect when channel does not exist', function() {
+      target.deleteChannel('already been deleted');
+      $rootScope.$apply();
+
+      expect(channels).toEqual([existingChannel]);
+    });
+  });
+
+  describe('when getting a channel', function() {
+    var channels;
+    var existingChannel = {channelId: 'existingId'};
+
+    // Swap own implementation for spy.
+    beforeEach(function() {
+      channels = [existingChannel];
+      spyOn(target, 'getChannels').and.callFake(function() {
+        return $q.when(channels);
+      });
     });
 
     it('should throw an error if channel does not exist', function() {

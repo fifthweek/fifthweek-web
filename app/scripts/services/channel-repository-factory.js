@@ -60,6 +60,13 @@ angular.module('webApp')
           });
         };
 
+        service.deleteChannel = function(channelId) {
+          return service.updateChannels(function(channels) {
+            _.remove(channels, { channelId: channelId });
+            return $q.when();
+          });
+        };
+
         service.createCollection = function(channelId, collectionId, collectionName) {
           return service.updateChannel(channelId, function(channel) {
             channel.collections.push({
