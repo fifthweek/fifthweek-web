@@ -1,4 +1,4 @@
-angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $state, states, aggregateUserState, channelRepositoryFactory, channelStub, subscriptionService) {
+angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $state, states, channelRepositoryFactory, channelStub, subscriptionService) {
   'use strict';
 
   var channelRepository = channelRepositoryFactory.forCurrentUser();
@@ -29,10 +29,11 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
         channelData.channelId = channelId;
         channelData.priceInUsCentsPerWeek = channelData.price;
         delete channelData.price;
+        delete channelData.subscriptionId;
 
-        channelRepository.createChannel(channelData);
-
-        $state.go($scope.previousState);
+        return channelRepository.createChannel(channelData).then(function() {
+          $state.go($scope.previousState);
+        });
       });
   };
 });
