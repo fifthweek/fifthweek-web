@@ -34,20 +34,23 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
       price: channel.price * 100,
       isVisibleToNonSubscribers: !channel.hidden
     };
-    return channelStub.putChannel(channelId, channelData)
-      .then(function() {
-        return channelRepository.updateChannel(channelId, function(channel) {
-          channel.name = channelData.name;
-          channel.description = channelData.description;
-          channel.priceInUsCentsPerWeek = channelData.price;
-          channel.isVisibleToNonSubscribers = channelData.isVisibleToNonSubscribers;
-        }).then(function() {
-          $state.go($scope.previousState);
-        });
+    return channelStub.putChannel(channelId, channelData).then(function() {
+      return channelRepository.updateChannel(channelId, function(channel) {
+        channel.name = channelData.name;
+        channel.description = channelData.description;
+        channel.priceInUsCentsPerWeek = channelData.price;
+        channel.isVisibleToNonSubscribers = channelData.isVisibleToNonSubscribers;
+      }).then(function() {
+        $state.go($scope.previousState);
       });
+    });
   };
 
   $scope.delete = function() {
-    $state.go($scope.previousState);
+    return channelStub.deleteChannel(channelId).then(function() {
+      return channelRepository.deleteChannel(channelId).then(function() {
+        $state.go($scope.previousState);
+      });
+    });
   };
 });

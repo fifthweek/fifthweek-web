@@ -25,30 +25,22 @@ angular.module('webApp')
 
     var performMerge = function(isFromServer, userId, userStateDelta){
       var newUserState;
+      var validUserStateExists = service.currentValue && service.currentValue.userId === userId;
 
-      if (service.currentValue) {
-        if(service.currentValue.userId === userId){
-          // Do not mutate state, as other services may have reference to this object (they should also never mutate it!).
-          newUserState = _.cloneDeep(service.currentValue);
-          _.merge(newUserState, userStateDelta);
-        }
-        else if(isFromServer){
-          // The data from the server trumps what we have, so replace our current user state.
-          newUserState = _.cloneDeep(userStateDelta);
-        }
+      if (validUserStateExists) {
+        // Do not mutate state, as other services may have reference to this object (they should also never mutate it!).
+        newUserState = _.cloneDeep(service.currentValue);
+        _.merge(newUserState, userStateDelta);
       }
-      else if(isFromServer) {
-        // We could be here because the user ID changed, triggering
-        // the cache to be cleared, or because the cache has never
-        // been set.  In both cases we are only interested in the
-        // next update being from the server.
+      else if (isFromServer) {
         newUserState = _.cloneDeep(userStateDelta);
-      }
 
-      if(newUserState){
         // The access signatures are never read from this service, so don't store them.
         delete newUserState.accessSignatures;
         newUserState.userId = userId;
+      }
+
+      if (newUserState) {
         setNewUserState(newUserState);
       }
     };
