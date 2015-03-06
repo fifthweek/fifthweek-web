@@ -52,7 +52,7 @@ describe('new channel controller', function () {
     expect($scope.model.channel.price).toBe('1.00');
   });
 
-  it('should save the new channel to the API', function() {
+  it('should create the new channel via the API', function() {
     $scope.model.channel.name = 'name';
     $scope.model.channel.description = 'description';
     $scope.model.channel.hidden = false;

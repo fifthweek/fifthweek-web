@@ -17,8 +17,8 @@ describe('edit channel controller', function () {
   var errorFacade;
 
   beforeEach(function() {
-    channelStub = jasmine.createSpyObj('channelStub', ['putChannel']);
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannel', 'updateChannel']);
+    channelStub = jasmine.createSpyObj('channelStub', ['putChannel', 'deleteChannel']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannel', 'updateChannel', 'deleteChannel']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
     $state = jasmine.createSpyObj('$state', ['go']);
     $state.params = { id: currentChannelId };
@@ -47,7 +47,9 @@ describe('edit channel controller', function () {
     });
 
     channelStub.putChannel.and.returnValue($q.defer().promise);
+    channelStub.deleteChannel.and.returnValue($q.defer().promise);
     channelRepository.updateChannel.and.returnValue($q.defer().promise);
+    channelRepository.deleteChannel.and.returnValue($q.defer().promise);
   });
 
   var initializeTarget = function() {
@@ -103,56 +105,86 @@ describe('edit channel controller', function () {
       expect($scope.previousState).toBe(states.creators.customize.channels.name);
     });
 
-    it('should save the updated channel to the API', function() {
-      $scope.model.channel.name = 'name';
-      $scope.model.channel.description = 'description';
-      $scope.model.channel.hidden = false;
-      $scope.model.channel.price = '5.99';
+    describe('when saving', function() {
+      it('should save the updated channel via the API', function() {
+        $scope.model.channel.name = 'name';
+        $scope.model.channel.description = 'description';
+        $scope.model.channel.hidden = false;
+        $scope.model.channel.price = '5.99';
 
-      $scope.save();
-      $scope.$apply();
+        $scope.save();
+        $scope.$apply();
 
-      expect(channelStub.putChannel).toHaveBeenCalledWith(currentChannelId, {
-        name: 'name',
-        description: 'description',
-        price: 599,
-        isVisibleToNonSubscribers: true
+        expect(channelStub.putChannel).toHaveBeenCalledWith(currentChannelId, {
+          name: 'name',
+          description: 'description',
+          price: 599,
+          isVisibleToNonSubscribers: true
+        });
+      });
+
+      it('should save the updated channel to the client-side repository', function() {
+        var channelDelta = {};
+        channelRepository.updateChannel.and.callFake(function(channelId, update) {
+          update(channelDelta);
+          return $q.defer().promise;
+        });
+
+        $scope.model.channel.name = 'name';
+        $scope.model.channel.description = 'description';
+        $scope.model.channel.hidden = false;
+        $scope.model.channel.price = '5.99';
+        channelStub.putChannel.and.returnValue($q.when());
+
+        $scope.save();
+        $scope.$apply();
+
+        expect(channelRepository.updateChannel).toHaveBeenCalledWith(currentChannelId, jasmine.any(Function));
+        expect(channelDelta).toEqual({
+          name: 'name',
+          description: 'description',
+          priceInUsCentsPerWeek: 599,
+          isVisibleToNonSubscribers: true
+        });
+      });
+
+      it('should return to the previous state on save', function() {
+        channelStub.putChannel.and.returnValue($q.when());
+        channelRepository.updateChannel.and.returnValue($q.when());
+
+        $scope.save();
+        $scope.$apply();
+
+        expect($state.go).toHaveBeenCalledWith($scope.previousState);
       });
     });
 
-    it('should save the updated channel to the client-side repository', function() {
-      var channelDelta = {};
-      channelRepository.updateChannel.and.callFake(function(channelId, update) {
-        update(channelDelta);
-        return $q.defer().promise;
+    describe('when deleting', function() {
+      it('should delete the channel via the API', function() {
+        $scope.delete();
+        $scope.$apply();
+
+        expect(channelStub.deleteChannel).toHaveBeenCalledWith(currentChannelId);
       });
 
-      $scope.model.channel.name = 'name';
-      $scope.model.channel.description = 'description';
-      $scope.model.channel.hidden = false;
-      $scope.model.channel.price = '5.99';
-      channelStub.putChannel.and.returnValue($q.when());
+      it('should delete the channel from the client-side repository', function() {
+        channelStub.deleteChannel.and.returnValue($q.when());
 
-      $scope.save();
-      $scope.$apply();
+        $scope.delete();
+        $scope.$apply();
 
-      expect(channelRepository.updateChannel).toHaveBeenCalledWith(currentChannelId, jasmine.any(Function));
-      expect(channelDelta).toEqual({
-        name: 'name',
-        description: 'description',
-        priceInUsCentsPerWeek: 599,
-        isVisibleToNonSubscribers: true
+        expect(channelRepository.deleteChannel).toHaveBeenCalledWith(currentChannelId);
       });
-    });
 
-    it('should return to the previous state on save', function() {
-      channelStub.putChannel.and.returnValue($q.when());
-      channelRepository.updateChannel.and.returnValue($q.when());
+      it('should return to the previous state on delete', function() {
+        channelStub.deleteChannel.and.returnValue($q.when());
+        channelRepository.deleteChannel.and.returnValue($q.when());
 
-      $scope.save();
-      $scope.$apply();
+        $scope.delete();
+        $scope.$apply();
 
-      expect($state.go).toHaveBeenCalledWith($scope.previousState);
+        expect($state.go).toHaveBeenCalledWith($scope.previousState);
+      });
     });
   });
 });
