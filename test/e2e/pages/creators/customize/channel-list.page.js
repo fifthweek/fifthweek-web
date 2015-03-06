@@ -12,6 +12,18 @@ ChannelListPage.prototype = Object.create({}, {
   }},
   getEditChannelButton: { value: function(index) {
     return element(by.css('#channels .item:nth-child(' + (index + 1) + ') button'))
+  }},
+  expectChannel: { value: function(channelIndex, channelData) {
+    var element = this.getChannel(channelIndex);
+    expect(element.getText()).toContain(channelData.name);
+    expect(element.getText()).toContain('$' + channelData.price);
+    expect(element.getText()).toContain(channelData.description);
+  }},
+  waitForPage: { value: function() {
+    var self = this;
+    browser.wait(function(){
+      return self.addChannelButton.isPresent();
+    });
   }}
 });
 

@@ -93,6 +93,12 @@ TestKit.prototype = Object.create({}, {
 
     return newValues;
   }},
+  getEmptyFormValues: { value: function(inputs) {
+    return _.reduce(inputs, function(formValues, input) {
+      formValues[input.name] = '';
+      return formValues;
+    }, {});
+  }},
   expectFormValues: { value: function(page, values) {
     _.forOwn(values, function(value, inputName) {
       if (_.endsWith(inputName, 'TextBox')) {
@@ -106,7 +112,7 @@ TestKit.prototype = Object.create({}, {
       }
     });
   }},
-  itShouldHaveWellBehavedSubmitButton: { value: function(page, inputs, button) {
+  itShouldHaveSubmitButtonDisabledUntilDirty: { value: function(page, inputs, button) {
     it('should be disabled until changes are made', function(){
       expect(button.isEnabled()).toBe(false);
     });

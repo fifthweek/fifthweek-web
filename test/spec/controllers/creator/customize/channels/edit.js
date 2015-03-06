@@ -4,6 +4,10 @@ describe('edit channel controller', function () {
   var currentChannelId = 'channelId';
   var currentChannel;
 
+  var boundaryRoundingValue = '2.51'; // 2.51 * 100 = 250.99999999999997
+  var price = boundaryRoundingValue;
+  var priceInCents = 251;
+
   var $q;
   var $scope;
   var $state;
@@ -110,7 +114,7 @@ describe('edit channel controller', function () {
         $scope.model.channel.name = 'name';
         $scope.model.channel.description = 'description';
         $scope.model.channel.hidden = false;
-        $scope.model.channel.price = '5.99';
+        $scope.model.channel.price = price;
 
         $scope.save();
         $scope.$apply();
@@ -118,7 +122,7 @@ describe('edit channel controller', function () {
         expect(channelStub.putChannel).toHaveBeenCalledWith(currentChannelId, {
           name: 'name',
           description: 'description',
-          price: 599,
+          price: priceInCents,
           isVisibleToNonSubscribers: true
         });
       });
@@ -133,7 +137,7 @@ describe('edit channel controller', function () {
         $scope.model.channel.name = 'name';
         $scope.model.channel.description = 'description';
         $scope.model.channel.hidden = false;
-        $scope.model.channel.price = '5.99';
+        $scope.model.channel.price = price;
         channelStub.putChannel.and.returnValue($q.when());
 
         $scope.save();
@@ -143,7 +147,7 @@ describe('edit channel controller', function () {
         expect(channelDelta).toEqual({
           name: 'name',
           description: 'description',
-          priceInUsCentsPerWeek: 599,
+          priceInUsCentsPerWeek: priceInCents,
           isVisibleToNonSubscribers: true
         });
       });

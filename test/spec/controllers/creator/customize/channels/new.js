@@ -4,6 +4,10 @@ describe('new channel controller', function () {
   var subscriptionId = 'subscriptionId';
   var channelId = 'channelId';
 
+  var boundaryRoundingValue = '2.51'; // 2.51 * 100 = 250.99999999999997
+  var price = boundaryRoundingValue;
+  var priceInCents = 251;
+
   var $q;
   var $scope;
   var $state;
@@ -56,7 +60,7 @@ describe('new channel controller', function () {
     $scope.model.channel.name = 'name';
     $scope.model.channel.description = 'description';
     $scope.model.channel.hidden = false;
-    $scope.model.channel.price = '5.99';
+    $scope.model.channel.price = price;
 
     $scope.create();
     $scope.$apply();
@@ -65,7 +69,7 @@ describe('new channel controller', function () {
       subscriptionId: subscriptionId,
       name: 'name',
       description: 'description',
-      price: 599,
+      price: priceInCents,
       isVisibleToNonSubscribers: true
     });
   });
@@ -74,7 +78,7 @@ describe('new channel controller', function () {
     $scope.model.channel.name = 'name';
     $scope.model.channel.description = 'description';
     $scope.model.channel.hidden = false;
-    $scope.model.channel.price = '5.99';
+    $scope.model.channel.price = price;
     channelStub.postChannel.and.returnValue($q.when({ data: channelId }));
 
     $scope.create();
@@ -84,7 +88,7 @@ describe('new channel controller', function () {
       channelId: channelId,
       name: 'name',
       description: 'description',
-      priceInUsCentsPerWeek: 599,
+      priceInUsCentsPerWeek: priceInCents,
       isVisibleToNonSubscribers: true,
       collections: []
     });

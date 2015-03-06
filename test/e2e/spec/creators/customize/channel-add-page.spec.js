@@ -4,7 +4,7 @@ var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var BreadcrumbPage = require('../../../pages/breadcrumb.page.js');
 var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
 
-ddescribe('add channel page', function() {
+describe('add channel page', function() {
   'use strict';
 
   var commonWorkflows = new CommonWorkflows();

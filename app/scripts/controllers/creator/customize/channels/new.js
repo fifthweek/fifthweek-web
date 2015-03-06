@@ -19,7 +19,7 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
       subscriptionId: subscriptionService.subscriptionId,
       name: channel.name,
       description: channel.description,
-      price: channel.price * 100,
+      price: Math.round(channel.price * 100),
       isVisibleToNonSubscribers: !channel.hidden
     };
     return channelStub.postChannel(channelData)

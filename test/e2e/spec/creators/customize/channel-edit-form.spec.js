@@ -49,8 +49,9 @@ describe('edit channel form', function() {
       }
     };
     var navigateToPage = function() {
-      var editChannelButton = channelListPage.getEditChannelButton(isDefault ? 0 : 1);
-      editChannelButton.click();
+      channelListPage.waitForPage();
+      var editButton = channelListPage.getEditChannelButton(isDefault ? 0 : 1);
+      editButton.click();
     };
 
     it('should run once before all', function() {
@@ -94,7 +95,6 @@ describe('edit channel form', function() {
       it('should run once before all', function() {
         newFormValues = testKit.setFormValues(page, inputs);
         page.saveButton.click();
-        browser.waitForAngular(); // Seems to be required.
         navigateToPage();
       });
 
@@ -116,7 +116,6 @@ describe('edit channel form', function() {
 
       afterEach(function() {
         page.saveButton.click();
-        browser.waitForAngular(); // Seems to be required.
         navigateToPage();
         testKit.expectFormValues(page, newFormValues);
       });
@@ -151,7 +150,7 @@ describe('edit channel form', function() {
         navigateToPage();
       });
 
-      testKit.itShouldHaveWellBehavedSubmitButton(page, inputs, page.saveButton);
+      testKit.itShouldHaveSubmitButtonDisabledUntilDirty(page, inputs, page.saveButton);
     });
   };
 
