@@ -34,18 +34,18 @@ describe('edit channel form', function() {
   });
 
   var describeForm = function(isDefault) {
+    var channel;
     var initialValues;
     var inputs = isDefault ? _.reject(page.inputs, {name: 'hiddenCheckbox'}) : page.inputs;
     var determineCorrectInitialValues = function() {
       initialValues = {
-        nameTextBox: isDefault ? channelListPage.defaultChannelName : 'Not Implemented',
-        descriptionTextBox: isDefault ? channelListPage.defaultChannelDescription : 'Not Implemented',
-        priceTextBox: isDefault ? subscription.basePrice : 'Not Implemented'
+        nameTextBox: isDefault ? channelListPage.defaultChannelName : channel.name,
+        descriptionTextBox: isDefault ? channelListPage.defaultChannelDescription : channel.description,
+        priceTextBox: isDefault ? subscription.basePrice : channel.price
       };
 
       if (!isDefault) {
-        initialValues.hiddenCheckbox = 'Not Implemented';
-        throw 'Not Implemented';
+        initialValues.hiddenCheckbox = channel.hidden;
       }
     };
     var navigateToPage = function() {
@@ -55,6 +55,10 @@ describe('edit channel form', function() {
     };
 
     it('should run once before all', function() {
+      if (!isDefault) {
+        channel = commonWorkflows.createChannel();
+      }
+
       determineCorrectInitialValues();
       navigateToPage();
     });
@@ -158,7 +162,7 @@ describe('edit channel form', function() {
     describeForm(true);
   });
 
-  //describe('when editing a non-default channel', function() {
-  //  describeForm(false);
-  //});
+  describe('when editing a non-default channel', function() {
+    describeForm(false);
+  });
 });
