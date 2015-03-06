@@ -36,14 +36,14 @@ describe('compose note form', function() {
   };
 
   var postNow = function(channelName){
-    it('should post a note to ' + channelName, function(){
+    it('should post a note to ' + (channelName ? channelName : 'default channel'), function(){
       page.postNow(channelName);
       verifySuccess('Posted successfully');
     });
   };
 
   var postOnDate = function(channelName){
-    it('should post a note to ' + channelName, function(){
+    it('should schedule a note to ' + (channelName ? channelName : 'default channel'), function(){
       page.postOnDate(channelName);
       verifySuccess('Scheduled successfully');
     });

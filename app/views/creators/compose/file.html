@@ -25,6 +25,7 @@
           <div ng-if="!model.createCollection">
             <label>Collection</label>
             <fw-form-input-select-collection
+              id="model-input-selected-collection"
               selected-item="model.input.selectedCollection" items="model.collections"
               create-new-collection-disabled="contentForm.isSubmitting"
               create-new-collection="createNewCollection()"></fw-form-input-select-collection>
