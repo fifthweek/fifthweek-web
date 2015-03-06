@@ -5,14 +5,10 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
   var channelId = $state.params.id;
   $scope.model = {};
 
-  channelRepository.getChannels()
-    .then(function(channels) {
-      $scope.model.savedChannel = _.find(channels, { channelId: channelId });
-      if (!$scope.model.savedChannel) {
-        return $q.reject(new FifthweekError('Channel does not exist'));
-      }
-
-      $scope.model.channel = _.cloneDeep($scope.model.savedChannel);
+  channelRepository.getChannel(channelId)
+    .then(function(channel) {
+      $scope.model.savedChannelName = channel.name;
+      $scope.model.channel = channel;
 
       // Map price.
       $scope.model.channel.price = ($scope.model.channel.priceInUsCentsPerWeek / 100).toFixed(2);

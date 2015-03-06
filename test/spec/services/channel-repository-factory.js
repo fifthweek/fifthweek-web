@@ -56,7 +56,6 @@ describe('channel repository factory', function(){
     });
   });
 
-
   describe('when updating channels', function() {
     it('should set changes into the master repository at the correct location', function() {
       var channels = [];
@@ -78,7 +77,7 @@ describe('channel repository factory', function(){
     var updateChannels;
     var existingChannel = {channelId: 'existingId'};
 
-    // Temporarily swap own implementation for spy.
+    // Swap own implementation for spy.
     beforeEach(function() {
       channels = [existingChannel];
       updateChannels = target.updateChannels;
@@ -89,16 +88,11 @@ describe('channel repository factory', function(){
       spyOn(target, 'updateChannels').and.callThrough();
     });
 
-    // Restore original implementation.
-    afterEach(function() {
-      target.updateChannels = updateChannels;
-    });
-
     it('should throw an error if channel already exists', function() {
       var newChannel = {channelId: 'existingId'};
 
       target.createChannel(newChannel).catch(function(error) {
-        expect(error instanceof FifthweekError).toBeTruthy();
+        expect(error instanceof DisplayableError).toBeTruthy();
         expect(error.message).toBe('Channel already exists.');
       });
       $rootScope.$apply();
@@ -121,7 +115,7 @@ describe('channel repository factory', function(){
     var updateChannels;
     var existingChannel = {channelId: 'existingId'};
 
-    // Temporarily swap own implementation for spy.
+    // Swap own implementation for spy.
     beforeEach(function() {
       channels = [existingChannel];
       updateChannels = target.updateChannels;
@@ -132,16 +126,11 @@ describe('channel repository factory', function(){
       spyOn(target, 'updateChannels').and.callThrough();
     });
 
-    // Restore original implementation.
-    afterEach(function() {
-      target.updateChannels = updateChannels;
-    });
-
     it('should throw an error if channel does not exist', function() {
       var applyChanges = jasmine.createSpy('applyChanges');
 
       target.updateChannel(channelId, applyChanges).catch(function(error) {
-        expect(error instanceof FifthweekError).toBeTruthy();
+        expect(error instanceof DisplayableError).toBeTruthy();
         expect(error.message).toBe('Channel not found.');
       });
       $rootScope.$apply();
@@ -156,6 +145,41 @@ describe('channel repository factory', function(){
       $rootScope.$apply();
 
       expect(applyChanges).toHaveBeenCalled();
+    });
+  });
+
+  describe('when getting a channel', function() {
+    var channels;
+    var getChannels;
+    var existingChannel = {channelId: 'existingId'};
+
+    // Swap own implementation for spy.
+    beforeEach(function() {
+      channels = [existingChannel];
+      getChannels = target.getChannels;
+      target.getChannels = function() {
+        return $q.when(channels);
+      };
+
+      spyOn(target, 'getChannels').and.callThrough();
+    });
+
+    it('should throw an error if channel does not exist', function() {
+      target.getChannel(channelId).catch(function(error) {
+        expect(error instanceof DisplayableError).toBeTruthy();
+        expect(error.message).toBe('Channel not found.');
+      });
+      $rootScope.$apply();
+    });
+
+    it('should apply the changes if the channel exists', function() {
+      var actualChannel;
+      target.getChannel('existingId').then(function(channel) {
+        actualChannel = channel;
+      });
+      $rootScope.$apply();
+
+      expect(actualChannel).toBe(existingChannel);
     });
   });
 });

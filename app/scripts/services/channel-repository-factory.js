@@ -11,7 +11,7 @@ angular.module('webApp')
 
         var service = {};
 
-        service.getChannels = function(){
+        service.getChannels = function() {
           return masterRepository.get(channelsKey).then(function(channels) {
             if (channels.length === 0) {
               return $q.reject(new DisplayableError('You must create a subscription.'));
@@ -21,16 +21,27 @@ angular.module('webApp')
           });
         };
 
-        service.updateChannels = function(applyChanges){
+        service.updateChannels = function(applyChanges) {
           return masterRepository.set(channelsKey, function(channels) {
             return $q.when(applyChanges(channels));
           });
         };
 
-        service.createChannel = function(newChannel){
+        service.getChannel = function(channelId) {
+          return service.getChannels().then(function(channels) {
+            var channel = _.find(channels, {channelId: channelId});
+            if (!channel) {
+              return $q.reject(new DisplayableError('Channel not found.'));
+            }
+
+            return channel;
+          });
+        };
+
+        service.createChannel = function(newChannel) {
           return service.updateChannels(function(channels) {
             if (_.some(channels, { channelId: newChannel.channelId })) {
-              return $q.reject(new FifthweekError('Channel already exists.'));
+              return $q.reject(new DisplayableError('Channel already exists.'));
             }
 
             channels.push(newChannel);
@@ -38,18 +49,18 @@ angular.module('webApp')
           });
         };
 
-        service.updateChannel = function(channelId, applyChanges){
+        service.updateChannel = function(channelId, applyChanges) {
           return service.updateChannels(function(channels) {
             var channel = _.find(channels, { channelId: channelId });
             if (!channel) {
-              return $q.reject(new FifthweekError('Channel not found.'));
+              return $q.reject(new DisplayableError('Channel not found.'));
             }
 
             return $q.when(applyChanges(channel));
           });
         };
 
-        service.createCollection = function(channelId, collectionId, collectionName){
+        service.createCollection = function(channelId, collectionId, collectionName) {
           return service.updateChannel(channelId, function(channel) {
             channel.collections.push({
               collectionId: collectionId,

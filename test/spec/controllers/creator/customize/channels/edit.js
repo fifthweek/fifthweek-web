@@ -3,7 +3,6 @@ describe('edit channel controller', function () {
 
   var currentChannelId = 'B';
   var currentChannel;
-  var channels;
 
   var $q;
   var $scope;
@@ -16,7 +15,7 @@ describe('edit channel controller', function () {
   var errorFacade;
 
   beforeEach(function() {
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannel']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
     $state = { params: { id: currentChannelId } };
     currentChannel = {
@@ -27,15 +26,6 @@ describe('edit channel controller', function () {
       isDefault: true,
       isVisibleToNonSubscribers: false
     };
-    channels = [
-      {
-        channelId: 'A',
-        name: 'channel A',
-        priceInUsCentsPerWeek: 50,
-        description: 'Hello\nWorld'
-      },
-      currentChannel
-    ];
 
     module('webApp', 'errorFacadeMock');
     module(function($provide) {
@@ -55,12 +45,13 @@ describe('edit channel controller', function () {
     target = $controller('editChannelCtrl', { $scope: $scope });
   };
 
-  it('should expose the specified channel from user state', function() {
-    channelRepository.getChannels.and.returnValue($q.when(channels));
+  it('should expose the specified channel', function() {
+    channelRepository.getChannel.and.returnValue($q.when(currentChannel));
 
     initializeTarget();
     $scope.$apply();
 
+    expect(channelRepository.getChannel).toHaveBeenCalledWith(currentChannelId);
     expect($scope.model.channel).toEqual(
       {
         channelId: currentChannel.channelId,
@@ -72,28 +63,17 @@ describe('edit channel controller', function () {
       });
   });
 
-  it('should expose the specified channel from user state, as a clone', function() {
-    channelRepository.getChannels.and.returnValue($q.when(channels));
+  it('should expose the channel\'s original name', function() {
+    channelRepository.getChannel.and.returnValue($q.when(currentChannel));
 
     initializeTarget();
     $scope.$apply();
 
-    var currentChannelPreChange = _.cloneDeep(currentChannel);
-    $scope.model.channel.name = 'Something else';
-    expect(currentChannel).toEqual(currentChannelPreChange);
-  });
-
-  it('should display an error when no channels match the one specified', function() {
-    channelRepository.getChannels.and.returnValue($q.when([]));
-
-    initializeTarget();
-    $scope.$apply();
-
-    expect($scope.model.errorMessage).toBe(errorFacade.expectedMessage('Error: Channel does not exist'));
+    expect($scope.model.savedChannelName).toBe(currentChannel.name);
   });
 
   it('should display any error messages', function() {
-    channelRepository.getChannels.and.returnValue($q.reject('error'));
+    channelRepository.getChannel.and.returnValue($q.reject('error'));
 
     initializeTarget();
     $scope.$apply();
