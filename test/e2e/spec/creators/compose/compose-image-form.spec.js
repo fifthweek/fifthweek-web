@@ -47,23 +47,23 @@ describe('compose image form', function() {
     expect(page.getCollectionOptionCount(collectionName, channelName)).toBe(1);
   };
 
-  var postImageNow = function(collectionName, channelName, createCollection, isFirstCollection){
+  var postNow = function(collectionName, channelName, createCollection, isFirstCollection){
     it('should post an image to ' + collectionName + (channelName ? '(' + channelName + ')' : ''), function(){
-      page.postImageNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      page.postNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
       verifySuccess('Posted successfully', collectionName, channelName);
     });
   };
 
-  var postImageOnDate = function(collectionName, channelName, createCollection, isFirstCollection){
+  var postOnDate = function(collectionName, channelName, createCollection, isFirstCollection){
     it('should post an image to ' + collectionName + (channelName ? '(' + channelName + ')' : ''), function(){
-      page.postImageOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      page.postOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
       verifySuccess('Scheduled successfully', collectionName, channelName);
     });
   };
 
-  var postImageToQueue = function(collectionName, channelName, createCollection, isFirstCollection){
+  var postToQueue = function(collectionName, channelName, createCollection, isFirstCollection){
     it('should post an image to ' + collectionName + (channelName ? '(' + channelName + ')' : ''), function(){
-      page.postImageToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      page.postToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
       verifySuccess('Queued successfully', collectionName, channelName);
     });
   };
@@ -81,9 +81,9 @@ describe('compose image form', function() {
       navigateToPage();
     });
 
-    postImageNow(firstCollectionName, undefined, true, true);
-    postImageToQueue(firstCollectionName, undefined, true, true);
-    postImageOnDate(firstCollectionName, undefined, true, true);
+    postNow(firstCollectionName, undefined, true, true);
+    postToQueue(firstCollectionName, undefined, true, true);
+    postOnDate(firstCollectionName, undefined, true, true);
 
     /*
     describe('when posting now', function(){
@@ -94,7 +94,7 @@ describe('compose image form', function() {
         createCollection(firstCollectionName); // Test reflected in UI.
 
         describe('when the creator has no collections', function(){
-          postImageNow(firstCollectionName, undefined, true, true);
+          postNow(firstCollectionName, undefined, true, true);
         });
 
         describe('when the creator has one collection', function(){
@@ -103,8 +103,8 @@ describe('compose image form', function() {
             createCollection(firstCollectionName);
           });
 
-          postImageNow(firstCollectionName, undefined, false, false);
-          postImageNow(secondCollectionName, undefined, true, false);
+          postNow(firstCollectionName, undefined, false, false);
+          postNow(secondCollectionName, undefined, true, false);
         });
       });
 
@@ -119,8 +119,8 @@ describe('compose image form', function() {
         createCollection(firstCollectionName, secondChannelName); // Test reflected in UI.
 
         describe('when the creator has no collections', function(){
-          postImageNow(firstCollectionName, undefined, true, true);
-          postImageNow(firstCollectionName, secondChannelName, true, true);
+          postNow(firstCollectionName, undefined, true, true);
+          postNow(firstCollectionName, secondChannelName, true, true);
         });
 
         describe('when the creator has one collection', function(){
@@ -129,10 +129,10 @@ describe('compose image form', function() {
             createCollection(firstCollectionName);
           });
 
-          postImageNow(firstCollectionName, undefined, false, false);
-          postImageNow(secondCollectionName, undefined, true, false);
-          postImageNow(firstCollectionName, secondChannelName, true, false);
-          postImageNow(secondCollectionName, secondChannelName, true, false);
+          postNow(firstCollectionName, undefined, false, false);
+          postNow(secondCollectionName, undefined, true, false);
+          postNow(firstCollectionName, secondChannelName, true, false);
+          postNow(secondCollectionName, secondChannelName, true, false);
         });
 
         describe('when the creator has two collections', function(){
@@ -142,10 +142,10 @@ describe('compose image form', function() {
             createCollection(firstCollectionName, secondChannelName);
           });
 
-          postImageNow(firstCollectionName, undefined, false, false);
-          postImageNow(secondCollectionName, undefined, true, false);
-          postImageNow(firstCollectionName, secondChannelName, false, false);
-          postImageNow(secondCollectionName, secondChannelName, true, false);
+          postNow(firstCollectionName, undefined, false, false);
+          postNow(secondCollectionName, undefined, true, false);
+          postNow(firstCollectionName, secondChannelName, false, false);
+          postNow(secondCollectionName, secondChannelName, true, false);
         });
       });
     });
@@ -153,7 +153,7 @@ describe('compose image form', function() {
     describe('when posting on schedule', function(){
 
       describe('when creator has one channel', function(){
-        postImageOnDate(firstCollectionName, undefined, true, true);
+        postOnDate(firstCollectionName, undefined, true, true);
       });
 
       describe('when creator has two channels and two collections', function(){
@@ -164,17 +164,17 @@ describe('compose image form', function() {
           createCollection(firstCollectionName, secondChannelName);
         });
 
-        postImageOnDate(firstCollectionName, undefined, false, false);
-        postImageOnDate(secondCollectionName, undefined, true, false);
-        postImageOnDate(firstCollectionName, secondChannelName, false, false);
-        postImageOnDate(secondCollectionName, secondChannelName, true,  false);
+        postOnDate(firstCollectionName, undefined, false, false);
+        postOnDate(secondCollectionName, undefined, true, false);
+        postOnDate(firstCollectionName, secondChannelName, false, false);
+        postOnDate(secondCollectionName, secondChannelName, true,  false);
       });
     });
 
     describe('when posting to queue', function(){
 
       describe('when creator has one channel', function(){
-        postImageToQueue(firstCollectionName, undefined, true, true);
+        postToQueue(firstCollectionName, undefined, true, true);
       });
 
       describe('when creator has two channels and two collections', function(){
@@ -185,10 +185,10 @@ describe('compose image form', function() {
           createCollection(firstCollectionName, secondChannelName);
         });
 
-        postImageToQueue(firstCollectionName, undefined, false, false);
-        postImageToQueue(secondCollectionName, undefined, true, false);
-        postImageToQueue(firstCollectionName, secondChannelName, false, false);
-        postImageToQueue(secondCollectionName, secondChannelName, true,  false);
+        postToQueue(firstCollectionName, undefined, false, false);
+        postToQueue(secondCollectionName, undefined, true, false);
+        postToQueue(firstCollectionName, secondChannelName, false, false);
+        postToQueue(secondCollectionName, secondChannelName, true,  false);
       });
     });
 
@@ -210,7 +210,7 @@ describe('compose image form', function() {
         page.postNowButton.click();
         expect(page.successMessage.isDisplayed()).toBe(true);
 
-        browser.refresh();
+        page.postAnotherButton.click();
       });
 
       it('should allow symbols in the comment', function(){

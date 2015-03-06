@@ -116,13 +116,13 @@ composeImagePage.prototype = Object.create({}, {
     }
   }},
 
-  postImageNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
+  postNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
     this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
 
     this.postNowButton.click();
   }},
 
-  postImageOnDate: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
+  postOnDate: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
     this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
     this.postLaterButton.click();
     this.postOnDateRadio.click();
@@ -134,7 +134,7 @@ composeImagePage.prototype = Object.create({}, {
     this.postToBacklogButton.click();
   }},
 
-  postImageToQueue: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
+  postToQueue: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
     this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
     this.postLaterButton.click();
     this.postToQueueRadio.click();
@@ -143,7 +143,7 @@ composeImagePage.prototype = Object.create({}, {
 
   setFileInput: { value: function(filePath) {
     var absolutePath = __dirname + '/' + filePath;
-    console.log(absolutePath);
+    //console.log(absolutePath);
     this.fileInput.sendKeys(absolutePath);
   }}
 });
