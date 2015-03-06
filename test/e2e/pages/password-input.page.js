@@ -38,6 +38,17 @@ PasswordInputPage.prototype = Object.create({},
 
       testKit.assertMinLength(helpMessages, 6);
     });
+
+    it('should not allow passwords with more than 100 characters', function(){
+      var maxLength = 100;
+      var overSizedValue = new Array(maxLength + 2).join('x');
+
+      populateOtherInputsWithValidData();
+      input.clear();
+      input.sendKeys(overSizedValue);
+
+      testKit.assertMaxLength(helpMessages, input, overSizedValue, maxLength);
+    });
   }}
 });
 
