@@ -19,7 +19,7 @@ describe('compose utilities', function(){
     $modal = jasmine.createSpyObj('$modal', ['open']);
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
-    channelRepository = jasmine.createSpyObj('channelRepository', ['createCollection', 'getChannelsAndCollections']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['createCollection', 'getChannels']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
     collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection']);
 
@@ -53,9 +53,9 @@ describe('compose utilities', function(){
 
   describe('when calling getChannelsForSelection', function(){
 
-    describe('when getChannelsAndCollections fails', function(){
+    describe('when getChannels fails', function(){
       it('should return the error', function(){
-        channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
+        channelRepository.getChannels.and.returnValue($q.reject('error'));
         target.getChannelsForSelection()
           .then(function(){
             fail('this should not occur');
@@ -92,7 +92,7 @@ describe('compose utilities', function(){
           }
         ];
 
-        channelRepository.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
+        channelRepository.getChannels.and.returnValue($q.when(inputChannels));
 
         target.getChannelsForSelection()
           .then(function(r){
@@ -126,9 +126,9 @@ describe('compose utilities', function(){
 
   describe('when calling getCollectionsForSelection', function(){
 
-    describe('when getChannelsAndCollections fails', function(){
+    describe('when getChannels fails', function(){
       it('should return the error', function(){
-        channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
+        channelRepository.getChannels.and.returnValue($q.reject('error'));
         target.getCollectionsForSelection()
           .then(function(){
             fail('this should not occur');
@@ -141,7 +141,7 @@ describe('compose utilities', function(){
       });
     });
 
-    describe('when getChannelsAndCollections succeeds', function(){
+    describe('when getChannels succeeds', function(){
 
       var inputChannels;
       var result;
@@ -181,7 +181,7 @@ describe('compose utilities', function(){
           }
         ];
 
-        channelRepository.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
+        channelRepository.getChannels.and.returnValue($q.when(inputChannels));
 
         target.getCollectionsForSelection()
           .then(function(r){
@@ -215,9 +215,9 @@ describe('compose utilities', function(){
 
   describe('when calling getChannelsAndCollectionsForSelection', function(){
 
-    describe('when getChannelsAndCollections fails', function(){
+    describe('when getChannels fails', function(){
       it('should return the error', function(){
-        channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
+        channelRepository.getChannels.and.returnValue($q.reject('error'));
         target.getChannelsAndCollectionsForSelection()
           .then(function(){
             fail('this should not occur');
@@ -270,7 +270,7 @@ describe('compose utilities', function(){
           }
         ];
 
-        channelRepository.getChannelsAndCollections.and.returnValue($q.when(inputChannels));
+        channelRepository.getChannels.and.returnValue($q.when(inputChannels));
 
         target.getChannelsAndCollectionsForSelection()
           .then(function(r){

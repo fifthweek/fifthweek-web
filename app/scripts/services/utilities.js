@@ -7,6 +7,27 @@ angular.module('webApp')
 
     var service = {};
 
+    // http://stackoverflow.com/a/6491621/592768
+    // Adapted to be more readable.
+    service.getAccessorPathSegments = function(path) {
+      path = path.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+      path = path.replace(/^\./, '');           // strip a leading dot
+      return path.split('.');
+    };
+    service.getValue = function(object, path) {
+      var pathSegments = _.isArray(path) ? path : service.getAccessorPathSegments(path);
+      for (var i = 0; i < pathSegments.length; ++i) {
+        var pathSegment = pathSegments[i];
+        if (pathSegment in object) {
+          object = object[pathSegment];
+        }
+        else {
+          return;
+        }
+      }
+      return object;
+    };
+
     service.getHttpError = function(response){
       if(response.status === 0){
         return new ConnectionError(response);

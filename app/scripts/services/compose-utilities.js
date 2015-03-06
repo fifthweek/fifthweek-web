@@ -59,7 +59,7 @@ angular.module('webApp')
 
     service.getChannelsForSelection = function(){
       var channelRepository = channelRepositoryFactory.forCurrentUser();
-      return channelRepository.getChannelsAndCollections()
+      return channelRepository.getChannels()
         .then(function(channels){
           return $q.when(getChannelsForSelectionInner(channels));
         });
@@ -67,7 +67,7 @@ angular.module('webApp')
 
     service.getCollectionsForSelection = function(){
       var channelRepository = channelRepositoryFactory.forCurrentUser();
-      return channelRepository.getChannelsAndCollections()
+      return channelRepository.getChannels()
         .then(function(channels){
           return $q.when(getCollectionsForSelectionInner(channels));
         });
@@ -75,7 +75,7 @@ angular.module('webApp')
 
     service.getChannelsAndCollectionsForSelection = function(){
       var channelRepository = channelRepositoryFactory.forCurrentUser();
-      return channelRepository.getChannelsAndCollections()
+      return channelRepository.getChannels()
         .then(function(channels){
           return $q.when({
             channels: getChannelsForSelectionInner(channels),

@@ -1,25 +1,23 @@
 describe('channel repository factory', function(){
   'use strict';
 
-  var userId = 'userId';
-  var channelId = 'channel0';
+  var channelId = 'channelId';
 
   var $q;
   var $rootScope;
-  var aggregateUserState;
-  var authenticationService;
+  var masterRepositoryFactory;
+  var masterRepository;
   var targetFactory;
   var target;
 
   beforeEach(function() {
     module('webApp');
 
-    authenticationService = { currentUser: { userId: userId } };
-    aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['updateFromDelta']);
+    masterRepository = jasmine.createSpyObj('masterRepository', ['get', 'set']);
+    masterRepositoryFactory = { forCurrentUser: function() { return masterRepository; } };
 
     module(function($provide) {
-      $provide.value('authenticationService', authenticationService);
-      $provide.value('aggregateUserState', aggregateUserState);
+      $provide.value('masterRepositoryFactory', masterRepositoryFactory);
     });
 
     inject(function($injector) {
@@ -31,277 +29,133 @@ describe('channel repository factory', function(){
     target = targetFactory.forCurrentUser();
   });
 
-  describe('when user ID has changed', function() {
-    beforeEach(function() {
-      seedChannels([channelId]);
+  describe('when getting channels', function() {
+    it('should get channels from the master repository at the correct location', function() {
+      var expectedChannels = [{}];
+      var actualChannels;
+      masterRepository.get.and.returnValue($q.when(expectedChannels));
+
+      target.getChannels().then(function(channels) {
+        actualChannels = channels;
+      });
+      $rootScope.$apply();
+
+      expect(masterRepository.get).toHaveBeenCalledWith('createdChannelsAndCollections.channels');
+      expect(expectedChannels).toBe(actualChannels);
     });
 
-    it('should not update state', function() {
-      var channelRepository = targetFactory.forCurrentUser();
-      aggregateUserState.currentValue = { userId: 'changed' };
-      channelRepository.updateChannel(channelId, function() {});
-      expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
-    });
+    it('should throw an error if there are no channels', function() {
+      var noChannels = [];
+      masterRepository.get.and.returnValue($q.when(noChannels));
 
-    it('should throw an error when reading state', function() {
-      var channelRepository = targetFactory.forCurrentUser();
-      aggregateUserState.currentValue = { userId: 'changed' };
-      channelRepository.getChannelsAndCollections().catch(function(error){
-        expect(error instanceof FifthweekError).toBeTruthy();
-        expect(error.message).toBe('User has changed: channel repository no longer valid.');
+      target.getChannels().catch(function(error) {
+        expect(error instanceof DisplayableError).toBeTruthy();
+        expect(error.message).toBe('You must create a subscription.');
       });
-    });
-  });
-
-  describe('when updating a channel', function(){
-
-    var initialState;
-    var initialStateClone;
-
-    describe('when no channels exist', function(){
-      var error;
-      beforeEach(function(){
-
-        seedChannels([]);
-        initialState = aggregateUserState.currentValue;
-        initialStateClone = _.cloneDeep(initialState);
-
-        target.updateChannel('non-existent channel', function(){}).catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not modify the aggregate user state', function(){
-        expect(initialState).toEqual(initialStateClone);
-      });
-
-      it('should not call updateFromDelta', function(){
-        expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
-      });
-
-      it('should return a rejected promise', function(){
-        expect(error).toBeDefined();
-      });
-
-      it('should return a FifthweekError', function(){
-        expect(error instanceof FifthweekError).toBeTruthy();
-      });
-    });
-
-    describe('when called with no matching channels', function(){
-      var error;
-      beforeEach(function(){
-
-        seedChannels([channelId, 'channel2']);
-        initialState = aggregateUserState.currentValue;
-        initialStateClone = _.cloneDeep(initialState);
-
-        target.updateChannel('non-existent channel', function(){}).catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not modify the aggregate user state', function(){
-        expect(initialState).toEqual(initialStateClone);
-      });
-
-      it('should not call updateFromDelta', function(){
-        expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
-      });
-
-      it('should return a rejected promise', function(){
-        expect(error).toBeDefined();
-      });
-
-      it('should return a FifthweekError', function(){
-        expect(error instanceof FifthweekError).toBeTruthy();
-      });
-    });
-
-    describe('when called and one channel matches', function(){
-      beforeEach(function(){
-
-        seedChannels([channelId, 'channel2']);
-        initialState = aggregateUserState.currentValue;
-        initialStateClone = _.cloneDeep(initialState);
-
-        target.updateChannel(channelId, function(channel) {
-          channel.name = 'new value';
-        });
-      });
-
-      it('should not modify the aggregate user state directly', function(){
-        expect(initialState).toEqual(initialStateClone);
-      });
-
-      it('should call updateFromDelta with the new structure', function(){
-        expect(aggregateUserState.updateFromDelta).toHaveBeenCalledWith(
-          userId,
-          {
-            createdChannelsAndCollections: {
-              channels: [
-                {
-                  channelId: channelId,
-                  name: 'new value'
-                },
-                {
-                  channelId: 'channel2'
-                }
-              ]
-            }
-          });
-      });
+      $rootScope.$apply();
     });
   });
 
-  describe('when creating a collection', function() {
-    var collectionId = 'collectionId';
-    var collectionName = 'collectionName';
-    var channel;
-    var updateChannel;
+
+  describe('when updating channels', function() {
+    it('should set changes into the master repository at the correct location', function() {
+      var channels = [];
+      var applyChanges = jasmine.createSpy('applyChanges');
+
+      masterRepository.set.and.callFake(function(key, apply) {
+        apply(channels);
+      });
+
+      target.updateChannels(applyChanges);
+
+      expect(applyChanges).toHaveBeenCalledWith(channels);
+      expect(masterRepository.set.calls.mostRecent().args[0]).toBe('createdChannelsAndCollections.channels');
+    });
+  });
+
+  describe('when creating a channel', function() {
+    var channels;
+    var updateChannels;
+    var existingChannel = {channelId: 'existingId'};
+
+    // Temporarily swap own implementation for spy.
     beforeEach(function() {
-      channel = { collections: [] };
-      // Spy on own method. The method under test could go into a new higher-level object, but it's included within
-      // this object for simplicity. However, we test it as though we have pulled it out, mocking away its dependencies
-      // like so:
-      updateChannel = target.updateChannel;
-      target.updateChannel = function(channelId, applyChanges) {
-        applyChanges(channel);
+      channels = [existingChannel];
+      updateChannels = target.updateChannels;
+      target.updateChannels = function(applyChanges) {
+        return applyChanges(channels);
       };
 
-      spyOn(target, 'updateChannel').and.callThrough();
+      spyOn(target, 'updateChannels').and.callThrough();
     });
 
+    // Restore original implementation.
     afterEach(function() {
-      // Restore original implementation.
-      target.updateChannel = updateChannel;
+      target.updateChannels = updateChannels;
     });
 
-    it('should append the new collection onto the channel\'s list of collections', function() {
-      target.createCollection(channelId, collectionId, collectionName);
+    it('should throw an error if channel already exists', function() {
+      var newChannel = {channelId: 'existingId'};
 
-      expect(target.updateChannel.calls.mostRecent().args[0]).toBe(channelId);
-      expect(channel.collections).toEqual([{
-        collectionId: collectionId,
-        name: collectionName
-      }]);
-    });
-  });
-
-  describe('when retrieving channels with collections', function(){
-
-    describe('when an unexpected error occurs', function(){
-      it('should convert the error into a rejected promise', function(){
-        // This structure should not occur, so the service will trip up and throw an exception.
-        aggregateUserState.currentValue = { userId: userId, createdChannelsAndCollections: undefined };
-
-        target.getChannelsAndCollections()
-          .then(function(){
-            fail('this should not occur');
-          })
-          .catch(function(error){
-            expect(error instanceof FifthweekError).toBeTruthy();
-          });
-
-        $rootScope.$apply();
+      target.createChannel(newChannel).catch(function(error) {
+        expect(error instanceof FifthweekError).toBeTruthy();
+        expect(error.message).toBe('Channel already exists.');
       });
+      $rootScope.$apply();
+
+      expect(channels).toEqual([existingChannel]);
     });
 
-    describe('when there is no current aggregate state', function(){
-      it('should return the error', function(){
-        aggregateUserState.currentValue = undefined;
+    it('should append the new channel onto the channel list', function() {
+      var newChannel = {channelId: 'channelId'};
 
-        target.getChannelsAndCollections()
-          .then(function(){
-            fail('this should not occur');
-          })
-          .catch(function(error){
-            expect(error instanceof FifthweekError).toBeTruthy();
-            expect(error.message).toBe('No aggregate state found.');
-          });
+      target.createChannel(newChannel);
+      $rootScope.$apply();
 
-        $rootScope.$apply();
-      });
-    });
-
-    describe('when there are no channels', function(){
-      it('should return a displayable error', function(){
-        aggregateUserState.currentValue = { userId: userId, createdChannelsAndCollections: { channels: [] }};
-
-        target.getChannelsAndCollections()
-          .then(function(){
-            fail('this should not occur');
-          })
-          .catch(function(error){
-            expect(error instanceof DisplayableError).toBeTruthy();
-            expect(error.message).toBe('You must create a subscription.');
-          });
-
-        $rootScope.$apply();
-      });
-    });
-
-    describe('when the aggregate state is valid', function(){
-
-      var result;
-
-      beforeEach(function(){
-        var inputChannels = [
-          {
-            name: 'one',
-            someKey: 'someValue1',
-            collections: [
-              {
-                name: 'oneA',
-                someKey: 'someValueOneA'
-              },
-              {
-                name: 'oneB',
-                someKey: 'someValueOneB'
-              }
-            ]
-          },
-          {
-            name: 'two',
-            someKey: 'someValue2',
-            collections: [
-              {
-                name: 'twoA',
-                someKey: 'someValueTwoA'
-              }
-            ]
-          }
-        ];
-
-        aggregateUserState.currentValue = { userId: userId, createdChannelsAndCollections: { channels: inputChannels }};
-
-        target.getChannelsAndCollections()
-          .then(function(r){
-            result = r;
-          });
-
-        $rootScope.$apply();
-      });
-
-      it('should return a list of channels that matches the aggregate state', function(){
-        expect(result).toEqual(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
-      });
-
-      it('should return a deep clone of the channels in the aggregate user state', function(){
-        expect(result).not.toBe(aggregateUserState.currentValue.createdChannelsAndCollections.channels);
-
-        result[0].collections[0].name = 'new';
-        expect(aggregateUserState.currentValue.createdChannelsAndCollections.channels[0].collections[0].name).toBe('oneA');
-      });
+      expect(channels).toEqual([existingChannel, newChannel]);
     });
   });
 
-  var seedChannels = function(channelIds) {
-    aggregateUserState.currentValue = {
-      userId: userId,
-      createdChannelsAndCollections: {
-        channels: _.map(channelIds, function(channelId) {
-          return { channelId: channelId };
-        })
-      }
-    };
-  };
+  describe('when updating a channel', function() {
+    var channels;
+    var updateChannels;
+    var existingChannel = {channelId: 'existingId'};
+
+    // Temporarily swap own implementation for spy.
+    beforeEach(function() {
+      channels = [existingChannel];
+      updateChannels = target.updateChannels;
+      target.updateChannels = function(applyChanges) {
+        return applyChanges(channels);
+      };
+
+      spyOn(target, 'updateChannels').and.callThrough();
+    });
+
+    // Restore original implementation.
+    afterEach(function() {
+      target.updateChannels = updateChannels;
+    });
+
+    it('should throw an error if channel does not exist', function() {
+      var applyChanges = jasmine.createSpy('applyChanges');
+
+      target.updateChannel(channelId, applyChanges).catch(function(error) {
+        expect(error instanceof FifthweekError).toBeTruthy();
+        expect(error.message).toBe('Channel not found.');
+      });
+      $rootScope.$apply();
+
+      expect(applyChanges).not.toHaveBeenCalled();
+    });
+
+    it('should apply the changes if the channel exists', function() {
+      var applyChanges = jasmine.createSpy('applyChanges');
+
+      target.updateChannel('existingId', applyChanges);
+      $rootScope.$apply();
+
+      expect(applyChanges).toHaveBeenCalled();
+    });
+  });
 });

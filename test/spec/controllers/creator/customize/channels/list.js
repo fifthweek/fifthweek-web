@@ -11,7 +11,7 @@ describe('channel list controller', function () {
   var errorFacade;
 
   beforeEach(function() {
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelsAndCollections']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
 
     module('webApp', 'errorFacadeMock');
@@ -32,7 +32,7 @@ describe('channel list controller', function () {
   };
 
   it('should expose channels from user state', function() {
-    channelRepository.getChannelsAndCollections.and.returnValue($q.when([
+    channelRepository.getChannels.and.returnValue($q.when([
       {
         channelId: 'A',
         name: 'channel A',
@@ -67,7 +67,7 @@ describe('channel list controller', function () {
   });
 
   it('should display any error messages', function() {
-    channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
+    channelRepository.getChannels.and.returnValue($q.reject('error'));
 
     initializeTarget();
     $scope.$apply();

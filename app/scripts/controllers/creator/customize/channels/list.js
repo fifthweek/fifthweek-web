@@ -4,7 +4,7 @@ angular.module('webApp').controller('listChannelsCtrl', function($scope, channel
   var channelRepository = channelRepositoryFactory.forCurrentUser();
   $scope.model = {};
 
-  channelRepository.getChannelsAndCollections()
+  channelRepository.getChannels()
     .then(function(channels) {
       $scope.model.channels = _.map(
         channels,

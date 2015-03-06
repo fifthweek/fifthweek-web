@@ -16,7 +16,7 @@ describe('edit channel controller', function () {
   var errorFacade;
 
   beforeEach(function() {
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelsAndCollections']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
     $state = { params: { id: currentChannelId } };
     currentChannel = {
@@ -56,7 +56,7 @@ describe('edit channel controller', function () {
   };
 
   it('should expose the specified channel from user state', function() {
-    channelRepository.getChannelsAndCollections.and.returnValue($q.when(channels));
+    channelRepository.getChannels.and.returnValue($q.when(channels));
 
     initializeTarget();
     $scope.$apply();
@@ -73,7 +73,7 @@ describe('edit channel controller', function () {
   });
 
   it('should expose the specified channel from user state, as a clone', function() {
-    channelRepository.getChannelsAndCollections.and.returnValue($q.when(channels));
+    channelRepository.getChannels.and.returnValue($q.when(channels));
 
     initializeTarget();
     $scope.$apply();
@@ -84,7 +84,7 @@ describe('edit channel controller', function () {
   });
 
   it('should display an error when no channels match the one specified', function() {
-    channelRepository.getChannelsAndCollections.and.returnValue($q.when([]));
+    channelRepository.getChannels.and.returnValue($q.when([]));
 
     initializeTarget();
     $scope.$apply();
@@ -93,7 +93,7 @@ describe('edit channel controller', function () {
   });
 
   it('should display any error messages', function() {
-    channelRepository.getChannelsAndCollections.and.returnValue($q.reject('error'));
+    channelRepository.getChannels.and.returnValue($q.reject('error'));
 
     initializeTarget();
     $scope.$apply();
