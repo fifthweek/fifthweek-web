@@ -40,15 +40,7 @@ angular.module('webApp').factory('masterRepositoryFactory', function($q, aggrega
         }
 
         return applyChangesPromise.then(function() {
-          var delta = {};
-          var leaf = delta;
-          for (var i = 0; i < pathSegments.length; i++) {
-            var isLastSegment = i === pathSegments.length - 1;
-            leaf[pathSegments[i]] = isLastSegment ? clonedValue : {};
-            leaf = leaf[pathSegments[i]];
-          }
-
-          aggregateUserState.updateFromDelta(currentUserId, delta);
+          aggregateUserState.setDelta(currentUserId, key, clonedValue);
         });
       };
 

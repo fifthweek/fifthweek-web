@@ -51,7 +51,7 @@ describe('subscription service', function() {
 
   beforeEach(function() {
     subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['postSubscription', 'putSubscription']);
-    aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['updateFromDelta']);
+    aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['setDelta']);
     authenticationService = { currentUser: { userId: userId }};
 
     module('webApp');
@@ -135,25 +135,22 @@ describe('subscription service', function() {
       $rootScope.$apply();
 
       expect(subscriptionStub.postSubscription).toHaveBeenCalledWith(subscriptionData);
-      expect(aggregateUserState.updateFromDelta).toHaveBeenCalledWith(
-        userId,
-        {
-          creatorStatus: {
-            subscriptionId: subscriptionId
-          },
-          createdChannelsAndCollections: {
-            channels: [
-              {
-                channelId: subscriptionId,
-                name: defaultChannelName,
-                priceInUsCentsPerWeek: basePrice,
-                description: defaultChannelDescription,
-                isDefault: true,
-                collections: []
-              }
-            ]
-          }
-        });
+
+      expect(aggregateUserState.setDelta.calls.allArgs()).toEqual([
+        [userId, 'creatorStatus', {subscriptionId: subscriptionId}],
+        [userId, 'createdChannelsAndCollections', {
+          channels: [
+            {
+              channelId: subscriptionId,
+              name: defaultChannelName,
+              priceInUsCentsPerWeek: basePrice,
+              description: defaultChannelDescription,
+              isDefault: true,
+              collections: []
+            }
+          ]
+        }]
+      ]);
     });
 
     it('should retain read the current user ID before calling the API', function() {
@@ -166,25 +163,21 @@ describe('subscription service', function() {
       authenticationService.currentUser.userId = 'changed_user_id';
       $rootScope.$apply();
 
-      expect(aggregateUserState.updateFromDelta).toHaveBeenCalledWith(
-        userId,
-        {
-          creatorStatus: {
-            subscriptionId: subscriptionId
-          },
-          createdChannelsAndCollections: {
-            channels: [
-              {
-                channelId: subscriptionId,
-                name: defaultChannelName,
-                priceInUsCentsPerWeek: basePrice,
-                description: defaultChannelDescription,
-                isDefault: true,
-                collections: []
-              }
-            ]
-          }
-        });
+      expect(aggregateUserState.setDelta.calls.allArgs()).toEqual([
+        [userId, 'creatorStatus', {subscriptionId: subscriptionId}],
+        [userId, 'createdChannelsAndCollections', {
+          channels: [
+            {
+              channelId: subscriptionId,
+              name: defaultChannelName,
+              priceInUsCentsPerWeek: basePrice,
+              description: defaultChannelDescription,
+              isDefault: true,
+              collections: []
+            }
+          ]
+        }]
+      ]);
     });
 
     it('should propagate errors', function() {
@@ -201,7 +194,7 @@ describe('subscription service', function() {
 
       expect(result).toBe(error);
       expect(subscriptionStub.postSubscription).toHaveBeenCalledWith(subscriptionData);
-      expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
+      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
     });
   });
 });

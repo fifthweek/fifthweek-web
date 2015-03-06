@@ -8,10 +8,11 @@ angular.module('webApp')
     return aggregateUserStateImpl;
   })
   .factory('aggregateUserStateImpl',
-  function($rootScope, localStorageService, aggregateUserStateConstants, fetchAggregateUserStateConstants, authenticationServiceConstants) {
+  function($rootScope, localStorageService, aggregateUserStateConstants, fetchAggregateUserStateConstants, authenticationServiceConstants, utilities) {
   'use strict';
 
     var localStorageName = 'aggregateUserState';
+    var initialized = false;
 
     var broadcastUpdated = function(){
       $rootScope.$broadcast(aggregateUserStateConstants.updatedEvent, service.currentValue);
@@ -23,30 +24,14 @@ angular.module('webApp')
       broadcastUpdated();
     };
 
-    var performMerge = function(isFromServer, userId, userStateDelta){
-      var newUserState;
-      var validUserStateExists = service.currentValue && service.currentValue.userId === userId;
-
-      if (validUserStateExists) {
-        // Do not mutate state, as other services may have reference to this object (they should also never mutate it!).
-        newUserState = _.cloneDeep(service.currentValue);
-        _.merge(newUserState, userStateDelta);
-      }
-      else if (isFromServer) {
-        newUserState = _.cloneDeep(userStateDelta);
-
-        // The access signatures are never read from this service, so don't store them.
-        delete newUserState.accessSignatures;
-        newUserState.userId = userId;
-      }
-
-      if (newUserState) {
-        setNewUserState(newUserState);
-      }
-    };
-
     var handleAggregateUserStateFetched = function(event, userId, userState){
-      performMerge(true, userId, userState);
+      userState = _.cloneDeep(userState);
+
+      // The access signatures are never read from this service, so don't store them.
+      delete userState.accessSignatures;
+      userState.userId = userId;
+
+      setNewUserState(userState);
     };
 
     var handleCurrentUserChanged = function(event, newUser){
@@ -62,17 +47,37 @@ angular.module('webApp')
     service.currentValue = undefined;
 
     service.initialize = function() {
-      var storedUserState = localStorageService.get(localStorageName);
-      if (storedUserState) {
-        service.currentValue = storedUserState;
+      if (initialized) {
+        throw new FifthweekError('Aggregate user state already initialized');
       }
+
+      initialized = true;
+
+      service.currentValue = localStorageService.get(localStorageName);
 
       $rootScope.$on(fetchAggregateUserStateConstants.fetchedEvent, handleAggregateUserStateFetched);
       $rootScope.$on(authenticationServiceConstants.currentUserChangedEvent, handleCurrentUserChanged);
     };
 
-    service.updateFromDelta = function(userId, userStateDelta) {
-      performMerge(false, userId, userStateDelta);
+    service.setDelta = function(userId, key, userStateDelta) {
+      if (!service.currentValue || service.currentValue.userId !== userId) {
+        return;
+      }
+
+      var keySegments = _.isArray(key) ? key : utilities.getAccessorPathSegments(key);
+      if (keySegments.length === 0 || keySegments[0].length === 0) {
+        throw new FifthweekError('Cannot set directly to aggregate root.');
+      }
+
+      var newUserState = _.cloneDeep(service.currentValue);
+      var parentObject = utilities.getValue(newUserState, _.initial(keySegments));
+
+      if (parentObject === undefined) {
+        throw new FifthweekError('Parent object for "' + key + "' does not exist in existing aggregate state");
+      }
+
+      parentObject[_.last(keySegments)] = userStateDelta;
+      setNewUserState(newUserState);
     };
 
     return service;

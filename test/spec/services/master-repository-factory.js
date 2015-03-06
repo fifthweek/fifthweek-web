@@ -18,7 +18,7 @@ describe('master repository factory', function(){
     module('webApp');
 
     authenticationService = { currentUser: { userId: userId } };
-    aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['updateFromDelta']);
+    aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['setDelta']);
     aggregateUserState.currentValue = { key: {} };
 
     module(function($provide) {
@@ -48,7 +48,7 @@ describe('master repository factory', function(){
       $rootScope.$apply();
 
       expect(initialState).toEqual(initialStateClone);
-      expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
+      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
     });
 
     it('should throw an error when reading state', function() {
@@ -71,7 +71,7 @@ describe('master repository factory', function(){
       $rootScope.$apply();
 
       expect(initialState).toEqual(initialStateClone);
-      expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
+      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
     });
 
     it('should not throw an error when updating state', function() {
@@ -101,7 +101,7 @@ describe('master repository factory', function(){
       $rootScope.$apply();
 
       expect(initialState).toEqual(initialStateClone);
-      expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
+      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
     });
 
     it('should throw an error when updating state', function() {
@@ -128,7 +128,7 @@ describe('master repository factory', function(){
       $rootScope.$apply();
 
       expect(initialState).toEqual(initialStateClone);
-      expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
+      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
     });
 
     it('should throw an error when updating state', function() {
@@ -168,7 +168,7 @@ describe('master repository factory', function(){
 
       it('should not update state', function(){
         expect(initialState).toEqual(initialStateClone);
-        expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
+        expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
       });
 
       it('should return a rejected promise', function(){
@@ -194,7 +194,7 @@ describe('master repository factory', function(){
 
       it('should not update state', function(){
         expect(initialState).toEqual(initialStateClone);
-        expect(aggregateUserState.updateFromDelta).not.toHaveBeenCalled();
+        expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
       });
 
       it('should return a rejected promise', function(){
@@ -215,17 +215,12 @@ describe('master repository factory', function(){
         expect(initialState).toEqual(initialStateClone);
       });
 
-      it('should call updateFromDelta with the new structure', function(){
-        expect(aggregateUserState.updateFromDelta).toHaveBeenCalledWith(
+      it('should call mergeDelta with the new structure', function(){
+        expect(aggregateUserState.setDelta).toHaveBeenCalledWith(
           userId,
+          'key.deep',
           {
-            key:
-            {
-              deep:
-              {
-                change: 'applied'
-              }
-            }
+            change: 'applied'
           });
       });
     });
