@@ -4,7 +4,7 @@
 
   <div ng-if="model.submissionSucceeded">
     <div class="alert alert-success" >
-      <p>Posted successfully</p>
+      <p>{{model.postLater ? 'Scheduled' : 'Posted'}} successfully</p>
     </div>
     <button class="btn btn-default btn-block"
             ng-click="postAnother()">Post Another</button>

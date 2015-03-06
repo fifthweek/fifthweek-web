@@ -5,17 +5,22 @@ var composeNotePage = function() {};
 
 composeNotePage.prototype = Object.create({}, {
 
-  postNowButton: { get: function() { return element(by.css('.btn[fw-form-submit="postNow()"]')); }},
-  postLaterButton: { get: function() { return element(by.css('.btn[fw-form-submit="postLater()"]')); }},
+  postNowButton: { get: function() { return element(by.css('button[fw-form-submit="postNow()"]')); }},
+  postLaterButton: { get: function() { return element(by.css('button[fw-form-submit="postLater()"]')); }},
 
-  postToBacklogButton: { get: function() { return element(by.css('.btn[fw-form-submit="postToBacklog()"]')); }},
-  cancelButton: { get: function() { return element(by.css('.btn[ng-click="cancelPostLater()"]')); }},
+  postToBacklogButton: { get: function() { return element(by.css('button[fw-form-submit="postToBacklog()"]')); }},
+  cancelButton: { get: function() { return element(by.css('button[ng-click="cancelPostLater()"]')); }},
 
   contentTextBox: { get: function() { return element(by.id('model-input-note')); }},
   channelSelect: { get: function() { return element(by.id('model-input-selected-channel')); }},
   datepicker: { get: function() { return element(by.id('model-input-date')); }},
 
+  successMessage: { get: function(){ return element(by.css('.alert-success')); }},
+  postAnotherButton: { get: function(){ return element(by.css('button[ng-click="postAnother()"]')); }},
+
   pageUrl: { get: function () { return '/creators/compose/note'; }},
+
+  helpMessages: { get: function () { return element.all(by.css('.help-block')); }},
 
   populateContent: { value: function(channelName){
     var date = new Date();
@@ -27,13 +32,13 @@ composeNotePage.prototype = Object.create({}, {
     }
   }},
 
-  postNoteNow: { value: function(channelName) {
+  postNow: { value: function(channelName) {
     this.populateContent(channelName);
 
     this.postNowButton.click();
   }},
 
-  postNoteOnDate: { value: function(channelName) {
+  postOnDate: { value: function(channelName) {
     this.populateContent(channelName);
 
     this.postLaterButton.click();
