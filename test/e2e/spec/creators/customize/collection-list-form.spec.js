@@ -3,7 +3,7 @@ var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var CollectionListPage = require('../../../pages/creators/customize/collection-list.page.js');
 
-ddescribe('collection list form', function() {
+describe('collection list form', function() {
   'use strict';
 
   // NOTE:
