@@ -2,7 +2,7 @@ var CommonWorkflows = require('../../../common-workflows.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 
-ddescribe('collection list page', function() {
+describe('collection list page', function() {
   'use strict';
 
   var commonWorkflows = new CommonWorkflows();

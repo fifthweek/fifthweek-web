@@ -7,7 +7,7 @@ describe('channel list form', function() {
   'use strict';
 
   // NOTE:
-  // Tests for non-default channels are covered by the 'add channel' specification.
+  // Tests for listing non-default channels are covered by the add/edit collection specs.
 
   var registration;
   var subscription;
