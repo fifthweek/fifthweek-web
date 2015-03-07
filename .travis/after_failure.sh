@@ -4,7 +4,7 @@ git config --global user.name "$TRAVIS_COMMIT_AUTHOR"
 mkdir $HOME/temp_reports
 
 echo Cloning fifthweek-web-build-failure-reports
-git clone -b master git@github.com:fifthweek/fifthweek-web-build-failure-reports.git $HOME/temp_reports
+git clone -b $TRAVIS_BRANCH git@github.com:fifthweek/fifthweek-web-build-failure-reports.git $HOME/temp_reports
 
 echo Clearing files
 rm -rf $HOME/temp_reports/*

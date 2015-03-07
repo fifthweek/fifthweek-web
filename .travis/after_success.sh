@@ -5,7 +5,7 @@ if [ $TRAVIS_BRANCH = "master" ]; then
   mkdir $HOME/temp_dist
 
   echo Cloning fifthweek-web-dist
-  git clone -b master git@github.com:fifthweek/fifthweek-web-dist.git $HOME/temp_dist
+  git clone -b $TRAVIS_BRANCH git@github.com:fifthweek/fifthweek-web-dist.git $HOME/temp_dist
 
   echo Clearing files
   rm -rf $HOME/temp_dist/*
