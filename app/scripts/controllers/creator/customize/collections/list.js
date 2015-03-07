@@ -12,7 +12,7 @@ angular.module('webApp').controller('listCollectionsCtrl', function($scope, chan
             return {
               id: collection.collectionId,
               name: collection.name,
-              channel: channel.name,
+              channel: channel.isDefault ? undefined : channel.name,
               schedule: _.map(collection.weeklyReleaseSchedule, function(hourOfWeek) {
                 return [
                   'Sunday',
