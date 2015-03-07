@@ -438,6 +438,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.customize.collections.list.name, {
         url: '',
         templateUrl: 'views/creators/customize/collections/list.html',
+        controller: 'listCollectionsCtrl',
         requireSubscription: true,
         data : {
           pageTitle: 'Collections',
