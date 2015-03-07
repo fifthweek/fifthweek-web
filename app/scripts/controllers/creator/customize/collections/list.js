@@ -1,4 +1,4 @@
-angular.module('webApp').controller('listCollectionsCtrl', function($scope, channelRepositoryFactory, errorFacade) {
+angular.module('webApp').controller('listCollectionsCtrl', function($scope, channelRepositoryFactory, errorFacade, releaseTimeFormatter) {
   'use strict';
 
   var channelRepository = channelRepositoryFactory.forCurrentUser();
@@ -13,17 +13,7 @@ angular.module('webApp').controller('listCollectionsCtrl', function($scope, chan
               id: collection.collectionId,
               name: collection.name,
               channel: channel.isDefault ? undefined : channel.name,
-              schedule: _.map(collection.weeklyReleaseSchedule, function(hourOfWeek) {
-                return [
-                  'Sunday',
-                  'Monday',
-                  'Tuesday',
-                  'Wednesday',
-                  'Thursday',
-                  'Friday',
-                  'Saturday'
-                  ][Math.floor(hourOfWeek / 24)];
-              })
+              schedule: releaseTimeFormatter.getDaysOfWeek(collection.weeklyReleaseSchedule)
             };
           });
         })
