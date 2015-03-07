@@ -445,6 +445,11 @@ module.exports = function (grunt) {
         options:{
           configFile: 'test/protractor-debug.conf.js'
         }
+      },
+      prepush:{
+        options:{
+          configFile: 'test/protractor-prepush.conf.js'
+        }
       }
     },
 
@@ -708,11 +713,11 @@ module.exports = function (grunt) {
 
   grunt.registerTask('prepush', [
     'ddescribe-iit',
-    'test:live'
+    'test:live:app:prepush'
   ]);
 
   grunt.registerTask('prepush:local', [
     'ddescribe-iit',
-    'test:local'
+    'test:local:app:prepush'
   ]);
 };
