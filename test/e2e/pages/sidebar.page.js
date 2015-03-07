@@ -25,7 +25,7 @@ SidebarPage.prototype = Object.create({}, {
         expect(self.usernameLink.isDisplayed()).toBe(true);
       });
 
-      it('should contain "Settings" link', function () {
+      it('should contain "New Post" link', function () {
         expect(self.newPostLink.isDisplayed()).toBe(true);
       });
 
