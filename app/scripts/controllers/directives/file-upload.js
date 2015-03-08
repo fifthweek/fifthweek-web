@@ -80,6 +80,7 @@ angular.module('webApp')
         })
         .then(function(){
           return callUploadCompleteCallback({
+            file: file,
             fileId: fileData.fileId,
             fileUri: fileData.accessInformation.uri,
             containerName: fileData.accessInformation.containerName

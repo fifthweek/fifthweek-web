@@ -228,6 +228,7 @@ describe('file upload controller', function(){
 
         expect($scope.onUploadComplete).toHaveBeenCalledWith({
           data: {
+            file: blob,
             fileId: uploadRequestData.fileId,
             fileUri: uploadRequestData.accessInformation.uri,
             containerName: uploadRequestData.accessInformation.containerName

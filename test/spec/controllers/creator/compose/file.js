@@ -47,4 +47,22 @@ describe('compose file controller', function () {
       expect(composeUploadDelegate.initialize.calls.first().args[2]).toBe(postsStub.postFile);
     });
   });
+
+  describe('when calling onUploadComplete delegate', function(){
+
+    var delegate;
+    beforeEach(function(){
+      createController();
+      delegate = composeUploadDelegate.initialize.calls.first().args[1];
+      delegate({
+        file: { name: 'fileName' },
+        fileUri: 'fileUri',
+        containerName: 'containerName'
+      });
+    });
+
+    it('should update the scope with the file name', function(){
+      expect($scope.fileName).toBe('fileName');
+    });
+  });
 });

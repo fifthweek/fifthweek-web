@@ -5,6 +5,10 @@ angular.module('webApp').controller('composeFileCtrl',
     $scope.uploadFormFile = 'file';
 
     var onUploadComplete = function(data) {
+      var fileUri = data.fileUri;
+      var containerName = data.containerName;
+
+      $scope.fileName = data.file.name;
     };
 
     composeUploadDelegate.initialize($scope, onUploadComplete, postsStub.postFile);
