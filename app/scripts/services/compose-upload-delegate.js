@@ -9,6 +9,7 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
         fileUploaded: false,
         postLater: false,
         postToQueue: true,
+        queuedLiveDate: undefined,
         createCollection: false,
         input: {
           fileId: undefined,
@@ -35,6 +36,7 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
 
       $scope.postLater = function() {
         model.postLater = true;
+        composeUtilities.updateEstimatedLiveDate(model);
       };
 
       $scope.cancelPostLater = function() {

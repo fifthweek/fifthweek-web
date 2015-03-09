@@ -13,7 +13,7 @@ describe('compose upload delegate', function(){
   beforeEach(function() {
 
     $state = jasmine.createSpyObj('$state', ['reload']);
-    composeUtilities = jasmine.createSpyObj('composeUtilities', ['loadChannelsAndCollectionsIntoModel', 'getCollectionIdAndCreateCollectionIfRequired', 'showCreateCollectionDialog']);
+    composeUtilities = jasmine.createSpyObj('composeUtilities', ['loadChannelsAndCollectionsIntoModel', 'getCollectionIdAndCreateCollectionIfRequired', 'showCreateCollectionDialog', 'updateEstimatedLiveDate']);
 
     onUploadComplete = jasmine.createSpy('onUploadComplete');
     post = jasmine.createSpy('post');
@@ -254,6 +254,10 @@ describe('compose upload delegate', function(){
 
       it('should set postLater to true', function(){
         expect($scope.model.postLater).toBe(true);
+      });
+
+      it('should set call updateEstimatedLiveDate', function(){
+        expect(composeUtilities.updateEstimatedLiveDate).toHaveBeenCalled();
       });
     });
 

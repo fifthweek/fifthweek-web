@@ -21,7 +21,7 @@ describe('compose utilities', function(){
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
     channelRepository = jasmine.createSpyObj('channelRepository', ['createCollection', 'getChannels']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
-    collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection']);
+    collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection', 'getLiveDateOfNewQueuedPost']);
 
     module(function($provide) {
       $provide.value('$modal', $modal);
@@ -596,6 +596,88 @@ describe('compose utilities', function(){
 
     it('should result the modal object', function(){
       expect(result).toBe('result');
+    });
+  });
+
+  describe('when calling updateEstimatedLiveDate', function(){
+
+    var model;
+
+    beforeEach(function(){
+      model = {
+        queuedLiveDate: 'something',
+        input: {}
+      };
+    });
+
+    describe('when selectedCollection is undefined', function(){
+      beforeEach(function(){
+        target.updateEstimatedLiveDate(model);
+        $rootScope.$apply();
+      });
+
+      it('should not call getLiveDateOfNewQueuedPost', function(){
+        expect(collectionStub.getLiveDateOfNewQueuedPost).not.toHaveBeenCalled();
+      });
+
+      it('should set queuedLiveDate to undefined', function(){
+        expect(model.queuedLiveDate).toBeUndefined();
+      });
+    });
+
+    describe('when the selected collection is a new collection', function(){
+      beforeEach(function(){
+        model.input.selectedCollection  = { isNewCollection: true };
+        target.updateEstimatedLiveDate(model);
+        $rootScope.$apply();
+      });
+
+      it('should not call getLiveDateOfNewQueuedPost', function(){
+        expect(collectionStub.getLiveDateOfNewQueuedPost).not.toHaveBeenCalled();
+      });
+
+      it('should set queuedLiveDate to undefined', function(){
+        expect(model.queuedLiveDate).toBeUndefined();
+      });
+    });
+
+    describe('when the selected collection is an existing collection', function(){
+      beforeEach(function(){
+        collectionStub.getLiveDateOfNewQueuedPost.and.returnValue($q.when({ data:'someDate' }));
+        model.input.selectedCollection  = { collectionId: 'collectionId' };
+        target.updateEstimatedLiveDate(model);
+        $rootScope.$apply();
+      });
+
+      it('should call getLiveDateOfNewQueuedPost', function(){
+        expect(collectionStub.getLiveDateOfNewQueuedPost).toHaveBeenCalledWith('collectionId');
+      });
+
+      it('should update queuedLiveDate', function(){
+        expect(model.queuedLiveDate).toBe('someDate');
+      });
+    });
+
+    describe('when getLiveDateOfNewQueuedPost fails', function(){
+      beforeEach(function(){
+        model.input.selectedCollection  = { collectionId: 'collectionId' };
+        collectionStub.getLiveDateOfNewQueuedPost.and.returnValue($q.reject('error'));
+        utilities.getFriendlyErrorMessage.and.returnValue('friendly');
+        target.updateEstimatedLiveDate(model);
+        $rootScope.$apply();
+      });
+
+      it('should log the error', function(){
+        expect(logService.error).toHaveBeenCalledWith('error');
+      });
+
+      it('should display a friendly error message', function(){
+        expect(model.errorMessage).toBe('friendly');
+      });
+
+      it('should set queuedLiveDate to undefined', function(){
+        expect(model.queuedLiveDate).toBeUndefined();
+      });
     });
   });
 });

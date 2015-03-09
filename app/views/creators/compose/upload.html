@@ -61,7 +61,7 @@
           <div class="radio">
             <label><input type="radio"
                           ng-model="model.postToQueue"
-                          ng-value="true"/> After other posts in queue (will appear Wednesday 7th Jan)</label>
+                          ng-value="true"/> After other posts in queue <span ng-if="model.queuedLiveDate">(will appear {{model.queuedLiveDate | date:'EEEE, d MMMM @ HH:mm UTC':'UTC'}})</span></label>
           </div>
 
           <div class="radio">

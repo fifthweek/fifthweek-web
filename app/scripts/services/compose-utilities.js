@@ -143,6 +143,21 @@ angular.module('webApp')
       });
     };
 
+    service.updateEstimatedLiveDate = function(model){
+      model.queuedLiveDate = undefined;
+      if(model.input.selectedCollection && !model.input.selectedCollection.isNewCollection) {
+        collectionStub.getLiveDateOfNewQueuedPost(model.input.selectedCollection.collectionId)
+          .then(function(result){
+            model.queuedLiveDate = result.data;
+          })
+          .catch(function(error){
+            model.queuedLiveDate = undefined;
+            logService.error(error);
+            model.errorMessage = utilities.getFriendlyErrorMessage(error);
+          });
+      }
+    };
+
     return service;
   }
 );
