@@ -377,7 +377,7 @@
 
           describe('when posting to queue', function(){
 
-            xdescribe('when creator has one channel', function(){
+            describe('when creator has one channel', function(){
               postToQueue(firstCollectionName, 0, true, true);
             });
 
@@ -399,7 +399,7 @@
               });
             });
 
-            xdescribe('when creator has two channels and two collections', function(){
+            describe('when creator has two channels and two collections', function(){
 
               beforeEach(function(){
                 createChannel();
