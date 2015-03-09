@@ -7,7 +7,7 @@
   composeFilePage.prototype = Object.create(BasePage.prototype, {
     uploadType: { value: 'file' },
     headerLink: { value: 'fileLink' },
-    uploadIndicator: { get: function(){ return this.postNowButton; }},
+    uploadIndicator: { get: function(){ return element(by.css('.btn-file-download')); }},
     pageUrl: { get: function () { return '/creators/compose/file'; }}
   });
 

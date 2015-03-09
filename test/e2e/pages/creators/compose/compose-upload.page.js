@@ -50,6 +50,9 @@
     postToQueueRadio: { get: function() { return element(by.css('input[ng-value="true"]')); }},
     postOnDateRadio: { get: function() { return element(by.css('input[ng-value="false"]')); }},
 
+    postToQueueDate: { get: function() { return element(by.css('span[ng-if="model.queuedLiveDate"]')); }},
+
+
     datepicker: { get: function() { return element(by.id('model-input-date')); }},
 
     successMessage: { get: function(){ return element(by.css('.alert-success')); }},
@@ -119,9 +122,28 @@
             if(channelName){
               element(by.cssContainingText('#create-collection-form option', channelName)).click();
             }
+
+            this.dialogContinueButton.click();
           }
         }
       }
+    }},
+
+    createCollection: { value: function(filePath, collectionName, channelName, isFirstCollection) {
+
+      if(!collectionName){
+        collectionName = collectionNameInputPage.newName();
+      }
+
+      this.populateContent(filePath, collectionName,  channelName, true, isFirstCollection);
+
+      this.postNowButton.click();
+
+      return {
+        filePath: filePath,
+        collectionName: collectionName,
+        channelName: channelName
+      };
     }},
 
     postNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
@@ -145,7 +167,7 @@
     postToQueue: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
       this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
       this.postLaterButton.click();
-      this.postToQueueRadio.click();
+
       this.postToBacklogButton.click();
     }},
 
@@ -174,17 +196,22 @@
 
         var filePath = '../../../sample-image.jpg';
         var tinyFilePath = '../../../sample-image-tiny.jpg';
-        var secondChannelName = 'Channel 2';
-        var thirdChannelName = 'Channel 3;';
-        var firstCollectionName = 'Collection 1';
-        var secondCollectionName = 'Collection 2';
+
+        var channelNames;
+
+        var firstCollectionName = 'Collection 0';
+        var secondCollectionName = 'Collection 1';
 
         var createChannel = function(channelName){
-
+          var result = commonWorkflows.createChannel();
+          channelNames.push(result.name);
+          navigateToPage();
         };
 
-        var createCollection = function(collectionName){
-
+        var createCollection = function(collectionName, channelName, isFirstCollection){
+          page.createCollection(tinyFilePath, collectionName, channelName, isFirstCollection);
+          expect(page.successMessage.isDisplayed()).toBe(true);
+          page.postAnotherButton.click();
         };
 
         var verifySuccess = function(successMessage, collectionName, channelName){
@@ -198,25 +225,28 @@
 
           page.populateUpload(tinyFilePath);
 
-          expect(page.getCollectionOptionCount(collectionName, channelName)).toBe(1);
+          expect(page.getCollectionOptionCount(collectionName, channelName)).not.toBe(0);
         };
 
-        var postNow = function(collectionName, channelName, createCollection, isFirstCollection){
-          it('should post an ' + uploadType + ' to ' + collectionName + (channelName ? '(' + channelName + ')' : ''), function(){
+        var postNow = function(collectionName, channelIndex, createCollection, isFirstCollection){
+          it('should post an ' + uploadType + ' to ' + collectionName + ' (Channel ' + channelIndex + ')', function(){
+            var channelName = channelNames[channelIndex];
             page.postNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
             verifySuccess('Posted successfully', collectionName, channelName);
           });
         };
 
-        var postOnDate = function(collectionName, channelName, createCollection, isFirstCollection){
-          it('should schedule an ' + uploadType + ' to ' + collectionName + (channelName ? '(' + channelName + ')' : ''), function(){
+        var postOnDate = function(collectionName, channelIndex, createCollection, isFirstCollection){
+          it('should schedule an ' + uploadType + ' to ' + collectionName + ' (Channel ' + channelIndex + ')', function(){
+            var channelName = channelNames[channelIndex];
             page.postOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
             verifySuccess('Scheduled successfully', collectionName, channelName);
           });
         };
 
-        var postToQueue = function(collectionName, channelName, createCollection, isFirstCollection){
-          it('should queue an ' + uploadType + ' to ' + collectionName + (channelName ? '(' + channelName + ')' : ''), function(){
+        var postToQueue = function(collectionName, channelIndex, createCollection, isFirstCollection){
+          it('should queue an ' + uploadType + ' to ' + collectionName + ' (Channel ' + channelIndex + ')', function(){
+            var channelName = channelNames[channelIndex];
             page.postToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
             verifySuccess('Queued successfully', collectionName, channelName);
           });
@@ -227,6 +257,10 @@
           header[headerLink].click();
         };
 
+        beforeEach(function(){
+          channelNames = [undefined];  // Set initial default channel name to undefined.
+        });
+
         describe('workflows', function(){
           beforeEach(function(){
             var context = commonWorkflows.createSubscription();
@@ -235,118 +269,150 @@
             navigateToPage();
           });
 
-          postNow(firstCollectionName, undefined, true, true);
-          postToQueue(firstCollectionName, undefined, true, true);
-          postOnDate(firstCollectionName, undefined, true, true);
+          describe('when posting now', function(){
 
-          /*
-           describe('when posting now', function(){
+            describe('when creator has one channel', function(){
 
-           describe('when creator has one channel', function(){
+              it('should reflect new channels in the UI', function(){
+                createChannel(); // Test reflected in UI.
+              });
 
-           createChannel(secondChannelName); // Test reflected in UI.
-           createCollection(firstCollectionName); // Test reflected in UI.
+              it('should reflect new collections in the UI', function(){
+                createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
+              });
 
-           describe('when the creator has no collections', function(){
-           postNow(firstCollectionName, undefined, true, true);
-           });
+              describe('when the creator has no collections', function(){
+                postNow(firstCollectionName, 0, true, true);
+              });
 
-           describe('when the creator has one collection', function(){
+              describe('when the creator has one collection', function(){
 
-           beforeEach(function(){
-           createCollection(firstCollectionName);
-           });
+                beforeEach(function(){
+                  createCollection(firstCollectionName, channelNames[0], true);
+                });
 
-           postNow(firstCollectionName, undefined, false, false);
-           postNow(secondCollectionName, undefined, true, false);
-           });
-           });
+                it('should select the existing collection if a duplicate collection is added', function(){
+                  page.populateUpload(tinyFilePath);
+                  page.createCollectionLink.click();
 
-           describe('when creator has two channels', function(){
+                  page.dialogCreateCollectionNameTextBox.sendKeys(firstCollectionName);
 
-           beforeEach(function(){
-           createChannel(secondChannelName);
-           });
+                  page.dialogContinueButton.click();
 
-           createChannel(thirdChannelName); // Test reflected in UI.
-           createCollection(firstCollectionName); // Test reflected in UI.
-           createCollection(firstCollectionName, secondChannelName); // Test reflected in UI.
+                  expect(page.getCollectionOptionCount(firstCollectionName, channelNames[0])).toBe(1);
+                });
 
-           describe('when the creator has no collections', function(){
-           postNow(firstCollectionName, undefined, true, true);
-           postNow(firstCollectionName, secondChannelName, true, true);
-           });
+                postNow(firstCollectionName, 0, false, false);
+                postNow(secondCollectionName, 0, true, false);
+              });
+            });
 
-           describe('when the creator has one collection', function(){
+            describe('when creator has two channels', function(){
 
-           beforeEach(function(){
-           createCollection(firstCollectionName);
-           });
+              beforeEach(function(){
+                createChannel();
+              });
 
-           postNow(firstCollectionName, undefined, false, false);
-           postNow(secondCollectionName, undefined, true, false);
-           postNow(firstCollectionName, secondChannelName, true, false);
-           postNow(secondCollectionName, secondChannelName, true, false);
-           });
+              it('should reflect new channels in the UI', function(){
+                createChannel(); // Test reflected in UI.
+              });
 
-           describe('when the creator has two collections', function(){
+              it('should reflect new collections in the UI', function(){
+                createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
+                createCollection(firstCollectionName, channelNames[1], false); // Test reflected in UI.
+              });
 
-           beforeEach(function(){
-           createCollection(firstCollectionName);
-           createCollection(firstCollectionName, secondChannelName);
-           });
+              describe('when the creator has no collections', function(){
+                postNow(firstCollectionName, 0, true, true);
+                postNow(firstCollectionName, 1, true, true);
+              });
 
-           postNow(firstCollectionName, undefined, false, false);
-           postNow(secondCollectionName, undefined, true, false);
-           postNow(firstCollectionName, secondChannelName, false, false);
-           postNow(secondCollectionName, secondChannelName, true, false);
-           });
-           });
-           });
+              describe('when the creator has one collection', function(){
 
-           describe('when posting on schedule', function(){
+                beforeEach(function(){
+                  createCollection(firstCollectionName, channelNames[0], true);
+                });
 
-           describe('when creator has one channel', function(){
-           postOnDate(firstCollectionName, undefined, true, true);
-           });
+                postNow(firstCollectionName, 0, false, false);
+                postNow(secondCollectionName, 0, true, false);
+                postNow(firstCollectionName, 1, true, false);
+                postNow(secondCollectionName, 1, true, false);
+              });
 
-           describe('when creator has two channels and two collections', function(){
+              describe('when the creator has two collections', function(){
 
-           beforeEach(function(){
-           createChannel(secondChannelName);
-           createCollection(firstCollectionName);
-           createCollection(firstCollectionName, secondChannelName);
-           });
+                beforeEach(function(){
+                  createCollection(firstCollectionName, channelNames[0], true);
+                  createCollection(firstCollectionName, channelNames[1], false);
+                });
 
-           postOnDate(firstCollectionName, undefined, false, false);
-           postOnDate(secondCollectionName, undefined, true, false);
-           postOnDate(firstCollectionName, secondChannelName, false, false);
-           postOnDate(secondCollectionName, secondChannelName, true,  false);
-           });
-           });
+                postNow(firstCollectionName, 0, false, false);
+                postNow(secondCollectionName, 0, true, false);
+                postNow(firstCollectionName, 1, false, false);
+                postNow(secondCollectionName, 1, true, false);
+              });
+            });
+          });
 
-           describe('when posting to queue', function(){
+          describe('when posting on schedule', function(){
 
-           describe('when creator has one channel', function(){
-           postToQueue(firstCollectionName, undefined, true, true);
-           });
+            describe('when creator has one channel', function(){
+              postOnDate(firstCollectionName, 0, true, true);
+            });
 
-           describe('when creator has two channels and two collections', function(){
+            describe('when creator has two channels and two collections', function(){
 
-           beforeEach(function(){
-           createChannel(secondChannelName);
-           createCollection(firstCollectionName);
-           createCollection(firstCollectionName, secondChannelName);
-           });
+              beforeEach(function(){
+                createChannel();
+                createCollection(firstCollectionName, channelNames[0], true);
+                createCollection(firstCollectionName, channelNames[1], false);
+              });
 
-           postToQueue(firstCollectionName, undefined, false, false);
-           postToQueue(secondCollectionName, undefined, true, false);
-           postToQueue(firstCollectionName, secondChannelName, false, false);
-           postToQueue(secondCollectionName, secondChannelName, true,  false);
-           });
-           });
+              postOnDate(firstCollectionName, 0, false, false);
+              postOnDate(secondCollectionName, 0, true, false);
+              postOnDate(firstCollectionName, 1, false, false);
+              postOnDate(secondCollectionName, 1, true,  false);
+            });
+          });
 
-           */
+          describe('when posting to queue', function(){
+
+            xdescribe('when creator has one channel', function(){
+              postToQueue(firstCollectionName, 0, true, true);
+            });
+
+            describe('when creator has one channel and one collection', function() {
+
+              beforeEach(function () {
+                createCollection(firstCollectionName, channelNames[0], true);
+              });
+
+              it('should receive an estimated live date from the server', function(){
+                page.populateUpload(tinyFilePath);
+                page.postLaterButton.click();
+
+                browser.wait(function(){
+                  return page.postToQueueDate.isPresent();
+                });
+
+                expect(page.postToQueueDate.isDisplayed()).toBe(true);
+              });
+            });
+
+            xdescribe('when creator has two channels and two collections', function(){
+
+              beforeEach(function(){
+                createChannel();
+                createCollection(firstCollectionName, channelNames[0], true);
+                createCollection(firstCollectionName, channelNames[1], false);
+              });
+
+              postToQueue(firstCollectionName, 0, false, false);
+              postToQueue(secondCollectionName, 0, true, false);
+              postToQueue(firstCollectionName, 1, false, false);
+              postToQueue(secondCollectionName, 1, true,  false);
+            });
+          });
         });
 
         describe('when validating inputs', function() {
@@ -379,19 +445,18 @@
             });
 
             testKit.includeHappyPaths(page, collectionNameInputPage, 'createCollectionNameTextBox');
-            /*
-             describe('when a collection exists', function(){
 
-             beforeEach(function(){
-             createCollection(firstCollectionName);
-             navigateToPage();
-             page.populateUpload(tinyFilePath);
-             page.createCollectionLink.click();
-             });
+            describe('when a collection exists', function(){
 
-             collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
-             });
-             */
+              beforeEach(function(){
+                createCollection(firstCollectionName, channelNames[0], true);
+                navigateToPage();
+                page.populateUpload(tinyFilePath);
+                page.createCollectionLink.click();
+              });
+
+              collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
+            });
           });
 
           describe('sad path', function() {
@@ -403,50 +468,61 @@
               navigateToPage();
             });
 
-            beforeEach(function(){
-              page.populateUpload(tinyFilePath);
+            describe('when a collection does not exist', function(){
+              beforeEach(function(){
+                page.populateUpload(tinyFilePath);
+              });
+
+              afterEach(function(){
+                browser.refresh();
+              });
+
+              it('should not allow a comment more than 2000 characters', function(){
+                testKit.setFormValues(page, page.inputs);
+                page.commentTextBox.clear();
+                var overSizedValue = new Array(2002).join( 'a' );
+                page.commentTextBox.sendKeys(overSizedValue);
+
+                testKit.assertMaxLength(page.helpMessages, page.commentTextBox, overSizedValue, 2000);
+              });
+
+              collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postNowButton, page.helpMessages, function() {});
+              collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postLaterButton, page.helpMessages, function() {});
+
+              it('should not allow an empty date', function(){
+                page.createCollectionNameTextBox.sendKeys('collection');
+                page.postLaterButton.click();
+
+                page.postOnDateRadio.click();
+
+                page.postToBacklogButton.click();
+
+                testKit.assertSingleValidationMessage(page.helpMessages,
+                  'Please select a date.');
+              });
             });
 
-            afterEach(function(){
-              browser.refresh();
+            describe('when a collection exists', function(){
+
+              it('should run once before all', function() {
+                createCollection(firstCollectionName, channelNames[0], true);
+                navigateToPage();
+              });
+
+              describe('then', function(){
+
+                beforeEach(function(){
+                  page.populateUpload(tinyFilePath);
+                  page.createCollectionLink.click();
+                });
+
+                afterEach(function(){
+                  browser.refresh();
+                });
+
+                collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
+              });
             });
-
-            it('should not allow a comment more than 2000 characters', function(){
-              testKit.setFormValues(page, page.inputs);
-              page.commentTextBox.clear();
-              var overSizedValue = new Array(2002).join( 'a' );
-              page.commentTextBox.sendKeys(overSizedValue);
-
-              testKit.assertMaxLength(page.helpMessages, page.commentTextBox, overSizedValue, 2000);
-            });
-
-            collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postNowButton, page.helpMessages, function() {});
-            collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postLaterButton, page.helpMessages, function() {});
-
-            it('should not allow an empty date', function(){
-              page.createCollectionNameTextBox.sendKeys('collection');
-              page.postLaterButton.click();
-
-              page.postOnDateRadio.click();
-
-              page.postToBacklogButton.click();
-
-              testKit.assertSingleValidationMessage(page.helpMessages,
-                'Please select a date.');
-            });
-            /*
-             describe('when a collection exists', function(){
-
-             beforeEach(function(){
-             createCollection(firstCollectionName);
-             navigateToPage();
-             page.populateUpload(tinyFilePath);
-             page.createCollectionLink.click();
-             });
-
-             collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
-             });
-             */
           });
         });
       });
