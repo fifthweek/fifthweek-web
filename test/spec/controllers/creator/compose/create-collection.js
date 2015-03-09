@@ -134,4 +134,54 @@ describe('composeCreateCollectionCtrl', function(){
       expect($scope.model.input.selectedCollection).toBe($scope.model.collections[1]);
     });
   });
+
+  describe('when submitted with a name matching an existing collection', function(){
+    describe('when submitted for the first time', function(){
+      beforeEach(function(){
+        $scope.model = { channels: [{}], collections: [{name: 'collection 1'}, { name: 'collection 2' }, { name: 'collection 3' }] };
+        $scope.model.input = {
+          selectedChannel: $scope.model.channels[0],
+          newCollectionName: 'newCollection'
+        };
+
+        composeUtilities.getCollectionNameForSelection.and.returnValue('collection 2');
+
+        createController();
+        $scope.submit();
+      });
+
+      it('should not add a new collection to the collections list', function(){
+        expect($scope.model.collections.length).toBe(3);
+      });
+
+      it('should set the selected collection to the matching existing collection', function(){
+        expect($scope.model.input.selectedCollection).toBe($scope.model.collections[1]);
+      });
+    });
+
+    describe('when submitted after the first time', function(){
+      beforeEach(function(){
+        $scope.model = { channels: [{}], collections: [{name: 'collection 1'}, {name: 'collection 2'}, { isNewCollection: true, name: 'name' }] };
+        $scope.model.input = {
+          selectedChannel: $scope.model.channels[0],
+          newCollectionName: 'newCollection'
+        };
+
+        composeUtilities.getCollectionNameForSelection.and.returnValue('collection 1');
+
+        createController();
+        $scope.submit();
+      });
+
+      it('should remove the existing new collection from the collections list', function(){
+        expect($scope.model.collections.length).toBe(2);
+        expect($scope.model.collections[0].name).toBe('collection 1');
+        expect($scope.model.collections[1].name).toBe('collection 2');
+      });
+
+      it('should set the selected collection to the new collection', function(){
+        expect($scope.model.input.selectedCollection).toBe($scope.model.collections[0]);
+      });
+    });
+  });
 });

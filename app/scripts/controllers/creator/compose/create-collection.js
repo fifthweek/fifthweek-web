@@ -31,6 +31,15 @@ angular.module('webApp').controller('composeCreateCollectionCtrl',
 
     var updateCollections = function(){
 
+      var newCollectionName = getNewCollectionName();
+      for(var i=0; i < model.collections.length; ++i){
+        if(model.collections[i].name === newCollectionName){
+          model.input.selectedCollection = model.collections[i];
+          _.remove(model.collections, 'isNewCollection');
+          return;
+        }
+      }
+
       if(model.collections.length > 0){
         var lastCollection = model.collections[model.collections.length - 1];
         if(lastCollection.isNewCollection){
