@@ -273,14 +273,6 @@
 
             describe('when creator has one channel', function(){
 
-              it('should reflect new channels in the UI', function(){
-                createChannel(); // Test reflected in UI.
-              });
-
-              it('should reflect new collections in the UI', function(){
-                createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
-              });
-
               describe('when the creator has no collections', function(){
                 postNow(firstCollectionName, 0, true, true);
               });
@@ -311,15 +303,6 @@
 
               beforeEach(function(){
                 createChannel();
-              });
-
-              it('should reflect new channels in the UI', function(){
-                createChannel(); // Test reflected in UI.
-              });
-
-              it('should reflect new collections in the UI', function(){
-                createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
-                createCollection(firstCollectionName, channelNames[1], false); // Test reflected in UI.
               });
 
               describe('when the creator has no collections', function(){
