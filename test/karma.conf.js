@@ -42,7 +42,8 @@ module.exports = function(config) {
       'bower_components/angular-md/dist/angular-md.js',
       'app/scripts/app.js',
       'app/scripts/**/*.js',
-      'app/views/**/*.html',
+      'app/modules/**/*.js',
+      'app/**/*.html',
       'test/mock/*.js',
       'test/pages/**/*.js',
       'test/spec/**/*.js'
@@ -91,7 +92,7 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     preprocessors: {
-      'app/views/**/*.html': ['ng-html2js']
+      'app/**/*.html': ['ng-html2js']
     },
 
     ngHtml2JsPreprocessor: {
