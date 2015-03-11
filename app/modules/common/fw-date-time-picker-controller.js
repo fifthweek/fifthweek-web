@@ -8,10 +8,8 @@ angular.module('webApp')
     var ngModelCtrl;
 
     var render = function(){
-      var date = ngModelCtrl.$modelValue ? new Date(ngModelCtrl.$modelValue) : undefined;
-
-      if (date) {
-        selected = date;
+      if (ngModelCtrl.$modelValue) {
+        selected = new Date(ngModelCtrl.$modelValue);
       }
 
       updateTemplate();

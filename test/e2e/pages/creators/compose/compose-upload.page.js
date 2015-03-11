@@ -6,8 +6,10 @@
   var SidebarPage = require('../../../pages/sidebar.page.js');
   var HeaderComposePage = require('../../../pages/header-compose.page.js');
   var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
+  var DateTimePickerPage = require('../../../pages/date-time-picker.page.js');
 
   var collectionNameInputPage = new CollectionNameInputPage();
+  var dateTimePickerPage = new DateTimePickerPage();
 
   var composeUploadPage = function() {};
 
@@ -51,13 +53,6 @@
     postOnDateRadio: { get: function() { return element(by.css('input[ng-value="false"]')); }},
 
     postToQueueDate: { get: function() { return element(by.css('span[ng-if="model.queuedLiveDate"]')); }},
-
-    datepickerButton: { get: function() { return element(by.css('.fw-date-time-picker .input-group-btn button')); }},
-    datepickerPreviousMonthButton: { get: function() { return element(by.css('.fw-date-time-picker thead button[ng-click="move(-1)"]')); }},
-    datepickerNextMonthButton: { get: function() { return element(by.css('.fw-date-time-picker thead button[ng-click="move(1)"]')); }},
-    datepicker15Button: { get: function() { return element(by.cssContainingText('.fw-date-time-picker td button', '15')); }},
-    timeHoursTextBox: { get: function() { return element(by.model('hours')); }},
-    timeMinutesTextBox: { get: function() { return element(by.model('minutes')); }},
 
     successMessage: { get: function(){ return element(by.css('.alert-success')); }},
     postAnotherButton: { get: function(){ return element(by.css('button[ng-click="postAnother()"]')); }},
@@ -161,14 +156,14 @@
       this.postLaterButton.click();
       this.postOnDateRadio.click();
 
-      this.datepickerButton.click();
-      this.datepickerNextMonthButton.click();
-      this.datepicker15Button.click();
+      dateTimePickerPage.datepickerButton.click();
+      dateTimePickerPage.datepickerNextMonthButton.click();
+      dateTimePickerPage.datepicker15Button.click();
 
-      this.timeHoursTextBox.clear();
-      this.timeHoursTextBox.sendKeys('13');
-      this.timeMinutesTextBox.clear();
-      this.timeMinutesTextBox.sendKeys('37');
+      dateTimePickerPage.timeHoursTextBox.clear();
+      dateTimePickerPage.timeHoursTextBox.sendKeys('13');
+      dateTimePickerPage.timeMinutesTextBox.clear();
+      dateTimePickerPage.timeMinutesTextBox.sendKeys('37');
 
       this.postToBacklogButton.click();
     }},
@@ -418,36 +413,64 @@
               page.populateUpload(tinyFilePath);
             });
 
-            afterEach(function(){
-              page.postNowButton.click();
-              expect(page.successMessage.isDisplayed()).toBe(true);
+            describe('when posting now', function(){
+              afterEach(function(){
+                page.postNowButton.click();
+                expect(page.successMessage.isDisplayed()).toBe(true);
 
-              page.postAnotherButton.click();
-            });
-
-            it('should allow symbols in the comment', function(){
-              testKit.setFormValues(page, page.inputs);
-              page.commentTextBox.clear();
-              page.commentTextBox.sendKeys(testKit.punctuation33);
-            });
-
-            it('should allow empty comments', function(){
-              testKit.setFormValues(page, page.inputs);
-              page.commentTextBox.clear();
-            });
-
-            testKit.includeHappyPaths(page, collectionNameInputPage, 'createCollectionNameTextBox');
-
-            describe('when a collection exists', function(){
-
-              beforeEach(function(){
-                createCollection(firstCollectionName, channelNames[0], true);
-                navigateToPage();
-                page.populateUpload(tinyFilePath);
-                page.createCollectionLink.click();
+                page.postAnotherButton.click();
               });
 
-              collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
+              it('should allow symbols in the comment', function(){
+                testKit.setFormValues(page, page.inputs);
+                page.commentTextBox.clear();
+                page.commentTextBox.sendKeys(testKit.punctuation33);
+              });
+
+              it('should allow empty comments', function(){
+                testKit.setFormValues(page, page.inputs);
+                page.commentTextBox.clear();
+              });
+
+              testKit.includeHappyPaths(page, collectionNameInputPage, 'createCollectionNameTextBox');
+
+              describe('when a collection exists', function(){
+
+                beforeEach(function(){
+                  createCollection(firstCollectionName, channelNames[0], true);
+                  navigateToPage();
+                  page.populateUpload(tinyFilePath);
+                  page.createCollectionLink.click();
+                });
+
+                collectionNameInputPage.includeHappyPaths(function(value) {
+                  page.createCollectionNameTextBox.clear();
+                  page.createCollectionNameTextBox.sendKeys(value);
+                });
+              });
+
+            });
+
+            describe('when posting to backlog', function(){
+              beforeEach(function(){
+                testKit.setFormValues(page, page.inputs);
+                page.postLaterButton.click();
+              });
+
+              afterEach(function(){
+                page.postToBacklogButton.click();
+                expect(page.successMessage.isDisplayed()).toBe(true);
+
+                page.postAnotherButton.click();
+              });
+
+              describe('when testing date time picker', function(){
+                beforeEach(function(){
+                  page.postOnDateRadio.click();
+                });
+
+                dateTimePickerPage.includeHappyPaths(function() {});
+              });
             });
           });
 
@@ -458,6 +481,22 @@
               registration = context.registration;
               subscription = context.subscription;
               navigateToPage();
+            });
+
+            describe('when testing date time picker', function(){
+
+              it('should run once before all', function() {
+                page.populateUpload(tinyFilePath);
+                testKit.setFormValues(page, page.inputs);
+                page.postLaterButton.click();
+                page.postOnDateRadio.click();
+              });
+
+              dateTimePickerPage.includeSadPaths(page.postToBacklogButton, page.helpMessages, function() {});
+
+              it('should run once after all', function(){
+                browser.refresh();
+              });
             });
 
             describe('when a collection does not exist', function(){
@@ -480,18 +519,6 @@
 
               collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postNowButton, page.helpMessages, function() {});
               collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postLaterButton, page.helpMessages, function() {});
-
-              it('should not allow an empty date', function(){
-                page.createCollectionNameTextBox.sendKeys('collection');
-                page.postLaterButton.click();
-
-                page.postOnDateRadio.click();
-
-                page.postToBacklogButton.click();
-
-                testKit.assertSingleValidationMessage(page.helpMessages,
-                  'Please select a date.');
-              });
             });
 
             describe('when a collection exists', function(){
