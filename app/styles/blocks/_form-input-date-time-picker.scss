@@ -1,0 +1,74 @@
+@import '_base';
+
+.fw-date-time-picker {
+
+  .input-group {
+    border:solid 1px $grey-light-5;
+    border-radius:$input-border-radius;
+    .form-control {
+      height:auto;
+      padding:8px 12px;
+      border:0 none;
+      box-shadow:none;
+      background: $white-full;
+      cursor: pointer;
+    }
+  }
+
+  .input-group-btn {
+    .btn {
+      border:0 none;
+      border-left:solid 1px $grey-light-5;
+      margin-left:0;
+      padding:{
+        top:9px;
+        bottom:8px;
+      }
+    }
+  }
+  .fa {
+    margin-left:2px;
+  }
+
+  .dropdown-menu {
+    padding:0 0 10px 0;
+  }
+  table {
+    outline:0 none;
+  }
+
+
+  @media (min-width: $screen-s-min) {
+
+    .timepicker {
+      font-size: $p-font-size;
+      margin-top: -36px;
+      button, input {
+        height: $input-height-base;
+      }
+    }
+
+    .row {
+      div:first-child {
+        padding-right: 0;
+      }
+      div:last-child {
+        padding-left: 2px;
+      }
+    }
+
+    .hour-of-week {
+      .timepicker {
+        margin-top: -35px;
+      }
+      .row {
+        div:first-child {
+          padding-right: 0;
+        }
+        div:last-child {
+          padding-left: 2px;
+        }
+      }
+    }
+  }
+}

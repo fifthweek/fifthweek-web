@@ -58,19 +58,20 @@
       <form novalidate name="scheduleForm" id="schedule-form">
 
         <div class="form-group">
-          <div class="radio">
+          <div class="radio bottom-buffer-l">
             <label><input type="radio"
                           ng-model="model.postToQueue"
-                          ng-value="true"/> After other posts in queue <span ng-if="model.queuedLiveDate">(will appear {{model.queuedLiveDate | date:'EEEE, d MMMM @ HH:mm UTC':'UTC'}})</span></label>
+                          ng-value="true"/> After other posts in queue <span ng-if="model.queuedLiveDate">(will appear {{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}})</span></label>
           </div>
 
-          <div class="radio">
+          <div class="radio bottom-buffer">
             <label><input type="radio"
                           ng-model="model.postToQueue"
-                          ng-value="false" /> On specific date:</label>
+                          ng-value="false" /> On specific date and time (UTC):</label>
           </div>
 
-          <fw-form-input-datepicker ng-model="model.input.date" ng-disabled="model.postToQueue" ng-required="!model.postToQueue"></fw-form-input-datepicker>
+          <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>
+          <!--fw-form-input-datepicker ng-model="model.input.date" ng-disabled="model.postToQueue" ng-required="!model.postToQueue"></fw-form-input-datepicker-->
         </div>
 
         <fw-error-message value="scheduleForm.message"></fw-error-message>

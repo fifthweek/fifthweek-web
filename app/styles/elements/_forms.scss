@@ -147,3 +147,7 @@ fieldset[disabled] .form-control {
 .bottom-buffer {
   margin-bottom:$form-group-inner-margin;
 }
+
+.bottom-buffer-l {
+  margin-bottom: 2 * $form-group-inner-margin;
+}

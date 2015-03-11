@@ -41,8 +41,11 @@
     <div ng-show="model.postLater">
       <form novalidate name="scheduleForm" id="schedule-form">
 
-        <label>On specific date:</label>
-        <fw-form-input-datepicker ng-model="model.input.date" required></fw-form-input-datepicker>
+        <label>On specific date and time (UTC):</label>
+
+        <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>
+
+        <!--fw-form-input-datepicker ng-model="model.input.date" required></fw-form-input-datepicker-->
 
         <div class="row-btn">
 
