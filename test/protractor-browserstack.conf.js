@@ -14,6 +14,7 @@ exports.config = {
 
   multiCapabilities: [{
     'browserName': 'firefox',
+    'version': '34',
     'os': 'OS X',
     'build': bsConfig.build,
     'project': bsConfig.project,
@@ -25,6 +26,7 @@ exports.config = {
   },
   {
     'browserName': 'firefox',
+    'version': '34',
     'os': 'Windows',
     'build': bsConfig.build,
     'project': bsConfig.project,
@@ -83,7 +85,7 @@ exports.config = {
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.
-  specs: ['e2e/spec/**/*.spec.js'],
+  specs: ['e2e/spec/**/create-subscription-page.spec.js'],
 
   // Options to be passed to Jasmine-node.
   jasmineNodeOpts: {
