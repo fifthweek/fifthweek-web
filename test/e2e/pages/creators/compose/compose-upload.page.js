@@ -307,51 +307,51 @@
               //});
             });
 
-            describe('when creator has two channels', function(){
-
-              beforeEach(function(){
-                createChannel();
-              });
-
-              it('should reflect new channels in the UI', function(){
-                createChannel(); // Test reflected in UI.
-              });
-
-              it('should reflect new collections in the UI', function(){
-                createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
-                createCollection(firstCollectionName, channelNames[1], false); // Test reflected in UI.
-              });
-
-              describe('when the creator has no collections', function(){
-                postNow(firstCollectionName, 0, true, true);
-                postNow(firstCollectionName, 1, true, true);
-              });
-
-              describe('when the creator has one collection', function(){
-
-                beforeEach(function(){
-                  createCollection(firstCollectionName, channelNames[0], true);
-                });
-
-                postNow(firstCollectionName, 0, false, false);
-                postNow(secondCollectionName, 0, true, false);
-                postNow(firstCollectionName, 1, true, false);
-                postNow(secondCollectionName, 1, true, false);
-              });
-
-              describe('when the creator has two collections', function(){
-
-                beforeEach(function(){
-                  createCollection(firstCollectionName, channelNames[0], true);
-                  createCollection(firstCollectionName, channelNames[1], false);
-                });
-
-                postNow(firstCollectionName, 0, false, false);
-                postNow(secondCollectionName, 0, true, false);
-                postNow(firstCollectionName, 1, false, false);
-                postNow(secondCollectionName, 1, true, false);
-              });
-            });
+            //describe('when creator has two channels', function(){
+            //
+            //  beforeEach(function(){
+            //    createChannel();
+            //  });
+            //
+            //  it('should reflect new channels in the UI', function(){
+            //    createChannel(); // Test reflected in UI.
+            //  });
+            //
+            //  it('should reflect new collections in the UI', function(){
+            //    createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
+            //    createCollection(firstCollectionName, channelNames[1], false); // Test reflected in UI.
+            //  });
+            //
+            //  describe('when the creator has no collections', function(){
+            //    postNow(firstCollectionName, 0, true, true);
+            //    postNow(firstCollectionName, 1, true, true);
+            //  });
+            //
+            //  describe('when the creator has one collection', function(){
+            //
+            //    beforeEach(function(){
+            //      createCollection(firstCollectionName, channelNames[0], true);
+            //    });
+            //
+            //    postNow(firstCollectionName, 0, false, false);
+            //    postNow(secondCollectionName, 0, true, false);
+            //    postNow(firstCollectionName, 1, true, false);
+            //    postNow(secondCollectionName, 1, true, false);
+            //  });
+            //
+            //  describe('when the creator has two collections', function(){
+            //
+            //    beforeEach(function(){
+            //      createCollection(firstCollectionName, channelNames[0], true);
+            //      createCollection(firstCollectionName, channelNames[1], false);
+            //    });
+            //
+            //    postNow(firstCollectionName, 0, false, false);
+            //    postNow(secondCollectionName, 0, true, false);
+            //    postNow(firstCollectionName, 1, false, false);
+            //    postNow(secondCollectionName, 1, true, false);
+            //  });
+            //});
           });
 
           //describe('when posting on schedule', function(){
