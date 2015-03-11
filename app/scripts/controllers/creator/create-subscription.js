@@ -18,8 +18,9 @@ angular.module('webApp').controller('createSubscriptionCtrl',
       $rootScope.debugLines = [];
       return subscriptionService.createFirstSubscription(buildDTO()).then(function() {
         $rootScope.debugLines.push('subscriptionService.hasSubscription 1 = ' + subscriptionService.hasSubscription);
-        $state.go(calculatedStates.getDefaultState());
-        $rootScope.debugLines.push('subscriptionService.hasSubscription 2 = ' + subscriptionService.hasSubscription);
+        var state = calculatedStates.getDefaultState();
+        $state.go(state);
+        $rootScope.debugLines.push('state = ' + state);
       });
     };
   }

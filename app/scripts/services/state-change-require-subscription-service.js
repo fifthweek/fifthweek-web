@@ -21,6 +21,10 @@ angular.module('webApp').factory('stateChangeRequireSubscriptionService',
     service.redirectAwayIfRequired = function(event, toState, toParams/*, fromState, fromParams*/){
       if (!service.isPermitted(toState)) {
         event.preventDefault();
+
+        $rootScope.debugLines = $rootScope.debugLines || [];
+        $rootScope.debugLines.push('service.redirectAwayIfRequired 2 = ' + toState);
+
         $state.go(calculatedStates.getDefaultState(), toParams);
       }
     };
