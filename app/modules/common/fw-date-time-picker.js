@@ -3,6 +3,7 @@ angular.module('webApp')
   // TODO: Remove this once ui-bootstrap 0.13.0 is released:
   // https://github.com/angular-ui/bootstrap/issues/2659
   .directive('datepickerPopup', ['datepickerPopupConfig', 'dateParser', 'dateFilter', function (datepickerPopupConfig, dateParser, dateFilter) {
+    'use strict';
     return {
       'restrict': 'A',
       'require': '^ngModel',
