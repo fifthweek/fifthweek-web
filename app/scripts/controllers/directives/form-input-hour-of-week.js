@@ -36,7 +36,7 @@ angular.module('webApp').controller('formInputHourOfWeekCtrl', function ($q, $sc
 
   $scope.model.day = $scope.model.days[0];
 
-  $scope.itemTypeCapitalized = _.capitalize($scope.itemType)
+  $scope.itemTypeCapitalized = _.capitalize($scope.itemType);
 
   $scope.timeChanged = function() {
   };

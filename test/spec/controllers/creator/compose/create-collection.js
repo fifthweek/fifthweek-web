@@ -45,7 +45,7 @@ describe('composeCreateCollectionCtrl', function(){
         catch(error){
           expect(error.message).toBe('Scope did not contain any model.');
         }
-      })
+      });
     });
 
     describe('when no collections exist', function(){
@@ -58,7 +58,7 @@ describe('composeCreateCollectionCtrl', function(){
         catch(error){
           expect(error.message).toBe('Scope did not contain any collections.');
         }
-      })
+      });
     });
 
     describe('when no channels exist', function(){
@@ -71,7 +71,7 @@ describe('composeCreateCollectionCtrl', function(){
         catch(error){
           expect(error.message).toBe('Scope did not contain any channels.');
         }
-      })
+      });
     });
 
     describe('when channels and collections exist', function(){
@@ -83,7 +83,7 @@ describe('composeCreateCollectionCtrl', function(){
         catch(error){
           fail('This should not occur');
         }
-      })
+      });
     });
   });
 

@@ -1,7 +1,6 @@
 'use strict';
 
 describe('backlog controller', function() {
-  var nextState = 'nextState';
   var $q;
   var scope;
   var $state;

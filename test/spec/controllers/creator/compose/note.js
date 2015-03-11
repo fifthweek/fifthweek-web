@@ -134,7 +134,7 @@ describe('compose note controller', function () {
 
         it('should set submissionSucceeded to true', function(){
           expect($scope.model.submissionSucceeded).toBe(true);
-        })
+        });
       });
 
       describe('when postNote fails', function(){
@@ -170,7 +170,7 @@ describe('compose note controller', function () {
 
         it('should set submissionSucceeded to true', function(){
           expect($scope.model.submissionSucceeded).toBe(true);
-        })
+        });
       });
 
       describe('when postNote fails', function(){

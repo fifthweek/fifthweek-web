@@ -26,7 +26,7 @@ angular.module('webApp').controller('composeCreateCollectionCtrl',
       return {
         isNewCollection: true,
         name: name
-      }
+      };
     };
 
     var updateCollections = function(){
@@ -57,5 +57,5 @@ angular.module('webApp').controller('composeCreateCollectionCtrl',
     $scope.submit = function(){
       updateCollections();
       $scope.$close();
-    }
+    };
   });

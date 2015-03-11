@@ -1,7 +1,6 @@
 describe('creator - create subscription controller', function () {
   'use strict';
 
-  var initialState = 'initialState';
   var nextState = 'nextState';
   var error = 'error';
 

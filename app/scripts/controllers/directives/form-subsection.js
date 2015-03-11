@@ -1,4 +1,4 @@
-angular.module('webApp').controller('formSubsectionCtrl', function ($q, $scope, $modal) {
+angular.module('webApp').controller('formSubsectionCtrl', function ($q, $scope) {
   'use strict';
 
   $scope.formSubsection = {

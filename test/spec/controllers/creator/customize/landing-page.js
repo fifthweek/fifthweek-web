@@ -98,7 +98,7 @@ describe('customize landing page controller', function () {
     describe('when initializing with no subscription id', function(){
 
       beforeEach(function(){
-        aggregateUserState.currentValue.creatorStatus.subscriptionId = undefined
+        aggregateUserState.currentValue.creatorStatus.subscriptionId = undefined;
 
         createController();
       });

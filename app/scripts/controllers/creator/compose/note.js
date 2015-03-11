@@ -66,6 +66,6 @@ angular.module('webApp').controller(
 
     $scope.postAnother = function(){
       $state.reload();
-    }
+    };
   }
 );
