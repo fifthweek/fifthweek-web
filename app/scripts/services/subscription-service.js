@@ -36,9 +36,6 @@ angular.module('webApp')
 
           aggregateUserState.setDelta(subscriptionUserId, 'creatorStatus', {subscriptionId: subscriptionId});
           aggregateUserState.setDelta(subscriptionUserId, 'createdChannelsAndCollections', {channels: channels});
-
-          $rootScope.debugLines = $rootScope.debugLines || [];
-          $rootScope.debugLines.push('service.hasSubscription = ' + service.hasSubscription);
       });
     };
 

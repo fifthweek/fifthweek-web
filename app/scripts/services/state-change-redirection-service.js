@@ -1,7 +1,7 @@
 /// <reference path='../angular.module('webApp')js' />
 
 angular.module('webApp').factory('stateChangeRedirectionService',
-  function($rootScope, $state) {
+  function($state) {
     'use strict';
 
     var service = {};
@@ -13,10 +13,6 @@ angular.module('webApp').factory('stateChangeRedirectionService',
     service.redirectAwayIfRequired = function(event, toState, toParams){
       if(toState.redirectTo){
         event.preventDefault();
-
-        $rootScope.debugLines = $rootScope.debugLines || [];
-        $rootScope.debugLines.push('service.redirectAwayIfRequired 1 = ' + toState);
-
         $state.go(toState.redirectTo, toParams);
       }
     };

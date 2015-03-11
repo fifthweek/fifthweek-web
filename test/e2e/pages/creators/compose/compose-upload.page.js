@@ -277,254 +277,254 @@
                 createChannel(); // Test reflected in UI.
               });
 
-              //it('should reflect new collections in the UI', function(){
-              //  createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
-              //});
-              //
-              //describe('when the creator has no collections', function(){
-              //  postNow(firstCollectionName, 0, true, true);
-              //});
-              //
-              //describe('when the creator has one collection', function(){
-              //
-              //  beforeEach(function(){
-              //    createCollection(firstCollectionName, channelNames[0], true);
-              //  });
-              //
-              //  it('should select the existing collection if a duplicate collection is added', function(){
-              //    page.populateUpload(tinyFilePath);
-              //    page.createCollectionLink.click();
-              //
-              //    page.dialogCreateCollectionNameTextBox.sendKeys(firstCollectionName);
-              //
-              //    page.dialogContinueButton.click();
-              //
-              //    expect(page.getCollectionOptionCount(firstCollectionName, channelNames[0])).toBe(1);
-              //  });
-              //
-              //  postNow(firstCollectionName, 0, false, false);
-              //  postNow(secondCollectionName, 0, true, false);
-              //});
+              it('should reflect new collections in the UI', function(){
+                createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
+              });
+
+              describe('when the creator has no collections', function(){
+                postNow(firstCollectionName, 0, true, true);
+              });
+
+              describe('when the creator has one collection', function(){
+
+                beforeEach(function(){
+                  createCollection(firstCollectionName, channelNames[0], true);
+                });
+
+                it('should select the existing collection if a duplicate collection is added', function(){
+                  page.populateUpload(tinyFilePath);
+                  page.createCollectionLink.click();
+
+                  page.dialogCreateCollectionNameTextBox.sendKeys(firstCollectionName);
+
+                  page.dialogContinueButton.click();
+
+                  expect(page.getCollectionOptionCount(firstCollectionName, channelNames[0])).toBe(1);
+                });
+
+                postNow(firstCollectionName, 0, false, false);
+                postNow(secondCollectionName, 0, true, false);
+              });
             });
 
-            //describe('when creator has two channels', function(){
-            //
-            //  beforeEach(function(){
-            //    createChannel();
-            //  });
-            //
-            //  it('should reflect new channels in the UI', function(){
-            //    createChannel(); // Test reflected in UI.
-            //  });
-            //
-            //  it('should reflect new collections in the UI', function(){
-            //    createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
-            //    createCollection(firstCollectionName, channelNames[1], false); // Test reflected in UI.
-            //  });
-            //
-            //  describe('when the creator has no collections', function(){
-            //    postNow(firstCollectionName, 0, true, true);
-            //    postNow(firstCollectionName, 1, true, true);
-            //  });
-            //
-            //  describe('when the creator has one collection', function(){
-            //
-            //    beforeEach(function(){
-            //      createCollection(firstCollectionName, channelNames[0], true);
-            //    });
-            //
-            //    postNow(firstCollectionName, 0, false, false);
-            //    postNow(secondCollectionName, 0, true, false);
-            //    postNow(firstCollectionName, 1, true, false);
-            //    postNow(secondCollectionName, 1, true, false);
-            //  });
-            //
-            //  describe('when the creator has two collections', function(){
-            //
-            //    beforeEach(function(){
-            //      createCollection(firstCollectionName, channelNames[0], true);
-            //      createCollection(firstCollectionName, channelNames[1], false);
-            //    });
-            //
-            //    postNow(firstCollectionName, 0, false, false);
-            //    postNow(secondCollectionName, 0, true, false);
-            //    postNow(firstCollectionName, 1, false, false);
-            //    postNow(secondCollectionName, 1, true, false);
-            //  });
-            //});
+            describe('when creator has two channels', function(){
+
+              beforeEach(function(){
+                createChannel();
+              });
+
+              it('should reflect new channels in the UI', function(){
+                createChannel(); // Test reflected in UI.
+              });
+
+              it('should reflect new collections in the UI', function(){
+                createCollection(firstCollectionName, channelNames[0], true); // Test reflected in UI.
+                createCollection(firstCollectionName, channelNames[1], false); // Test reflected in UI.
+              });
+
+              describe('when the creator has no collections', function(){
+                postNow(firstCollectionName, 0, true, true);
+                postNow(firstCollectionName, 1, true, true);
+              });
+
+              describe('when the creator has one collection', function(){
+
+                beforeEach(function(){
+                  createCollection(firstCollectionName, channelNames[0], true);
+                });
+
+                postNow(firstCollectionName, 0, false, false);
+                postNow(secondCollectionName, 0, true, false);
+                postNow(firstCollectionName, 1, true, false);
+                postNow(secondCollectionName, 1, true, false);
+              });
+
+              describe('when the creator has two collections', function(){
+
+                beforeEach(function(){
+                  createCollection(firstCollectionName, channelNames[0], true);
+                  createCollection(firstCollectionName, channelNames[1], false);
+                });
+
+                postNow(firstCollectionName, 0, false, false);
+                postNow(secondCollectionName, 0, true, false);
+                postNow(firstCollectionName, 1, false, false);
+                postNow(secondCollectionName, 1, true, false);
+              });
+            });
           });
 
-          //describe('when posting on schedule', function(){
-          //
-          //  describe('when creator has one channel', function(){
-          //    postOnDate(firstCollectionName, 0, true, true);
-          //  });
-          //
-          //  describe('when creator has two channels and two collections', function(){
-          //
-          //    beforeEach(function(){
-          //      createChannel();
-          //      createCollection(firstCollectionName, channelNames[0], true);
-          //      createCollection(firstCollectionName, channelNames[1], false);
-          //    });
-          //
-          //    postOnDate(firstCollectionName, 0, false, false);
-          //    postOnDate(secondCollectionName, 0, true, false);
-          //    postOnDate(firstCollectionName, 1, false, false);
-          //    postOnDate(secondCollectionName, 1, true,  false);
-          //  });
-          //});
+          describe('when posting on schedule', function(){
 
-          //describe('when posting to queue', function(){
-          //
-          //  describe('when creator has one channel', function(){
-          //    postToQueue(firstCollectionName, 0, true, true);
-          //  });
-          //
-          //  describe('when creator has one channel and one collection', function() {
-          //
-          //    beforeEach(function () {
-          //      createCollection(firstCollectionName, channelNames[0], true);
-          //    });
-          //
-          //    it('should receive an estimated live date from the server', function(){
-          //      page.populateUpload(tinyFilePath);
-          //      page.postLaterButton.click();
-          //
-          //      browser.wait(function(){
-          //        return page.postToQueueDate.isPresent();
-          //      });
-          //
-          //      expect(page.postToQueueDate.isDisplayed()).toBe(true);
-          //    });
-          //  });
-          //
-          //  describe('when creator has two channels and two collections', function(){
-          //
-          //    beforeEach(function(){
-          //      createChannel();
-          //      createCollection(firstCollectionName, channelNames[0], true);
-          //      createCollection(firstCollectionName, channelNames[1], false);
-          //    });
-          //
-          //    postToQueue(firstCollectionName, 0, false, false);
-          //    postToQueue(secondCollectionName, 0, true, false);
-          //    postToQueue(firstCollectionName, 1, false, false);
-          //    postToQueue(secondCollectionName, 1, true,  false);
-          //  });
-          //});
+            describe('when creator has one channel', function(){
+              postOnDate(firstCollectionName, 0, true, true);
+            });
+
+            describe('when creator has two channels and two collections', function(){
+
+              beforeEach(function(){
+                createChannel();
+                createCollection(firstCollectionName, channelNames[0], true);
+                createCollection(firstCollectionName, channelNames[1], false);
+              });
+
+              postOnDate(firstCollectionName, 0, false, false);
+              postOnDate(secondCollectionName, 0, true, false);
+              postOnDate(firstCollectionName, 1, false, false);
+              postOnDate(secondCollectionName, 1, true,  false);
+            });
+          });
+
+          describe('when posting to queue', function(){
+
+            describe('when creator has one channel', function(){
+              postToQueue(firstCollectionName, 0, true, true);
+            });
+
+            describe('when creator has one channel and one collection', function() {
+
+              beforeEach(function () {
+                createCollection(firstCollectionName, channelNames[0], true);
+              });
+
+              it('should receive an estimated live date from the server', function(){
+                page.populateUpload(tinyFilePath);
+                page.postLaterButton.click();
+
+                browser.wait(function(){
+                  return page.postToQueueDate.isPresent();
+                });
+
+                expect(page.postToQueueDate.isDisplayed()).toBe(true);
+              });
+            });
+
+            describe('when creator has two channels and two collections', function(){
+
+              beforeEach(function(){
+                createChannel();
+                createCollection(firstCollectionName, channelNames[0], true);
+                createCollection(firstCollectionName, channelNames[1], false);
+              });
+
+              postToQueue(firstCollectionName, 0, false, false);
+              postToQueue(secondCollectionName, 0, true, false);
+              postToQueue(firstCollectionName, 1, false, false);
+              postToQueue(secondCollectionName, 1, true,  false);
+            });
+          });
         });
 
-        //describe('when validating inputs', function() {
-        //
-        //  describe('happy path', function(){
-        //    beforeEach(function(){
-        //      var context = commonWorkflows.createSubscription();
-        //      registration = context.registration;
-        //      subscription = context.subscription;
-        //      navigateToPage();
-        //      page.populateUpload(tinyFilePath);
-        //    });
-        //
-        //    afterEach(function(){
-        //      page.postNowButton.click();
-        //      expect(page.successMessage.isDisplayed()).toBe(true);
-        //
-        //      page.postAnotherButton.click();
-        //    });
-        //
-        //    it('should allow symbols in the comment', function(){
-        //      testKit.setFormValues(page, page.inputs);
-        //      page.commentTextBox.clear();
-        //      page.commentTextBox.sendKeys(testKit.punctuation33);
-        //    });
-        //
-        //    it('should allow empty comments', function(){
-        //      testKit.setFormValues(page, page.inputs);
-        //      page.commentTextBox.clear();
-        //    });
-        //
-        //    testKit.includeHappyPaths(page, collectionNameInputPage, 'createCollectionNameTextBox');
-        //
-        //    describe('when a collection exists', function(){
-        //
-        //      beforeEach(function(){
-        //        createCollection(firstCollectionName, channelNames[0], true);
-        //        navigateToPage();
-        //        page.populateUpload(tinyFilePath);
-        //        page.createCollectionLink.click();
-        //      });
-        //
-        //      collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
-        //    });
-        //  });
-        //
-        //  describe('sad path', function() {
-        //
-        //    it('should run once before all', function() {
-        //      var context = commonWorkflows.createSubscription();
-        //      registration = context.registration;
-        //      subscription = context.subscription;
-        //      navigateToPage();
-        //    });
-        //
-        //    describe('when a collection does not exist', function(){
-        //      beforeEach(function(){
-        //        page.populateUpload(tinyFilePath);
-        //      });
-        //
-        //      afterEach(function(){
-        //        browser.refresh();
-        //      });
-        //
-        //      it('should not allow a comment more than 2000 characters', function(){
-        //        testKit.setFormValues(page, page.inputs);
-        //        page.commentTextBox.clear();
-        //        var overSizedValue = new Array(2002).join( 'a' );
-        //        page.commentTextBox.sendKeys(overSizedValue);
-        //
-        //        testKit.assertMaxLength(page.helpMessages, page.commentTextBox, overSizedValue, 2000);
-        //      });
-        //
-        //      collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postNowButton, page.helpMessages, function() {});
-        //      collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postLaterButton, page.helpMessages, function() {});
-        //
-        //      it('should not allow an empty date', function(){
-        //        page.createCollectionNameTextBox.sendKeys('collection');
-        //        page.postLaterButton.click();
-        //
-        //        page.postOnDateRadio.click();
-        //
-        //        page.postToBacklogButton.click();
-        //
-        //        testKit.assertSingleValidationMessage(page.helpMessages,
-        //          'Please select a date.');
-        //      });
-        //    });
-        //
-        //    describe('when a collection exists', function(){
-        //
-        //      it('should run once before all', function() {
-        //        createCollection(firstCollectionName, channelNames[0], true);
-        //        navigateToPage();
-        //      });
-        //
-        //      describe('then', function(){
-        //
-        //        beforeEach(function(){
-        //          page.populateUpload(tinyFilePath);
-        //          page.createCollectionLink.click();
-        //        });
-        //
-        //        afterEach(function(){
-        //          browser.refresh();
-        //        });
-        //
-        //        collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
-        //      });
-        //    });
-        //  });
-        //});
+        describe('when validating inputs', function() {
+
+          describe('happy path', function(){
+            beforeEach(function(){
+              var context = commonWorkflows.createSubscription();
+              registration = context.registration;
+              subscription = context.subscription;
+              navigateToPage();
+              page.populateUpload(tinyFilePath);
+            });
+
+            afterEach(function(){
+              page.postNowButton.click();
+              expect(page.successMessage.isDisplayed()).toBe(true);
+
+              page.postAnotherButton.click();
+            });
+
+            it('should allow symbols in the comment', function(){
+              testKit.setFormValues(page, page.inputs);
+              page.commentTextBox.clear();
+              page.commentTextBox.sendKeys(testKit.punctuation33);
+            });
+
+            it('should allow empty comments', function(){
+              testKit.setFormValues(page, page.inputs);
+              page.commentTextBox.clear();
+            });
+
+            testKit.includeHappyPaths(page, collectionNameInputPage, 'createCollectionNameTextBox');
+
+            describe('when a collection exists', function(){
+
+              beforeEach(function(){
+                createCollection(firstCollectionName, channelNames[0], true);
+                navigateToPage();
+                page.populateUpload(tinyFilePath);
+                page.createCollectionLink.click();
+              });
+
+              collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
+            });
+          });
+
+          describe('sad path', function() {
+
+            it('should run once before all', function() {
+              var context = commonWorkflows.createSubscription();
+              registration = context.registration;
+              subscription = context.subscription;
+              navigateToPage();
+            });
+
+            describe('when a collection does not exist', function(){
+              beforeEach(function(){
+                page.populateUpload(tinyFilePath);
+              });
+
+              afterEach(function(){
+                browser.refresh();
+              });
+
+              it('should not allow a comment more than 2000 characters', function(){
+                testKit.setFormValues(page, page.inputs);
+                page.commentTextBox.clear();
+                var overSizedValue = new Array(2002).join( 'a' );
+                page.commentTextBox.sendKeys(overSizedValue);
+
+                testKit.assertMaxLength(page.helpMessages, page.commentTextBox, overSizedValue, 2000);
+              });
+
+              collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postNowButton, page.helpMessages, function() {});
+              collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postLaterButton, page.helpMessages, function() {});
+
+              it('should not allow an empty date', function(){
+                page.createCollectionNameTextBox.sendKeys('collection');
+                page.postLaterButton.click();
+
+                page.postOnDateRadio.click();
+
+                page.postToBacklogButton.click();
+
+                testKit.assertSingleValidationMessage(page.helpMessages,
+                  'Please select a date.');
+              });
+            });
+
+            describe('when a collection exists', function(){
+
+              it('should run once before all', function() {
+                createCollection(firstCollectionName, channelNames[0], true);
+                navigateToPage();
+              });
+
+              describe('then', function(){
+
+                beforeEach(function(){
+                  page.populateUpload(tinyFilePath);
+                  page.createCollectionLink.click();
+                });
+
+                afterEach(function(){
+                  browser.refresh();
+                });
+
+                collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
+              });
+            });
+          });
+        });
       });
     }}
   });

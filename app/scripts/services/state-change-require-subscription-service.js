@@ -1,15 +1,13 @@
 /// <reference path='../angular.module('webApp')js' />
 
 angular.module('webApp').factory('stateChangeRequireSubscriptionService',
-  function($rootScope, $state, calculatedStates, subscriptionService) {
+  function($state, calculatedStates, subscriptionService) {
     'use strict';
 
     var service = {};
 
     service.isPermitted = function(toState){
       if (toState.requireSubscription !== undefined) {
-        $rootScope.debugLines = $rootScope.debugLines || [];
-        $rootScope.debugLines.push('subscriptionService.hasSubscription 3 = ' + subscriptionService.hasSubscription);
         if (toState.requireSubscription !== subscriptionService.hasSubscription) {
           return false;
         }
@@ -21,10 +19,6 @@ angular.module('webApp').factory('stateChangeRequireSubscriptionService',
     service.redirectAwayIfRequired = function(event, toState, toParams/*, fromState, fromParams*/){
       if (!service.isPermitted(toState)) {
         event.preventDefault();
-
-        $rootScope.debugLines = $rootScope.debugLines || [];
-        $rootScope.debugLines.push('service.redirectAwayIfRequired 2 = ' + toState);
-
         $state.go(calculatedStates.getDefaultState(), toParams);
       }
     };
