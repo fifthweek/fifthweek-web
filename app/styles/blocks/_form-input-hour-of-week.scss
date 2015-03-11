@@ -1,0 +1,20 @@
+
+.hour-of-week{
+
+  .timepicker {
+    font-size: $p-font-size;
+    margin-top: -35px;
+    button, input {
+      height: $input-height-base;
+    }
+  }
+
+  .row {
+    >div:first-child {
+      padding-right: 0;
+    }
+    >div:last-child {
+      padding-left: 2px;
+    }
+  }
+}
