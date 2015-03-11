@@ -1,6 +1,6 @@
 angular.module('webApp')
   .factory('composeUtilities',
-  function($q, $modal, channelRepositoryFactory, utilities, logService, collectionStub, collectionService) {
+  function($q, $modal, channelRepositoryFactory, utilities, logService, collectionStub, collectionService, channelNameFormatter) {
     'use strict';
 
     var service = {};
@@ -29,7 +29,7 @@ angular.module('webApp')
       for(var i = 0; i < channels.length; ++i){
         var channel = channels[i];
         channel.originalName = channel.name;
-        channel.name = channel.isDefault ? 'Share with everyone' : '"' + channel.name + '" Only';
+        channel.name = channelNameFormatter.shareWith(channel);
       }
 
       return channels;

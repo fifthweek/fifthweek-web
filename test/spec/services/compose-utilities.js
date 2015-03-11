@@ -7,6 +7,7 @@ describe('compose utilities', function(){
   var $rootScope;
   var logService;
   var utilities;
+  var channelNameFormatter;
   var channelRepositoryFactory;
   var channelRepository;
   var authenticationService;
@@ -23,6 +24,7 @@ describe('compose utilities', function(){
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
     collectionService = jasmine.createSpyObj('collectionService', ['createCollectionFromName']);
+    channelNameFormatter = jasmine.createSpyObj('channelNameFormatter', ['shareWith']);
     channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
     collectionStub = jasmine.createSpyObj('collectionStub', ['getLiveDateOfNewQueuedPost']);
@@ -32,6 +34,7 @@ describe('compose utilities', function(){
       $provide.value('logService', logService);
       $provide.value('utilities', utilities);
       $provide.value('collectionService', collectionService);
+      $provide.value('channelNameFormatter', channelNameFormatter);
       $provide.value('channelRepositoryFactory', channelRepositoryFactory);
       $provide.value('authenticationService', authenticationService);
       $provide.value('collectionStub', collectionStub);
@@ -44,6 +47,9 @@ describe('compose utilities', function(){
     });
 
     collectionService.createCollectionFromName.and.returnValue($q.when(collectionId));
+    channelNameFormatter.shareWith.and.callFake(function(channel) {
+      return '!' + channel.name;
+    });
   });
 
   describe('when calling getCollectionNameForSelection', function(){
@@ -111,15 +117,6 @@ describe('compose utilities', function(){
 
       it('should return a list with an element for each channel', function(){
         expect(result.length).toBe(3);
-      });
-
-      it('should set the default channel name to be "Share with everyone"', function(){
-        expect(result[0].name).toBe('Share with everyone');
-      });
-
-      it('should set the other channel names to be "[channelName] Only"', function(){
-        expect(result[1].name).toBe('"two" Only');
-        expect(result[2].name).toBe('"three" Only');
       });
 
       it('should keep other properties on the channel', function(){
@@ -316,13 +313,10 @@ describe('compose utilities', function(){
           expect(result.channels.length).toBe(3);
         });
 
-        it('should set the default channel name to be "Share with everyone"', function(){
-          expect(result.channels[0].name).toBe('Share with everyone');
-        });
-
-        it('should set the other channel names to be "[channelName] Only"', function(){
-          expect(result.channels[1].name).toBe('"two" Only');
-          expect(result.channels[2].name).toBe('"three" Only');
+        it('should format the channel names for sharing', function(){
+          expect(result.channels[0].name).toBe('!one');
+          expect(result.channels[1].name).toBe('!two');
+          expect(result.channels[2].name).toBe('!three');
         });
 
         it('should keep other properties on the channel', function(){

@@ -1,32 +1,41 @@
-angular.module('webApp').controller('newCollectionCtrl', function($scope, $state, states) {
+angular.module('webApp').controller('newCollectionCtrl', function($scope, $state, states, channelRepositoryFactory, collectionService, channelNameFormatter, errorFacade) {
   'use strict';
 
+  $scope.previousState = states.creators.customize.collections.name;
+
   $scope.model = {
-    name: '',
-    channels: [
-      {
-        name:'Share with everyone',
-        value:'a'
-      },
-      {
-        name:'"Extras Channel" Only',
-        value:'b'
-      },
-      {
-        name:'"HD Channel" Only',
-        value:'c'
-      }
-    ]
+    collection: {
+      name: ''
+    }
   };
 
-  $scope.model.selectedChannel = $scope.model.channels[0];
+  var channelRepository = channelRepositoryFactory.forCurrentUser();
+
+  channelRepository.getChannels()
+    .then(function(channels) {
+      $scope.model.channels = _.map(
+        channels,
+        function(channel) {
+          return {
+            value: channel.channelId,
+            name: channelNameFormatter.shareWith(channel)
+          };
+        }
+      );
+
+      $scope.model.selectedChannel = $scope.model.channels[0];
+    })
+    .catch(function(error) {
+      return errorFacade.handleError(error, function(message) {
+        $scope.model.errorMessage = message;
+      });
+    });
 
   $scope.createCollection = function() {
-    $state.go(states.creators.customize.collections.name);
-  };
-
-  $scope.deleteReleaseTime = function() {
-    _.remove($scope.model.schedule, $scope.model.selectedReleaseTime);
-    $scope.model.selectedReleaseTime = null;
+    var channelId = $scope.model.selectedChannel.value;
+    var collectionName = $scope.model.collection.name;
+    collectionService.createCollectionFromName(channelId, collectionName).then(function() {
+      $state.go($scope.previousState);
+    });
   };
 });

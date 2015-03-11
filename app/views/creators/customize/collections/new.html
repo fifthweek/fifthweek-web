@@ -6,7 +6,7 @@
         role="form"
         name="createCollectionForm">
 
-    <fw-form-input-collection-name ng-model="model.name" placeholder="New collection name" required focus></fw-form-input-collection-name>
+    <fw-form-input-collection-name ng-model="model.collection.name" placeholder="New collection name" required focus></fw-form-input-collection-name>
 
     <fw-form-input-select selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
 
@@ -19,8 +19,10 @@
         data-event-title="Collection created"
         data-event-category="Customization"
         fw-form-submit="createCollection()">Create Collection</button>
-      <button class="btn btn-default btn-block"
-              ui-sref="creators.customize.collections">Cancel</button>
+      <button
+        id="cancel-button"
+        class="btn btn-default btn-block"
+        ui-sref="{{previousState}}">Cancel</button>
     </div>
 
   </form>
