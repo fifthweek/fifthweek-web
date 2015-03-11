@@ -47,9 +47,10 @@ describe('compose utilities', function(){
     });
 
     collectionService.createCollectionFromName.and.returnValue($q.when(collectionId));
-    channelNameFormatter.shareWith.and.callFake(function(channel) {
+    channelNameFormatter.shareWithResult = function(channel) {
       return '!' + channel.name;
-    });
+    };
+    channelNameFormatter.shareWith.and.callFake(channelNameFormatter.shareWithResult);
   });
 
   describe('when calling getCollectionNameForSelection', function(){
@@ -238,6 +239,7 @@ describe('compose utilities', function(){
     describe('when the aggregate state is valid', function(){
 
       var inputChannels;
+      var inputChannelsOriginal;
       var result;
 
       beforeEach(function(){
@@ -276,6 +278,7 @@ describe('compose utilities', function(){
           }
         ];
 
+        inputChannelsOriginal = _.cloneDeep(inputChannels);
         channelRepository.getChannels.and.returnValue($q.when(inputChannels));
 
         target.getChannelsAndCollectionsForSelection()
@@ -314,9 +317,9 @@ describe('compose utilities', function(){
         });
 
         it('should format the channel names for sharing', function(){
-          expect(result.channels[0].name).toBe('!one');
-          expect(result.channels[1].name).toBe('!two');
-          expect(result.channels[2].name).toBe('!three');
+          expect(result.channels[0].name).toBe(channelNameFormatter.shareWithResult(inputChannelsOriginal[0]));
+          expect(result.channels[1].name).toBe(channelNameFormatter.shareWithResult(inputChannelsOriginal[1]));
+          expect(result.channels[2].name).toBe(channelNameFormatter.shareWithResult(inputChannelsOriginal[2]));
         });
 
         it('should keep other properties on the channel', function(){
