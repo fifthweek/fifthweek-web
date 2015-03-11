@@ -13,7 +13,13 @@ composeNotePage.prototype = Object.create({}, {
 
   contentTextBox: { get: function() { return element(by.id('model-input-note')); }},
   channelSelect: { get: function() { return element(by.id('model-input-selected-channel')); }},
-  datepicker: { get: function() { return element(by.id('model-input-date')); }},
+
+  datepickerButton: { get: function() { return element(by.css('.fw-date-time-picker .input-group-btn button')); }},
+  datepickerPreviousMonthButton: { get: function() { return element(by.css('.fw-date-time-picker thead button[ng-click="move(-1)"]')); }},
+  datepickerNextMonthButton: { get: function() { return element(by.css('.fw-date-time-picker thead button[ng-click="move(1)"]')); }},
+  datepicker15Button: { get: function() { return element(by.cssContainingText('.fw-date-time-picker td button', '15')); }},
+  timeHoursTextBox: { get: function() { return element(by.model('hours')); }},
+  timeMinutesTextBox: { get: function() { return element(by.model('minutes')); }},
 
   successMessage: { get: function(){ return element(by.css('.alert-success')); }},
   postAnotherButton: { get: function(){ return element(by.css('button[ng-click="postAnother()"]')); }},
@@ -43,9 +49,14 @@ composeNotePage.prototype = Object.create({}, {
 
     this.postLaterButton.click();
 
-    var tomorrow = new Date(new Date().getTime() + 24*60*60*1000);
-    this.datepicker.clear();
-    this.datepicker.sendKeys(tomorrow.toISOString());
+    this.datepickerButton.click();
+    this.datepickerNextMonthButton.click();
+    this.datepicker15Button.click();
+
+    this.timeHoursTextBox.clear();
+    this.timeHoursTextBox.sendKeys('13');
+    this.timeMinutesTextBox.clear();
+    this.timeMinutesTextBox.sendKeys('37');
 
     this.postToBacklogButton.click();
   }}
