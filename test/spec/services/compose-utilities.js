@@ -2,7 +2,6 @@ describe('compose utilities', function(){
   'use strict';
 
   var collectionId = 'collectionId';
-  var weeklyReleaseTime = 42;
 
   var $q;
   var $rootScope;
