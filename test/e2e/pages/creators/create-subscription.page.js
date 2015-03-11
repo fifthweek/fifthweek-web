@@ -37,6 +37,7 @@ CreateSubscriptionPage.prototype = Object.create({}, {
   submitSuccessfully: { value: function() {
     var formValues = testKit.setFormValues(this, this.inputs);
     this.submitButton.click();
+    browser.waitForAngular();
     return {
       name: formValues.nameTextBox,
       tagline: formValues.taglineTextBox,
