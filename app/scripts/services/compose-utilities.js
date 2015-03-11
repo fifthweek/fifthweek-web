@@ -1,6 +1,6 @@
 angular.module('webApp')
   .factory('composeUtilities',
-  function($q, $modal, channelRepositoryFactory, utilities, logService, collectionStub) {
+  function($q, $modal, channelRepositoryFactory, utilities, logService, collectionStub, collectionService) {
     'use strict';
 
     var service = {};
@@ -114,22 +114,9 @@ angular.module('webApp')
 
     service.getCollectionIdAndCreateCollectionIfRequired = function(model){
       if(shouldCreateCollection(model)) {
-        var channelRepository = channelRepositoryFactory.forCurrentUser();
         var channelId = model.input.selectedChannel.channelId;
         var collectionName = model.input.newCollectionName;
-        var collectionId;
-        return collectionStub
-          .postCollection({
-            channelId: channelId,
-            name: collectionName
-          })
-          .then(function(response){
-            collectionId = response.data;
-            return channelRepository.createCollection(channelId, collectionId, collectionName);
-          })
-          .then(function(){
-            return collectionId;
-          });
+        return collectionService.createCollectionFromName(channelId, collectionName);
       }
 
       return $q.when(model.input.selectedCollection.collectionId);

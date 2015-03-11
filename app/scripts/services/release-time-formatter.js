@@ -14,7 +14,7 @@ angular.module('webApp').factory('releaseTimeFormatter', function() {
 
   service.getDayOfWeek = function(hourOfWeek) {
     if (!_.isNumber(hourOfWeek)) {
-      throw new FifthweekError('Expected an hour of week');
+      throw new FifthweekError('Hour of week must be a number');
     }
     if (hourOfWeek < 0 || hourOfWeek > 167) {
       throw new FifthweekError('Hour of week must be between 0 and 167');

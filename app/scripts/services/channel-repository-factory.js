@@ -67,12 +67,9 @@ angular.module('webApp')
           });
         };
 
-        service.createCollection = function(channelId, collectionId, collectionName) {
+        service.createCollection = function(channelId, collection) {
           return service.updateChannel(channelId, function(channel) {
-            channel.collections.push({
-              collectionId: collectionId,
-              name: collectionName
-            });
+            channel.collections.push(collection);
           });
         };
 

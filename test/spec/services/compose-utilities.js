@@ -1,6 +1,9 @@
 describe('compose utilities', function(){
   'use strict';
 
+  var collectionId = 'collectionId';
+  var weeklyReleaseTime = 42;
+
   var $q;
   var $rootScope;
   var logService;
@@ -9,6 +12,7 @@ describe('compose utilities', function(){
   var channelRepository;
   var authenticationService;
   var collectionStub;
+  var collectionService;
   var $modal;
   var target;
 
@@ -19,14 +23,16 @@ describe('compose utilities', function(){
     $modal = jasmine.createSpyObj('$modal', ['open']);
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
-    channelRepository = jasmine.createSpyObj('channelRepository', ['createCollection', 'getChannels']);
+    collectionService = jasmine.createSpyObj('collectionService', ['createCollectionFromName']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
-    collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection', 'getLiveDateOfNewQueuedPost']);
+    collectionStub = jasmine.createSpyObj('collectionStub', ['getLiveDateOfNewQueuedPost']);
 
     module(function($provide) {
       $provide.value('$modal', $modal);
       $provide.value('logService', logService);
       $provide.value('utilities', utilities);
+      $provide.value('collectionService', collectionService);
       $provide.value('channelRepositoryFactory', channelRepositoryFactory);
       $provide.value('authenticationService', authenticationService);
       $provide.value('collectionStub', collectionStub);
@@ -37,6 +43,8 @@ describe('compose utilities', function(){
       $rootScope = $injector.get('$rootScope');
       target = $injector.get('composeUtilities');
     });
+
+    collectionService.createCollectionFromName.and.returnValue($q.when(collectionId));
   });
 
   describe('when calling getCollectionNameForSelection', function(){
@@ -422,7 +430,6 @@ describe('compose utilities', function(){
       model = {};
 
       authenticationService.currentUser = { userId: 'userId' };
-      collectionStub.postCollection.and.returnValue($q.when({ data: 'collectionId' }));
     });
 
     describe('when an existing collection is selected', function() {
@@ -444,16 +451,8 @@ describe('compose utilities', function(){
         $rootScope.$apply();
       });
 
-      it('should not post a new collection', function(){
-        expect(collectionStub.postCollection).not.toHaveBeenCalled();
-      });
-
-      it('should not merge the data into the new collection', function(){
-        expect(channelRepository.createCollection).not.toHaveBeenCalled();
-      });
-
-      it('should return the existing collection id', function(){
-        expect(result).toBe('existingCollectionId');
+      it('should not create a new collection', function(){
+        expect(collectionService.createCollectionFromName).not.toHaveBeenCalled();
       });
     });
 
@@ -473,21 +472,12 @@ describe('compose utilities', function(){
         $rootScope.$apply();
       });
 
-      it('should post a new collection', function(){
-        expect(collectionStub.postCollection.calls.count()).toBe(1);
-        expect(collectionStub.postCollection).toHaveBeenCalledWith({
-          channelId: 'channelId',
-          name: 'newCollection'
-        });
-      });
-
-      it('should merge the data into the new collection', function(){
-        expect(channelRepository.createCollection.calls.count()).toBe(1);
-        expect(channelRepository.createCollection).toHaveBeenCalledWith('channelId', 'collectionId', 'newCollection');
+      it('should create a new collection', function(){
+        expect(collectionService.createCollectionFromName).toHaveBeenCalledWith('channelId', 'newCollection');
       });
 
       it('should return the new collection id', function(){
-        expect(result).toBe('collectionId');
+        expect(result).toBe(collectionId);
       });
     });
 
@@ -510,25 +500,16 @@ describe('compose utilities', function(){
       });
 
       it('should post a new collection', function(){
-        expect(collectionStub.postCollection.calls.count()).toBe(1);
-        expect(collectionStub.postCollection).toHaveBeenCalledWith({
-          channelId: 'channelId',
-          name: 'newCollection'
-        });
-      });
-
-      it('should merge the data into the new collection', function(){
-        expect(channelRepository.createCollection.calls.count()).toBe(1);
-        expect(channelRepository.createCollection).toHaveBeenCalledWith('channelId', 'collectionId', 'newCollection');
+        expect(collectionService.createCollectionFromName).toHaveBeenCalledWith('channelId', 'newCollection');
       });
 
       it('should return the new collection id', function(){
-        expect(result).toBe('collectionId');
+        expect(result).toBe(collectionId);
       });
     });
 
 
-    describe('when postCollection fails', function() {
+    describe('when creating a collection fails', function() {
       var error;
 
       beforeEach(function(){
@@ -540,37 +521,10 @@ describe('compose utilities', function(){
           }
         };
 
-        channelRepository.createCollection.and.returnValue($q.reject('error'));
+        collectionService.createCollectionFromName.and.returnValue($q.reject('error'));
 
         target.getCollectionIdAndCreateCollectionIfRequired(model).catch(function(e){ error = e; });
         $rootScope.$apply();
-      });
-
-      it('should propagate the error', function(){
-        expect(error).toBe('error');
-      });
-    });
-
-    describe('when mergeNewCollection fails', function() {
-      var error;
-
-      beforeEach(function(){
-        model.createCollection = true;
-        model.input = {
-          newCollectionName: 'newCollection',
-          selectedChannel: {
-            channelId: 'channelId'
-          }
-        };
-
-        collectionStub.postCollection.and.returnValue($q.reject('error'));
-
-        target.getCollectionIdAndCreateCollectionIfRequired(model).catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not merge the data into the new collection', function(){
-        expect(channelRepository.createCollection).not.toHaveBeenCalled();
       });
 
       it('should propagate the error', function(){
@@ -644,13 +598,13 @@ describe('compose utilities', function(){
     describe('when the selected collection is an existing collection', function(){
       beforeEach(function(){
         collectionStub.getLiveDateOfNewQueuedPost.and.returnValue($q.when({ data:'someDate' }));
-        model.input.selectedCollection  = { collectionId: 'collectionId' };
+        model.input.selectedCollection  = { collectionId: collectionId };
         target.updateEstimatedLiveDate(model);
         $rootScope.$apply();
       });
 
       it('should call getLiveDateOfNewQueuedPost', function(){
-        expect(collectionStub.getLiveDateOfNewQueuedPost).toHaveBeenCalledWith('collectionId');
+        expect(collectionStub.getLiveDateOfNewQueuedPost).toHaveBeenCalledWith(collectionId);
       });
 
       it('should update queuedLiveDate', function(){
@@ -660,7 +614,7 @@ describe('compose utilities', function(){
 
     describe('when getLiveDateOfNewQueuedPost fails', function(){
       beforeEach(function(){
-        model.input.selectedCollection  = { collectionId: 'collectionId' };
+        model.input.selectedCollection  = { collectionId: collectionId };
         collectionStub.getLiveDateOfNewQueuedPost.and.returnValue($q.reject('error'));
         utilities.getFriendlyErrorMessage.and.returnValue('friendly');
         target.updateEstimatedLiveDate(model);
