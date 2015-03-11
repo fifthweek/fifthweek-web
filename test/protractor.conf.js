@@ -1,7 +1,7 @@
 
 exports.config = {
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/create-subscription-page.spec.js', 'e2e/spec/**/compose-file-form.spec.js'],
+  specs: ['e2e/spec/**/compose-file-form.spec.js'],
   capabilities: {
     browserName: 'firefox',
     //shardTestFiles: true,

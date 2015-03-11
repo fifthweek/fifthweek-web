@@ -1,5 +1,5 @@
 angular.module('webApp').controller('createSubscriptionCtrl',
-  function($scope, $state, calculatedStates, subscriptionService) {
+  function($rootScope, $scope, $state, calculatedStates, subscriptionService) {
     'use strict';
 
     $scope.newSubscriptionData = {
@@ -16,7 +16,10 @@ angular.module('webApp').controller('createSubscriptionCtrl',
 
     $scope.continue = function() {
       return subscriptionService.createFirstSubscription(buildDTO()).then(function() {
+        $rootScope.debugLines = $rootScope.debugLines || [];
+        $rootScope.debugLines.push('subscriptionService.hasSubscription 1 = ' + subscriptionService.hasSubscription);
         $state.go(calculatedStates.getDefaultState());
+        $rootScope.debugLines.push('subscriptionService.hasSubscription 2 = ' + subscriptionService.hasSubscription);
       });
     };
   }
