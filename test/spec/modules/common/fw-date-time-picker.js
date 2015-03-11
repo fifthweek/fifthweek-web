@@ -10,7 +10,7 @@ describe('fw-date-time-picker directive', function(){
     module('webApp', 'webApp.views');
 
     module(function($controllerProvider){
-      $controllerProvider.register('fwDateTimePickerCtrl', function() { fwDateTimePickerCtrl = this; this.initialize = jasmine.createSpy('initialize')});
+      $controllerProvider.register('fwDateTimePickerCtrl', function() { fwDateTimePickerCtrl = this; this.initialize = jasmine.createSpy('initialize'); });
     });
 
     inject(function($injector) {

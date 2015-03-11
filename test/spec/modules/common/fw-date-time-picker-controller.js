@@ -10,8 +10,6 @@ describe('fw-date-time-picker-controller', function(){
   beforeEach(function() {
 
     module('webApp');
-    module(function($provide) {
-    });
 
     inject(function ($injector) {
       $q = $injector.get('$q');

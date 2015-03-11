@@ -102,7 +102,7 @@ describe('compose note form', function() {
     });
   });
 
-  ddescribe('when validating inputs', function() {
+  describe('when validating inputs', function() {
 
     it('should run once before all', function() {
       var context = commonWorkflows.createSubscription();
