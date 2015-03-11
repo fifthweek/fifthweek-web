@@ -12,7 +12,7 @@ angular.module('webApp').directive('fwFormGroup', function () {
       pre: function(scope, element, attrs, formCtrl) {
 
         // Allow optimisation through explicit specification of which elements to use.
-        var inputName = element.inputName;
+        var inputName = attrs.inputName;
         var formName = formCtrl.$name;
 
         scope.getInputName = function() {
