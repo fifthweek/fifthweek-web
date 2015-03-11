@@ -15,8 +15,8 @@ angular.module('webApp').controller('createSubscriptionCtrl',
     };
 
     $scope.continue = function() {
+      $rootScope.debugLines = [];
       return subscriptionService.createFirstSubscription(buildDTO()).then(function() {
-        $rootScope.debugLines = $rootScope.debugLines || [];
         $rootScope.debugLines.push('subscriptionService.hasSubscription 1 = ' + subscriptionService.hasSubscription);
         $state.go(calculatedStates.getDefaultState());
         $rootScope.debugLines.push('subscriptionService.hasSubscription 2 = ' + subscriptionService.hasSubscription);
