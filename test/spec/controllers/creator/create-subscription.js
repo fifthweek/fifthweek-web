@@ -78,7 +78,7 @@ describe('creator - create subscription controller', function () {
       $scope.continue();
       $scope.$apply();
 
-      //expect($state.go).toHaveBeenCalledWith(nextState);
+      expect($state.go).toHaveBeenCalledWith(nextState);
     });
   });
 });
