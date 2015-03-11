@@ -708,7 +708,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('ci-checks', [
     'ddescribe-iit',
-    'test:live:dist'
+    'test:live:dist:browserstack'
   ]);
 
   grunt.registerTask('prepush', [
