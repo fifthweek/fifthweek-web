@@ -29,7 +29,9 @@ angular
     unexpectedErrorText: 'An error has occurred.',
     connectionErrorText: 'Unable to communicate with the server. Make sure you are connected to the internet and try again.',
     tokenPath: 'token',
-    logPath: 'log'
+    logPath: 'log',
+    longDateFormat: 'EEEE, MMMM d, yyyy',
+    longDateTimeFormat: 'EEEE, MMMM d, yyyy \'at\' HH:mm \'UTC\''
   })
   .config(function(snapRemoteProvider) {
     snapRemoteProvider. globalOptions = {
