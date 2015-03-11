@@ -443,10 +443,7 @@
                   page.createCollectionLink.click();
                 });
 
-                collectionNameInputPage.includeHappyPaths(function(value) {
-                  page.createCollectionNameTextBox.clear();
-                  page.createCollectionNameTextBox.sendKeys(value);
-                });
+                testKit.includeHappyPaths(page, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
               });
 
             });
