@@ -33,7 +33,7 @@ function DisplayableError(displayMessage, detailedMessage) {
   this.stack = Error().stack;
 }
 DisplayableError.prototype = Object.create(Error.prototype);
-DisplayableError.prototype.constructor = InputValidationError;
+DisplayableError.prototype.constructor = DisplayableError;
 
   // Derives from DisplayableError. Used if there is a problem validating user input.
   // These are not logged back to the API.

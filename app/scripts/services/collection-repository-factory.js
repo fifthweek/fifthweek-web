@@ -10,13 +10,17 @@ angular.module('webApp')
 
         var service = {};
 
-        service.findChannelForCollection = function(channels, collectionId) {
-          var channel = _.find(channels, function(channel) {
+        service.tryFindChannelForCollection = function(channels, collectionId) {
+          return _.find(channels, function(channel) {
             return _.some(channel.collections, {collectionId: collectionId});
           });
+        };
+
+        service.findChannelForCollection = function(channels, collectionId) {
+          var channel = service.tryFindChannelForCollection(channels, collectionId);
 
           if (!channel) {
-            return $q.reject(new DisplayableError('Channel not found.'));
+            throw new DisplayableError('Channel not found.');
           }
 
           return channel;
@@ -24,20 +28,45 @@ angular.module('webApp')
 
         service.getChannelForCollection = function(collectionId) {
           return channelRepository.getChannels().then(function(channels) {
-            return service.findChannelForCollection(channels, collectionId);
+            try {
+              return $q.when(service.findChannelForCollection(channels, collectionId));
+            }
+            catch(error) {
+              return $q.reject(error);
+            }
           });
         };
 
         service.createCollection = function(channelId, collection) {
-          return channelRepository.updateChannel(channelId, function(channel) {
+          return channelRepository.updateChannels(function(channels) {
+
+            if (service.tryFindChannelForCollection(channels, collection.collectionId)) {
+              return $q.reject(new DisplayableError('Collection already exists.'));
+            }
+
+            var channel = _.find(channels, { channelId: channelId });
+            if (!channel) {
+              return $q.reject(new DisplayableError('Channel not found.'));
+            }
+
             channel.collections.push(collection);
+            return $q.when();
           });
         };
 
         service.deleteCollection = function(collectionId) {
           return channelRepository.updateChannels(function(channels) {
-            var channel = service.findChannelForCollection(channels, collectionId);
+            var channel;
+            try {
+              channel = service.findChannelForCollection(channels, collectionId);
+            }
+            catch(error) {
+              return $q.reject(error);
+            }
+
             _.remove(channel.collections, { collectionId: collectionId });
+
+            return $q.when();
           });
         };
 
