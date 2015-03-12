@@ -27,5 +27,20 @@ angular.module('webApp').factory('releaseTimeFormatter', function() {
     return _.map(hoursOfWeek, service.getDayOfWeek);
   };
 
+  service.getTimeOfWeek = function(hourOfWeek) {
+    return (hourOfWeek % 24) + ':00';
+  };
+
+  service.getDayAndTimeOfWeek = function(hourOfWeek) {
+    return {
+      day: service.getDayOfWeek(hourOfWeek),
+      time: service.getTimeOfWeek(hourOfWeek)
+    };
+  };
+
+  service.getDayAndTimesOfWeek = function(hoursOfWeek) {
+    return _.map(hoursOfWeek, service.getDayAndTimeOfWeek);
+  };
+
   return service;
 });

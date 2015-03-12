@@ -3,6 +3,7 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
 
   var channelRepository = channelRepositoryFactory.forCurrentUser();
   var channelId = $state.params.id;
+  $scope.previousState = states.creators.customize.channels.name;
   $scope.model = {};
 
   channelRepository.getChannel(channelId)
@@ -23,8 +24,6 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
         $scope.model.errorMessage = message;
       });
     });
-
-  $scope.previousState = states.creators.customize.channels.name;
 
   $scope.save = function() {
     var channel = $scope.model.channel;
