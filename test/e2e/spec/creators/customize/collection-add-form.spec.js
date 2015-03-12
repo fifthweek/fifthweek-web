@@ -2,13 +2,14 @@ var _ = require('lodash');
 var TestKit = require('../../../test-kit.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
+var ChannelSelectInputPage = require('../../../pages/channel-select-input.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
 var CollectionListPage = require('../../../pages/creators/customize/collection-list.page.js');
 var CollectionAddPage = require('../../../pages/creators/customize/collection-add.page.js');
 
-describe('edit collection form', function() {
+describe('add collection form', function() {
   'use strict';
 
   var registration;
@@ -19,6 +20,7 @@ describe('edit collection form', function() {
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
   var collectionNameInputPage = new CollectionNameInputPage();
+  var channelSelectInputPage = new ChannelSelectInputPage();
   var sidebar = new SidebarPage();
   var header = new HeaderCustomizePage();
   var channelListPage = new ChannelListPage();
@@ -36,11 +38,12 @@ describe('edit collection form', function() {
     registration = context.registration;
     subscription = context.subscription;
 
-    var channelNames = [ getChannelName(channelListPage.defaultChannelName) ];
+    var channelNames = [ channelListPage.defaultChannelName ];
     channelNames.push(commonWorkflows.createChannel().name);
     channelNames.push(commonWorkflows.createChannel().name);
 
-    inputs = page.inputs(channelNames);
+    var channelSelectTexts = channelSelectInputPage.mapToSelectTexts(channelNames);
+    inputs = page.inputs(channelSelectTexts);
 
     sidebar.customizeLink.click();
     header.collectionsLink.click();
@@ -56,7 +59,7 @@ describe('edit collection form', function() {
 
     page.cancelButton.click();
 
-    expect(collectionListPage.collections.count()).toBe(0);
+    expect(collectionListPage.collections.count()).toBe(collectionCount);
     collectionListPage.addCollectionButton.click();
   });
 
@@ -65,7 +68,7 @@ describe('edit collection form', function() {
 
     page.cancelButton.click();
 
-    expect(collectionListPage.collections.count()).toBe(0);
+    expect(collectionListPage.collections.count()).toBe(collectionCount);
     collectionListPage.addCollectionButton.click();
   });
 
@@ -119,20 +122,13 @@ describe('edit collection form', function() {
     expect(collectionListPage.collections.count()).toBe(collectionCount);
 
     var collection = {name: newFormValues.nameTextBox};
-    if (!isDefaultChannel(newFormValues.channelSelect)) {
-      collection.channelName = newFormValues.channelSelect;
+    var channelName = channelSelectInputPage.mapToChannelName(newFormValues.channelSelect);
+    if (!channelSelectInputPage.isDefaultChannel(channelName)) {
+      collection.channelName = channelName;
     }
 
     collectionListPage.expectCollection(collection);
 
     collectionListPage.addCollectionButton.click();
-  };
-
-  var getChannelName = function(value) {
-    return value === 'Basic Subscription' ? defaultChannelSelectText : value;
-  };
-
-  var isDefaultChannel = function(name) {
-    return name === defaultChannelSelectText;
   };
 });

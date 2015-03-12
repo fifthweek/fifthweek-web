@@ -7,14 +7,21 @@ ChannelListPage.prototype = Object.create({}, {
   defaultChannelDescription: { value: 'Exclusive News Feed\nEarly Updates on New Releases' },
   addChannelButton: { get: function () { return element(by.id('add-button')); }},
   channels: { get: function () { return element.all(by.css('#channels .item')); }},
-  getChannel: { value: function(index) {
-    return element(by.css('#channels .item:nth-child(' + (index + 1) + ')'))
+  getChannel: { value: function(name) {
+    return element
+      .all(by.css('#channels .item'))
+      .filter(function(elem) {
+        return elem.element(by.css('h5 a')).getText().then(function(text) {
+          return text === name;
+        });
+      })
+      .first();
   }},
-  getEditChannelButton: { value: function(index) {
-    return element(by.css('#channels .item:nth-child(' + (index + 1) + ') button'))
+  getEditChannelButton: { value: function(name) {
+    return this.getChannel(name).element(by.tagName('button'));
   }},
-  expectChannel: { value: function(channelIndex, channelData) {
-    var element = this.getChannel(channelIndex);
+  expectChannel: { value: function(channelData) {
+    var element = this.getChannel(channelData.name);
     expect(element.getText()).toContain(channelData.name);
     expect(element.getText()).toContain('$' + channelData.price);
     expect(element.getText()).toContain(channelData.description);

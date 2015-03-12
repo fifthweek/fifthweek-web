@@ -6,7 +6,14 @@ CollectionListPage.prototype = Object.create({}, {
   addCollectionButton: { get: function () { return element(by.id('add-button')); }},
   collections: { get: function () { return element.all(by.css('#collections .item')); }},
   getCollection: { value: function(name) {
-    return element(by.cssContainingText('#collections .item', name));
+    return element
+      .all(by.css('#collections .item'))
+      .filter(function(elem) {
+        return elem.element(by.css('h5 a')).getText().then(function(text) {
+          return text === name;
+        });
+      })
+      .first();
   }},
   getEditCollectionButton: { value: function(name) {
     return this.getCollection(name).element(by.tagName('button'));

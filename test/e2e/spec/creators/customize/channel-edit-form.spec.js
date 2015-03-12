@@ -38,23 +38,23 @@ describe('edit channel form', function() {
   var describeForm = function(isDefault) {
     describe('when editing a ' + (isDefault ? '' : 'non-') + 'default channel', function() {
       var channel;
-      var latestValues;
-      var initialValues;
+      var savedValues;
       var inputs = isDefault ? _.reject(page.inputs, {name: 'hiddenCheckbox'}) : page.inputs;
       var determineCorrectInitialValues = function () {
-        initialValues = {
+        savedValues = {
           nameTextBox: isDefault ? channelListPage.defaultChannelName : channel.name,
           descriptionTextBox: isDefault ? channelListPage.defaultChannelDescription : channel.description,
           priceTextBox: isDefault ? subscription.basePrice : channel.price
         };
 
         if (!isDefault) {
-          initialValues.hiddenCheckbox = channel.hidden;
+          savedValues.hiddenCheckbox = channel.hidden;
         }
       };
+
       var navigateToPage = function () {
         channelListPage.waitForPage();
-        var editButton = channelListPage.getEditChannelButton(isDefault ? 0 : 1);
+        var editButton = channelListPage.getEditChannelButton(savedValues.nameTextBox);
         editButton.click();
       };
 
@@ -68,7 +68,7 @@ describe('edit channel form', function() {
       });
 
       it('should initialise with the correct properties', function () {
-        testKit.expectFormValues(page, initialValues);
+        testKit.expectFormValues(page, savedValues);
       });
 
       it('should ' + (isDefault ? 'not' : '') + ' give you the option to hide the channel', function () {
@@ -85,7 +85,7 @@ describe('edit channel form', function() {
         page.cancelButton.click();
         navigateToPage();
 
-        testKit.expectFormValues(page, initialValues);
+        testKit.expectFormValues(page, savedValues);
       });
 
       it('should allow user to cancel when form is invalid', function () {
@@ -94,19 +94,19 @@ describe('edit channel form', function() {
         page.cancelButton.click();
         navigateToPage();
 
-        testKit.expectFormValues(page, initialValues);
+        testKit.expectFormValues(page, savedValues);
       });
 
       describe('on successful submission', function () {
 
         it('should run once before all', function () {
-          latestValues = testKit.setFormValues(page, inputs);
+          savedValues = testKit.setFormValues(page, inputs);
           page.saveButton.click();
           navigateToPage();
         });
 
         it('should persist the changes', function () {
-          testKit.expectFormValues(page, latestValues);
+          testKit.expectFormValues(page, savedValues);
         });
 
         it('should persist the changes, between sessions', function () {
@@ -114,7 +114,7 @@ describe('edit channel form', function() {
           sidebar.customizeLink.click();
           header.channelsLink.click();
           navigateToPage();
-          testKit.expectFormValues(page, latestValues);
+          testKit.expectFormValues(page, savedValues);
         });
       });
 
@@ -123,19 +123,19 @@ describe('edit channel form', function() {
         afterEach(function () {
           page.saveButton.click();
           navigateToPage();
-          testKit.expectFormValues(page, latestValues);
+          testKit.expectFormValues(page, savedValues);
         });
 
         testKit.includeHappyPaths(page, channelNameInputPage, 'nameTextBox', null, function (generatedFormValues) {
-          _.merge(latestValues, generatedFormValues);
+          _.merge(savedValues, generatedFormValues);
         });
 
         testKit.includeHappyPaths(page, channelDescriptionInputPage, 'descriptionTextBox', null, function (generatedFormValues) {
-          _.merge(latestValues, generatedFormValues);
+          _.merge(savedValues, generatedFormValues);
         });
 
         testKit.includeHappyPaths(page, channelPriceInputPage, 'priceTextBox', null, function (generatedFormValues) {
-          _.merge(latestValues, generatedFormValues);
+          _.merge(savedValues, generatedFormValues);
         });
       });
 
@@ -163,7 +163,7 @@ describe('edit channel form', function() {
         deleteConfirmationPage.describeDeletingWithVerification(
           'Channel',
           function () {
-            return latestValues.nameTextBox;
+            return savedValues.nameTextBox;
           },
           function () {
             page.deleteButton.click();
@@ -172,20 +172,20 @@ describe('edit channel form', function() {
             // Check not deleted from client-side.
             header.channelsLink.click();
             navigateToPage();
-            testKit.expectFormValues(page, latestValues);
+            testKit.expectFormValues(page, savedValues);
 
             // Check not deleted from API.
             commonWorkflows.reSignIn(registration);
             sidebar.customizeLink.click();
             header.channelsLink.click();
             navigateToPage();
-            testKit.expectFormValues(page, latestValues);
+            testKit.expectFormValues(page, savedValues);
           },
           function () {
             // Check deleted from client-side.
             channelListPage.waitForPage();
             expect(channelListPage.channels.count()).toBe(1);
-            expect(channelListPage.getChannel(0).getText()).not.toContain(latestValues.nameTextBox);
+            expect(channelListPage.channels.getText()).not.toContain(savedValues.nameTextBox);
 
             // Check deleted from API.
             commonWorkflows.reSignIn(registration);
@@ -193,7 +193,7 @@ describe('edit channel form', function() {
             header.channelsLink.click();
             channelListPage.waitForPage();
             expect(channelListPage.channels.count()).toBe(1);
-            expect(channelListPage.getChannel(0).getText()).not.toContain(latestValues.nameTextBox);
+            expect(channelListPage.channels.getText()).not.toContain(savedValues.nameTextBox);
           }
         );
       }

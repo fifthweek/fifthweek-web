@@ -87,7 +87,15 @@ TestKit.prototype = Object.create({}, {
         });
       }
       else if (_.endsWith(inputName, 'Select')) {
-        element(by.cssContainingText('#' + page[inputName + 'Id'] + ' option', newValue)).click();
+        element
+          .all(by.css('#' + page[inputName + 'Id'] + ' option'))
+          .filter(function(option) {
+            return option.getText().then(function(text) {
+              return text === newValue;
+            });
+          })
+          .first()
+          .click();
       }
       else {
         throw 'Unknown inputName type: ' + inputName;

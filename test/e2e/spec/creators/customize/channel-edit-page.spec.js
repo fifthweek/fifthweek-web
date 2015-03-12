@@ -17,12 +17,12 @@ describe('edit channel page', function() {
     commonWorkflows.createSubscription();
     sidebar.customizeLink.click();
     header.channelsLink.click();
-    channelListPage.getEditChannelButton(0).click();
+    channelListPage.getEditChannelButton(channelListPage.defaultChannelName).click();
   });
 
   breadcrumb.includeTests(['Channels', channelListPage.defaultChannelName], function() {
     header.channelsLink.click();
-    channelListPage.getEditChannelButton(0).click();
+    channelListPage.getEditChannelButton(channelListPage.defaultChannelName).click();
   });
 
   header.includeBasicTests(header.channelsLink);

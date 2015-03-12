@@ -8,7 +8,7 @@ var CollectionNameInputPage = function() {};
 CollectionNameInputPage.prototype = Object.create({},
   {
     newName: { value: function() {
-      return 'Awesomeness #' + Math.round(Math.random() * 1000);
+      return 'Collection ' + Math.round(Math.random() * 100000);
     }},
     // All happy paths in a suite typically share the same post-condition, which can be extracted into a afterEach.
     // This is why button clicks and expectations are not set here.

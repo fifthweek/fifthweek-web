@@ -9,11 +9,12 @@ var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
 var ChannelAddPage = require('../../../pages/creators/customize/channel-add.page.js');
 
-describe('edit channel form', function() {
+describe('add channel form', function() {
   'use strict';
 
   var registration;
   var subscription;
+  var channelCount = 1; // Account for default channel.
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
@@ -50,7 +51,7 @@ describe('edit channel form', function() {
 
     page.cancelButton.click();
 
-    expect(channelListPage.channels.count()).toBe(1);
+    expect(channelListPage.channels.count()).toBe(channelCount);
     channelListPage.addChannelButton.click();
   });
 
@@ -59,7 +60,7 @@ describe('edit channel form', function() {
 
     page.cancelButton.click();
 
-    expect(channelListPage.channels.count()).toBe(1);
+    expect(channelListPage.channels.count()).toBe(channelCount);
     channelListPage.addChannelButton.click();
   });
 
@@ -69,10 +70,11 @@ describe('edit channel form', function() {
     it('should run once before all', function() {
       newFormValues = testKit.setFormValues(page, page.inputs);
       page.createButton.click();
+      channelCount++;
     });
 
     it('should persist the changes', function() {
-      expectChangesAppliedAndNavigateToPage(newFormValues, 1);
+      expectChangesAppliedAndNavigateToPage(newFormValues);
     });
 
     it('should persist the changes, between sessions', function() {
@@ -80,17 +82,17 @@ describe('edit channel form', function() {
       sidebar.customizeLink.click();
       header.channelsLink.click();
 
-      expectChangesAppliedAndNavigateToPage(newFormValues, 1);
+      expectChangesAppliedAndNavigateToPage(newFormValues);
     });
   });
 
   describe('when validating good input', function() {
     var newFormValues;
-    var newChannelIndex = 2;
 
     afterEach(function() {
       page.createButton.click();
-      expectChangesAppliedAndNavigateToPage(newFormValues, newChannelIndex++);
+      channelCount++;
+      expectChangesAppliedAndNavigateToPage(newFormValues);
     });
 
     testKit.includeHappyPaths(page, channelNameInputPage, 'nameTextBox', page.inputs, function(generatedFormValues) {
@@ -117,11 +119,11 @@ describe('edit channel form', function() {
     testKit.includeSadPaths(page, page.createButton, page.helpMessages, channelPriceInputPage, 'priceTextBox', page.inputs);
   });
 
-  var expectChangesAppliedAndNavigateToPage = function(newFormValues, index) {
+  var expectChangesAppliedAndNavigateToPage = function(newFormValues) {
     channelListPage.waitForPage();
-    expect(channelListPage.channels.count()).toBe(index + 1);
+    expect(channelListPage.channels.count()).toBe(channelCount);
 
-    channelListPage.expectChannel(index, {
+    channelListPage.expectChannel({
       name: newFormValues.nameTextBox,
       price: newFormValues.priceTextBox,
       description: newFormValues.descriptionTextBox

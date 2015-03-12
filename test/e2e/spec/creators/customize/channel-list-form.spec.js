@@ -39,7 +39,7 @@ describe('channel list form', function() {
   });
 
   it('should allow default channel to be edited', function () {
-    expect(page.getEditChannelButton(0).isDisplayed()).toBe(true);
+    expect(page.getEditChannelButton(page.defaultChannelName).isDisplayed()).toBe(true);
   });
 
   var navigateToPage = function() {
@@ -49,7 +49,7 @@ describe('channel list form', function() {
 
   var expectBaseChannel = function() {
     expect(page.channels.count()).toBe(1);
-    page.expectChannel(0, {
+    page.expectChannel({
       name: page.defaultChannelName,
       price: subscription.basePrice,
       description: page.defaultChannelDescription
