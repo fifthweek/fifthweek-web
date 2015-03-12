@@ -18,8 +18,7 @@ angular.module('webApp').controller('newCollectionCtrl', function($scope, $state
         function(channel) {
           return {
             value: channel.channelId,
-            name: channelNameFormatter.shareWith(channel),
-            unformattedName: channel.name
+            name: channelNameFormatter.shareWith(channel)
           };
         }
       );
