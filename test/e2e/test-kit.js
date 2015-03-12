@@ -86,6 +86,9 @@ TestKit.prototype = Object.create({}, {
           }
         });
       }
+      else if (_.endsWith(inputName, 'Select')) {
+        element(by.cssContainingText('#' + page[inputName + 'Id'] + ' option', newValue)).click();
+      }
       else {
         throw 'Unknown inputName type: ' + inputName;
       }
@@ -111,6 +114,9 @@ TestKit.prototype = Object.create({}, {
       else if (_.endsWith(inputName, 'Checkbox')) {
         expect(page[inputName].isSelected()).toBe(value);
       }
+      else if (_.endsWith(inputName, 'Select')) {
+        expect(element(by.css('#' + page[inputName + 'Id'] + ' option:checked')).getText()).toBe(value);
+      }
       else {
         throw 'Unknown inputName type: ' + inputName;
       }
@@ -129,6 +135,29 @@ TestKit.prototype = Object.create({}, {
         }
         else if (_.endsWith(inputName, 'Checkbox')) {
           page[inputName].click();
+        }
+        else if (_.endsWith(inputName, 'Select')) {
+          var selectId = '#' + page[inputName + 'Id'];
+          var options = element(by.css(selectId + ' option'));
+          options.count().then(function(optionCount) {
+            if (optionCount === 1) {
+              throw 'Cannot change ' + inputName + ' to make form dirty as there is only 1 value to select from';
+            }
+
+            var selectedOption = element(by.css(selectId + ' option:checked'));
+            selectedOption.getText().then(function(selectedValue) {
+              var firstOption = element(by.css(selectId + ' option:nth-child(1)'));
+              firstOption.getText().then(function(firstValue) {
+                if (selectedValue !== firstValue) {
+                  firstOption.click();
+                }
+                else {
+                  var secondOption = element(by.css(selectId + ' option:nth-child(2)'));
+                  secondOption.click();
+                }
+              });
+            });
+          });
         }
         else {
           throw 'Unknown inputName type: ' + inputName;
@@ -157,7 +186,6 @@ TestKit.prototype = Object.create({}, {
           saveNewValues(newFormValues)
         }
       });
-
     });
   }},
   includeSadPaths: { value: function(page, button, helpMessages, inputPage, inputName, inputsNeedingValues, isOptional) {

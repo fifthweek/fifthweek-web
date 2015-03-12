@@ -514,8 +514,8 @@
                 testKit.assertMaxLength(page.helpMessages, page.commentTextBox, overSizedValue, 2000);
               });
 
-              collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postNowButton, page.helpMessages, function() {});
-              collectionNameInputPage.includeSadPaths(page.createCollectionNameTextBox, page.postLaterButton, page.helpMessages, function() {});
+              testKit.includeSadPaths(page, page.postNowButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
+              testKit.includeSadPaths(page, page.postLaterButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
             });
 
             describe('when a collection exists', function(){
@@ -536,7 +536,7 @@
                   browser.refresh();
                 });
 
-                collectionNameInputPage.includeSadPaths(page.dialogCreateCollectionNameTextBox, page.dialogContinueButton, page.helpMessages, function() {});
+                testKit.includeSadPaths(page, page.dialogContinueButton, page.helpMessages, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
               });
             });
           });

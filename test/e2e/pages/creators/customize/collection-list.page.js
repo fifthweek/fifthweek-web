@@ -5,19 +5,17 @@ var CollectionListPage = function() {};
 CollectionListPage.prototype = Object.create({}, {
   addCollectionButton: { get: function () { return element(by.id('add-button')); }},
   collections: { get: function () { return element.all(by.css('#collections .item')); }},
-  getCollection: { value: function(index) {
-    return element(by.css('#collections .item:nth-child(' + (index + 1) + ')'))
+  getCollection: { value: function(name) {
+    return element(by.cssContainingText('#collections .item', name));
   }},
-  getEditCollectionButton: { value: function(index) {
-    return element(by.css('#collections .item:nth-child(' + (index + 1) + ') button'))
+  getEditCollectionButton: { value: function(name) {
+    return this.getCollection(name).element(by.tagName('button'));
   }},
-  expectCollection: { value: function(collectionIndex, collectionData) {
-    var element = this.getCollection(collectionIndex);
-    expect(element.getText()).toContain(collectionData.name);
-    expect(element.getText()).toContain(collectionData.description);
+  expectCollection: { value: function(collectionData) {
+    var element = this.getCollection(collectionData.name);
 
-    if (collectionData.nonDefaultChannelName) {
-      expect(element.getText()).toContain(collectionData.nonDefaultChannelName);
+    if (collectionData.channelName) {
+      expect(element.getText()).toContain(collectionData.channelName);
     }
   }},
   waitForPage: { value: function() {

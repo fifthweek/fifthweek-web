@@ -4,11 +4,12 @@
 
   <form novalidate
         role="form"
+        id="createCollectionForm"
         name="createCollectionForm">
 
     <fw-form-input-collection-name ng-model="model.collection.name" placeholder="New collection name" required focus></fw-form-input-collection-name>
 
-    <fw-form-input-select selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
+    <fw-form-input-select id="model-selected-channel" selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
 
 
     <div class="row-btn">

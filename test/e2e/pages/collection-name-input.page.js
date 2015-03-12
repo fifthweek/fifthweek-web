@@ -32,11 +32,10 @@ CollectionNameInputPage.prototype = Object.create({},
         applyValue(' ' + normalizedValue + ' ', normalizedValue);
       });
     }},
-    includeSadPaths: { value: function(input, button, helpMessages, populateOtherInputsWithValidData, isOptional) {
+    includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
 
       if(!isOptional) {
         it('requires collection name', function () {
-          populateOtherInputsWithValidData();
           input.clear();
 
           button.click();
@@ -46,7 +45,6 @@ CollectionNameInputPage.prototype = Object.create({},
       }
 
       it('should not allow collection names with over than 50 characters', function(){
-        populateOtherInputsWithValidData();
         input.clear();
 
         var maxLength = 50;
