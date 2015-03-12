@@ -24,7 +24,13 @@ ChannelSelectInputPage.prototype = Object.create({},
     return this.channelNameMap[channelName];
   }},
   mapToChannelName: { value: function(channelSelectText) {
-    return _.findKey(this.channelNameMap, channelSelectText);
+    var channelName = _.findKey(this.channelNameMap, function(value) {
+      return channelSelectText === value;
+    });
+    if (channelName === undefined) {
+      throw 'No channel associated with selection "' + channelSelectText + '". Available selections are: ' + _.values(this.channelNameMap);
+    }
+    return channelName;
   }},
   isDefaultChannel: { value: function(channelName) {
     return channelName === channelListPage.defaultChannelName;

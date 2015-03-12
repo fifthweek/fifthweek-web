@@ -21,7 +21,7 @@
     "ng-focus": "~0.0.1",
     "fontawesome": "~4.2.0",
     "angular-elastic": "~2.4.2",
-    "lodash": "~3.1.0",
+    "lodash": "~3.4.0",
     "angular-ui-sortable": "~0.13.3",
     "marked": "~0.3.3"
   },

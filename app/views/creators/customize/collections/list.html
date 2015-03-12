@@ -1,7 +1,7 @@
 <fw-managed-list id="collections" ng-if="!model.errorMessage" item-name="collection" items="model.collections" new-item-state="creators.customize.collections.new" manage-item-state="creators.customize.collections.edit">
   <h5>
     <a href>{{item.name}}</a>
-    <span class="tail" ng-if="item.channel !== undefined">{{item.channel}}</span>
+    <span class="tail">{{item.isDefaultChannel ? 'Everyone' : '"' + item.channel + '" Only'}}</span>
   </h5>
   <p class="release-times">
     <span ng-repeat="weekday in item.schedule">{{weekday}}</span>

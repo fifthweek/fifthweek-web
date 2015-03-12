@@ -28,6 +28,9 @@ describe('add collection form', function() {
   var page = new CollectionAddPage();
 
   var inputs;
+  var getInputs = function() {
+    return inputs;
+  };
   var initialValues = {
     nameTextBox: '',
     channelSelect: defaultChannelSelectText
@@ -103,7 +106,7 @@ describe('add collection form', function() {
       expectChangesAppliedAndNavigateToPage(newFormValues);
     });
 
-    testKit.includeHappyPaths(page, collectionNameInputPage, 'nameTextBox', inputs, function(generatedFormValues) {
+    testKit.includeHappyPaths(page, collectionNameInputPage, 'nameTextBox', getInputs, function(generatedFormValues) {
       newFormValues = generatedFormValues;
     });
   });
@@ -114,18 +117,17 @@ describe('add collection form', function() {
       collectionListPage.addCollectionButton.click();
     });
 
-    testKit.includeSadPaths(page, page.createButton, page.helpMessages, collectionNameInputPage, 'nameTextBox', inputs);
+    testKit.includeSadPaths(page, page.createButton, page.helpMessages, collectionNameInputPage, 'nameTextBox', getInputs);
   });
 
   var expectChangesAppliedAndNavigateToPage = function(newFormValues) {
     collectionListPage.waitForPage();
     expect(collectionListPage.collections.count()).toBe(collectionCount);
 
-    var collection = {name: newFormValues.nameTextBox};
-    var channelName = channelSelectInputPage.mapToChannelName(newFormValues.channelSelect);
-    if (!channelSelectInputPage.isDefaultChannel(channelName)) {
-      collection.channelName = channelName;
-    }
+    var collection = {
+      name: newFormValues.nameTextBox,
+      channelName: channelSelectInputPage.mapToChannelName(newFormValues.channelSelect)
+    };
 
     collectionListPage.expectCollection(collection);
 

@@ -183,7 +183,10 @@ TestKit.prototype = Object.create({}, {
       inputPage.includeHappyPaths(function (newValue, newValueNormalized) {
         var valuesToTest = {};
         valuesToTest[inputName] = newValue;
-        var newFormValues = self.setFormValues(page, inputsNeedingValues, valuesToTest);
+
+        var inputsNeedingValuesResolved = _.isFunction(inputsNeedingValues) ? inputsNeedingValues() : inputsNeedingValues;
+
+        var newFormValues = self.setFormValues(page, inputsNeedingValuesResolved, valuesToTest);
 
         if (newValueNormalized) {
           // Input page object has stated that the persisted value is expected to be different from the one entered.
@@ -202,7 +205,9 @@ TestKit.prototype = Object.create({}, {
     describe('for "' + inputName + '"', function() {
 
       if (inputsNeedingValues) {
-        var inputsExcludingOneUnderTest = _.reject(inputsNeedingValues, { name: inputName });
+        var inputsNeedingValuesResolved = _.isFunction(inputsNeedingValues) ? inputsNeedingValues() : inputsNeedingValues;
+
+        var inputsExcludingOneUnderTest = _.reject(inputsNeedingValuesResolved, { name: inputName });
         if (inputsExcludingOneUnderTest.length > 0) {
 
           beforeEach(function() {

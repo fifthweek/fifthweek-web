@@ -37,13 +37,15 @@ describe('channel list controller', function () {
         channelId: 'A',
         name: 'channel A',
         priceInUsCentsPerWeek: 50,
-        description: 'Hello\nWorld'
+        description: 'Hello\nWorld',
+        isDefault: true
       },
       {
         channelId: 'B',
         name: 'channel B',
         priceInUsCentsPerWeek: 101,
-        description: 'Foo'
+        description: 'Foo',
+        isDefault: false
       }
     ]));
 
@@ -55,13 +57,15 @@ describe('channel list controller', function () {
         id: 'A',
         name: 'channel A',
         price: '0.50',
-        description: ['Hello', 'World']
+        description: ['Hello', 'World'],
+        isDefault: true
       },
       {
         id: 'B',
         name: 'channel B',
         price: '1.01',
-        description: ['Foo']
+        description: ['Foo'],
+        isDefault: false
       }
     ]);
   });

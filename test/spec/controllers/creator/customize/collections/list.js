@@ -85,19 +85,22 @@ describe('collection list controller', function () {
         id: 'X',
         name: 'collection X',
         schedule: ['day 1', 'day 2', 'day 3'],
-        channel: undefined // Channel omitted for default channel.
+        channel: 'channel A',
+        isDefaultChannel: true
       },
       {
         id: 'Y',
         name: 'collection Y',
         schedule: ['day 4'],
-        channel: 'channel B'
+        channel: 'channel B',
+        isDefaultChannel: false
       },
       {
         id: 'Z',
         name: 'collection Z',
         schedule: ['day 5', 'day 6'],
-        channel: 'channel B'
+        channel: 'channel B',
+        isDefaultChannel: false
       }
     ]);
   });

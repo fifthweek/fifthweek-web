@@ -6,17 +6,18 @@ angular.module('webApp').controller('listChannelsCtrl', function($scope, channel
 
   channelRepository.getChannels()
     .then(function(channels) {
-      $scope.model.channels = _.map(
-        channels,
-        function(channel) {
+      $scope.model.channels = _.chain(channels)
+        .map(function (channel) {
           return {
             id: channel.channelId,
             name: channel.name,
             price: (channel.priceInUsCentsPerWeek / 100).toFixed(2),
-            description: channel.description.split('\n')
+            description: channel.description.split('\n'),
+            isDefault: channel.isDefault
           };
-        }
-      );
+        })
+        .sortByOrder(['isDefault', 'name'], [false, true])
+        .value();
     })
     .catch(function(error) {
       return errorFacade.handleError(error, function(message) {

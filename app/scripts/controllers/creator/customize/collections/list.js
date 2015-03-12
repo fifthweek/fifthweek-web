@@ -12,12 +12,14 @@ angular.module('webApp').controller('listCollectionsCtrl', function($scope, chan
             return {
               id: collection.collectionId,
               name: collection.name,
-              channel: channel.isDefault ? undefined : channel.name,
+              channel: channel.name,
+              isDefaultChannel: channel.isDefault,
               schedule: releaseTimeFormatter.getDaysOfWeek(collection.weeklyReleaseSchedule)
             };
           });
         })
         .flatten()
+        .sortBy('name')
         .value();
     })
     .catch(function(error) {

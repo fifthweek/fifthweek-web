@@ -23,7 +23,6 @@ ChannelListPage.prototype = Object.create({}, {
   expectChannel: { value: function(channelData) {
     var element = this.getChannel(channelData.name);
     expect(element.getText()).toContain(channelData.name);
-    expect(element.getText()).toContain('$' + channelData.price);
     expect(element.getText()).toContain(channelData.description);
   }},
   waitForPage: { value: function() {
