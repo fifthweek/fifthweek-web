@@ -16,9 +16,9 @@ describe('collection service', function(){
   beforeEach(function() {
     module('webApp');
 
-    channelRepository = jasmine.createSpyObj('channelRepository', ['createCollection']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['createCollection', 'deleteCollection']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
-    collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection']);
+    collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection', 'deleteCollection']);
 
     module(function($provide) {
       $provide.value('channelRepositoryFactory', channelRepositoryFactory);
@@ -33,6 +33,8 @@ describe('collection service', function(){
 
     collectionStub.postCollection.and.returnValue($q.when({ data: { collectionId: collectionId, defaultWeeklyReleaseTime: weeklyReleaseTime } }));
     channelRepository.createCollection.and.returnValue($q.when());
+    collectionStub.deleteCollection.and.returnValue($q.defer().promise);
+    channelRepository.deleteCollection.and.returnValue($q.defer().promise);
   });
 
   describe('when creating a collection from name', function(){
@@ -79,6 +81,24 @@ describe('collection service', function(){
       $rootScope.$apply();
 
       expect(actualResult).toBe(collectionId);
+    });
+  });
+
+  describe('when deleting a collection', function() {
+    it('should delete the collection via the API', function() {
+      target.deleteCollection(collectionId);
+      $rootScope.$apply();
+
+      expect(collectionStub.deleteCollection).toHaveBeenCalledWith(collectionId);
+    });
+
+    it('should delete the collection from the client-side repository', function() {
+      collectionStub.deleteCollection.and.returnValue($q.when());
+
+      target.deleteCollection(collectionId);
+      $rootScope.$apply();
+
+      expect(channelRepository.deleteCollection).toHaveBeenCalledWith(collectionId);
     });
   });
 });

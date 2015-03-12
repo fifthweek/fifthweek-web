@@ -27,6 +27,13 @@ angular.module('webApp')
       );
     };
 
+    service.deleteCollection = function(collectionId) {
+      var channelRepository = channelRepositoryFactory.forCurrentUser();
+      return collectionStub.deleteCollection(collectionId).then(function() {
+        return channelRepository.deleteCollection(collectionId);
+      });
+    };
+
     return service;
   }
 );

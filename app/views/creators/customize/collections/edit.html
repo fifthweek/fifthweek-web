@@ -50,8 +50,10 @@
               ng-disabled="!mainFormDirty() || manageCollectionForm.isSubmitting"
               can-submit="manageCollectionForm.$valid && mainFormDirty()"
               fw-form-submit="save()">Save Changes</button>
-            <button class="btn btn-default btn-block"
-                    ui-sref="creators.customize.collections">Cancel</button>
+            <button
+              id="cancel-button"
+              class="btn btn-default btn-block"
+              ui-sref="{{previousState}}">Cancel</button>
           </div>
           <div class="col-s-4">
             <fw-form-input-delete
@@ -87,6 +89,7 @@
         class="btn btn-block btn-success"
         ng-click="addReleaseTime()">Add Release Time</button>
       <button
+        id="cancel-release-time-button"
         class="btn btn-default btn-block"
         ng-click="model.addingReleaseTime = false">Cancel</button>
 
@@ -116,6 +119,7 @@
             ng-disabled="manageReleaseTimeForm.$pristine || manageReleaseTimeForm.isSubmitting"
             ng-click="saveReleaseTime()">Update Release Time</button>
           <button
+            id="cancel-release-time-button"
             class="btn btn-default btn-block"
             ng-click="model.selectedReleaseTime = null">Cancel</button>
         </div>

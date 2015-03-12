@@ -67,9 +67,34 @@ angular.module('webApp')
           });
         };
 
+        service.findChannelForCollection = function(channels, collectionId) {
+          var channel = _.find(channels, function(channel) {
+            return _.some(channel.collections, {collectionId: collectionId});
+          });
+
+          if (!channel) {
+            return $q.reject(new DisplayableError('Channel not found.'));
+          }
+
+          return channel;
+        };
+
+        service.getChannelForCollection = function(collectionId) {
+          return service.getChannels().then(function(channels) {
+            return service.findChannelForCollection(channels, collectionId);
+          });
+        };
+
         service.createCollection = function(channelId, collection) {
           return service.updateChannel(channelId, function(channel) {
             channel.collections.push(collection);
+          });
+        };
+
+        service.deleteCollection = function(collectionId) {
+          return service.updateChannels(function(channels) {
+            var channel = service.findChannelForCollection(channels, collectionId);
+            _.remove(channel.collections, { collectionId: collectionId });
           });
         };
 

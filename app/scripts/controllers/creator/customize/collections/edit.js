@@ -1,5 +1,10 @@
-angular.module('webApp').controller('editCollectionCtrl', function($scope, $state, states) {
+angular.module('webApp').controller('editCollectionCtrl', function($scope, $state, states, collectionService) {
   'use strict';
+
+  //var channelRepository = channelRepositoryFactory.forCurrentUser();
+  var collectionId = $state.params.id;
+
+  $scope.previousState = states.creators.customize.collections.name;
 
   $scope.model = {
     id: 'a',
@@ -67,11 +72,13 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
   };
 
   $scope.save = function() {
-    $state.go(states.creators.customize.collections.name);
+    $state.go($scope.previousState);
   };
 
   $scope.delete = function() {
-    $state.go(states.creators.customize.collections.name);
+    return collectionService.deleteCollection(collectionId).then(function() {
+      $state.go($scope.previousState);
+    });
   };
 
   $scope.deleteReleaseTime = function() {
