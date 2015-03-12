@@ -14,7 +14,7 @@
     <div ng-show="!model.postLater">
       <form novalidate name="contentForm" id="content-form">
 
-        <div ng-include="'views/creators/compose/' + uploadFormFile + '.html'"></div>
+        <div ng-include="'modules/creator-compose/compose-' + uploadFormFile + '.html'"></div>
 
         <div ng-if="model.fileUploaded">
           <fw-form-input-comment ng-model="model.input.comment" placeholder="Add a comment, if you like" focus></fw-form-input-comment>

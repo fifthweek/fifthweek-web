@@ -1,4 +1,4 @@
-angular.module('webApp').controller('composeCreateCollectionCtrl',
+angular.module('webApp').controller('composeCreateCollectionDialogCtrl',
   function($scope, composeUtilities) {
     'use strict';
 

@@ -1,4 +1,4 @@
-describe('composeCreateCollectionCtrl', function(){
+describe('composeCreateCollectionDialogCtrl', function(){
   'use strict';
 
   var $q;
@@ -29,7 +29,7 @@ describe('composeCreateCollectionCtrl', function(){
 
   var createController = function(){
     inject(function ($controller) {
-      target = $controller('composeCreateCollectionCtrl', { $scope: $scope });
+      target = $controller('composeCreateCollectionDialogCtrl', { $scope: $scope });
     });
   };
 

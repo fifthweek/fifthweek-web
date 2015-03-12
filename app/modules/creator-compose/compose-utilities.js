@@ -124,8 +124,8 @@ angular.module('webApp')
 
     service.showCreateCollectionDialog = function($scope) {
       return $modal.open({
-        controller: 'composeCreateCollectionCtrl',
-        templateUrl: 'views/creators/compose/create-collection.html',
+        controller: 'composeCreateCollectionDialogCtrl',
+        templateUrl: 'modules/creator-compose/compose-create-collection-dialog.html',
         scope: $scope
       });
     };

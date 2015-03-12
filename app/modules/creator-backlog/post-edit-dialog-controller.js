@@ -1,4 +1,4 @@
-angular.module('webApp').controller('backlogPostEditCtrl',
+angular.module('webApp').controller('postEditDialogCtrl',
   function($scope, postId) {
     'use strict';
 

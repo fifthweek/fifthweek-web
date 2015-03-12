@@ -18,8 +18,8 @@ angular.module('webApp').factory('postInteractions', function($modal, deleteVeri
 
     service.edit = function(postId) {
       $modal.open({
-        controller: 'backlogPostEditCtrl',
-        templateUrl: 'views/creators/backlog/post-edit.html',
+        controller: 'postEditDialogCtrl',
+        templateUrl: 'modules/creator-backlog/post-edit-dialog.html',
         resolve: {
           postId: function() {
             return postId;

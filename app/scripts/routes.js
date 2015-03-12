@@ -263,7 +263,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.compose.name, {
         url: '/compose',
-        templateUrl: 'views/creators/compose/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
         data : {
           pageTitle: 'Compose',
@@ -276,7 +276,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.compose.note.name, {
         url: '/note',
-        templateUrl: 'views/creators/compose/note.html',
+        templateUrl: 'modules/creator-compose/compose-note.html',
         controller: 'composeNoteCtrl',
         requireSubscription: true,
         data : {
@@ -290,7 +290,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.compose.image.name, {
         url: '/image',
-        templateUrl: 'views/creators/compose/upload.html',
+        templateUrl: 'modules/creator-compose/compose-upload.html',
         controller: 'composeImageCtrl',
         requireSubscription: true,
         data : {
@@ -304,7 +304,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.compose.file.name, {
         url: '/file',
-        templateUrl: 'views/creators/compose/upload.html',
+        templateUrl: 'modules/creator-compose/compose-upload.html',
         controller: 'composeFileCtrl',
         requireSubscription: true,
         data : {
@@ -318,7 +318,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.backlog.name, {
         url: '/backlog',
-        templateUrl: 'views/creators/backlog/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.creators.backlog.futurePosts.name,
         requireSubscription: true,
         data : {
@@ -329,7 +329,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.backlog.futurePosts.name, {
         url: '',
-        templateUrl: 'views/creators/backlog/post-list.html',
+        templateUrl: 'modules/creator-backlog/backlog-post-list.html',
         controller: 'backlogPostListCtrl',
         requireSubscription: true,
         data : {
@@ -342,7 +342,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.backlog.queues.name, {
         url: '/queues',
-        templateUrl: 'views/creators/backlog/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.creators.backlog.queues.queues.name,
         requireSubscription: true,
         data : {
@@ -353,7 +353,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.backlog.queues.queues.name, {
         url: '/',
-        templateUrl: 'views/creators/backlog/queue-list.html',
+        templateUrl: 'modules/creator-backlog/backlog-queue-list.html',
         requireSubscription: true,
         data : {
           pageTitle: 'Queues',
@@ -365,7 +365,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.backlog.queues.reorder.name, {
         url: '/{id}',
-        templateUrl: 'views/creators/backlog/queue-reorder.html',
+        templateUrl: 'modules/creator-backlog/backlog-queue-reorder.html',
         controller: 'queueReorderCtrl',
         requireSubscription: true,
         data : {
