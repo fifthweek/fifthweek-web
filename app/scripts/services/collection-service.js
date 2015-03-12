@@ -1,12 +1,12 @@
 angular.module('webApp')
   .factory('collectionService',
-  function(channelRepositoryFactory, collectionStub) {
+  function(collectionRepositoryFactory, collectionStub) {
     'use strict';
 
     var service = {};
 
     service.createCollectionFromName = function(channelId, collectionName) {
-      var channelRepository = channelRepositoryFactory.forCurrentUser();
+      var collectionRepository = collectionRepositoryFactory.forCurrentUser();
       return collectionStub
         .postCollection({
           channelId: channelId,
@@ -18,7 +18,7 @@ angular.module('webApp')
             name: collectionName,
             weeklyReleaseSchedule: [ response.data.defaultWeeklyReleaseTime ]
           };
-          return channelRepository.createCollection(channelId, collection)
+          return collectionRepository.createCollection(channelId, collection)
             .then(function(){
               return collection.collectionId;
             }
@@ -28,9 +28,9 @@ angular.module('webApp')
     };
 
     service.deleteCollection = function(collectionId) {
-      var channelRepository = channelRepositoryFactory.forCurrentUser();
+      var collectionRepository = collectionRepositoryFactory.forCurrentUser();
       return collectionStub.deleteCollection(collectionId).then(function() {
-        return channelRepository.deleteCollection(collectionId);
+        return collectionRepository.deleteCollection(collectionId);
       });
     };
 

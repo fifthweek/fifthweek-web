@@ -8,20 +8,20 @@ describe('collection service', function(){
 
   var $q;
   var $rootScope;
-  var channelRepositoryFactory;
-  var channelRepository;
+  var collectionRepositoryFactory;
+  var collectionRepository;
   var collectionStub;
   var target;
 
   beforeEach(function() {
     module('webApp');
 
-    channelRepository = jasmine.createSpyObj('channelRepository', ['createCollection', 'deleteCollection']);
-    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
+    collectionRepository = jasmine.createSpyObj('collectionRepository', ['createCollection', 'deleteCollection']);
+    collectionRepositoryFactory = { forCurrentUser: function() { return collectionRepository; }};
     collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection', 'deleteCollection']);
 
     module(function($provide) {
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('collectionRepositoryFactory', collectionRepositoryFactory);
       $provide.value('collectionStub', collectionStub);
     });
 
@@ -32,16 +32,16 @@ describe('collection service', function(){
     });
 
     collectionStub.postCollection.and.returnValue($q.when({ data: { collectionId: collectionId, defaultWeeklyReleaseTime: weeklyReleaseTime } }));
-    channelRepository.createCollection.and.returnValue($q.when());
+    collectionRepository.createCollection.and.returnValue($q.when());
     collectionStub.deleteCollection.and.returnValue($q.defer().promise);
-    channelRepository.deleteCollection.and.returnValue($q.defer().promise);
+    collectionRepository.deleteCollection.and.returnValue($q.defer().promise);
   });
 
   describe('when creating a collection from name', function(){
 
     it('should get the repository for the current user before any async operations begin', function() {
       var firstCall = null;
-      channelRepositoryFactory.forCurrentUser = function() {
+      collectionRepositoryFactory.forCurrentUser = function() {
         firstCall = firstCall || 'good';
       };
 
@@ -66,7 +66,7 @@ describe('collection service', function(){
       target.createCollectionFromName(channelId, collectionName);
       $rootScope.$apply();
 
-      expect(channelRepository.createCollection).toHaveBeenCalledWith(channelId, {
+      expect(collectionRepository.createCollection).toHaveBeenCalledWith(channelId, {
         collectionId: collectionId,
         name: collectionName,
         weeklyReleaseSchedule: [weeklyReleaseTime]
@@ -98,7 +98,7 @@ describe('collection service', function(){
       target.deleteCollection(collectionId);
       $rootScope.$apply();
 
-      expect(channelRepository.deleteCollection).toHaveBeenCalledWith(collectionId);
+      expect(collectionRepository.deleteCollection).toHaveBeenCalledWith(collectionId);
     });
   });
 });
