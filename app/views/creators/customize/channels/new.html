@@ -5,7 +5,7 @@
   <form novalidate
         role="form"
         id="createChannelForm"
-        name="createChannelForm">
+        name="form">
 
     <fw-form-input-channel-name ng-model="model.channel.name" placeholder="New channel name" required focus></fw-form-input-channel-name>
     <fw-form-input-channel-description ng-model="model.channel.description" required></fw-form-input-channel-description>
@@ -24,6 +24,10 @@
         id="cancel-button"
         class="btn btn-default btn-block"
         ui-sref="{{previousState}}">Cancel</button>
+    </div>
+
+    <div ng-show="form.message" class="alert alert-danger sub-form-alert">
+      <p>{{form.message}}</p>
     </div>
 
   </form>

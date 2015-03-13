@@ -27,7 +27,7 @@ CollectionListPage.prototype = Object.create({}, {
 
     var element = this.getCollection(collectionData.name);
 
-    expect(element.getText()).toContain(expectedChannelName.toUpperCase());
+    expect(element.getText()).toContain(expectedChannelName);
   }},
   waitForPage: { value: function() {
     var self = this;

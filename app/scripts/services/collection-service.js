@@ -27,6 +27,19 @@ angular.module('webApp')
       );
     };
 
+    service.updateCollection = function(collectionId, collectionData) {
+      var collectionRepository = collectionRepositoryFactory.forCurrentUser();
+      return collectionStub.putCollection(collectionId, collectionData).then(function() {
+        var channelId = collectionData.channelId;
+        var collection = {
+          collectionId: collectionId,
+          name: collectionData.name,
+          weeklyReleaseSchedule: collectionData.weeklyReleaseSchedule
+        };
+        return collectionRepository.updateCollection(channelId, collection);
+      });
+    };
+
     service.deleteCollection = function(collectionId) {
       var collectionRepository = collectionRepositoryFactory.forCurrentUser();
       return collectionStub.deleteCollection(collectionId).then(function() {
