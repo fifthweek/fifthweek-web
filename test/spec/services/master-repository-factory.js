@@ -44,7 +44,15 @@ describe('master repository factory', function(){
     });
 
     it('should not update state', function() {
-      target.set(key, function(value) { value.change = 'applied'; });
+      target.update(key, function(value) { value.change = 'applied'; });
+      $rootScope.$apply();
+
+      expect(initialState).toEqual(initialStateClone);
+      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
+    });
+
+    it('should not set state', function() {
+      target.set(key, {});
       $rootScope.$apply();
 
       expect(initialState).toEqual(initialStateClone);
@@ -67,7 +75,15 @@ describe('master repository factory', function(){
     });
 
     it('should not update state', function() {
-      target.set(key, function(value) { value.change = 'applied'; });
+      target.update(key, function(value) { value.change = 'applied'; });
+      $rootScope.$apply();
+
+      expect(initialState).toEqual(initialStateClone);
+      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
+    });
+
+    it('should not set state', function() {
+      target.set(key, {});
       $rootScope.$apply();
 
       expect(initialState).toEqual(initialStateClone);
@@ -75,7 +91,14 @@ describe('master repository factory', function(){
     });
 
     it('should not throw an error when updating state', function() {
-      target.set(key, function(value) { value.change = 'applied'; }).catch(function() {
+      target.update(key, function(value) { value.change = 'applied'; }).catch(function() {
+        throw 'Assert never throws';
+      });
+      $rootScope.$apply();
+    });
+
+    it('should not throw an error when settting state', function() {
+      target.set(key, {}).catch(function() {
         throw 'Assert never throws';
       });
       $rootScope.$apply();
@@ -97,7 +120,15 @@ describe('master repository factory', function(){
     });
 
     it('should not update state', function() {
-      target.set(key, function(value) { value.change = 'applied'; });
+      target.update(key, function(value) { value.change = 'applied'; });
+      $rootScope.$apply();
+
+      expect(initialState).toEqual(initialStateClone);
+      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
+    });
+
+    it('should not set state', function() {
+      target.set(key, {});
       $rootScope.$apply();
 
       expect(initialState).toEqual(initialStateClone);
@@ -105,7 +136,15 @@ describe('master repository factory', function(){
     });
 
     it('should throw an error when updating state', function() {
-      target.set(key, function(value) { value.change = 'applied'; }).catch(function(error){
+      target.update(key, function(value) { value.change = 'applied'; }).catch(function(error){
+        expect(error instanceof FifthweekError).toBeTruthy();
+        expect(error.message).toBe('No aggregate state found.');
+      });
+      $rootScope.$apply();
+    });
+
+    it('should throw an error when setting state', function() {
+      target.set(key, {}).catch(function(error){
         expect(error instanceof FifthweekError).toBeTruthy();
         expect(error.message).toBe('No aggregate state found.');
       });
@@ -124,7 +163,7 @@ describe('master repository factory', function(){
   describe('when the provided key is invalid', function() {
 
     it('should not update state', function() {
-      target.set('invalid', function(value) { value.change = 'applied'; });
+      target.update('invalid', function(value) { value.change = 'applied'; });
       $rootScope.$apply();
 
       expect(initialState).toEqual(initialStateClone);
@@ -132,7 +171,7 @@ describe('master repository factory', function(){
     });
 
     it('should throw an error when updating state', function() {
-      target.set('invalid', function(value) { value.change = 'applied'; }).catch(function(error){
+      target.update('invalid', function(value) { value.change = 'applied'; }).catch(function(error){
         expect(error instanceof FifthweekError).toBeTruthy();
         expect(error.message).toBe('The key "invalid" does not match anything within the aggregate user state.');
       });
@@ -148,7 +187,7 @@ describe('master repository factory', function(){
     });
   });
 
-  describe('when setting a value', function(){
+  describe('when updating a value', function(){
 
     describe('when apply method fails synchronously', function(){
       var actualError;
@@ -156,7 +195,7 @@ describe('master repository factory', function(){
 
       beforeEach(function(){
         target
-          .set(key, function(value) {
+          .update(key, function(value) {
             value.change = 'applied';
             throw expectedError;
           })
@@ -182,7 +221,7 @@ describe('master repository factory', function(){
 
       beforeEach(function(){
         target
-          .set(key, function(value) {
+          .update(key, function(value) {
             value.change = 'applied';
             return $q.reject(expectedError);
           })
@@ -205,7 +244,7 @@ describe('master repository factory', function(){
     describe('when apply method succeeds', function(){
       beforeEach(function(){
         aggregateUserState.currentValue = { key: { deep: {} } };
-        target.set('key.deep', function(value) {
+        target.update('key.deep', function(value) {
           value.change = 'applied';
         });
         $rootScope.$apply();
@@ -223,6 +262,32 @@ describe('master repository factory', function(){
             change: 'applied'
           });
       });
+    });
+  });
+
+  describe('when setting a value', function(){
+
+    var newStructure = { change: 'applied', and: { anotherChange: 'also-applied' }};
+
+    beforeEach(function(){
+      aggregateUserState.currentValue = { key: { deep: {} } };
+      target.set('key.deep', newStructure);
+      $rootScope.$apply();
+    });
+
+    it('should call mergeDelta with a copy of the new structure', function(){
+      expect(aggregateUserState.setDelta).toHaveBeenCalledWith(
+        userId,
+        'key.deep',
+        newStructure);
+
+      var passedStructure = aggregateUserState.setDelta.calls.first().args[2];
+
+      expect(passedStructure).toEqual(newStructure);
+      expect(passedStructure).not.toBe(newStructure);
+
+      newStructure.and.anotherChange = 'something-else';
+      expect(passedStructure.and.anotherChange).toBe('also-applied');
     });
   });
 

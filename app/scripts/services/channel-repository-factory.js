@@ -44,7 +44,7 @@ angular.module('webApp')
         };
 
         service.updateChannels = function(applyChanges) {
-          return masterRepository.set(channelsKey, function(channels) {
+          return masterRepository.update(channelsKey, function(channels) {
             return $q.when(applyChanges(channels));
           });
         };

@@ -13,7 +13,7 @@ describe('channel repository factory', function(){
   beforeEach(function() {
     module('webApp');
 
-    masterRepository = jasmine.createSpyObj('masterRepository', ['get', 'set']);
+    masterRepository = jasmine.createSpyObj('masterRepository', ['get', 'update']);
     masterRepositoryFactory = { forCurrentUser: function() { return masterRepository; } };
 
     module(function($provide) {
@@ -61,14 +61,14 @@ describe('channel repository factory', function(){
       var channels = [];
       var applyChanges = jasmine.createSpy('applyChanges');
 
-      masterRepository.set.and.callFake(function(key, apply) {
+      masterRepository.update.and.callFake(function(key, apply) {
         apply(channels);
       });
 
       target.updateChannels(applyChanges);
 
       expect(applyChanges).toHaveBeenCalledWith(channels);
-      expect(masterRepository.set).toHaveBeenCalledWith('createdChannelsAndCollections.channels', jasmine.any(Function));
+      expect(masterRepository.update).toHaveBeenCalledWith('createdChannelsAndCollections.channels', jasmine.any(Function));
     });
   });
 

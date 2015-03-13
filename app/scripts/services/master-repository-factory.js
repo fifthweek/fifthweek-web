@@ -14,7 +14,22 @@ angular.module('webApp').factory('masterRepositoryFactory', function($q, aggrega
         return !authenticationService.currentUser || authenticationService.currentUser.userId !== currentUserId;
       };
 
-      service.set = function(key, applyChanges){
+      service.set = function(key, newValue){
+        if (userChanged()) {
+          return $q.when(); // Fail silently when user changes.
+        }
+        if (!aggregateUserState.currentValue) {
+          return $q.reject(new FifthweekError('No aggregate state found.'));
+        }
+
+        var clonedValue = _.cloneDeep(newValue);
+
+        aggregateUserState.setDelta(currentUserId, key, clonedValue);
+
+        return $q.when();
+      };
+
+      service.update = function(key, applyChanges){
         if (userChanged()) {
           return $q.when(); // Fail silently when user changes.
         }
