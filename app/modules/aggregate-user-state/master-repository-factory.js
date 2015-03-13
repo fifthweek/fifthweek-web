@@ -14,6 +14,10 @@ angular.module('webApp').factory('masterRepositoryFactory', function($q, aggrega
         return !authenticationService.currentUser || authenticationService.currentUser.userId !== currentUserId;
       };
 
+      service.getUserId = function(){
+        return currentUserId;
+      };
+
       service.set = function(key, newValue){
         if (userChanged()) {
           return $q.when(); // Fail silently when user changes.

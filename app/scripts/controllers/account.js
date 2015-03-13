@@ -1,42 +1,31 @@
 angular.module('webApp')
-  .controller('AccountCtrl', function ($scope, $q, authenticationService, accountSettingsStub, logService, utilities, blobImageControlFactory) {
+  .controller('AccountCtrl', function ($scope, $q, accountSettingsRepositoryFactory, accountSettingsStub, errorFacade, blobImageControlFactory) {
     'use strict';
 
     var model = {
       accountSettings: undefined,
-      isLoading: false,
       errorMessage: undefined
     };
 
+    var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
+
     var loadForm = function(){
-      model.errorMessage = undefined;
-      model.isLoading = true;
-      var username = authenticationService.currentUser.username;
-      var userId = authenticationService.currentUser.userId;
-      return accountSettingsStub.get(userId)
-        .then(function(result){
-          var data = result.data;
-          model.accountSettings = {};
-          model.accountSettings.email = data.email;
-          model.accountSettings.username = username;
-          model.accountSettings.userId = userId;
+      return accountSettingsRepository.getAccountSettings()
+        .then(function(data){
+          model.accountSettings = data;
 
           if(data.profileImage){
-            model.accountSettings.profileImageId = data.profileImage.fileId;
             $scope.blobImage.update(data.profileImage.uri, data.profileImage.containerName, true);
           }
           else{
-            model.accountSettings.profileImageId = undefined;
             $scope.blobImage.update();
           }
         })
         .catch(function(error){
-          logService.error(error);
-          model.errorMessage = utilities.getFriendlyErrorMessage(error);
           model.accountSettings = undefined;
-        })
-        .finally(function(){
-          model.isLoading = false;
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
         });
     };
 
@@ -46,22 +35,29 @@ angular.module('webApp')
     loadForm();
 
     $scope.onUploadComplete = function(data) {
-      model.accountSettings.profileImageId = data.fileId;
+      model.accountSettings.profileImage = data;
       $scope.form.$setDirty();
-      $scope.blobImage.update(data.fileUri, data.containerName, false);
+      $scope.blobImage.update(data.uri, data.containerName, false);
     };
 
     $scope.submitForm = function() {
+      var userId = accountSettingsRepository.getUserId();
+      var fileId;
+      if(model.accountSettings.profileImage){
+        fileId = model.accountSettings.profileImage.fileId;
+      }
       return accountSettingsStub
-        .put(model.accountSettings.userId, {
+        .put(userId, {
           newEmail: model.accountSettings.email,
           newUsername: model.accountSettings.username,
           newPassword: model.password ? model.password : undefined,
-          newProfileImageId: model.accountSettings.profileImageId
+          newProfileImageId: fileId
+        })
+        .then(function() {
+          return accountSettingsRepository.setAccountSettings(model.accountSettings);
         })
         .then(function(){
           $scope.form.$setPristine();
-          authenticationService.updateUsername(model.accountSettings.userId, model.accountSettings.username);
         });
     };
   });

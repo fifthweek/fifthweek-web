@@ -145,8 +145,8 @@ describe('fw-blob-image directive', function(){
         });
       });
 
-      it('should call update immediately if the fileUri and containerName are specified as attributes', function(){
-        var element = angular.element('<fw-blob-image file-uri="uri" container-name="containerName" />');
+      it('should call update immediately if the uri and containerName are specified as attributes', function(){
+        var element = angular.element('<fw-blob-image uri="uri" container-name="containerName" />');
         $compile(element)(scope);
         scope.$digest();
 
@@ -155,8 +155,8 @@ describe('fw-blob-image directive', function(){
         expect(broadcastAvailableImmediately).toBe(true);
       });
 
-      it('should call update immediately with thumbnail if the fileUri and containerName are specified as attributes', function(){
-        var element = angular.element('<fw-blob-image file-uri="uri" container-name="containerName" thumbnail="blah" />');
+      it('should call update immediately with thumbnail if the uri and containerName are specified as attributes', function(){
+        var element = angular.element('<fw-blob-image uri="uri" container-name="containerName" thumbnail="blah" />');
         $compile(element)(scope);
         scope.$digest();
 
@@ -176,8 +176,8 @@ describe('fw-blob-image directive', function(){
         expect(broadcastAvailableImmediately).toBeUndefined();
       });
 
-      it('should not call update immediately if only the fileUri is specified as an attribute', function(){
-        var element = angular.element('<fw-blob-image file-uri="uri" />');
+      it('should not call update immediately if only the uri is specified as an attribute', function(){
+        var element = angular.element('<fw-blob-image uri="uri" />');
         $compile(element)(scope);
         scope.$digest();
         scope.$apply();
@@ -187,7 +187,7 @@ describe('fw-blob-image directive', function(){
         expect(broadcastAvailableImmediately).toBeUndefined();
       });
 
-      it('should not call update immediately if neither fileUri nor containerName is specified as an attribute', function(){
+      it('should not call update immediately if neither uri nor containerName is specified as an attribute', function(){
         var element = angular.element('<fw-blob-image />');
         $compile(element)(scope);
         scope.$digest();

@@ -5,40 +5,45 @@ describe('customize landing page controller', function () {
   var $scope;
   var target;
 
-  var authenticationService;
+  var subscriptionRepositoryFactory;
+  var subscriptionRepository;
   var aggregateUserState;
   var subscriptionStub;
-  var logService;
-  var utilities;
   var blobImageControlFactory;
+  var errorFacade;
 
   var defaultBlobControl;
 
   beforeEach(function() {
 
-    authenticationService = jasmine.createSpyObj('authenticationService', ['updateUsername']);
+    subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['getSubscription', 'setSubscription']);
+    subscriptionRepositoryFactory = jasmine.createSpyObj('subscriptionRepositoryFactory', ['forCurrentUser']);
     aggregateUserState = { currentValue: { creatorStatus: { subscriptionId: 'subscriptionId' } } };
-    subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['getSubscription', 'putSubscription']);
-    logService = jasmine.createSpyObj('logService', ['error']);
-    utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
+    subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['putSubscription']);
     blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
+    errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
 
     defaultBlobControl = { control: true };
     blobImageControlFactory.createControl.and.returnValue(defaultBlobControl);
+    subscriptionRepositoryFactory.forCurrentUser.and.returnValue(subscriptionRepository);
 
     module('webApp');
     module(function($provide) {
-      $provide.value('authenticationService', authenticationService);
       $provide.value('aggregateUserState', aggregateUserState);
       $provide.value('subscriptionStub', subscriptionStub);
-      $provide.value('logService', logService);
-      $provide.value('utilities', utilities);
       $provide.value('blobImageControlFactory', blobImageControlFactory);
+      $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
+      $provide.value('errorFacade', errorFacade);
     });
 
     inject(function ($injector) {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
+    });
+
+    errorFacade.handleError.and.callFake(function(error, setMessage) {
+      setMessage('friendlyError');
+      return $q.when();
     });
 
     $scope.form = jasmine.createSpyObj('form', ['$setDirty','$setPristine']);
@@ -54,23 +59,22 @@ describe('customize landing page controller', function () {
 
   describe('when creating', function(){
 
-    beforeEach(function(){
-      authenticationService.currentUser = { username: 'username' };
-    });
-
     describe('when initializing', function(){
 
       beforeEach(function(){
-        subscriptionStub.getSubscription.and.returnValue($q.when({ data: {
-          email: 'email',
-          profileImage: undefined
-        }}));
+        subscriptionRepository.getSubscription.and.returnValue($q.when({
+          blah: 'blah'
+        }));
 
         createController();
       });
 
-      it('should call getSubscription with the subscription ID', function(){
-        expect(subscriptionStub.getSubscription).toHaveBeenCalledWith('subscriptionId');
+      it('should get the subscription repository', function(){
+        expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalled();
+      });
+
+      it('should call getSubscription', function(){
+        expect(subscriptionRepository.getSubscription).toHaveBeenCalled();
       });
 
       it('should set the blobImage control variable', function(){
@@ -81,104 +85,52 @@ describe('customize landing page controller', function () {
         expect($scope.model).toBeDefined();
       });
 
-      it('should set the landing page URL', function(){
-        expect($scope.model.landingPageUrl).toBe('https://www.fifthweek.com/username');
-      });
-
-      it('should load the current settings', function(){
-        expect($scope.model.isLoading).toBe(true);
-      });
-
       it('should set blobImage to a new control object', function(){
         expect(blobImageControlFactory.createControl).toHaveBeenCalled();
         expect($scope.blobImage).toEqual(defaultBlobControl);
       });
     });
 
-    describe('when initializing with no subscription id', function(){
-
-      beforeEach(function(){
-        aggregateUserState.currentValue.creatorStatus.subscriptionId = undefined;
-
-        createController();
-      });
-
-      it('should not call getSubscription', function(){
-        expect(subscriptionStub.getSubscription).not.toHaveBeenCalled();
-      });
-
-      it('should set the error message', function(){
-        expect($scope.model.errorMessage).toBeDefined();
-      });
-
-      it('should not be loading', function(){
-        expect($scope.model.isLoading).toBe(false);
-      });
-    });
-
-    describe('when initializing with no user state', function(){
-
-      beforeEach(function(){
-        aggregateUserState.currentValue = undefined;
-
-        createController();
-      });
-
-      it('should not call getSubscription', function(){
-        expect(subscriptionStub.getSubscription).not.toHaveBeenCalled();
-      });
-
-      it('should set the error message', function(){
-        expect($scope.model.errorMessage).toBeDefined();
-      });
-
-      it('should not be loading', function(){
-        expect($scope.model.isLoading).toBe(false);
-      });
-    });
-
     describe('when the user does not have a profile header image', function(){
 
       beforeEach(function(){
-        subscriptionStub.getSubscription.and.returnValue($q.when({ data: {
+        subscriptionRepository.getSubscription.and.returnValue($q.when({
           subscriptionName: 'name',
+          username: 'username',
           headerImage: undefined
-        }}));
+        }));
 
         createController();
         $scope.$apply();
       });
 
-      it('should set isLoading to false when complete', function(){
-        expect($scope.model.isLoading).toBe(false);
-      });
-
       it('should set the settings', function(){
         expect($scope.model.settings).toBeDefined();
         expect($scope.model.settings.subscriptionName).toBe('name');
-        expect($scope.model.settings.headerImageFileId).toBeUndefined();
-      });
-
-      it('should remove the headerImage property', function(){
-        expect(_.has($scope.model.settings, 'headerImage')).toBeFalsy();
+        expect($scope.model.settings.headerImage).toBeUndefined();
       });
 
       it('should set the blob image to defaults', function(){
         expect($scope.blobImage.update).toHaveBeenCalledWith();
+      });
+
+      it('should set the landing page URL', function(){
+        expect($scope.model.landingPageUrl).toBe('https://www.fifthweek.com/username');
       });
     });
 
     describe('when the user does have a profile image', function(){
 
       beforeEach(function(){
-        subscriptionStub.getSubscription.and.returnValue($q.when({ data: {
+        subscriptionRepository.getSubscription.and.returnValue($q.when({
           subscriptionName: 'name',
+          username: 'username',
           headerImage: {
             uri: 'uri',
             containerName: 'containerName',
             fileId: 'fileId'
           }
-        }}));
+        }));
 
         createController();
         $scope.$apply();
@@ -187,52 +139,46 @@ describe('customize landing page controller', function () {
       it('should set the settings', function(){
         expect($scope.model.settings).toBeDefined();
         expect($scope.model.settings.subscriptionName).toBe('name');
-        expect($scope.model.settings.headerImageFileId).toBe('fileId');
-      });
-
-      it('should remove the headerImage property', function(){
-        expect(_.has($scope.model.settings, 'headerImage')).toBeFalsy();
+        expect($scope.model.settings.headerImage.fileId).toBe('fileId');
+        expect($scope.model.settings.headerImage.uri).toBe('uri');
+        expect($scope.model.settings.headerImage.containerName).toBe('containerName');
       });
 
       it('should set the blob image to defaults', function(){
         expect($scope.blobImage.update).toHaveBeenCalledWith('uri', 'containerName', true);
+      });
+
+      it('should set the landing page URL', function(){
+        expect($scope.model.landingPageUrl).toBe('https://www.fifthweek.com/username');
       });
     });
 
     describe('when there is an error loading settings', function(){
 
       beforeEach(function(){
-        utilities.getFriendlyErrorMessage.and.returnValue('friendlyError');
-        subscriptionStub.getSubscription.and.returnValue($q.reject('error'));
+        subscriptionRepository.getSubscription.and.returnValue($q.reject('error'));
         createController();
         $scope.model.settings = { blah: 'blah' };
         $scope.$apply();
       });
 
       it('should log the error', function(){
-        expect(logService.error).toHaveBeenCalledWith('error');
+        expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
       });
 
       it('should update the error message', function(){
-        expect(utilities.getFriendlyErrorMessage).toHaveBeenCalledWith('error');
         expect($scope.model.errorMessage).toBe('friendlyError');
       });
 
       it('should set account settings to undefined', function(){
         expect($scope.model.settings).toBeUndefined();
       });
-
-      it('should set isLoading to false', function(){
-        expect($scope.model.isLoading).toBe(false);
-      });
     });
   });
 
   describe('when created', function(){
     beforeEach(function(){
-      authenticationService.currentUser = { username: 'username' };
-
-      subscriptionStub.getSubscription.and.returnValue($q.when({ data: {
+      subscriptionRepository.getSubscription.and.returnValue($q.when({
         subscriptionId: 'subscriptionId',
         subscriptionName: 'name',
         tagline: 'tagline',
@@ -244,7 +190,7 @@ describe('customize landing page controller', function () {
           containerName: 'containerName',
           fileId: 'fileId'
         }
-      }}));
+      }));
 
       createController();
 
@@ -255,13 +201,15 @@ describe('customize landing page controller', function () {
       beforeEach(function(){
         $scope.onUploadComplete({
           fileId: 'fileId',
-          fileUri: 'fileUri',
+          uri: 'uri',
           containerName: 'containerName'
         });
       });
 
       it('should set the new profile image id', function(){
-        expect($scope.model.settings.headerImageFileId).toBe('fileId');
+        expect($scope.model.settings.headerImage.fileId).toBe('fileId');
+        expect($scope.model.settings.headerImage.uri).toBe('uri');
+        expect($scope.model.settings.headerImage.containerName).toBe('containerName');
       });
 
       it('should set the form to dirty', function(){
@@ -269,7 +217,7 @@ describe('customize landing page controller', function () {
       });
 
       it('should update the blob image', function(){
-        expect($scope.blobImage.update).toHaveBeenCalledWith('fileUri', 'containerName', false);
+        expect($scope.blobImage.update).toHaveBeenCalledWith('uri', 'containerName', false);
       });
     });
 
@@ -279,12 +227,12 @@ describe('customize landing page controller', function () {
 
         beforeEach(function(){
           subscriptionStub.putSubscription.and.returnValue($q.when());
-          $scope.model.password = 'password';
+          subscriptionRepository.setSubscription.and.returnValue($q.when());
           $scope.submitForm();
           $scope.$apply();
         });
 
-        it('should save the account settings', function(){
+        it('should save the subscription settings', function(){
           expect(subscriptionStub.putSubscription).toHaveBeenCalledWith(
             'subscriptionId',
             {
@@ -298,12 +246,30 @@ describe('customize landing page controller', function () {
           );
         });
 
+        it('should update the aggregate user state', function(){
+          expect(subscriptionRepository.setSubscription).toHaveBeenCalledWith(
+            {
+              subscriptionId: 'subscriptionId',
+              subscriptionName: 'name',
+              tagline: 'tagline',
+              introduction: 'introduction',
+              video: 'video',
+              description: 'description',
+              headerImage: {
+                fileId: 'fileId',
+                uri: 'uri',
+                containerName: 'containerName'
+              }
+            }
+          );
+        });
+
         it('should set the form to pristine', function(){
           expect($scope.form.$setPristine).toHaveBeenCalled();
         });
       });
 
-      describe('when saving account settings fails', function(){
+      describe('when saving subscription settings fails', function(){
 
         var error;
 
@@ -311,6 +277,34 @@ describe('customize landing page controller', function () {
           subscriptionStub.putSubscription.and.returnValue($q.reject('error'));
           $scope.submitForm().catch(function(e){ error = e; });
           $scope.$apply();
+        });
+
+        it('should not update the aggregate user state', function(){
+          expect(subscriptionRepository.setSubscription).not.toHaveBeenCalled();
+        });
+
+        it('should not set the form to pristine', function(){
+          expect($scope.form.$setPristine).not.toHaveBeenCalled();
+        });
+
+        it('should propagate the error back to the caller', function(){
+          expect(error).toBe('error');
+        });
+      });
+
+      describe('when updating aggregate user state fails', function(){
+
+        var error;
+
+        beforeEach(function(){
+          subscriptionStub.putSubscription.and.returnValue($q.when());
+          subscriptionRepository.setSubscription.and.returnValue($q.reject('error'));
+          $scope.submitForm().catch(function(e){ error = e; });
+          $scope.$apply();
+        });
+
+        it('should save the subscription settings', function(){
+          expect(subscriptionStub.putSubscription).toHaveBeenCalled();
         });
 
         it('should not set the form to pristine', function(){

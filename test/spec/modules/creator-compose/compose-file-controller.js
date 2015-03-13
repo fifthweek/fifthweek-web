@@ -56,7 +56,7 @@ describe('compose file controller', function () {
       delegate = composeUploadDelegate.initialize.calls.first().args[1];
       delegate({
         file: { name: 'fileName' },
-        fileUri: 'fileUri',
+        uri: 'uri',
         containerName: 'containerName'
       });
     });

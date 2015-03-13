@@ -59,9 +59,8 @@ angular.module('webApp')
         bytesUploaded: 0,
         submitUri: null,
         file: file,
-        uri: config.uri,
         signature: config.signature,
-        fileUri: config.uri + config.signature,
+        uri: config.uri + config.signature,
         progress: config.progress || function(){},
         azureCalled: config.azureCalled || function(){},
         deferred: $q.defer()
@@ -88,7 +87,7 @@ angular.module('webApp')
     };
 
     var commitBlockList = function (state) {
-      azureBlobStub.commitBlockList(state.fileUri, state.blockIds, state.file.type)
+      azureBlobStub.commitBlockList(state.uri, state.blockIds, state.file.type)
         .then(function() {
           state.deferred.resolve();
         }).catch(function(error) {
@@ -103,7 +102,7 @@ angular.module('webApp')
         if (event.target.readyState === FileReader.DONE) {
 
           var requestData = new Uint8Array(event.target.result);
-          azureBlobStub.putBlockBlob(state.fileUri, state.blockIds[state.blockIds.length - 1], requestData)
+          azureBlobStub.putBlockBlob(state.uri, state.blockIds[state.blockIds.length - 1], requestData)
             .then(function () {
               state.bytesUploaded += requestData.length;
 

@@ -284,7 +284,7 @@ describe('compose upload delegate', function(){
     describe('when onUploadComplete is called', function(){
       var data;
       beforeEach(function(){
-        data = {fileId: 'fileId2', fileUri: 'uri', containerName: 'containerName'};
+        data = {fileId: 'fileId2', uri: 'uri', containerName: 'containerName'};
         $scope.model.fileUploaded = false;
         $scope.onUploadComplete(data);
       });
@@ -307,7 +307,7 @@ describe('compose upload delegate', function(){
       var data;
       beforeEach(function(){
         onUploadComplete = undefined;
-        data = {fileId: 'fileId2', fileUri: 'uri', containerName: 'containerName'};
+        data = {fileId: 'fileId2', uri: 'uri', containerName: 'containerName'};
         $scope.model.fileUploaded = false;
         $scope.onUploadComplete(data);
       });

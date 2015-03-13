@@ -35,10 +35,10 @@ angular.module('webApp')
       }
 
       if(_.now() > pendingImageDataExpiry){
-        return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for image ' + pendingImageData.fileUri + ' to be available.'));
+        return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for image ' + pendingImageData.uri + ' to be available.'));
       }
 
-      return azureBlobAvailability.checkAvailability(pendingImageData.fileUri, pendingImageData.containerName)
+      return azureBlobAvailability.checkAvailability(pendingImageData.uri, pendingImageData.containerName)
         .then(function(urlWithSignature){
           if(urlWithSignature){
             return assignImage(urlWithSignature);
@@ -53,9 +53,9 @@ angular.module('webApp')
       return $timeout(waitForImage, intervalMilliseconds);
     };
 
-    var handleUpdateEvent = function(event, fileUri, containerName, availableImmediately){
+    var handleUpdateEvent = function(event, uri, containerName, availableImmediately){
 
-      if(!fileUri){
+      if(!uri){
         // Reset and cancel existing checks.
         $scope.model.errorMessage = undefined;
         $scope.model.imageUri = undefined;
@@ -71,7 +71,7 @@ angular.module('webApp')
 
       var isAlreadyWaiting = pendingImageData !== undefined;
       pendingImageData = {
-        fileUri: fileUri,
+        uri: uri,
         containerName: containerName
       };
 

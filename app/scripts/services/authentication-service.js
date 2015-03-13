@@ -6,7 +6,7 @@ angular.module('webApp')
     roles: {
       creator: 'creator',
       administrator: 'administrator',
-      psychic: 'psychic'
+      preRelease: 'pre-release'
     }
   })
   .factory('authenticationService', function(authenticationServiceImpl){
@@ -43,40 +43,25 @@ angular.module('webApp')
       service.currentUser.accessToken = undefined;
       service.currentUser.refreshToken = undefined;
       service.currentUser.userId = undefined;
-      service.currentUser.username = undefined;
       service.currentUser.roles = undefined;
 
       localStorageService.remove(localStorageName);
       broadcastCurrentUserChangedEvent();
     };
 
-    var setCurrentUserDetails = function(accessToken, refreshToken, userId, username, roles){
+    var setCurrentUserDetails = function(accessToken, refreshToken, userId, roles){
       service.currentUser.authenticated = true;
       service.currentUser.accessToken = accessToken;
       service.currentUser.refreshToken = refreshToken;
       service.currentUser.userId = userId;
-      service.currentUser.username = username;
       service.currentUser.roles = roles;
 
       localStorageService.set(localStorageName, service.currentUser);
       broadcastCurrentUserChangedEvent();
     };
 
-    var updateUsername = function(userId, username){
-      if(service.currentUser.authenticated && service.currentUser.userId === userId){
-        service.currentUser.username = username;
-
-        localStorageService.set(localStorageName, service.currentUser);
-        broadcastCurrentUserChangedEvent();
-      }
-    };
-
     var extractAuthenticationDataFromResponse = function (response){
       return $q(function(resolve, reject) {
-        var username = response.data.username;
-        if (!username ){
-          return reject(new FifthweekError('The username was not returned'));
-        }
 
         var roles = [];
         var rolesString = response.data.roles;
@@ -102,7 +87,7 @@ angular.module('webApp')
           return reject(new FifthweekError('The refresh token was not returned'));
         }
 
-        setCurrentUserDetails(accessToken, refreshToken, userId, username, roles);
+        setCurrentUserDetails(accessToken, refreshToken, userId, roles);
         return resolve();
       });
     };
@@ -191,10 +176,6 @@ angular.module('webApp')
       clearCurrentUserDetails();
 
       return fetchAggregateUserState.updateFromServer();
-    };
-
-    service.updateUsername = function(userId, username){
-      updateUsername(userId, username);
     };
 
     return service;

@@ -7,7 +7,7 @@ angular.module('webApp').controller('composeImageCtrl',
     $scope.blobImage = blobImageControlFactory.createControl();
 
     var onUploadComplete = function(data) {
-      $scope.blobImage.update(data.fileUri, data.containerName);
+      $scope.blobImage.update(data.uri, data.containerName);
     };
 
     composeUploadDelegate.initialize($scope, onUploadComplete, postsStub.postImage);

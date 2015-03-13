@@ -11,9 +11,9 @@ angular.module('webApp').factory('blobImageControlFactory', function($q) {
       };
 
       var control = {
-        update: function(fileUri, containerName, availableImmediately){
+        update: function(uri, containerName, availableImmediately){
           return state.deferred.promise.then(function(){
-            return state.updateHandler(fileUri, containerName, availableImmediately);
+            return state.updateHandler(uri, containerName, availableImmediately);
           });
         },
         initialize: function(updateHandler){

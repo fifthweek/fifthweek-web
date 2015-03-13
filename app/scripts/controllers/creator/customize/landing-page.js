@@ -1,52 +1,36 @@
 angular.module('webApp').controller(
   'customizeLandingPageCtrl',
-  function($scope, $q, authenticationService, aggregateUserState, subscriptionStub, logService, utilities, blobImageControlFactory) {
+  function($scope, $q, subscriptionRepositoryFactory, subscriptionStub, errorFacade, blobImageControlFactory) {
     'use strict';
 
     var model = {
       settings: undefined,
-      isLoading: false,
       errorMessage: undefined,
-      landingPageUrl: 'https://www.fifthweek.com/' + authenticationService.currentUser.username
+      landingPageUrl: undefined
     };
 
+    var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+
     var loadForm = function(){
-      if(!aggregateUserState.currentValue || !aggregateUserState.currentValue.creatorStatus)
-      {
-        model.errorMessage = 'Subscription ID unavailable.';
-        return;
-      }
 
-      var subscriptionId = aggregateUserState.currentValue.creatorStatus.subscriptionId;
-      if(!subscriptionId){
-        model.errorMessage = 'You do not have a subscription to customize.';
-        return;
-      }
+      return subscriptionRepository.getSubscription()
+        .then(function(data){
+          model.settings = data;
 
-      model.errorMessage = undefined;
-      model.isLoading = true;
-      return subscriptionStub.getSubscription(subscriptionId)
-        .then(function(result){
-          var data = result.data;
-          model.settings = _.cloneDeep(data);
-          delete model.settings.headerImage;
+          model.landingPageUrl = 'https://www.fifthweek.com/' + data.username;
 
           if(data.headerImage){
-            model.settings.headerImageFileId = data.headerImage.fileId;
             $scope.blobImage.update(data.headerImage.uri, data.headerImage.containerName, true);
           }
           else{
-            model.settings.headerImageFileId = undefined;
             $scope.blobImage.update();
           }
         })
         .catch(function(error){
-          logService.error(error);
-          model.errorMessage = utilities.getFriendlyErrorMessage(error);
           model.settings = undefined;
-        })
-        .finally(function(){
-          model.isLoading = false;
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
         });
     };
 
@@ -56,9 +40,9 @@ angular.module('webApp').controller(
     loadForm();
 
     $scope.onUploadComplete = function(data) {
-      model.settings.headerImageFileId = data.fileId;
+      model.settings.headerImage = data;
       $scope.form.$setDirty();
-      $scope.blobImage.update(data.fileUri, data.containerName, false);
+      $scope.blobImage.update(data.uri, data.containerName, false);
     };
 
     $scope.submitForm = function() {
@@ -66,12 +50,15 @@ angular.module('webApp').controller(
         subscriptionName: model.settings.subscriptionName,
         tagline: model.settings.tagline,
         introduction: model.settings.introduction,
-        headerImageFileId: model.settings.headerImageFileId,
+        headerImageFileId: model.settings.headerImage.fileId,
         video: model.settings.video ? model.settings.video : undefined,
         description: model.settings.description
       };
 
       return subscriptionStub.putSubscription(model.settings.subscriptionId, subscriptionData)
+        .then(function() {
+          return subscriptionRepository.setSubscription(model.settings);
+        })
         .then(function(){
           $scope.form.$setPristine();
         });

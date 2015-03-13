@@ -14,6 +14,10 @@ angular.module('webApp')
 
         var service = {};
 
+        service.getUserId = function(){
+          return masterRepository.getUserId();
+        };
+
         service.getAccountSettings = function(){
           return masterRepository.get(accountSettingsKey);
         };

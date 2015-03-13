@@ -3,7 +3,7 @@
     <div ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
       <div ng-if="post.image" class="full-width-image">
-        <fw-blob-image thumbnail="1200x16000" file-uri="{{post.image.uri}}" container-name="{{post.image.containerName}}"></fw-blob-image>
+        <fw-blob-image thumbnail="1200x16000" uri="{{post.image.uri}}" container-name="{{post.image.containerName}}"></fw-blob-image>
       </div>
 
       <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
@@ -26,7 +26,7 @@
         <div class="row info-actions">
           <div class="col-xs-8 info">
             <div class="author">
-              <fw-blob-image control="blobImage" thumbnail="128x128-crop" file-uri="{{model.accountSettings.profileImage.uri}}" container-name="{{model.accountSettings.profileImage.containerName}}"></fw-blob-image>
+              <fw-blob-image control="blobImage" thumbnail="128x128-crop" uri="{{model.accountSettings.profileImage.uri}}" container-name="{{model.accountSettings.profileImage.containerName}}"></fw-blob-image>
             </div>
             <ul>
               <li>

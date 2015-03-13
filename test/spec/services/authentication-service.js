@@ -96,20 +96,20 @@ describe('authentication service', function() {
   var executeSignOutExpectations = function(){
     expect(localStorageService.remove).toHaveBeenCalledWith('currentUser');
     expect(target.currentUser.authenticated).toBeFalsy();
-    expect(target.currentUser.username).toBeFalsy();
+    expect(target.currentUser.userId).toBeFalsy();
   };
 
   describe('when initializing', function(){
 
     it('should become authenticated if user data exists in local storage', function(){
       localStorageService.get = function(){
-        return { authenticated: true, username: 'username' };
+        return { authenticated: true, userId: 'userId' };
       };
 
       target.initialize();
 
       expect(target.currentUser.authenticated).toBe(true);
-      expect(target.currentUser.username).toBe('username');
+      expect(target.currentUser.userId).toBe('userId');
     });
 
     it('should become unauthenticated if user data absent from local storage', function(){
@@ -121,12 +121,12 @@ describe('authentication service', function() {
       target.initialize();
 
       expect(target.currentUser.authenticated).toBe(false);
-      expect(target.currentUser.username).toBeFalsy();
+      expect(target.currentUser.userId).toBeFalsy();
     });
 
     it('should broadcast current user changed event if user data exists in local storage', function(){
       localStorageService.get = function(){
-        return { authenticated: true, username: 'username' };
+        return { authenticated: true, userId: 'userId' };
       };
 
       spyOn($rootScope, '$broadcast');
@@ -168,7 +168,7 @@ describe('authentication service', function() {
       it('should throw an error if the user is signed in', function() {
 
         target.currentUser.authenticated = true;
-        var registrationData = {username: 'user'};
+        var registrationData = {userId: 'userId'};
 
         var result;
         target.registerUser(registrationData).catch(function(response) { result = response; });
@@ -180,7 +180,7 @@ describe('authentication service', function() {
 
       it('should and call the register API', function() {
 
-        var registrationData = {username: 'user'};
+        var registrationData = {userId: 'userId'};
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(200, {});
 
@@ -193,7 +193,7 @@ describe('authentication service', function() {
 
       it('should return an ApiError on an unexpected response', function() {
 
-        var registrationData = {username: 'user'};
+        var registrationData = {userId: 'userId'};
 
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'membership/registrations', registrationData).respond(500, { message: 'Bad' });
 
@@ -241,7 +241,6 @@ describe('authentication service', function() {
         expect(target.currentUser.authenticated).toBe(true);
         expect(target.currentUser.accessToken).toBe('ACCESSTOKEN');
         expect(target.currentUser.refreshToken).toBe('REFRESHTOKEN');
-        expect(target.currentUser.username).toBe('username');
         expect(target.currentUser.userId).toBe(userId);
         expect(target.currentUser.roles).toEqual(['admin', 'creator']);
 
@@ -275,7 +274,6 @@ describe('authentication service', function() {
           200,
           {
             refresh_token: 'REFRESHTOKEN',
-            username: 'username',
             user_id: '123'
           });
 
@@ -299,7 +297,6 @@ describe('authentication service', function() {
           200,
           {
             access_token: 'ACCESSTOKEN',
-            username: 'username',
             user_id: '123'
           });
 
@@ -323,8 +320,7 @@ describe('authentication service', function() {
           200,
           {
             access_token: 'ACCESSTOKEN',
-            refresh_token: 'REFRESHTOKEN',
-            username: 'username'
+            refresh_token: 'REFRESHTOKEN'
           });
 
         localStorageService.set = function(){};
@@ -339,58 +335,6 @@ describe('authentication service', function() {
 
         expect(result instanceof FifthweekError).toBeTruthy();
         expect(result.message).toBe('The user ID was not returned');
-      });
-
-      it('should require a username to be returned', function(){
-
-        $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
-          200,
-          {
-            access_token: 'ACCESSTOKEN',
-            refresh_token: 'REFRESHTOKEN',
-            user_id: '123'
-          });
-
-        localStorageService.set = function(){};
-
-        var result;
-        target.signIn(validSignInData).catch(function(response){
-          result = response;
-        });
-
-        $httpBackend.flush();
-        $rootScope.$apply();
-
-        expect(result instanceof FifthweekError).toBeTruthy();
-        expect(result.message).toBe('The username was not returned');
-      });
-
-      it('should normalise username using same rules as API', function() {
-        // Ensure these are consistent with fifthweek-api 'UserInputNormalizationTests'.
-
-        var signInData = {
-          username: '  \t\nUSERNAME\t\n  ',
-          password: 'PASSWORD'
-        };
-
-        $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(
-          200,
-          {
-            access_token: 'ACCESSTOKEN',
-            refresh_token: 'REFRESHTOKEN',
-            username: 'username',
-            user_id: '123'
-          });
-
-        localStorageService.set = function(){};
-        spyOn(localStorageService, 'set');
-
-        target.signIn(signInData);
-
-        $httpBackend.flush();
-        $rootScope.$apply();
-
-        expect(target.currentUser.username).toBe('username');
       });
 
       it('should ensure we are logged out on unsuccessful sign in', function(){
@@ -414,7 +358,7 @@ describe('authentication service', function() {
         expect(result.message).toBe('Bad');
       });
 
-      it('should track the username against the analytics providers', function () {
+      it('should track the user ID against the analytics providers', function () {
         $httpBackend.expectPOST(fifthweekConstants.apiBaseUri + 'token').respond(200, validResponse);
         localStorageService.remove = function(){};
         localStorageService.set = function(){};
@@ -557,73 +501,6 @@ describe('authentication service', function() {
 
         expect(result instanceof FifthweekError).toBeTruthy();
         expect(result.message).toBe('Cannot refresh the authentication token because the user is not authenticated.');
-      });
-    });
-
-    describe('when updating the username', function(){
-
-      beforeEach(function(){
-        localStorageService.set = jasmine.createSpy();
-        spyOn($rootScope, '$broadcast');
-      });
-
-      it('should update the username and persist', function(){
-
-        target.currentUser = { authenticated: true, username: 'username', userId: 'userId' };
-
-        target.updateUsername('userId', 'username2');
-        $rootScope.$apply();
-
-        expect(target.currentUser.authenticated).toBe(true);
-        expect(target.currentUser.username).toBe('username2');
-        expect(target.currentUser.userId).toBe('userId');
-      });
-
-      it('should persist the new username', function(){
-
-        target.currentUser = { authenticated: true, username: 'username', userId: 'userId' };
-
-        target.updateUsername('userId', 'username2');
-        $rootScope.$apply();
-
-        expect(localStorageService.set).toHaveBeenCalled();
-      });
-
-      it('should broadcast the current user changed event', function(){
-
-        target.currentUser = { authenticated: true, username: 'username', userId: 'userId' };
-
-        target.updateUsername('userId', 'username2');
-        $rootScope.$apply();
-
-        expect($rootScope.$broadcast).toHaveBeenCalled();
-        expect($rootScope.$broadcast.calls.first().args[0]).toBe(authenticationServiceConstants.currentUserChangedEvent);
-      });
-
-      it('should not update the if the user is not authenticated', function(){
-
-        target.currentUser = { authenticated: false, username: 'username', userId: 'userId' };
-
-        target.updateUsername('userId', 'username2');
-        $rootScope.$apply();
-
-        expect(target.currentUser.username).toBe('username');
-        expect($rootScope.$broadcast).not.toHaveBeenCalled();
-        expect(localStorageService.set).not.toHaveBeenCalled();
-      });
-
-      it('should not update the if the userId does not match the current user', function(){
-
-        target.currentUser = { authenticated: true, username: 'username', userId: 'userId' };
-
-        target.updateUsername('userId2', 'username2');
-        $rootScope.$apply();
-
-        expect(target.currentUser.authenticated).toBe(true);
-        expect(target.currentUser.username).toBe('username');
-        expect(target.currentUser.userId).toBe('userId');
-        expect($rootScope.$broadcast).not.toHaveBeenCalled();
-        expect(localStorageService.set).not.toHaveBeenCalled();
       });
     });
   });

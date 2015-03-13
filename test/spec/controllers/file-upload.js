@@ -230,7 +230,7 @@ describe('file upload controller', function(){
           data: {
             file: blob,
             fileId: uploadRequestData.fileId,
-            fileUri: uploadRequestData.accessInformation.uri,
+            uri: uploadRequestData.accessInformation.uri,
             containerName: uploadRequestData.accessInformation.containerName
           }
         });

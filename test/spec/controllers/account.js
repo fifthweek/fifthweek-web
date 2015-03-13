@@ -5,37 +5,43 @@ describe('account controller', function () {
   var $scope;
   var target;
 
-  var authenticationService;
+  var accountSettingsRepositoryFactory;
+  var accountSettingsRepository;
   var accountSettingsStub;
-  var logService;
-  var utilities;
+  var errorFacade;
   var blobImageControlFactory;
 
   var defaultBlobControl;
 
   beforeEach(function() {
 
-    authenticationService = jasmine.createSpyObj('authenticationService', ['updateUsername']);
-    accountSettingsStub = jasmine.createSpyObj('accountSettingsStub', ['get', 'put']);
-    logService = jasmine.createSpyObj('logService', ['error']);
-    utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
+    accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings', 'setAccountSettings', 'getUserId']);
+    accountSettingsRepositoryFactory = jasmine.createSpyObj('accountSettingsRepositoryFactory', ['forCurrentUser']);
+    accountSettingsStub = jasmine.createSpyObj('accountSettingsStub', ['put']);
+    errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
     blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
 
     defaultBlobControl = { control: true };
     blobImageControlFactory.createControl.and.returnValue(defaultBlobControl);
+    accountSettingsRepositoryFactory.forCurrentUser.and.returnValue(accountSettingsRepository);
+    accountSettingsRepository.getUserId.and.returnValue('userId');
 
     module('webApp');
     module(function($provide) {
-      $provide.value('authenticationService', authenticationService);
+      $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
       $provide.value('accountSettingsStub', accountSettingsStub);
-      $provide.value('logService', logService);
-      $provide.value('utilities', utilities);
+      $provide.value('errorFacade', errorFacade);
       $provide.value('blobImageControlFactory', blobImageControlFactory);
     });
 
     inject(function ($injector) {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
+    });
+
+    errorFacade.handleError.and.callFake(function(error, setMessage) {
+      setMessage('friendlyError');
+      return $q.when();
     });
 
     $scope.form = jasmine.createSpyObj('form', ['$setDirty','$setPristine']);
@@ -51,23 +57,24 @@ describe('account controller', function () {
 
   describe('when creating', function(){
 
-    beforeEach(function(){
-      authenticationService.currentUser = { username: 'username', userId: 'userId' };
-    });
-
     describe('when initializing', function(){
 
       beforeEach(function(){
-        accountSettingsStub.get.and.returnValue($q.when({ data: {
+        accountSettingsRepository.getAccountSettings.and.returnValue($q.when({
           email: 'email',
+          username: 'username',
           profileImage: undefined
-        }}));
+        }));
 
         createController();
       });
 
-      it('should call get with the user ID', function(){
-        expect(accountSettingsStub.get).toHaveBeenCalledWith('userId');
+      it('should get the account settings repository', function(){
+        expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalled();
+      });
+
+      it('should call getAccountSettings', function(){
+        expect(accountSettingsRepository.getAccountSettings).toHaveBeenCalled();
       });
 
       it('should set the blobImage control variable', function(){
@@ -76,10 +83,6 @@ describe('account controller', function () {
 
       it('should initialize the model', function(){
         expect($scope.model).toBeDefined();
-      });
-
-      it('should load the current user settings', function(){
-        expect($scope.model.isLoading).toBe(true);
       });
 
       it('should set blobImage to a new control object', function(){
@@ -91,25 +94,21 @@ describe('account controller', function () {
     describe('when the user does not have a profile image', function(){
 
       beforeEach(function(){
-        accountSettingsStub.get.and.returnValue($q.when({ data: {
+        accountSettingsRepository.getAccountSettings.and.returnValue($q.when({
           email: 'email',
+          username: 'username',
           profileImage: undefined
-        }}));
+        }));
 
         createController();
         $scope.$apply();
-      });
-
-      it('should set isLoading to false when complete', function(){
-        expect($scope.model.isLoading).toBe(false);
       });
 
       it('should set the accountSettings', function(){
         expect($scope.model.accountSettings).toBeDefined();
         expect($scope.model.accountSettings.email).toBe('email');
         expect($scope.model.accountSettings.username).toBe('username');
-        expect($scope.model.accountSettings.userId).toBe('userId');
-        expect($scope.model.accountSettings.profileImageId).toBeUndefined();
+        expect($scope.model.accountSettings.profileImage).toBeUndefined();
       });
 
       it('should set the blob image to defaults', function(){
@@ -120,14 +119,15 @@ describe('account controller', function () {
     describe('when the user does have a profile image', function(){
 
       beforeEach(function(){
-        accountSettingsStub.get.and.returnValue($q.when({ data: {
+        accountSettingsRepository.getAccountSettings.and.returnValue($q.when({
           email: 'email',
+          username: 'username',
           profileImage: {
             uri: 'uri',
             containerName: 'containerName',
             fileId: 'fileId'
           }
-        }}));
+        }));
 
         createController();
         $scope.$apply();
@@ -137,8 +137,9 @@ describe('account controller', function () {
         expect($scope.model.accountSettings).toBeDefined();
         expect($scope.model.accountSettings.email).toBe('email');
         expect($scope.model.accountSettings.username).toBe('username');
-        expect($scope.model.accountSettings.userId).toBe('userId');
-        expect($scope.model.accountSettings.profileImageId).toBe('fileId');
+        expect($scope.model.accountSettings.profileImage.uri).toBe('uri');
+        expect($scope.model.accountSettings.profileImage.containerName).toBe('containerName');
+        expect($scope.model.accountSettings.profileImage.fileId).toBe('fileId');
       });
 
       it('should set the blob image to defaults', function(){
@@ -149,44 +150,37 @@ describe('account controller', function () {
     describe('when there is an error loading account settings', function(){
 
       beforeEach(function(){
-        utilities.getFriendlyErrorMessage.and.returnValue('friendlyError');
-        accountSettingsStub.get.and.returnValue($q.reject('error'));
+        accountSettingsRepository.getAccountSettings.and.returnValue($q.reject('error'));
         createController();
         $scope.model.accountSettings = { blah: 'blah' };
         $scope.$apply();
       });
 
       it('should log the error', function(){
-        expect(logService.error).toHaveBeenCalledWith('error');
+        expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
       });
 
       it('should update the error message', function(){
-        expect(utilities.getFriendlyErrorMessage).toHaveBeenCalledWith('error');
         expect($scope.model.errorMessage).toBe('friendlyError');
       });
 
       it('should set account settings to undefined', function(){
         expect($scope.model.accountSettings).toBeUndefined();
       });
-
-      it('should set isLoading to false', function(){
-        expect($scope.model.isLoading).toBe(false);
-      });
     });
   });
 
   describe('when created', function(){
     beforeEach(function(){
-      authenticationService.currentUser = { username: 'username', userId: 'userId' };
-
-      accountSettingsStub.get.and.returnValue($q.when({ data: {
+      accountSettingsRepository.getAccountSettings.and.returnValue($q.when({
         email: 'email',
+        username: 'username',
         profileImage: {
           uri: 'uri',
           containerName: 'containerName',
           fileId: 'fileId'
         }
-      }}));
+      }));
 
       createController();
 
@@ -197,13 +191,15 @@ describe('account controller', function () {
       beforeEach(function(){
         $scope.onUploadComplete({
           fileId: 'fileId',
-          fileUri: 'fileUri',
+          uri: 'uri',
           containerName: 'containerName'
         });
       });
 
-      it('should set the new profile image id', function(){
-        expect($scope.model.accountSettings.profileImageId).toBe('fileId');
+      it('should set the new profile image', function(){
+        expect($scope.model.accountSettings.profileImage.fileId).toBe('fileId');
+        expect($scope.model.accountSettings.profileImage.uri).toBe('uri');
+        expect($scope.model.accountSettings.profileImage.containerName).toBe('containerName');
       });
 
       it('should set the form to dirty', function(){
@@ -211,22 +207,62 @@ describe('account controller', function () {
       });
 
       it('should update the blob image', function(){
-        expect($scope.blobImage.update).toHaveBeenCalledWith('fileUri', 'containerName', false);
+        expect($scope.blobImage.update).toHaveBeenCalledWith('uri', 'containerName', false);
       });
     });
 
     describe('when submitForm is called', function(){
 
-      describe('when saving account settings succeeds', function(){
+      describe('when no profile image exists', function(){
 
         beforeEach(function(){
+          $scope.model.accountSettings.profileImage = undefined;
+
           accountSettingsStub.put.and.returnValue($q.when());
+          accountSettingsRepository.setAccountSettings.and.returnValue($q.when());
           $scope.model.password = 'password';
           $scope.submitForm();
           $scope.$apply();
         });
 
-        it('should save the account settings', function(){
+        it('should save the account settings to the server', function(){
+          expect(accountSettingsStub.put).toHaveBeenCalledWith(
+            'userId',
+            {
+              newEmail: 'email',
+              newUsername: 'username',
+              newPassword: 'password',
+              newProfileImageId: undefined
+            }
+          );
+        });
+
+        it('should save the account settings to the aggregate user state', function(){
+          expect(accountSettingsRepository.setAccountSettings).toHaveBeenCalledWith(
+            {
+              email: 'email',
+              username: 'username',
+              profileImage: undefined
+            }
+          );
+        });
+
+        it('should set the form to pristine', function(){
+          expect($scope.form.$setPristine).toHaveBeenCalled();
+        });
+      });
+
+      describe('when a profile image exists', function(){
+
+        beforeEach(function(){
+          accountSettingsStub.put.and.returnValue($q.when());
+          accountSettingsRepository.setAccountSettings.and.returnValue($q.when());
+          $scope.model.password = 'password';
+          $scope.submitForm();
+          $scope.$apply();
+        });
+
+        it('should save the account settings to the server', function(){
           expect(accountSettingsStub.put).toHaveBeenCalledWith(
             'userId',
             {
@@ -238,8 +274,18 @@ describe('account controller', function () {
           );
         });
 
-        it('should update the username in the authentication service', function(){
-          expect(authenticationService.updateUsername).toHaveBeenCalledWith('userId', 'username');
+        it('should save the account settings to the aggregate user state', function(){
+          expect(accountSettingsRepository.setAccountSettings).toHaveBeenCalledWith(
+            {
+              email: 'email',
+              username: 'username',
+              profileImage: {
+                fileId: 'fileId',
+                uri: 'uri',
+                containerName: 'containerName'
+              }
+            }
+          );
         });
 
         it('should set the form to pristine', function(){
@@ -257,8 +303,8 @@ describe('account controller', function () {
           $scope.$apply();
         });
 
-        it('should not update the username in the authentication service', function(){
-          expect(authenticationService.updateUsername).not.toHaveBeenCalled();
+        it('should not update the aggregate user state', function(){
+          expect(accountSettingsRepository.setAccountSettings).not.toHaveBeenCalled();
         });
 
         it('should not set the form to pristine', function(){
@@ -274,6 +320,7 @@ describe('account controller', function () {
 
         beforeEach(function(){
           accountSettingsStub.put.and.returnValue($q.when());
+          accountSettingsRepository.setAccountSettings.and.returnValue($q.when());
           $scope.model.password = '';
           $scope.submitForm();
           $scope.$apply();
@@ -290,29 +337,44 @@ describe('account controller', function () {
             }
           );
         });
-      });
 
-      describe('when the user in the authentication service has changed', function(){
-
-        beforeEach(function(){
-          authenticationService.currentUser = { username: 'username2', userId: 'userId2' };
-          accountSettingsStub.put.and.returnValue($q.when());
-          $scope.submitForm();
-          $scope.$apply();
-        });
-
-        it('should save the account settings with the original user id and password', function(){
-          expect(accountSettingsStub.put).toHaveBeenCalledWith(
-            'userId',
+        it('should save the account settings to the aggregate user state', function(){
+          expect(accountSettingsRepository.setAccountSettings).toHaveBeenCalledWith(
             {
-              newEmail: 'email',
-              newUsername: 'username',
-              newPassword: undefined,
-              newProfileImageId: 'fileId'
+              email: 'email',
+              username: 'username',
+              profileImage: {
+                fileId: 'fileId',
+                uri: 'uri',
+                containerName: 'containerName'
+              }
             }
           );
         });
       });
-    });
+
+      describe('when updating aggregate user state fails', function(){
+
+        var error;
+
+        beforeEach(function(){
+          accountSettingsStub.put.and.returnValue($q.when());
+          accountSettingsRepository.setAccountSettings.and.returnValue($q.reject('error'));
+          $scope.submitForm().catch(function(e){ error = e; });
+          $scope.$apply();
+        });
+
+        it('should save the subscription settings', function(){
+          expect(accountSettingsStub.put).toHaveBeenCalled();
+        });
+
+        it('should not set the form to pristine', function(){
+          expect($scope.form.$setPristine).not.toHaveBeenCalled();
+        });
+
+        it('should propagate the error back to the caller', function(){
+          expect(error).toBe('error');
+        });
+      });   });
   });
 });
