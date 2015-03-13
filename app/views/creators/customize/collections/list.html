@@ -4,7 +4,7 @@
     <span class="tail">{{item.isDefaultChannel ? 'Everyone' : item.channel}}</span>
   </h5>
   <p class="release-times">
-    <span ng-repeat="weekday in item.schedule">{{weekday}}</span>
+    <span ng-repeat="time in item.schedule | orderBy:'sortKey'">{{time.day}}</span>
   </p>
 </fw-managed-list>
 

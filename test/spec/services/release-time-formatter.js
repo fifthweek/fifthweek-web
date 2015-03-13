@@ -91,4 +91,29 @@ describe('release time formatter', function() {
       expect(target.getDaysOfWeek(['a', 'b', 'c'])).toEqual([1, 2, 3]);
     });
   });
+
+  describe('when getting the time of week', function() {
+    it('should return the hour of day in 24H format', function() {
+      expect(target.getTimeOfWeek(10)).toBe('10:00');
+      expect(target.getTimeOfWeek(23)).toBe('23:00');
+      expect(target.getTimeOfWeek(34)).toBe('10:00');
+    });
+
+    it('should prefix single digit hours with a 0', function() {
+      expect(target.getTimeOfWeek(0)).toBe('00:00');
+      expect(target.getTimeOfWeek(24)).toBe('00:00');
+      expect(target.getTimeOfWeek(25)).toBe('01:00');
+    });
+  });
+
+  describe('when getting the day and times of week', function() {
+    it('should map inputs to the "getDayAndTimeOfWeek" function', function() {
+      var range = 0;
+      target.getDayAndTimeOfWeek = function() {
+        return ++range;
+      };
+
+      expect(target.getDayAndTimesOfWeek(['a', 'b', 'c'])).toEqual([1, 2, 3]);
+    });
+  });
 });

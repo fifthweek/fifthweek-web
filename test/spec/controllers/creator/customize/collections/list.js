@@ -12,11 +12,11 @@ describe('collection list controller', function () {
   var errorFacade;
 
   beforeEach(function() {
-    releaseTimeFormatter = jasmine.createSpyObj('releaseTimeFormatter', ['getDaysOfWeek']);
+    releaseTimeFormatter = jasmine.createSpyObj('releaseTimeFormatter', ['getDayAndTimesOfWeek']);
     channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
 
-    releaseTimeFormatter.getDaysOfWeek.and.callFake(function(inputs) {
+    releaseTimeFormatter.getDayAndTimesOfWeek.and.callFake(function(inputs) {
       return _.map(inputs, function(input) { return 'day ' + input; });
     });
 

@@ -14,7 +14,7 @@ angular.module('webApp').controller('listCollectionsCtrl', function($scope, chan
               name: collection.name,
               channel: channel.name,
               isDefaultChannel: channel.isDefault,
-              schedule: releaseTimeFormatter.getDaysOfWeek(collection.weeklyReleaseSchedule)
+              schedule: releaseTimeFormatter.getDayAndTimesOfWeek(collection.weeklyReleaseSchedule)
             };
           });
         })
