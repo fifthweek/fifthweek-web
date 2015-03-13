@@ -1,19 +1,22 @@
 <div class="posts">
-  <div class="post tagged-post" ng-repeat="post in posts">
-    <div ng-class="{'non-image-post': !post.imagePath, 'image-post': post.imagePath}">
-      <img ng-if="post.imagePath" ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>
+  <div class="post tagged-post" ng-repeat="post in model.posts">
+    <div ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
-      <p class="tag" ng-if="!post.queued">Scheduled, {{post.date}}</p>
+      <div ng-if="post.image" class="full-width-image">
+        <fw-blob-image thumbnail="1200x16000" file-uri="{{post.image.uri}}" container-name="{{post.image.containerName}}"></fw-blob-image>
+      </div>
 
-      <p class="tag" ng-if="post.queued">Queued, {{post.date}}</p>
+      <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
+
+      <p class="tag" ng-if="post.scheduledByQueue">Queued, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
 
       <div class="text">
-        <div class="content" ng-if="post.comment || post.filePath">
+        <div class="content" ng-if="post.comment || post.file">
           <md ng-model="post.comment" ng-if="post.comment"></md>
 
-          <p ng-if="post.filePath">
-            <a class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">
-              {{post.fileName}}
+          <p ng-if="post.file">
+            <a class="btn-file-download file-content" href="{{post.file.uri}}" target="_blank">
+              {{post.file.blobName}}
             </a>
           </p>
         </div>
@@ -28,8 +31,8 @@
             <ul>
               <li>
                 <span class="poster-name">Marc Holmes</span>
-                <span ng-if="post.collection">in {{post.collection}}</span>
-                <span ng-if="!post.collection">to {{post.channel}}</span>
+                <span ng-if="post.collection">in {{post.collection.name}}</span>
+                <span ng-if="!post.collection">to {{post.channel.name}}</span>
               </li>
               <li>live in {{post.liveIn}}</li>
             </ul>
@@ -46,7 +49,7 @@
                 <div class="actions-drop-down" ng-show="post.showMenu">
                   <ul>
                     <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
-                    <li ng-if="post.queued"><a ui-sref="creators.backlog.queues.reorder({id: post.collectionId})">Reorder</a></li>
+                    <li ng-if="post.scheduledByQueue"><a ui-sref="creators.backlog.queues.reorder({id: post.collectionId})">Reorder</a></li>
                     <li>
                       <fw-delete-link
                         item-type="Post"

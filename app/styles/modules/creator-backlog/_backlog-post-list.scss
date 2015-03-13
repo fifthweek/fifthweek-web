@@ -1,0 +1,24 @@
+@import '_base';
+
+$html-name-space:'.page-creators-backlog-post-list';
+
+#{$html-name-space} {
+
+  .full-width-image{
+    .image-area{
+      width: 100%;
+      height: auto;
+      max-width: 600px;
+      position: static;
+    }
+
+    .pending-image{
+      width: 600px;
+      height: 400px;
+    }
+
+    .vertical-aspect-ratio{
+      padding-top: 0;
+    }
+  }
+}

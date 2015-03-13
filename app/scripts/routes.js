@@ -335,6 +335,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Future Posts',
           headTitle: ': ' + 'Future Posts',
+          bodyClass: 'page-creators-backlog-post-list',
           access: {
             requireAuthenticated: true
           }

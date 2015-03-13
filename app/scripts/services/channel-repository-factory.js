@@ -21,6 +21,28 @@ angular.module('webApp')
           });
         };
 
+        service.getChannelMap = function() {
+          return masterRepository.get(channelsKey).then(function(channels) {
+            if (channels.length === 0) {
+              return $q.reject(new DisplayableError('You must create a subscription.'));
+            }
+
+            var channelMap = _.reduce(channels, function(channelResult, channel){
+
+              var collectionMap = _.reduce(channel.collections, function(collectionResult, collection){
+                collectionResult[collection.collectionId] = collection;
+                return collectionResult;
+              }, {});
+
+              channel.collections = collectionMap;
+              channelResult[channel.channelId] = channel;
+              return channelResult;
+            }, {});
+
+            return $q.when(channelMap);
+          });
+        };
+
         service.updateChannels = function(applyChanges) {
           return masterRepository.set(channelsKey, function(channels) {
             return $q.when(applyChanges(channels));

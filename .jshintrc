@@ -23,6 +23,7 @@
     "ga": false,
     "$f": false,
     "angular": false,
+    "moment": false,
     "alert": false,
     "jQuery": false,
     "marked": false,

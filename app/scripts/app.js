@@ -31,7 +31,8 @@ angular
     tokenPath: 'token',
     logPath: 'log',
     longDateFormat: 'EEEE, MMMM d, yyyy',
-    longDateTimeFormat: 'EEEE, MMMM d, yyyy \'at\' HH:mm \'UTC\''
+    longDateTimeFormat: 'EEEE, MMMM d, yyyy \'at\' HH:mm \'UTC\'',
+    newsfeedDateFormat: 'MMM d'
   })
   .config(function(snapRemoteProvider) {
     snapRemoteProvider. globalOptions = {

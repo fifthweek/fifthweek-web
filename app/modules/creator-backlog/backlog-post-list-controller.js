@@ -1,5 +1,5 @@
 angular.module('webApp').controller('backlogPostListCtrl',
-  function($scope, postInteractions) {
+  function($scope, postInteractions, authenticationService, channelRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade) {
     'use strict';
 
     $scope.posts = [
@@ -73,6 +73,59 @@ angular.module('webApp').controller('backlogPostListCtrl',
         queued:true
       }
     ];
+
+
+    var model = {
+      posts: undefined,
+      isLoading: false,
+      errorMessage: undefined
+    };
+
+    var processPosts = function(channelRepository, posts){
+      channelRepository.getChannelMap()
+        .then(function(channelMap){
+          _.forEach(posts, function(post){
+            post.channel = channelMap[post.channelId];
+
+            if(post.collectionId){
+              post.collection = post.channel.collections[post.collectionId];
+            }
+
+            var m = moment(post.liveDate);
+            post.liveIn = m.fromNow();
+          });
+
+          model.posts = posts;
+        });
+    };
+
+    var loadForm = function(){
+      model.errorMessage = undefined;
+      model.isLoading = true;
+
+      var channelRepository = channelRepositoryFactory.forCurrentUser();
+      var userId = authenticationService.currentUser.userId;
+      var getCreatorBacklog = function() { return postsStub.getCreatorBacklog(userId); };
+
+      return fetchAggregateUserState.updateInParallel(userId, getCreatorBacklog)
+        .then(function(result){
+          processPosts(channelRepository, result.data);
+        })
+        .catch(function(error){
+          model.posts = undefined;
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
+        })
+        .finally(function(){
+          model.isLoading = false;
+        });
+    };
+
+    $scope.model = model;
+
+    loadForm();
+
 
     $scope.viewImage = function (post) {
       postInteractions.viewImage(post.imagePath, true);

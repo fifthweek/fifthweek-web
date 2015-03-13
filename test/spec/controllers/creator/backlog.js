@@ -45,8 +45,8 @@ describe('backlog controller', function() {
   function initializeTarget() {
   }
 
-  it('should contain an viewImage function', function(){
-    expect(scope.viewImage).toBeDefined();
-  });
+  //it('should contain an viewImage function', function(){
+  //  expect(scope.viewImage).toBeDefined();
+  //});
 
 });

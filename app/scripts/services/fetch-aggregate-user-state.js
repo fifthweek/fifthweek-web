@@ -3,7 +3,7 @@ angular.module('webApp')
     fetchedEvent: 'aggregateUserStateFetched'
   })
   .factory('fetchAggregateUserState',
-  function($rootScope, fetchAggregateUserStateConstants, userStateStub) {
+  function($q, $rootScope, fetchAggregateUserStateConstants, userStateStub) {
     'use strict';
 
     var broadcastUpdated = function(userId, response){
@@ -26,6 +26,13 @@ angular.module('webApp')
         return userStateStub.getUserState(userId).then(handleResponse);
       }
       return userStateStub.getVisitorState().then(handleResponse);
+    };
+
+    service.updateInParallel = function(userId, delegate){
+      return $q.all([delegate(),service.updateFromServer(userId)])
+        .then(function(result){
+          return $q.when(result[0]);
+        });
     };
 
     return service;
