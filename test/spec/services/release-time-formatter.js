@@ -106,6 +106,31 @@ describe('release time formatter', function() {
     });
   });
 
+  describe('when getting the day and time of week', function() {
+    it('should return all release time information', function() {
+      target.getDayOfWeek = function() {
+        return 'A';
+      };
+      target.getTimeOfWeek = function() {
+        return 'B';
+      };
+
+      expect(target.getDayAndTimeOfWeek(24)).toEqual({
+        day: 'A',
+        time: 'B',
+        hourOfWeek: 24,
+        sortKey: 0
+      });
+    });
+
+    it('should provide a sort key that begins Monday 00:00 and ends Sunday 23:00', function() {
+      expect(target.getDayAndTimeOfWeek(25).sortKey).toBe(1);
+      expect(target.getDayAndTimeOfWeek(24).sortKey).toBe(0);
+      expect(target.getDayAndTimeOfWeek(23).sortKey).toBe(167);
+      expect(target.getDayAndTimeOfWeek(22).sortKey).toBe(166);
+    });
+  });
+
   describe('when getting the day and times of week', function() {
     it('should map inputs to the "getDayAndTimeOfWeek" function', function() {
       var range = 0;
