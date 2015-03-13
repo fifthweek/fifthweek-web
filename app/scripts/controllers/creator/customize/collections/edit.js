@@ -90,7 +90,14 @@ angular.module('webApp').controller('editCollectionCtrl', function(
   };
 
   $scope.save = function() {
-    $state.go($scope.previousState);
+    var collection = {
+      name: $scope.model.name,
+      channelId: $scope.model.selectedChannel.value,
+      weeklyReleaseSchedule: _.pluck($scope.model.schedule, 'hourOfWeek')
+    };
+    return collectionService.updateCollection(collectionId, collection).then(function() {
+      $state.go($scope.previousState);
+    });
   };
 
   $scope.delete = function() {
