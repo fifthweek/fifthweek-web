@@ -5,7 +5,7 @@ exports.config = {
   capabilities: {
     browserName: 'firefox',
     shardTestFiles: true,
-    maxInstances: 3
+    maxInstances: 2
   },
   onPrepare: function () {
     // The require statement must be down here, since jasmine-reporters
