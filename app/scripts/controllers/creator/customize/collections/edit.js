@@ -1,9 +1,11 @@
 angular.module('webApp').controller('editCollectionCtrl', function($scope, $state, states, collectionService, collectionRepositoryFactory, channelRepositoryFactory, channelNameFormatter, releaseTimeFormatter, errorFacade) {
   'use strict';
 
+  var defaultHourOfWeek = 0;
   $scope.previousState = states.creators.customize.collections.name;
   $scope.model = {
-    releaseTimesDirty: false
+    releaseTimesDirty: false,
+    hourOfWeek: defaultHourOfWeek
   };
 
   var collectionId = $state.params.id;
@@ -47,23 +49,22 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
     return $scope.manageCollectionForm.$dirty || $scope.model.releaseTimesDirty;
   };
 
-  $scope.timeChanged = function() {
-
-  };
-
   $scope.manageReleaseTime = function(releaseTime) {
-    $scope.model.stagedReleaseTime = _.cloneDeep(releaseTime);
     $scope.model.selectedReleaseTime = releaseTime;
+    $scope.model.hourOfWeek = releaseTime.hourOfWeek;
   };
 
   $scope.saveReleaseTime = function() {
+    var releaseTime = releaseTimeFormatter.getDayAndTimeOfWeek($scope.model.hourOfWeek);
     $scope.model.releaseTimesDirty = true;
-    _.merge($scope.model.selectedReleaseTime, $scope.model.stagedReleaseTime);
+    _.merge($scope.model.selectedReleaseTime, releaseTime);
     $scope.model.selectedReleaseTime = null;
+    $scope.model.hourOfWeek = defaultHourOfWeek;
   };
 
   $scope.addReleaseTime = function() {
-    // To-do: add to release times.
+    var releaseTime = releaseTimeFormatter.getDayAndTimeOfWeek($scope.model.hourOfWeek);
+    $scope.model.schedule.push(releaseTime);
     $scope.model.releaseTimesDirty = true;
     $scope.model.addingReleaseTime = false;
   };

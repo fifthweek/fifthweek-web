@@ -1,17 +1,19 @@
-<div class="hour-of-week" ng-controller="formInputHourOfWeekCtrl">
-
+<div class="hour-of-week">
   <div class="form-group">
     <label>Weekly release time</label>
     <div class="row">
-      <div class="col-xs-6 col-sm-4">
+      <div class="col-xs-6 col-sm-4 day-of-week">
         <div class="select">
           <select class="select-full-width" ng-model="model.day" ng-options="item.name for item in model.days"></select>
         </div>
       </div>
-      <div class="col-xs-6">
-        <div class="timepicker">
-          <timepicker ng-model="model.time" ng-change="timeChanged()" minute-step="15"></timepicker>
+      <div class="col-xs-4 col-ss-3 hour-of-day">
+        <div class="select">
+          <select class="select-full-width" ng-model="model.hour" ng-options="item.name for item in model.hours"></select>
         </div>
+      </div>
+      <div class="col-xs-2 timezone">
+        <p>UTC</p>
       </div>
     </div>
   </div>

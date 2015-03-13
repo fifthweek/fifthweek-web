@@ -10,11 +10,18 @@
   }
 
   .row {
-    >div:first-child {
+    >.day-of-week {
       padding-right: 0;
     }
-    >div:last-child {
+    >.hour-of-day {
       padding-left: 2px;
+      padding-right: 0;
+    }
+    >.timezone {
+      padding-left: 15px;
+      font-weight: bold;
+      padding-top: 10px;
+      color:$grey-light-1;
     }
   }
 }

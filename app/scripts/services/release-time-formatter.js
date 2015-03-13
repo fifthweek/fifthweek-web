@@ -28,13 +28,19 @@ angular.module('webApp').factory('releaseTimeFormatter', function() {
   };
 
   service.getTimeOfWeek = function(hourOfWeek) {
-    return (hourOfWeek % 24) + ':00';
+    var result = (hourOfWeek % 24) + ':00';
+    if (result.length === 4) {
+      result = '0' + result;
+    }
+
+    return result;
   };
 
   service.getDayAndTimeOfWeek = function(hourOfWeek) {
     return {
       day: service.getDayOfWeek(hourOfWeek),
-      time: service.getTimeOfWeek(hourOfWeek)
+      time: service.getTimeOfWeek(hourOfWeek),
+      hourOfWeek: hourOfWeek
     };
   };
 

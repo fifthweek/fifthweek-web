@@ -23,7 +23,9 @@
           </summary>
           <summary-expanded>
             <p>
-              When you add posts to ‘the queue’ they automatically become published according to the schedule defined against their collection.
+              When you add posts to ‘the queue’ they automatically become
+              published according to the schedule defined against the
+              collection you are posting into. You can set that schedule here:
             </p>
           </summary-expanded>
           <section>
@@ -32,7 +34,7 @@
               items="model.schedule"
               new-item="model.addingReleaseTime = true"
               manage-item="manageReleaseTime(item)">
-              <p>{{item.day}} <span class="release-time-of-day">@ {{item.time}}</span></p>
+              <p>{{item.day}} <span class="release-time-of-day">@ {{item.time}} UTC</span></p>
             </fw-managed-list-sm>
           </section>
         </fw-form-subsection>
@@ -82,7 +84,7 @@
 
     <fw-panel12>
 
-      <fw-form-input-hour-of-week></fw-form-input-hour-of-week>
+      <fw-form-input-hour-of-week ng-model="model.hourOfWeek"></fw-form-input-hour-of-week>
 
       <button
         id="add-release-time-button"
@@ -109,7 +111,7 @@
       previous-state="model.selectedReleaseTime = null"></fw-breadcrumb>
 
     <fw-panel12>
-      <fw-form-input-hour-of-week></fw-form-input-hour-of-week>
+      <fw-form-input-hour-of-week ng-model="model.hourOfWeek"></fw-form-input-hour-of-week>
 
       <div class="row">
         <div class="col-s-8">

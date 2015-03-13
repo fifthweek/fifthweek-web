@@ -1,5 +1,37 @@
-angular.module('webApp').controller('formInputHourOfWeekCtrl', function ($q, $scope) {
+angular.module('webApp').controller('formInputHourOfWeekCtrl', function ($q, $scope, releaseTimeFormatter) {
   'use strict';
+
+  var ngModelCtrl;
+
+  var modulo = function(dividend, divisor) {
+    return ((dividend % divisor) + divisor) % divisor;
+  };
+
+  var setViewValue = function(){
+    if($scope.model.day && $scope.model.hour){
+      ngModelCtrl.$setViewValue($scope.model.day.value + $scope.model.hour.value);
+      ngModelCtrl.$setValidity('hourOfWeek', true);
+    }
+    else{
+      ngModelCtrl.$setViewValue( undefined );
+      ngModelCtrl.$setValidity('hourOfWeek', false);
+    }
+  };
+
+  var render = function(){
+    var day = 0;
+    var hour = 0;
+    if (ngModelCtrl.$modelValue) {
+      hour = ngModelCtrl.$modelValue % 24;
+
+      var offsetFromSunday = Math.floor(ngModelCtrl.$modelValue / 24);
+      var offsetFromMonday = modulo(offsetFromSunday - 1, 7);
+      day = offsetFromMonday;
+    }
+
+    $scope.model.day = $scope.model.days[day];
+    $scope.model.hour = $scope.model.hours[hour];
+  };
 
   $scope.model = {
     days: [
@@ -31,13 +63,19 @@ angular.module('webApp').controller('formInputHourOfWeekCtrl', function ($q, $sc
         name: 'Sunday',
         value: 0
       }
-    ]
+    ],
+    hours: _.map(_.range(24), function(hour) {
+      return {
+        name: releaseTimeFormatter.getTimeOfWeek(hour),
+        value: hour
+      };
+    })
   };
 
-  $scope.model.day = $scope.model.days[0];
+  this.initialize = function(ngModelCtrl_){
+    ngModelCtrl = ngModelCtrl_;
+    ngModelCtrl.$render = render;
 
-  $scope.itemTypeCapitalized = _.capitalize($scope.itemType);
-
-  $scope.timeChanged = function() {
+    $scope.$watchGroup(['model.day', 'model.hour'], setViewValue);
   };
 });
