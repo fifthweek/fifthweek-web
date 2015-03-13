@@ -9,7 +9,7 @@ describe('authentication interceptor', function() {
   var $httpBackend;
   var $q;
   var fifthweekConstants;
-  var authenticationInterceptor;
+  var target;
   var authenticationService;
   var states;
 
@@ -25,7 +25,7 @@ describe('authentication interceptor', function() {
     $rootScope = $injector.get('$rootScope');
     $state = $injector.get('$state');
     $httpBackend = $injector.get('$httpBackend');
-    authenticationInterceptor = $injector.get('authenticationInterceptor');
+    target = $injector.get('authenticationInterceptor');
     fifthweekConstants = $injector.get('fifthweekConstants');
     states = $injector.get('states');
   }));
@@ -45,7 +45,7 @@ describe('authentication interceptor', function() {
       };
 
       var config = { url: fifthweekConstants.apiBaseUri + 'blah' };
-      var newConfig = authenticationInterceptor.request(config);
+      var newConfig = target.request(config);
 
       expect(newConfig).toBe(config);
       expect(newConfig.headers.Authorization).toBe('Bearer ABC');
@@ -58,7 +58,7 @@ describe('authentication interceptor', function() {
       };
 
       var config = { url: 'http://www.google.com/blah' };
-      var newConfig = authenticationInterceptor.request(config);
+      var newConfig = target.request(config);
 
       expect(newConfig).toBe(config);
       expect(newConfig.headers.Authorization).toBeUndefined();
@@ -87,7 +87,7 @@ describe('authentication interceptor', function() {
         rejection.status = 400;
 
         var result;
-        authenticationInterceptor.responseError(rejection).catch(
+        target.responseError(rejection).catch(
           function(promiseResult) {
             result = promiseResult;
           });
@@ -105,7 +105,7 @@ describe('authentication interceptor', function() {
         $httpBackend.expectGET(testUrl).respond(200, 'Success');
 
         var result;
-        authenticationInterceptor.responseError(rejection).then(
+        target.responseError(rejection).then(
           function(promiseResult) {
             result = promiseResult;
           });
@@ -126,7 +126,7 @@ describe('authentication interceptor', function() {
         $httpBackend.expectGET(testUrl).respond(401, 'Forbidden');
 
         var result;
-        authenticationInterceptor.responseError(rejection).catch(
+        target.responseError(rejection).catch(
           function(promiseResult) {
             result = promiseResult;
           });
@@ -147,7 +147,7 @@ describe('authentication interceptor', function() {
         $state.expectTransitionTo(states.signIn.name);
 
         var result;
-        authenticationInterceptor.responseError(rejection).catch(
+        target.responseError(rejection).catch(
           function(promiseResult) {
             result = promiseResult;
           });
@@ -173,7 +173,7 @@ describe('authentication interceptor', function() {
           return initialRequest.promise;
         };
 
-        authenticationInterceptor.responseError(_.cloneDeep(rejection))
+        target.responseError(_.cloneDeep(rejection))
           .then(function(result) {
             initialResult = result;
           })
@@ -191,7 +191,7 @@ describe('authentication interceptor', function() {
         rejection.status = 400;
 
         var result;
-        authenticationInterceptor.responseError(rejection).catch(
+        target.responseError(rejection).catch(
           function(promiseResult) {
             result = promiseResult;
           });
@@ -210,12 +210,14 @@ describe('authentication interceptor', function() {
         $httpBackend.whenGET(testUrl).respond(200, 'Success');
 
         var result;
-        authenticationInterceptor.responseError(rejection).then(
+        target.responseError(rejection).then(
           function(promiseResult) {
             result = promiseResult;
           });
 
         $rootScope.$apply();
+
+        expect(target.currentTokenRequest).toBeDefined();
 
         expect(initialResult).not.toBeDefined();
         expect(result).not.toBeDefined();
@@ -225,6 +227,8 @@ describe('authentication interceptor', function() {
         $rootScope.$apply();
         $httpBackend.flush();
         $rootScope.$apply();
+
+        expect(target.currentTokenRequest).toBeUndefined();
 
         expect(initialResult).toBeDefined();
         expect(initialResult.status).toBe(200);
@@ -239,12 +243,14 @@ describe('authentication interceptor', function() {
         $httpBackend.whenGET(testUrl).respond(401, 'Forbidden');
 
         var result;
-        authenticationInterceptor.responseError(rejection).catch(
+        target.responseError(rejection).catch(
           function(promiseResult) {
             result = promiseResult;
           });
 
         $rootScope.$apply();
+
+        expect(target.currentTokenRequest).toBeDefined();
 
         expect(initialResult).not.toBeDefined();
         expect(result).not.toBeDefined();
@@ -254,6 +260,8 @@ describe('authentication interceptor', function() {
         $rootScope.$apply();
         $httpBackend.flush();
         $rootScope.$apply();
+
+        expect(target.currentTokenRequest).toBeUndefined();
 
         expect(initialResult).toBeDefined();
         expect(initialResult.status).toBe(401);
@@ -270,12 +278,14 @@ describe('authentication interceptor', function() {
         $state.expectTransitionTo(states.signIn.name);
 
         var result;
-        authenticationInterceptor.responseError(rejection).catch(
+        target.responseError(rejection).catch(
           function(promiseResult) {
             result = promiseResult;
           });
 
         $rootScope.$apply();
+
+        expect(target.currentTokenRequest).toBeDefined();
 
         expect(initialResult).not.toBeDefined();
         expect(result).not.toBeDefined();
@@ -284,10 +294,53 @@ describe('authentication interceptor', function() {
 
         $rootScope.$apply();
 
+        expect(target.currentTokenRequest).toBeUndefined();
+
         expect(result).toBeDefined();
         expect(result.status).toBe(401);
 
         expect(authenticationService.refreshToken).not.toHaveBeenCalled();
+      });
+
+      it('should request a new token if the initial request has completed and the new request status code is 401', function() {
+        $httpBackend.expectGET(testUrl).respond(200, 'Success');
+
+        initialRequest.resolve();
+
+        $rootScope.$apply();
+        $httpBackend.flush();
+        $rootScope.$apply();
+
+        expect(target.currentTokenRequest).toBeUndefined();
+
+        expect(initialResult).toBeDefined();
+        expect(initialResult.status).toBe(200);
+
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+
+        authenticationService.refreshToken.and.callFake(function() {
+          return $q.when();
+        });
+
+        $httpBackend.expectGET(testUrl).respond(200, 'Success');
+
+        var result;
+        target.responseError(rejection).then(
+          function(promiseResult) {
+            result = promiseResult;
+          });
+
+        $rootScope.$apply();
+        $httpBackend.flush();
+        $rootScope.$apply();
+
+        expect(target.currentTokenRequest).toBeUndefined();
+
+        expect(result).toBeDefined();
+        expect(result.status).toBe(200);
+
+        expect(authenticationService.refreshToken).toHaveBeenCalled();
       });
 
     });

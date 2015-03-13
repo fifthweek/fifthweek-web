@@ -20,10 +20,14 @@ angular.module('webApp').factory('authenticationInterceptor',
 
         // Do this here to ensure it only happens once even if multiple requests
         // hook into the current promise.
-        service.currentTokenRequest.catch(function(){
-          $state = $state || $injector.get('$state');
-          $state.go(states.signIn.name);
-        });
+        service.currentTokenRequest
+          .catch(function(){
+            $state = $state || $injector.get('$state');
+            $state.go(states.signIn.name);
+          })
+          .finally(function(){
+            service.currentTokenRequest = undefined;
+          });
       }
 
       return service.currentTokenRequest;

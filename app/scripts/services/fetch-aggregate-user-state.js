@@ -18,14 +18,32 @@ angular.module('webApp')
     var service = {};
 
     service.updateFromServer = function(userId) {
+
+      if(cache.currentRequest){
+        if(cache.lastUserId === userId){
+          return cache.currentRequest;
+        }
+      }
+
       // Keep track of the most recent requested user ID.
       cache.lastUserId = userId;
+      cache.currentRequest = undefined;
 
       var handleResponse = _.curry(broadcastUpdated)(userId);
+      var promise;
       if (userId) {
-        return userStateStub.getUserState(userId).then(handleResponse);
+        promise = userStateStub.getUserState(userId).then(handleResponse);
       }
-      return userStateStub.getVisitorState().then(handleResponse);
+      else{
+        promise = userStateStub.getVisitorState().then(handleResponse);
+      }
+
+      cache.currentRequest = promise;
+      promise.finally(function(){
+        cache.currentRequest = undefined;
+      });
+
+      return promise;
     };
 
     service.updateInParallel = function(userId, delegate){
