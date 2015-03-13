@@ -2,12 +2,34 @@ angular.module('webApp').factory('authenticationInterceptor',
   function($q, $injector, states, fifthweekConstants) {
     'use strict';
 
-    var factory = {};
+    var service = {};
     var $http;
     var $state;
     var authenticationService;
 
-    factory.request = function(config) {
+    service.currentTokenRequest = undefined;
+
+    var retryHttpRequest = function(config) {
+      $http = $http || $injector.get('$http');
+      return $http(config);
+    };
+
+    var refreshToken = function(){
+      if(!service.currentTokenRequest){
+        service.currentTokenRequest = authenticationService.refreshToken();
+
+        // Do this here to ensure it only happens once even if multiple requests
+        // hook into the current promise.
+        service.currentTokenRequest.catch(function(){
+          $state = $state || $injector.get('$state');
+          $state.go(states.signIn.name);
+        });
+      }
+
+      return service.currentTokenRequest;
+    };
+
+    service.request = function(config) {
 
       config.headers = config.headers || {};
 
@@ -19,18 +41,16 @@ angular.module('webApp').factory('authenticationInterceptor',
       return config;
     };
 
-    factory.responseError = function(rejection) {
+    service.responseError = function(rejection) {
       if (rejection.status === 401 && !rejection.config.hasRetried) {
         rejection.config.hasRetried = true;
 
         authenticationService = authenticationService || $injector.get('authenticationService');
-        return authenticationService.refreshToken().then(
+        return refreshToken().then(
           function() {
             return retryHttpRequest(rejection.config);
           },
           function() {
-            $state = $state || $injector.get('$state');
-            $state.go(states.signIn.name);
             return $q.reject(rejection);
           });
       }
@@ -38,11 +58,6 @@ angular.module('webApp').factory('authenticationInterceptor',
       return $q.reject(rejection);
     };
 
-    var retryHttpRequest = function(config) {
-      $http = $http || $injector.get('$http');
-      return $http(config);
-    };
-
-    return factory;
+    return service;
   }
 );

@@ -19,17 +19,17 @@ angular.module('stateMock').service("$state", function($q){
     var promise = deferred.promise;
     deferred.resolve();
     return promise;
-  }
+  };
 
   this.go = this.transitionTo;
 
   this.expectTransitionTo = function(stateName){
       this.expectedTransitions.push(stateName);
-  }
+  };
 
   this.get = function(stateName){
     return undefined;
-  }
+  };
 
   this.verifyNoOutstandingTransitions = function(){
       if(this.expectedTransitions.length > 0){
