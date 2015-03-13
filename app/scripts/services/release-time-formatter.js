@@ -2,6 +2,7 @@ angular.module('webApp').factory('releaseTimeFormatter', function() {
   'use strict';
 
   var service = {};
+  var hoursInWeek = 7 * 24;
   var daysOfWeek = [
     'Sunday',
     'Monday',
@@ -12,12 +13,16 @@ angular.module('webApp').factory('releaseTimeFormatter', function() {
     'Saturday'
   ];
 
+  var modulo = function(dividend, divisor) {
+    return ((dividend % divisor) + divisor) % divisor;
+  };
+
   service.getDayOfWeek = function(hourOfWeek) {
     if (!_.isNumber(hourOfWeek)) {
       throw new FifthweekError('Hour of week must be a number');
     }
-    if (hourOfWeek < 0 || hourOfWeek > 167) {
-      throw new FifthweekError('Hour of week must be between 0 and 167');
+    if (hourOfWeek < 0 || hourOfWeek >= hoursInWeek) {
+      throw new FifthweekError('Hour of week must be between 0 and ' + (hoursInWeek - 1));
     }
 
     return daysOfWeek[Math.floor(hourOfWeek / 24)];
@@ -40,7 +45,8 @@ angular.module('webApp').factory('releaseTimeFormatter', function() {
     return {
       day: service.getDayOfWeek(hourOfWeek),
       time: service.getTimeOfWeek(hourOfWeek),
-      hourOfWeek: hourOfWeek
+      hourOfWeek: hourOfWeek,
+      sortKey: modulo(hourOfWeek - 24, hoursInWeek) // Start from Monday instead of Sunday.
     };
   };
 

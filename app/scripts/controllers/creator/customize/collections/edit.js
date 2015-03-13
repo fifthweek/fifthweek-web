@@ -12,6 +12,10 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
   var collectionRepository = collectionRepositoryFactory.forCurrentUser();
   var channelRepository = channelRepositoryFactory.forCurrentUser();
 
+  var sortReleaseTimes = function() {
+    $scope.model.schedule = _.sortBy($scope.model.schedule, 'sortKey');
+  };
+
   channelRepository.getChannels()
     .then(function(channels) {
       $scope.model.channels = _.map(
@@ -32,6 +36,7 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
           $scope.model.name = collection.name;
           $scope.model.schedule = releaseTimeFormatter.getDayAndTimesOfWeek(collection.weeklyReleaseSchedule);
           $scope.model.selectedChannel = _.find($scope.model.channels, {value: channel.channelId});
+          sortReleaseTimes();
         })
         .catch(function(error) {
           return errorFacade.handleError(error, function(message) {
@@ -60,6 +65,7 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
     _.merge($scope.model.selectedReleaseTime, releaseTime);
     $scope.model.selectedReleaseTime = null;
     $scope.model.hourOfWeek = defaultHourOfWeek;
+    sortReleaseTimes();
   };
 
   $scope.addReleaseTime = function() {
@@ -68,6 +74,7 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
     $scope.model.releaseTimesDirty = true;
     $scope.model.addingReleaseTime = false;
     $scope.model.hourOfWeek = defaultHourOfWeek;
+    sortReleaseTimes();
   };
 
   $scope.save = function() {
