@@ -54,6 +54,11 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
     return $scope.manageCollectionForm.$dirty || $scope.model.releaseTimesDirty;
   };
 
+  $scope.addReleaseTime = function() {
+    $scope.model.addingReleaseTime = true;
+    $scope.model.hourOfWeek = defaultHourOfWeek;
+  };
+
   $scope.manageReleaseTime = function(releaseTime) {
     $scope.model.selectedReleaseTime = releaseTime;
     $scope.model.hourOfWeek = releaseTime.hourOfWeek;
@@ -64,16 +69,14 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
     $scope.model.releaseTimesDirty = true;
     _.merge($scope.model.selectedReleaseTime, releaseTime);
     $scope.model.selectedReleaseTime = null;
-    $scope.model.hourOfWeek = defaultHourOfWeek;
     sortReleaseTimes();
   };
 
-  $scope.addReleaseTime = function() {
+  $scope.saveNewReleaseTime = function() {
     var releaseTime = releaseTimeFormatter.getDayAndTimeOfWeek($scope.model.hourOfWeek);
     $scope.model.schedule.push(releaseTime);
     $scope.model.releaseTimesDirty = true;
     $scope.model.addingReleaseTime = false;
-    $scope.model.hourOfWeek = defaultHourOfWeek;
     sortReleaseTimes();
   };
 

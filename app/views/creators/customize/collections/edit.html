@@ -32,7 +32,7 @@
             <fw-managed-list-sm
               item-name="release time"
               items="model.schedule"
-              new-item="model.addingReleaseTime = true"
+              new-item="addReleaseTime()"
               manage-item="manageReleaseTime(item)">
               <p>{{item.day}} <span class="release-time-of-day">@ {{item.time}} UTC</span></p>
             </fw-managed-list-sm>
@@ -89,7 +89,7 @@
       <button
         id="add-release-time-button"
         class="btn btn-block btn-success"
-        ng-click="addReleaseTime()">Add Release Time</button>
+        ng-click="saveNewReleaseTime()">Add Release Time</button>
       <button
         id="cancel-release-time-button"
         class="btn btn-default btn-block"
@@ -127,6 +127,7 @@
         </div>
         <div class="col-s-4">
           <fw-form-input-delete
+            ng-if="model.schedule.length > 1"
             item-type="Release Time"
             link-id="delete-release-time-link"
             delete="deleteReleaseTime()"></fw-form-input-delete>
