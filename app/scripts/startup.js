@@ -55,6 +55,9 @@
               $state.current,
               $state.params);
           }
+          else {
+            $state.reload(); // Ensure controllers are reset with latest state.
+          }
         })
         .catch(function(error) {
           logService.error(error);
