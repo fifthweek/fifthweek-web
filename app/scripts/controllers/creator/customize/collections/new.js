@@ -34,7 +34,7 @@ angular.module('webApp').controller('newCollectionCtrl', function($scope, $state
   $scope.createCollection = function() {
     var channelId = $scope.model.selectedChannel.value;
     var collectionName = $scope.model.collection.name;
-    collectionService.createCollectionFromName(channelId, collectionName).then(function() {
+    return collectionService.createCollectionFromName(channelId, collectionName).then(function() {
       $state.go($scope.previousState);
     });
   };

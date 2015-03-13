@@ -1,4 +1,13 @@
-angular.module('webApp').controller('editCollectionCtrl', function($scope, $state, states, collectionService, collectionRepositoryFactory, channelRepositoryFactory, channelNameFormatter, releaseTimeFormatter, errorFacade) {
+angular.module('webApp').controller('editCollectionCtrl', function(
+  $scope,
+  $state,
+  states,
+  collectionService,
+  collectionRepositoryFactory,
+  channelRepositoryFactory,
+  channelNameFormatter,
+  releaseTimeFormatter,
+  errorFacade) {
   'use strict';
 
   var defaultHourOfWeek = 0;
