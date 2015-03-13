@@ -74,17 +74,19 @@ angular.module('webApp').controller('editCollectionCtrl', function(
   };
 
   $scope.saveReleaseTime = function() {
-    var releaseTime = releaseTimeFormatter.getDayAndTimeOfWeek($scope.model.hourOfWeek);
     $scope.model.releaseTimesDirty = true;
+
+    var releaseTime = releaseTimeFormatter.getDayAndTimeOfWeek($scope.model.hourOfWeek);
     _.merge($scope.model.selectedReleaseTime, releaseTime);
     $scope.model.selectedReleaseTime = null;
     sortReleaseTimes();
   };
 
   $scope.saveNewReleaseTime = function() {
+    $scope.model.releaseTimesDirty = true;
+
     var releaseTime = releaseTimeFormatter.getDayAndTimeOfWeek($scope.model.hourOfWeek);
     $scope.model.schedule.push(releaseTime);
-    $scope.model.releaseTimesDirty = true;
     $scope.model.addingReleaseTime = false;
     sortReleaseTimes();
   };
@@ -107,6 +109,8 @@ angular.module('webApp').controller('editCollectionCtrl', function(
   };
 
   $scope.deleteReleaseTime = function() {
+    $scope.model.releaseTimesDirty = true;
+
     _.remove($scope.model.schedule, $scope.model.selectedReleaseTime);
     $scope.model.selectedReleaseTime = null;
   };
