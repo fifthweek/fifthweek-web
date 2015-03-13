@@ -90,6 +90,7 @@ describe('new channel controller', function () {
       description: 'description',
       priceInUsCentsPerWeek: priceInCents,
       isVisibleToNonSubscribers: true,
+      isDefault: false,
       collections: []
     });
   });

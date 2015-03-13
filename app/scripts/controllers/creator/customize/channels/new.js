@@ -28,6 +28,7 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
         channelData.collections = [];
         channelData.channelId = channelId;
         channelData.priceInUsCentsPerWeek = channelData.price;
+        channelData.isDefault = false;
         delete channelData.price;
         delete channelData.subscriptionId;
 
