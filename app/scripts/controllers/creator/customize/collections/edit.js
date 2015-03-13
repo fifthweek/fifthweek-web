@@ -67,6 +67,7 @@ angular.module('webApp').controller('editCollectionCtrl', function($scope, $stat
     $scope.model.schedule.push(releaseTime);
     $scope.model.releaseTimesDirty = true;
     $scope.model.addingReleaseTime = false;
+    $scope.model.hourOfWeek = defaultHourOfWeek;
   };
 
   $scope.save = function() {
