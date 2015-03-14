@@ -1,4 +1,4 @@
-angular.module('webApp').controller('formInputHourOfWeekCtrl', function ($q, $scope, releaseTimeFormatter) {
+angular.module('webApp').controller('fwFormInputHourOfWeekCtrl', function ($q, $scope, releaseTimeFormatter) {
   'use strict';
 
   var ngModelCtrl;
