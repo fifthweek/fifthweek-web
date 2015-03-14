@@ -56,7 +56,10 @@
               $state.params);
           }
           else {
-            $state.reload(); // Ensure controllers are reset with latest state.
+            // Make sure we have had time to transition to a state.
+            if($state.current.name){
+              $state.reload(); // Ensure controllers are reset with latest state.
+            }
           }
         })
         .catch(function(error) {
