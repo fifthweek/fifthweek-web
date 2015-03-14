@@ -162,27 +162,24 @@ describe('collection repository factory', function(){
       channels = [{ channelId: channelId, collections: [ 'existing collection' ]}];
 
       spyOn(target, 'tryFindChannelForCollection');
+      spyOn(target, 'addCollectionToChannelUnchecked');
       target.tryFindChannelForCollection.and.returnValue(undefined);
-    });
 
-    it('should add the new collection to the channel', function() {
       channelRepository.updateChannels.and.callFake(function(applyChange) {
         return $q.when(applyChange(channels));
       });
+    });
 
+    it('should add the new collection to the channel', function() {
       target.createCollection(channelId, collection);
       $rootScope.$apply();
 
       expect(target.tryFindChannelForCollection).toHaveBeenCalledWith(channels, collectionId);
-      expect(channels[0].collections).toEqual([ 'existing collection', collection ]);
+      expect(target.addCollectionToChannelUnchecked).toHaveBeenCalledWith(channels, channelId, collection);
     });
 
     it('should throw an error if collection already exists', function() {
       target.tryFindChannelForCollection.and.returnValue({});
-
-      channelRepository.updateChannels.and.callFake(function(applyChange) {
-        return $q.when(applyChange(channels));
-      });
 
       target.createCollection(channelId, collection)
         .then(function() {
@@ -196,16 +193,14 @@ describe('collection repository factory', function(){
     });
 
     it('should throw an error if channel does not exist', function() {
-      channelRepository.updateChannels.and.callFake(function(applyChange) {
-        return $q.when(applyChange(channels));
-      });
+      target.addCollectionToChannelUnchecked.and.throwError(expectedError);
 
       target.createCollection('absent channel', collection)
         .then(function() {
           throw 'Failure expected';
         })
         .catch(function(error) {
-          expect(error instanceof DisplayableError).toBeTruthy();
+          expect(error).toBe(expectedError);
         });
 
       $rootScope.$apply();
