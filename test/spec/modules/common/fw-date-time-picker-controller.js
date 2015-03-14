@@ -69,8 +69,7 @@ describe('fw-date-time-picker-controller', function(){
       });
 
       it('should set-up a watch on the date and time variables', function(){
-        expect($scope.$watchGroup.calls.count()).toBe(1);
-        expect($scope.$watchGroup.calls.first().args[0]).toEqual(['date', 'time']);
+        expect($scope.$watchGroup).toHaveBeenCalledWith(['date', 'time'], jasmine.any(Function));
       });
     });
 
