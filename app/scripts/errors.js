@@ -1,5 +1,19 @@
 'use strict';
 
+// http://massalabs.com/dev/2013/10/17/handling-errors-in-nodejs.html
+var config = {
+  configurable: true,
+  value: function() {
+    var alt = {};
+    var storeKey = function(key) {
+      alt[key] = this[key];
+    };
+    Object.getOwnPropertyNames(this).forEach(storeKey, this);
+    return alt;
+  }
+};
+Object.defineProperty(Error.prototype, 'toJSON', config);
+
 // Used for web application errors containing information that the user
 // isn't concerned with.
 function FifthweekError(message) {
