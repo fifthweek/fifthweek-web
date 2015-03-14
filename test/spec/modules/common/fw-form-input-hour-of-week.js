@@ -1,16 +1,16 @@
-describe('fw-date-time-picker directive', function(){
+describe('fw-form-input-hour-of-week directive', function(){
   'use strict';
 
   var $rootScope;
   var $compile;
 
-  var fwDateTimePickerCtrl;
+  var fwFormInputHourOfWeekCtrl;
 
   beforeEach(function() {
     module('webApp', 'webApp.views');
 
     module(function($controllerProvider){
-      $controllerProvider.register('fwDateTimePickerCtrl', function() { fwDateTimePickerCtrl = this; this.initialize = jasmine.createSpy('initialize'); });
+      $controllerProvider.register('fwFormInputHourOfWeekCtrl', function() { fwFormInputHourOfWeekCtrl = this; this.initialize = jasmine.createSpy('initialize'); });
     });
 
     inject(function($injector) {
@@ -27,13 +27,13 @@ describe('fw-date-time-picker directive', function(){
       scope = $rootScope.$new();
     });
 
-    it('should initialize the date time picker controller with the ngModel controller', function(){
-      var element = angular.element('<fw-date-time-picker ng-model="value"/>');
+    it('should initialize the controller with the ngModel controller', function(){
+      var element = angular.element('<fw-form-input-hour-of-week ng-model="value"/>');
       scope.value = 'success';
       $compile(element)(scope);
       scope.$digest();
 
-      expect(fwDateTimePickerCtrl.initialize).toHaveBeenCalledWith(jasmine.objectContaining({
+      expect(fwFormInputHourOfWeekCtrl.initialize).toHaveBeenCalledWith(jasmine.objectContaining({
         $modelValue: 'success'
       }));
     });
