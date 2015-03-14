@@ -76,6 +76,51 @@ describe('collection repository factory', function(){
     });
   });
 
+  describe('when finding a channel', function() {
+    it('should return channel if it exists', function() {
+      var result = target.findChannel(channels, channelId);
+
+      expect(result).toBe(channel);
+    });
+
+    it('should throw an error if channel does not exist', function() {
+      expect(function() {
+        target.findChannel(channels, 'does not exists');
+      }).toThrowError(DisplayableError);
+    });
+  });
+
+  describe('when removing a collection from a set of channels', function() {
+    it('should remove the collection if the collection exists', function() {
+      spyOn(target, 'tryFindChannelForCollection').and.returnValue(channel);
+
+      target.removeCollectionFromChannels(channels, collectionId);
+
+      expect(target.tryFindChannelForCollection).toHaveBeenCalledWith(channels, collectionId);
+      expect(channel.collections).toEqual([collection2]);
+    });
+
+    it('should have no effect if the collection does not exist', function() {
+      spyOn(target, 'tryFindChannelForCollection').and.returnValue(undefined);
+
+      target.removeCollectionFromChannels(channels, collectionId);
+
+      expect(channel.collections).toEqual([collection, collection2]);
+    });
+  });
+
+  describe('when adding a collection to a set of channels (unchecked)', function() {
+    it('should attempt to add the collection to its located channel', function() {
+      var channel = {collections:[collection2]};
+      spyOn(target, 'findChannel').and.returnValue(channel);
+
+      target.addCollectionToChannelUnchecked(channels, channelId, collection);
+
+      expect(target.findChannel).toHaveBeenCalledWith(channels, channelId);
+      expect(channel.collections).toEqual([collection2, collection]);
+    });
+  });
+
   describe('when getting the channel for a collection', function() {
     beforeEach(function() {
       spyOn(target, 'findChannelForCollection');
@@ -171,9 +216,8 @@ describe('collection repository factory', function(){
     beforeEach(function() {
       channel = { collections:[ collection, 'something else' ] };
 
-      spyOn(target, 'findChannelForCollection');
+      spyOn(target, 'removeCollectionFromChannels');
 
-      target.findChannelForCollection.and.returnValue(channel);
       channelRepository.updateChannels.and.callFake(function(applyChange) {
         return $q.when(applyChange(channels));
       });
@@ -183,29 +227,7 @@ describe('collection repository factory', function(){
       target.deleteCollection(collectionId);
       $rootScope.$apply();
 
-      expect(target.findChannelForCollection).toHaveBeenCalledWith(channels, collectionId);
-      expect(channel.collections).toEqual([ 'something else' ]);
-    });
-
-    it('should have no effect when collection does not exist', function() {
-      target.deleteCollection('already been deleted');
-      $rootScope.$apply();
-
-      expect(channel.collections).toEqual([ collection, 'something else' ]);
-    });
-
-    it('should throw an error if collection does not exist', function() {
-      target.findChannelForCollection.and.throwError(expectedError);
-
-      target.deleteCollection(collectionId)
-        .then(function() {
-          throw 'Failure expected';
-        })
-        .catch(function(error) {
-          expect(error).toBe(expectedError);
-        });
-
-      $rootScope.$apply();
+      expect(target.removeCollectionFromChannels).toHaveBeenCalledWith(channels, collectionId);
     });
   });
 });

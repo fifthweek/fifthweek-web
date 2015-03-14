@@ -26,18 +26,29 @@ angular.module('webApp')
           return channel;
         };
 
-        service.removeCollectionFromChannels = function(channels, collectionId) {
-          var channel = service.findChannelForCollection(channels, collectionId);
-          _.remove(channel.collections, { collectionId: collectionId });
-        };
-
-        service.addCollectionToChannel = function(channels, channelId, collection) {
+        service.findChannel = function(channels, channelId) {
           var channel = _.find(channels, { channelId: channelId });
+
           if (!channel) {
             throw new DisplayableError('Channel not found.');
           }
 
-          channel.collections.push(collection);
+          return channel;
+        };
+
+        service.removeCollectionFromChannels = function(channels, collectionId) {
+          var channel = service.tryFindChannelForCollection(channels, collectionId);
+
+          if (channel) {
+            _.remove(channel.collections, { collectionId: collectionId });
+          }
+        };
+
+        // 'Unchecked' as this method will not verify the collection is unique: the
+        // caller is responsible for this.
+        service.addCollectionToChannelUnchecked = function(channels, channelId, collection) {
+          service.findChannel(channels, channelId)
+            .collections.push(collection);
         };
 
         service.getChannelForCollection = function(collectionId) {
@@ -58,7 +69,7 @@ angular.module('webApp')
             }
 
             try {
-              service.addCollectionToChannel(channels, channelId, collection);
+              service.addCollectionToChannelUnchecked(channels, channelId, collection);
             }
             catch(error) {
               return $q.reject(error);
@@ -70,15 +81,10 @@ angular.module('webApp')
 
         service.updateCollection = function(channelId, collection) {
           return channelRepository.updateChannels(function(channels) {
-            try {
-              service.removeCollectionFromChannels(channels, collection.collectionId);
-            }
-            catch(error) {
-              return $q.reject(error);
-            }
+            service.removeCollectionFromChannels(channels, collection.collectionId);
 
             try {
-              service.addCollectionToChannel(channels, channelId, collection);
+              service.addCollectionToChannelUnchecked(channels, channelId, collection);
             }
             catch(error) {
               return $q.reject(error);
@@ -90,12 +96,7 @@ angular.module('webApp')
 
         service.deleteCollection = function(collectionId) {
           return channelRepository.updateChannels(function(channels) {
-            try {
-              service.removeCollectionFromChannels(channels, collectionId);
-            }
-            catch(error) {
-              return $q.reject(error);
-            }
+            service.removeCollectionFromChannels(channels, collectionId);
 
             return $q.when();
           });
