@@ -29,12 +29,11 @@ angular.module('webApp')
 
             var channelMap = _.reduce(channels, function(channelResult, channel){
 
-              var collectionMap = _.reduce(channel.collections, function(collectionResult, collection){
+              channel.collections = _.reduce(channel.collections, function(collectionResult, collection){
                 collectionResult[collection.collectionId] = collection;
                 return collectionResult;
               }, {});
 
-              channel.collections = collectionMap;
               channelResult[channel.channelId] = channel;
               return channelResult;
             }, {});

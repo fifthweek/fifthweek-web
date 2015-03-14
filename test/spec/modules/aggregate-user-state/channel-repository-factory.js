@@ -197,4 +197,66 @@ describe('channel repository factory', function(){
       expect(actualChannel).toBe(existingChannel);
     });
   });
+
+  describe('when getting a channel map', function(){
+    describe('when no channels exist', function(){
+
+      var error;
+      beforeEach(function(){
+        masterRepository.get.and.returnValue($q.when([]));
+        target.getChannelMap().catch(function(e){error = e;});
+        $rootScope.$apply();
+      });
+
+      it('should fail with a displayable error', function(){
+        expect(error instanceof DisplayableError).toBe(true);
+        expect(error.message).toBe('You must create a subscription.');
+      });
+    });
+
+    describe('when channels exist', function(){
+
+      var result;
+      beforeEach(function(){
+        masterRepository.get.and.returnValue($q.when([
+          {
+            channelId: 'a',
+            collections: [
+              { collectionId: 'x' },
+              { collectionId: 'y' }
+            ]
+          },
+          {
+            channelId: 'b',
+            collections: [
+              { collectionId: 'xx' },
+              { collectionId: 'yy' }
+            ]
+          }
+        ]));
+
+        target.getChannelMap().then(function(r){result = r;});
+        $rootScope.$apply();
+      });
+
+      it('should return a map of channels and collections', function(){
+        expect(result).toEqual({
+          a: {
+            channelId: 'a',
+            collections: {
+              x: { collectionId: 'x' },
+              y: { collectionId: 'y' }
+            }
+          },
+          b: {
+            channelId: 'b',
+            collections: {
+              xx: { collectionId: 'xx' },
+              yy: { collectionId: 'yy' }
+            }
+          }
+        });
+      });
+    });
+  });
 });
