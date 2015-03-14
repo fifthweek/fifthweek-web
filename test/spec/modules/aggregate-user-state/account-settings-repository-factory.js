@@ -1,7 +1,6 @@
 describe('account settings repository factory', function(){
   'use strict';
 
-
   var $q;
   var $rootScope;
   var masterRepositoryFactory;

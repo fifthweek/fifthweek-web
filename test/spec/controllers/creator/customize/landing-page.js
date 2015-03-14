@@ -10,6 +10,7 @@ describe('customize landing page controller', function () {
   var aggregateUserState;
   var subscriptionStub;
   var blobImageControlFactory;
+  var aggregateUserStateUtilities;
   var errorFacade;
 
   var defaultBlobControl;
@@ -22,10 +23,13 @@ describe('customize landing page controller', function () {
     subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['putSubscription']);
     blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
+    aggregateUserStateUtilities = jasmine.createSpyObj('aggregateUserStateUtilities', ['getUsername']);
 
     defaultBlobControl = { control: true };
     blobImageControlFactory.createControl.and.returnValue(defaultBlobControl);
     subscriptionRepositoryFactory.forCurrentUser.and.returnValue(subscriptionRepository);
+
+    aggregateUserStateUtilities.getUsername.and.returnValue('username');
 
     module('webApp');
     module(function($provide) {
@@ -34,6 +38,7 @@ describe('customize landing page controller', function () {
       $provide.value('blobImageControlFactory', blobImageControlFactory);
       $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
       $provide.value('errorFacade', errorFacade);
+      $provide.value('aggregateUserStateUtilities', aggregateUserStateUtilities);
     });
 
     inject(function ($injector) {
@@ -96,12 +101,15 @@ describe('customize landing page controller', function () {
       beforeEach(function(){
         subscriptionRepository.getSubscription.and.returnValue($q.when({
           subscriptionName: 'name',
-          username: 'username',
           headerImage: undefined
         }));
 
         createController();
         $scope.$apply();
+      });
+
+      it('should get the current username', function(){
+        expect(aggregateUserStateUtilities.getUsername).toHaveBeenCalled();
       });
 
       it('should set the settings', function(){
@@ -124,7 +132,6 @@ describe('customize landing page controller', function () {
       beforeEach(function(){
         subscriptionRepository.getSubscription.and.returnValue($q.when({
           subscriptionName: 'name',
-          username: 'username',
           headerImage: {
             uri: 'uri',
             containerName: 'containerName',
@@ -134,6 +141,10 @@ describe('customize landing page controller', function () {
 
         createController();
         $scope.$apply();
+      });
+
+      it('should get the current username', function(){
+        expect(aggregateUserStateUtilities.getUsername).toHaveBeenCalled();
       });
 
       it('should set the settings', function(){

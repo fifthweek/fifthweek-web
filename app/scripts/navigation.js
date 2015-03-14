@@ -1,14 +1,6 @@
 angular.module('webApp')
-  .factory('navigationMap', function(aggregateUserState, states) {
+  .factory('navigationMap', function(aggregateUserStateUtilities, states) {
     'use strict';
-
-    var getUsername = function(){
-      if(aggregateUserState.currentValue && aggregateUserState.currentValue.accountSettings){
-        return aggregateUserState.currentValue.accountSettings.username;
-      }
-
-      return undefined;
-    };
 
     return [
       {
@@ -24,7 +16,7 @@ angular.module('webApp')
         color: 'green'
       },
       {
-        name: getUsername,
+        name: aggregateUserStateUtilities.getUsername,
         id: 'Username',
         state: states.user.timeline.name,
         icon: 'fa fa-user',
