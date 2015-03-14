@@ -6,6 +6,10 @@
   margin: -6px 0 25px 0;
   color:$grey-dark-2;
 
+  @media (min-width:$screen-md-min) {
+    margin-top: -13px;
+  }
+
   i {
     margin:0 7px 0 9px;
   }

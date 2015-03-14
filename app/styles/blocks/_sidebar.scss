@@ -21,12 +21,12 @@ $item-padding:$item-padding-tb $item-padding-lr;
   #{$logo} {
     font-size:24px;
     padding:0;
-    margin:14px 0 20px 0;
+    margin:14px 0 18px 0;
     a {
       display:inline-block;
       vertical-align:top;
       width:100%;
-      padding:9px $item-padding-lr + $item-margin-lr;
+      padding:4px $item-padding-lr + $item-margin-lr;
       color:$grey-dark-4;
     }
   }

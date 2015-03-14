@@ -14,8 +14,8 @@ ul.header-navbar-menu {
     padding-left:75px;
   }
 
-  @media (min-width:$screen-md-min) {
-    padding-top: 20px;
+  @media (min-width:$navbar-lg-min) {
+    padding-top: 12px;
   }
 
   li {
@@ -30,7 +30,7 @@ ul.header-navbar-menu {
       outline:0 none;
 
       @media (min-width:$navbar-lg-min) {
-        padding-bottom: 20px;
+        padding-bottom: 17px;
       }
 
       &:hover{
