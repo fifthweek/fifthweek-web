@@ -5,6 +5,7 @@ describe('collection service', function(){
   var collectionId = 'collectionId';
   var collectionName = 'collection name';
   var weeklyReleaseTime = 42;
+  var weeklyReleaseTimes = [weeklyReleaseTime];
 
   var $q;
   var $rootScope;
@@ -13,12 +14,30 @@ describe('collection service', function(){
   var collectionStub;
   var target;
 
+  var itShouldGetRepositoryForCurrentUser = function(targetMethod, stubMethod) {
+    it('should get the repository for the current user before any async operations begin', function() {
+      var firstCall = null;
+      collectionRepositoryFactory.forCurrentUser = function() {
+        firstCall = firstCall || 'good';
+      };
+
+      collectionStub[stubMethod].and.callFake(function() {
+        firstCall = firstCall || 'bad';
+        return $q.defer().promise;
+      });
+
+      target[targetMethod]();
+
+      expect(firstCall).toBe('good');
+    });
+  };
+
   beforeEach(function() {
     module('webApp');
 
-    collectionRepository = jasmine.createSpyObj('collectionRepository', ['createCollection', 'deleteCollection']);
+    collectionRepository = jasmine.createSpyObj('collectionRepository', ['createCollection', 'updateCollection', 'deleteCollection']);
     collectionRepositoryFactory = { forCurrentUser: function() { return collectionRepository; }};
-    collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection', 'deleteCollection']);
+    collectionStub = jasmine.createSpyObj('collectionStub', ['postCollection', 'putCollection', 'deleteCollection']);
 
     module(function($provide) {
       $provide.value('collectionRepositoryFactory', collectionRepositoryFactory);
@@ -32,28 +51,15 @@ describe('collection service', function(){
     });
 
     collectionStub.postCollection.and.returnValue($q.when({ data: { collectionId: collectionId, defaultWeeklyReleaseTime: weeklyReleaseTime } }));
+    collectionStub.putCollection.and.returnValue($q.when());
+    collectionStub.deleteCollection.and.returnValue($q.when());
     collectionRepository.createCollection.and.returnValue($q.when());
-    collectionStub.deleteCollection.and.returnValue($q.defer().promise);
-    collectionRepository.deleteCollection.and.returnValue($q.defer().promise);
+    collectionRepository.updateCollection.and.returnValue($q.when());
+    collectionRepository.deleteCollection.and.returnValue($q.when());
   });
 
   describe('when creating a collection from name', function(){
-
-    it('should get the repository for the current user before any async operations begin', function() {
-      var firstCall = null;
-      collectionRepositoryFactory.forCurrentUser = function() {
-        firstCall = firstCall || 'good';
-      };
-
-      collectionStub.postCollection.and.callFake(function() {
-        firstCall = firstCall || 'bad';
-        return $q.defer().promise;
-      });
-
-      target.createCollectionFromName(channelId, collectionName);
-
-      expect(firstCall).toBe('good');
-    });
+    itShouldGetRepositoryForCurrentUser('createCollectionFromName', 'postCollection');
 
     it('should create the collection via the API', function() {
       target.createCollectionFromName(channelId, collectionName);
@@ -84,7 +90,40 @@ describe('collection service', function(){
     });
   });
 
+  describe('when updating a collection', function() {
+    var collectionData;
+    beforeEach(function() {
+      collectionData = {
+        channelId: channelId,
+        name: collectionName,
+        weeklyReleaseSchedule: weeklyReleaseTimes
+      };
+    });
+
+    itShouldGetRepositoryForCurrentUser('updateCollection', 'putCollection');
+
+    it('should update the collection via the API', function() {
+      target.updateCollection(collectionId, collectionData);
+      $rootScope.$apply();
+
+      expect(collectionStub.putCollection).toHaveBeenCalledWith(collectionId, collectionData);
+    });
+
+    it('should update the collection via the client-side repository', function() {
+      target.updateCollection(collectionId, collectionData);
+      $rootScope.$apply();
+
+      expect(collectionRepository.updateCollection).toHaveBeenCalledWith(channelId, {
+        collectionId: collectionId,
+        name: collectionName,
+        weeklyReleaseSchedule: weeklyReleaseTimes
+      });
+    });
+  });
+
   describe('when deleting a collection', function() {
+    itShouldGetRepositoryForCurrentUser('deleteCollection', 'deleteCollection');
+
     it('should delete the collection via the API', function() {
       target.deleteCollection(collectionId);
       $rootScope.$apply();
@@ -93,8 +132,6 @@ describe('collection service', function(){
     });
 
     it('should delete the collection from the client-side repository', function() {
-      collectionStub.deleteCollection.and.returnValue($q.when());
-
       target.deleteCollection(collectionId);
       $rootScope.$apply();
 
