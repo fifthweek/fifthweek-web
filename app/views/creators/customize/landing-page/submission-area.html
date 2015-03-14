@@ -8,12 +8,13 @@
   <div ng-show="form.hasAttemptedSubmit && !form.$valid" class="alert alert-danger form-invalid-message">
     <p>Please correct all invalid fields before proceeding.</p>
   </div>
-  <input type="submit"
+  <button type="submit"
          class="btn btn-block btn-success save-changes-button"
-         value="Save Changes"
          data-loading-text="Saving..."
          data-event-title="Customize Landing Page form submitted"
          data-event-category="Customize Landing Page"
          ng-disabled="form.$pristine || form.isSubmitting"
-         fw-form-submit="submitForm()" />
+         fw-form-submit="submitForm()">
+    Save Changes
+  </button>
 </div>

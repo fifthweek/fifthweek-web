@@ -75,18 +75,16 @@
           <p>Saved successfully</p>
         </div>
         <fw-error-message value="form.message"></fw-error-message>
-        <div ng-show="form.message" class="alert alert-danger" id="form-message">
-          <p>{{form.message}}</p>
-        </div>
-        <input type="submit"
+        <button type="submit"
                id="save-changes-button"
                class="btn btn-block btn-success"
-               value="Save Changes"
                data-loading-text="Saving..."
                data-event-title="Account settings saved"
                data-event-category="Account"
                ng-disabled="form.$pristine || form.isSubmitting"
-               fw-form-submit="submitForm()" />
+               fw-form-submit="submitForm()">
+          Save Changes
+        </button>
       </div>
     </div>
   </fw-panel12>
