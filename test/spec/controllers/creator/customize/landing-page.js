@@ -234,7 +234,50 @@ describe('customize landing page controller', function () {
 
     describe('when submitForm is called', function(){
 
-      describe('when saving account settings succeeds', function(){
+      describe('when no header image exists', function(){
+
+        beforeEach(function(){
+          $scope.model.settings.headerImage = undefined;
+          subscriptionStub.putSubscription.and.returnValue($q.when());
+          subscriptionRepository.setSubscription.and.returnValue($q.when());
+          $scope.submitForm();
+          $scope.$apply();
+        });
+
+        it('should save the subscription settings', function(){
+          expect(subscriptionStub.putSubscription).toHaveBeenCalledWith(
+            'subscriptionId',
+            {
+              subscriptionName: 'name',
+              tagline: 'tagline',
+              introduction: 'introduction',
+              headerImageFileId: undefined,
+              video: 'video',
+              description: 'description'
+            }
+          );
+        });
+
+        it('should update the aggregate user state', function(){
+          expect(subscriptionRepository.setSubscription).toHaveBeenCalledWith(
+            {
+              subscriptionId: 'subscriptionId',
+              subscriptionName: 'name',
+              tagline: 'tagline',
+              introduction: 'introduction',
+              video: 'video',
+              description: 'description',
+              headerImage: undefined
+            }
+          );
+        });
+
+        it('should set the form to pristine', function(){
+          expect($scope.form.$setPristine).toHaveBeenCalled();
+        });
+      });
+
+      describe('when a header image exists', function(){
 
         beforeEach(function(){
           subscriptionStub.putSubscription.and.returnValue($q.when());

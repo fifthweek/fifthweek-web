@@ -46,11 +46,15 @@ angular.module('webApp').controller(
     };
 
     $scope.submitForm = function() {
+      var fileId;
+      if(model.settings.headerImage){
+        fileId = model.settings.headerImage.fileId;
+      }
       var subscriptionData = {
         subscriptionName: model.settings.subscriptionName,
         tagline: model.settings.tagline,
         introduction: model.settings.introduction,
-        headerImageFileId: model.settings.headerImage.fileId,
+        headerImageFileId: fileId,
         video: model.settings.video ? model.settings.video : undefined,
         description: model.settings.description
       };
