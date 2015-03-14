@@ -159,8 +159,6 @@ describe('collection repository factory', function(){
 
   describe('when creating a collection', function() {
     beforeEach(function() {
-      channels = [{ channelId: channelId, collections: [ 'existing collection' ]}];
-
       spyOn(target, 'tryFindChannelForCollection');
       spyOn(target, 'addCollectionToChannelUnchecked');
       target.tryFindChannelForCollection.and.returnValue(undefined);
@@ -196,6 +194,45 @@ describe('collection repository factory', function(){
       target.addCollectionToChannelUnchecked.and.throwError(expectedError);
 
       target.createCollection('absent channel', collection)
+        .then(function() {
+          throw 'Failure expected';
+        })
+        .catch(function(error) {
+          expect(error).toBe(expectedError);
+        });
+
+      $rootScope.$apply();
+    });
+  });
+
+  describe('when updating a collection', function() {
+    beforeEach(function() {
+      spyOn(target, 'removeCollectionFromChannels');
+      spyOn(target, 'addCollectionToChannelUnchecked');
+
+      channelRepository.updateChannels.and.callFake(function(applyChange) {
+        return $q.when(applyChange(channels));
+      });
+    });
+
+    it('should remove the existing collection', function() {
+      target.updateCollection(channelId, collection);
+      $rootScope.$apply();
+
+      expect(target.removeCollectionFromChannels).toHaveBeenCalledWith(channels, collectionId);
+    });
+
+    it('should add the new collection to the channel', function() {
+      target.updateCollection(channelId, collection);
+      $rootScope.$apply();
+
+      expect(target.addCollectionToChannelUnchecked).toHaveBeenCalledWith(channels, channelId, collection);
+    });
+
+    it('should throw an error if channel does not exist', function() {
+      target.addCollectionToChannelUnchecked.and.throwError(expectedError);
+
+      target.updateCollection('absent channel', collection)
         .then(function() {
           throw 'Failure expected';
         })
