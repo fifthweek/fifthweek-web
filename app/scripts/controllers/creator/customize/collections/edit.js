@@ -10,19 +10,18 @@ angular.module('webApp').controller('editCollectionCtrl', function(
   errorFacade) {
   'use strict';
 
+  var collectionId = $state.params.id;
+  var collectionRepository = collectionRepositoryFactory.forCurrentUser();
+  var channelRepository = channelRepositoryFactory.forCurrentUser();
   var defaultHourOfWeek = 0;
+  var sortReleaseTimes = function() {
+    $scope.model.schedule = _.sortBy($scope.model.schedule, 'sortKey');
+  };
+
   $scope.previousState = states.creators.customize.collections.name;
   $scope.model = {
     releaseTimesDirty: false,
     hourOfWeek: defaultHourOfWeek
-  };
-
-  var collectionId = $state.params.id;
-  var collectionRepository = collectionRepositoryFactory.forCurrentUser();
-  var channelRepository = channelRepositoryFactory.forCurrentUser();
-
-  var sortReleaseTimes = function() {
-    $scope.model.schedule = _.sortBy($scope.model.schedule, 'sortKey');
   };
 
   channelRepository.getChannels()
