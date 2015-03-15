@@ -9,6 +9,8 @@ var SidebarPage = require('./pages/sidebar.page.js');
 var HeaderCustomizePage = require('./pages/header-customize.page.js');
 var ChannelListPage = require('./pages/creators/customize/channel-list.page.js');
 var ChannelAddPage = require('./pages/creators/customize/channel-add.page.js');
+var CollectionListPage = require('./pages/creators/customize/collection-list.page.js');
+var CollectionAddPage = require('./pages/creators/customize/collection-add.page.js');
 
 var signOutPage = new SignOutPage();
 var registerPage = new RegisterPage();
@@ -19,6 +21,8 @@ var sidebar = new SidebarPage();
 var headerCustomize = new HeaderCustomizePage();
 var channelListPage = new ChannelListPage();
 var channelAddPage = new ChannelAddPage();
+var collectionListPage = new CollectionListPage();
+var collectionAddPage = new CollectionAddPage();
 
 var CommonWorkflows = function() {};
 
@@ -45,6 +49,13 @@ CommonWorkflows.prototype = Object.create({}, {
     headerCustomize.channelsLink.click();
     channelListPage.addChannelButton.click();
     return channelAddPage.submitSuccessfully();
+  }},
+
+  createCollection: { value: function() {
+    sidebar.customizeLink.click();
+    headerCustomize.collectionsLink.click();
+    collectionListPage.addCollectionButton.click();
+    return collectionAddPage.submitSuccessfully([channelListPage.defaultChannelName]);
   }}
 });
 

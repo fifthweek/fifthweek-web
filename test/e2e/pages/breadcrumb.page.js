@@ -5,11 +5,15 @@ var BreadcrumbPage = function() {};
 
 BreadcrumbPage.prototype = Object.create({}, {
   includeTests: { value: function(pageTitles, returnToPage) {
+    var getPageTitle = function(pageTitle) {
+      return _.isFunction(pageTitle) ? pageTitle() : pageTitle;
+    };
+
     var expectBreadcrumbText = function(count) {
       expect(element.all(by.css('#breadcrumb .item')).count()).toBe(count);
       for (var i = 0; i < count; i++) {
         var item = element(by.css('#breadcrumb .item:nth-child(' + (i + 1) + ')'));
-        expect(item.getText()).toBe(pageTitles[i]);
+        expect(item.getText()).toBe(getPageTitle(pageTitles[i]));
       }
     };
 
@@ -21,14 +25,16 @@ BreadcrumbPage.prototype = Object.create({}, {
       });
 
       _.forEach(_.initial(pageTitles), function(pageTitle, index) {
-        it('should contain "' + pageTitle + '" link', function() {
+        var preRuntimePageTitle = _.isFunction(pageTitle) ? '<dynamic>' : pageTitle;
+
+        it('should contain "' + preRuntimePageTitle + '" link', function() {
           var link = element(by.css('#breadcrumb a.item:nth-child(' + (index + 1) + ')'));
 
-          expect(link.getText()).toBe(pageTitle);
+          expect(link.getText()).toBe(getPageTitle(pageTitle));
         });
 
         if (index === 0) {
-          it('should contain "' + pageTitle + '" link, that navigates to the root ancestor', function() {
+          it('should contain "' + preRuntimePageTitle + '" link, that navigates to the root ancestor', function() {
             var link = element(by.css('#breadcrumb a.item:nth-child(' + (index + 1) + ')'));
             link.click();
 
@@ -36,7 +42,7 @@ BreadcrumbPage.prototype = Object.create({}, {
           });
         }
         else {
-          it('should contain "' + pageTitle + '" link, that navigates to a non-root ancestor', function() {
+          it('should contain "' + preRuntimePageTitle + '" link, that navigates to a non-root ancestor', function() {
             var link = element(by.css('#breadcrumb a.item:nth-child(' + (index + 1) + ')'));
             link.click();
 
