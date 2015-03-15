@@ -37,20 +37,14 @@ angular.module('webApp').controller('editCollectionCtrl', function(
       );
     })
     .then(function() {
-      return collectionRepository.getChannelForCollection(collectionId)
-        .then(function(channel) {
-          var collection = _.find(channel.collections, { collectionId: collectionId });
-          $scope.model.savedName = collection.name;
-          $scope.model.name = collection.name;
-          $scope.model.schedule = releaseTimeFormatter.getDayAndTimesOfWeek(collection.weeklyReleaseSchedule);
-          $scope.model.selectedChannel = _.find($scope.model.channels, {value: channel.channelId});
-          sortReleaseTimes();
-        })
-        .catch(function(error) {
-          return errorFacade.handleError(error, function(message) {
-            $scope.model.errorMessage = message;
-          });
-        });
+      return collectionRepository.getChannelForCollection(collectionId).then(function(channel) {
+        var collection = _.find(channel.collections, { collectionId: collectionId });
+        $scope.model.savedName = collection.name;
+        $scope.model.name = collection.name;
+        $scope.model.schedule = releaseTimeFormatter.getDayAndTimesOfWeek(collection.weeklyReleaseSchedule);
+        $scope.model.selectedChannel = _.find($scope.model.channels, {value: channel.channelId});
+        sortReleaseTimes();
+      });
     })
     .catch(function(error) {
       return errorFacade.handleError(error, function(message) {
