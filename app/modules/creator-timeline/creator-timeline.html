@@ -14,10 +14,7 @@
       <div class="row header">
         <div class="col-s-4">
           <div class="creator">
-            <div class="image-container">
-              <div class="vertical-aspect-ratio"></div>
-              <img class="image-area" ng-src="{{model.profileImageUrl}}" />
-            </div>
+            <fw-image src="{{model.profileImageUrl}}"></fw-image>
             <div class="subscribe-button-wrapper">
               <div ng-if="model.subscribed" class="subscribed">
                 <button id="subscribed-button"
