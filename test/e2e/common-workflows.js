@@ -51,11 +51,11 @@ CommonWorkflows.prototype = Object.create({}, {
     return channelAddPage.submitSuccessfully();
   }},
 
-  createCollection: { value: function() {
+  createCollection: { value: function(channelNames) {
     sidebar.customizeLink.click();
     headerCustomize.collectionsLink.click();
     collectionListPage.addCollectionButton.click();
-    return collectionAddPage.submitSuccessfully([channelListPage.defaultChannelName]);
+    return collectionAddPage.submitSuccessfully(channelNames || [channelListPage.defaultChannelName]);
   }}
 });
 

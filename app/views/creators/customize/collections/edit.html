@@ -1,7 +1,8 @@
 <div class="page-customize-collections-manage">
   <form novalidate
-        role="form"
+        id="manageCollectionForm"
         name="manageCollectionForm"
+        role="form"
         ng-show="!model.addingReleaseTime && !model.selectedReleaseTime">
 
     <fw-breadcrumb current="{{model.savedName}}"></fw-breadcrumb>
@@ -12,7 +13,7 @@
       <fw-form-input-collection-name ng-model="model.name" placeholder="Collection name" required focus></fw-form-input-collection-name>
 
       <label>Available in</label>
-      <fw-form-input-select selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
+      <fw-form-input-select id="model-selected-channel" selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
 
       <div class="form-group">
         <fw-form-subsection name="Schedule">
