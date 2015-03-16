@@ -147,7 +147,7 @@ $header-height:108px;
       }
 
       button {
-        font-size: $p-font-size + 2;
+        font-size: $p-font-size;
         color:#fff;
         box-shadow: $post-shadow;
         border:none;
@@ -156,6 +156,11 @@ $header-height:108px;
         margin:-20px auto 0;
         display: block;
         width:auto;
+      }
+      #subscribe-button {
+        background-color: $blue-light-4;
+        font-weight: normal;
+        font-size: $p-font-size + 2;
 
         @media (min-width:$screen-s-min) {
           font-size: $p-font-size;
@@ -164,10 +169,6 @@ $header-height:108px;
         @media (min-width:$screen-sm-min + 100) {
           font-size: $p-font-size + 2;
         }
-      }
-      #subscribe-button {
-        background-color: $blue-light-4;
-        font-weight: normal;
       }
       #subscribed-button {
         text-transform: uppercase;
@@ -240,14 +241,14 @@ $header-height:108px;
           position: absolute;
           top: 0;
           left: 35px;
-          font-size: $p-font-size;
+          font-size: $p-font-size + 1;
           font-weight: bold;
           display: inline;
-          line-height: $p-line-height-hug;
+          line-height: $p-line-height-hug + 1;
         }
         .price {
           text-align: right;
-          line-height: $p-line-height-hug;
+          line-height: $p-line-height-hug + 1;
         }
         ul {
           padding: 15px 0 20px 52px;
