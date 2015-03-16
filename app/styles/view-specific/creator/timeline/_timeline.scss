@@ -12,6 +12,10 @@ $header-height:108px;
   color: $grey-dark-4;
 }
 
+@mixin header-shadow {
+  box-shadow: 0 2px 9px $image-overlay;
+}
+
 #{$html-name-space} {
   #{$logo-sm} {
     position: absolute;
@@ -29,6 +33,7 @@ $header-height:108px;
     }
   }
   .header-image {
+    @include header-shadow;
     position: absolute;
     top:0;
     left:0;
@@ -91,7 +96,7 @@ $header-height:108px;
       font-weight: normal;
       margin-bottom: 20px;
       @media (min-width:$screen-s-min) {
-        margin-bottom: 40px;
+        margin-bottom: 50px;
       }
     }
     h4 {
@@ -103,7 +108,7 @@ $header-height:108px;
       margin: 0 0 25px;
       @media (min-width:$screen-s-min) {
         text-align:left;
-        margin-bottom: 66px;
+        margin-bottom: 60px;
       }
       @media (min-width:$screen-sm-min) and (max-width:$screen-md-max){
         margin-bottom: 100px;
@@ -135,8 +140,8 @@ $header-height:108px;
         border-radius: $post-border-radius;
         min-width: 176px; /* Ensures button is never wider than image */
         .image-area {
+          @include header-shadow;
           border-radius: $post-border-radius;
-          box-shadow: 0 2px 9px $image-overlay;
         }
       }
 
