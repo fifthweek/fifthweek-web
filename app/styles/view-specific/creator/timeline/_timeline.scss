@@ -147,7 +147,7 @@ $header-height:108px;
       }
 
       button {
-        font-size: $p-font-size;
+        font-size: $p-font-size + 2;
         color:#fff;
         box-shadow: $post-shadow;
         border:none;
@@ -156,6 +156,14 @@ $header-height:108px;
         margin:-20px auto 0;
         display: block;
         width:auto;
+
+        @media (min-width:$screen-s-min) {
+          font-size: $p-font-size;
+        }
+
+        @media (min-width:$screen-sm-min + 100) {
+          font-size: $p-font-size + 2;
+        }
       }
       #subscribe-button {
         background-color: $blue-light-4;
