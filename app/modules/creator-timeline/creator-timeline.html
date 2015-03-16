@@ -10,7 +10,7 @@
       <div class="row header">
         <div class="col-s-4">
           <div class="creator">
-            <fw-blob-image control="blobImage" thumbnail="600x600-crop" uri="https://fifthweek.blob.core.windows.net/public/WuZ1Yr3lEeST-gAVXcJ6Nw2" container-name="public"></fw-blob-image>
+            <fw-blob-image control="blobImage" thumbnail="600x600-crop" uri="{{model.accountSettings.profileImage.uri}}" container-name="{{model.accountSettings.profileImage.containerName}}"></fw-blob-image>
             <div class="subscribe-button-wrapper">
               <div ng-if="model.subscribed" class="subscribed">
                 <button id="subscribed-button"
@@ -34,9 +34,9 @@
         </div>
         <div class="col-s-8">
           <div class="header-text">
-            <h2>{{model.subscription.}}</h2>
-            <h3>Web Comics and More</h3>
-            <h4>Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here! And here's another line.</h4>
+            <h2>{{model.subscription.subscriptionName}}</h2>
+            <h3>{{model.subscription.tagline}}</h3>
+            <h4>{{model.subscription.introduction}}</h4>
           </div>
         </div>
       </div>

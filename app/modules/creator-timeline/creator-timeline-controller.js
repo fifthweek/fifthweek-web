@@ -1,7 +1,8 @@
 angular.module('webApp').controller('timelineCtrl',
-  function($scope, $sce, subscriptionRepositoryFactory, postInteractions) {
+  function($scope, $sce, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, postInteractions) {
     'use strict';
 
+    var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
     $scope.model = {
@@ -109,6 +110,10 @@ angular.module('webApp').controller('timelineCtrl',
 
     subscriptionRepository.getSubscription().then(function(data) {
       $scope.model.subscription = data;
+    });
+
+    accountSettingsRepository.getAccountSettings().then(function(accountSettings){
+      $scope.model.accountSettings = accountSettings;
     });
 
     $scope.viewImage = function (post) {
