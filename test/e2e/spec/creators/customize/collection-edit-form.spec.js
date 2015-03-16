@@ -90,6 +90,19 @@ describe('edit collection form', function() {
   });
 
   describe('on successful submission', function() {
+    var expectReleaseTimes = function() {
+      expect(page.releaseTimeSummaries.count()).toBe(releaseTimes.length);
+
+      page.expandReleaseTimesButton.click();
+      expect(page.releaseTimes.count()).toBe(releaseTimes.length);
+
+      for (var i = 0; i < releaseTimes.length; i++) {
+        page.getReleaseTime(i).click();
+        testKit.expectFormValues(page, releaseTimes[i]);
+        page.cancelReleaseTimeButton.click();
+      }
+    };
+
     it('should run once before all', function() {
       savedValues = testKit.setFormValues(page, inputs);
 
@@ -116,7 +129,7 @@ describe('edit collection form', function() {
 
     it('should persist the changes', function() {
       testKit.expectFormValues(page, savedValues);
-      expect(page.releaseTimeSummaries.count()).toBe(releaseTimes.length);
+      expectReleaseTimes();
     });
 
     it('should persist the changes, between sessions', function() {
@@ -125,7 +138,7 @@ describe('edit collection form', function() {
       header.collectionsLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
-      expect(page.releaseTimeSummaries.count()).toBe(releaseTimes.length);
+      expectReleaseTimes();
     });
   });
 
