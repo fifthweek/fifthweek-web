@@ -17,6 +17,7 @@ describe('edit collection form', function() {
   var subscription;
   var savedValues;
   var inputs;
+  var releaseTimes = [];
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
@@ -92,8 +93,21 @@ describe('edit collection form', function() {
     it('should run once before all', function() {
       savedValues = testKit.setFormValues(page, inputs);
 
+      // Add release time that will appear at start of list.
       page.expandReleaseTimesButton.click();
       page.newReleaseTimeButton.click();
+      releaseTimes.push(page.defaultReleaseTime);
+      page.addReleaseTimeButton.click();
+
+      // Delete other release time. This means we know exactly which release times we have.
+      page.getReleaseTime(1).click();
+      page.deleteReleaseTimeButton.click();
+      page.confirmDeleteReleaseTimeButton.click();
+
+      // Add another release time, just to make a change to the number of release times from when we started.
+      page.newReleaseTimeButton.click();
+      browser.waitForAngular();
+      releaseTimes.push(testKit.setFormValues(page, page.releaseTimeInputs));
       page.addReleaseTimeButton.click();
 
       page.saveButton.click();
@@ -102,7 +116,7 @@ describe('edit collection form', function() {
 
     it('should persist the changes', function() {
       testKit.expectFormValues(page, savedValues);
-      expect(page.releaseTimeSummaries.count()).toBe(2);
+      expect(page.releaseTimeSummaries.count()).toBe(releaseTimes.length);
     });
 
     it('should persist the changes, between sessions', function() {
@@ -111,7 +125,7 @@ describe('edit collection form', function() {
       header.collectionsLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
-      expect(page.releaseTimeSummaries.count()).toBe(2);
+      expect(page.releaseTimeSummaries.count()).toBe(releaseTimes.length);
     });
   });
 
@@ -173,6 +187,28 @@ describe('edit collection form', function() {
       page.saveReleaseTimeButton.click();
       expect(page.saveButton.isEnabled()).toBe(true);
     });
+  });
+
+  describe('when deleting release times', function() {
+    it('it should allow release times to be deleted when multiple exist', function() {
+
+    });
+
+    it('it should not allow release times to be deleted when only one exists', function() {
+
+    });
+  });
+
+  describe('release times should be ordered', function() {
+
+
+    it('after editing a release time', function() {
+
+    });
+  });
+
+  it('should order release times', function() {
+
   });
 
   deleteConfirmationPage.describeDeletingWithVerification(

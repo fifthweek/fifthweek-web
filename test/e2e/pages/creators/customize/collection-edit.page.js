@@ -24,6 +24,7 @@ CollectionEditPage.prototype = Object.create({}, {
       newValue: function() { return _.sample(channelSelectTexts); }
     }
   ]; }},
+  defaultReleaseTime: { get: function() { return { daySelect:'Monday', hourSelect: '00:00' }; } },
   releaseTimeInputs: { get: function() { return [
     {
       name: 'daySelect',
