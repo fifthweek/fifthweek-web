@@ -98,6 +98,9 @@ $header-height:108px;
       @media (min-width:$screen-s-min) {
         margin-bottom: 48px;
       }
+      @media (min-width:$screen-lg-min) {
+        width:125%; // Allow larger text to be displayed on one line.
+      }
     }
     h4 {
       @include light-text;
