@@ -881,4 +881,3 @@ describe('user state stub', function() {
     expect(result).toBe(responseData);
   });
 });
-

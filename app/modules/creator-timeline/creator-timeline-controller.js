@@ -1,6 +1,8 @@
 angular.module('webApp').controller('timelineCtrl',
-  function($scope, $sce, postInteractions) {
+  function($scope, $sce, subscriptionRepositoryFactory, postInteractions) {
     'use strict';
+
+    var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
     $scope.model = {
       subscribed: false,
@@ -104,6 +106,10 @@ angular.module('webApp').controller('timelineCtrl',
         }
       ]
     };
+
+    subscriptionRepository.getSubscription().then(function(data) {
+      $scope.model.subscription = data;
+    });
 
     $scope.viewImage = function (post) {
       postInteractions.viewImage(post.imagePath, true);
