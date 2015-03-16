@@ -7,6 +7,8 @@ angular.module('webApp').controller('timelineCtrl',
 
     $scope.model = {
       subscribed: false,
+      profileImageUrl: '',
+      headerImageUrl: '',
       videoUrl: $sce.trustAsResourceUrl('//player.vimeo.com/video/114229222'),
       fullDescription: 'Hello there!',
       channels: {

@@ -128,7 +128,7 @@ $reorder-menu-width: 29px;
         .author {
           float:left;
           padding-top:4px;
-          .blob-image{
+          .image-container{
             @include remove-blob-image-styling;
             width: 32px;
             .image-area{

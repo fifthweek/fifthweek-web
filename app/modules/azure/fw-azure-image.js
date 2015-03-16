@@ -1,19 +1,22 @@
-angular.module('webApp').directive('fwAzureBackgroundImage', function (azureGetImageService, logService) {
+angular.module('webApp').directive('fwAzureImage', function (azureGetImageService, logService) {
   'use strict';
 
   return {
+    restrict: 'E',
     scope: {
       thumbnail: '@',
       uri: '@',
-      containerName: '@'
+      containerName: '@',
+      outputUrl: '='
     },
-    link: function(scope, element) {
+    replace: true,
+    link: function(scope) {
       var cancellationToken;
       var onScopeValid = function() {
         cancellationToken = {};
         azureGetImageService.getImageUrl(scope.containerName, scope.uri, scope.thumbnail, cancellationToken)
           .then(function(imageUrl) {
-            element.attr('style', 'background-image:url(\'' + imageUrl + '\')');
+            scope.outputUrl = imageUrl;
           })
           .catch(function(error){
             logService.error(error);
