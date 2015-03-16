@@ -9,12 +9,14 @@ var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js');
 var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
 var ChannelEditPage = require('../../../pages/creators/customize/channel-edit.page.js');
+var CollectionListPage = require('../../../pages/creators/customize/collection-list.page.js');
 
 describe('edit channel form', function() {
   'use strict';
 
   var registration;
   var subscription;
+  var defaultChannelCollectionCount = 1;
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
@@ -25,6 +27,7 @@ describe('edit channel form', function() {
   var header = new HeaderCustomizePage();
   var deleteConfirmationPage = new DeleteConfirmationPage();
   var channelListPage = new ChannelListPage();
+  var collectionListPage = new CollectionListPage();
   var page = new ChannelEditPage();
 
   it('should run once before all', function() {
@@ -61,6 +64,9 @@ describe('edit channel form', function() {
       it('should run once before all', function () {
         if (!isDefault) {
           channel = commonWorkflows.createChannel();
+          commonWorkflows.createCollection();
+          commonWorkflows.createCollection([channel.name]);
+          header.channelsLink.click();
         }
 
         determineCorrectInitialValues();
@@ -183,6 +189,11 @@ describe('edit channel form', function() {
           },
           function () {
             // Check deleted from client-side.
+            header.collectionsLink.click();
+            collectionListPage.waitForPage();
+            expect(collectionListPage.collections.count()).toBe(defaultChannelCollectionCount);
+
+            header.channelsLink.click();
             channelListPage.waitForPage();
             expect(channelListPage.channels.count()).toBe(1);
             expect(channelListPage.channels.getText()).not.toContain(savedValues.nameTextBox);
@@ -190,6 +201,10 @@ describe('edit channel form', function() {
             // Check deleted from API.
             commonWorkflows.reSignIn(registration);
             sidebar.customizeLink.click();
+            header.collectionsLink.click();
+            collectionListPage.waitForPage();
+            expect(collectionListPage.collections.count()).toBe(defaultChannelCollectionCount);
+
             header.channelsLink.click();
             channelListPage.waitForPage();
             expect(channelListPage.channels.count()).toBe(1);

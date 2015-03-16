@@ -189,14 +189,6 @@ describe('edit collection form', function() {
     });
   });
 
-  describe('release times should be ordered', function() {
-
-
-    it('after editing a release time', function() {
-
-    });
-  });
-
   describe('when deleting release times', function() {
     afterEach(function () {
       header.collectionsLink.click(); // Reset form state.
@@ -209,6 +201,8 @@ describe('edit collection form', function() {
       page.deleteReleaseTimeButton.click();
       page.confirmDeleteReleaseTimeButton.click();
       page.saveButton.click();
+
+      releaseTimes.pop();
     });
 
     it('it should not allow release times to be deleted when only one exists', function() {
