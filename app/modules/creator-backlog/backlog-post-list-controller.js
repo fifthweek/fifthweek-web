@@ -8,6 +8,11 @@ angular.module('webApp').controller('backlogPostListCtrl',
       errorMessage: undefined
     };
 
+    var humanFileSize = function(size) {
+      var i = Math.floor( Math.log(size) / Math.log(1024) );
+      return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + [' bytes', 'KB', 'MB', 'GB', 'TB'][i];
+    };
+
     var processPosts = function(channelRepository, posts){
       channelRepository.getChannelMap()
         .then(function(channelMap){
@@ -20,11 +25,20 @@ angular.module('webApp').controller('backlogPostListCtrl',
 
             var m = moment(post.liveDate);
             post.liveIn = m.fromNow();
+
+            if(post.fileSource){
+              post.fileSource.readableSize = humanFileSize(post.fileSource.size);
+            }
+
+            if(post.imageSource){
+              post.imageSource.readableSize = humanFileSize(post.imageSource.size);
+            }
           });
 
           model.posts = posts;
         });
     };
+
 
     var loadForm = function(){
       model.errorMessage = undefined;
@@ -61,7 +75,7 @@ angular.module('webApp').controller('backlogPostListCtrl',
 
 
     $scope.viewImage = function (post) {
-      postInteractions.viewImage(post.imagePath, true);
+      postInteractions.viewImage(post.image.uri, true);
     };
 
     $scope.edit = function(postId) {

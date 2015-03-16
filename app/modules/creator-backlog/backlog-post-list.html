@@ -1,9 +1,16 @@
 <div class="posts">
+
+  <div ng-if="model.isLoading && !model.errorMessage" class="updating-area">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
   <div class="post tagged-post" ng-repeat="post in model.posts">
     <div ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
       <div ng-if="post.image" class="full-width-image">
-        <fw-blob-image thumbnail="1200x16000" uri="{{post.image.uri}}" container-name="{{post.image.containerName}}"></fw-blob-image>
+        <fw-blob-image ng-click="viewImage(post)" thumbnail="1200x16000" uri="{{post.image.uri}}" container-name="{{post.image.containerName}}"></fw-blob-image>
       </div>
 
       <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
@@ -14,11 +21,14 @@
         <div class="content" ng-if="post.comment || post.file">
           <md ng-model="post.comment" ng-if="post.comment"></md>
 
-          <p ng-if="post.file">
-            <a class="btn-file-download file-content" href="{{post.file.uri}}" target="_blank">
-              {{post.file.blobName}}
-            </a>
-          </p>
+          <div ng-if="post.file" class="file-download">
+            <p>
+              <a class="btn-file-download file-content" href="{{post.file.uri}}" target="_blank">
+                {{post.fileSource.fileName}}.{{post.fileSource.fileExtension}}
+              </a>
+            </p>
+            <span class="file-size">{{post.fileSource.readableSize}}</span>
+          </div>
         </div>
 
         <hr />
