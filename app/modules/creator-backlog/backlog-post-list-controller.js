@@ -74,8 +74,12 @@ angular.module('webApp').controller('backlogPostListCtrl',
     loadForm();
 
 
-    $scope.viewImage = function (post) {
-      postInteractions.viewImage(post.image.uri, true);
+    $scope.viewImage = function (image, imageSource) {
+      postInteractions.viewImage(image, imageSource);
+    };
+
+    $scope.openFile = function (file) {
+      return postInteractions.openFile(file);
     };
 
     $scope.edit = function(postId) {

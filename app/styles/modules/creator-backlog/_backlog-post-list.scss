@@ -14,6 +14,7 @@ $html-name-space:'.page-creators-backlog-post-list';
         max-width: 600px;
         position: static;
         border-radius: 6px 6px 0px 0px;
+        cursor: pointer;
       }
 
       .pending-image{
@@ -41,4 +42,56 @@ $html-name-space:'.page-creators-backlog-post-list';
     font-size: $p-font-size - 2;
     color: $grey-light-1;
   }
+
+  .btn-file-download{
+    cursor: pointer;
+  }
+
+  .modal-fw-large-image {
+    .modal-dialog {
+      @media (min-width:$screen-sm-min) {
+        width: auto;
+        margin: 0.5%;
+        max-width: 99%;
+        max-height: 99%;
+      }
+    }
+    .modal-content {
+      background:none;
+      box-shadow:none;
+      border:0 none;
+    }
+    .modal-body {
+      text-align:center;
+    }
+    img {
+      @include modal-box-shadow;
+      margin: 0px auto;
+    }
+
+    .image-button{
+      @include modal-box-shadow;
+      background: #000;
+      color: #ffffff;
+      padding-left: 2px;
+      padding-top: 5px;
+      font-size: 16px;
+      border-color: $grey-light-1;
+      margin: 0px 10px 10px 0px;
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      cursor: pointer;
+      float:right;
+      a{
+        color: #fff;
+      }
+    }
+
+    .image-button-close{
+      padding-left: 0px;
+      padding-top: 3px;
+    }
+  }
+
 }

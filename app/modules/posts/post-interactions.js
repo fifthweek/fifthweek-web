@@ -1,19 +1,30 @@
-angular.module('webApp').factory('postInteractions', function($modal, deleteVerification) {
+angular.module('webApp').factory('postInteractions', function($modal, deleteVerification, accessSignatures) {
     'use strict';
 
     var service = {};
 
-    service.viewImage = function (imagePath) {
+    service.viewImage = function (image, imageSource) {
       $modal.open({
         controller: 'fullSizeImageModalCtrl',
-        templateUrl: 'views/full-size-image-modal.html',
+        templateUrl: 'modules/posts/full-size-image-modal.html',
         windowClass: 'modal-fw-large-image',
         resolve: {
-          imagePath: function() {
-            return imagePath;
+          image: function() {
+            return image;
+          },
+          imageSource: function() {
+            return imageSource;
           }
         }
       });
+    };
+
+    service.openFile = function (file) {
+      return accessSignatures.getContainerAccessInformation(file.containerName)
+        .then(function(data) {
+          var uriWithSignature = file.uri + data.signature;
+          window.open(uriWithSignature, '_blank');
+        });
     };
 
     service.edit = function(postId) {

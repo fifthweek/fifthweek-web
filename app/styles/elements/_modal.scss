@@ -57,24 +57,3 @@
 .modal-sm {
   width: 360px; /* Deleting release times is currently the longest modal */
 }
-
-.modal-fw-large-image {
-  .modal-dialog {
-    @media (min-width:$screen-sm-min) {
-      width:80%;
-      max-width:1200px;
-    }
-  }
-  .modal-content {
-    background:none;
-    box-shadow:none;
-    border:0 none;
-  }
-  .modal-body {
-    text-align:center;
-  }
-  img {
-    @include modal-box-shadow;
-    margin:0 auto;
-  }
-}
