@@ -189,16 +189,6 @@ describe('edit collection form', function() {
     });
   });
 
-  describe('when deleting release times', function() {
-    it('it should allow release times to be deleted when multiple exist', function() {
-
-    });
-
-    it('it should not allow release times to be deleted when only one exists', function() {
-
-    });
-  });
-
   describe('release times should be ordered', function() {
 
 
@@ -207,8 +197,26 @@ describe('edit collection form', function() {
     });
   });
 
-  it('should order release times', function() {
+  describe('when deleting release times', function() {
+    afterEach(function () {
+      header.collectionsLink.click(); // Reset form state.
+      navigateToPage();
+    });
 
+    it('it should allow release times to be deleted when multiple exist', function() {
+      page.expandReleaseTimesButton.click();
+      page.getReleaseTime(0).click();
+      page.deleteReleaseTimeButton.click();
+      page.confirmDeleteReleaseTimeButton.click();
+      page.saveButton.click();
+    });
+
+    it('it should not allow release times to be deleted when only one exists', function() {
+      page.expandReleaseTimesButton.click();
+      page.getReleaseTime(0).click();
+      expect(page.deleteReleaseTimeButtonCount).toBe(0);
+      page.cancelReleaseTimeButton.click();
+    });
   });
 
   deleteConfirmationPage.describeDeletingWithVerification(
