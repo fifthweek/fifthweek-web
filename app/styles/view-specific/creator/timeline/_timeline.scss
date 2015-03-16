@@ -1,14 +1,14 @@
 @import '_base';
 
 $html-name-space:'.page-timeline';
-$header-image-height:410px;
+$header-image-height:500px;
 $header-image-height-sm:300px;
 $header-image-height-xs:220px;
 $header-height:108px;
 
 @mixin light-text {
   font-weight: 200;
-  text-shadow: 0.5px 0.5px 0 #c8c8c8;
+  text-shadow: 0.5px 0.5px 0 #ddd;
   color: $grey-dark-4;
 }
 
@@ -96,14 +96,15 @@ $header-height:108px;
       font-weight: normal;
       margin-bottom: 20px;
       @media (min-width:$screen-s-min) {
-        margin-bottom: 50px;
+        margin-bottom: 48px;
       }
     }
     h4 {
       @include light-text;
       text-align: center;
-      font-size: 18px;
-      line-height: 20px;
+      font-size: 20px;
+      line-height: 26px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       padding: 0;
       margin: 0 0 25px;
       @media (min-width:$screen-s-min) {
