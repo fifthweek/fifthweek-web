@@ -57,24 +57,25 @@ describe('edit collection form', function() {
     sidebar.customizeLink.click();
     header.collectionsLink.click();
     navigateToPage();
-    page.expandReleaseTimesButton.click();
-    page.newReleaseTimeButton.click();
-    page.addReleaseTimeButton.click();
-    page.saveButton.click();
-    navigateToPage();
   });
 
   it('should initialise with the correct properties', function () {
     testKit.expectFormValues(page, savedValues);
+    expect(page.releaseTimeSummaries.count()).toBe(1);
   });
 
   it('should discard changes when user cancels', function() {
     testKit.setFormValues(page, inputs);
 
+    page.expandReleaseTimesButton.click();
+    page.newReleaseTimeButton.click();
+    page.addReleaseTimeButton.click();
+
     page.cancelButton.click();
     navigateToPage();
 
     testKit.expectFormValues(page, savedValues);
+    expect(page.releaseTimeSummaries.count()).toBe(1);
   });
 
   it('should allow user to cancel when form is invalid', function() {
@@ -84,17 +85,24 @@ describe('edit collection form', function() {
     navigateToPage();
 
     testKit.expectFormValues(page, savedValues);
+    expect(page.releaseTimeSummaries.count()).toBe(1);
   });
 
   describe('on successful submission', function() {
     it('should run once before all', function() {
       savedValues = testKit.setFormValues(page, inputs);
+
+      page.expandReleaseTimesButton.click();
+      page.newReleaseTimeButton.click();
+      page.addReleaseTimeButton.click();
+
       page.saveButton.click();
       navigateToPage();
     });
 
     it('should persist the changes', function() {
       testKit.expectFormValues(page, savedValues);
+      expect(page.releaseTimeSummaries.count()).toBe(2);
     });
 
     it('should persist the changes, between sessions', function() {
@@ -103,6 +111,7 @@ describe('edit collection form', function() {
       header.collectionsLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
+      expect(page.releaseTimeSummaries.count()).toBe(2);
     });
   });
 

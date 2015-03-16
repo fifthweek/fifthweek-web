@@ -49,6 +49,7 @@ CollectionEditPage.prototype = Object.create({}, {
   helpMessages: { get: function () { return element.all(by.css('#manageCollectionForm .help-block')); }},
   expandReleaseTimesButton: { get: function () { return element(by.css('#manageReleaseTimes .btn-expand')); }},
   collapseReleaseTimesButton: { get: function () { return element(by.css('#manageReleaseTimes .btn-collapse')); }},
+  releaseTimeSummaries: { get: function () { return element.all(by.css('#manageCollectionForm .release-time')); }},
   releaseTimes: { get: function () { return element.all(by.css('#release-time-list .item')); }},
   getReleaseTime: { value: function(index) { return element(by.css('#release-time-list .item:nth-child(' + (index + 1) + ')')); }},
   newReleaseTimeButton: { get: function () { return element(by.css('#manageReleaseTimes .btn-add')); }},
