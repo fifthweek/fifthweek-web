@@ -12,6 +12,8 @@ var CollectionEditPage = function() {};
 CollectionEditPage.prototype = Object.create({}, {
   nameTextBox: { get: function () { return element(by.id('model-name')); }},
   channelSelectId: { get: function() { return 'model-selected-channel'; }},
+  daySelectId: { get: function() { return 'day-of-week'; }},
+  hourSelectId: { get: function() { return 'hour-of-day'; }},
   inputs: { value: function(channelSelectTexts) { return [
     {
       name: 'nameTextBox',
@@ -22,7 +24,39 @@ CollectionEditPage.prototype = Object.create({}, {
       newValue: function() { return _.sample(channelSelectTexts); }
     }
   ]; }},
+  releaseTimeInputs: { get: function() { return [
+    {
+      name: 'daySelect',
+      newValue: function() { return [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday'
+      ][Math.round(Math.random() * 7)]; }
+    },
+    {
+      name: 'hourSelect',
+      newValue: function() { return [
+        '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00',
+        '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',
+        '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'
+      ][Math.round(Math.random() * 24)]; }
+    }
+  ]; }},
   helpMessages: { get: function () { return element.all(by.css('#manageCollectionForm .help-block')); }},
+  expandReleaseTimesButton: { get: function () { return element(by.css('#manageReleaseTimes .btn-expand')); }},
+  collapseReleaseTimesButton: { get: function () { return element(by.css('#manageReleaseTimes .btn-collapse')); }},
+  releaseTimes: { get: function () { return element.all(by.css('#release-time-list .item')); }},
+  getReleaseTime: { value: function(index) { return element(by.css('#release-time-list .item:nth-child(' + (index + 1) + ')')); }},
+  newReleaseTimeButton: { get: function () { return element(by.css('#manageReleaseTimes .btn-add')); }},
+  addReleaseTimeButton: { get: function () { return element(by.id('add-release-time-button')); }},
+  saveReleaseTimeButton: { get: function () { return element(by.id('save-release-time-button')); }},
+  deleteReleaseTimeButton: { get: function () { return element(by.id('delete-release-time-link')); }},
+  confirmDeleteReleaseTimeButton: { get: function () { return element(by.id('delete-item-unverified-button')); }},
+  cancelReleaseTimeButton: { get: function () { return element(by.id('cancel-release-time-button')); }},
   saveButton: { get: function () { return element(by.id('save-collection-button')); }},
   cancelButton: { get: function () { return element(by.id('cancel-button')); }},
   deleteButtonSelector: { get: function () { return by.id('delete-collection-link'); }},

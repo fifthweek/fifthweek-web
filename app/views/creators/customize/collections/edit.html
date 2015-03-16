@@ -15,7 +15,7 @@
       <label>Available in</label>
       <fw-form-input-select id="model-selected-channel" selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
 
-      <div class="form-group">
+      <div class="form-group" id="manageReleaseTimes">
         <fw-form-subsection name="Schedule">
           <summary>
             <p class="release-times">
@@ -31,6 +31,7 @@
           </summary-expanded>
           <section>
             <fw-managed-list-sm
+              id="release-time-list"
               item-name="release time"
               items="model.schedule"
               new-item="addReleaseTime()"

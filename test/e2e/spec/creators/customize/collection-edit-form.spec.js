@@ -57,6 +57,11 @@ describe('edit collection form', function() {
     sidebar.customizeLink.click();
     header.collectionsLink.click();
     navigateToPage();
+    page.expandReleaseTimesButton.click();
+    page.newReleaseTimeButton.click();
+    page.addReleaseTimeButton.click();
+    page.saveButton.click();
+    navigateToPage();
   });
 
   it('should initialise with the correct properties', function () {
@@ -129,6 +134,36 @@ describe('edit collection form', function() {
     });
 
     testKit.itShouldHaveSubmitButtonDisabledUntilDirty(page, inputs, page.saveButton);
+
+    it('should remain disabled after cancelling out of adding a release time', function(){
+      page.expandReleaseTimesButton.click();
+      page.newReleaseTimeButton.click();
+      page.cancelReleaseTimeButton.click();
+      expect(page.saveButton.isEnabled()).toBe(false);
+    });
+
+    it('should become enabled after adding a release time', function(){
+      page.expandReleaseTimesButton.click();
+      page.newReleaseTimeButton.click();
+      page.addReleaseTimeButton.click();
+      expect(page.saveButton.isEnabled()).toBe(true);
+    });
+
+    it('should become enabled after removing a release time', function(){
+      page.expandReleaseTimesButton.click();
+      page.getReleaseTime(0).click();
+      page.deleteReleaseTimeButton.click();
+      page.confirmDeleteReleaseTimeButton.click();
+      expect(page.saveButton.isEnabled()).toBe(true);
+    });
+
+    it('should become enabled after updating a release time', function(){
+      page.expandReleaseTimesButton.click();
+      page.getReleaseTime(0).click();
+      testKit.makeSelectDirty(page, 'daySelect');
+      page.saveReleaseTimeButton.click();
+      expect(page.saveButton.isEnabled()).toBe(true);
+    });
   });
 
   deleteConfirmationPage.describeDeletingWithVerification(
