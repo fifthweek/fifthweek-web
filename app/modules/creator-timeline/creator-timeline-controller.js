@@ -1,8 +1,9 @@
 angular.module('webApp').controller('timelineCtrl',
-  function($scope, $sce, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, postInteractions) {
+  function($scope, $sce, accountSettingsRepositoryFactory, channelRepositoryFactory, subscriptionRepositoryFactory, postInteractions) {
     'use strict';
 
     var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
+    var channelRepository = channelRepositoryFactory.forCurrentUser();
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
     $scope.model = {
@@ -11,34 +12,6 @@ angular.module('webApp').controller('timelineCtrl',
       headerImageUrl: '',
       videoUrl: $sce.trustAsResourceUrl('//player.vimeo.com/video/114229222'),
       fullDescription: 'Hello there!',
-      channels: {
-        basic: {
-          title:'Basic',
-          price:'0.50',
-          descriptionLines: [
-            'Exclusive News Feed',
-            'Eternal Gratitude'
-          ],
-          checked:true
-        },
-        extras: {
-          title:'Extras',
-          price:'0.75',
-          descriptionLines: [
-            'Side Comic',
-            'Wall Papers'
-          ],
-          checked:false
-        },
-        superExtras: {
-          title:'Super Extras',
-          price:'0.30',
-          descriptionLines: [
-            'Print Quality Signed Comics'
-          ],
-          checked:false
-        }
-      },
       posts: [
         {
           postId: 'a',
@@ -110,12 +83,28 @@ angular.module('webApp').controller('timelineCtrl',
       ]
     };
 
-    subscriptionRepository.getSubscription().then(function(data) {
-      $scope.model.subscription = data;
-    });
-
     accountSettingsRepository.getAccountSettings().then(function(accountSettings){
       $scope.model.accountSettings = accountSettings;
+    });
+
+    channelRepository.getChannels().then(function(channels) {
+      $scope.model.channels = _.chain(channels)
+        .map(function (channel) {
+          return {
+            id: channel.channelId,
+            name: channel.name,
+            price: (channel.priceInUsCentsPerWeek / 100).toFixed(2),
+            description: channel.description.split('\n'),
+            isDefault: channel.isDefault,
+            checked: channel.isDefault
+          };
+        })
+        .sortByOrder(['isDefault', 'name'], [false, true])
+        .value();
+    });
+
+    subscriptionRepository.getSubscription().then(function(data) {
+      $scope.model.subscription = data;
     });
 
     $scope.viewImage = function (post) {

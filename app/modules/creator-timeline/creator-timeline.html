@@ -59,7 +59,7 @@
                              ng-checked="channel.checked"
                              ng-disabled="$first"
                              ng-change="checkboxHandler()">
-                      <h6>{{channel.title}} Subscription</h6>
+                      <h6>{{channel.name}}</h6>
                     </label>
                   </form>
                 </div>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="col-sm-8">
                   <ul>
-                    <li ng-repeat="descriptionLine in channel.descriptionLines">{{descriptionLine}}</li>
+                    <li ng-repeat="descriptionLine in channel.description">{{descriptionLine}}</li>
                   </ul>
                 </div>
               </div>
