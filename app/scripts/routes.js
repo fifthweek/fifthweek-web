@@ -224,7 +224,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.user.timeline.name, {
         url: '/landing-page',
-        templateUrl: 'views/creators/timeline.html',
+        templateUrl: 'modules/creator-timeline/creator-timeline.html',
         controller: 'timelineCtrl',
         requireSubscription: true,
         data : {
