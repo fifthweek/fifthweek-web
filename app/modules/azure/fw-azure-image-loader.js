@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwAzureImage', function ($sce, azureGetImageService, logService) {
+angular.module('webApp').directive('fwAzureImageLoader', function ($sce, azureGetImageService, logService) {
   'use strict';
 
   return {
