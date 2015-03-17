@@ -6,7 +6,8 @@ $queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*
 $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
 $post-font-size: 14px;
 $post-line-height: 20px;
-$post-bottom-margin: 45px;
+$post-bottom-margin-sm: $main-cont-padding-small;
+$post-bottom-margin-lg: 45px;
 $reorder-menu-width: 29px;
 
 @mixin post-core {
@@ -14,7 +15,10 @@ $reorder-menu-width: 29px;
   box-shadow: $post-shadow;
   border-radius: $post-border-radius;
   background: #fff;
-  margin-bottom: $post-bottom-margin;
+  margin-bottom: $post-bottom-margin-sm;
+  @media (min-width:$screen-sm-min) {
+    margin-bottom: $post-bottom-margin-lg;
+  }
 }
 
 @mixin post-border-top-radius {
