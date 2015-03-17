@@ -1,4 +1,4 @@
-describe('azure blob availability service', function() {
+describe('azure URI service', function() {
   'use strict';
 
   var $rootScope;
@@ -23,7 +23,7 @@ describe('azure blob availability service', function() {
     });
 
     inject(function($injector) {
-      target = $injector.get('azureBlobAvailability');
+      target = $injector.get('azureUriService');
       $rootScope = $injector.get('$rootScope');
       $q = $injector.get('$q');
     });

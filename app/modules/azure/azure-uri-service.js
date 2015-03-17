@@ -1,4 +1,4 @@
-angular.module('webApp').factory('azureUriService', function($q, $timeout, azureConstants, azureBlobAvailability) {
+angular.module('webApp').factory('azureUriService', function($q, $timeout, azureConstants, accessSignatures, azureBlobStub) {
     'use strict';
 
     var service = {};
@@ -23,7 +23,7 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
           return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for image ' + uri + ' to be available.'));
         }
 
-        return azureBlobAvailability.tryGetAvailableFileUrl(uri, containerName)
+        return service.tryGetAvailableFileUrl(uri, containerName)
           .then(function (urlWithSignature) {
             if (urlWithSignature) {
               return urlWithSignature;
@@ -35,6 +35,17 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
       };
 
       return waitForImage();
+    };
+
+    service.tryGetAvailableFileUrl = function(uri, containerName){
+      return accessSignatures.getContainerAccessInformation(containerName)
+        .then(function(data){
+          var uriWithSignature = uri + data.signature;
+          return azureBlobStub.checkAvailability(uriWithSignature)
+            .then(function(exists) {
+              return $q.when(exists ? uriWithSignature : undefined);
+            });
+        });
     };
 
     return service;
