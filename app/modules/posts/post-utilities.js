@@ -1,5 +1,5 @@
 angular.module('webApp').factory('postUtilities',
-  function($q, $state, states, accessSignatures) {
+  function($q, $state, states, accessSignatures, fifthweekConstants) {
     'use strict';
 
     var service = {};
@@ -66,7 +66,7 @@ angular.module('webApp').factory('postUtilities',
         }
 
         if(addGrouping){
-          post.dayGrouping = postMoment.format('dddd, MMM D');
+          post.dayGrouping = postMoment.format(fifthweekConstants.dayGroupingDateFormat);
         }
       }
 
