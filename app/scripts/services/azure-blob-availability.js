@@ -4,7 +4,7 @@ angular.module('webApp')
 
     var service = {};
 
-    service.checkAvailability = function(uri, containerName){
+    service.tryGetAvailableFileUrl = function(uri, containerName){
       return accessSignatures.getContainerAccessInformation(containerName)
         .then(function(data){
           var uriWithSignature = uri + data.signature;

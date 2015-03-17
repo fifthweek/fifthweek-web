@@ -19,7 +19,7 @@ angular.module('webApp').factory('azureGetImageService', function($q, $timeout, 
           return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for image ' + uri + ' to be available.'));
         }
 
-        return azureBlobAvailability.checkAvailability(uri, containerName)
+        return azureBlobAvailability.tryGetAvailableFileUrl(uri, containerName)
           .then(function (urlWithSignature) {
             if (urlWithSignature) {
               return urlWithSignature;
