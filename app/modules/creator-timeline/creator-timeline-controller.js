@@ -73,7 +73,10 @@ angular.module('webApp').controller('timelineCtrl',
 
     subscriptionRepository.getSubscription().then(function(data) {
       $scope.model.subscription = data;
-      $scope.model.videoUrl = $sce.trustAsResourceUrl(data.video.replace('http://', '//').replace('https://', '//'));
+
+      if (data.video) {
+        $scope.model.videoUrl = $sce.trustAsResourceUrl(data.video.replace('http://', '//').replace('https://', '//'));
+      }
     });
 
     $scope.viewImage = function (image, imageSource) {
