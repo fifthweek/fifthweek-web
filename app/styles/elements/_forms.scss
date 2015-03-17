@@ -42,6 +42,10 @@ textarea.form-control {
   }
 }
 
+.has-feedback .form-control {
+  padding-right: 38px;
+}
+
 input[type="file"] {
   font-size:10px;
 }
