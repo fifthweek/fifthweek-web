@@ -114,13 +114,13 @@ $header-height:108px;
         text-align: left;
       }
       @media (min-width:$screen-s-min) and (max-width:$screen-sm-max){
-        margin-bottom: 85px;
+        margin-bottom: 75px;
       }
       @media (min-width:$screen-md-min) and (max-width:$screen-md-max){
-        margin-bottom: 115px;
+        margin-bottom: 110px;
       }
       @media (min-width:$screen-lg-min) {
-        margin-bottom: 100px;
+        margin-bottom: 50px;
       }
     }
     .creator {
@@ -225,7 +225,7 @@ $header-height:108px;
       font-size: $p-font-size;
       font-weight: normal;
       color:#fff;
-      padding: 5px 0 11px;
+      padding: 31px 0 30px;
       span {
         @include post-left-right-padding;
         padding-top: 3px;
