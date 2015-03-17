@@ -46,19 +46,19 @@ describe('azure URI service', function() {
       });
 
       it('should return the uri with signature', function(){
-        target.tryGetAvailableFileUrl(url, container)
+        target.tryGetAvailableFileUri(url, container)
           .then(function(result){ expect(result).toBe(url + signature); });
         $rootScope.$apply();
       });
 
       it('should call the access signatures service with the container', function(){
-        target.tryGetAvailableFileUrl(url, container);
+        target.tryGetAvailableFileUri(url, container);
         $rootScope.$apply();
         expect(accessSignatures.getContainerAccessInformation).toHaveBeenCalledWith(container);
       });
 
       it('should call the azure blob stub with the uri and signature', function(){
-        target.tryGetAvailableFileUrl(url, container);
+        target.tryGetAvailableFileUri(url, container);
         $rootScope.$apply();
         expect(azureBlobStub.checkAvailability).toHaveBeenCalledWith(url + signature);
       });
@@ -70,19 +70,19 @@ describe('azure URI service', function() {
       });
 
       it('should return undefined', function(){
-        target.tryGetAvailableFileUrl(url, container)
+        target.tryGetAvailableFileUri(url, container)
           .then(function(result){ expect(result).toBeUndefined(); });
         $rootScope.$apply();
       });
 
       it('should call the access signatures service with the container', function(){
-        target.tryGetAvailableFileUrl(url, container);
+        target.tryGetAvailableFileUri(url, container);
         $rootScope.$apply();
         expect(accessSignatures.getContainerAccessInformation).toHaveBeenCalledWith(container);
       });
 
       it('should call the azure blob stub with the uri and signature', function(){
-        target.tryGetAvailableFileUrl(url, container);
+        target.tryGetAvailableFileUri(url, container);
         $rootScope.$apply();
         expect(azureBlobStub.checkAvailability).toHaveBeenCalledWith(url + signature);
       });
@@ -94,7 +94,7 @@ describe('azure URI service', function() {
       });
 
       it('should return the error', function(){
-        target.tryGetAvailableFileUrl(url, container)
+        target.tryGetAvailableFileUri(url, container)
           .then(function(){ fail('This should not occur'); })
           .catch(function(error){ expect(error).toBe('error'); });
         $rootScope.$apply();
@@ -108,14 +108,14 @@ describe('azure URI service', function() {
     });
 
     it('should return the error', function(){
-      target.tryGetAvailableFileUrl(url, container)
+      target.tryGetAvailableFileUri(url, container)
         .then(function(){ fail('This should not occur'); })
         .catch(function(error){ expect(error).toBe('error'); });
       $rootScope.$apply();
     });
 
     it('should not call the azure blob stub', function(){
-      target.tryGetAvailableFileUrl(url, container);
+      target.tryGetAvailableFileUri(url, container);
       $rootScope.$apply();
       expect(azureBlobStub.checkAvailability).not.toHaveBeenCalled();
     });

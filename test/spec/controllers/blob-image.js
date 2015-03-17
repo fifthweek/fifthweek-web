@@ -11,7 +11,7 @@ describe('blob image controller', function(){
   var target;
 
   beforeEach(function() {
-    azureUriService = jasmine.createSpyObj('azureUriService', ['getAvailableImageUrl']);
+    azureUriService = jasmine.createSpyObj('azureUriService', ['getAvailableImageUri']);
 
     module('webApp', 'errorFacadeMock');
     module(function($provide) {
@@ -57,7 +57,7 @@ describe('blob image controller', function(){
 
     beforeEach(function(){
       createController();
-      azureUriService.getAvailableImageUrl.and.returnValue($q.when('uri?sig'));
+      azureUriService.getAvailableImageUri.and.returnValue($q.when('uri?sig'));
     });
 
     it('should update the image uri', function(){
@@ -66,7 +66,7 @@ describe('blob image controller', function(){
       $timeout.flush();
       expect($scope.model.imageUri).toBe('uri?sig');
       expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureUriService.getAvailableImageUrl).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
+      expect(azureUriService.getAvailableImageUri).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
     });
 
     it('should pause before the initial check, when image is not immediately available', function(){
@@ -102,7 +102,7 @@ describe('blob image controller', function(){
 
     it('should stop checking availability if interrupted with another update event', function(){
       var actualCancellationToken;
-      azureUriService.getAvailableImageUrl.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
+      azureUriService.getAvailableImageUri.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
         actualCancellationToken = cancellationToken;
         return $q.defer().promise;
       });
@@ -119,22 +119,22 @@ describe('blob image controller', function(){
 
     it('should check availability with new file if interrupted with another update event', function(){
       var actualCancellationTokens = [];
-      azureUriService.getAvailableImageUrl.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
+      azureUriService.getAvailableImageUri.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
         actualCancellationTokens.push(cancellationToken);
         return $q.defer().promise;
       });
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
       $timeout.flush();
-      expect(azureUriService.getAvailableImageUrl).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
+      expect(azureUriService.getAvailableImageUri).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
       expect(actualCancellationTokens[0].isCancelled).toBeUndefined();
 
-      azureUriService.getAvailableImageUrl.calls.reset();
+      azureUriService.getAvailableImageUri.calls.reset();
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri2', 'containerName2');
       $scope.$apply();
       $timeout.flush();
-      expect(azureUriService.getAvailableImageUrl).toHaveBeenCalledWith('containerName2', 'uri2', null, jasmine.any(Object));
+      expect(azureUriService.getAvailableImageUri).toHaveBeenCalledWith('containerName2', 'uri2', null, jasmine.any(Object));
       expect(actualCancellationTokens[0].isCancelled).toBe(true);
       expect(actualCancellationTokens[1].isCancelled).toBeUndefined();
     });
@@ -146,11 +146,11 @@ describe('blob image controller', function(){
       expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureUriService.getAvailableImageUrl).not.toHaveBeenCalled();
+      expect(azureUriService.getAvailableImageUri).not.toHaveBeenCalled();
     });
 
     it('should reset the model to defaults and not check availability, when subsequent update event has no arguments, and current event is in progress', function(){
-      azureUriService.getAvailableImageUrl.and.returnValue($q.defer().promise);
+      azureUriService.getAvailableImageUri.and.returnValue($q.defer().promise);
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
@@ -158,9 +158,9 @@ describe('blob image controller', function(){
       expect($scope.model.updating).toBe(true);
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureUriService.getAvailableImageUrl).toHaveBeenCalled();
+      expect(azureUriService.getAvailableImageUri).toHaveBeenCalled();
 
-      azureUriService.getAvailableImageUrl.calls.reset();
+      azureUriService.getAvailableImageUri.calls.reset();
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent);
       $scope.$apply();
@@ -169,7 +169,7 @@ describe('blob image controller', function(){
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
 
-      expect(azureUriService.getAvailableImageUrl).not.toHaveBeenCalled();
+      expect(azureUriService.getAvailableImageUri).not.toHaveBeenCalled();
     });
 
     it('should reset the model to defaults and not check availability, when subsequent update event has no arguments, and current event has completed', function(){
@@ -179,9 +179,9 @@ describe('blob image controller', function(){
       expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBe('uri?sig');
       expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureUriService.getAvailableImageUrl).toHaveBeenCalled();
+      expect(azureUriService.getAvailableImageUri).toHaveBeenCalled();
 
-      azureUriService.getAvailableImageUrl.calls.reset();
+      azureUriService.getAvailableImageUri.calls.reset();
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent);
       $scope.$apply();
@@ -190,7 +190,7 @@ describe('blob image controller', function(){
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
 
-      expect(azureUriService.getAvailableImageUrl).not.toHaveBeenCalled();
+      expect(azureUriService.getAvailableImageUri).not.toHaveBeenCalled();
     });
 
   });

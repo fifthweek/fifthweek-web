@@ -3,15 +3,15 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
 
     var service = {};
 
-    service.getAvailableImageUrl = function(containerName, uri, thumbnail, cancellationToken) {
+    service.getAvailableImageUri = function(containerName, uri, thumbnail, cancellationToken) {
       if (thumbnail) {
         uri = uri + '/' + thumbnail;
       }
 
-      return service.getAvailableFileUrl(containerName, uri, cancellationToken);
+      return service.getAvailableFileUri(containerName, uri, cancellationToken);
     };
 
-    service.getAvailableFileUrl = function(containerName, uri, cancellationToken) {
+    service.getAvailableFileUri = function(containerName, uri, cancellationToken) {
       var pendingImageDataExpiry = _.now() + (azureConstants.timeoutMilliseconds);
 
       var waitForImage = function() {
@@ -23,7 +23,7 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
           return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for image ' + uri + ' to be available.'));
         }
 
-        return service.tryGetAvailableFileUrl(uri, containerName)
+        return service.tryGetAvailableFileUri(uri, containerName)
           .then(function (urlWithSignature) {
             if (urlWithSignature) {
               return urlWithSignature;
@@ -37,15 +37,15 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
       return waitForImage();
     };
 
-    service.tryGetAvailableFileUrl = function(uri, containerName){
-      return service.getFileUrl(uri, containerName).then(function(uriWithSignature){
+    service.tryGetAvailableFileUri = function(uri, containerName){
+      return service.getFileUri(uri, containerName).then(function(uriWithSignature){
         return azureBlobStub.checkAvailability(uriWithSignature).then(function(exists) {
           return $q.when(exists ? uriWithSignature : undefined);
         });
       });
     };
 
-    service.getFileUrl = function(uri, containerName){
+    service.getFileUri = function(uri, containerName){
       return accessSignatures.getContainerAccessInformation(containerName)
         .then(function(data){
           return uri + data.signature;
