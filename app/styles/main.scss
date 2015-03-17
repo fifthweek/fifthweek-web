@@ -6,6 +6,13 @@
 
 @import '_typography';
 
+@import 'elements/_header-logo';
+@import 'elements/_forms';
+@import 'elements/_buttons';
+@import 'elements/_modal';
+@import 'elements/_row-selection';
+@import 'elements/_video';
+
 @import 'blocks/_layout-containers';
 @import 'blocks/_snapjs-customisation';
 @import 'blocks/_header-navbar';
@@ -21,13 +28,6 @@
 @import 'blocks/form-input-hour-of-week';
 @import 'blocks/form-input-select-collection';
 @import 'blocks/posts';
-
-@import 'elements/_header-logo';
-@import 'elements/_forms';
-@import 'elements/_buttons';
-@import 'elements/_modal';
-@import 'elements/_row-selection';
-@import 'elements/_video';
 
 @import 'view-specific/empty/_empty';
 @import 'view-specific/home/_home';

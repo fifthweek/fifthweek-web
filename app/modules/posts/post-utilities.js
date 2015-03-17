@@ -1,5 +1,6 @@
-angular.module('webApp').factory('postUtilities', function($q, $state, states) {
-  'use strict';
+angular.module('webApp').factory('postUtilities',
+  function($q, $state, states, accessSignatures) {
+    'use strict';
 
     var service = {};
 
@@ -10,6 +11,57 @@ angular.module('webApp').factory('postUtilities', function($q, $state, states) {
 
     var isViewable = function(contentType){
       return contentType === 'image/jpeg' || contentType === 'image/gif' || contentType === 'image/png';
+    };
+
+    var getImageUri = function(image, thumbnail, accessMap){
+      var uri = image.uri;
+      if (thumbnail) {
+        uri = uri + '/' + thumbnail;
+      }
+
+      var accessInformation = accessMap[image.containerName];
+      return uri + accessInformation.signature;
+    };
+
+    var updatePostUris = function(post, accessMap){
+      if(post.image){
+        post.image.resolvedUri = getImageUri(post.image, '1200x16000', accessMap);
+      }
+
+      post.creator.profileImage.resolvedUri = getImageUri(post.creator.profileImage, '64x64-crop', accessMap);
+    };
+
+    var processPost = function(post, accessMap){
+      var m = moment(post.liveDate);
+      post.liveIn = m.fromNow();
+
+      if(post.fileSource){
+        post.fileSource.readableSize = humanFileSize(post.fileSource.size);
+      }
+
+      if(post.imageSource){
+        post.imageSource.readableSize = humanFileSize(post.imageSource.size);
+        post.imageSource.viewable = isViewable(post.imageSource.contentType);
+
+        if(!post.imageSource.viewable){
+          // This gives us a link to the non-viewable image file.
+          post.fileSource = post.imageSource;
+        }
+      }
+
+      if(post.liveDate){
+        post.reorder = function(){
+          $state.go(states.creators.backlog.queues.reorder.name, {id: post.collectionId});
+        };
+      }
+
+      updatePostUris(post, accessMap);
+    };
+
+    var processPosts = function(posts, accessMap){
+      _.forEach(posts, function(post){
+        processPost(post, accessMap);
+      });
     };
 
     service.populateCurrentCreatorInformation = function(posts, accountSettingsRepository, channelRepository) {
@@ -39,36 +91,11 @@ angular.module('webApp').factory('postUtilities', function($q, $state, states) {
     };
 
     service.processPostsForRendering = function(posts){
-
-      _.forEach(posts, function(post){
-
-        var m = moment(post.liveDate);
-        post.liveIn = m.fromNow();
-
-        if(post.fileSource){
-          post.fileSource.readableSize = humanFileSize(post.fileSource.size);
-        }
-
-        if(post.imageSource){
-          post.imageSource.readableSize = humanFileSize(post.imageSource.size);
-          post.imageSource.viewable = isViewable(post.imageSource.contentType);
-
-          if(!post.imageSource.viewable){
-            // This gives us a link to the non-viewable image file.
-            post.fileSource = post.imageSource;
-          }
-        }
-
-        if(post.liveDate){
-          post.reorder = function(){
-            $state.go(states.creators.backlog.queues.reorder.name, {id: post.collectionId});
-          }
-        }
-      });
-
-      return $q.when();
+      return accessSignatures.getContainerAccessMap()
+        .then(function(accessMap){
+          processPosts(posts, accessMap);
+        });
     };
 
     return service;
-  }
-);
+});

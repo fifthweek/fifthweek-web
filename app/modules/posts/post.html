@@ -1,12 +1,9 @@
 <div class="timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
-  <div ng-if="post.image" class="full-width-image">
-    <fw-blob-image ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" thumbnail="1200x16000" uri="{{post.image.uri}}" container-name="{{post.image.containerName}}"></fw-blob-image>
-  </div>
+  <img class="full-width-image" ng-if="post.image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
 
   <div ng-if="post.liveDate">
     <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
-
     <p class="tag" ng-if="post.scheduledByQueue">Queued, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
   </div>
 
@@ -28,11 +25,9 @@
 
     <div class="row info-actions">
       <div class="col-xs-8 info">
-        <div class="author">
-          <a ui-sref="account">
-            <fw-blob-image control="blobImage" thumbnail="128x128-crop" uri="{{post.creator.profileImage.uri}}" container-name="{{post.creator.profileImage.containerName}}"></fw-blob-image>
-          </a>
-        </div>
+        <a class="author" ui-sref="account">
+          <img class="author-image" ng-src="{{post.creator.profileImage.resolvedUri}}" />
+        </a>
         <ul>
           <li>
             <a ui-sref="account" class="poster-name">

@@ -57,5 +57,21 @@ angular.module('webApp')
         });
     };
 
+    service.getContainerAccessMap = function(){
+      return accessSignaturesCache.getSignatures()
+        .then(function(data){
+
+          var result = {};
+          result[data.publicSignature.containerName] = data.publicSignature;
+
+          result = _.reduce(data.privateSignatures, function(signatures, item){
+            signatures[item.information.containerName] = item.information;
+            return signatures;
+          }, result);
+
+          return $q.when(result);
+        });
+    };
+
     return service;
   });

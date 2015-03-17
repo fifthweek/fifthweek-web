@@ -128,12 +128,10 @@ $reorder-menu-width: 29px;
         .author {
           float:left;
           padding-top:4px;
-          .image-container{
-            @include remove-blob-image-styling;
+          .author-image{
             width: 32px;
-            .image-area{
-              border-radius: 16px;
-            }
+            height: 32px;
+            border-radius: 16px;
           }
         }
 
@@ -226,6 +224,27 @@ $reorder-menu-width: 29px;
   .image-post {
     @include post-visual;
   }
+
+  .file-download{
+    font-size: $p-font-size + 1;
+  }
+
+  .file-size{
+    margin-left: 35px;
+    font-size: $p-font-size - 2;
+    color: $grey-light-1;
+  }
+
+  .btn-file-download{
+    cursor: pointer;
+  }
+
+  >.updating-area{
+    font-size: 18px;
+    text-align: center;
+  }
+
+
 }
 
 .queue .post {
@@ -318,5 +337,53 @@ $reorder-menu-width: 29px;
         width:100% - $queued-image-width-sm;
       }
     }
+  }
+}
+
+.modal-fw-large-image {
+  .modal-dialog {
+    @media (min-width:$screen-sm-min) {
+      width: auto;
+      margin: 0.5%;
+      max-width: 99%;
+      max-height: 99%;
+    }
+  }
+  .modal-content {
+    background:none;
+    box-shadow:none;
+    border:0 none;
+  }
+  .modal-body {
+    text-align:center;
+  }
+  img {
+    @include modal-box-shadow;
+    margin: 0px auto;
+  }
+
+  .image-button{
+    @include modal-box-shadow;
+    background: #000;
+    color: #ffffff;
+    padding-left: 3px;
+    padding-top: 5px;
+    font-size: 16px;
+    border-color: $grey-light-1;
+    margin: 0px 10px 10px 0px;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    cursor: pointer;
+    float:right;
+  }
+
+  a{
+    color: #fff;
+  }
+
+  .image-button-close{
+    padding-left: 0px;
+    padding-top: 3px;
   }
 }
