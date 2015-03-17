@@ -1,4 +1,4 @@
-angular.module('webApp').directive('fwAzureImageLoader', function ($sce, azureGetImageService, logService) {
+angular.module('webApp').directive('fwAzureImageLoader', function ($sce, azureUriService, logService) {
   'use strict';
 
   return {
@@ -14,7 +14,7 @@ angular.module('webApp').directive('fwAzureImageLoader', function ($sce, azureGe
       var cancellationToken;
       var onScopeValid = function() {
         cancellationToken = {};
-        azureGetImageService.getImageUrl(scope.containerName, scope.uri, scope.thumbnail, cancellationToken)
+        azureUriService.getImageUrl(scope.containerName, scope.uri, scope.thumbnail, cancellationToken)
           .then(function(imageUrl) {
             scope.outputUrl = $sce.trustAsResourceUrl(imageUrl);
           })

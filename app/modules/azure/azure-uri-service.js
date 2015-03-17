@@ -1,4 +1,4 @@
-angular.module('webApp').factory('azureGetImageService', function($q, $timeout, azureConstants, azureBlobAvailability) {
+angular.module('webApp').factory('azureUriService', function($q, $timeout, azureConstants, azureBlobAvailability) {
     'use strict';
 
     var service = {};

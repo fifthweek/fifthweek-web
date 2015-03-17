@@ -6,16 +6,16 @@ describe('blob image controller', function(){
   var $timeout;
 
   var blobImageCtrlConstants;
-  var azureGetImageService;
+  var azureUriService;
   var errorFacade;
   var target;
 
   beforeEach(function() {
-    azureGetImageService = jasmine.createSpyObj('azureGetImageService', ['getImageUrl']);
+    azureUriService = jasmine.createSpyObj('azureUriService', ['getImageUrl']);
 
     module('webApp', 'errorFacadeMock');
     module(function($provide) {
-      $provide.value('azureGetImageService', azureGetImageService);
+      $provide.value('azureUriService', azureUriService);
     });
 
     inject(function ($injector) {
@@ -57,7 +57,7 @@ describe('blob image controller', function(){
 
     beforeEach(function(){
       createController();
-      azureGetImageService.getImageUrl.and.returnValue($q.when('uri?sig'));
+      azureUriService.getImageUrl.and.returnValue($q.when('uri?sig'));
     });
 
     it('should update the image uri', function(){
@@ -66,7 +66,7 @@ describe('blob image controller', function(){
       $timeout.flush();
       expect($scope.model.imageUri).toBe('uri?sig');
       expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureGetImageService.getImageUrl).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
+      expect(azureUriService.getImageUrl).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
     });
 
     it('should pause before the initial check, when image is not immediately available', function(){
@@ -102,7 +102,7 @@ describe('blob image controller', function(){
 
     it('should stop checking availability if interrupted with another update event', function(){
       var actualCancellationToken;
-      azureGetImageService.getImageUrl.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
+      azureUriService.getImageUrl.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
         actualCancellationToken = cancellationToken;
         return $q.defer().promise;
       });
@@ -119,22 +119,22 @@ describe('blob image controller', function(){
 
     it('should check availability with new file if interrupted with another update event', function(){
       var actualCancellationTokens = [];
-      azureGetImageService.getImageUrl.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
+      azureUriService.getImageUrl.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
         actualCancellationTokens.push(cancellationToken);
         return $q.defer().promise;
       });
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
       $timeout.flush();
-      expect(azureGetImageService.getImageUrl).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
+      expect(azureUriService.getImageUrl).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
       expect(actualCancellationTokens[0].isCancelled).toBeUndefined();
 
-      azureGetImageService.getImageUrl.calls.reset();
+      azureUriService.getImageUrl.calls.reset();
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri2', 'containerName2');
       $scope.$apply();
       $timeout.flush();
-      expect(azureGetImageService.getImageUrl).toHaveBeenCalledWith('containerName2', 'uri2', null, jasmine.any(Object));
+      expect(azureUriService.getImageUrl).toHaveBeenCalledWith('containerName2', 'uri2', null, jasmine.any(Object));
       expect(actualCancellationTokens[0].isCancelled).toBe(true);
       expect(actualCancellationTokens[1].isCancelled).toBeUndefined();
     });
@@ -146,11 +146,11 @@ describe('blob image controller', function(){
       expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureGetImageService.getImageUrl).not.toHaveBeenCalled();
+      expect(azureUriService.getImageUrl).not.toHaveBeenCalled();
     });
 
     it('should reset the model to defaults and not check availability, when subsequent update event has no arguments, and current event is in progress', function(){
-      azureGetImageService.getImageUrl.and.returnValue($q.defer().promise);
+      azureUriService.getImageUrl.and.returnValue($q.defer().promise);
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
@@ -158,9 +158,9 @@ describe('blob image controller', function(){
       expect($scope.model.updating).toBe(true);
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureGetImageService.getImageUrl).toHaveBeenCalled();
+      expect(azureUriService.getImageUrl).toHaveBeenCalled();
 
-      azureGetImageService.getImageUrl.calls.reset();
+      azureUriService.getImageUrl.calls.reset();
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent);
       $scope.$apply();
@@ -169,7 +169,7 @@ describe('blob image controller', function(){
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
 
-      expect(azureGetImageService.getImageUrl).not.toHaveBeenCalled();
+      expect(azureUriService.getImageUrl).not.toHaveBeenCalled();
     });
 
     it('should reset the model to defaults and not check availability, when subsequent update event has no arguments, and current event has completed', function(){
@@ -179,9 +179,9 @@ describe('blob image controller', function(){
       expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBe('uri?sig');
       expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureGetImageService.getImageUrl).toHaveBeenCalled();
+      expect(azureUriService.getImageUrl).toHaveBeenCalled();
 
-      azureGetImageService.getImageUrl.calls.reset();
+      azureUriService.getImageUrl.calls.reset();
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent);
       $scope.$apply();
@@ -190,7 +190,7 @@ describe('blob image controller', function(){
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
 
-      expect(azureGetImageService.getImageUrl).not.toHaveBeenCalled();
+      expect(azureUriService.getImageUrl).not.toHaveBeenCalled();
     });
 
   });

@@ -3,7 +3,7 @@ angular.module('webApp')
     initialWaitMilliseconds: 3000,
     updateEvent: 'update'
   })
-  .controller('blobImageCtrl', function ($scope, $q, $timeout, blobImageCtrlConstants, azureGetImageService, errorFacade) {
+  .controller('blobImageCtrl', function ($scope, $q, $timeout, blobImageCtrlConstants, azureUriService, errorFacade) {
     'use strict';
 
     $scope.model = {
@@ -32,7 +32,7 @@ angular.module('webApp')
       $scope.model.updating = true;
 
       var getImageUrl = function() {
-        return azureGetImageService.getImageUrl(containerName, uri, null, cancellationToken);
+        return azureUriService.getImageUrl(containerName, uri, null, cancellationToken);
       };
 
       var imageUrlPromise;
