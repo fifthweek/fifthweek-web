@@ -49,7 +49,7 @@ angular.module('webApp')
           $scope.model.updating = false;
         })
         .catch(function(error) {
-          errorFacade.handleError(error, function(message) {
+          return errorFacade.handleError(error, function(message) {
             $scope.model.errorMessage = message;
             $scope.model.updating = false;
           });
