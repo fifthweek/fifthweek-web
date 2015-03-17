@@ -55,18 +55,19 @@ angular.module('webApp').factory('postUtilities',
           $state.go(states.creators.backlog.queues.reorder.name, {id: post.collectionId});
         };
       }
-
-      var addGrouping = false;
-      if(!previousPost){
-        addGrouping = true;
-      }
       else{
-        var previousMoment = moment(previousPost.liveDate);
-        addGrouping = !postMoment.isSame(previousMoment, 'day');
-      }
+        var addGrouping = false;
+        if(!previousPost){
+          addGrouping = true;
+        }
+        else{
+          var previousMoment = moment(previousPost.liveDate);
+          addGrouping = !postMoment.isSame(previousMoment, 'day');
+        }
 
-      if(addGrouping){
-        post.dayGrouping = postMoment.format('dddd, MMM D');
+        if(addGrouping){
+          post.dayGrouping = postMoment.format('dddd, MMM D');
+        }
       }
 
       updatePostUris(post, accessMap);
