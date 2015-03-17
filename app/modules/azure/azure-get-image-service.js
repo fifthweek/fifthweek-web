@@ -12,7 +12,7 @@ angular.module('webApp').factory('azureGetImageService', function($q, $timeout, 
 
       var waitForImage = function() {
         if (cancellationToken && cancellationToken.isCancelled) {
-          return $q.when();
+          return $q.reject(new CancellationError());
         }
 
         if(_.now() > pendingImageDataExpiry){

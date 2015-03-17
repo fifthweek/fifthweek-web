@@ -6,27 +6,23 @@ describe('blob image controller', function(){
   var $timeout;
 
   var blobImageCtrlConstants;
-  var azureBlobAvailability;
-  var utilities;
-  var logService;
+  var azureGetImageService;
+  var errorFacade;
   var target;
 
   beforeEach(function() {
-    azureBlobAvailability = jasmine.createSpyObj('azureBlobAvailability', ['checkAvailability']);
-    utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
-    logService = jasmine.createSpyObj('logService', ['error']);
+    azureGetImageService = jasmine.createSpyObj('azureGetImageService', ['getImageUrl']);
 
-    module('webApp');
+    module('webApp', 'errorFacadeMock');
     module(function($provide) {
-      $provide.value('azureBlobAvailability', azureBlobAvailability);
-      $provide.value('utilities', utilities);
-      $provide.value('logService', logService);
+      $provide.value('azureGetImageService', azureGetImageService);
     });
 
     inject(function ($injector) {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
       $timeout = $injector.get('$timeout');
+      errorFacade = $injector.get('errorFacade');
       blobImageCtrlConstants = $injector.get('blobImageCtrlConstants');
     });
   });
@@ -44,43 +40,36 @@ describe('blob image controller', function(){
       expect($scope.model).toBeDefined();
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
+      expect($scope.model.updating).toBe(false);
     });
 
     it('should attach to the update event', function(){
-
       spyOn($scope, '$on');
 
       createController();
 
-      expect($scope.$on).toHaveBeenCalled();
-      expect($scope.$on.calls.first().args[0]).toBe(blobImageCtrlConstants.updateEvent);
+      expect($scope.$on).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, jasmine.any(Function));
     });
 
   });
 
   describe('when created', function(){
 
-    var now;
-
     beforeEach(function(){
       createController();
-      utilities.getFriendlyErrorMessage.and.callFake(function(error) { return error.message; });
-
-      now = _.now();
-      spyOn(_, 'now').and.returnValue(now);
+      azureGetImageService.getImageUrl.and.returnValue($q.when('uri?sig'));
     });
 
     it('should update the image uri', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
       $timeout.flush();
       expect($scope.model.imageUri).toBe('uri?sig');
       expect($scope.model.errorMessage).toBeUndefined();
+      expect(azureGetImageService.getImageUrl).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
     });
 
-    it('should pause before the initial check', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
+    it('should pause before the initial check, when image is not immediately available', function(){
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
       expect($scope.model.imageUri).toBeUndefined();
@@ -88,9 +77,14 @@ describe('blob image controller', function(){
       expect($scope.model.imageUri).toBe('uri?sig');
     });
 
+    it('should not pause before the initial check, when image is immediately available', function(){
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName', true);
+      $scope.$apply();
+      expect($scope.model.imageUri).toBe('uri?sig');
+    });
+
     it('should set the image uri to undefined while checking availability', function(){
       $scope.model.imageUri = 'something';
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
 
       expect($scope.model.imageUri).toBeUndefined();
@@ -101,144 +95,48 @@ describe('blob image controller', function(){
 
     it('should set the error message to undefined while checking availability', function(){
       $scope.model.errorMessage = 'something';
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
 
       expect($scope.model.errorMessage).toBeUndefined();
     });
 
-    it('should retry after a timeout if the image does not exist', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
+    it('should stop checking availability if interrupted with another update event', function(){
+      var actualCancellationToken;
+      azureGetImageService.getImageUrl.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
+        actualCancellationToken = cancellationToken;
+        return $q.defer().promise;
+      });
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
       $timeout.flush();
+      expect(actualCancellationToken.isCancelled).toBeUndefined();
 
-      expect($scope.model.imageUri).toBeUndefined();
-      expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(1);
-
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent);
+      $scope.$apply();
       $timeout.flush();
-
-      expect($scope.model.imageUri).toBe('uri?sig');
-      expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(2);
+      expect(actualCancellationToken.isCancelled).toBe(true);
     });
 
-    it('should continue retry after a timeout if the image continues not to exist', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
+    it('should check availability with new file if interrupted with another update event', function(){
+      var actualCancellationTokens = [];
+      azureGetImageService.getImageUrl.and.callFake(function(containerName, uri, thumbnail, cancellationToken) {
+        actualCancellationTokens.push(cancellationToken);
+        return $q.defer().promise;
+      });
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
       $timeout.flush();
+      expect(azureGetImageService.getImageUrl).toHaveBeenCalledWith('containerName', 'uri', null, jasmine.any(Object));
+      expect(actualCancellationTokens[0].isCancelled).toBeUndefined();
 
-      expect($scope.model.imageUri).toBeUndefined();
-      expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(1);
+      azureGetImageService.getImageUrl.calls.reset();
 
-      $timeout.flush();
-
-      expect($scope.model.imageUri).toBeUndefined();
-      expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(2);
-
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
-      $timeout.flush();
-
-      expect($scope.model.imageUri).toBe('uri?sig');
-      expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(3);
-    });
-
-    it('should continue to check while within the timeout period', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
-      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri2', 'containerName2');
       $scope.$apply();
       $timeout.flush();
-
-      expect($scope.model.imageUri).toBeUndefined();
-      expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(1);
-
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
-      _.now.and.returnValue(now + blobImageCtrlConstants.timeoutMilliseconds);
-
-      $timeout.flush();
-
-      expect($scope.model.imageUri).toBe('uri?sig');
-      expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(2);
-    });
-
-    it('should fail if the timeout expires', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
-      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
-      $scope.$apply();
-      $timeout.flush();
-
-      expect($scope.model.imageUri).toBeUndefined();
-      expect($scope.model.errorMessage).toBeUndefined();
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(1);
-
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
-      _.now.and.returnValue(now + blobImageCtrlConstants.timeoutMilliseconds + 1);
-
-      $timeout.flush();
-
-      expect($scope.model.imageUri).toBeUndefined();
-      expect($scope.model.errorMessage).toBe('Timeout');
-      expect(logService.error).toHaveBeenCalled();
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(1);
-    });
-
-    it('should fail if the checkAvailability call fails', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.reject({ message: 'error' }));
-      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
-      $scope.$apply();
-      $timeout.flush();
-
-      expect($scope.model.imageUri).toBeUndefined();
-      expect($scope.model.errorMessage).toBe('error');
-      expect(logService.error).toHaveBeenCalled();
-    });
-
-    it('should continue checking availability with new file if interrupted with new file', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
-      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
-      $scope.$apply();
-      $timeout.flush();
-
-      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri2', 'containerName');
-      $scope.$apply();
-      $timeout.flush();
-
-      expect(azureBlobAvailability.checkAvailability.calls.count()).toBe(2);
-      expect(azureBlobAvailability.checkAvailability.calls.first().args[0]).toBe('uri');
-      expect(azureBlobAvailability.checkAvailability.calls.mostRecent().args[0]).toBe('uri2');
-    });
-
-    it('should reset the timer and continue checking availability if interrupted with new file', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
-      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
-      $scope.$apply();
-      $timeout.flush();
-      expect($scope.model.errorMessage).toBeUndefined();
-
-      _.now.and.returnValue(now + 10000);
-
-      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri2', 'containerName');
-      $scope.$apply();
-      $timeout.flush();
-      expect($scope.model.errorMessage).toBeUndefined();
-
-      _.now.and.returnValue(now + 10000 + blobImageCtrlConstants.timeoutMilliseconds);
-
-      $timeout.flush();
-      expect($scope.model.errorMessage).toBeUndefined();
-
-      _.now.and.returnValue(now + 10000 + blobImageCtrlConstants.timeoutMilliseconds + 1);
-
-      $timeout.flush();
-      expect($scope.model.errorMessage).toBe('Timeout');
+      expect(azureGetImageService.getImageUrl).toHaveBeenCalledWith('containerName2', 'uri2', null, jasmine.any(Object));
+      expect(actualCancellationTokens[0].isCancelled).toBe(true);
+      expect(actualCancellationTokens[1].isCancelled).toBeUndefined();
     });
 
     it('should not start checking availability if the update event has no arguments', function(){
@@ -248,15 +146,42 @@ describe('blob image controller', function(){
       expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
+      expect(azureGetImageService.getImageUrl).not.toHaveBeenCalled();
     });
 
-    it('should reset the model to defaults if the update event has no arguments', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when('uri?sig'));
+    it('should reset the model to defaults and not check availability, when subsequent update event has no arguments, and current event is in progress', function(){
+      azureGetImageService.getImageUrl.and.returnValue($q.defer().promise);
+
       $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
       $scope.$apply();
       $timeout.flush();
+      expect($scope.model.updating).toBe(true);
+      expect($scope.model.imageUri).toBeUndefined();
+      expect($scope.model.errorMessage).toBeUndefined();
+      expect(azureGetImageService.getImageUrl).toHaveBeenCalled();
+
+      azureGetImageService.getImageUrl.calls.reset();
+
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent);
+      $scope.$apply();
+      $timeout.flush();
+      expect($scope.model.updating).toBe(false);
+      expect($scope.model.imageUri).toBeUndefined();
+      expect($scope.model.errorMessage).toBeUndefined();
+
+      expect(azureGetImageService.getImageUrl).not.toHaveBeenCalled();
+    });
+
+    it('should reset the model to defaults and not check availability, when subsequent update event has no arguments, and current event has completed', function(){
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
+      $scope.$apply();
+      $timeout.flush();
+      expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBe('uri?sig');
       expect($scope.model.errorMessage).toBeUndefined();
+      expect(azureGetImageService.getImageUrl).toHaveBeenCalled();
+
+      azureGetImageService.getImageUrl.calls.reset();
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent);
       $scope.$apply();
@@ -264,23 +189,9 @@ describe('blob image controller', function(){
       expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
+
+      expect(azureGetImageService.getImageUrl).not.toHaveBeenCalled();
     });
 
-    it('should stop checking availability if interrupted with an update event with no arguments', function(){
-      azureBlobAvailability.checkAvailability.and.returnValue($q.when(undefined));
-      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'uri', 'containerName');
-      $scope.$apply();
-      $timeout.flush();
-      expect($scope.model.errorMessage).toBeUndefined();
-      expect($scope.model.imageUri).toBeUndefined();
-      expect($scope.model.updating).toBe(true);
-
-      $scope.$broadcast(blobImageCtrlConstants.updateEvent);
-      $scope.$apply();
-      $timeout.flush();
-      expect($scope.model.updating).toBe(false);
-      expect($scope.model.imageUri).toBeUndefined();
-      expect($scope.model.errorMessage).toBeUndefined();
-    });
   });
 });

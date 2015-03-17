@@ -29,6 +29,7 @@
     "marked": false,
     "ApiError": false,
     "FifthweekError": false,
+    "CancellationError": false,
     "InputValidationError": false,
     "UnauthenticatedError": false,
     "UnauthorizedError": false,

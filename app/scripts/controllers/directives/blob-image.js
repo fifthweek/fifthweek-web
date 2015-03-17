@@ -1,11 +1,9 @@
 angular.module('webApp')
   .constant('blobImageCtrlConstants', {
-    timeoutMilliseconds: 30000,
-    checkIntervalMilliseconds: 1500,
     initialWaitMilliseconds: 3000,
     updateEvent: 'update'
   })
-  .controller('blobImageCtrl', function ($scope, $q, $timeout, blobImageCtrlConstants, azureBlobAvailability, utilities, logService) {
+  .controller('blobImageCtrl', function ($scope, $q, $timeout, blobImageCtrlConstants, azureGetImageService, errorFacade) {
     'use strict';
 
     $scope.model = {
@@ -14,79 +12,47 @@ angular.module('webApp')
       updating: false
     };
 
-    var pendingImageData;
-    var pendingImageDataExpiry;
-
-    var updateExpiryTime = function(){
-      pendingImageDataExpiry = _.now() + (blobImageCtrlConstants.timeoutMilliseconds);
-    };
-
-    var assignImage = function(urlWithSignature){
-      pendingImageData = undefined;
-      $scope.model.imageUri = urlWithSignature;
-      $scope.model.updating = false;
-      return $q.when();
-    };
-
-    var waitForImage = function(){
-
-      if(!pendingImageData){
-        return $q.when(); // No longer waiting for an image.
-      }
-
-      if(_.now() > pendingImageDataExpiry){
-        return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for image ' + pendingImageData.uri + ' to be available.'));
-      }
-
-      return azureBlobAvailability.checkAvailability(pendingImageData.uri, pendingImageData.containerName)
-        .then(function(urlWithSignature){
-          if(urlWithSignature){
-            return assignImage(urlWithSignature);
-          }
-          else {
-            return pauseAndWaitForImage(blobImageCtrlConstants.checkIntervalMilliseconds);
-          }
-        });
-    };
-
-    var pauseAndWaitForImage = function(intervalMilliseconds){
-      return $timeout(waitForImage, intervalMilliseconds);
-    };
+    var cancellationToken;
 
     var handleUpdateEvent = function(event, uri, containerName, availableImmediately){
-
-      if(!uri){
-        // Reset and cancel existing checks.
-        $scope.model.errorMessage = undefined;
-        $scope.model.imageUri = undefined;
-        $scope.model.updating = false;
-        pendingImageData = undefined;
-        return $q.when();
-      }
-
       $scope.model.errorMessage = undefined;
       $scope.model.imageUri = undefined;
-      $scope.model.updating = true;
-      updateExpiryTime();
 
-      var isAlreadyWaiting = pendingImageData !== undefined;
-      pendingImageData = {
-        uri: uri,
-        containerName: containerName
-      };
+      if (cancellationToken) {
+        cancellationToken.isCancelled = true;
+        cancellationToken = undefined;
+      }
 
-      if(isAlreadyWaiting) {
+      if (!uri) {
+        $scope.model.updating = false;
         return $q.when();
       }
 
-      var initialInterval = availableImmediately ? 0 : blobImageCtrlConstants.initialWaitMilliseconds;
+      cancellationToken = {};
+      $scope.model.updating = true;
 
-      return pauseAndWaitForImage(initialInterval)
-        .catch(function(error){
-          logService.error(error);
-          $scope.model.errorMessage = utilities.getFriendlyErrorMessage(error);
+      var getImageUrl = function() {
+        return azureGetImageService.getImageUrl(containerName, uri, null, cancellationToken);
+      };
+
+      var imageUrlPromise;
+      if (availableImmediately) {
+        imageUrlPromise = getImageUrl();
+      }
+      else {
+        imageUrlPromise = $timeout(getImageUrl, blobImageCtrlConstants.initialWaitMilliseconds);
+      }
+
+      imageUrlPromise
+        .then(function(imageUrl) {
+          $scope.model.imageUri = imageUrl;
           $scope.model.updating = false;
-          pendingImageData = undefined;
+        })
+        .catch(function(error) {
+          errorFacade.handleError(error, function(message) {
+            $scope.model.errorMessage = message;
+            $scope.model.updating = false;
+          });
         });
     };
 

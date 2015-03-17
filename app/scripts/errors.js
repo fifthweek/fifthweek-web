@@ -23,6 +23,14 @@ function FifthweekError(message) {
 FifthweekError.prototype = Object.create(Error.prototype);
 FifthweekError.prototype.constructor = FifthweekError;
 
+// Used for when a promise is cancelled.
+function CancellationError(message) {
+  this.message = message;
+  this.stack = Error().stack;
+}
+CancellationError.prototype = Object.create(Error.prototype);
+CancellationError.prototype.constructor = CancellationError;
+
 // Used for when the web application fails to connect to another service.
 function ConnectionError(message) {
   this.message = message;
