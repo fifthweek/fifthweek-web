@@ -36,7 +36,7 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
       return waitForImage();
     };
 
-    service.tryGetAvailableFileUri = function(uri, containerName){
+    service.tryGetAvailableFileUri = function(containerName, uri){
       return service.getFileUri(containerName, uri).then(function(uriWithSignature){
         return azureBlobStub.checkAvailability(uriWithSignature).then(function(exists) {
           return $q.when(exists ? uriWithSignature : undefined);
