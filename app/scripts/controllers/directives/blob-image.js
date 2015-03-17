@@ -32,7 +32,7 @@ angular.module('webApp')
       $scope.model.updating = true;
 
       var getImageUrl = function() {
-        return azureUriService.getImageUrl(containerName, uri, null, cancellationToken);
+        return azureUriService.getAvailableImageUrl(containerName, uri, null, cancellationToken);
       };
 
       var imageUrlPromise;

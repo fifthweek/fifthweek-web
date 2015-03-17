@@ -14,7 +14,7 @@ angular.module('webApp').directive('fwAzureImageLoader', function ($sce, azureUr
       var cancellationToken;
       var onScopeValid = function() {
         cancellationToken = {};
-        azureUriService.getImageUrl(scope.containerName, scope.uri, scope.thumbnail, cancellationToken)
+        azureUriService.getAvailableImageUrl(scope.containerName, scope.uri, scope.thumbnail, cancellationToken)
           .then(function(imageUrl) {
             scope.outputUrl = $sce.trustAsResourceUrl(imageUrl);
           })

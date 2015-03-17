@@ -3,7 +3,7 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
 
     var service = {};
 
-    service.getImageUrl = function(containerName, uri, thumbnail, cancellationToken) {
+    service.getAvailableImageUrl = function(containerName, uri, thumbnail, cancellationToken) {
       if (thumbnail) {
         uri = uri + '/' + thumbnail;
       }
