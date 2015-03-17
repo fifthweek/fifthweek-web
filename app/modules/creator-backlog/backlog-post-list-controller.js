@@ -8,7 +8,7 @@ angular.module('webApp').controller('backlogPostListCtrl',
       errorMessage: undefined
     };
 
-    var loadForm = function(){
+    var loadPosts = function(){
       model.errorMessage = undefined;
       model.isLoading = true;
 
@@ -43,7 +43,7 @@ angular.module('webApp').controller('backlogPostListCtrl',
 
     $scope.model = model;
 
-    loadForm();
+    loadPosts();
 
     $scope.viewImage = function (image, imageSource) {
       postInteractions.viewImage(image, imageSource);

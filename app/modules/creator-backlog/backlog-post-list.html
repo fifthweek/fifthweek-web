@@ -1,4 +1,4 @@
-<div class="posts">
+<div class="posts tagged-posts">
 
   <div ng-if="model.isLoading && !model.errorMessage" class="updating-area">
     <i class="fa fa-refresh fa-spin"></i>
@@ -6,5 +6,5 @@
 
   <fw-error-message value="model.errorMessage"></fw-error-message>
 
-  <div class="post tagged-post" ng-repeat="post in model.posts" ng-include="'modules/posts/post.html'"></div>
+  <div ng-repeat="post in model.posts" ng-include="'modules/posts/post.html'"></div>
 </div>

@@ -31,9 +31,9 @@ angular.module('webApp').factory('postUtilities',
       post.creator.profileImage.resolvedUri = getImageUri(post.creator.profileImage, '64x64-crop', accessMap);
     };
 
-    var processPost = function(post, accessMap){
-      var m = moment(post.liveDate);
-      post.liveIn = m.fromNow();
+    var processPost = function(post, previousPost, accessMap){
+      var postMoment = moment(post.liveDate);
+      post.liveIn = postMoment.fromNow();
 
       if(post.fileSource){
         post.fileSource.readableSize = humanFileSize(post.fileSource.size);
@@ -49,18 +49,34 @@ angular.module('webApp').factory('postUtilities',
         }
       }
 
-      if(post.liveDate){
+      post.isScheduled = _.has(post, 'scheduledByQueue');
+      if(post.isScheduled){
         post.reorder = function(){
           $state.go(states.creators.backlog.queues.reorder.name, {id: post.collectionId});
         };
+      }
+
+      var addGrouping = false;
+      if(!previousPost){
+        addGrouping = true;
+      }
+      else{
+        var previousMoment = moment(previousPost.liveDate);
+        addGrouping = !postMoment.isSame(previousMoment, 'day');
+      }
+
+      if(addGrouping){
+        post.dayGrouping = postMoment.format('dddd, MMM D');
       }
 
       updatePostUris(post, accessMap);
     };
 
     var processPosts = function(posts, accessMap){
+      var previousPost;
       _.forEach(posts, function(post){
-        processPost(post, accessMap);
+        processPost(post, previousPost, accessMap);
+        previousPost = post;
       });
     };
 

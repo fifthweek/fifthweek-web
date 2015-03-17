@@ -1,8 +1,9 @@
-<div class="timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
+<h5 ng-if="post.dayGrouping"><span>{{post.dayGrouping}}</span></h5>
+<div class="post timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
   <img class="full-width-image" ng-if="post.image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
 
-  <div ng-if="post.liveDate">
+  <div ng-if="post.isScheduled">
     <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
     <p class="tag" ng-if="post.scheduledByQueue">Queued, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
   </div>
@@ -48,7 +49,7 @@
           </li>
           <li>
             <a ng-click="edit(post.postId)" class="live-in-info">
-              live {{post.liveIn}}
+              <span ng-if="post.isScheduled">live </span>{{post.liveIn}}
             </a>
           </li>
         </ul>
@@ -65,7 +66,7 @@
             <div class="actions-drop-down" ng-show="post.showMenu">
               <ul>
                 <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
-                <li ng-if="post.liveDate && post.scheduledByQueue"><a ng-mousedown="post.reorder()">Reorder</a></li>
+                <li ng-if="post.isScheduled && post.scheduledByQueue"><a ng-mousedown="post.reorder()">Reorder</a></li>
                 <li>
                   <fw-delete-link
                     item-type="Post"

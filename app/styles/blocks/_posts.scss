@@ -199,28 +199,6 @@ $reorder-menu-width: 29px;
     }
   }
 
-  .tagged-post {
-    .non-image-post {
-      padding-top: 32px;
-    }
-
-    .tag {
-      box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.2);
-      font-size: 12px;
-      position: absolute;
-      top:8px;
-      left:-2px;
-      border-left: 2px solid #bdbdbd;
-      border-radius: 2px;
-      background: $gray-lighter;
-      padding: 3px 6px;
-    }
-
-    .image-post .tag {
-      background: #fff;
-    }
-  }
-
   .image-post {
     @include post-visual;
   }
@@ -243,8 +221,28 @@ $reorder-menu-width: 29px;
     font-size: 18px;
     text-align: center;
   }
+}
 
+.tagged-posts {
+  .non-image-post {
+    padding-top: 32px;
+  }
 
+  .tag {
+    box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.2);
+    font-size: 12px;
+    position: absolute;
+    top:8px;
+    left:-2px;
+    border-left: 2px solid #bdbdbd;
+    border-radius: 2px;
+    background: $gray-lighter;
+    padding: 3px 6px;
+  }
+
+  .image-post .tag {
+    background: #fff;
+  }
 }
 
 .queue .post {
