@@ -8,6 +8,10 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
         uri = uri + '/' + thumbnail;
       }
 
+      return service.getAvailableFileUrl(containerName, uri, cancellationToken);
+    };
+
+    service.getAvailableFileUrl = function(containerName, uri, cancellationToken) {
       var pendingImageDataExpiry = _.now() + (azureConstants.timeoutMilliseconds);
 
       var waitForImage = function() {
@@ -25,13 +29,9 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
               return urlWithSignature;
             }
             else {
-              return pauseAndWaitForImage(azureConstants.checkIntervalMilliseconds);
+              return $timeout(waitForImage, azureConstants.checkIntervalMilliseconds);
             }
           });
-      };
-
-      var pauseAndWaitForImage = function(intervalMilliseconds){
-        return $timeout(waitForImage, intervalMilliseconds);
       };
 
       return waitForImage();
