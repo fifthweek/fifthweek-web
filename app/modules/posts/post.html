@@ -1,4 +1,4 @@
-<div ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
+<div class="timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
   <div ng-if="post.image" class="full-width-image">
     <fw-blob-image ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" thumbnail="1200x16000" uri="{{post.image.uri}}" container-name="{{post.image.containerName}}"></fw-blob-image>
@@ -29,15 +29,33 @@
     <div class="row info-actions">
       <div class="col-xs-8 info">
         <div class="author">
-          <fw-blob-image control="blobImage" thumbnail="128x128-crop" uri="{{post.creator.profileImage.uri}}" container-name="{{post.creator.profileImage.containerName}}"></fw-blob-image>
+          <a ui-sref="account">
+            <fw-blob-image control="blobImage" thumbnail="128x128-crop" uri="{{post.creator.profileImage.uri}}" container-name="{{post.creator.profileImage.containerName}}"></fw-blob-image>
+          </a>
         </div>
         <ul>
           <li>
-            <span class="poster-name">{{post.creator.username}}</span>
-            <span ng-if="post.collection">in {{post.collection.name}}</span>
-            <span ng-if="!post.collection">to {{post.channel.name}}</span>
+            <a ui-sref="account" class="poster-name">
+              {{post.creator.username}}
+            </a>
+            <span ng-if="post.collection">
+              in
+              <a ui-sref="creators.customize.collections.edit({id: post.collectionId})" class="container-name">
+                {{post.collection.name}}
+              </a>
+            </span>
+            <span ng-if="!post.collection">
+              to
+               <a ui-sref="creators.customize.channels.edit({id: post.channelId})" class="container-name">
+                 {{post.channel.name}}
+               </a>
+            </span>
           </li>
-          <li>live {{post.liveIn}}</li>
+          <li>
+            <a ng-click="edit(post.postId)" class="live-in-info">
+              live {{post.liveIn}}
+            </a>
+          </li>
         </ul>
       </div>
       <div class="col-xs-4 actions">
@@ -52,7 +70,7 @@
             <div class="actions-drop-down" ng-show="post.showMenu">
               <ul>
                 <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
-                <li ng-if="post.scheduledByQueue"><a ui-sref="creators.backlog.queues.reorder({id: post.collectionId})">Reorder</a></li>
+                <li ng-if="post.liveDate && post.scheduledByQueue"><a ng-mousedown="post.reorder()">Reorder</a></li>
                 <li>
                   <fw-delete-link
                     item-type="Post"

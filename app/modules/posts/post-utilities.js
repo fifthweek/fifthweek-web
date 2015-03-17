@@ -1,4 +1,4 @@
-angular.module('webApp').factory('postUtilities', function($q) {
+angular.module('webApp').factory('postUtilities', function($q, $state, states) {
   'use strict';
 
     var service = {};
@@ -56,6 +56,12 @@ angular.module('webApp').factory('postUtilities', function($q) {
           if(!post.imageSource.viewable){
             // This gives us a link to the non-viewable image file.
             post.fileSource = post.imageSource;
+          }
+        }
+
+        if(post.liveDate){
+          post.reorder = function(){
+            $state.go(states.creators.backlog.queues.reorder.name, {id: post.collectionId});
           }
         }
       });
