@@ -1,5 +1,5 @@
 angular.module('webApp').controller('backlogPostListCtrl',
-  function($scope, postInteractions, authenticationService, channelRepositoryFactory, accountSettingsRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade) {
+  function($scope, postInteractions, authenticationService, channelRepositoryFactory, accountSettingsRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade, postUtilities) {
     'use strict';
 
     var model = {
@@ -7,45 +7,6 @@ angular.module('webApp').controller('backlogPostListCtrl',
       isLoading: false,
       errorMessage: undefined
     };
-
-    var humanFileSize = function(size) {
-      var i = Math.floor( Math.log(size) / Math.log(1024) );
-      return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + [' bytes', 'KB', 'MB', 'GB', 'TB'][i];
-    };
-
-    var processPosts = function(channelRepository, posts){
-      channelRepository.getChannelMap()
-        .then(function(channelMap){
-          _.forEach(posts, function(post){
-            post.channel = channelMap[post.channelId];
-
-            if(post.collectionId){
-              post.collection = post.channel.collections[post.collectionId];
-            }
-
-            var m = moment(post.liveDate);
-            post.liveIn = m.fromNow();
-
-            if(post.fileSource){
-              post.fileSource.readableSize = humanFileSize(post.fileSource.size);
-            }
-
-            if(post.imageSource){
-              post.imageSource.readableSize = humanFileSize(post.imageSource.size);
-              post.imageSource.viewable = post.imageSource.contentType === 'image/jpeg'
-                                        || post.imageSource.contentType === 'image/gif'
-                                        || post.imageSource.contentType === 'image/png';
-
-              if(!post.imageSource.viewable){
-                post.fileSource = post.imageSource;
-              }
-            }
-          });
-
-          model.posts = posts;
-        });
-    };
-
 
     var loadForm = function(){
       model.errorMessage = undefined;
@@ -57,13 +18,17 @@ angular.module('webApp').controller('backlogPostListCtrl',
       var userId = authenticationService.currentUser.userId;
       var getCreatorBacklog = function() { return postsStub.getCreatorBacklog(userId); };
 
-      accountSettingsRepository.getAccountSettings()
-        .then(function(accountSettings){
-          model.accountSettings = accountSettings;
-          return fetchAggregateUserState.updateInParallel(userId, getCreatorBacklog);
+      var posts;
+      fetchAggregateUserState.updateInParallel(userId, getCreatorBacklog)
+        .then(function(result) {
+          posts = result.data;
+          return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, channelRepository);
         })
-        .then(function(result){
-          processPosts(channelRepository, result.data);
+        .then(function(){
+          return postUtilities.processPostsForRendering(posts);
+        })
+        .then(function(){
+          model.posts = posts;
         })
         .catch(function(error){
           model.posts = undefined;
@@ -79,7 +44,6 @@ angular.module('webApp').controller('backlogPostListCtrl',
     $scope.model = model;
 
     loadForm();
-
 
     $scope.viewImage = function (image, imageSource) {
       postInteractions.viewImage(image, imageSource);

@@ -1,0 +1,73 @@
+<div ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
+
+  <div ng-if="post.image" class="full-width-image">
+    <fw-blob-image ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" thumbnail="1200x16000" uri="{{post.image.uri}}" container-name="{{post.image.containerName}}"></fw-blob-image>
+  </div>
+
+  <div ng-if="post.liveDate">
+    <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
+
+    <p class="tag" ng-if="post.scheduledByQueue">Queued, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
+  </div>
+
+  <div class="text">
+    <div class="content" ng-if="post.comment || post.fileSource">
+      <md ng-model="post.comment" ng-if="post.comment"></md>
+
+      <div ng-if="post.fileSource" class="file-download">
+        <p>
+          <a class="btn-file-download file-content" ng-click="openFile(post.file)">
+            {{post.fileSource.fileName}}.{{post.fileSource.fileExtension}}
+          </a>
+        </p>
+        <span class="file-size">{{post.fileSource.readableSize}}</span>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row info-actions">
+      <div class="col-xs-8 info">
+        <div class="author">
+          <fw-blob-image control="blobImage" thumbnail="128x128-crop" uri="{{post.creator.profileImage.uri}}" container-name="{{post.creator.profileImage.containerName}}"></fw-blob-image>
+        </div>
+        <ul>
+          <li>
+            <span class="poster-name">{{post.creator.username}}</span>
+            <span ng-if="post.collection">in {{post.collection.name}}</span>
+            <span ng-if="!post.collection">to {{post.channel.name}}</span>
+          </li>
+          <li>live {{post.liveIn}}</li>
+        </ul>
+      </div>
+      <div class="col-xs-4 actions">
+        <ul>
+          <li class="actions-more"
+              ng-class="{'active-actions-drop-down': post.showMenu}">
+            <button
+              ng-click="post.showMenu = !post.showMenu"
+              ng-blur="post.showMenu = false">
+              <i class="fa fa-ellipsis-h"></i>
+            </button>
+            <div class="actions-drop-down" ng-show="post.showMenu">
+              <ul>
+                <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
+                <li ng-if="post.scheduledByQueue"><a ui-sref="creators.backlog.queues.reorder({id: post.collectionId})">Reorder</a></li>
+                <li>
+                  <fw-delete-link
+                    item-type="Post"
+                    data-event-title="Post deleted"
+                    data-event-category="Backlog"
+                    delete="delete(post.postId)">
+                    Delete
+                  </fw-delete-link>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
