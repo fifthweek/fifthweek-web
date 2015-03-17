@@ -11,9 +11,8 @@ angular.module('webApp').directive('fwAzureImageLoader', function ($sce, azureUr
     },
     replace: true,
     link: function(scope) {
-      var cancellationToken;
       var onScopeValid = function() {
-        azureUriService.getImageUri(scope.containerName, scope.uri, scope.thumbnail, cancellationToken)
+        azureUriService.getImageUri(scope.containerName, scope.uri, scope.thumbnail)
           .then(function(imageUrl) {
             scope.outputUrl = $sce.trustAsResourceUrl(imageUrl);
           })
@@ -24,10 +23,6 @@ angular.module('webApp').directive('fwAzureImageLoader', function ($sce, azureUr
 
       scope.$watchGroup(['thumbnail', 'uri', 'containerName'], function() {
         if (scope.thumbnail && scope.uri && scope.containerName) {
-          if (cancellationToken) {
-            cancellationToken.isCancelled = true;
-          }
-
           onScopeValid();
         }
       });
