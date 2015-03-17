@@ -6,7 +6,7 @@ $queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*
 $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
 $post-font-size: 14px;
 $post-line-height: 20px;
-$post-bottom-margin: 20px;
+$post-bottom-margin: 45px;
 $reorder-menu-width: 29px;
 
 @mixin post-core {

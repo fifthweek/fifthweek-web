@@ -109,12 +109,17 @@ $header-height:108px;
       line-height: 26px;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       padding: 0;
-      margin: 0 0 25px;
+      margin: 0 0 50px;
       @media (min-width:$screen-s-min) {
-        text-align:left;
-        margin-bottom: 60px;
+        text-align: left;
       }
-      @media (min-width:$screen-sm-min) and (max-width:$screen-md-max){
+      @media (min-width:$screen-s-min) and (max-width:$screen-sm-max){
+        margin-bottom: 85px;
+      }
+      @media (min-width:$screen-md-min) and (max-width:$screen-md-max){
+        margin-bottom: 115px;
+      }
+      @media (min-width:$screen-lg-min) {
         margin-bottom: 100px;
       }
     }
@@ -221,7 +226,7 @@ $header-height:108px;
       font-size: $p-font-size;
       font-weight: normal;
       color:#fff;
-      padding: 28px 0 11px;
+      padding: 5px 0 11px;
       span {
         @include post-left-right-padding;
         padding-top: 3px;
