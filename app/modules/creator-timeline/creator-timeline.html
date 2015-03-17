@@ -74,17 +74,20 @@
               </div>
             </div>
 
-            <h5><span>More Info</span></h5>
-            <div class="pseudo-post-text" ng-if="!model.videoUrl">
-              <md ng-model="model.subscription.description"></md>
-            </div>
-            <div class="pseudo-post-video" ng-if="model.videoUrl">
-              <div class="video">
-                <embed-video data-ng-href="{{model.videoUrl}}" controls=0></embed-video>
-                <div ng-include="'../../views/partials/video-radius-fix.html'"></div>
-              </div>
-              <div class="text" ng-if="model.subscription.description">
+            <div ng-if="model.videoUrl || model.subscription.description">
+              <h5><span>More Info</span></h5>
+              <div class="pseudo-post-text" ng-if="!model.videoUrl">
                 <md ng-model="model.subscription.description"></md>
+              </div>
+              <div class="pseudo-post-video" ng-if="model.videoUrl">
+                <div class="video">
+                  <embed-video data-ng-href="{{model.videoUrl}}" controls=0></embed-video>
+                  <div ng-include="'../../views/partials/video-radius-fix.html'"></div>
+                </div>
+                <div class="text">
+                  <md ng-model="model.subscription.description" ng-if="model.subscription.description"></md>
+                  <p ng-if="!model.subscription.description">Subscriptions can be cancelled at anytime.</p>
+                </div>
               </div>
             </div>
 
