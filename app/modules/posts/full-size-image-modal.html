@@ -1,15 +1,15 @@
 ﻿<div class="modal-body" ng-click="$close()">
 
-  <div class="image-button image-button-close">
-    <a class="" ng-click="$close()">
+  <a ng-click="$close()">
+    <div class="image-button image-button-close">
       <i class="fa fa-close"></i>
-    </a>
-  </div>
-  <div class="image-button">
-    <a class="" ng-click="openFile(image)">
+    </div>
+  </a>
+  <a ng-click="openFile(image)">
+    <div class="image-button">
       <i class="fa fa-external-link"></i>
-    </a>
-  </div>
+    </div>
+  </a>
 
   <img ng-src="{{imagePath}}" class="img-responsive"/>
 

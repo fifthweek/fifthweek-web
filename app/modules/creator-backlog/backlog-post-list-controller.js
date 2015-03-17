@@ -32,6 +32,13 @@ angular.module('webApp').controller('backlogPostListCtrl',
 
             if(post.imageSource){
               post.imageSource.readableSize = humanFileSize(post.imageSource.size);
+              post.imageSource.viewable = post.imageSource.contentType === 'image/jpeg'
+                                        || post.imageSource.contentType === 'image/gif'
+                                        || post.imageSource.contentType === 'image/png';
+
+              if(!post.imageSource.viewable){
+                post.fileSource = post.imageSource;
+              }
             }
           });
 
