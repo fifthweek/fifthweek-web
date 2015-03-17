@@ -38,13 +38,17 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
     };
 
     service.tryGetAvailableFileUrl = function(uri, containerName){
+      return service.getFileUrl(uri, containerName).then(function(uriWithSignature){
+        return azureBlobStub.checkAvailability(uriWithSignature).then(function(exists) {
+          return $q.when(exists ? uriWithSignature : undefined);
+        });
+      });
+    };
+
+    service.getFileUrl = function(uri, containerName){
       return accessSignatures.getContainerAccessInformation(containerName)
         .then(function(data){
-          var uriWithSignature = uri + data.signature;
-          return azureBlobStub.checkAvailability(uriWithSignature)
-            .then(function(exists) {
-              return $q.when(exists ? uriWithSignature : undefined);
-            });
+          return uri + data.signature;
         });
     };
 
