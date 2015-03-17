@@ -10,7 +10,6 @@ angular.module('webApp').controller('timelineCtrl',
       subscribed: false,
       profileImageUrl: '',
       headerImageUrl: '',
-      videoUrl: $sce.trustAsResourceUrl('//player.vimeo.com/video/114229222'),
       fullDescription: 'Hello there!',
       posts: [
         {
@@ -105,6 +104,7 @@ angular.module('webApp').controller('timelineCtrl',
 
     subscriptionRepository.getSubscription().then(function(data) {
       $scope.model.subscription = data;
+      $scope.model.videoUrl = $sce.trustAsResourceUrl(data.video.replace('http://', '//').replace('https://', '//'));
     });
 
     $scope.viewImage = function (post) {

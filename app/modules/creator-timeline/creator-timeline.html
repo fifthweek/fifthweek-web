@@ -76,15 +76,15 @@
 
             <h5><span>More Info</span></h5>
             <div class="pseudo-post-text" ng-if="!model.videoUrl">
-              <p>{{model.fullDescription}}</p>
+              <md ng-model="model.subscription.description"></md>
             </div>
             <div class="pseudo-post-video" ng-if="model.videoUrl">
               <div class="video">
-                <iframe id="home-modal-video" vimeo-video title="Creator Journey" src="{{model.videoUrl}}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                <embed-video data-ng-href="{{model.videoUrl}}" controls=0></embed-video>
                 <div ng-include="'../../views/partials/video-radius-fix.html'"></div>
               </div>
-              <div class="text">
-                <p>{{model.fullDescription}}</p>
+              <div class="text" ng-if="model.subscription.description">
+                <md ng-model="model.subscription.description"></md>
               </div>
             </div>
 
