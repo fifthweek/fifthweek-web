@@ -7,7 +7,7 @@ $header-image-height-xs:220px;
 $header-height:108px;
 
 @mixin light-text {
-  -webkit-font-smoothing: auto;
+  -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: auto;
   font-weight: 200;
   text-shadow: 0.5px 0.5px 0 #ddd;
@@ -169,16 +169,26 @@ $header-height:108px;
         width:auto;
       }
       #subscribe-button {
+        color:#fff;
+        padding: 13px 16px 15px 24px;
         background-color: $blue-light-4;
-        font-weight: normal;
-        font-size: $p-font-size + 2;
+        font-size: $p-font-size + 1;
 
         @media (min-width:$screen-s-min) {
           font-size: $p-font-size;
         }
 
         @media (min-width:$screen-sm-min + 100) {
-          font-size: $p-font-size + 2;
+          font-size: $p-font-size + 1;
+        }
+
+        span {
+          margin-left:12px;
+          padding: 7px 9px;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 4px;
+          font-size: $p-font-size - 2;
+          font-weight: bold;
         }
       }
       #subscribed-button {
