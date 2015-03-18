@@ -5,7 +5,7 @@
   <fw-azure-image-loader output-url="model.profileImageUrl" thumbnail="600x600-crop" uri="{{model.accountSettings.profileImage.uri}}" container-name="{{model.accountSettings.profileImage.containerName}}"></fw-azure-image-loader>
   <fw-azure-image-loader output-url="model.headerImageUrl" thumbnail="3000x800-crop" uri="{{model.subscription.headerImage.uri}}" container-name="{{model.subscription.headerImage.containerName}}"></fw-azure-image-loader>
 
-  <div class="header-image" style="background-image:url('{{model.headerImageUrl}}')">
+  <div class="header-image" style="background-image:url('{{model.subscription.headerImage.uri ? model.headerImageUrl : 'images/header-default.jpg'}}')">
     <div ng-include="'../../views/partials/logo-sm.html'"></div>
   </div>
 
