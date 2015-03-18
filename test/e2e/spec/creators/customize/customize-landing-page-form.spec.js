@@ -69,7 +69,7 @@ describe('customize landing page form', function() {
       });
 
       it('should contain the default introduction', function(){
-        expect(page.introductionTextBox.getAttribute('value')).toContain('Hello!');
+        expect(page.introductionTextBox.getAttribute('value')).not.toBeFalsy();
       });
 
       it('should contain the submit button', function(){
