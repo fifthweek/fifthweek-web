@@ -14,7 +14,7 @@
       <div class="row header">
         <div class="col-s-4">
           <div class="creator">
-            <fw-image src="{{model.profileImageUrl}}"></fw-image>
+            <fw-image src="{{model.accountSettings.profileImage.uri ? model.profileImageUrl : 'images/avatar-default.jpg'}}"></fw-image>
             <div class="subscribe-button-wrapper">
               <div ng-if="model.subscribed" class="subscribed">
                 <button id="subscribed-button"
