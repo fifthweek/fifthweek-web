@@ -61,7 +61,7 @@
           <div class="radio bottom-buffer-l">
             <label><input type="radio"
                           ng-model="model.postToQueue"
-                          ng-value="true"/> After other posts in queue <span ng-if="model.queuedLiveDate">(will appear {{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}})</span></label>
+                          ng-value="true"/> After other posts in queue <span ng-if="model.queuedLiveDate">(<strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span></label>
           </div>
 
           <div class="radio bottom-buffer">
