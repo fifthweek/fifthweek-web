@@ -2,7 +2,7 @@ angular.module('webApp')
   .constant('subscriptionServiceConstants', {
     defaultChannelName: 'Basic Subscription',
     defaultChannelDescription: 'Exclusive News Feed\nEarly Updates on New Releases',
-    defaultSubscriptionIntroduction: 'Hello! Thinking of subscribing? Awesome! Subscriptions allow me to produce more of my awesome creations for all you lovely people to see here!'
+    defaultSubscriptionIntroduction: 'Welcome to my new exclusive series. More of your favourites released every week, available to subscribers only.'
   })
   .factory('subscriptionService',
   function($rootScope, $q, subscriptionStub, aggregateUserState, authenticationService, subscriptionRepositoryFactory, subscriptionServiceConstants) {
