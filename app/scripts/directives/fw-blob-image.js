@@ -6,31 +6,27 @@ angular.module('webApp').directive('fwBlobImage',
     scope: {
       control: '=',
       thumbnail: '@',
-      uri: '@',
+      fileId: '@',
       containerName: '@'
     },
     templateUrl:'views/partials/blob-image.html',
     link: function(scope/*, element, attrs*/){
 
-      var updateHandler = function(uri, containerName, availableImmediately) {
-        if(!uri) {
+      var updateHandler = function(containerName, fileId, availableImmediately) {
+        if(!fileId) {
           scope.$broadcast(blobImageCtrlConstants.updateEvent);
           return;
         }
 
-        if(scope.thumbnail){
-          uri = uri + '/' + scope.thumbnail;
-        }
-
-        scope.$broadcast(blobImageCtrlConstants.updateEvent, uri,  containerName, availableImmediately);
+        scope.$broadcast(blobImageCtrlConstants.updateEvent, containerName, fileId, scope.thumbnail, availableImmediately);
       };
 
       if(scope.control){
         scope.control.initialize(updateHandler);
       }
 
-      if(scope.uri && scope.containerName){
-        updateHandler(scope.uri, scope.containerName, true);
+      if(scope.fileId && scope.containerName){
+        updateHandler(scope.containerName, scope.fileId, true);
       }
     }
   };

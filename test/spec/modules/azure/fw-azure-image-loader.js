@@ -41,7 +41,7 @@ describe('fw-azure-image-loader directive', function(){
       $sce.trustAsResourceUrl.and.returnValue('imageUrlTrusted');
       scope.outputImageUrl = '';
 
-      var element = angular.element('<fw-azure-image-loader thumbnail="a" uri="b" container-name="c" output-url="outputImageUrl"></fw-azure-image-loader>');
+      var element = angular.element('<fw-azure-image-loader thumbnail="a" file-id="b" container-name="c" output-url="outputImageUrl"></fw-azure-image-loader>');
       $compile(element)(scope);
       scope.$digest();
 
@@ -54,7 +54,7 @@ describe('fw-azure-image-loader directive', function(){
       azureUriService.getImageUri.and.returnValue($q.reject('bad'));
       scope.outputImageUrl = '';
 
-      var element = angular.element('<fw-azure-image-loader thumbnail="a" uri="b" container-name="c" output-url="outputImageUrl"></fw-azure-image-loader>');
+      var element = angular.element('<fw-azure-image-loader thumbnail="a" file-id="b" container-name="c" output-url="outputImageUrl"></fw-azure-image-loader>');
       $compile(element)(scope);
       scope.$digest();
 
@@ -65,7 +65,7 @@ describe('fw-azure-image-loader directive', function(){
     it('should not do anything if any value is absent 1', function(){
       scope.outputImageUrl = 'dageasgaes';
 
-      var element = angular.element('<fw-azure-image-loader thumbnail="" uri="b" container-name="c" output-url="outputImageUrl"></fw-azure-image-loader>');
+      var element = angular.element('<fw-azure-image-loader thumbnail="" file-id="b" container-name="c" output-url="outputImageUrl"></fw-azure-image-loader>');
       $compile(element)(scope);
       element.isolateScope().$apply();
 
@@ -75,7 +75,7 @@ describe('fw-azure-image-loader directive', function(){
     it('should not do anything if any value is absent 2', function(){
       scope.outputImageUrl = '';
 
-      var element = angular.element('<fw-azure-image-loader thumbnail="a" uri="" container-name="c" output-url="outputImageUrl" />');
+      var element = angular.element('<fw-azure-image-loader thumbnail="a" file-id="" container-name="c" output-url="outputImageUrl" />');
       $compile(element)(scope);
       scope.$digest();
 
@@ -85,7 +85,7 @@ describe('fw-azure-image-loader directive', function(){
     it('should not do anything if any value is absent 3', function(){
       scope.outputImageUrl = '';
 
-      var element = angular.element('<fw-azure-image-loader thumbnail="a" uri="b" container-name="" output-url="outputImageUrl" />');
+      var element = angular.element('<fw-azure-image-loader thumbnail="a" file-id="b" container-name="" output-url="outputImageUrl" />');
       $compile(element)(scope);
       scope.$digest();
 

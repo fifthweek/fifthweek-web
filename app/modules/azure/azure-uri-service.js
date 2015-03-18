@@ -3,15 +3,29 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
 
     var service = {};
 
-    service.getAvailableImageUri = function(containerName, uri, thumbnail, cancellationToken) {
+    var getBlobName = function (fileId, thumbnail) {
       if (thumbnail) {
-        uri = uri + '/' + thumbnail;
+        return fileId + '/' + thumbnail;
       }
 
-      return service.getAvailableFileUri(containerName, uri, cancellationToken);
+      return fileId;
     };
 
-    service.getAvailableFileUri = function(containerName, uri, cancellationToken) {
+    service.getBlobUri = function(containerName, blobName){
+      return accessSignatures.getContainerAccessInformation(containerName).then(function(data){
+        return data.uri + '/' + blobName + data.signature;
+      });
+    };
+
+    service.tryGetAvailableBlobUri = function(containerName, blobName){
+      return service.getBlobUri(containerName, blobName).then(function(uriWithSignature){
+        return azureBlobStub.checkAvailability(uriWithSignature).then(function(exists) {
+          return $q.when(exists ? uriWithSignature : undefined);
+        });
+      });
+    };
+
+    service.getAvailableBlobUri = function(containerName, blobName, cancellationToken) {
       var pendingImageDataExpiry = _.now() + (azureConstants.timeoutMilliseconds);
 
       var waitForImage = function() {
@@ -20,10 +34,10 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
         }
 
         if(_.now() > pendingImageDataExpiry){
-          return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for image ' + uri + ' to be available.'));
+          return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for blob ' + blobName + ' in container ' + containerName + ' to be available.'));
         }
 
-        return service.tryGetAvailableFileUri(containerName, uri).then(function(urlWithSignature) {
+        return service.tryGetAvailableBlobUri(containerName, blobName).then(function(urlWithSignature) {
           if (urlWithSignature) {
             return urlWithSignature;
           }
@@ -36,26 +50,26 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
       return waitForImage();
     };
 
-    service.tryGetAvailableFileUri = function(containerName, uri){
-      return service.getFileUri(containerName, uri).then(function(uriWithSignature){
-        return azureBlobStub.checkAvailability(uriWithSignature).then(function(exists) {
-          return $q.when(exists ? uriWithSignature : undefined);
-        });
-      });
+    service.getAvailableImageUri = function(containerName, fileId, thumbnail, cancellationToken) {
+      var blobName = getBlobName(fileId, thumbnail);
+      return service.getAvailableBlobUri(containerName, blobName, cancellationToken);
     };
 
-    service.getImageUri = function(containerName, uri, thumbnail) {
-      if (thumbnail) {
-        uri = uri + '/' + thumbnail;
-      }
-
-      return service.getFileUri(containerName, uri);
+    service.getAvailableFileUri = function(containerName, fileId, cancellationToken) {
+      return service.getAvailableBlobUri(containerName, fileId, cancellationToken);
     };
 
-    service.getFileUri = function(containerName, uri){
-      return accessSignatures.getContainerAccessInformation(containerName).then(function(data){
-        return uri + data.signature;
-      });
+    service.tryGetAvailableFileUri = function(containerName, fileId){
+      return service.tryGetAvailableBlobUri(containerName, fileId);
+    };
+
+    service.getImageUri = function(containerName, fileId, thumbnail) {
+      var blobName = getBlobName(fileId, thumbnail);
+      return service.getBlobUri(containerName, blobName);
+    };
+
+    service.getFileUri = function(containerName, fileId){
+      return service.getBlobUri(containerName, fileId);
     };
 
     return service;

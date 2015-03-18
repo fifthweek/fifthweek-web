@@ -15,7 +15,7 @@ angular.module('webApp')
           model.accountSettings = data;
 
           if(data.profileImage){
-            $scope.blobImage.update(data.profileImage.uri, data.profileImage.containerName, true);
+            $scope.blobImage.update(data.profileImage.containerName, data.profileImage.fileId, true);
           }
           else{
             $scope.blobImage.update();
@@ -37,7 +37,7 @@ angular.module('webApp')
     $scope.onUploadComplete = function(data) {
       model.accountSettings.profileImage = data;
       $scope.form.$setDirty();
-      $scope.blobImage.update(data.uri, data.containerName, false);
+      $scope.blobImage.update(data.containerName, data.fileId, false);
     };
 
     $scope.submitForm = function() {

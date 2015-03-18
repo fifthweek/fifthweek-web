@@ -133,7 +133,6 @@ describe('customize landing page controller', function () {
         subscriptionRepository.getSubscription.and.returnValue($q.when({
           subscriptionName: 'name',
           headerImage: {
-            uri: 'uri',
             containerName: 'containerName',
             fileId: 'fileId'
           }
@@ -151,12 +150,11 @@ describe('customize landing page controller', function () {
         expect($scope.model.settings).toBeDefined();
         expect($scope.model.settings.subscriptionName).toBe('name');
         expect($scope.model.settings.headerImage.fileId).toBe('fileId');
-        expect($scope.model.settings.headerImage.uri).toBe('uri');
         expect($scope.model.settings.headerImage.containerName).toBe('containerName');
       });
 
       it('should set the blob image to defaults', function(){
-        expect($scope.blobImage.update).toHaveBeenCalledWith('uri', 'containerName', true);
+        expect($scope.blobImage.update).toHaveBeenCalledWith('containerName', 'fileId', true);
       });
 
       it('should set the landing page URL', function(){
@@ -212,14 +210,12 @@ describe('customize landing page controller', function () {
       beforeEach(function(){
         $scope.onUploadComplete({
           fileId: 'fileId',
-          uri: 'uri',
           containerName: 'containerName'
         });
       });
 
       it('should set the new profile image id', function(){
         expect($scope.model.settings.headerImage.fileId).toBe('fileId');
-        expect($scope.model.settings.headerImage.uri).toBe('uri');
         expect($scope.model.settings.headerImage.containerName).toBe('containerName');
       });
 
@@ -228,7 +224,7 @@ describe('customize landing page controller', function () {
       });
 
       it('should update the blob image', function(){
-        expect($scope.blobImage.update).toHaveBeenCalledWith('uri', 'containerName', false);
+        expect($scope.blobImage.update).toHaveBeenCalledWith('containerName', 'fileId', false);
       });
     });
 

@@ -123,7 +123,6 @@ describe('account controller', function () {
           email: 'email',
           username: 'username',
           profileImage: {
-            uri: 'uri',
             containerName: 'containerName',
             fileId: 'fileId'
           }
@@ -137,13 +136,12 @@ describe('account controller', function () {
         expect($scope.model.accountSettings).toBeDefined();
         expect($scope.model.accountSettings.email).toBe('email');
         expect($scope.model.accountSettings.username).toBe('username');
-        expect($scope.model.accountSettings.profileImage.uri).toBe('uri');
         expect($scope.model.accountSettings.profileImage.containerName).toBe('containerName');
         expect($scope.model.accountSettings.profileImage.fileId).toBe('fileId');
       });
 
       it('should set the blob image to defaults', function(){
-        expect($scope.blobImage.update).toHaveBeenCalledWith('uri', 'containerName', true);
+        expect($scope.blobImage.update).toHaveBeenCalledWith('containerName', 'fileId', true);
       });
     });
 
@@ -191,14 +189,12 @@ describe('account controller', function () {
       beforeEach(function(){
         $scope.onUploadComplete({
           fileId: 'fileId',
-          uri: 'uri',
           containerName: 'containerName'
         });
       });
 
       it('should set the new profile image', function(){
         expect($scope.model.accountSettings.profileImage.fileId).toBe('fileId');
-        expect($scope.model.accountSettings.profileImage.uri).toBe('uri');
         expect($scope.model.accountSettings.profileImage.containerName).toBe('containerName');
       });
 
@@ -207,7 +203,7 @@ describe('account controller', function () {
       });
 
       it('should update the blob image', function(){
-        expect($scope.blobImage.update).toHaveBeenCalledWith('uri', 'containerName', false);
+        expect($scope.blobImage.update).toHaveBeenCalledWith('containerName', 'fileId', false);
       });
     });
 

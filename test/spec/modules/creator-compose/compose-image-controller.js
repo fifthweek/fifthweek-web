@@ -72,13 +72,13 @@ describe('compose image controller', function () {
       createController();
       delegate = composeUploadDelegate.initialize.calls.first().args[1];
       delegate({
-        uri: 'uri',
+        fileId: 'fileId',
         containerName: 'containerName'
       });
     });
 
     it('should update the blob image', function(){
-      expect(control.update).toHaveBeenCalledWith('uri', 'containerName');
+      expect(control.update).toHaveBeenCalledWith('containerName', 'fileId');
     });
   });
 });

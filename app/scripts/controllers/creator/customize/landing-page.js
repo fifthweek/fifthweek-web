@@ -20,7 +20,7 @@ angular.module('webApp').controller(
           model.landingPageUrl = 'https://www.fifthweek.com/' + aggregateUserStateUtilities.getUsername();
 
           if(data.headerImage){
-            $scope.blobImage.update(data.headerImage.uri, data.headerImage.containerName, true);
+            $scope.blobImage.update(data.headerImage.containerName, data.headerImage.fileId, true);
           }
           else{
             $scope.blobImage.update();
@@ -42,7 +42,7 @@ angular.module('webApp').controller(
     $scope.onUploadComplete = function(data) {
       model.settings.headerImage = data;
       $scope.form.$setDirty();
-      $scope.blobImage.update(data.uri, data.containerName, false);
+      $scope.blobImage.update(data.containerName, data.fileId, false);
     };
 
     $scope.submitForm = function() {

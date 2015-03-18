@@ -5,14 +5,14 @@ angular.module('webApp').directive('fwAzureImageLoader', function ($sce, azureUr
     restrict: 'E',
     scope: {
       thumbnail: '@',
-      uri: '@',
+      fileId: '@',
       containerName: '@',
       outputUrl: '='
     },
     replace: true,
     link: function(scope) {
       var onScopeValid = function() {
-        azureUriService.getImageUri(scope.containerName, scope.uri, scope.thumbnail)
+        azureUriService.getImageUri(scope.containerName, scope.fileId, scope.thumbnail)
           .then(function(imageUrl) {
             scope.outputUrl = $sce.trustAsResourceUrl(imageUrl);
           })
@@ -21,8 +21,8 @@ angular.module('webApp').directive('fwAzureImageLoader', function ($sce, azureUr
           });
       };
 
-      scope.$watchGroup(['thumbnail', 'uri', 'containerName'], function() {
-        if (scope.thumbnail && scope.uri && scope.containerName) {
+      scope.$watchGroup(['thumbnail', 'fileId', 'containerName'], function() {
+        if (scope.thumbnail && scope.fileId && scope.containerName) {
           onScopeValid();
         }
       });

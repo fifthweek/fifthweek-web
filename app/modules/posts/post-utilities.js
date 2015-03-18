@@ -14,13 +14,13 @@ angular.module('webApp').factory('postUtilities',
     };
 
     var getImageUri = function(image, thumbnail, accessMap){
-      var uri = image.uri;
+      var blob = image.fileId;
       if (thumbnail) {
-        uri = uri + '/' + thumbnail;
+        blob = blob + '/' + thumbnail;
       }
 
       var accessInformation = accessMap[image.containerName];
-      return uri + accessInformation.signature;
+      return accessInformation.uri + '/' + blob + accessInformation.signature;
     };
 
     var updatePostUris = function(post, accessMap){

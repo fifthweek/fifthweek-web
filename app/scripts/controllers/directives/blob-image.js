@@ -14,7 +14,7 @@ angular.module('webApp')
 
     var cancellationToken;
 
-    var handleUpdateEvent = function(event, uri, containerName, availableImmediately){
+    var handleUpdateEvent = function(event, containerName, fileId, thumbnail, availableImmediately){
       $scope.model.errorMessage = undefined;
       $scope.model.imageUri = undefined;
 
@@ -23,7 +23,7 @@ angular.module('webApp')
         cancellationToken = undefined;
       }
 
-      if (!uri) {
+      if (!fileId) {
         $scope.model.updating = false;
         return $q.when();
       }
@@ -32,7 +32,7 @@ angular.module('webApp')
       $scope.model.updating = true;
 
       var getImageUrl = function() {
-        return azureUriService.getAvailableImageUri(containerName, uri, null, cancellationToken);
+        return azureUriService.getAvailableImageUri(containerName, fileId, thumbnail, cancellationToken);
       };
 
       var imageUrlPromise;

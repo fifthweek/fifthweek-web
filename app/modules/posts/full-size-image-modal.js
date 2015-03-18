@@ -4,7 +4,7 @@ angular.module('webApp').controller('fullSizeImageModalCtrl',
 
     accessSignatures.getContainerAccessInformation(image.containerName)
       .then(function(data) {
-        var uriWithSignature = image.uri + data.signature;
+        var uriWithSignature = data.uri + '/' + image.fileId + data.signature;
         $scope.imagePath = uriWithSignature;
         $scope.image = image;
         $scope.imageSource = imageSource;

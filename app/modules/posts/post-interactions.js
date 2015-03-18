@@ -22,7 +22,7 @@ angular.module('webApp').factory('postInteractions', function($modal, deleteVeri
     service.openFile = function (file) {
       return accessSignatures.getContainerAccessInformation(file.containerName)
         .then(function(data) {
-          var uriWithSignature = file.uri + data.signature;
+          var uriWithSignature = data.uri + '/' + file.fileId + data.signature;
           window.open(uriWithSignature, '_blank');
         });
     };
