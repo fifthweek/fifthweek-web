@@ -379,6 +379,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.customize.name, {
         url: '/customize',
+        redirectTo: states.creators.customize.landingPage.name,
         templateUrl: 'views/creators/customize/index.html',
         requireSubscription: true,
         data : {
