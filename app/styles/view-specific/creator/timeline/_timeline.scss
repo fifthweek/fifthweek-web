@@ -214,7 +214,7 @@ $header-height:108px;
       .button-footer {
         @include light-text;
         text-align:center;
-        padding-top: 48px;
+        padding-top: 45px;
       }
       .subscribed {
         text-transform: uppercase;
@@ -256,13 +256,33 @@ $header-height:108px;
     }
     .channels {
       margin-bottom: 25px;
-      .row {
-        .subscribe-link {
-          font-size: $p-font-size;
-          font-weight: bold;
+      .subscribe-now {
+        text-align: right;
+        font-weight: bold;
+        a {
           color: $blue-light-4;
-          float:right;
+          font-size: $post-font-size + 1;
         }
+      }
+      .subscribe-now-total {
+        position:absolute;
+        background: #fff;
+        padding:0 8px;
+        bottom:42px;
+        right:$post-margin-sm - 8px;
+        font-weight: bold;
+        font-size:$p-font-size;
+        color: $grey-light-4;
+        @media (min-width:$post-lg-min) {
+          right:$post-margin-lg - 8px;
+          bottom:46px;
+        }
+
+        span {
+          margin-right:3px;
+        }
+      }
+      .row {
         h6 {
           font-size: $p-font-size + 1;
           font-weight: bold;

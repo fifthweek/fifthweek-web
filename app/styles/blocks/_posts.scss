@@ -1,5 +1,7 @@
 @import '_base';
 
+$post-sm-max:$screen-ss-max;
+$post-lg-min:$screen-s-min;
 $post-max-width:600px;
 $post-margin-text-vertical-sm:20px;
 $post-margin-sm:15px;
@@ -18,7 +20,7 @@ $line-height-compensation: -5px;
   // Remains constant.
   padding-top: $post-margin-sm;
   padding-bottom: $post-margin-sm;
-  @media (min-width:$screen-s-min) {
+  @media (min-width:$post-lg-min) {
     padding-top: $post-margin-lg;
     padding-bottom: $post-margin-lg;
   }
@@ -27,7 +29,7 @@ $line-height-compensation: -5px;
 @mixin post-left-right-padding {
   padding-left: $post-margin-sm;
   padding-right: $post-margin-sm;
-  @media (min-width:$screen-s-min) {
+  @media (min-width:$post-lg-min) {
     padding-left: $post-margin-lg;
     padding-right: $post-margin-lg;
   }
@@ -44,7 +46,7 @@ $line-height-compensation: -5px;
   border-radius: $post-border-radius;
   background: #fff;
   margin-bottom: $post-bottom-margin-sm;
-  @media (min-width:$screen-sm-min) {
+  @media (min-width:$post-lg-min) {
     margin-bottom: $post-bottom-margin-lg;
   }
 }
@@ -111,7 +113,7 @@ $line-height-compensation: -5px;
 
       .content {
         @include clearfix;
-        @media (max-width:$screen-ss-max) {
+        @media (max-width:$post-sm-max) {
           padding: ($post-margin-text-vertical-sm - $post-margin-sm) 0;
         }
       }
@@ -123,7 +125,7 @@ $line-height-compensation: -5px;
         margin-bottom:$post-margin-sm;
         margin-left: $post-margin-sm * -1;
         margin-right: $post-margin-sm * -1;
-        @media (min-width:$screen-s-min) {
+        @media (min-width:$post-lg-min) {
           margin-top:$post-margin-lg;
           margin-bottom:$post-margin-lg;
           margin-left: $post-margin-lg * -1;
@@ -167,7 +169,7 @@ $line-height-compensation: -5px;
         > ul {
           float:left;
           padding-left: 10px;
-          @media (min-width:$screen-s-min) {
+          @media (min-width:$post-lg-min) {
             padding-left: 16px; /* 10 and 16 are golden rations from 27 - the border */
           }
           > li {
@@ -280,7 +282,7 @@ $line-height-compensation: -5px;
   .text {
     padding-bottom: $post-margin-lg;
     padding-right: $reorder-menu-width + $post-margin-sm;
-    @media (min-width:$screen-s-min) {
+    @media (min-width:$post-lg-min) {
       padding-right: $reorder-menu-width + $post-margin-lg;
     }
 
