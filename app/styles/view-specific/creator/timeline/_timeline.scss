@@ -254,7 +254,11 @@ $header-height:108px;
         background: $grey-dark;
       }
     }
+    .landing-page h5 {
+      padding-bottom: 16px;
+    }
     .channels {
+      margin-bottom: 25px;
       .row {
         h6 {
           font-size: $p-font-size + 1;
