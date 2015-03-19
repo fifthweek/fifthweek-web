@@ -257,6 +257,12 @@ $header-height:108px;
     .channels {
       margin-bottom: 25px;
       .row {
+        .subscribe-link {
+          font-size: $p-font-size;
+          font-weight: bold;
+          color: $blue-light-4;
+          float:right;
+        }
         h6 {
           font-size: $p-font-size + 1;
           font-weight: bold;

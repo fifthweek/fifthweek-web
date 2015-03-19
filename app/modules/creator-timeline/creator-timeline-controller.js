@@ -47,7 +47,6 @@ angular.module('webApp').controller('timelineCtrl',
     });
 
     $scope.subscribe = function() {
-      //throw new InputValidationError('Example error message.');
       $scope.model.subscribed = true;
     };
 
