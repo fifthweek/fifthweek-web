@@ -269,7 +269,7 @@ $header-height:108px;
         .price {
           text-align: right;
           line-height: $p-line-height-hug + 1;
-          p {
+          span {
             @include dark-button;
             display: inline-block;
             font-size: $p-font-size - 1;

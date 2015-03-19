@@ -1,7 +1,8 @@
 @import '_base';
 
 $post-max-width:600px;
-$post-margin-sm:10px;
+$post-margin-text-vertical-sm:20px;
+$post-margin-sm:15px;
 $post-margin-lg:27px;
 $footer-margin:10px;
 $queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*0.382)*1.618) */
@@ -15,11 +16,10 @@ $line-height-compensation: -5px;
 
 @mixin post-top-bottom-padding {
   // Remains constant.
-  padding-top: $post-margin-lg;
-
-  // Extra 1px bottom padding causes equal margin with the post footer content.
+  padding-top: $post-margin-sm;
   padding-bottom: $post-margin-sm;
   @media (min-width:$screen-s-min) {
+    padding-top: $post-margin-lg;
     padding-bottom: $post-margin-lg;
   }
 }
@@ -111,17 +111,20 @@ $line-height-compensation: -5px;
 
       .content {
         @include clearfix;
+        @media (max-width:$screen-ss-max) {
+          padding: ($post-margin-text-vertical-sm - $post-margin-sm) 0;
+        }
       }
 
       hr {
         width:auto;
         display:block;
-        /* IMPORTANT: Constant LG Top is intentional. */
-        margin-top:$post-margin-lg;
-        margin-bottom:5px;
+        margin-top:$post-margin-sm;
+        margin-bottom:$post-margin-sm;
         margin-left: $post-margin-sm * -1;
         margin-right: $post-margin-sm * -1;
         @media (min-width:$screen-s-min) {
+          margin-top:$post-margin-lg;
           margin-bottom:$post-margin-lg;
           margin-left: $post-margin-lg * -1;
           margin-right: $post-margin-lg * -1;
