@@ -27,7 +27,7 @@ angular.module('webApp').factory('postInteractions', function($modal, deleteVeri
         });
     };
 
-    service.edit = function(postId) {
+    service.editPost = function(postId) {
       $modal.open({
         controller: 'postEditDialogCtrl',
         templateUrl: 'modules/creator-backlog/post-edit-dialog.html',
@@ -39,7 +39,7 @@ angular.module('webApp').factory('postInteractions', function($modal, deleteVeri
       });
     };
 
-    service.delete = function(postId, isBacklog) {
+    service.deletePost = function(postId, isBacklog) {
       var performDelete = function() {
 
       };

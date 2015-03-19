@@ -6,7 +6,7 @@ angular.module('webApp').factory('postUtilities',
 
     var humanFileSize = function(size) {
       var i = Math.floor( Math.log(size) / Math.log(1024) );
-      return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + [' bytes', 'KB', 'MB', 'GB', 'TB'][i];
+      return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['bytes', 'KB', 'MB', 'GB', 'TB'][i];
     };
 
     var isViewable = function(contentType){
@@ -82,6 +82,10 @@ angular.module('webApp').factory('postUtilities',
     };
 
     service.populateCurrentCreatorInformation = function(posts, accountSettingsRepository, channelRepository) {
+      if(!posts || posts.length === 0){
+        return $q.when();
+      }
+
       var channelMap;
       var accountSettings;
       return channelRepository.getChannelMap()
@@ -108,6 +112,10 @@ angular.module('webApp').factory('postUtilities',
     };
 
     service.processPostsForRendering = function(posts){
+      if(!posts || posts.length === 0){
+        return $q.when();
+      }
+
       return accessSignatures.getContainerAccessMap()
         .then(function(accessMap){
           processPosts(posts, accessMap);

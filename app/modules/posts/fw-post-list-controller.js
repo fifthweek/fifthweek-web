@@ -8,7 +8,7 @@ angular.module('webApp').controller('fwPostListCtrl',
       errorMessage: undefined
     };
 
-    var loadNext = function(){ return $q.reject('Unknown posts source.'); };
+    var loadNext = function(){ return $q.reject(new DisplayableError('Unknown fw-post-list source.')); };
 
     var accountSettingsRepository;
     var channelRepository;
@@ -53,12 +53,12 @@ angular.module('webApp').controller('fwPostListCtrl',
       return postInteractions.openFile(file);
     };
 
-    $scope.edit = function(postId) {
-      postInteractions.edit(postId, true);
+    $scope.editPost = function(postId) {
+      postInteractions.editPost(postId, true);
     };
 
-    $scope.delete = function(postId) {
-      postInteractions.delete(postId, true);
+    $scope.deletePost = function(postId) {
+      postInteractions.deletePost(postId, true);
     };
 
     this.initialize = function(){

@@ -48,7 +48,7 @@
             </span>
           </li>
           <li>
-            <a ng-click="edit(post.postId)" class="live-in-info">
+            <a ng-click="editPost(post.postId)" class="live-in-info">
               <span ng-if="post.isScheduled">live </span>{{post.liveIn}}
             </a>
           </li>
@@ -65,14 +65,14 @@
             </button>
             <div class="actions-drop-down" ng-show="post.showMenu">
               <ul>
-                <li><a ng-mousedown="edit(post.postId)">Edit</a></li>
+                <li><a ng-mousedown="editPost(post.postId)">Edit</a></li>
                 <li ng-if="post.isScheduled && post.scheduledByQueue"><a ng-mousedown="post.reorder()">Reorder</a></li>
                 <li>
                   <fw-delete-link
                     item-type="Post"
                     data-event-title="Post deleted"
                     data-event-category="Backlog"
-                    delete="delete(post.postId)">
+                    delete="deletePost(post.postId)">
                     Delete
                   </fw-delete-link>
                 </li>

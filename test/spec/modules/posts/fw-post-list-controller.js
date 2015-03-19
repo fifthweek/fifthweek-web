@@ -19,7 +19,7 @@ describe('fw-post-list-controller', function(){
 
   beforeEach(function() {
 
-    postInteractions = jasmine.createSpyObj('postInteractions', ['viewImage', 'openFile', 'edit', 'delete']);
+    postInteractions = jasmine.createSpyObj('postInteractions', ['viewImage', 'openFile', 'editPost', 'deletePost']);
     authenticationService = { currentUser: { userId: 'userId' }};
     channelRepositoryFactory = jasmine.createSpyObj('channelRepositoryFactory', ['forCurrentUser']);
     channelRepository = 'channelRepository';
@@ -28,7 +28,7 @@ describe('fw-post-list-controller', function(){
     accountSettingsRepository = 'accountSettingsRepository';
     accountSettingsRepositoryFactory.forCurrentUser.and.returnValue(accountSettingsRepository);
     fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateInParallel']);
-    postsStub = jasmine.createSpyObj('postsStub', ['getCreatorBacklog']);
+    postsStub = jasmine.createSpyObj('postsStub', ['getCreatorBacklog', 'getCreatorNewsfeed']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
     postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'processPostsForRendering']);
 
@@ -62,13 +62,85 @@ describe('fw-post-list-controller', function(){
     });
   };
 
-  describe('when creating', function(){
-    var apiDeferred;
+  var includeInitializationTests = function(testData){
+
+    it('should start loading posts', function(){
+      expect($scope.model.isLoading).toBe(true);
+    });
+
+    it('should not have an error message', function(){
+      expect($scope.model.errorMessage).toBeUndefined();
+    });
+
+    it('should call updateInParallel', function(){
+      expect(fetchAggregateUserState.updateInParallel).toHaveBeenCalledWith('userId', jasmine.any(Function));
+    });
+
+    it('should get an account settings repository', function(){
+      expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+    });
+
+    it('should get a channel repository', function(){
+      expect(channelRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+    });
+
+    describe('when API fails', function(){
+      beforeEach(function(){
+        testData.updateDeferred.reject('error');
+        $scope.$apply();
+      });
+
+      it('should log the error', function(){
+        expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
+      });
+
+      it('should update the error message', function(){
+        expect($scope.model.errorMessage).toBe('friendlyError');
+      });
+
+      it('should set isLoading to false', function(){
+        expect($scope.model.isLoading).toBe(false);
+      });
+    });
+
+    describe('when API returns', function(){
+      var posts;
+      beforeEach(function(){
+
+        postUtilities.populateCurrentCreatorInformation.and.returnValue($q.when());
+        postUtilities.processPostsForRendering.and.returnValue($q.when());
+
+        posts = {some: 'value' };
+        testData.updateDeferred.resolve({data: posts});
+        $scope.$apply();
+      });
+
+      it('should call populateCurrentCreatorInformation', function(){
+        expect(postUtilities.populateCurrentCreatorInformation).toHaveBeenCalledWith(posts, accountSettingsRepository, channelRepository);
+      });
+
+      it('should call processPostsForRendering', function(){
+        expect(postUtilities.processPostsForRendering).toHaveBeenCalledWith(posts);
+      });
+
+      it('should save posts to the model', function(){
+        expect($scope.model.posts).toBe(posts);
+      });
+
+      it('should set isLoading to false', function(){
+        expect($scope.model.isLoading).toBe(false);
+      });
+    });
+  };
+
+  describe('when created', function(){
+    var testData = {};
     beforeEach(function(){
+      testData.updateDeferred = undefined;
       fetchAggregateUserState.updateInParallel.and.callFake(function(userId, delegate){
         delegate();
-        apiDeferred = $q.defer();
-        return apiDeferred.promise;
+        testData.updateDeferred = $q.defer();
+        return testData.updateDeferred.promise;
       });
       createController();
     });
@@ -89,84 +161,32 @@ describe('fw-post-list-controller', function(){
       expect($scope.model.errorMessage).toBeUndefined();
     });
 
-    describe('when initializing', function(){
+    describe('when initialized with creator-backlog source', function(){
 
       beforeEach(function(){
         $scope.source = fwPostListConstants.sources.creatorBacklog;
         target.initialize();
       });
 
-      it('should start loading posts', function(){
-        expect($scope.model.isLoading).toBe(true);
-      });
-
-      it('should not have an error message', function(){
-        expect($scope.model.errorMessage).toBeUndefined();
-      });
-
-      it('should call updateInParallel', function(){
-        expect(fetchAggregateUserState.updateInParallel).toHaveBeenCalledWith('userId', jasmine.any(Function));
-      });
-
       it('should call getCreatorBacklog', function(){
         expect(postsStub.getCreatorBacklog).toHaveBeenCalledWith('userId');
       });
 
-      it('should get an account settings repository', function(){
-        expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+      includeInitializationTests(testData);
+    });
+
+    describe('when initialized with creator-timeline source', function(){
+
+      beforeEach(function(){
+        $scope.source = fwPostListConstants.sources.creatorTimeline;
+        target.initialize();
       });
 
-      it('should get a channel repository', function(){
-        expect(channelRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+      it('should call getCreatorBacklog', function(){
+        expect(postsStub.getCreatorNewsfeed).toHaveBeenCalledWith('userId', 0, 1000);
       });
 
-      describe('when API fails', function(){
-        beforeEach(function(){
-          apiDeferred.reject('error');
-          $scope.$apply();
-        });
-
-        it('should log the error', function(){
-          expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
-        });
-
-        it('should update the error message', function(){
-          expect($scope.model.errorMessage).toBe('friendlyError');
-        });
-
-        it('should set isLoading to false', function(){
-          expect($scope.model.isLoading).toBe(false);
-        });
-      });
-
-      describe('when API returns', function(){
-        var posts;
-        beforeEach(function(){
-
-          postUtilities.populateCurrentCreatorInformation.and.returnValue($q.when());
-          postUtilities.processPostsForRendering.and.returnValue($q.when());
-
-          posts = {some: 'value' };
-          apiDeferred.resolve({data: posts});
-          $scope.$apply();
-        });
-
-        it('should call populateCurrentCreatorInformation', function(){
-          expect(postUtilities.populateCurrentCreatorInformation).toHaveBeenCalledWith(posts, accountSettingsRepository, channelRepository);
-        });
-
-        it('should call processPostsForRendering', function(){
-          expect(postUtilities.processPostsForRendering).toHaveBeenCalledWith(posts);
-        });
-
-        it('should save posts to the model', function(){
-          expect($scope.model.posts).toBe(posts);
-        });
-
-        it('should set isLoading to false', function(){
-          expect($scope.model.isLoading).toBe(false);
-        });
-      });
+      includeInitializationTests(testData);
     });
   });
 
@@ -187,13 +207,13 @@ describe('fw-post-list-controller', function(){
     });
 
     it('should forward the edit function to postInteractions', function(){
-      $scope.edit('a');
-      expect(postInteractions.edit).toHaveBeenCalledWith('a', true);
+      $scope.editPost('a');
+      expect(postInteractions.editPost).toHaveBeenCalledWith('a', true);
     });
 
     it('should forward the delete function to postInteractions', function(){
-      $scope.delete('a');
-      expect(postInteractions.delete).toHaveBeenCalledWith('a', true);
+      $scope.deletePost('a');
+      expect(postInteractions.deletePost).toHaveBeenCalledWith('a', true);
     });
   });
 });

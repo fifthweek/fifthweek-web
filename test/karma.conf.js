@@ -41,6 +41,7 @@ module.exports = function(config) {
       'bower_components/marked/lib/marked.js',
       'bower_components/angular-md/dist/angular-md.js',
       'bower_components/ng-videosharing-embed/build/ng-videosharing-embed.min.js',
+      'bower_components/moment/moment.js',
       'app/scripts/app.js',
       'app/scripts/**/*.js',
       'app/modules/**/*.js',
