@@ -278,14 +278,21 @@ $header-height:108px;
               border-color:$blue-light-4;
               color: $blue-light-4;
               background: none;
+              &:hover {
+                background:$blue-light-6;
+                border-color:transparent;
+                color:#fff;
+              }
             }
 
             &.non-default {
-              cursor: pointer;
               &:before {
                 content:"+";
                 font-size:$p-font-size + 1;
                 margin: 0 4px 0 2px;
+              }
+              &:hover {
+                cursor: pointer;
               }
             }
           }
