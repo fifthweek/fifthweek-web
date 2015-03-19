@@ -1,5 +1,5 @@
 angular.module('webApp').controller('timelineCtrl',
-  function($scope, $sce, authenticationService, accountSettingsRepositoryFactory, channelRepositoryFactory, subscriptionRepositoryFactory, postInteractions, fetchAggregateUserState, postsStub, postUtilities, errorFacade) {
+  function($scope, $sce, authenticationService, accountSettingsRepositoryFactory, channelRepositoryFactory, subscriptionRepositoryFactory) {
     'use strict';
 
     var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
@@ -10,43 +10,7 @@ angular.module('webApp').controller('timelineCtrl',
       subscribed: false,
       profileImageUrl: '',
       headerImageUrl: '',
-      fullDescription: 'Hello there!',
-      posts: undefined,
-      isLoading: false,
-      errorMessage: undefined
-    };
-
-    var loadPosts = function(){
-      model.errorMessage = undefined;
-      model.isLoading = true;
-
-      var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
-      var channelRepository = channelRepositoryFactory.forCurrentUser();
-
-      var userId = authenticationService.currentUser.userId;
-      var getCreatorNewsfeed = function() { return postsStub.getCreatorNewsfeed(userId, 0, 1000); };
-
-      var posts;
-      fetchAggregateUserState.updateInParallel(userId, getCreatorNewsfeed)
-        .then(function(result) {
-          posts = result.data;
-          return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, channelRepository);
-        })
-        .then(function(){
-          return postUtilities.processPostsForRendering(posts);
-        })
-        .then(function(){
-          model.posts = posts;
-        })
-        .catch(function(error){
-          model.posts = undefined;
-          return errorFacade.handleError(error, function(message) {
-            model.errorMessage = message;
-          });
-        })
-        .finally(function(){
-          model.isLoading = false;
-        });
+      fullDescription: 'Hello there!'
     };
 
     $scope.model = model;
@@ -80,24 +44,7 @@ angular.module('webApp').controller('timelineCtrl',
       }
     });
 
-    $scope.viewImage = function (image, imageSource) {
-      postInteractions.viewImage(image, imageSource);
-    };
-
-    $scope.openFile = function (file) {
-      return postInteractions.openFile(file);
-    };
-
-    $scope.edit = function(postId) {
-      postInteractions.edit(postId, true);
-    };
-
-    $scope.delete = function(postId) {
-      postInteractions.delete(postId, true);
-    };
-
     $scope.subscribe = function() {
-      loadPosts();
       $scope.model.subscribed = true;
     };
 

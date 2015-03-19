@@ -1,5 +1,7 @@
 angular.module('webApp')
   .constant('accessSignaturesCacheConstants', {
+    // This should match the API.
+    // The client will try and refresh access signatures when they are this close to expiring.
     refreshMinimumExpiry: 1000 * 60 * 10,
     failMinimumExpiry: 1000 * 30
   })

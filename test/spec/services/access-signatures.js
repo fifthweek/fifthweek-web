@@ -4,7 +4,7 @@ describe('access signatures', function() {
   var response = {
     timeToLiveSeconds: 1000,
     publicSignature: {
-      containerName: 'files',
+      containerName: 'public',
       uri: 'https://files.fifthweek.com/public',
       signature: '?abcd',
       expiry: 1234
@@ -59,63 +59,98 @@ describe('access signatures', function() {
       accessSignaturesCache.getSignatures.and.returnValue($q.when(response));
     });
 
-    it('should return public access information', function(){
-      target.getPublicAccessInformation().then(function(result){
-        expect(result).toEqual(response.publicSignature);
+    describe('when getting public access information', function(){
+      it('should return public access information', function(){
+        target.getPublicAccessInformation().then(function(result){
+          expect(result).toEqual(response.publicSignature);
+        });
+        $rootScope.$apply();
       });
-      $rootScope.$apply();
     });
 
-    it('should return the correct private access information when creatorId is specified', function(){
-      target.getCreatorAccessInformation('creator1').then(function(result){
-        expect(result).toEqual(response.privateSignatures[0].information);
-      });
-      $rootScope.$apply();
+    describe('when getting access information by creator id', function(){
+      it('should return the correct private access information when creatorId is specified', function(){
+        target.getCreatorAccessInformation('creator1').then(function(result){
+          expect(result).toEqual(response.privateSignatures[0].information);
+        });
+        $rootScope.$apply();
 
-      target.getCreatorAccessInformation('creator2').then(function(result){
-        expect(result).toEqual(response.privateSignatures[1].information);
+        target.getCreatorAccessInformation('creator2').then(function(result){
+          expect(result).toEqual(response.privateSignatures[1].information);
+        });
+        $rootScope.$apply();
       });
-      $rootScope.$apply();
+
+      it('should return public access information when creatorId is undefined', function(){
+        target.getCreatorAccessInformation(undefined).then(function(result){
+          expect(result).toEqual(response.publicSignature);
+        });
+        $rootScope.$apply();
+      });
+
+      it('should return an error when creatorId is unknown', function(){
+        target.getCreatorAccessInformation('unknownCreator')
+          .then(function(){ fail('This should not occur.'); })
+          .catch(function(error){ expect(error instanceof FifthweekError).toBeTruthy(); });
+        $rootScope.$apply();
+      });
     });
 
-    it('should return the correct private access information when containerName is specified', function(){
-      target.getContainerAccessInformation('container1').then(function(result){
-        expect(result).toEqual(response.privateSignatures[0].information);
+    describe('when getting access information by container name', function(){
+      it('should return the correct private access information when containerName is specified', function(){
+        target.getContainerAccessInformation('container1').then(function(result){
+          expect(result).toEqual(response.privateSignatures[0].information);
+        });
+        $rootScope.$apply();
+
+        target.getContainerAccessInformation('container2').then(function(result){
+          expect(result).toEqual(response.privateSignatures[1].information);
+        });
+        $rootScope.$apply();
       });
-      $rootScope.$apply();
 
-      target.getContainerAccessInformation('container2').then(function(result){
-        expect(result).toEqual(response.privateSignatures[1].information);
+
+      it('should return public access information when containerName is undefined', function(){
+        target.getContainerAccessInformation(undefined).then(function(result){
+          expect(result).toEqual(response.publicSignature);
+        });
+        $rootScope.$apply();
       });
-      $rootScope.$apply();
-    });
 
-    it('should return public access information when creatorId is undefined', function(){
-      target.getCreatorAccessInformation(undefined).then(function(result){
-        expect(result).toEqual(response.publicSignature);
+      it('should return an error when containerName is unknown', function(){
+        target.getContainerAccessInformation('unknownContainer')
+          .then(function(){ fail('This should not occur.'); })
+          .catch(function(error){ expect(error instanceof FifthweekError).toBeTruthy(); });
+        $rootScope.$apply();
       });
-      $rootScope.$apply();
-    });
 
-    it('should return public access information when containerName is undefined', function(){
-      target.getContainerAccessInformation(undefined).then(function(result){
-        expect(result).toEqual(response.publicSignature);
+      describe('when getting a map', function(){
+        it('should contain a map of all the signatures', function(){
+          target.getContainerAccessMap().then(function(result){
+            expect(result).toEqual({
+              public: {
+                containerName: 'public',
+                uri: 'https://files.fifthweek.com/public',
+                signature: '?abcd',
+                expiry: 1234
+              },
+              container1: {
+                containerName: 'container1',
+                uri: 'https://files.fifthweek.com/creator1',
+                signature: '?abcd',
+                expiry: 1234
+              },
+              container2: {
+                containerName: 'container2',
+                uri: 'https://files.fifthweek.com/creator2',
+                signature: '?efgh',
+                expiry: 1234
+              }
+            });
+          });
+          $rootScope.$apply();
+        });
       });
-      $rootScope.$apply();
-    });
-
-    it('should return an error when creatorId is unknown', function(){
-      target.getCreatorAccessInformation('unknownCreator')
-        .then(function(){ fail('This should not occur.'); })
-        .catch(function(error){ expect(error instanceof FifthweekError).toBeTruthy(); });
-      $rootScope.$apply();
-    });
-
-    it('should return an error when containerName is unknown', function(){
-      target.getContainerAccessInformation('unknownContainer')
-        .then(function(){ fail('This should not occur.'); })
-        .catch(function(error){ expect(error instanceof FifthweekError).toBeTruthy(); });
-      $rootScope.$apply();
     });
   });
 
@@ -140,6 +175,13 @@ describe('access signatures', function() {
 
     it('should return the error when getting container access information', function(){
       target.getContainerAccessInformation('container1')
+        .then(function(){ fail('This should not occur.'); })
+        .catch(function(error){ expect(error).toBe('error'); });
+      $rootScope.$apply();
+    });
+
+    it('should return the error when getting container access map', function(){
+      target.getContainerAccessMap()
         .then(function(){ fail('This should not occur.'); })
         .catch(function(error){ expect(error).toBe('error'); });
       $rootScope.$apply();

@@ -1,0 +1,10 @@
+<div class="posts" ng-class="{ 'tagged-posts': source ===  sources.creatorBacklog }">
+
+  <div ng-if="model.isLoading && !model.errorMessage" class="updating-area">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <div ng-repeat="post in model.posts" ng-include="'modules/posts/post.html'"></div>
+</div>
