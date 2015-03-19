@@ -18,10 +18,6 @@ angular.module('webApp').directive('fwFormSubmit',
         throw new FifthweekError('Must be within a form');
       }
 
-      if (!_.isFunction(submit)) {
-        throw new FifthweekError('"fwFormSubmit" attribute must reference a function name');
-      }
-
       if (!canSubmit) {
         canSubmit = function() {
           return form.$valid && form.$dirty;
