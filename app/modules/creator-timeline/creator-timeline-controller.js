@@ -57,7 +57,8 @@ angular.module('webApp').controller('timelineCtrl',
 
     channelRepository.getChannels().then(function(channels) {
       $scope.model.channels = _.chain(channels)
-        .map(function (channel) {
+        .filter({isVisibleToNonSubscribers: true})
+        .map(function(channel) {
           return {
             id: channel.channelId,
             name: channel.name,
