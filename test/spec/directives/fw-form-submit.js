@@ -10,17 +10,14 @@ describe('submit form directive', function(){
   var $compile;
   var $q;
 
-  var errorFacade;
-  var analytics;
+  var wrapUserAction;
 
   beforeEach(function() {
-    analytics = jasmine.createSpyObj('analytics', ['eventTrack']);
-    errorFacade = {};
+    wrapUserAction = jasmine.createSpy('wrapUserAction');
 
     module('webApp');
     module(function($provide){
-      $provide.value('errorFacade', errorFacade);
-      $provide.value('analytics', analytics);
+      $provide.value('wrapUserAction', wrapUserAction);
     });
 
     inject(function($injector) {
@@ -28,12 +25,6 @@ describe('submit form directive', function(){
       $compile = $injector.get('$compile');
       $q = $injector.get('$q');
     });
-
-    errorFacade.handleError = function(error, setMessage) {
-      setMessage('friendly error message');
-      return $q.when();
-    };
-    spyOn(errorFacade, 'handleError').and.callThrough();
   });
 
   describe('when created', function(){
@@ -65,7 +56,7 @@ describe('submit form directive', function(){
     beforeEach(function(){
       scope = $rootScope.$new();
       deferred = $q.defer();
-      scope.submit = function() { return deferred.promise; };
+      wrapUserAction.and.returnValue(deferred.promise);
 
       element = angular.element(formHtml);
       $compile(element)(scope);
@@ -76,9 +67,15 @@ describe('submit form directive', function(){
     });
 
     it('should call the specified delegate', function(){
-      scope.submit = function() {};
-      spyOn(scope, 'submit').and.callThrough();
+      scope.submit = jasmine.createSpy('submit');
+      wrapUserAction.and.callFake(function(action) {
+        action();
+        return deferred.promise;
+      });
+
       element.click();
+
+      expect(wrapUserAction).toHaveBeenCalled();
       expect(scope.submit).toHaveBeenCalled();
     });
 
@@ -104,7 +101,7 @@ describe('submit form directive', function(){
 
       expect(scope.form.isSubmitting).toBe(true);
 
-      deferred.reject('error');
+      deferred.resolve('error message');
       $rootScope.$apply();
 
       expect(scope.form.isSubmitting).toBe(false);
@@ -132,7 +129,7 @@ describe('submit form directive', function(){
 
       expect(scope.form.hasSubmitted).toBe(false);
 
-      deferred.reject('error');
+      deferred.resolve('error message');
       $rootScope.$apply();
 
       expect(scope.form.hasSubmitted).toBe(true);
@@ -160,7 +157,7 @@ describe('submit form directive', function(){
 
       expect(scope.form.submissionSucceeded).toBe(false);
 
-      deferred.reject('error');
+      deferred.resolve('error message');
       $rootScope.$apply();
 
       expect(scope.form.submissionSucceeded).toBe(false);
@@ -180,7 +177,7 @@ describe('submit form directive', function(){
       expect(scope.form.message).toBe('');
     });
 
-    it('should set the message to the friendly error message after an unsuccessful submission', function(){
+    it('should set the message to the error message after an unsuccessful submission', function(){
       expect(scope.form.message).toBe('');
 
       element.click();
@@ -188,10 +185,10 @@ describe('submit form directive', function(){
 
       expect(scope.form.message).toBe('');
 
-      deferred.reject('error');
+      deferred.resolve('error message');
       $rootScope.$apply();
 
-      expect(scope.form.message).toBe('friendly error message');
+      expect(scope.form.message).toBe('error message');
     });
 
     it('should set the disabled state during submission', function(){
@@ -221,43 +218,11 @@ describe('submit form directive', function(){
       expect(element.hasClass('disabled')).toBe(true);
       expect(element.attr('disabled')).toBe('disabled');
 
-      deferred.reject('error');
+      deferred.resolve('error message');
       $rootScope.$apply();
 
       expect(element.hasClass('disabled')).toBe(false);
       expect(element.attr('disabled')).toBeUndefined();
-    });
-
-    it('should not report error if submission succeeds', function(){
-      deferred.resolve();
-      element.click();
-      $rootScope.$apply();
-
-      expect(errorFacade.handleError).not.toHaveBeenCalled();
-    });
-
-    it('should report the error if submission fails', function(){
-      deferred.reject('error');
-      element.click();
-      $rootScope.$apply();
-
-      expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
-    });
-
-    it('should not call the analytics service during successful submission', function(){
-      deferred.resolve();
-      element.click();
-      $rootScope.$apply();
-
-      expect(analytics.eventTrack).not.toHaveBeenCalled();
-    });
-
-    it('should call the analytics service during unsuccessful submission', function(){
-      deferred.reject('error');
-      element.click();
-      $rootScope.$apply();
-
-      expect(analytics.eventTrack).not.toHaveBeenCalled();
     });
 
     it('should not set the loading text on the button during submission', function(){
@@ -277,6 +242,7 @@ describe('submit form directive', function(){
     describe('when first submission succeeds', function(){
       beforeEach(function(){
         scope.submit = function() {};
+        wrapUserAction.and.returnValue($q.when());
         element.click();
         $rootScope.$apply();
         scope.form.$valid = true;
@@ -285,7 +251,7 @@ describe('submit form directive', function(){
 
       it('should keep the hasSubmitted as true', function(){
         var deferred = $q.defer();
-        scope.submit = function() { return deferred.promise; };
+        wrapUserAction.and.returnValue(deferred.promise);
 
         expect(scope.form.hasSubmitted).toBe(true);
 
@@ -302,7 +268,7 @@ describe('submit form directive', function(){
 
       it('should reset the submissionSucceeded state to false during the next submission', function(){
         var deferred = $q.defer();
-        scope.submit = function() { return deferred.promise; };
+        wrapUserAction.and.returnValue(deferred.promise);
 
         expect(scope.form.submissionSucceeded).toBe(true);
 
@@ -319,7 +285,7 @@ describe('submit form directive', function(){
 
       it('should set the submissionSucceeded state to false if the next submission fails', function(){
         var deferred = $q.defer();
-        scope.submit = function() { return deferred.promise; };
+        wrapUserAction.and.returnValue(deferred.promise);
 
         expect(scope.form.submissionSucceeded).toBe(true);
 
@@ -328,15 +294,15 @@ describe('submit form directive', function(){
 
         expect(scope.form.submissionSucceeded).toBe(false);
 
-        deferred.reject('error');
+        deferred.resolve('error message');
         $rootScope.$apply();
 
         expect(scope.form.submissionSucceeded).toBe(false);
       });
 
-      it('should set the message to the friendly error message on next unsuccessful submission', function(){
+      it('should set the message to the error message on next unsuccessful submission', function(){
         var deferred = $q.defer();
-        scope.submit = function() { return deferred.promise; };
+        wrapUserAction.and.returnValue(deferred.promise);
 
         expect(scope.form.message).toBe('');
 
@@ -345,18 +311,18 @@ describe('submit form directive', function(){
 
         expect(scope.form.message).toBe('');
 
-        deferred.reject('error');
+        deferred.resolve('error message');
         $rootScope.$apply();
 
-        expect(scope.form.message).toBe('friendly error message');
+        expect(scope.form.message).toBe('error message');
       });
     });
 
     describe('when first submission fails', function(){
       beforeEach(function(){
         var deferred = $q.defer();
-        scope.submit = function() { return deferred.promise; };
-        deferred.reject('error');
+        wrapUserAction.and.returnValue(deferred.promise);
+        deferred.resolve('error message');
 
         element.click();
         $rootScope.$apply();
@@ -366,7 +332,7 @@ describe('submit form directive', function(){
 
       it('should keep the hasSubmitted as true on subsequent unsuccessful submissions', function(){
         var deferred = $q.defer();
-        scope.submit = function() { return deferred.promise; };
+        wrapUserAction.and.returnValue(deferred.promise);
 
         expect(scope.form.hasSubmitted).toBe(true);
 
@@ -375,7 +341,7 @@ describe('submit form directive', function(){
 
         expect(scope.form.hasSubmitted).toBe(true);
 
-        deferred.reject('error');
+        deferred.resolve('error message');
         $rootScope.$apply();
 
         expect(scope.form.hasSubmitted).toBe(true);
@@ -383,7 +349,7 @@ describe('submit form directive', function(){
 
       it('should set the submissionSucceeded state to true on next successful submission', function(){
         var deferred = $q.defer();
-        scope.submit = function() { return deferred.promise; };
+        wrapUserAction.and.returnValue(deferred.promise);
 
         expect(scope.form.submissionSucceeded).toBe(false);
 
@@ -400,9 +366,9 @@ describe('submit form directive', function(){
 
       it('should reset the message on a subsequent submission after an unsuccessful submission', function(){
         var deferred = $q.defer();
-        scope.submit = function() { return deferred.promise; };
+        wrapUserAction.and.returnValue(deferred.promise);
 
-        expect(scope.form.message).toBe('friendly error message');
+        expect(scope.form.message).toBe('error message');
 
         element.click();
         $rootScope.$apply();
@@ -426,7 +392,7 @@ describe('submit form directive', function(){
     beforeEach(function () {
       scope = $rootScope.$new();
       deferred = $q.defer();
-      scope.submit = function() { return deferred.promise; };
+      wrapUserAction.and.returnValue(deferred.promise);
 
       element = angular.element(getFormHtml('ng-disabled="something"'));
       $compile(element)(scope);
@@ -463,7 +429,7 @@ describe('submit form directive', function(){
     beforeEach(function () {
       scope = $rootScope.$new();
       deferred = $q.defer();
-      scope.submit = function() { return deferred.promise; };
+      wrapUserAction.and.returnValue(deferred.promise);
 
       element = angular.element(getFormHtml('data-loading-text="loading"'));
       $compile(element)(scope);
@@ -488,7 +454,7 @@ describe('submit form directive', function(){
     });
   });
 
-  describe('when click event is triggered with data-event-title attribute', function() {
+  describe('when click event is triggered with tracking information', function() {
 
     var scope;
     var element;
@@ -496,80 +462,9 @@ describe('submit form directive', function(){
 
     beforeEach(function () {
       scope = $rootScope.$new();
+      scope.submit = function() { };
       deferred = $q.defer();
-      scope.submit = function() { return deferred.promise; };
-
-      element = angular.element(getFormHtml('data-event-title="title"'));
-      $compile(element)(scope);
-      element = element.find('button');
-      scope.$digest();
-      scope.form.$valid = true;
-      scope.form.$dirty = true;
-    });
-
-    it('should not call the analytics service during successful submission', function(){
-      deferred.resolve();
-      element.click();
-      $rootScope.$apply();
-
-      expect(analytics.eventTrack).not.toHaveBeenCalled();
-    });
-
-    it('should not call the analytics service during unsuccessful submission', function(){
-      deferred.reject('error');
-      element.click();
-      $rootScope.$apply();
-
-      expect(analytics.eventTrack).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('when click event is triggered with data-event-category attribute', function() {
-
-    var scope;
-    var element;
-    var deferred;
-
-    beforeEach(function () {
-      scope = $rootScope.$new();
-      deferred = $q.defer();
-      scope.submit = function() { return deferred.promise; };
-
-      element = angular.element(getFormHtml('data-event-category="category"'));
-      $compile(element)(scope);
-      element = element.find('button');
-      scope.$digest();
-      scope.form.$valid = true;
-      scope.form.$dirty = true;
-    });
-
-    it('should not call the analytics service during successful submission', function(){
-      deferred.resolve();
-      element.click();
-      $rootScope.$apply();
-
-      expect(analytics.eventTrack).not.toHaveBeenCalled();
-    });
-
-    it('should not call the analytics service during unsuccessful submission', function(){
-      deferred.reject('error');
-      element.click();
-      $rootScope.$apply();
-
-      expect(analytics.eventTrack).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('when click event is triggered with data-event-title and data-event-category attribute', function() {
-
-    var scope;
-    var element;
-    var deferred;
-
-    beforeEach(function () {
-      scope = $rootScope.$new();
-      deferred = $q.defer();
-      scope.submit = function() { return deferred.promise; };
+      wrapUserAction.and.returnValue(deferred.promise);
 
       element = angular.element(getFormHtml('data-event-title="title" data-event-category="category"'));
       $compile(element)(scope);
@@ -579,20 +474,15 @@ describe('submit form directive', function(){
       scope.form.$dirty = true;
     });
 
-    it('should call the analytics service during successful submission', function(){
+    it('should forward this information to the user action wrapper', function(){
       deferred.resolve();
       element.click();
       $rootScope.$apply();
 
-      expect(analytics.eventTrack).toHaveBeenCalledWith('title', 'category');
-    });
-
-    it('should not call the analytics service during unsuccessful submission', function(){
-      deferred.reject('error');
-      element.click();
-      $rootScope.$apply();
-
-      expect(analytics.eventTrack).not.toHaveBeenCalled();
+      expect(wrapUserAction).toHaveBeenCalledWith(jasmine.any(Function), {
+        eventTitle: 'title',
+        eventCategory: 'category'
+      });
     });
   });
 
@@ -605,7 +495,7 @@ describe('submit form directive', function(){
     beforeEach(function () {
       scope = $rootScope.$new();
       deferred = $q.defer();
-      scope.submit = function() { return deferred.promise; };
+      wrapUserAction.and.returnValue(deferred.promise);
 
       element = angular.element(formHtml);
       $compile(element)(scope);
@@ -653,7 +543,7 @@ describe('submit form directive', function(){
     beforeEach(function () {
       scope = $rootScope.$new();
       deferred = $q.defer();
-      scope.submit = function() { return deferred.promise; };
+      wrapUserAction.and.returnValue(deferred.promise);
 
       element = angular.element(getFormHtml('can-submit="canSubmit()"'));
       $compile(element)(scope);

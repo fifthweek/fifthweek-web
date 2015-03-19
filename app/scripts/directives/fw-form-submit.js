@@ -1,6 +1,6 @@
 // See: https://gist.github.com/thisboyiscrazy/5137781#comment-838257
 angular.module('webApp').directive('fwFormSubmit',
-  function ($q, analytics, errorFacade) {
+  function ($q, wrapUserAction) {
   'use strict';
 
   return {
@@ -16,10 +16,6 @@ angular.module('webApp').directive('fwFormSubmit',
 
       if (form === undefined) {
         throw new FifthweekError('Must be within a form');
-      }
-
-      if (!_.isFunction(submit)) {
-        throw new FifthweekError('"fwFormSubmit" attribute must reference a function name');
       }
 
       if (!canSubmit) {
@@ -56,34 +52,31 @@ angular.module('webApp').directive('fwFormSubmit',
           element.html(loadingText);
         }
 
-        return $q.when(submit()).then(
-          function(){
+        var submitMetadata = {
+          eventTitle: element.data('event-title'),
+          eventCategory: element.data('event-category')
+        };
+
+        return wrapUserAction(submit, submitMetadata).then(function(errorMessage) {
+          if (errorMessage) {
+            form.message = errorMessage;
+          }
+          else {
             form.submissionSucceeded = true;
-            var eventTitle = element.data('event-title');
-            var eventCategory = element.data('event-category');
-            if(eventTitle && eventCategory){
-              analytics.eventTrack(eventTitle,  eventCategory);
-            }
-          },
-          function(error){
-            return errorFacade.handleError(error, function(message) {
-              form.message = message;
-            });
-          })
-          .finally(function() {
-            form.hasSubmitted = true;
+          }
 
-            if (!attrs.hasOwnProperty('ngDisabled')) {
-              element.removeClass('disabled').removeAttr('disabled');
-            }
+          form.hasSubmitted = true;
+          form.isSubmitting = false;
 
-            var resetText = element.data('resetText');
-            if(resetText){
-              element.html(resetText);
-            }
+          if (!attrs.hasOwnProperty('ngDisabled')) {
+            element.removeClass('disabled').removeAttr('disabled');
+          }
 
-            form.isSubmitting = false;
-          });
+          var resetText = element.data('resetText');
+          if(resetText){
+            element.html(resetText);
+          }
+        });
       });
     }
   };

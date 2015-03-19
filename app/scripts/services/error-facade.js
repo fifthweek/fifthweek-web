@@ -12,6 +12,16 @@ angular.module('webApp').factory('errorFacade', function($q, logService, utiliti
       return logService.error(error);
     };
 
+    service.handleErrorInBackground = function(error){
+      if(error instanceof CancellationError){
+        return $q.when();
+      }
+
+      logService.error(error);
+
+      return utilities.getFriendlyErrorMessage(error);
+    };
+
     return service;
   }
 );
