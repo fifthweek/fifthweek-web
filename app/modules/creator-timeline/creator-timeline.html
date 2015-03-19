@@ -49,31 +49,36 @@
           <div class="posts landing-page" ng-if="!model.subscribed">
 
             <h5><span>What You'll Get</span></h5>
-            <div class="pseudo-post-text channels">
-              <div class="row" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
-                <div class="col-sm-8 name">
-                  <h6>{{channel.name}}</h6>
+            <div class="post non-image-post channels">
+              <div class="text">
+                <div class="row" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
+                  <div class="col-sm-8 name">
+                    <h6>{{channel.name}}</h6>
+                  </div>
+                  <div class="col-sm-4 price">
+                    <p ng-click="channel.checked = !channel.checked || channel.isDefault"
+                       ng-class="{'unchecked':!channel.checked, 'non-default':!channel.isDefault}">
+                      &#36;{{channel.price}}/week
+                    </p>
+                  </div>
+                  <div class="col-sm-8">
+                    <ul>
+                      <li ng-repeat="descriptionLine in channel.description">{{descriptionLine}}</li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="col-sm-4 price">
-                  <p ng-click="channel.checked = !channel.checked || channel.isDefault"
-                     ng-class="{'unchecked':!channel.checked, 'non-default':!channel.isDefault}">
-                    &#36;{{channel.price}}/week
-                  </p>
-                </div>
-                <div class="col-sm-8">
-                  <ul>
-                    <li ng-repeat="descriptionLine in channel.description">{{descriptionLine}}</li>
-                  </ul>
-                </div>
+                <hr />
               </div>
             </div>
 
             <div ng-if="model.videoUrl || model.subscription.description">
               <h5><span>More Info</span></h5>
-              <div class="pseudo-post-text" ng-if="!model.videoUrl">
-                <md ng-model="model.subscription.description"></md>
+              <div class="post non-image-post" ng-if="!model.videoUrl">
+                <div class="text">
+                  <md ng-model="model.subscription.description"></md>
+                </div>
               </div>
-              <div class="pseudo-post-video" ng-if="model.videoUrl">
+              <div class="post image-post" ng-if="model.videoUrl">
                 <div class="video">
                   <embed-video data-ng-href="{{model.videoUrl}}" controls=0></embed-video>
                   <div ng-include="'../../views/partials/video-radius-fix.html'"></div>
@@ -81,7 +86,6 @@
                 <div class="text">
                   <md ng-model="model.subscription.description" ng-if="model.subscription.description"></md>
                   <p ng-if="!model.subscription.description">More of your favourites each and every week -- all for less than a coffee!</p>
-
                 </div>
               </div>
             </div>

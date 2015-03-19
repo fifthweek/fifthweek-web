@@ -1,7 +1,9 @@
 @import '_base';
 
+$post-max-width:600px;
+$post-margin-sm:10px;
+$post-margin-lg:27px;
 $footer-margin:10px;
-$horizontal-rule:23px;
 $queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*0.382)*1.618) */
 $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
 $post-font-size: 14px;
@@ -9,6 +11,32 @@ $post-line-height: 20px;
 $post-bottom-margin-sm: $main-cont-padding-small;
 $post-bottom-margin-lg: 45px;
 $reorder-menu-width: 29px;
+$line-height-compensation: -5px;
+
+@mixin post-top-bottom-padding {
+  // Remains constant.
+  padding-top: $post-margin-lg;
+
+  // Extra 1px bottom padding causes equal margin with the post footer content.
+  padding-bottom: $post-margin-sm;
+  @media (min-width:$screen-s-min) {
+    padding-bottom: $post-margin-lg;
+  }
+}
+
+@mixin post-left-right-padding {
+  padding-left: $post-margin-sm;
+  padding-right: $post-margin-sm;
+  @media (min-width:$screen-s-min) {
+    padding-left: $post-margin-lg;
+    padding-right: $post-margin-lg;
+  }
+}
+
+@mixin post-padding {
+  @include post-top-bottom-padding;
+  @include post-left-right-padding;
+}
 
 @mixin post-core {
   position: relative;
@@ -63,21 +91,6 @@ $reorder-menu-width: 29px;
   }
 }
 
-.pseudo-post-text {
-  @include clearfix;
-  @include post-core;
-  @include post-padding;
-}
-
-.pseudo-post-video, .pseudo-post-image {
-  @include post-core;
-  @include post-visual;
-  .text {
-    @include clearfix;
-    @include post-padding;
-  }
-}
-
 .posts {
   @import 'actions-drop-down';
   margin: 0 auto;
@@ -89,6 +102,13 @@ $reorder-menu-width: 29px;
     .text {
       @include post-padding;
 
+      p:first-child {
+        margin-top: $line-height-compensation;
+      }
+      p:last-child {
+        margin-bottom: $line-height-compensation;
+      }
+
       .content {
         @include clearfix;
       }
@@ -97,12 +117,12 @@ $reorder-menu-width: 29px;
         width:auto;
         display:block;
         /* IMPORTANT: Constant LG Top is intentional. */
-        margin-top:$horizontal-rule;
+        margin-top:$post-margin-lg;
         margin-bottom:5px;
         margin-left: $post-margin-sm * -1;
         margin-right: $post-margin-sm * -1;
         @media (min-width:$screen-s-min) {
-          margin-bottom:$horizontal-rule;
+          margin-bottom:$post-margin-lg;
           margin-left: $post-margin-lg * -1;
           margin-right: $post-margin-lg * -1;
         }
@@ -126,6 +146,8 @@ $reorder-menu-width: 29px;
       .info-actions {
         @include vcenter;
         clear:both;
+        margin-top: $line-height-compensation;
+        margin-bottom: $line-height-compensation;
       }
 
       .info {
