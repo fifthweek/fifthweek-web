@@ -1,24 +1,29 @@
 angular.module('webApp').controller('timelineCtrl',
-  function($scope, $sce, authenticationService, accountSettingsRepositoryFactory, channelRepositoryFactory, subscriptionRepositoryFactory) {
+  function($scope, $sce, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, channelRepositoryFactory) {
     'use strict';
 
     var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
-    var channelRepository = channelRepositoryFactory.forCurrentUser();
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+    var channelRepository = channelRepositoryFactory.forCurrentUser();
 
     $scope.model = {
       tracking: {
         title: 'Subscribed',
         category: 'Timeline'
       },
-      subscribed: false,
-      profileImageUrl: '',
-      headerImageUrl: '',
-      fullDescription: 'Hello there!'
+      subscribed: false
     };
 
     accountSettingsRepository.getAccountSettings().then(function(accountSettings){
       $scope.model.accountSettings = accountSettings;
+    });
+
+    subscriptionRepository.getSubscription().then(function(data) {
+      $scope.model.subscription = data;
+
+      if (data.video) {
+        $scope.model.videoUrl = $sce.trustAsResourceUrl(data.video.replace('http://', '//').replace('https://', '//'));
+      }
     });
 
     channelRepository.getChannels().then(function(channels) {
@@ -38,14 +43,6 @@ angular.module('webApp').controller('timelineCtrl',
         .value();
     });
 
-    subscriptionRepository.getSubscription().then(function(data) {
-      $scope.model.subscription = data;
-
-      if (data.video) {
-        $scope.model.videoUrl = $sce.trustAsResourceUrl(data.video.replace('http://', '//').replace('https://', '//'));
-      }
-    });
-
     $scope.subscribe = function() {
       $scope.model.subscribed = true;
     };
@@ -53,9 +50,7 @@ angular.module('webApp').controller('timelineCtrl',
     $scope.$watch('model.channels', function() {
 
       $scope.model.totalPrice = _($scope.model.channels)
-        .filter(function(channel) {
-          return channel.checked === true;
-        })
+        .filter({checked: true})
         .reduce(function(sum, channel) {
           return sum + parseFloat(channel.price); },
         0)
