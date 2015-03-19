@@ -289,10 +289,28 @@ $header-height:108px;
               &:before {
                 content:"+";
                 font-size:$p-font-size + 1;
+                line-height: 10px;
                 margin: 0 4px 0 2px;
               }
               &:hover {
                 cursor: pointer;
+              }
+            }
+
+            &.checked {
+              &:before {
+                content:"\f00c";
+                font-family:'FontAwesome';
+                line-height: 10px;
+                font-size:12px;
+                font-weight: normal;
+                margin: 0 3px 0 0px;
+              }
+            }
+
+            &.default {
+              &:before {
+                content:none;
               }
             }
           }

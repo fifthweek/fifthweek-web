@@ -58,7 +58,7 @@
                     </div>
                     <div class="col-xs-5 price">
                       <span ng-click="channel.checked = !channel.checked || channel.isDefault"
-                         ng-class="{'unchecked':!channel.checked, 'non-default':!channel.isDefault}">
+                         ng-class="{'unchecked':!channel.checked, 'checked':channel.checked, 'non-default':!channel.isDefault, 'default':channel.isDefault}">
                         &#36;{{channel.price}}/week
                       </span>
                     </div>
