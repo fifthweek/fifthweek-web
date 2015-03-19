@@ -50,21 +50,15 @@
 
             <h5><span>What You'll Get</span></h5>
             <div class="pseudo-post-text channels">
-              <div class="row" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last, checked:channel.checked}">
+              <div class="row" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
                 <div class="col-sm-8 name">
-                  <form>
-                    <label>
-                      <input type="checkbox"
-                             ng-model="channel.checked"
-                             ng-checked="channel.checked"
-                             ng-disabled="$first"
-                             ng-change="checkboxHandler()">
-                      <h6>{{channel.name}}</h6>
-                    </label>
-                  </form>
+                  <h6>{{channel.name}}</h6>
                 </div>
                 <div class="col-sm-4 price">
-                  <p>&#36;{{channel.price}}/week</p>
+                  <p ng-click="channel.checked = !channel.checked || channel.isDefault"
+                     ng-class="{'unchecked':!channel.checked, 'non-default':!channel.isDefault}">
+                    &#36;{{channel.price}}/week
+                  </p>
                 </div>
                 <div class="col-sm-8">
                   <ul>
