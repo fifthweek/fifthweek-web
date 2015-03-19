@@ -118,6 +118,7 @@ describe('subscription service', function() {
               priceInUsCentsPerWeek: basePrice,
               description: subscriptionServiceConstants.defaultChannelDescription,
               isDefault: true,
+              isVisibleToNonSubscribers: true,
               collections: []
             }
           ]
@@ -163,6 +164,7 @@ describe('subscription service', function() {
               priceInUsCentsPerWeek: basePrice,
               description: subscriptionServiceConstants.defaultChannelDescription,
               isDefault: true,
+              isVisibleToNonSubscribers: true,
               collections: []
             }
           ]

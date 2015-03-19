@@ -30,6 +30,7 @@ angular.module('webApp')
               channelId: subscriptionId,
               priceInUsCentsPerWeek: subscriptionData.basePrice,
               isDefault: true,
+              isVisibleToNonSubscribers: true,
               collections: [],
 
               // These constants are repeated client-side to avoid an API round-trip. Consequences of these
