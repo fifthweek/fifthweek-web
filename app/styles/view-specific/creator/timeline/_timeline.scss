@@ -29,6 +29,13 @@ $header-height:108px;
   font-weight: bold;
 }
 
+@mixin h4-bottom-margin {
+  margin-bottom: 10px;
+  @media (min-width:$screen-lg-min) {
+    margin-bottom: -20px;
+  }
+}
+
 #{$html-name-space} {
   #{$logo-sm} {
     position: absolute;
@@ -98,11 +105,8 @@ $header-height:108px;
       font-weight:bold;
       letter-spacing: -1.8px;
       margin-top:0;
-      padding-top:70px;
+      padding-top:17px;
       margin-bottom: 5px;
-      @media (min-width:$screen-s-min) {
-        padding-top:17px;
-      }
     }
     h3 {
       font-size: 24px;
@@ -122,23 +126,16 @@ $header-height:108px;
       line-height: 26px;
       padding: 0;
       margin: 0 0 50px;
+      @include h4-bottom-margin;
       @media (min-width:$screen-s-min) {
         text-align: left;
-      }
-      @media (min-width:$screen-s-min) and (max-width:$screen-sm-max){
-        margin-bottom: 95px;
-      }
-      @media (min-width:$screen-md-min) and (max-width:$screen-md-max){
-        margin-bottom: 110px;
-      }
-      @media (min-width:$screen-lg-min) {
-        margin-bottom: 60px;
       }
     }
     .creator {
       position: relative;
-      margin: -25px auto 0 auto;
       width:70%;
+      margin: -25px auto 0 auto;
+      @include h4-bottom-margin;
       @media (min-width:$screen-ss-min) {
         width:60%;
         margin-top:0;
@@ -214,10 +211,10 @@ $header-height:108px;
         position: absolute;
         width:100%;
       }
-      p {
+      .button-footer {
         @include light-text;
         text-align:center;
-        padding-top: 15px;
+        padding-top: 48px;
       }
       .subscribed {
         text-transform: uppercase;

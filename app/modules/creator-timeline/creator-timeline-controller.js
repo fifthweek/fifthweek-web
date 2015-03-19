@@ -6,14 +6,16 @@ angular.module('webApp').controller('timelineCtrl',
     var channelRepository = channelRepositoryFactory.forCurrentUser();
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
-    var model = {
+    $scope.model = {
+      tracking: {
+        title: 'Subscribed',
+        category: 'Timeline'
+      },
       subscribed: false,
       profileImageUrl: '',
       headerImageUrl: '',
       fullDescription: 'Hello there!'
     };
-
-    $scope.model = model;
 
     accountSettingsRepository.getAccountSettings().then(function(accountSettings){
       $scope.model.accountSettings = accountSettings;
@@ -45,6 +47,7 @@ angular.module('webApp').controller('timelineCtrl',
     });
 
     $scope.subscribe = function() {
+      //throw new InputValidationError('Example error message.');
       $scope.model.subscribed = true;
     };
 
