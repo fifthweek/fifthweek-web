@@ -136,7 +136,7 @@ describe('customize landing page form', function() {
       expect(page.basicsSubmitButton.isEnabled()).toBe(true);
 
       page.taglineTextBox.sendKeys('2');
-      page.introductionTextBox.sendKeys('2');
+      page.introductionTextBox.sendKeys('stronger suffix!');
 
       page.headerImageTabLink.click();
       expect(page.headerImageSubmitButton.isEnabled()).toBe(true);
@@ -201,7 +201,7 @@ describe('customize landing page form', function() {
 
         expect(page.subscriptionNameTextBox.getAttribute('value')).toBe(subscription.name + '2');
         expect(page.taglineTextBox.getAttribute('value')).toBe(subscription.tagline + '2');
-        expect(page.introductionTextBox.getAttribute('value')).toContain('here!2');
+        expect(page.introductionTextBox.getAttribute('value')).toContain('stronger suffix!');
 
         page.headerImageTabLink.click();
 
