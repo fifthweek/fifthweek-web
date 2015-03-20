@@ -7,4 +7,9 @@
   <fw-error-message value="model.errorMessage"></fw-error-message>
 
   <div ng-repeat="post in model.posts" ng-include="'modules/posts/post.html'" id="post-{{$index}}"></div>
+
+  <fw-panel12 ng-if="model.posts.length === 0">
+    <h4>Backlog Empty</h4>
+    <p>There are currently no posts in your backlog.</p>
+  </fw-panel12>
 </div>

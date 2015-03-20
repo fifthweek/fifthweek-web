@@ -45,13 +45,13 @@ angular.module('webApp')
             color: 'orange'
           },
           {
-            name: 'Share Image',
+            name: 'Upload Image',
             state: states.creators.compose.image.name,
             icon: 'fa fa-image',
             color: 'orange'
           },
           {
-            name: 'Share File',
+            name: 'Upload File',
             state: states.creators.compose.file.name,
             icon: 'fa fa-file-o',
             color: 'orange'

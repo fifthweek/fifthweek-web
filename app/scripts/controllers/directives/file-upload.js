@@ -20,7 +20,7 @@ angular.module('webApp')
     };
 
     var reportProgress = function(percentageComplete){
-      $scope.model.progress = percentageComplete;
+      $scope.model.progress = Math.round(percentageComplete);
     };
 
     var reportError = function(message){

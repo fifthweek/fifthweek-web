@@ -262,7 +262,7 @@ angular.module('routes', ['ui.router'])
         }
       })
       .state(states.creators.compose.name, {
-        url: '/compose',
+        url: '/post',
         templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
         data : {
@@ -281,7 +281,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Note',
-          headTitle: ': ' + 'New Note',
+          headTitle: ': ' + 'Write a Note',
           bodyClass: 'page-creators-compose-note',
           access: {
             requireAuthenticated: true
@@ -295,7 +295,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' Image',
-          headTitle: ': ' + 'New Image',
+          headTitle: ': ' + 'Upload Image',
           bodyClass: 'page-creators-compose-image',
           access: {
             requireAuthenticated: true
@@ -309,7 +309,7 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         data : {
           pageTitle: ' File',
-          headTitle: ': ' + 'New File',
+          headTitle: ': ' + 'Upload File',
           bodyClass: 'page-creators-compose-file',
           access: {
             requireAuthenticated: true

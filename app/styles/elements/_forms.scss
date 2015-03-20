@@ -23,6 +23,13 @@ div[fw-file-upload] {
   margin-bottom: $form-group-margin;
 }
 
+// Can be applied as the parent of an element, so useful when including a control that optionally needs a bottom
+// margin depending on form state. E.g. upload image. Also, negative margin is required as a way for allowing
+// 'bottom-buffers' to stay effective within a form-group, but for the form-group itself to have no bottom margin.
+.form-group-no-bottom-margin {
+  margin-bottom: $form-group-margin * -1;
+}
+
 .form-group-has-buffers {
   margin-bottom: 0;
 
@@ -159,4 +166,19 @@ fieldset[disabled] .form-control {
     font-size:22px;
     pointer-events:none
   }
+}
+
+.progress-container {
+  position: relative;
+}
+.progress {
+  margin-bottom: 0;
+}
+.progress-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  padding: 0 10px;
+  margin-top: -20px;
+  line-height: 20px;
 }

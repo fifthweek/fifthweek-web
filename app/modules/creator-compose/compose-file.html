@@ -1,17 +1,8 @@
-<label>Post a File</label>
 <div class="form-group">
   <div class="row">
-    <div class="col-s-12">
-      <fw-file-upload description="Upload File" on-upload-complete="onUploadComplete(data)" file-purpose="post-file" accept=""></fw-file-upload>
-    </div>
-  </div>
-</div>
-<div class="form-group">
-  <div class="row" ng-if="fileName">
-    <div class="col-s-12">
-      <div class="btn-file-download file-content">
-        <p>{{fileName}}</p>
-      </div>
+    <div class="col-xs-12" ng-class="{'btn-file-change': fileName}">
+      <p class="file-name" ng-if="fileName">{{fileName}}</p>
+      <fw-file-upload description="{{fileName ? 'Change' : 'Upload File'}}" on-upload-complete="onUploadComplete(data)" file-purpose="post-file" accept=""></fw-file-upload>
     </div>
   </div>
 </div>
