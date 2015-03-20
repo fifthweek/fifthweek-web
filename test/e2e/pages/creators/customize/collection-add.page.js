@@ -13,6 +13,7 @@ var CollectionAddPage = function() {};
 CollectionAddPage.prototype = Object.create({}, {
   nameTextBox: { get: function () { return element(by.id('model-collection-name')); }},
   channelSelectId: { get: function() { return 'model-selected-channel'; }},
+  channelSelect: { get: function() { return element(by.id(this.channelSelectId)); }},
   inputs: { value: function(channelSelectTexts) { return [
     {
       name: 'nameTextBox',
@@ -34,6 +35,16 @@ CollectionAddPage.prototype = Object.create({}, {
     return {
       name: formValues.nameTextBox,
       channelName: channelSelectInputPage.mapToChannelName(formValues.channelSelect)
+    };
+  }},
+  submitCollectionSuccessfully: { value: function(channelName, newCollectionName) {
+    var channelSelectInputPage = new ChannelSelectInputPage();
+    var channelSelectText = channelSelectInputPage.mapToSelectText(channelName);
+    testKit.setFormValues(this, this.inputs(), { nameTextBox: newCollectionName, channelSelect: channelSelectText});
+    this.createButton.click();
+    return {
+      name: newCollectionName,
+      channelName: channelName
     };
   }}
 });

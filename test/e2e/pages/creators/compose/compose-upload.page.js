@@ -213,9 +213,11 @@
         };
 
         var createCollection = function(collectionName, channelName, isFirstCollection){
-          page.createCollection(tinyFilePath, collectionName, channelName, isFirstCollection);
-          expect(page.successMessage.isDisplayed()).toBe(true);
-          page.postAnotherButton.click();
+          commonWorkflows.createNamedCollection(channelName, collectionName);
+          navigateToPage();
+          //page.createCollection(tinyFilePath, collectionName, channelName, isFirstCollection);
+          //expect(page.successMessage.isDisplayed()).toBe(true);
+          //page.postAnotherButton.click();
         };
 
         var verifySuccess = function(successMessage, collectionName, channelName){
