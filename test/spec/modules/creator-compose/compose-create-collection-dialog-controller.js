@@ -160,27 +160,55 @@ describe('composeCreateCollectionDialogCtrl', function(){
     });
 
     describe('when submitted after the first time', function(){
-      beforeEach(function(){
-        $scope.model = { channels: [{}], collections: [{name: 'collection 1'}, {name: 'collection 2'}, { isNewCollection: true, name: 'name' }] };
-        $scope.model.input = {
-          selectedChannel: $scope.model.channels[0],
-          newCollectionName: 'newCollection'
-        };
+      describe('when the matching collection is the previous new collection', function(){
+        beforeEach(function(){
+          $scope.model = { channels: [{}], collections: [{name: 'collection 1'}, {name: 'collection 2'}, { isNewCollection: true, name: 'name' }] };
+          $scope.model.input = {
+            selectedChannel: $scope.model.channels[0],
+            newCollectionName: 'newCollection'
+          };
 
-        composeUtilities.getCollectionNameForSelection.and.returnValue('collection 1');
+          composeUtilities.getCollectionNameForSelection.and.returnValue('name');
 
-        createController();
-        $scope.submit();
+          createController();
+          $scope.submit();
+        });
+
+        it('should not remove the existing new collection from the collections list', function(){
+          expect($scope.model.collections.length).toBe(3);
+          expect($scope.model.collections[0].name).toBe('collection 1');
+          expect($scope.model.collections[1].name).toBe('collection 2');
+          expect($scope.model.collections[2].name).toBe('name');
+        });
+
+        it('should set the selected collection to the new collection', function(){
+          expect($scope.model.input.selectedCollection).toBe($scope.model.collections[2]);
+        });
       });
 
-      it('should remove the existing new collection from the collections list', function(){
-        expect($scope.model.collections.length).toBe(2);
-        expect($scope.model.collections[0].name).toBe('collection 1');
-        expect($scope.model.collections[1].name).toBe('collection 2');
-      });
+      describe('when the matching collection is not the previous new collection', function(){
+        beforeEach(function(){
+          $scope.model = { channels: [{}], collections: [{name: 'collection 1'}, {name: 'collection 2'}, { isNewCollection: true, name: 'name' }] };
+          $scope.model.input = {
+            selectedChannel: $scope.model.channels[0],
+            newCollectionName: 'newCollection'
+          };
 
-      it('should set the selected collection to the new collection', function(){
-        expect($scope.model.input.selectedCollection).toBe($scope.model.collections[0]);
+          composeUtilities.getCollectionNameForSelection.and.returnValue('collection 1');
+
+          createController();
+          $scope.submit();
+        });
+
+        it('should remove the existing new collection from the collections list', function(){
+          expect($scope.model.collections.length).toBe(2);
+          expect($scope.model.collections[0].name).toBe('collection 1');
+          expect($scope.model.collections[1].name).toBe('collection 2');
+        });
+
+        it('should set the selected collection to the new collection', function(){
+          expect($scope.model.input.selectedCollection).toBe($scope.model.collections[0]);
+        });
       });
     });
   });
