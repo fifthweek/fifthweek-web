@@ -8,10 +8,11 @@
       <div class="form-group form-group-has-buffers">
         <label>Header Image</label>
         <div class="row">
-          <div class="col-xs-12 col-md-10 bottom-buffer">
+          <div class="col-xs-12 col-s-9 col-sm-10 bottom-buffer">
             <fw-blob-image control="blobImage" thumbnail="960x256-crop"></fw-blob-image>
+            <small class="sub-image-input">We recommend images at least 3000x1000 pixels.</small>
           </div>
-          <div class="col-xs-12 col-md-2 bottom-buffer">
+          <div class="col-xs-12 col-s-3 col-sm-2 bottom-buffer">
             <fw-file-upload description="Upload" on-upload-complete="onUploadComplete(data)" file-purpose="profile-header-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
           </div>
         </div>
