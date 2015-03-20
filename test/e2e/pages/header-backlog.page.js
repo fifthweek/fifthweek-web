@@ -4,13 +4,13 @@ var HeaderPage = require('./header.page.js');
 var HeaderBacklogPage = function() {};
 
 HeaderBacklogPage.prototype = Object.create(HeaderPage.prototype, {
-  yourFuturePostsLink: { get: function () { return element(by.id('navigation-your-future-posts')); }},
+  futurePostsLink: { get: function () { return element(by.id('navigation-future-posts')); }},
   queuesLink: { get: function () { return element(by.id('navigation-queues')); }},
   includeBasicTests: { value: function(highlightedLink) {
     this.includeBasicTestsBase(highlightedLink, [
       {
-        name: 'Your Future Posts',
-        element: this.yourFuturePostsLink
+        name: 'Future Posts',
+        element: this.futurePostsLink
       },
       {
         name: 'Queues',

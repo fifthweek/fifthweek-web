@@ -16,7 +16,7 @@
       sidebar.backlogLink.click();
     });
 
-    header.includeBasicTests(header.yourFuturePostsLink);
+    header.includeBasicTests(header.futurePostsLink);
 
     sidebar.includeEstablishedCreatorTests(sidebar.backlogLink);
   });

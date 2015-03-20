@@ -97,7 +97,7 @@
 
     var navigateToPage = function() {
       sidebar.backlogLink.click();
-      header.yourFuturePostsLink.click();
+      header.futurePostsLink.click();
     };
   });
 })();
