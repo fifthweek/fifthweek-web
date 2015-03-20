@@ -28,7 +28,9 @@ angular.module('webApp').factory('postUtilities',
         post.image.resolvedUri = getImageUri(post.image, '1200x16000', accessMap);
       }
 
-      post.creator.profileImage.resolvedUri = getImageUri(post.creator.profileImage, '64x64-crop', accessMap);
+      if(post.creator.profileImage){
+        post.creator.profileImage.resolvedUri = getImageUri(post.creator.profileImage, '64x64-crop', accessMap);
+      }
     };
 
     var processPost = function(post, previousPost, accessMap){

@@ -434,10 +434,7 @@ describe('post-utilities', function(){
               containerName: 'containerName2'
             },
             creator: {
-              profileImage: {
-                fileId: 'creator2',
-                containerName: 'containerName2'
-              }
+              profileImage: undefined
             }
           }
         ];
@@ -516,7 +513,7 @@ describe('post-utilities', function(){
         expect(posts[0].creator.profileImage.resolvedUri).toBe('uri1/creator1/64x64-crop?signature1');
         expect(posts[1].creator.profileImage.resolvedUri).toBe('uri2/creator2/64x64-crop?signature2');
         expect(posts[2].creator.profileImage.resolvedUri).toBe('uri1/creator1/64x64-crop?signature1');
-        expect(posts[3].creator.profileImage.resolvedUri).toBe('uri2/creator2/64x64-crop?signature2');
+        expect(posts[3].creator.profileImage).toBeUndefined();
       });
 
       it('should add image resolvedUri data', function(){
