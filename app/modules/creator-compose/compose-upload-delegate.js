@@ -51,6 +51,10 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
         composeUtilities.showCreateCollectionDialog($scope);
       };
 
+      $scope.shouldCreateCollection = function(){
+        return composeUtilities.shouldCreateCollection($scope.model);
+      };
+
       $scope.postNow = function() {
         return composeUtilities.getCollectionIdAndCreateCollectionIfRequired(model)
           .then(function(collectionId){

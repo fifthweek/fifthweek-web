@@ -104,7 +104,7 @@ angular.module('webApp')
         });
     };
 
-    var shouldCreateCollection = function(model){
+    service.shouldCreateCollection = function(model){
       if(model.createCollection) {
         return true;
       }
@@ -113,7 +113,7 @@ angular.module('webApp')
     };
 
     service.getCollectionIdAndCreateCollectionIfRequired = function(model){
-      if(shouldCreateCollection(model)) {
+      if(service.shouldCreateCollection(model)) {
         var channelId = model.input.selectedChannel.channelId;
         var collectionName = model.input.newCollectionName;
         return collectionService.createCollectionFromName(channelId, collectionName);
