@@ -241,7 +241,7 @@ $header-height:108px;
       font-size: $p-font-size;
       font-weight: normal;
       color:#fff;
-      padding: 31px 0 30px;
+      padding: 31px 0 16px;
       span {
         @include post-left-right-padding;
         padding-top: 3px;
@@ -250,9 +250,6 @@ $header-height:108px;
         box-shadow: $post-shadow;
         background: $grey-dark;
       }
-    }
-    .landing-page h5 {
-      padding-bottom: 16px;
     }
     .channels {
       margin-bottom: 25px;
