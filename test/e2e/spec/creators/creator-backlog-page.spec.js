@@ -5,7 +5,7 @@
   var HeaderBacklogPage = require('../../pages/header-backlog.page.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
 
-  describe('creator-backlog page', function() {
+  describe('compose note page', function() {
 
     var commonWorkflows = new CommonWorkflows();
     var header = new HeaderBacklogPage();
