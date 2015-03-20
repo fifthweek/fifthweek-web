@@ -442,6 +442,11 @@ module.exports = function (grunt) {
           configFile: 'test/protractor-browserstack.conf.js'
         }
       },
+      debug:{
+        options:{
+          configFile: 'test/protractor-debug.conf.js'
+        }
+      },
       prepush:{
         options:{
           configFile: 'test/protractor-prepush.conf.js'
@@ -657,6 +662,10 @@ module.exports = function (grunt) {
 
   grunt.registerTask('ptest', 'protractor tests', function(targetApi, targetBase, browserLocation){
     runTests(targetApi, targetBase, browserLocation, true);
+  });
+
+  grunt.registerTask('pdebug', 'protractor tests', function(targetApi, targetBase){
+    runTests(targetApi, targetBase, 'debug', true);
   });
 
   grunt.registerTask('update', 'updates source files for different scenarios', function(scenario){
