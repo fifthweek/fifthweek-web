@@ -22,7 +22,6 @@ $header-height:108px;
   margin-left:12px;
   border:1px solid transparent;
   padding: 6px 8px;
-  background: $blue-light-5;
   color:#fff;
   border-radius: 4px;
   font-size: $p-font-size - 2;
@@ -179,7 +178,7 @@ $header-height:108px;
       #subscribe-button {
         color:#fff;
         padding: 13px 16px 15px 24px;
-        background-color: $blue-light-4;
+        background-color: $landing-page-highlight;
         font-size: $p-font-size + 1;
 
         @media (min-width:$screen-s-min) {
@@ -192,6 +191,7 @@ $header-height:108px;
 
         span {
           @include dark-button;
+          background: $landing-page-highlight-2;
         }
       }
       #subscribed-button {
@@ -257,7 +257,7 @@ $header-height:108px;
         text-align: right;
         font-weight: bold;
         a {
-          color: $blue-light-4;
+          color: $landing-page-highlight;
           font-size: $post-font-size + 1;
         }
       }
@@ -291,15 +291,16 @@ $header-height:108px;
           line-height: $p-line-height-hug + 1;
           span {
             @include dark-button;
+            background: $landing-page-highlight-3;
             display: inline-block;
             font-size: $p-font-size - 1;
 
             &.unchecked {
-              border-color:$blue-light-4;
-              color: $blue-light-4;
+              border-color:$landing-page-highlight;
+              color: $landing-page-highlight;
               background: none;
               &:hover {
-                background:$blue-light-6;
+                background:$landing-page-highlight-2;
                 border-color:transparent;
                 color:#fff;
               }
