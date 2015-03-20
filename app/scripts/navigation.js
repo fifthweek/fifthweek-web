@@ -66,7 +66,7 @@ angular.module('webApp')
         secondary:
           [
             {
-              name: 'Your Future Posts',
+              name: 'Future Posts',
               state: states.creators.backlog.futurePosts.name,
               icon: 'fa fa-sort-amount-desc',
               color: 'yellow'
@@ -87,7 +87,7 @@ angular.module('webApp')
         secondary:
         [
           {
-            name: 'Your Landing Page',
+            name: 'Landing Page',
             state: states.creators.customize.landingPage.name,
             icon: 'fa fa-arrow-circle-down',
             color: 'green'
