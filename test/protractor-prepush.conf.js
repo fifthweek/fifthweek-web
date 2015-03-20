@@ -23,6 +23,7 @@ exports.config = {
     // create a html reporter with screenshots
     jasmine.getEnv().addReporter(new HtmlReporter({
       baseDirectory: 'reports/screenshots',
+      preserveDirectory: true,
       takeScreenShotsOnlyForFailedSpecs: true
     }));
 
