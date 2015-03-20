@@ -5,8 +5,8 @@ var HeaderComposePage = function() {};
 
 HeaderComposePage.prototype = Object.create(HeaderPage.prototype, {
   noteLink: { get: function () { return element(by.id('navigation-write-a-note')); }},
-  imageLink: { get: function () { return element(by.id('navigation-share-image')); }},
-  fileLink: { get: function () { return element(by.id('navigation-share-file')); }},
+  imageLink: { get: function () { return element(by.id('navigation-upload-image')); }},
+  fileLink: { get: function () { return element(by.id('navigation-upload-file')); }},
   includeBasicTests: { value: function(highlightedLink) {
     this.includeBasicTestsBase(highlightedLink, [
       {
@@ -14,11 +14,11 @@ HeaderComposePage.prototype = Object.create(HeaderPage.prototype, {
         element: this.noteLink
       },
       {
-        name: 'Share Image',
+        name: 'Upload Image',
         element: this.imageLink
       },
       {
-        name: 'Share File',
+        name: 'Upload File',
         element: this.fileLink
       }
     ]);
