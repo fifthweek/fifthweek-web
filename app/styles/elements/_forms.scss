@@ -176,7 +176,7 @@ fieldset[disabled] .form-control {
   height:$p-line-height;
 }
 .progress-text {
-  text-shadow:0 1px 1px rgba(0, 0, 0, 0.5);
+  text-shadow:0 0.5px 0.5px rgba(0, 0, 0, 0.7), 0 1px 1px rgba(0, 0, 0, 0.3);
   color: #fff;
   font-size: 12px;
   font-weight: bold;

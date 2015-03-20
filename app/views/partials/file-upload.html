@@ -9,7 +9,8 @@
     </div>
     <div ng-if="model.isSubmitting" class="progress-container" id="file-upload-progress-area">
       <progressbar value="model.progress" type="success"></progressbar>
-      <p class="progress-text">Uploading: {{model.progress}}% complete</p>
+      <p ng-if="abbreviateProgress" class="progress-text">{{model.progress}}%</p>
+      <p ng-if="!abbreviateProgress" class="progress-text">Uploading: {{model.progress}}% complete</p>
     </div>
     <div class="has-error" ng-if="model.errorMessage" id="file-upload-error-area">
       <p class="help-block">
