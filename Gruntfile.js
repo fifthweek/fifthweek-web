@@ -430,7 +430,8 @@ module.exports = function (grunt) {
         configFile: 'test/protractor.conf.js',
         keepAlive: false, // If false, the grunt process stops when the test fails.
         noColor: false,
-        debug: false
+        debug: false,
+        jasmineNodeOpts: {defaultTimeoutInterval: 2 * 60 * 1000} // 2 Minutes
       },
       local: {
         args: {
