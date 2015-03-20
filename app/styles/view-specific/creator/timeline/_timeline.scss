@@ -157,11 +157,11 @@ $header-height:108px;
       }
       .image-container {
         background: $body-bg;
-        border-radius: $post-border-radius;
+        border-radius: 6px;
         min-width: 176px; /* Ensures button is never wider than image */
         .image-area {
           @include header-shadow;
-          border-radius: $post-border-radius;
+          border-radius: 6px;
         }
       }
 
