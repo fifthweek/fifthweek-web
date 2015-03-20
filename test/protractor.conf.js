@@ -3,6 +3,7 @@ exports.config = {
   baseUrl: 'http://localhost:9001',
   specs: ['e2e/spec/**/*.spec.js'],
   allScriptsTimeout: 30000,
+  jasmineNodeOpts: {defaultTimeoutInterval: 2 * 60 * 1000}, // 2 Minutes
   capabilities: {
     browserName: 'firefox',
     shardTestFiles: true,

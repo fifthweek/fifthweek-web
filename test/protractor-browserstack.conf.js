@@ -8,7 +8,8 @@ exports.config = {
   // The address of a running selenium server.
   seleniumAddress: 'http://hub.browserstack.com/wd/hub',
   baseUrl: 'http://localhost:9001',
-  allScriptsTimeout: 55000,
+  allScriptsTimeout: 30000,
+  jasmineNodeOpts: {defaultTimeoutInterval: 2 * 60 * 1000}, // 2 Minutes
   maxSessions: 2,
   // Capabilities to be passed to the webdriver instance.
 
@@ -86,14 +87,6 @@ exports.config = {
   // Spec patterns are relative to the current working directly when
   // protractor is called.
   specs: ['e2e/spec/**/*.spec.js'],
-
-  // Options to be passed to Jasmine-node.
-  jasmineNodeOpts: {
-    showColors: true,
-    defaultTimeoutInterval: 90000,
-    browserNoActivityTimeout: 50000,
-    captureTimeout: 60000
-  },
 
   onPrepare: function () {
 
