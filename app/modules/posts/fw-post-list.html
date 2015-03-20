@@ -6,5 +6,5 @@
 
   <fw-error-message value="model.errorMessage"></fw-error-message>
 
-  <div ng-repeat="post in model.posts" ng-include="'modules/posts/post.html'"></div>
+  <div ng-repeat="post in model.posts" ng-include="'modules/posts/post.html'" id="post-{{$index}}"></div>
 </div>

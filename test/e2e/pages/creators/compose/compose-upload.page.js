@@ -21,6 +21,8 @@
     return itemName;
   };
 
+  var lastMinutes = 0;
+
   composeUploadPage.prototype = Object.create({}, {
 
     // Values to override:
