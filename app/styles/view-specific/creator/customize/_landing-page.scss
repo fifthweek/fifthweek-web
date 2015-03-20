@@ -13,7 +13,6 @@ $html-name-space:'.page-customize-landing';
       overflow-x:hidden;
       > div {
         &:first-child {
-          padding-bottom:15px;
           @media (min-width:$screen-sm-min) {
             padding:{
               right:15px;

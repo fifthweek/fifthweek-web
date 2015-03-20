@@ -4,16 +4,4 @@
   @media (min-width:$screen-sm-min) {
     padding:$main-cont-padding-large;
   }
-
-  /* This looks suspicious */
-  .col-md-4 {
-    padding-bottom:25px;
-
-    &:last-child {
-      padding-bottom:0;
-    }
-    @media (min-width:$screen-md-min) {
-      padding-bottom:0;
-    }
-  }
 }

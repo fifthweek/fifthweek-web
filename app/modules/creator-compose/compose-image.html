@@ -1,8 +1,9 @@
-<div class="form-group-file">
+<div class="form-group form-group-has-buffers">
   <label>Post an Image</label>
   <div class="row">
     <div class="col-s-7 bottom-buffer">
       <fw-blob-image control="blobImage" thumbnail="600x600"></fw-blob-image>
+      <small>We recommend images 1200px or wider</small>
     </div>
     <div class="col-s-5 bottom-buffer">
       <fw-file-upload description="Upload Image" on-upload-complete="onUploadComplete(data)" file-purpose="post-image" accept="image/tiff,image/jpeg,image/gif,image/png"></fw-file-upload>

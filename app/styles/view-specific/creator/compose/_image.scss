@@ -2,6 +2,9 @@
 
 $html-name-space:'.page-creators-compose-image';
 
+/*
+ * Non-default settings required since we do not know the aspect ratio of the uploaded image.
+ */
 #{$html-name-space} {
 
   .image-container{
@@ -10,7 +13,7 @@ $html-name-space:'.page-creators-compose-image';
       height: auto;
       max-width: 300px;
       max-height: 300px;
-      position: static;
+      position: relative;
     }
 
     .pending-image{

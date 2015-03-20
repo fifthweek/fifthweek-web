@@ -22,8 +22,17 @@ div[fw-file-upload] {
 .form-group {
   margin-bottom: $form-group-margin;
 }
-.form-group-file {
-  margin-bottom: $form-group-margin - $form-group-inner-margin;
+
+.form-group-has-buffers {
+  margin-bottom: 0;
+
+  .bottom-buffer {
+    margin-bottom:$form-group-margin;
+  }
+
+  .bottom-buffer-l {
+    margin-bottom: 2 * $form-group-margin;
+  }
 }
 
 .sub-form-alert {
@@ -146,12 +155,4 @@ fieldset[disabled] .form-control {
     font-size:22px;
     pointer-events:none
   }
-}
-
-.bottom-buffer {
-  margin-bottom:$form-group-inner-margin;
-}
-
-.bottom-buffer-l {
-  margin-bottom: 2 * $form-group-inner-margin;
 }
