@@ -9,7 +9,7 @@ exports.config = {
   seleniumAddress: 'http://hub.browserstack.com/wd/hub',
   baseUrl: 'http://localhost:9001',
   allScriptsTimeout: 30000,
-  jasmineNodeOpts: {defaultTimeoutInterval: 2 * 60 * 1000}, // 2 Minutes
+  jasmineNodeOpts: {defaultTimeoutInterval: 5 * 60 * 1000}, // 5 Minutes
   maxSessions: 2,
   // Capabilities to be passed to the webdriver instance.
 
