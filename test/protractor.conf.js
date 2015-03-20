@@ -2,6 +2,7 @@
 exports.config = {
   baseUrl: 'http://localhost:9001',
   specs: ['e2e/spec/**/*.spec.js'],
+  allScriptsTimeout: 30000,
   capabilities: {
     browserName: 'firefox',
     shardTestFiles: true,
