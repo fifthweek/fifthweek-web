@@ -15,6 +15,9 @@ angular.module('webApp').directive('fwFormGroup', function () {
         var inputName = attrs.inputName;
         var formName = formCtrl.$name;
 
+        // getFormName possibly redundant now, although many legacy components use it.
+        scope.form = formCtrl;
+
         scope.getInputName = function() {
           if (!inputName) {
             var input = element.find('input');

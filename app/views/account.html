@@ -44,32 +44,7 @@
         </div>
       </fw-form-group>
 
-      <fw-form-group>
-        <label for="username">Username</label>
-        <div class="row">
-          <div class="col-md-6">
-            <div fw-form-input-glyphs>
-              <input type="text" id="username" class="form-control" name="username" placeholder="Username"
-                     ng-model="model.accountSettings.username"
-                     ng-model-options="{ debounce: 500 }"
-                     ng-pattern="/^[a-zA-Z0-9_]+$/"
-                     ng-minlength="2"
-                     ng-maxlength="20"
-                     maxlength="20"
-                     required
-                     fw-check-username-availability>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <p fw-form-input-invalid-p="pattern">Letters, numbers and underscores only.</p>
-            <p fw-form-input-invalid-p="minlength">Must be at least 2 characters.</p>
-            <p fw-form-input-invalid-p="maxlength">Allowed 20 characters at most.</p>
-            <p fw-form-input-invalid-p="required">A username is required.</p>
-            <p ng-if="form.username.$pending.username" class="help-block">Checking availability...</p>
-            <p ng-if="form.username.$error.username" class="help-block">This username is already taken!</p>
-          </div>
-        </div>
-      </fw-form-group>
+      <fw-form-input-username ng-model="model.accountSettings.username" label="Username" breakpoint="md" required></fw-form-input-username>
 
       <fw-form-input-password ng-model="model.password" placeholder="New password" label="Password" breakpoint="md"></fw-form-input-password>
 
