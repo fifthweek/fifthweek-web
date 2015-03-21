@@ -25,11 +25,11 @@ angular.module('webApp').factory('postUtilities',
 
     var updatePostUris = function(post, accessMap){
       if(post.image){
-        post.image.resolvedUri = getImageUri(post.image, '1200x16000', accessMap);
+        post.image.resolvedUri = getImageUri(post.image, 'feed', accessMap);
       }
 
       if(post.creator.profileImage){
-        post.creator.profileImage.resolvedUri = getImageUri(post.creator.profileImage, '64x64-crop', accessMap);
+        post.creator.profileImage.resolvedUri = getImageUri(post.creator.profileImage, 'footer', accessMap);
       }
     };
 

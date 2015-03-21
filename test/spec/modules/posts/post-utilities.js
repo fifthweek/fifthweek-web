@@ -510,15 +510,15 @@ describe('post-utilities', function(){
       });
 
       it('should add profile image resolvedUri data', function(){
-        expect(posts[0].creator.profileImage.resolvedUri).toBe('uri1/creator1/64x64-crop?signature1');
-        expect(posts[1].creator.profileImage.resolvedUri).toBe('uri2/creator2/64x64-crop?signature2');
-        expect(posts[2].creator.profileImage.resolvedUri).toBe('uri1/creator1/64x64-crop?signature1');
+        expect(posts[0].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
+        expect(posts[1].creator.profileImage.resolvedUri).toBe('uri2/creator2/footer?signature2');
+        expect(posts[2].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
         expect(posts[3].creator.profileImage).toBeUndefined();
       });
 
       it('should add image resolvedUri data', function(){
-        expect(posts[2].image.resolvedUri).toBe('uri1/fileId1/1200x16000?signature1');
-        expect(posts[3].image.resolvedUri).toBe('uri2/fileId2/1200x16000?signature2');
+        expect(posts[2].image.resolvedUri).toBe('uri1/fileId1/feed?signature1');
+        expect(posts[3].image.resolvedUri).toBe('uri2/fileId2/feed?signature2');
       });
     });
   });
