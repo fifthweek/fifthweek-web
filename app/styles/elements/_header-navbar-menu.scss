@@ -72,7 +72,7 @@ ul.header-navbar-menu {
   @include mobile-nav-scroll(440px);
 }
 
-.page-customize,
-.page-customize-landing {
+.page-subscription,
+.page-subscription-landing {
   @include mobile-nav-scroll(490px);
 }

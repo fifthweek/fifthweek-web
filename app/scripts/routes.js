@@ -378,14 +378,14 @@ angular.module('routes', ['ui.router'])
         }
       })
       .state(states.creators.subscription.name, {
-        url: '/customize',
+        url: '/subscription',
         redirectTo: states.creators.subscription.landingPage.name,
         templateUrl: 'views/creators/customize/index.html',
         requireSubscription: true,
         data : {
-          pageTitle: 'Customize',
-          headTitle: ': ' + 'Customize',
-          bodyClass: 'page-customize',
+          pageTitle: 'Subscription',
+          headTitle: ': ' + 'Subscription',
+          bodyClass: 'page-subscription',
           access: {
             requireAuthenticated: true
           }
@@ -399,7 +399,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: ' Landing page',
           headTitle: ': ' + 'Landing page',
-          bodyClass: 'page-customize-landing'
+          bodyClass: 'page-subscription-landing'
         }
       })
       .state(states.creators.subscription.collections.name, {

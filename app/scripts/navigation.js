@@ -108,7 +108,7 @@ angular.module('webApp')
       },
       { separator: true },
       {
-        name: 'Settings',
+        name: 'Account',
         state: states.account.name,
         icon: 'fa fa-cog',
         color: 'blue',
