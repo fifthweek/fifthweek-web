@@ -7,9 +7,9 @@ var ChannelPriceInputPage = require('../../../pages/channel-price-input.page.js'
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js');
-var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
-var ChannelEditPage = require('../../../pages/creators/customize/channel-edit.page.js');
-var CollectionListPage = require('../../../pages/creators/customize/collection-list.page.js');
+var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
+var ChannelEditPage = require('../../../pages/creators/subscription/channel-edit.page.js');
+var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
 
 describe('edit channel form', function() {
   'use strict';

@@ -2,7 +2,7 @@ var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var BreadcrumbPage = require('../../../pages/breadcrumb.page.js');
-var CollectionListPage = require('../../../pages/creators/customize/collection-list.page.js');
+var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
 
 describe('add collection page', function() {
   'use strict';

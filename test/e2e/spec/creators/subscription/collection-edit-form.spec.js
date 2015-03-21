@@ -6,9 +6,9 @@ var ChannelSelectInputPage = require('../../../pages/channel-select-input.page.j
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js');
-var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
-var CollectionListPage = require('../../../pages/creators/customize/collection-list.page.js');
-var CollectionEditPage = require('../../../pages/creators/customize/collection-edit.page.js');
+var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
+var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
+var CollectionEditPage = require('../../../pages/creators/subscription/collection-edit.page.js');
 
 describe('edit collection form', function() {
   'use strict';

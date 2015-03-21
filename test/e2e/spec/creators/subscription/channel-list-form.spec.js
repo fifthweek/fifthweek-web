@@ -1,7 +1,7 @@
 var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
+var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
 
 describe('channel list form', function() {
   'use strict';

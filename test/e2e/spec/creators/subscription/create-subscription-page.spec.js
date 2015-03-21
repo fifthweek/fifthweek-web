@@ -1,8 +1,8 @@
-var SignOutPage = require('../../pages/sign-out.page.js');
-var RegisterPage = require('../../pages/register.page.js');
-var CreateSubscriptionPage = require('../../pages/creators/create-subscription.page.js');
-var HeaderPage = require('../../pages/header.page.js');
-var SidebarPage = require('../../pages/sidebar.page.js');
+var SignOutPage = require('../../../pages/sign-out.page.js');
+var RegisterPage = require('../../../pages/register.page.js');
+var CreateSubscriptionPage = require('../../../pages/creators/subscription/create-subscription.page.js');
+var HeaderPage = require('../../../pages/header.page.js');
+var SidebarPage = require('../../../pages/sidebar.page.js');
 
 describe('create subscription page', function() {
   'use strict';

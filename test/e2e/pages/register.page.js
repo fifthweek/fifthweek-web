@@ -1,7 +1,7 @@
 'use strict';
 
 var UsernameInputPage = require('./username-input.page');
-var CreateSubscriptionPage = require('./creators/create-subscription.page.js');
+var CreateSubscriptionPage = require('./creators/subscription/create-subscription.page.js');
 
 var RegisterPage = function() {};
 

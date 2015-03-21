@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateSubscriptionPage = require('./creators/create-subscription.page.js');
+var CreateSubscriptionPage = require('./creators/subscription/create-subscription.page.js');
 
 var SignInPage = function() {};
 

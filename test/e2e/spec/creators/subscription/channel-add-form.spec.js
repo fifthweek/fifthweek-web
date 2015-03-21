@@ -6,8 +6,8 @@ var ChannelDescriptionInputPage = require('../../../pages/channel-description-in
 var ChannelPriceInputPage = require('../../../pages/channel-price-input.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var ChannelListPage = require('../../../pages/creators/customize/channel-list.page.js');
-var ChannelAddPage = require('../../../pages/creators/customize/channel-add.page.js');
+var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
+var ChannelAddPage = require('../../../pages/creators/subscription/channel-add.page.js');
 
 describe('add channel form', function() {
   'use strict';

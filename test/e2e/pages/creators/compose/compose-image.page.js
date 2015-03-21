@@ -7,7 +7,7 @@
     uploadType: { value: 'image' },
     headerLink: { value: 'imageLink' },
     uploadIndicator: { get: function(){ return element(by.css('.available-image')); }},
-    pageUrl: { get: function () { return '/creators/compose/image'; }}
+    pageUrl: { get: function () { return '/creators/post/image'; }}
   });
 
   module.exports = composeImagePage;

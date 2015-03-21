@@ -2,7 +2,7 @@ var CommonWorkflows = require('../../../common-workflows.js');
 var TestKit = require('../../../test-kit.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var LandingPagePage = require('../../../pages/creators/customize/customize-landing-page.page.js');
+var LandingPagePage = require('../../../pages/creators/subscription/customize-landing-page.page.js');
 var SubscriptionNameInputPage = require('../../../pages/subscription-name-input.page.js');
 var TaglineInputPage = require('../../../pages/tagline-input.page.js');
 

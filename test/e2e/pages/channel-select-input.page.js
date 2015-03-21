@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var TestKit = require('../test-kit.js');
-var ChannelListPage = require('./creators/customize/channel-list.page.js');
+var ChannelListPage = require('./creators/subscription/channel-list.page.js');
 var testKit = new TestKit();
 var channelListPage = new ChannelListPage();
 

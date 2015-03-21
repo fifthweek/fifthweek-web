@@ -3,16 +3,16 @@
 
   var HomePage = require('./pages/home.page.js');
   var SignInPage = require('./pages/sign-in.page.js');
-  var CreateSubscriptionPage = require('./pages/creators/create-subscription.page.js');
+  var CreateSubscriptionPage = require('./pages/creators/subscription/create-subscription.page.js');
   var RegisterPage = require('./pages/register.page.js');
   var SignOutPage = require('./pages/sign-out.page.js');
   var SidebarPage = require('./pages/sidebar.page.js');
   var HeaderCustomizePage = require('./pages/header-customize.page.js');
   var HeaderComposePage = require('./pages/header-compose.page.js');
-  var ChannelListPage = require('./pages/creators/customize/channel-list.page.js');
-  var ChannelAddPage = require('./pages/creators/customize/channel-add.page.js');
-  var CollectionListPage = require('./pages/creators/customize/collection-list.page.js');
-  var CollectionAddPage = require('./pages/creators/customize/collection-add.page.js');
+  var ChannelListPage = require('./pages/creators/subscription/channel-list.page.js');
+  var ChannelAddPage = require('./pages/creators/subscription/channel-add.page.js');
+  var CollectionListPage = require('./pages/creators/subscription/collection-list.page.js');
+  var CollectionAddPage = require('./pages/creators/subscription/collection-add.page.js');
   var ComposeNotePage = require('./pages/creators/compose/compose-note.page.js');
   var ComposeFilePage = require('./pages/creators/compose/compose-file.page.js');
   var ComposeImagePage = require('./pages/creators/compose/compose-image.page.js');
