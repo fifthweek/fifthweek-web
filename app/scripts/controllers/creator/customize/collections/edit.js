@@ -18,7 +18,7 @@ angular.module('webApp').controller('editCollectionCtrl', function(
     $scope.model.schedule = _.sortBy($scope.model.schedule, 'sortKey');
   };
 
-  $scope.previousState = states.creators.customize.collections.name;
+  $scope.previousState = states.creators.subscription.collections.name;
   $scope.model = {
     releaseTimesDirty: false,
     hourOfWeek: defaultHourOfWeek

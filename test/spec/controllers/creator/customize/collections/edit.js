@@ -86,7 +86,7 @@ describe('edit collection controller', function () {
   it('should expose the state to return to on completion', function() {
     initializeTarget();
 
-    expect($scope.previousState).toBe(states.creators.customize.collections.name);
+    expect($scope.previousState).toBe(states.creators.subscription.collections.name);
   });
 
   it('should expose channels from user state', function() {

@@ -81,26 +81,26 @@ angular.module('webApp')
       },
       {
         name: 'Subscription',
-        state: states.creators.customize.landingPage.name,
+        state: states.creators.subscription.landingPage.name,
         icon: 'fa fa-eye',
         color: 'green',
         secondary:
         [
           {
             name: 'Landing Page',
-            state: states.creators.customize.landingPage.name,
+            state: states.creators.subscription.landingPage.name,
             icon: 'fa fa-arrow-circle-down',
             color: 'green'
           },
           {
             name: 'Channels',
-            state: states.creators.customize.channels.name,
+            state: states.creators.subscription.channels.name,
             icon: 'fa fa-list-ul',
             color: 'green'
           },
           {
             name: 'Collections',
-            state: states.creators.customize.collections.name,
+            state: states.creators.subscription.collections.name,
             icon: 'fa fa-th',
             color: 'green'
           }

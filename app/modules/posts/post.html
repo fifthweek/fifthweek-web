@@ -36,13 +36,13 @@
             </a>
             <span ng-if="post.collection">
               in
-              <a ui-sref="creators.customize.collections.edit({id: post.collectionId})" class="container-name">
+              <a ui-sref="creators.subscription.collections.edit({id: post.collectionId})" class="container-name">
                 {{post.collection.name}}
               </a>
             </span>
             <span ng-if="!post.collection">
               to
-               <a ui-sref="creators.customize.channels.edit({id: post.channelId})" class="container-name">
+               <a ui-sref="creators.subscription.channels.edit({id: post.channelId})" class="container-name">
                  {{post.channel.name}}
                </a>
             </span>

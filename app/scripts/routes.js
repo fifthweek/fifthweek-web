@@ -68,33 +68,33 @@ angular.module('routes', ['ui.router'])
           }
         }
       },
-      customize: {
-        name: 'creators.customize',
+      subscription: {
+        name: 'creators.subscription',
         landingPage: {
-          name: 'creators.customize.landingPage'
+          name: 'creators.subscription.landingPage'
         },
         collections: {
-          name: 'creators.customize.collections',
+          name: 'creators.subscription.collections',
           new: {
-            name: 'creators.customize.collections.new'
+            name: 'creators.subscription.collections.new'
           },
           edit: {
-            name: 'creators.customize.collections.edit'
+            name: 'creators.subscription.collections.edit'
           },
           list: {
-            name: 'creators.customize.collections.list'
+            name: 'creators.subscription.collections.list'
           }
         },
         channels: {
-          name: 'creators.customize.channels',
+          name: 'creators.subscription.channels',
           new: {
-            name: 'creators.customize.channels.new'
+            name: 'creators.subscription.channels.new'
           },
           edit: {
-            name: 'creators.customize.channels.edit'
+            name: 'creators.subscription.channels.edit'
           },
           list: {
-            name: 'creators.customize.channels.list'
+            name: 'creators.subscription.channels.list'
           }
         }
       }
@@ -377,9 +377,9 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.customize.name, {
+      .state(states.creators.subscription.name, {
         url: '/customize',
-        redirectTo: states.creators.customize.landingPage.name,
+        redirectTo: states.creators.subscription.landingPage.name,
         templateUrl: 'views/creators/customize/index.html',
         requireSubscription: true,
         data : {
@@ -391,7 +391,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.customize.landingPage.name, {
+      .state(states.creators.subscription.landingPage.name, {
         url: '/landing-page',
         templateUrl: 'views/creators/customize/landing-page/index.html',
         controller: 'customizeLandingPageCtrl',
@@ -402,18 +402,18 @@ angular.module('routes', ['ui.router'])
           bodyClass: 'page-customize-landing'
         }
       })
-      .state(states.creators.customize.collections.name, {
+      .state(states.creators.subscription.collections.name, {
         url: '/collections',
         templateUrl: 'views/creators/customize/collections/index.html',
         requireSubscription: true,
-        redirectTo: states.creators.customize.collections.list.name,
+        redirectTo: states.creators.subscription.collections.list.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.customize.collections.new.name, {
+      .state(states.creators.subscription.collections.new.name, {
         url: '/new',
         templateUrl: 'views/creators/customize/collections/new.html',
         controller: 'newCollectionCtrl',
@@ -425,7 +425,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.customize.collections.edit.name, {
+      .state(states.creators.subscription.collections.edit.name, {
         url: '/{id}',
         templateUrl: 'views/creators/customize/collections/edit.html',
         controller: 'editCollectionCtrl',
@@ -437,7 +437,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.customize.collections.list.name, {
+      .state(states.creators.subscription.collections.list.name, {
         url: '',
         templateUrl: 'views/creators/customize/collections/list.html',
         controller: 'listCollectionsCtrl',
@@ -450,18 +450,18 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.customize.channels.name, {
+      .state(states.creators.subscription.channels.name, {
         url: '/channels',
         templateUrl: 'views/creators/customize/channels/index.html',
         requireSubscription: true,
-        redirectTo: states.creators.customize.channels.list.name,
+        redirectTo: states.creators.subscription.channels.list.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.customize.channels.new.name, {
+      .state(states.creators.subscription.channels.new.name, {
         url: '/new',
         templateUrl: 'views/creators/customize/channels/new.html',
         controller: 'newChannelCtrl',
@@ -473,7 +473,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.customize.channels.edit.name, {
+      .state(states.creators.subscription.channels.edit.name, {
         url: '/{id}',
         templateUrl: 'views/creators/customize/channels/edit.html',
         controller: 'editChannelCtrl',
@@ -485,7 +485,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.customize.channels.list.name, {
+      .state(states.creators.subscription.channels.list.name, {
         url: '',
         templateUrl: 'views/creators/customize/channels/list.html',
         controller: 'listChannelsCtrl',

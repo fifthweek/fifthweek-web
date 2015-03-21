@@ -3,7 +3,7 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
 
   var channelRepository = channelRepositoryFactory.forCurrentUser();
   var channelId = $state.params.id;
-  $scope.previousState = states.creators.customize.channels.name;
+  $scope.previousState = states.creators.subscription.channels.name;
   $scope.model = {};
 
   channelRepository.getChannel(channelId)

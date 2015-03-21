@@ -1,7 +1,7 @@
 angular.module('webApp').controller('newCollectionCtrl', function($scope, $state, states, channelRepositoryFactory, collectionService, channelNameFormatter, errorFacade) {
   'use strict';
 
-  $scope.previousState = states.creators.customize.collections.name;
+  $scope.previousState = states.creators.subscription.collections.name;
 
   $scope.model = {
     collection: {
