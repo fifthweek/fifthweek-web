@@ -33,26 +33,26 @@ angular.module('webApp')
       },
       {
         name: 'New Post',
-        state: states.creators.compose.note.name,
+        state: states.creators.post.note.name,
         icon: 'fa fa-pencil-square-o',
         color: 'orange',
         secondary:
         [
           {
             name: 'Write a Note',
-            state: states.creators.compose.note.name,
+            state: states.creators.post.note.name,
             icon: 'fa fa-quote-left',
             color: 'orange'
           },
           {
             name: 'Upload Image',
-            state: states.creators.compose.image.name,
+            state: states.creators.post.image.name,
             icon: 'fa fa-image',
             color: 'orange'
           },
           {
             name: 'Upload File',
-            state: states.creators.compose.file.name,
+            state: states.creators.post.file.name,
             icon: 'fa fa-file-o',
             color: 'orange'
           }

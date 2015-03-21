@@ -42,7 +42,7 @@ describe('ui state provider', function() {
 
       var result = target.getDefaultState();
 
-      expect(result).toBe(states.creators.compose.note.name);
+      expect(result).toBe(states.creators.post.note.name);
     });
 
     it('it should return "create your subscription" for creators without a subscription', function() {
@@ -62,7 +62,7 @@ describe('ui state provider', function() {
 
       var result = target.getDefaultState();
 
-      expect(result).toBe(states.creators.compose.note.name);
+      expect(result).toBe(states.creators.post.note.name);
     });
   });
 });

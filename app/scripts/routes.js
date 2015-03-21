@@ -41,16 +41,16 @@ angular.module('routes', ['ui.router'])
       createSubscription: {
         name: 'creators.createSubscription'
       },
-      compose: {
-        name: 'creators.compose',
+      post: {
+        name: 'creators.post',
         note: {
-          name: 'creators.compose.note'
+          name: 'creators.post.note'
         },
         image: {
-          name: 'creators.compose.image'
+          name: 'creators.post.image'
         },
         file: {
-          name: 'creators.compose.file'
+          name: 'creators.post.file'
         }
       },
       backlog: {
@@ -261,7 +261,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.compose.name, {
+      .state(states.creators.post.name, {
         url: '/post',
         templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
@@ -274,7 +274,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.compose.note.name, {
+      .state(states.creators.post.note.name, {
         url: '/note',
         templateUrl: 'modules/creator-compose/compose-note.html',
         controller: 'composeNoteCtrl',
@@ -288,7 +288,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.compose.image.name, {
+      .state(states.creators.post.image.name, {
         url: '/image',
         templateUrl: 'modules/creator-compose/compose-upload.html',
         controller: 'composeImageCtrl',
@@ -302,7 +302,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.compose.file.name, {
+      .state(states.creators.post.file.name, {
         url: '/file',
         templateUrl: 'modules/creator-compose/compose-upload.html',
         controller: 'composeFileCtrl',
