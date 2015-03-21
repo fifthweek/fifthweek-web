@@ -35,7 +35,18 @@
     liveInLink: { get: function() { return element(this.byCss('.live-in-info')); }},
     moreActionsButton: { get: function() { return element(this.byCss('.actions-more button')); }},
     editPostLink: { get: function() { return element(this.byCssContainingText('.actions-drop-down a', 'Edit')); }},
-    deletePostLink: { get: function() { return element(this.byCssContainingText('.actions-drop-down a', 'Delete')); }}
+    deletePostLink: { get: function() { return element(this.byCssContainingText('.actions-drop-down a', 'Delete')); }},
+
+    expectNotePost: { value: function(css, text){
+    }},
+    expectImagePost: { value: function(css, text){
+    }},
+    expectNonViewableImagePost: { value: function(css, text){
+    }},
+    expectFilePost: { value: function(css, text){
+    }},
+
+
   });
 
   module.exports = PostPage;

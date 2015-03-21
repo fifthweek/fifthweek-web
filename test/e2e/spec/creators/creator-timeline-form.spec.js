@@ -44,6 +44,7 @@
       commonWorkflows.postNoteNow();
       navigateToPage();
       expect(post.allPosts.count()).toBe(1);
+      post.expectNotePost();
     });
 
     it('should not show the post after posting a note on a date', function () {
@@ -51,7 +52,6 @@
       commonWorkflows.postNoteOnDate();
       navigateToPage();
       expect(post.allPosts.count()).toBe(1);
-      //expect(post.comment.isDisplayed()).toBe(true);
     });
 
     it('should show the post after posting a file now', function () {
@@ -59,24 +59,21 @@
       commonWorkflows.postFileNow(filePath, collectionName);
       navigateToPage();
       expect(post.allPosts.count()).toBe(2);
+      post.expectFilePost();
     });
 
     it('should not show the post after posting a file on a date', function () {
       navigateToSite();
       commonWorkflows.postFileOnDate(filePath, collectionName);
       navigateToPage();
-      post.postIndex = 1;
       expect(post.allPosts.count()).toBe(2);
-      //expect(post.fileDownloadLink.isDisplayed()).toBe(true);
     });
 
     it('should not show the post after posting a file to the queue', function () {
       navigateToSite();
       commonWorkflows.postFileToQueue(filePath, collectionName);
       navigateToPage();
-      post.postIndex = 2;
       expect(post.allPosts.count()).toBe(2);
-      //expect(post.fileDownloadLink.isDisplayed()).toBe(true);
     });
 
     it('should show the post after posting a image now', function () {
@@ -84,24 +81,21 @@
       commonWorkflows.postImageNow(filePath, collectionName);
       navigateToPage();
       expect(post.allPosts.count()).toBe(3);
+      post.expectImagePost();
     });
 
     it('should not show the post after posting a image on a date', function () {
       navigateToSite();
       commonWorkflows.postImageOnDate(filePath, collectionName);
       navigateToPage();
-      post.postIndex = 3;
       expect(post.allPosts.count()).toBe(3);
-      //expect(post.image.isDisplayed()).toBe(true);
     });
 
     it('should not show the post after posting a image to the queue', function () {
       navigateToSite();
       commonWorkflows.postImageToQueue(filePath, collectionName);
       navigateToPage();
-      post.postIndex = 4;
       expect(post.allPosts.count()).toBe(3);
-      //expect(post.image.isDisplayed()).toBe(true);
     });
 
     var navigateToSite = function() {

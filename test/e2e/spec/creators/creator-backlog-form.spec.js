@@ -2,9 +2,9 @@
   'use strict';
 
   var CommonWorkflows = require('../../common-workflows.js');
-  var SidebarPage = require('../../pages/sidebar.post.js');
-  var HeaderBacklogPage = require('../../pages/header-backlog.post.js');
-  var PostPage = require('../../pages/post.post.js');
+  var SidebarPage = require('../../pages/sidebar.page.js');
+  var HeaderBacklogPage = require('../../pages/header-backlog.page.js');
+  var PostPage = require('../../pages/post.page.js');
 
   describe('creator-backlog form', function() {
 
@@ -48,7 +48,7 @@
       commonWorkflows.postNoteOnDate();
       navigateToPage();
       expect(post.allPosts.count()).toBe(1);
-      //expect(post.comment.isDisplayed()).toBe(true);
+      post.expectNotePost();
     });
 
     it('should not show the post after posting a file now', function () {
@@ -62,7 +62,7 @@
       navigateToPage();
       post.postIndex = 1;
       expect(post.allPosts.count()).toBe(2);
-      //expect(post.fileDownloadLink.isDisplayed()).toBe(true);
+      post.expectFilePost();
     });
 
     it('should show the post after posting a file to the queue', function () {
@@ -70,7 +70,7 @@
       navigateToPage();
       post.postIndex = 2;
       expect(post.allPosts.count()).toBe(3);
-      //expect(post.fileDownloadLink.isDisplayed()).toBe(true);
+      post.expectFilePost();
     });
 
     it('should not show the post after posting a image now', function () {
@@ -84,7 +84,7 @@
       navigateToPage();
       post.postIndex = 3;
       expect(post.allPosts.count()).toBe(4);
-      //expect(post.image.isDisplayed()).toBe(true);
+      post.expectImagePost();
     });
 
     it('should show the post after posting a image to the queue', function () {
@@ -92,7 +92,7 @@
       navigateToPage();
       post.postIndex = 4;
       expect(post.allPosts.count()).toBe(5);
-      //expect(post.image.isDisplayed()).toBe(true);
+      post.expectImagePost();
     });
 
     var navigateToPage = function() {

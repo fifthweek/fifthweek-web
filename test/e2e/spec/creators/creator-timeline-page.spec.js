@@ -14,8 +14,8 @@
     it('should not contain a sidebar or header', function() {
       commonWorkflows.createSubscription();
       sidebar.usernameLink.click();
-      expect(sidebar.links.count()).toBe(0);
-      expect(header.navigationLinks.count()).toBe(0);
+      expect(sidebar.sidebar.isDisplayed()).toBe(false);
+      expect(header.navbar.isDisplayed()).toBe(false);
     });
   });
 })();

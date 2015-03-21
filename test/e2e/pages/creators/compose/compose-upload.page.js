@@ -1,7 +1,6 @@
 (function(){
   'use strict';
 
-  var CommonWorkflows = require('../../../common-workflows.js');
   var TestKit = require('../../../test-kit.js');
   var SidebarPage = require('../../../pages/sidebar.page.js');
   var HeaderComposePage = require('../../../pages/header-compose.page.js');
@@ -20,8 +19,6 @@
     }
     return itemName;
   };
-
-  var lastMinutes = 0;
 
   composeUploadPage.prototype = Object.create({}, {
 
@@ -193,6 +190,8 @@
 
         var registration;
         var subscription;
+
+        var CommonWorkflows = require('../../../common-workflows.js');
 
         var commonWorkflows = new CommonWorkflows();
         var sidebar = new SidebarPage();

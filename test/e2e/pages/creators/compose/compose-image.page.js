@@ -2,7 +2,6 @@
   'use strict';
 
   var BasePage = require('../../../pages/creators/compose/compose-upload.page.js');
-
   var composeImagePage = function() {};
   composeImagePage.prototype = Object.create(BasePage.prototype, {
     uploadType: { value: 'image' },
