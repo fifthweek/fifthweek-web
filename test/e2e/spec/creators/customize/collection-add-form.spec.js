@@ -48,7 +48,7 @@ describe('add collection form', function() {
     var channelSelectTexts = channelSelectInputPage.mapToSelectTexts(channelNames);
     inputs = page.inputs(channelSelectTexts);
 
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
     header.collectionsLink.click();
     collectionListPage.addCollectionButton.click();
   });
@@ -90,7 +90,7 @@ describe('add collection form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.customizeLink.click();
+      sidebar.subscriptionLink.click();
       header.collectionsLink.click();
 
       expectChangesAppliedAndNavigateToPage(newFormValues);

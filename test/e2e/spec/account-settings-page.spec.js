@@ -11,10 +11,10 @@ describe('account settings page', function() {
 
   it('should run once before all', function() {
     commonWorkflows.createSubscription();
-    sidebar.settingsLink.click();
+    sidebar.accountLink.click();
   });
 
   header.includeBasicTests(header.accountSettingsLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.settingsLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.accountLink);
 });

@@ -43,7 +43,7 @@ describe('channel list form', function() {
   });
 
   var navigateToPage = function() {
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
     header.channelsLink.click();
   };
 

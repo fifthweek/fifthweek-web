@@ -37,7 +37,7 @@ describe('add channel form', function() {
     var context = commonWorkflows.createSubscription();
     registration = context.registration;
     subscription = context.subscription;
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
     header.channelsLink.click();
     channelListPage.addChannelButton.click();
   });
@@ -79,7 +79,7 @@ describe('add channel form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.customizeLink.click();
+      sidebar.subscriptionLink.click();
       header.channelsLink.click();
 
       expectChangesAppliedAndNavigateToPage(newFormValues);

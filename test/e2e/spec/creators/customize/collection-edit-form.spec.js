@@ -55,7 +55,7 @@ describe('edit collection form', function() {
       channelSelect: channelSelectInputPage.mapToSelectText(collection.channelName)
     };
 
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
     header.collectionsLink.click();
     navigateToPage();
   });
@@ -134,7 +134,7 @@ describe('edit collection form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.customizeLink.click();
+      sidebar.subscriptionLink.click();
       header.collectionsLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
@@ -242,7 +242,7 @@ describe('edit collection form', function() {
 
       // Check not deleted from API.
       commonWorkflows.reSignIn(registration);
-      sidebar.customizeLink.click();
+      sidebar.subscriptionLink.click();
       header.collectionsLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
@@ -255,7 +255,7 @@ describe('edit collection form', function() {
 
       // Check deleted from API.
       commonWorkflows.reSignIn(registration);
-      sidebar.customizeLink.click();
+      sidebar.subscriptionLink.click();
       header.collectionsLink.click();
       collectionListPage.waitForPage();
       expect(collectionListPage.collections.count()).toBe(0);

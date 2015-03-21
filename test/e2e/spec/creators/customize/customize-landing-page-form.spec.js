@@ -24,7 +24,7 @@ describe('customize landing page form', function() {
   var validDescription = 'In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content that could be distracting with placeholder text may allow viewers to focus on graphic aspects such as font, typography, and page layout. It also reduces the need for the designer to come up with meaningful text, as they can instead use hastily generated lorem ipsum text.';
 
   var navigateToPage = function() {
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
   };
 
   it('should run once before all', function() {
@@ -165,7 +165,7 @@ describe('customize landing page form', function() {
 
       it('should cancel the changes', function(){
         sidebar.helpLink.click();
-        sidebar.customizeLink.click();
+        sidebar.subscriptionLink.click();
       });
 
       testInitialContent();

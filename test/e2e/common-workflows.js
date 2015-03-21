@@ -54,21 +54,21 @@
     }},
 
     createChannel: { value: function() {
-      sidebar.customizeLink.click();
+      sidebar.subscriptionLink.click();
       headerCustomize.channelsLink.click();
       channelListPage.addChannelButton.click();
       return channelAddPage.submitSuccessfully();
     }},
 
     createCollection: { value: function(channelNames) {
-      sidebar.customizeLink.click();
+      sidebar.subscriptionLink.click();
       headerCustomize.collectionsLink.click();
       collectionListPage.addCollectionButton.click();
       return collectionAddPage.submitSuccessfully(channelNames || [channelListPage.defaultChannelName]);
     }},
 
     createNamedCollection: { value: function(channelName, newCollectionName) {
-      sidebar.customizeLink.click();
+      sidebar.subscriptionLink.click();
       headerCustomize.collectionsLink.click();
       collectionListPage.addCollectionButton.click();
       return collectionAddPage.submitCollectionSuccessfully(channelName || channelListPage.defaultChannelName, newCollectionName);

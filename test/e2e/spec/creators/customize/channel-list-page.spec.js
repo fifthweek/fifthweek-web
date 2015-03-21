@@ -11,11 +11,11 @@ describe('channel list page', function() {
 
   it('should run once before all', function() {
     commonWorkflows.createSubscription();
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
     header.channelsLink.click();
   });
 
   header.includeBasicTests(header.channelsLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.customizeLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.subscriptionLink);
 });

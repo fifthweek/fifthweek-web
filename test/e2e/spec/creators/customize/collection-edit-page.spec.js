@@ -29,5 +29,5 @@ describe('edit collection page', function() {
 
   header.includeBasicTests(header.collectionsLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.customizeLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.subscriptionLink);
 });

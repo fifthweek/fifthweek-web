@@ -80,7 +80,7 @@ angular.module('webApp')
           ]
       },
       {
-        name: 'Customize',
+        name: 'Subscription',
         state: states.creators.customize.landingPage.name,
         icon: 'fa fa-eye',
         color: 'green',

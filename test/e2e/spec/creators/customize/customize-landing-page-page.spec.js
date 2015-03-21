@@ -11,10 +11,10 @@ describe('customize landing page page', function() {
 
   it('should run once before all', function() {
     commonWorkflows.createSubscription();
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
   });
 
   header.includeBasicTests(header.landingPageLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.customizeLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.subscriptionLink);
 });

@@ -11,8 +11,8 @@ SidebarPage.prototype = Object.create({}, {
   usernameLink: { get: function () { return element(by.id('navigation-username')); }},
   newPostLink: { get: function () { return element(by.id('navigation-new-post')); }},
   backlogLink: { get: function () { return element(by.id('navigation-backlog')); }},
-  customizeLink: { get: function () { return element(by.id('navigation-customize')); }},
-  settingsLink: { get: function () { return element(by.id('navigation-settings')); }},
+  subscriptionLink: { get: function () { return element(by.id('navigation-subscription')); }},
+  accountLink: { get: function () { return element(by.id('navigation-account')); }},
   helpLink: { get: function () { return element(by.id('navigation-help')); }},
   includeEstablishedCreatorTests: { value: function(highlightedLink) {
     var self = this;
@@ -35,11 +35,11 @@ SidebarPage.prototype = Object.create({}, {
       });
 
       it('should contain "Customize" link', function () {
-        expect(self.customizeLink.isDisplayed()).toBe(true);
+        expect(self.subscriptionLink.isDisplayed()).toBe(true);
       });
 
       it('should contain "Settings" link', function () {
-        expect(self.settingsLink.isDisplayed()).toBe(true);
+        expect(self.accountLink.isDisplayed()).toBe(true);
       });
 
       it('should contain "Help" link', function () {

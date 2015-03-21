@@ -15,7 +15,7 @@ describe('edit channel page', function() {
 
   it('should run once before all', function() {
     commonWorkflows.createSubscription();
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
     header.channelsLink.click();
     channelListPage.getEditChannelButton(channelListPage.defaultChannelName).click();
   });
@@ -27,5 +27,5 @@ describe('edit channel page', function() {
 
   header.includeBasicTests(header.channelsLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.customizeLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.subscriptionLink);
 });

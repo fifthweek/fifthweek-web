@@ -24,7 +24,7 @@ describe('account settings form', function() {
     var context = commonWorkflows.createSubscription();
     registration = context.registration;
     subscription = context.subscription;
-    sidebar.settingsLink.click();
+    sidebar.accountLink.click();
   };
 
   describe('when validating against good input', function() {
@@ -116,7 +116,7 @@ describe('account settings form', function() {
       page.passwordTextBox.sendKeys('phil-the-cat');
 
       sidebar.helpLink.click();
-      sidebar.settingsLink.click();
+      sidebar.accountLink.click();
 
       expect(page.noProfileImage.isDisplayed()).toBe(true);
       expect(page.emailTextBox.getAttribute('value')).toBe(registration.email);
@@ -171,7 +171,7 @@ describe('account settings form', function() {
 
       it('should persist new settings between sessions', function(){
         commonWorkflows.reSignIn(registration);
-        sidebar.settingsLink.click();
+        sidebar.accountLink.click();
 
         browser.wait(function(){
           return page.profileImage.isPresent();

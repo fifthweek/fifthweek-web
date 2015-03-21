@@ -36,7 +36,7 @@ describe('create subscription page', function() {
     });
 
     it('should contain "Settings" link', function () {
-      expect(sidebar.settingsLink.isDisplayed()).toBe(true);
+      expect(sidebar.accountLink.isDisplayed()).toBe(true);
     });
 
     it('should contain "Help" link', function () {

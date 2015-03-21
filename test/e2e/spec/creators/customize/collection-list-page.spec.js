@@ -11,11 +11,11 @@ describe('collection list page', function() {
 
   it('should run once before all', function() {
     commonWorkflows.createSubscription();
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
     header.collectionsLink.click();
   });
 
   header.includeBasicTests(header.collectionsLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.customizeLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.subscriptionLink);
 });

@@ -34,7 +34,7 @@ describe('edit channel form', function() {
     var context = commonWorkflows.createSubscription();
     registration = context.registration;
     subscription = context.subscription;
-    sidebar.customizeLink.click();
+    sidebar.subscriptionLink.click();
     header.channelsLink.click();
   });
 
@@ -117,7 +117,7 @@ describe('edit channel form', function() {
 
         it('should persist the changes, between sessions', function () {
           commonWorkflows.reSignIn(registration);
-          sidebar.customizeLink.click();
+          sidebar.subscriptionLink.click();
           header.channelsLink.click();
           navigateToPage();
           testKit.expectFormValues(page, savedValues);
@@ -182,7 +182,7 @@ describe('edit channel form', function() {
 
             // Check not deleted from API.
             commonWorkflows.reSignIn(registration);
-            sidebar.customizeLink.click();
+            sidebar.subscriptionLink.click();
             header.channelsLink.click();
             navigateToPage();
             testKit.expectFormValues(page, savedValues);
@@ -200,7 +200,7 @@ describe('edit channel form', function() {
 
             // Check deleted from API.
             commonWorkflows.reSignIn(registration);
-            sidebar.customizeLink.click();
+            sidebar.subscriptionLink.click();
             header.collectionsLink.click();
             collectionListPage.waitForPage();
             expect(collectionListPage.collections.count()).toBe(defaultChannelCollectionCount);
