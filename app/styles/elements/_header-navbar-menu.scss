@@ -65,10 +65,10 @@ ul.header-navbar-menu {
   @include mobile-nav-scroll(360px);
 }
 
-.page-creators-compose,
-.page-creators-compose-note,
-.page-creators-compose-image,
-.page-creators-compose-file {
+.page-creators-post,
+.page-creators-post-note,
+.page-creators-post-image,
+.page-creators-post-file {
   @include mobile-nav-scroll(440px);
 }
 

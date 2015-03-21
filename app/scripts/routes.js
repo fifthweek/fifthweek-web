@@ -268,7 +268,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Compose',
           headTitle: ': ' + 'Compose',
-          bodyClass: 'page-creators-compose',
+          bodyClass: 'page-creators-post',
           access: {
             requireAuthenticated: true
           }
@@ -282,7 +282,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: ' Note',
           headTitle: ': ' + 'Write a Note',
-          bodyClass: 'page-creators-compose-note',
+          bodyClass: 'page-creators-post-note',
           access: {
             requireAuthenticated: true
           }
@@ -296,7 +296,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: ' Image',
           headTitle: ': ' + 'Upload Image',
-          bodyClass: 'page-creators-compose-image',
+          bodyClass: 'page-creators-post-image',
           access: {
             requireAuthenticated: true
           }
@@ -310,7 +310,7 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: ' File',
           headTitle: ': ' + 'Upload File',
-          bodyClass: 'page-creators-compose-file',
+          bodyClass: 'page-creators-post-file',
           access: {
             requireAuthenticated: true
           }
