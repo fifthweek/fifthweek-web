@@ -142,7 +142,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.signIn.name, {
         url: '/sign-in',
-        templateUrl: 'views/sign-in/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.signIn.signIn.name,
         data : {
           access: {
@@ -214,7 +214,7 @@ angular.module('routes', ['ui.router'])
       .state(states.user.name, {
         abstract: false,
         url: '/my',
-        templateUrl: 'views/creators/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.user.timeline.name,
         data : {
           access: {
@@ -240,7 +240,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.name, {
         abstract: false,
         url: '/creators',
-        templateUrl: 'views/creators/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.creators.landingPage.name,
         data : {
           access: {
@@ -250,7 +250,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.createSubscription.name, {
         url: '/create-subscription',
-        templateUrl: 'views/creators/create-subscription.html',
+        templateUrl: 'modules/creator-subscription/create-subscription.html',
         controller: 'createSubscriptionCtrl',
         requireSubscription: false,
         data : {
@@ -380,7 +380,7 @@ angular.module('routes', ['ui.router'])
       .state(states.creators.subscription.name, {
         url: '/subscription',
         redirectTo: states.creators.subscription.landingPage.name,
-        templateUrl: 'views/creators/customize/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
         data : {
           pageTitle: 'Subscription',
@@ -393,7 +393,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.landingPage.name, {
         url: '/landing-page',
-        templateUrl: 'views/creators/customize/landing-page/index.html',
+        templateUrl: 'modules/creator-subscription/customize-landing-page.html',
         controller: 'customizeLandingPageCtrl',
         requireSubscription: true,
         data : {
@@ -404,7 +404,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.collections.name, {
         url: '/collections',
-        templateUrl: 'views/creators/customize/collections/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
         redirectTo: states.creators.subscription.collections.list.name,
         data : {
@@ -415,7 +415,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.collections.new.name, {
         url: '/new',
-        templateUrl: 'views/creators/customize/collections/new.html',
+        templateUrl: 'modules/creator-subscription/new-collection.html',
         controller: 'newCollectionCtrl',
         requireSubscription: true,
         data : {
@@ -427,7 +427,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.collections.edit.name, {
         url: '/{id}',
-        templateUrl: 'views/creators/customize/collections/edit.html',
+        templateUrl: 'modules/creator-subscription/edit-collection.html',
         controller: 'editCollectionCtrl',
         requireSubscription: true,
         data : {
@@ -439,7 +439,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.collections.list.name, {
         url: '',
-        templateUrl: 'views/creators/customize/collections/list.html',
+        templateUrl: 'modules/creator-subscription/list-collections.html',
         controller: 'listCollectionsCtrl',
         requireSubscription: true,
         data : {
@@ -452,7 +452,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.channels.name, {
         url: '/channels',
-        templateUrl: 'views/creators/customize/channels/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
         redirectTo: states.creators.subscription.channels.list.name,
         data : {
@@ -463,7 +463,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.channels.new.name, {
         url: '/new',
-        templateUrl: 'views/creators/customize/channels/new.html',
+        templateUrl: 'modules/creator-subscription/new-channel.html',
         controller: 'newChannelCtrl',
         requireSubscription: true,
         data : {
@@ -475,7 +475,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.channels.edit.name, {
         url: '/{id}',
-        templateUrl: 'views/creators/customize/channels/edit.html',
+        templateUrl: 'modules/creator-subscription/edit-channel.html',
         controller: 'editChannelCtrl',
         requireSubscription: true,
         data : {
@@ -487,7 +487,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.channels.list.name, {
         url: '',
-        templateUrl: 'views/creators/customize/channels/list.html',
+        templateUrl: 'modules/creator-subscription/list-channels.html',
         controller: 'listChannelsCtrl',
         requireSubscription: true,
         data : {
@@ -501,7 +501,7 @@ angular.module('routes', ['ui.router'])
       .state(states.help.name, {
         abstract: false,
         url: '/help',
-        templateUrl: 'views/help/index.html',
+        templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.help.faq.name,
         data : {
           pageTitle: 'Help',

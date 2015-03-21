@@ -41,7 +41,7 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
 
   helpMessages: { get: function () { return element.all(by.css('#customizeLandingPageForm .help-block')); }},
 
-  pageUrl: { get: function () { return '/creators/customize/landingpage'; }},
+  pageUrl: { get: function () { return '/creators/subscription/landing-page'; }},
 
   setFileInput: { value: function(filePath) {
     var absolutePath = __dirname + '/' + filePath;
