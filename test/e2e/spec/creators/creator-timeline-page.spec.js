@@ -1,6 +1,7 @@
 (function(){
   'use strict';
 
+  var Defaults = require('../../defaults.js');
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
   var HeaderPage = require('../../pages/header.page.js');
@@ -12,6 +13,7 @@
     var registration;
     var subscription;
 
+    var defaults = new Defaults();
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
     var headerStandard = new HeaderPage();
@@ -28,6 +30,6 @@
       expect(headerStandard.navbar.isDisplayed()).toBe(false);
     });
 
-    headerCreator.includeTests(function() { return registration; }, function() { return subscription; });
+    headerCreator.includeTests(function() { return subscription; }, function() { return defaults.introduction });
   });
 })();

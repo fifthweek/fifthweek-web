@@ -1,7 +1,7 @@
 
 exports.config = {
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/creator-landing-page-page.spec.js'],
+  specs: ['e2e/spec/**/*.spec.js'],
   allScriptsTimeout: 30000,
   jasmineNodeOpts: {defaultTimeoutInterval: 5 * 60 * 1000}, // 5 Minutes
   capabilities: {
