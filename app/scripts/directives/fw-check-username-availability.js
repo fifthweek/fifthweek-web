@@ -1,14 +1,21 @@
-angular.module('webApp').directive('fwCheckUsernameAvailability', function($q, $timeout) {
+angular.module('webApp').directive('fwCheckUsernameAvailability', function($q, membershipStub, logService) {
   'use strict';
-
-  //
-  // TODO: Implement jasmine test once finished.
-  //
 
   return {
     require: 'ngModel',
     link: function(scope, elm, attrs, ctrl) {
+      var currentUsername;
+
       ctrl.$asyncValidators.username = function(modelValue) {
+
+        if (ctrl.$pristine) {
+          currentUsername = modelValue;
+          return $q.when();
+        }
+
+        if (modelValue === currentUsername) {
+          return $q.when();
+        }
 
         if (ctrl.$isEmpty(modelValue)) {
           // consider empty model valid
@@ -17,16 +24,19 @@ angular.module('webApp').directive('fwCheckUsernameAvailability', function($q, $
 
         var def = $q.defer();
 
-        $timeout(function() {
-          // Mock a delayed response
-          //if (usernames.indexOf(modelValue) === -1) {
-            // The username is available
+        membershipStub.getUsernameAvailability(modelValue)
+          .then(function() {
             def.resolve();
-          //} else {
-          //  def.reject();
-          //}
-
-        }, 100);
+          })
+          .catch(function(error) {
+            if (error instanceof ApiError && error.response.status === 404) {
+              def.reject();
+            }
+            else {
+              logService.error(error);
+              def.resolve();
+            }
+          });
 
         return def.promise;
       };
