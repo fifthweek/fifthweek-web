@@ -1,6 +1,6 @@
 'use strict';
 
-var Defaults = require('../defaults.js');
+var Defaults = require('../../../defaults.js');
 
 var defaults = new Defaults();
 

@@ -4,6 +4,7 @@ angular.module('webApp').directive('fwImage', function () {
   return {
     restrict: 'E',
     scope: {
+      id: '@',
       src: '@'
     },
     replace: true,
