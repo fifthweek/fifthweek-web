@@ -206,14 +206,66 @@ describe('fw-post-list-controller', function(){
       expect(postInteractions.openFile).toHaveBeenCalledWith('a');
     });
 
-    it('should forward the edit function to postInteractions', function(){
+    it('should forward the editPost function to postInteractions', function(){
       $scope.editPost('a');
-      expect(postInteractions.editPost).toHaveBeenCalledWith('a', true);
+      expect(postInteractions.editPost).toHaveBeenCalledWith('a');
     });
 
-    it('should forward the delete function to postInteractions', function(){
-      $scope.deletePost('a');
-      expect(postInteractions.deletePost).toHaveBeenCalledWith('a', true);
+    describe('when calling deletePost', function(){
+      beforeEach(function(){
+        $scope.model.posts = [
+          { postId: 'a' },
+          { postId: 'b' },
+          { postId: 'c' }
+        ];
+
+        postInteractions.deletePost.and.returnValue($q.when());
+      });
+
+      it('should forward the call to postInteractions', function(){
+        $scope.deletePost('b');
+        expect(postInteractions.deletePost).toHaveBeenCalledWith('b');
+      });
+
+      describe('when postInteractions succeeds', function(){
+        var success;
+        beforeEach(function(){
+          $scope.deletePost('b').then(function(){ success = true; });
+          $scope.$apply();
+        });
+
+        it('should remove the post from the model', function(){
+          expect($scope.model.posts).toEqual([
+            { postId: 'a' },
+            { postId: 'c' }
+          ]);
+        });
+
+        it('should return a successful promise', function(){
+          expect(success).toBe(true);
+        });
+      });
+
+      describe('when postInteractions fails', function(){
+        var error;
+        beforeEach(function(){
+          postInteractions.deletePost.and.returnValue($q.reject('error'));
+          $scope.deletePost('b').catch(function(e){ error = e; });
+          $scope.$apply();
+        });
+
+        it('should not remove the post from the model', function(){
+          expect($scope.model.posts).toEqual([
+            { postId: 'a' },
+            { postId: 'b' },
+            { postId: 'c' }
+          ]);
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
+      });
     });
   });
 });

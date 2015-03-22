@@ -54,11 +54,14 @@ angular.module('webApp').controller('fwPostListCtrl',
     };
 
     $scope.editPost = function(postId) {
-      postInteractions.editPost(postId, true);
+      postInteractions.editPost(postId);
     };
 
     $scope.deletePost = function(postId) {
-      postInteractions.deletePost(postId, true);
+      return postInteractions.deletePost(postId)
+        .then(function(){
+          _.remove(model.posts, { postId: postId });
+        });
     };
 
     this.initialize = function(){

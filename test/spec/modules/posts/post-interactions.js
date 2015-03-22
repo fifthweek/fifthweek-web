@@ -6,18 +6,18 @@ describe('post-interactions', function(){
   var target;
 
   var $modal;
-  var deleteVerification;
+  var postsStub;
   var accessSignatures;
 
   beforeEach(function() {
-    deleteVerification = jasmine.createSpyObj('deleteVerification', ['verifyDelete']);
+    postsStub = jasmine.createSpyObj('postsStub', ['deletePost']);
     accessSignatures = jasmine.createSpyObj('accessSignatures', ['getContainerAccessInformation']);
     $modal = jasmine.createSpyObj('$modal', ['open']);
 
     module('webApp');
 
     module(function($provide) {
-      $provide.value('deleteVerification', deleteVerification);
+      $provide.value('postsStub', postsStub);
       $provide.value('accessSignatures', accessSignatures);
       $provide.value('$modal', $modal);
     });
@@ -87,51 +87,33 @@ describe('post-interactions', function(){
   });
 
   describe('when deletePost is called', function(){
-    var deleteDelegate;
-    beforeEach(function(){
-      deleteDelegate = undefined;
-      deleteVerification.verifyDelete.and.callFake(function(performDelete){
-        deleteDelegate = performDelete;
+    describe('when deletePost succeeds', function(){
+      var success;
+      beforeEach(function(){
+        postsStub.deletePost.and.returnValue($q.when());
+        target.deletePost('postId').then(function() { success = true; });
+        $rootScope.$apply();
+      });
+
+      it('should delete the post on the API', function(){
+        expect(postsStub.deletePost).toHaveBeenCalledWith('postId');
+      });
+
+      it('should return a successful promise', function(){
+        expect(success).toBe(true);
       });
     });
 
-    describe('when isBacklog is false', function(){
+    describe('when deletePost fails', function(){
+      var error;
       beforeEach(function(){
-        target.deletePost('postId', false);
+        postsStub.deletePost.and.returnValue($q.reject('error'));
+        target.deletePost('postId').catch(function(e) { error = e; });
+        $rootScope.$apply();
       });
 
-      it('should call verifyDelete', function(){
-        expect(deleteVerification.verifyDelete).toHaveBeenCalledWith(jasmine.any(Function), 'Post deleted', 'News Feed', 'Post');
-      });
-
-      describe('when the delete delegate is called', function(){
-        beforeEach(function(){
-          deleteDelegate();
-        });
-
-        it('should delete the post', function(){
-          // TODO
-        });
-      });
-    });
-
-    describe('when isBacklog is true', function(){
-      beforeEach(function(){
-        target.deletePost('postId', true);
-      });
-
-      it('should call verifyDelete', function(){
-        expect(deleteVerification.verifyDelete).toHaveBeenCalledWith(jasmine.any(Function), 'Post deleted', 'Backlog', 'Post');
-      });
-
-      describe('when the delete delegate is called', function(){
-        beforeEach(function(){
-          deleteDelegate();
-        });
-
-        it('should delete the post', function(){
-          // TODO
-        });
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
       });
     });
   });

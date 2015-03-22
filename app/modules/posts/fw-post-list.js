@@ -18,6 +18,7 @@ angular.module('webApp')
     controller: 'fwPostListCtrl',
     link: function(scope, element, attrs, ctrls) {
 
+      scope.sourceName = _.startCase(scope.source);
       scope.sources = fwPostListConstants.sources;
 
       var controller = ctrls[0];

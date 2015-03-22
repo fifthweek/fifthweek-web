@@ -1,7 +1,7 @@
-angular.module('webApp').controller('deleteLinkCtrl', function ($q, $scope, deleteVerification) {
+angular.module('webApp').controller('deleteLinkCtrl', function ($scope, deleteVerification) {
   'use strict';
 
   $scope.verifyDelete = function() {
-    deleteVerification.verifyDelete($scope.delete, $scope.dataEventTitle, $scope.dataEventCategory, $scope.itemType, $scope.item);
+    deleteVerification.verifyDelete($scope.delete, $scope.eventTitle, $scope.eventCategory, $scope.itemType, $scope.item);
   };
 });

@@ -1,4 +1,4 @@
-angular.module('webApp').factory('postInteractions', function($modal, deleteVerification, accessSignatures) {
+angular.module('webApp').factory('postInteractions', function($q, $modal, accessSignatures, postsStub) {
     'use strict';
 
     var service = {};
@@ -39,16 +39,8 @@ angular.module('webApp').factory('postInteractions', function($modal, deleteVeri
       });
     };
 
-    service.deletePost = function(postId, isBacklog) {
-      var performDelete = function() {
-
-      };
-
-      deleteVerification.verifyDelete(
-        performDelete,
-        'Post deleted',
-        isBacklog ? 'Backlog' : 'News Feed',
-        'Post');
+    service.deletePost = function(postId) {
+        return postsStub.deletePost(postId);
     };
 
     return service;

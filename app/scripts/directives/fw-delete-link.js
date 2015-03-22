@@ -9,8 +9,8 @@ angular.module('webApp').directive('fwDeleteLink', function () {
       linkId: '@',
       itemType: '@',
       item: '=',
-      dataEventTitle: '@',
-      dataEventCategory: '@',
+      eventTitle: '@',
+      eventCategory: '@',
       delete: '&'
     },
     templateUrl: 'views/partials/delete-link.html'

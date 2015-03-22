@@ -4,7 +4,7 @@ angular.module('webApp').factory('deleteVerification', function($modal) {
     var service = {};
 
     service.verifyDelete = function(action, dataEventTitle, dataEventCategory, itemType, item) {
-      $modal.open({
+      var dialogInstance = $modal.open({
         controller: 'deleteVerificationCtrl',
         templateUrl: 'views/partials/delete-verification.html',
         size: item ? undefined : 'sm',
@@ -20,6 +20,8 @@ angular.module('webApp').factory('deleteVerification', function($modal) {
           }
         }
       });
+
+      return dialogInstance.result;
     };
 
     return service;
