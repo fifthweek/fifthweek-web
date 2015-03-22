@@ -104,17 +104,29 @@ $line-height-compensation: -5px;
     .text {
       @include post-padding;
 
-      p:first-child {
-        margin-top: $line-height-compensation;
-      }
-      p:last-child {
-        margin-bottom: $line-height-compensation;
-      }
-
       .content {
         @include clearfix;
         @media (max-width:$post-sm-max) {
           padding: ($post-margin-text-vertical-sm - $post-margin-sm) 0;
+        }
+
+        img {
+          margin: 12px 0;
+        }
+
+        p:first-child {
+          margin-top: $line-height-compensation;
+
+          img {
+            margin-top: $line-height-compensation * -1;
+          }
+        }
+        p:last-child {
+          margin-bottom: $line-height-compensation;
+
+          img {
+            margin-bottom: ($line-height-compensation * -1) + 1;
+          }
         }
       }
 
