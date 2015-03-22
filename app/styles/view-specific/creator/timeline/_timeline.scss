@@ -171,13 +171,14 @@ $header-height:108px;
         border:none;
         height: auto;
         padding: 10px 20px;
-        margin:-20px auto 0;
+        margin:0 auto;
         display: block;
         width:auto;
       }
       #subscribe-button {
-        color:#fff;
+        margin-top:-25px;
         padding: 13px 16px 15px 24px;
+        color:#fff;
         background-color: $landing-page-highlight;
         font-size: $p-font-size + 1;
 
@@ -195,8 +196,8 @@ $header-height:108px;
         }
       }
       #subscribed-button {
+        margin-top:-20px;
         text-transform: uppercase;
-
         font-weight: 200;
         letter-spacing: 1px;
         background-color: $brand-highlight;
@@ -214,7 +215,7 @@ $header-height:108px;
       .button-footer {
         @include light-text;
         text-align:center;
-        padding-top: 45px;
+        padding-top: 42px;
       }
       .subscribed {
         text-transform: uppercase;
