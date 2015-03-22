@@ -1,8 +1,8 @@
 'use strict';
 
-var ChannelListPage = require('./channel-list.page.js');
+var Defaults = require('../defaults.js');
 
-var channelListPage = new ChannelListPage();
+var defaults = new Defaults();
 
 var CollectionListPage = function() {};
 
@@ -23,7 +23,7 @@ CollectionListPage.prototype = Object.create({}, {
     return this.getCollection(name).element(by.tagName('button'));
   }},
   expectCollection: { value: function(collectionData) {
-    var expectedChannelName = collectionData.channelName === channelListPage.defaultChannelName ? 'Everyone' : collectionData.channelName;
+    var expectedChannelName = collectionData.channelName === defaults.channelName ? 'Everyone' : collectionData.channelName;
 
     var element = this.getCollection(collectionData.name);
 

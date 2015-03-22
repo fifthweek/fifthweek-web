@@ -1,10 +1,11 @@
 'use strict';
 
 var _ = require('lodash');
+var Defaults = require('../defaults.js');
 var TestKit = require('../test-kit.js');
-var ChannelListPage = require('./creators/subscription/channel-list.page.js');
+
+var defaults = new Defaults();
 var testKit = new TestKit();
-var channelListPage = new ChannelListPage();
 
 var defaultChannelSelectText = 'Share with everyone';
 
@@ -20,7 +21,7 @@ ChannelSelectInputPage.prototype = Object.create({},
     });
   }},
   mapToSelectText: { value: function(channelName) {
-    this.channelNameMap[channelName] = channelName === channelListPage.defaultChannelName ? defaultChannelSelectText : '"' + channelName + '" Only';
+    this.channelNameMap[channelName] = channelName === defaults.channelName ? defaultChannelSelectText : '"' + channelName + '" Only';
     return this.channelNameMap[channelName];
   }},
   mapToChannelName: { value: function(channelSelectText) {
@@ -33,7 +34,7 @@ ChannelSelectInputPage.prototype = Object.create({},
     return channelName;
   }},
   isDefaultChannel: { value: function(channelName) {
-    return channelName === channelListPage.defaultChannelName;
+    return channelName === defaults.channelName;
   }}
 });
 

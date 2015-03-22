@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var Defaults = require('../../../defaults.js');
 var TestKit = require('../../../test-kit.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
@@ -6,7 +7,6 @@ var ChannelSelectInputPage = require('../../../pages/channel-select-input.page.j
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js');
-var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
 var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
 var CollectionEditPage = require('../../../pages/creators/subscription/collection-edit.page.js');
 
@@ -19,6 +19,7 @@ describe('edit collection form', function() {
   var inputs;
   var releaseTimes = [];
 
+  var defaults = new Defaults();
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
   var collectionNameInputPage = new CollectionNameInputPage();
@@ -26,7 +27,6 @@ describe('edit collection form', function() {
   var sidebar = new SidebarPage();
   var header = new HeaderCustomizePage();
   var deleteConfirmationPage = new DeleteConfirmationPage();
-  var channelListPage = new ChannelListPage();
   var collectionListPage = new CollectionListPage();
   var page = new CollectionEditPage();
 
@@ -41,7 +41,7 @@ describe('edit collection form', function() {
     registration = context.registration;
     subscription = context.subscription;
 
-    var channelNames = [ channelListPage.defaultChannelName ];
+    var channelNames = [ defaults.channelName ];
     channelNames.push(commonWorkflows.createChannel().name);
     channelNames.push(commonWorkflows.createChannel().name);
 

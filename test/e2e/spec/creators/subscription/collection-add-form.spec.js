@@ -1,11 +1,11 @@
 var _ = require('lodash');
+var Defaults = require('../../../defaults.js');
 var TestKit = require('../../../test-kit.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
 var ChannelSelectInputPage = require('../../../pages/channel-select-input.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
 var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
 var CollectionAddPage = require('../../../pages/creators/subscription/collection-add.page.js');
 
@@ -17,13 +17,13 @@ describe('add collection form', function() {
   var defaultChannelSelectText = 'Share with everyone';
 
   var collectionCount = 0;
+  var defaults = new Defaults();
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
   var collectionNameInputPage = new CollectionNameInputPage();
   var channelSelectInputPage = new ChannelSelectInputPage();
   var sidebar = new SidebarPage();
   var header = new HeaderCustomizePage();
-  var channelListPage = new ChannelListPage();
   var collectionListPage = new CollectionListPage();
   var page = new CollectionAddPage();
 
@@ -41,7 +41,7 @@ describe('add collection form', function() {
     registration = context.registration;
     subscription = context.subscription;
 
-    var channelNames = [ channelListPage.defaultChannelName ];
+    var channelNames = [ defaults.channelName ];
     channelNames.push(commonWorkflows.createChannel().name);
     channelNames.push(commonWorkflows.createChannel().name);
 

@@ -1,6 +1,7 @@
 (function(){
   'use strict';
 
+  var Defaults = require('./defaults.js');
   var HomePage = require('./pages/home.page.js');
   var SignInPage = require('./pages/sign-in.page.js');
   var CreateSubscriptionPage = require('./pages/creators/subscription/create-subscription.page.js');
@@ -17,6 +18,7 @@
   var ComposeFilePage = require('./pages/creators/compose/compose-file.page.js');
   var ComposeImagePage = require('./pages/creators/compose/compose-image.page.js');
 
+  var defaults = new Defaults();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
   var createSubscriptionPage = new CreateSubscriptionPage();
@@ -64,14 +66,14 @@
       sidebar.subscriptionLink.click();
       headerCustomize.collectionsLink.click();
       collectionListPage.addCollectionButton.click();
-      return collectionAddPage.submitSuccessfully(channelNames || [channelListPage.defaultChannelName]);
+      return collectionAddPage.submitSuccessfully(channelNames || [defaults.channelName]);
     }},
 
     createNamedCollection: { value: function(channelName, newCollectionName) {
       sidebar.subscriptionLink.click();
       headerCustomize.collectionsLink.click();
       collectionListPage.addCollectionButton.click();
-      return collectionAddPage.submitCollectionSuccessfully(channelName || channelListPage.defaultChannelName, newCollectionName);
+      return collectionAddPage.submitCollectionSuccessfully(channelName || defaults.channelName, newCollectionName);
     }},
 
     postNoteNow: { value: function(channelName) {

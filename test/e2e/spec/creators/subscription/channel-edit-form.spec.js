@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var Defaults = require('../../../defaults.js');
 var TestKit = require('../../../test-kit.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var ChannelNameInputPage = require('../../../pages/channel-name-input.page.js');
@@ -18,6 +19,7 @@ describe('edit channel form', function() {
   var subscription;
   var defaultChannelCollectionCount = 1;
 
+  var defaults = new Defaults();
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
   var channelNameInputPage = new ChannelNameInputPage();
@@ -45,8 +47,8 @@ describe('edit channel form', function() {
       var inputs = isDefault ? _.reject(page.inputs, {name: 'hiddenCheckbox'}) : page.inputs;
       var determineCorrectInitialValues = function () {
         savedValues = {
-          nameTextBox: isDefault ? channelListPage.defaultChannelName : channel.name,
-          descriptionTextBox: isDefault ? channelListPage.defaultChannelDescription : channel.description,
+          nameTextBox: isDefault ? defaults.channelName : channel.name,
+          descriptionTextBox: isDefault ? defaults.channelDescription : channel.description,
           priceTextBox: isDefault ? subscription.basePrice : channel.price
         };
 

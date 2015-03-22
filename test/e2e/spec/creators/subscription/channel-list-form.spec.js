@@ -1,3 +1,4 @@
+var Defaults = require('../../../defaults.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
@@ -12,6 +13,7 @@ describe('channel list form', function() {
   var registration;
   var subscription;
 
+  var defaults = new Defaults();
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
   var header = new HeaderCustomizePage();
@@ -39,7 +41,7 @@ describe('channel list form', function() {
   });
 
   it('should allow default channel to be edited', function () {
-    expect(page.getEditChannelButton(page.defaultChannelName).isDisplayed()).toBe(true);
+    expect(page.getEditChannelButton(defaults.channelName).isDisplayed()).toBe(true);
   });
 
   var navigateToPage = function() {
@@ -50,9 +52,9 @@ describe('channel list form', function() {
   var expectBaseChannel = function() {
     expect(page.channels.count()).toBe(1);
     page.expectChannel({
-      name: page.defaultChannelName,
+      name: defaults.channelName,
       price: subscription.basePrice,
-      description: page.defaultChannelDescription
+      description: defaults.channelDescription
     });
   };
 });

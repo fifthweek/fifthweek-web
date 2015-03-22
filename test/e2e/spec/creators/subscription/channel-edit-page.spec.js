@@ -1,3 +1,4 @@
+var Defaults = require('../../../defaults.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
@@ -7,6 +8,7 @@ var ChannelListPage = require('../../../pages/creators/subscription/channel-list
 describe('edit channel page', function() {
   'use strict';
 
+  var defaults = new Defaults();
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
   var header = new HeaderCustomizePage();
@@ -17,12 +19,12 @@ describe('edit channel page', function() {
     commonWorkflows.createSubscription();
     sidebar.subscriptionLink.click();
     header.channelsLink.click();
-    channelListPage.getEditChannelButton(channelListPage.defaultChannelName).click();
+    channelListPage.getEditChannelButton(defaults.channelName).click();
   });
 
-  breadcrumb.includeTests(['Channels', channelListPage.defaultChannelName], function() {
+  breadcrumb.includeTests(['Channels', defaults.channelName], function() {
     header.channelsLink.click();
-    channelListPage.getEditChannelButton(channelListPage.defaultChannelName).click();
+    channelListPage.getEditChannelButton(defaults.channelName).click();
   });
 
   header.includeBasicTests(header.channelsLink);
