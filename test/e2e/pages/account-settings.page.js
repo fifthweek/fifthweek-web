@@ -8,7 +8,7 @@ AccountPage.prototype = Object.create({}, {
   profileImage: { get: function(){ return element(by.css('.available-image')); }},
   noProfileImage: { get: function(){ return element(by.css('.blank-area')); }},
   emailTextBox: { get: function(){ return element(by.model('model.accountSettings.email')); }},
-  usernameTextBox: { get: function(){ return element(by.model('model.accountSettings.username')); }},
+  usernameTextBox: { get: function(){ return element(by.id('model-accountSettings-username')); }},
   passwordTextBox: { get: function(){ return element(by.id('model-password')); }},
   saveChangesButton: { get: function(){ return element(by.id('save-changes-button')); }},
   savedSuccessfullyMessage: { get: function(){ return element(by.css('.alert-success')); }},
