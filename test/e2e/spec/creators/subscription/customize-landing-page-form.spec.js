@@ -5,6 +5,7 @@ var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var LandingPagePage = require('../../../pages/creators/subscription/customize-landing-page.page.js');
 var SubscriptionNameInputPage = require('../../../pages/subscription-name-input.page.js');
 var TaglineInputPage = require('../../../pages/tagline-input.page.js');
+var VideoUrlInputPage = require('../../../pages/video-url-input.page');
 
 describe('customize landing page form', function() {
   'use strict';
@@ -19,6 +20,7 @@ describe('customize landing page form', function() {
   var testKit = new TestKit();
   var subscriptionNameInputPage = new SubscriptionNameInputPage();
   var taglineInputPage = new TaglineInputPage();
+  var videoUrlInputPage = new VideoUrlInputPage();
 
   var validVideo = 'https://www.youtube.com/watch?v=vEQrP3bGX8k';
   var validDescription = 'In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content that could be distracting with placeholder text may allow viewers to focus on graphic aspects such as font, typography, and page layout. It also reduces the need for the designer to come up with meaningful text, as they can instead use hastily generated lorem ipsum text.';
@@ -237,47 +239,39 @@ describe('customize landing page form', function() {
         browser.refresh();
       });
 
-      testKit.includeHappyPaths(page, subscriptionNameInputPage, 'subscriptionNameTextBox');
-      testKit.includeHappyPaths(page, taglineInputPage, 'taglineTextBox');
+      describe('for "basics" section', function() {
+        beforeEach(function() {
+          page.basicsTabLink.click();
+        });
 
-      it('should allow symbols in introductions', function(){
-        page.basicsTabLink.click();
-        page.introductionTextBox.clear();
-        page.introductionTextBox.sendKeys(testKit.punctuation33);
+        testKit.includeHappyPaths(page, subscriptionNameInputPage, 'subscriptionNameTextBox');
+        testKit.includeHappyPaths(page, taglineInputPage, 'taglineTextBox');
+
+        it('should allow symbols in introductions', function(){
+          page.introductionTextBox.clear();
+          page.introductionTextBox.sendKeys(testKit.punctuation33);
+        });
       });
 
-      it('should allow symbols in descriptions', function(){
-        page.fullDescriptionTabLink.click();
-        page.descriptionTextBox.clear();
-        page.descriptionTextBox.sendKeys(testKit.punctuation33);
-      });
+      describe('for "full description" section', function() {
+        beforeEach(function() {
+          page.fullDescriptionTabLink.click();
+        });
 
-      it('should allow empty descriptions', function(){
-        page.fullDescriptionTabLink.click();
-        page.descriptionTextBox.clear();
-      });
+        testKit.includeHappyPaths(page, videoUrlInputPage, 'videoTextBox');
 
-      it('should allow YouTube video urls', function(){
-        page.fullDescriptionTabLink.click();
-        page.videoTextBox.clear();
-        page.videoTextBox.sendKeys('https://www.youtube.com/watch?v=OnqnCoPLdyw');
-      });
+        it('should allow symbols in descriptions', function(){
+          page.descriptionTextBox.clear();
+          page.descriptionTextBox.sendKeys(testKit.punctuation33);
+        });
 
-      it('should allow short YouTube video urls', function(){
-        page.fullDescriptionTabLink.click();
-        page.videoTextBox.clear();
-        page.videoTextBox.sendKeys('http://youtu.be/K3p0EFtJIn8');
-      });
+        it('should allow empty descriptions', function(){
+          page.descriptionTextBox.clear();
+        });
 
-      it('should allow Vimeo video urls', function(){
-        page.fullDescriptionTabLink.click();
-        page.videoTextBox.clear();
-        page.videoTextBox.sendKeys('https://vimeo.com/37328349');
-      });
-
-      it('should allow empty video urls', function(){
-        page.fullDescriptionTabLink.click();
-        page.videoTextBox.clear();
+        it('should allow empty video urls', function(){
+          page.videoTextBox.clear();
+        });
       });
     });
 
@@ -297,95 +291,68 @@ describe('customize landing page form', function() {
         expect(page.fullDescriptionSubmitButton.isEnabled()).toBe(true);
       };
 
-      beforeEach(function(){
-
-      });
-
       afterEach(function(){
         browser.refresh();
       });
 
-      testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, subscriptionNameInputPage, 'subscriptionNameTextBox');
-      testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, taglineInputPage, 'taglineTextBox');
+      describe('for "basics" section', function() {
+        beforeEach(function () {
+          page.basicsTabLink.click();
+        });
 
-      it('should not allow an empty introduction', function(){
-        page.basicsTabLink.click();
-        page.introductionTextBox.clear();
+        testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, subscriptionNameInputPage, 'subscriptionNameTextBox');
+        testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, taglineInputPage, 'taglineTextBox');
 
-        page.basicsSubmitButton.click();
+        it('should not allow an empty introduction', function(){
+          page.introductionTextBox.clear();
 
-        testKit.assertSingleValidationMessage(page.helpMessages,
-          'An introduction is required.');
+          page.basicsSubmitButton.click();
 
-        verifyInvalidMessage();
+          testKit.assertSingleValidationMessage(page.helpMessages,
+            'An introduction is required.');
+
+          verifyInvalidMessage();
+        });
+
+        it('should not allow an introduction less than 15 characters', function(){
+          page.introductionTextBox.clear();
+          var underSizedValue = new Array(15).join( 'a' );
+          page.introductionTextBox.sendKeys(underSizedValue);
+
+          page.basicsSubmitButton.click();
+
+          testKit.assertSingleValidationMessage(page.helpMessages,
+            'Must be at least 15 characters.');
+
+          verifyInvalidMessage();
+        });
+
+        it('should not allow an introduction more than 250 characters', function(){
+          page.introductionTextBox.clear();
+          var overSizedValue = new Array(252).join( 'a' );
+          page.introductionTextBox.sendKeys(overSizedValue);
+
+          testKit.assertMaxLength(page.helpMessages, page.introductionTextBox, overSizedValue, 250);
+        });
       });
 
-      it('should not allow an introduction less than 15 characters', function(){
-        page.basicsTabLink.click();
-        page.introductionTextBox.clear();
-        var underSizedValue = new Array(15).join( 'a' );
-        page.introductionTextBox.sendKeys(underSizedValue);
+      describe('for "full description" section', function() {
+        beforeEach(function() {
+          page.fullDescriptionTabLink.click();
+        });
 
-        page.basicsSubmitButton.click();
+        testKit.includeSadPaths(page, page.fullDescriptionSubmitButton, page.helpMessages, videoUrlInputPage, 'videoTextBox', null, true);
 
-        testKit.assertSingleValidationMessage(page.helpMessages,
-          'Must be at least 15 characters.');
+        it('should not allow descriptions over 2000 characters', function(){
+          page.fullDescriptionTabLink.click();
+          page.descriptionTextBox.clear();
 
-        verifyInvalidMessage();
-      });
+          var overSizedValue = new Array(2002).join( 'a' );
+          page.descriptionTextBox.sendKeys(overSizedValue);
 
-      it('should not allow an introduction more than 250 characters', function(){
-        page.basicsTabLink.click();
-        page.introductionTextBox.clear();
-        var overSizedValue = new Array(252).join( 'a' );
-        page.introductionTextBox.sendKeys(overSizedValue);
-
-        testKit.assertMaxLength(page.helpMessages, page.introductionTextBox, overSizedValue, 250);
-      });
-
-      it('should not allow invalid urls', function(){
-        page.fullDescriptionTabLink.click();
-        page.videoTextBox.clear();
-        page.videoTextBox.sendKeys('abc');
-
-        page.fullDescriptionSubmitButton.click();
-
-        expect(page.videoTextBox.getAttribute('class')).toContain('ng-invalid');
-
-        verifyInvalidMessage();
-      });
-
-      it('should not allow urls over 100 characters', function(){
-        page.fullDescriptionTabLink.click();
-        page.descriptionTextBox.clear();
-
-        var overSizedValue = 'http://youtu.be/K3p0EFtJIn8' + new Array(102).join( 'a' );
-        page.videoTextBox.sendKeys(overSizedValue);
-
-        testKit.assertMaxLength(page.helpMessages, page.videoTextBox, overSizedValue, 100);
-      });
-
-      it('should not allow random urls', function(){
-        page.fullDescriptionTabLink.click();
-        page.videoTextBox.clear();
-        page.videoTextBox.sendKeys('http://en.wikipedia.org/wiki/Lorem_ipsum');
-
-        page.fullDescriptionSubmitButton.click();
-
-        expect(page.fullDescriptionErrorMessage.isDisplayed()).toBe(true);
-        expect(page.fullDescriptionErrorMessage.getText()).toBe('Must be from Vimeo or YouTube');
-      });
-
-      it('should not allow descriptions over 2000 characters', function(){
-        page.fullDescriptionTabLink.click();
-        page.descriptionTextBox.clear();
-
-        var overSizedValue = new Array(2002).join( 'a' );
-        page.descriptionTextBox.sendKeys(overSizedValue);
-
-        testKit.assertMaxLength(page.helpMessages, page.descriptionTextBox, overSizedValue, 2000);
+          testKit.assertMaxLength(page.helpMessages, page.descriptionTextBox, overSizedValue, 2000);
+        });
       });
     });
   });
-
 });

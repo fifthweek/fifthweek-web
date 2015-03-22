@@ -12,6 +12,7 @@
                    ng-model="model.settings.video"
                    ng-maxlength="100"
                    maxlength="100"
+                   ng-pattern="/^https?:\/\/(www\.)?((youtube\.com)|(youtu\.be)|(vimeo\.com))\/.*$/"
                    placeholder="http://" />
             <p class="light-grey">
               <small>Creators with videos have a much higher success rate. <br/>
@@ -19,6 +20,7 @@
             </p>
           </div>
           <div class="col-xs-12">
+            <p fw-form-input-invalid-p="pattern">YouTube and Vimeo videos only. Must start with 'http://' or 'https://'.</p>
             <p fw-form-input-invalid-p="maxlength">Allowed 100 characters at most.</p>
           </div>
         </div>
