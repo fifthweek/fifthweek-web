@@ -265,6 +265,7 @@ $header-height:108px;
         position:absolute;
         background: #fff;
         padding:0 8px;
+        margin:0;
         bottom:42px;
         right:$post-margin-sm - 8px;
         font-weight: bold;
@@ -272,7 +273,7 @@ $header-height:108px;
         color: $grey-light-4;
         @media (min-width:$post-lg-min) {
           right:$post-margin-lg - 8px;
-          bottom:46px;
+          bottom:66px;
         }
 
         span {
