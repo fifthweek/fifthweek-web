@@ -4,7 +4,7 @@
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
   var PostPage = require('../../pages/post.page.js');
-  var CreatorTimelinePage = require('../../pages/creators/creator-timeline.page.js');
+  var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page§.page.js');
 
   describe('creator-timeline form', function() {
 
@@ -17,7 +17,7 @@
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
     var post = new PostPage();
-    var page = new CreatorTimelinePage();
+    var creatorLandingPagePage = new CreatorLandingPagePage();
 
     it('should run once before all', function() {
       var context = commonWorkflows.createSubscription();
@@ -99,12 +99,12 @@
     });
 
     var navigateToSite = function() {
-      page.fifthweekLink.click();
+      creatorLandingPagePage.fifthweekLink.click();
     };
 
     var navigateToPage = function() {
       sidebar.usernameLink.click();
-      page.subscribeButton.click();
+      creatorLandingPagePage.subscribeButton.click();
     };
   });
 })();

@@ -90,22 +90,22 @@
               </div>
             </div>
 
-            <div ng-if="model.videoUrl || model.subscription.description">
+            <div id="more-info" ng-if="model.videoUrl || model.subscription.description">
               <h5><span>More Info</span></h5>
               <div class="post non-image-post" ng-if="!model.videoUrl">
                 <div class="text">
-                  <div class="content">
+                  <div id="full-description" class="content">
                     <md ng-model="model.subscription.description"></md>
                   </div>
                 </div>
               </div>
               <div class="post image-post" ng-if="model.videoUrl">
-                <div class="video">
+                <div id="video" class="video">
                   <embed-video data-ng-href="{{model.videoUrl}}" controls=0></embed-video>
                   <div ng-include="'../../views/partials/video-radius-fix.html'"></div>
                 </div>
                 <div class="text">
-                  <div class="content">
+                  <div id="full-description" class="content">
                     <md ng-model="model.subscription.description" ng-if="model.subscription.description"></md>
                     <p ng-if="!model.subscription.description">More of your favourites each and every week -- for less than a coffee!</p>
                   </div>

@@ -6,7 +6,7 @@
   var SidebarPage = require('../../pages/sidebar.page.js');
   var HeaderPage = require('../../pages/header.page.js');
   var HeaderCreatorPage = require('../../pages/header-creator.page.js');
-  var CreatorTimelinePage = require('../../pages/creators/creator-timeline.page.js');
+  var CreatorLandingPagePage = require('../../pages/creators/creator-timeline-page.page.js');
 
   describe('creator-timeline page', function() {
 
@@ -18,14 +18,14 @@
     var sidebar = new SidebarPage();
     var headerStandard = new HeaderPage();
     var headerCreator = new HeaderCreatorPage();
-    var page = new CreatorTimelinePage();
+    var creatorLandingPagePage = new CreatorLandingPagePage();
 
     it('should not contain a sidebar or header', function() {
       var context = commonWorkflows.createSubscription();
       registration = context.registration;
       subscription = context.subscription;
       sidebar.usernameLink.click();
-      page.subscribeButton.click();
+      creatorLandingPagePage.subscribeButton.click();
       expect(sidebar.sidebar.isDisplayed()).toBe(false);
       expect(headerStandard.navbar.isDisplayed()).toBe(false);
     });
