@@ -40,8 +40,8 @@ ChannelAddPage.prototype = Object.create({}, {
   helpMessages: { get: function () { return element.all(by.css('#createChannelForm .help-block')); }},
   createButton: { get: function () { return element(by.id('create-channel-button')); }},
   cancelButton: { get: function () { return element(by.id('cancel-button')); }},
-  submitSuccessfully: { value: function() {
-    var formValues = testKit.setFormValues(this, this.inputs);
+  submitSuccessfully: { value: function(values) {
+    var formValues = testKit.setFormValues(this, this.inputs, values);
     this.createButton.click();
     return {
       name: formValues.nameTextBox,

@@ -55,11 +55,25 @@
       signInPage.signInSuccessfully(registration.username, registration.password);
     }},
 
-    createChannel: { value: function() {
+    createChannel: { value: function(values) {
       sidebar.subscriptionLink.click();
       headerCustomize.channelsLink.click();
       channelListPage.addChannelButton.click();
-      return channelAddPage.submitSuccessfully();
+      return channelAddPage.submitSuccessfully(values);
+    }},
+
+    createHiddenAndVisibleChannels: { value: function() {
+      var result = {
+        visible: [],
+        hidden: []
+      };
+
+      result.hidden.push(this.createChannel({hiddenCheckbox: true}));
+      result.hidden.push(this.createChannel({hiddenCheckbox: true}));
+      result.visible.push(this.createChannel({hiddenCheckbox: false}));
+      result.visible.push(this.createChannel({hiddenCheckbox: false}));
+
+      return result;
     }},
 
     createCollection: { value: function(channelNames) {

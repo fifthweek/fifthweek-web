@@ -1,6 +1,7 @@
 (function(){
   'use strict';
 
+  var _ = require('lodash');
   var Defaults = require('../../defaults.js');
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
@@ -27,7 +28,7 @@
       subscription = context.subscription;
       registration = context.registration;
 
-      sidebar.usernameLink.click();
+      navigateToPage();
       expect(sidebar.sidebar.isDisplayed()).toBe(false);
       expect(headerStandard.navbar.isDisplayed()).toBe(false);
     });
@@ -39,7 +40,7 @@
     describe('after signing back in', function() {
       it('should run once before all', function() {
         commonWorkflows.reSignIn(registration);
-        sidebar.usernameLink.click();
+        navigateToPage();
       });
 
       headerCreator.includeTests(function() { return subscription; }, function() { return defaults.introduction });
@@ -61,7 +62,7 @@
         customizeLandingPagePage.descriptionTextBox.clear();
         customizeLandingPagePage.descriptionTextBox.sendKeys(fullDescription);
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
-        sidebar.usernameLink.click();
+        navigateToPage();
 
         expect(page.moreInfo.isPresent()).toBe(true);
         expect(page.video.isPresent()).toBe(false);
@@ -76,7 +77,7 @@
         customizeLandingPagePage.videoTextBox.clear();
         customizeLandingPagePage.videoTextBox.sendKeys('https://' + videoUrlDomain + '/' + videoUrlId);
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
-        sidebar.usernameLink.click();
+        navigateToPage();
 
         expect(page.moreInfo.isPresent()).toBe(true);
         expect(page.video.isPresent()).toBe(true);
@@ -90,7 +91,7 @@
         customizeLandingPagePage.fullDescriptionTabLink.click();
         customizeLandingPagePage.descriptionTextBox.sendKeys(fullDescription);
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
-        sidebar.usernameLink.click();
+        navigateToPage();
 
         expect(page.moreInfo.isPresent()).toBe(true);
         expect(page.video.isPresent()).toBe(true);
@@ -100,18 +101,46 @@
       });
     });
 
-    it('should display the default channel', function() {
-      expect(page.channelCount).toBe(1);
+    describe('channel list', function() {
+      var visibleChannels = [];
 
-      var defaultChannel = page.getChannel(0);
-      expect(defaultChannel.getText()).toContain(defaults.channelName);
-      expect(defaultChannel.getText()).toContain(defaults.channelDescription);
-      expect(defaultChannel.getText()).toContain('$' + subscription.basePrice);
+      it('should display the default channel', function() {
+        visibleChannels.push({
+          name: defaults.channelName,
+            description: defaults.channelDescription,
+          price: subscription.basePrice
+        });
+
+        expectVisibleChannels();
+      });
+
+      it('should display other channels below the default channel', function() {
+        createHiddenAndVisibleChannels();
+        expectVisibleChannels();
+      });
+
+      var expectVisibleChannels = function() {
+        expect(page.channelCount).toBe(visibleChannels.length);
+        for (var i = 0; i < visibleChannels.length; i++) {
+          var defaultChannel = page.getChannel(i);
+          expect(defaultChannel.getText()).toContain(visibleChannels[i].name);
+          expect(defaultChannel.getText()).toContain(visibleChannels[i].description);
+          expect(defaultChannel.getText()).toContain('$' + visibleChannels[i].price);
+        }
+      };
+
+      var createHiddenAndVisibleChannels = function() {
+        page.fifthweekLink.click();
+        var newVisibleChannels = commonWorkflows.createHiddenAndVisibleChannels().visible;
+        var newVisibleChannelsSorted = _.sortBy(newVisibleChannels, 'name');
+        visibleChannels = visibleChannels.concat(newVisibleChannelsSorted);
+        navigateToPage();
+      };
     });
 
-    it('should display other channels below the default channel', function() {
-
-    });
+    var navigateToPage = function() {
+      sidebar.usernameLink.click();
+    };
 
     var describeTotalPrice = function(elementName) {
       describe(elementName, function() {
