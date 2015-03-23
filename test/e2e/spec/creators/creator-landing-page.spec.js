@@ -7,8 +7,9 @@
   var HeaderPage = require('../../pages/header.page.js');
   var HeaderCreatorPage = require('../../pages/header-creator.page.js');
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
+  var CustomizeLandingPagePage = require('../../pages/creators/subscription/customize-landing-page.page.js');
 
-  describe('creator landing page', function() {
+  ddescribe('creator landing page', function() {
 
     var subscription;
     var registration;
@@ -18,6 +19,7 @@
     var sidebar = new SidebarPage();
     var headerStandard = new HeaderPage();
     var headerCreator = new HeaderCreatorPage();
+    var customizeLandingPagePage = new CustomizeLandingPagePage();
     var page = new CreatorLandingPagePage();
 
     it('should not contain the standard sidebar or header', function() {
@@ -44,20 +46,57 @@
     });
 
     describe('more info', function() {
+      var fullDescription = customizeLandingPagePage.newFullDescription();
+      var videoUrlDomain = 'vimeo.com';
+      var videoUrlId = '114229222';
+
       it('should be hidden in absence of a full description and video', function() {
         expect(page.moreInfo.isPresent()).toBe(false);
       });
 
       it('should display full description when provided', function() {
+        page.fifthweekLink.click();
+        sidebar.subscriptionLink.click();
+        customizeLandingPagePage.fullDescriptionTabLink.click();
+        customizeLandingPagePage.descriptionTextBox.clear();
+        customizeLandingPagePage.descriptionTextBox.sendKeys(fullDescription);
+        customizeLandingPagePage.fullDescriptionSubmitButton.click();
+        sidebar.usernameLink.click();
 
+        expect(page.moreInfo.isPresent()).toBe(true);
+        expect(page.video.isPresent()).toBe(false);
+        expect(page.fullDescription.getText()).toBe(fullDescription);
       });
 
       it('should display video when provided', function() {
+        page.fifthweekLink.click();
+        sidebar.subscriptionLink.click();
+        customizeLandingPagePage.fullDescriptionTabLink.click();
+        customizeLandingPagePage.descriptionTextBox.clear();
+        customizeLandingPagePage.videoTextBox.clear();
+        customizeLandingPagePage.videoTextBox.sendKeys('https://' + videoUrlDomain + '/' + videoUrlId);
+        customizeLandingPagePage.fullDescriptionSubmitButton.click();
+        sidebar.usernameLink.click();
 
+        expect(page.moreInfo.isPresent()).toBe(true);
+        expect(page.video.isPresent()).toBe(true);
+        expect(page.video.getAttribute('src')).toContain(videoUrlDomain);
+        expect(page.video.getAttribute('src')).toContain(videoUrlId);
       });
 
       it('should display full description and video when both are provided', function() {
+        page.fifthweekLink.click();
+        sidebar.subscriptionLink.click();
+        customizeLandingPagePage.fullDescriptionTabLink.click();
+        customizeLandingPagePage.descriptionTextBox.sendKeys(fullDescription);
+        customizeLandingPagePage.fullDescriptionSubmitButton.click();
+        sidebar.usernameLink.click();
 
+        expect(page.moreInfo.isPresent()).toBe(true);
+        expect(page.video.isPresent()).toBe(true);
+        expect(page.video.getAttribute('src')).toContain(videoUrlDomain);
+        expect(page.video.getAttribute('src')).toContain(videoUrlId);
+        expect(page.fullDescription.getText()).toBe(fullDescription);
       });
     });
 

@@ -3,6 +3,10 @@
 var CustomizeLandingPagePage = function() {};
 
 CustomizeLandingPagePage.prototype = Object.create({}, {
+  newFullDescription: { value: function() {
+    return 'Full Description #' + Math.round(Math.random() * 100000);
+  }},
+
   basicsTab: { get: function() { return element(by.css('.nav-tabs li:nth-child(1)')); }},
   basicsTabLink: { get: function() { return element(by.css('.nav-tabs li:nth-child(1) a')); }},
   headerImageTab: { get: function() { return element(by.css('.nav-tabs li:nth-child(2)')); }},
