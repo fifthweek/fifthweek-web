@@ -4,7 +4,7 @@
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
   var PostPage = require('../../pages/post.page.js');
-  var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page§.page.js');
+  var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
 
   describe('creator-timeline form', function() {
 

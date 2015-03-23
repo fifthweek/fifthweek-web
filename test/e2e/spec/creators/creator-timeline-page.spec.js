@@ -6,7 +6,7 @@
   var SidebarPage = require('../../pages/sidebar.page.js');
   var HeaderPage = require('../../pages/header.page.js');
   var HeaderCreatorPage = require('../../pages/header-creator.page.js');
-  var CreatorLandingPagePage = require('../../pages/creators/creator-timeline-page.page.js');
+  var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
 
   describe('creator-timeline page', function() {
 
