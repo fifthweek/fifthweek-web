@@ -14,6 +14,7 @@
 
     var subscription;
     var registration;
+    var visibleChannels = [];
 
     var defaults = new Defaults();
     var commonWorkflows = new CommonWorkflows();
@@ -22,6 +23,10 @@
     var headerCreator = new HeaderCreatorPage();
     var customizeLandingPagePage = new CustomizeLandingPagePage();
     var page = new CreatorLandingPagePage();
+
+    var navigateToPage = function() {
+      sidebar.usernameLink.click();
+    };
 
     it('should not contain the standard sidebar or header', function() {
       var context = commonWorkflows.createSubscription();
@@ -102,8 +107,6 @@
     });
 
     describe('channel list', function() {
-      var visibleChannels = [];
-
       it('should display the default channel', function() {
         visibleChannels.push({
           name: defaults.channelName,
@@ -138,32 +141,41 @@
       };
     });
 
-    var navigateToPage = function() {
-      sidebar.usernameLink.click();
-    };
+    describe('total price', function() {
+      var priceSum;
 
-    var describeTotalPrice = function(elementName) {
-      describe(elementName, function() {
-        it('should contain the default channel price by default', function() {
-
-        });
-
-        it('should always include the default channel price (it may not be deselected)', function() {
-
-        });
-
-        it('should sum all selected channels as they are selected', function() {
-
-        });
-
-        it('should sum all selected channels as they are deselected', function() {
-
-        });
+      it('should equal the default channel price by default', function() {
+        expectPrice(subscription.basePrice);
       });
-    };
 
-    //describeTotalPrice('subscribe button', subscribeButton);
-    //describeTotalPrice('channel list total', channelListTotal);
+      it('should always include the default channel price (it may not be deselected)', function() {
+        page.getChannelPrice(0).click();
+        expectPrice(subscription.basePrice);
+      });
+
+      it('should sum all selected channels as they are selected', function() {
+        priceSum = subscription.basePrice;
+        for (var i = 1; i < visibleChannels.length; i++) {
+          priceSum = (parseFloat(priceSum) + parseFloat(visibleChannels[i].price)).toFixed(2);
+          page.getChannelPrice(i).click();
+          expectPrice(priceSum);
+        }
+      });
+
+      it('should sum all selected channels as they are deselected', function() {
+        for (var i = 1; i < visibleChannels.length; i++) {
+          priceSum = (parseFloat(priceSum) - parseFloat(visibleChannels[i].price)).toFixed(2);
+          page.getChannelPrice(i).click();
+          expectPrice(priceSum);
+        }
+      });
+
+      var expectPrice = function(price) {
+        expect(page.subscribeButton.getText()).toContain('$' + price);
+        expect(page.channelListTotalPrice.getText()).toContain('$' + price);
+      }
+    });
+
     //
     //var describeSubscribeButton = function(elementName) {
     //  describe(elementName, function() {
