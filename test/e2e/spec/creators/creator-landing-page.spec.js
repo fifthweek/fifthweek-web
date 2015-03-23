@@ -7,10 +7,11 @@
   var SidebarPage = require('../../pages/sidebar.page.js');
   var HeaderPage = require('../../pages/header.page.js');
   var HeaderCreatorPage = require('../../pages/header-creator.page.js');
-  var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
   var CustomizeLandingPagePage = require('../../pages/creators/subscription/customize-landing-page.page.js');
+  var CreatorTimelinePage = require('../../pages/creators/creator-timeline.page.js');
+  var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
 
-  ddescribe('creator landing page', function() {
+  describe('creator landing page', function() {
 
     var subscription;
     var registration;
@@ -22,6 +23,7 @@
     var headerStandard = new HeaderPage();
     var headerCreator = new HeaderCreatorPage();
     var customizeLandingPagePage = new CustomizeLandingPagePage();
+    var creatorTimelinePage = new CreatorTimelinePage();
     var page = new CreatorLandingPagePage();
 
     var navigateToPage = function() {
@@ -176,16 +178,22 @@
       }
     });
 
-    //
-    //var describeSubscribeButton = function(elementName) {
-    //  describe(elementName, function() {
-    //    it('should display the timeline when clicked', function() {
-    //
-    //    });
-    //  });
-    //};
-    //
-    //describeSubscribeButton('subscribe button', subscribeButton);
-    //describeSubscribeButton('channel list subscribe link', channelListSubscribeLink);
+    describe('subscribing', function() {
+      afterEach(function() {
+        // The timeline is tested as part of another spec. We just want to ensure that all routes to subscribe
+        // take the user to the timeline.
+        expect(creatorTimelinePage.subscribedButton.isPresent()).toBe(true);
+        page.fifthweekLink.click();
+        navigateToPage();
+      });
+
+      it('should be possible via the "subscribe" button', function() {
+        page.subscribeButton.click();
+      });
+
+      it('should be possible via the "subscribe now" link', function() {
+        page.channelListSubscribeLink.click();
+      });
+    });
   });
 })();

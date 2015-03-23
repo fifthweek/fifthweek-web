@@ -11,7 +11,8 @@ CreatorLandingPagePage.prototype = Object.create({}, {
   getChannel: { value: function (index) { return element(by.id('channel-' + index)); }},
   getChannelPrice: { value: function (index) { return element(by.id('channel-price-' + index)); }},
   channelCount: { get: function () { return element.all(by.css('.channels .channel')).count(); }},
-  channelListTotalPrice: { get: function() { return element(by.css('.subscribe-now-total')); }}
+  channelListTotalPrice: { get: function() { return element(by.css('.subscribe-now-total')); }},
+  channelListSubscribeLink: { get: function() { return element(by.id('subscribe-link')); }}
 });
 
 module.exports = CreatorLandingPagePage;
