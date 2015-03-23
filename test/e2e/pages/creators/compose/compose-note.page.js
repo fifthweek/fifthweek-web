@@ -26,26 +26,37 @@
 
     populateContent: { value: function(channelName){
       var date = new Date();
+      var noteText = 'Note on ' + date.toISOString();
       this.contentTextBox.clear();
-      this.contentTextBox.sendKeys('Note on ' + date.toISOString());
+      this.contentTextBox.sendKeys(noteText);
 
       if(channelName){
         element(by.cssContainingText('#model-input-selected-channel option', channelName)).click();
       }
+
+      return {
+        noteText: noteText,
+        channelName: channelName
+      }
     }},
 
     postNow: { value: function(channelName) {
-      this.populateContent(channelName);
+      var result = this.populateContent(channelName);
 
       this.postNowButton.click();
+
+      return result;
     }},
 
     postOnDate: { value: function(channelName) {
-      this.populateContent(channelName);
+      var result = this.populateContent(channelName);
 
       this.postLaterButton.click();
 
       dateTimePickerPage.datepickerButton.click();
+      dateTimePickerPage.datepickerNextMonthButton.click();
+      dateTimePickerPage.datepickerNextMonthButton.click();
+      dateTimePickerPage.datepickerNextMonthButton.click();
       dateTimePickerPage.datepickerNextMonthButton.click();
       dateTimePickerPage.datepicker15Button.click();
 
@@ -54,7 +65,12 @@
       dateTimePickerPage.timeMinutesTextBox.clear();
       dateTimePickerPage.timeMinutesTextBox.sendKeys('37');
 
+      result.dayOfMonth = '15';
+      result.timeOfDay = '13:17';
+
       this.postToBacklogButton.click();
+
+      return result;
     }}
   });
 

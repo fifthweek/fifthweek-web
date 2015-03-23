@@ -13,9 +13,70 @@ DeleteConfirmationPage.prototype = Object.create({}, {
   deleteHintText: { get: function () { return element(by.id('delete-hint')); }},
   confirmationTextBox: { get: function () { return element(by.id('deletion-confirmation-text')); }},
   deleteVerifiedButton: { get: function () { return element(by.id('delete-item-verified-button')); }},
-  deleteUnverifiedButton: { get: function () { return element(by.id('delete-item-verified-button')); }},
+  deleteUnverifiedButton: { get: function () { return element(by.id('delete-item-unverified-button')); }},
   crossButton: { get: function () { return element(by.id('modal-cross-button')); }},
   cancelButton: { get: function () { return element(by.id('modal-cancel-button')); }},
+  describeDeletingWithoutVerification: { value: function(itemType, displayModal, verifyItemNotDeleted, verifyItemDeleted) {
+    var self = this;
+    var itemTypeLower = itemType.toLowerCase();
+
+    describe('the modal for deleting a ' + itemTypeLower, function() {
+      it('should run once before all', function () {
+        displayModal();
+      });
+
+      it('should have the title "Delete ' + itemType + '"', function() {
+        expect(self.title.getText()).toBe('Delete ' + itemType);
+      });
+
+      _.forEach([
+        {
+          name: 'cancel button',
+          action: function() {
+            self.cancelButton.click();
+          }
+        },
+        {
+          name: 'X button',
+          action: function() {
+            self.crossButton.click();
+          }
+        },
+        {
+          name: 'background',
+          action: function() {
+            element(by.css('body > .modal')).click();
+          }
+        }
+      ], function(cancelOperation) {
+        describe('clicking the ' + cancelOperation.name, function() {
+          it('should cancel the operation', function () {
+            cancelOperation.action();
+            expect(self.modals.count()).toBe(0);
+            displayModal();
+          });
+        });
+      });
+
+      describe('the delete button', function() {
+        it('should be enabled', function() {
+          expect(self.deleteUnverifiedButton.isEnabled()).toBe(true);
+          self.crossButton.click();
+        });
+      });
+
+      it('should not have deleted the item up to this point', function() {
+        verifyItemNotDeleted();
+        displayModal();
+      });
+
+      it('should delete the ' + itemTypeLower, function() {
+        self.deleteUnverifiedButton.click();
+        browser.waitForAngular();
+        verifyItemDeleted();
+      });
+    });
+  }},
   describeDeletingWithVerification: { value: function(itemType, getItemName, displayModal, verifyItemNotDeleted, verifyItemDeleted) {
     var self = this;
     var itemTypeLower = itemType.toLowerCase();

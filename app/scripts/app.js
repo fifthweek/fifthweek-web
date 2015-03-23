@@ -34,7 +34,7 @@ angular
     longDateFormat: 'EEEE, MMMM d, yyyy',
     longDateTimeFormat: 'EEEE, MMMM d \'at\' HH:mm \'UTC\'',
     newsfeedDateFormat: 'MMM d',
-    dayGroupingDateFormat: 'dddd, MMM D'
+    dayGroupingDateFormat: 'EEEE, MMM d'
   })
   .config(function(snapRemoteProvider) {
     snapRemoteProvider. globalOptions = {

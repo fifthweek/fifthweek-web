@@ -5,7 +5,7 @@ angular.module('webApp')
       creatorTimeline: 'creator-timeline'
     }
   })
-  .directive('fwPostList', function (fwPostListConstants) {
+  .directive('fwPostList', function (fwPostListConstants, fifthweekConstants) {
   'use strict';
 
   return {
@@ -18,6 +18,7 @@ angular.module('webApp')
     controller: 'fwPostListCtrl',
     link: function(scope, element, attrs, ctrls) {
 
+      scope.fifthweekConstants = fifthweekConstants;
       scope.sourceName = _.startCase(scope.source);
       scope.sources = fwPostListConstants.sources;
 

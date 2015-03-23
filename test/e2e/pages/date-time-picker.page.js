@@ -14,6 +14,7 @@ DateTimePickerPage.prototype = Object.create({},
     datepicker15Button: { get: function() { return element(by.cssContainingText(this.restrictor + '.fw-date-time-picker td button', '15')); }},
     todayButton: { get: function() { return element(by.css(this.restrictor + '.fw-date-time-picker button[ng-click="select(\'today\')"]')); }},
     clearButton: { get: function() { return element(by.css(this.restrictor + '.fw-date-time-picker button[ng-click="select(null)"]')); }},
+    dateTextBox: { get: function() { return element(by.css(this.restrictor + '.fw-date-time-picker input[ng-model="date"]')); }},
     timeHoursTextBox: { get: function() { return element(by.css(this.restrictor + '.fw-date-time-picker input[ng-change="updateHours()"]')); }},
     timeMinutesTextBox: { get: function() { return element(by.css(this.restrictor + '.fw-date-time-picker input[ng-change="updateMinutes()"]')); }},
 

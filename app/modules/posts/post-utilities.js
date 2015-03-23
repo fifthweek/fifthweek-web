@@ -1,5 +1,5 @@
 angular.module('webApp').factory('postUtilities',
-  function($q, $state, states, accessSignatures, fifthweekConstants) {
+  function($q, $state, states, accessSignatures) {
     'use strict';
 
     var service = {};
@@ -57,9 +57,8 @@ angular.module('webApp').factory('postUtilities',
           $state.go(states.creators.backlog.queues.reorder.name, {id: post.collectionId});
         };
       }
-      else{
-        processPostDayGrouping(post, previousPost);
-      }
+
+      processPostDayGrouping(post, previousPost);
 
       updatePostUris(post, accessMap);
     };
@@ -74,10 +73,10 @@ angular.module('webApp').factory('postUtilities',
       }
 
       if(addGrouping){
-        post.dayGrouping = post.moment.format(fifthweekConstants.dayGroupingDateFormat);
+        post.dayGrouping = true;
       }
       else{
-        delete post.dayGrouping;
+        post.dayGrouping = false;
       }
     };
 

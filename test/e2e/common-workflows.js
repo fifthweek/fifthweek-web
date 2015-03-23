@@ -93,49 +93,49 @@
     postNoteNow: { value: function(channelName) {
       sidebar.newPostLink.click();
       headerCompose.noteLink.click();
-      composeNotePage.postNow(channelName);
+      return composeNotePage.postNow(channelName);
     }},
 
     postNoteOnDate: { value: function(channelName) {
       sidebar.newPostLink.click();
       headerCompose.noteLink.click();
-      composeNotePage.postOnDate(channelName);
+      return composeNotePage.postOnDate(channelName);
     }},
 
     postFileNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
       sidebar.newPostLink.click();
       headerCompose.fileLink.click();
-      composeFilePage.postNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      return composeFilePage.postNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
     }},
 
     postFileOnDate: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
       sidebar.newPostLink.click();
       headerCompose.fileLink.click();
-      composeFilePage.postOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      return composeFilePage.postOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
     }},
 
     postFileToQueue: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
       sidebar.newPostLink.click();
       headerCompose.fileLink.click();
-      composeFilePage.postToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      return composeFilePage.postToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
     }},
 
     postImageNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
       sidebar.newPostLink.click();
       headerCompose.imageLink.click();
-      composeImagePage.postNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      return composeImagePage.postNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
     }},
 
     postImageOnDate: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
       sidebar.newPostLink.click();
       headerCompose.imageLink.click();
-      composeImagePage.postOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      return composeImagePage.postOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
     }},
 
     postImageToQueue: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
       sidebar.newPostLink.click();
       headerCompose.imageLink.click();
-      composeImagePage.postToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      return composeImagePage.postToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
     }}
   });
 

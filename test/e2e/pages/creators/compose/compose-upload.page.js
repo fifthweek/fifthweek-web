@@ -98,8 +98,9 @@
       this.populateUpload(filePath, true);
 
       var date = new Date();
+      var commentText = 'Comment on ' + date.toISOString();
       this.commentTextBox.clear();
-      this.commentTextBox.sendKeys('Comment on ' + date.toISOString());
+      this.commentTextBox.sendKeys(commentText);
 
       if(collectionName){
         if(!createCollection){
@@ -125,6 +126,13 @@
           }
         }
       }
+
+      return {
+        commentText: commentText,
+        channelName: channelName,
+        collectionName: collectionName,
+        filePath: filePath
+      }
     }},
 
     createCollection: { value: function(filePath, collectionName, channelName, isFirstCollection) {
@@ -145,13 +153,15 @@
     }},
 
     postNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
-      this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
+      var result = this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
 
       this.postNowButton.click();
+
+      return result;
     }},
 
     postOnDate: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
-      this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
+      var result = this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
       this.postLaterButton.click();
       this.postOnDateRadio.click();
 
@@ -164,14 +174,23 @@
       dateTimePickerPage.timeMinutesTextBox.clear();
       dateTimePickerPage.timeMinutesTextBox.sendKeys('37');
 
+      result.dayOfMonth = '15';
+      result.timeOfDay = '13:17';
+
       this.postToBacklogButton.click();
+
+      return result;
     }},
 
     postToQueue: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
-      this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
+      var result = this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
+      result.isQueued = true;
+
       this.postLaterButton.click();
 
       this.postToBacklogButton.click();
+
+      return result;
     }},
 
     setFileInput: { value: function(filePath) {

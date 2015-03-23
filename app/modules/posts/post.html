@@ -1,16 +1,19 @@
-<h5 ng-if="post.dayGrouping"><span>{{post.dayGrouping}}</span></h5>
+<h5 ng-if="!post.isScheduled && post.dayGrouping"><span>{{post.liveDate | date:fifthweekConstants.dayGroupingDateFormat:'UTC'}}</span></h5>
 <div class="post timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
   <img class="full-width-image" ng-if="post.image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
 
   <div ng-if="post.isScheduled">
-    <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
-    <p class="tag" ng-if="post.scheduledByQueue">Queued, {{post.liveDate | date: fifthweekConstants.newsfeedDateFormat}}</p>
+    <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
+    <p class="tag" ng-if="post.scheduledByQueue">Queued, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
   </div>
 
   <div class="text">
     <div class="content" ng-if="post.comment || post.fileSource">
-      <md ng-model="post.comment" ng-if="post.comment"></md>
+
+      <div class="post-comment" ng-if="post.comment">
+        <md ng-model="post.comment"></md>
+      </div>
 
       <p ng-if="post.fileSource">
         <a class="btn-file-download file-content" ng-click="openFile(post.file)">

@@ -24,6 +24,11 @@ describe('fw-date-time-picker-controller', function(){
     });
   };
 
+  var parseUtcDateAsLocal = function(dateString){
+    var date = new Date(dateString);
+    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
+  };
+
   describe('when being created', function(){
     beforeEach(function(){
       createController();
@@ -86,7 +91,7 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
-          ngModelCtrl.$modelValue = new Date('2015-03-11T13:37:19Z');
+          ngModelCtrl.$modelValue = parseUtcDateAsLocal('2015-03-11T13:37:19Z');
           ngModelCtrl.$render();
           $scope.$apply();
         });
@@ -96,8 +101,9 @@ describe('fw-date-time-picker-controller', function(){
           expect(ngModelCtrl.$setValidity.calls.count()).toBe(1);
         });
 
-        it('should set date to the date component of the model value', function(){
-          expect($scope.date).toEqual(new Date('2015-03-11T00:00:00Z'));
+        it('should set date to be a copy of the model value', function(){
+          expect($scope.date).toEqual(ngModelCtrl.$modelValue);
+          expect($scope.date).not.toBe(ngModelCtrl.$modelValue);
         });
 
         it('should set time to be a copy of the model value', function(){
@@ -120,8 +126,8 @@ describe('fw-date-time-picker-controller', function(){
           expect(ngModelCtrl.$setValidity.calls.count()).toBe(1);
         });
 
-        it('should set date to the date component the current date', function(){
-          expect($scope.date).toEqual(new Date('2015-01-11T00:00:00Z'));
+        it('should set date to the next whole hour', function(){
+          expect($scope.date).toEqual(new Date('2015-01-11T12:00:00Z'));
         });
 
         it('should set time to the next whole hour', function(){
@@ -153,7 +159,7 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
-          $scope.date = new Date('2015-03-11T13:37:19Z');
+          $scope.date = parseUtcDateAsLocal('2015-03-11T13:37:19Z');
           $scope.$apply();
         });
 
@@ -170,7 +176,7 @@ describe('fw-date-time-picker-controller', function(){
           beforeEach(function(){
             ngModelCtrl.$setViewValue.calls.reset();
             ngModelCtrl.$setValidity.calls.reset();
-            $scope.time = new Date('2016-04-12T14:36:20Z');
+            $scope.time = parseUtcDateAsLocal('2016-04-12T14:36:20Z');
             $scope.$apply();
           });
 
@@ -190,7 +196,7 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
-          $scope.time = new Date('2015-03-11T13:37:19Z');
+          $scope.time = parseUtcDateAsLocal('2015-03-11T13:37:19Z');
           $scope.$apply();
         });
 
@@ -207,7 +213,7 @@ describe('fw-date-time-picker-controller', function(){
           beforeEach(function(){
             ngModelCtrl.$setViewValue.calls.reset();
             ngModelCtrl.$setValidity.calls.reset();
-            $scope.date = new Date('2016-04-12T14:36:20Z');
+            $scope.date = parseUtcDateAsLocal('2016-04-12T14:36:20Z');
             $scope.$apply();
           });
 
@@ -227,33 +233,12 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
-          $scope.date = new Date('2015-03-11T13:37:19Z');
-          $scope.time = new Date('2016-04-12T14:36:20Z');
+          $scope.date = parseUtcDateAsLocal('2015-03-11T13:37:19Z');
+          $scope.time = parseUtcDateAsLocal('2016-04-12T14:36:20Z');
           $scope.$apply();
         });
 
         it('should set the view value to the combination of date and time values', function(){
-          var expectedResult = new Date('2015-03-11T14:36:00Z');
-          expect(ngModelCtrl.$setViewValue).toHaveBeenCalledWith(expectedResult);
-          expect(ngModelCtrl.$setViewValue.calls.count()).toBe(1);
-        });
-
-        it('should set the validity to valid', function(){
-          expect(ngModelCtrl.$setValidity).toHaveBeenCalledWith('dateTime', true);
-          expect(ngModelCtrl.$setValidity.calls.count()).toBe(1);
-        });
-      });
-
-      describe('when assigning a non-utc date and time', function(){
-        beforeEach(function(){
-          ngModelCtrl.$setViewValue.calls.reset();
-          ngModelCtrl.$setValidity.calls.reset();
-          $scope.date = new Date('2015-03-11T13:37:19+05:00');
-          $scope.time = new Date('2016-04-12T14:36:20+05:00');
-          $scope.$apply();
-        });
-
-        it('should ignore the time zone and set the view value to the combination of date and time values but as UTC', function(){
           var expectedResult = new Date('2015-03-11T14:36:00Z');
           expect(ngModelCtrl.$setViewValue).toHaveBeenCalledWith(expectedResult);
           expect(ngModelCtrl.$setViewValue.calls.count()).toBe(1);
