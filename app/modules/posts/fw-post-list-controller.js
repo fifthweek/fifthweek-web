@@ -60,7 +60,7 @@ angular.module('webApp').controller('fwPostListCtrl',
     $scope.deletePost = function(postId) {
       return postInteractions.deletePost(postId)
         .then(function(){
-          _.remove(model.posts, { postId: postId });
+          postUtilities.removePost(model.posts, postId);
         });
     };
 

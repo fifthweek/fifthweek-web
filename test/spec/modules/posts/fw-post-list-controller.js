@@ -30,7 +30,7 @@ describe('fw-post-list-controller', function(){
     fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateInParallel']);
     postsStub = jasmine.createSpyObj('postsStub', ['getCreatorBacklog', 'getCreatorNewsfeed']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
-    postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'processPostsForRendering']);
+    postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'processPostsForRendering', 'removePost']);
 
     module('webApp');
     module(function($provide) {
@@ -235,10 +235,7 @@ describe('fw-post-list-controller', function(){
         });
 
         it('should remove the post from the model', function(){
-          expect($scope.model.posts).toEqual([
-            { postId: 'a' },
-            { postId: 'c' }
-          ]);
+          expect(postUtilities.removePost).toHaveBeenCalledWith($scope.model.posts, 'b');
         });
 
         it('should return a successful promise', function(){
@@ -255,11 +252,7 @@ describe('fw-post-list-controller', function(){
         });
 
         it('should not remove the post from the model', function(){
-          expect($scope.model.posts).toEqual([
-            { postId: 'a' },
-            { postId: 'b' },
-            { postId: 'c' }
-          ]);
+          expect(postUtilities.removePost).not.toHaveBeenCalled();
         });
 
         it('should propagate the error', function(){

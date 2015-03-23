@@ -6,7 +6,7 @@
 
   <fw-error-message value="model.errorMessage"></fw-error-message>
 
-  <div ng-repeat="post in model.posts" ng-include="'modules/posts/post.html'" id="post-{{$index}}"></div>
+  <div ng-repeat="post in model.posts track by post.postId" ng-include="'modules/posts/post.html'" id="post-{{$index}}"></div>
 
   <fw-panel12 ng-if="model.posts.length === 0 && source ===  sources.creatorBacklog">
     <h4>Backlog empty</h4>

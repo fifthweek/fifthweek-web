@@ -34,8 +34,8 @@ angular.module('webApp').factory('postUtilities',
     };
 
     var processPost = function(post, previousPost, accessMap){
-      var postMoment = moment(post.liveDate);
-      post.liveIn = postMoment.fromNow();
+      post.moment = moment(post.liveDate);
+      post.liveIn = post.moment.fromNow();
 
       if(post.fileSource){
         post.fileSource.readableSize = humanFileSize(post.fileSource.size);
@@ -58,21 +58,27 @@ angular.module('webApp').factory('postUtilities',
         };
       }
       else{
-        var addGrouping = false;
-        if(!previousPost){
-          addGrouping = true;
-        }
-        else{
-          var previousMoment = moment(previousPost.liveDate);
-          addGrouping = !postMoment.isSame(previousMoment, 'day');
-        }
-
-        if(addGrouping){
-          post.dayGrouping = postMoment.format(fifthweekConstants.dayGroupingDateFormat);
-        }
+        processPostDayGrouping(post, previousPost);
       }
 
       updatePostUris(post, accessMap);
+    };
+
+    var processPostDayGrouping = function(post, previousPost){
+      var addGrouping = false;
+      if(!previousPost){
+        addGrouping = true;
+      }
+      else{
+        addGrouping = !post.moment.isSame(previousPost.moment, 'day');
+      }
+
+      if(addGrouping){
+        post.dayGrouping = post.moment.format(fifthweekConstants.dayGroupingDateFormat);
+      }
+      else{
+        delete post.dayGrouping;
+      }
     };
 
     var processPosts = function(posts, accessMap){
@@ -122,6 +128,24 @@ angular.module('webApp').factory('postUtilities',
         .then(function(accessMap){
           processPosts(posts, accessMap);
         });
+    };
+
+    service.removePost = function(posts, postId){
+      if(!posts || posts.length === 0){
+        return $q.when();
+      }
+
+      for(var i=0; i < posts.length; ++i) {
+        if (posts[i].postId === postId) {
+          posts.splice(i, 1);
+
+          if (posts.length > i) {
+            processPostDayGrouping(posts[i], i === 0 ? undefined : posts[i - 1]);
+          }
+
+          return $q.when();
+        }
+      }
     };
 
     return service;

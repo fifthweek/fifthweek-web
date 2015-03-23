@@ -522,4 +522,114 @@ describe('post-utilities', function(){
       });
     });
   });
+
+  describe('when removing a post', function(){
+
+    var day1;
+    var day1Grouping;
+    var day2;
+    var day2Grouping;
+
+    beforeEach(function(){
+      day1 = moment(new Date('2015-03-22T10:00:00Z'));
+      day1Grouping =  'Sunday, Mar 22';
+      day2 = moment(new Date('2015-03-23T10:00:00Z'));
+      day2Grouping =  'Monday, Mar 23';
+    });
+
+    it('should do nothing if the post list is undefined', function(){
+      target.removePost(undefined, 'd');
+    });
+
+    it('should do nothing if the post list is empty', function(){
+      target.removePost([], 'd');
+    });
+
+    it('should not modify the list if the post is not found', function(){
+      var posts = [
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
+      ];
+
+      target.removePost(posts, 'd');
+
+      expect(posts).toEqual([
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
+      ]);
+    });
+
+    it('should remove the post correctly re-group by day (1)', function(){
+      var posts = [
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
+      ];
+
+      target.removePost(posts, 'a');
+
+      expect(posts).toEqual([
+        { postId: 'b', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'c', moment: day1 }
+      ]);
+    });
+
+    it('should remove the post correctly re-group by day (2)', function(){
+      var posts = [
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
+      ];
+
+      target.removePost(posts, 'b');
+
+      expect(posts).toEqual([
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'c', moment: day1 }
+      ]);
+    });
+
+    it('should remove the post correctly re-group by day (3)', function(){
+      var posts = [
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
+      ];
+
+      target.removePost(posts, 'c');
+
+      expect(posts).toEqual([
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'b', moment: day1 }
+      ]);
+    });
+
+    it('should remove the post correctly re-group by day (4)', function(){
+      var posts = [
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'b', moment: day2, dayGrouping: day2Grouping },
+        { postId: 'c', moment: day2 }
+      ];
+
+      target.removePost(posts, 'b');
+
+      expect(posts).toEqual([
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping },
+        { postId: 'c', moment: day2, dayGrouping: day2Grouping },
+      ]);
+    });
+
+    it('should remove the post correctly re-group by day (5)', function(){
+      var posts = [
+        { postId: 'a', moment: day1, dayGrouping: day1Grouping }
+      ];
+
+      target.removePost(posts, 'a');
+
+      expect(posts).toEqual([
+      ]);
+    });
+  });
 });
