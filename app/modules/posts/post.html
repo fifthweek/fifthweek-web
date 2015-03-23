@@ -12,14 +12,12 @@
     <div class="content" ng-if="post.comment || post.fileSource">
       <md ng-model="post.comment" ng-if="post.comment"></md>
 
-      <div ng-if="post.fileSource" class="file-download">
-        <p>
-          <a class="btn-file-download file-content" ng-click="openFile(post.file)">
-            {{post.fileSource.fileName}}.{{post.fileSource.fileExtension}}
-          </a>
-        </p>
+      <p ng-if="post.fileSource">
+        <a class="btn-file-download file-content" ng-click="openFile(post.file)">
+          {{post.fileSource.fileName}}.{{post.fileSource.fileExtension}}
+        </a>
         <span class="file-size">{{post.fileSource.readableSize}}</span>
-      </div>
+      </p>
     </div>
 
     <hr />

@@ -246,10 +246,6 @@ $line-height-compensation: -5px;
     @include post-visual;
   }
 
-  .file-download{
-    font-size: $p-font-size + 1;
-  }
-
   .file-size{
     margin-left: 35px;
     font-size: $p-font-size - 2;
