@@ -28,7 +28,7 @@ describe('new collection controller', function () {
   beforeEach(function() {
     collectionService = jasmine.createSpyObj('collectionService', ['createCollectionFromName']);
     $state = jasmine.createSpyObj('$state', ['go']);
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelsSorted']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
 
     module('webApp', 'errorFacadeMock', 'channelNameFormatterMock');
@@ -47,7 +47,7 @@ describe('new collection controller', function () {
       channelNameFormatter = $injector.get('channelNameFormatter');
     });
 
-    channelRepository.getChannels.and.returnValue($q.when(channels));
+    channelRepository.getChannelsSorted.and.returnValue($q.when(channels));
     collectionService.createCollectionFromName.and.returnValue($q.when());
   });
 
@@ -106,7 +106,7 @@ describe('new collection controller', function () {
   });
 
   it('should display any error messages in getting these channels', function() {
-    channelRepository.getChannels.and.returnValue($q.reject('error'));
+    channelRepository.getChannelsSorted.and.returnValue($q.reject('error'));
 
     initializeTarget();
 

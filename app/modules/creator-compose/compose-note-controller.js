@@ -16,7 +16,7 @@ angular.module('webApp').controller(
     $scope.model = model;
 
     var loadForm = function(){
-      composeUtilities.getChannelsForSelection()
+      return composeUtilities.getChannelsForSelection()
         .then(function(channels){
           model.channels = channels;
           model.input.selectedChannel = channels[0];

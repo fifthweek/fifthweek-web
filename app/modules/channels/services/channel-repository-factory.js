@@ -21,6 +21,12 @@ angular.module('webApp')
           });
         };
 
+        service.getChannelsSorted = function() {
+          return service.getChannels().then(function(channels) {
+            return _.sortByOrder(channels, ['isDefault', 'name'], [false, true]);
+          });
+        };
+
         service.getChannelMap = function() {
           return masterRepository.get(channelsKey).then(function(channels) {
             if (channels.length === 0) {

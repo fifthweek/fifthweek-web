@@ -56,6 +56,52 @@ describe('channel repository factory', function(){
     });
   });
 
+  describe('when getting channels sorted', function() {
+    it('should return them sorted by default, then by name', function() {
+      spyOn(target, 'getChannels').and.returnValue($q.when([
+        {
+          isDefault: false,
+          name: 'b'
+        },
+        {
+          isDefault: false,
+          name: 'a'
+        },
+        {
+          isDefault: true,
+          name: 'd'
+        },
+        {
+          isDefault: true,
+          name: 'c'
+        }
+      ]));
+
+      var continuation = jasmine.createSpy('continuation');
+      target.getChannelsSorted().then(continuation);
+      $rootScope.$apply();
+
+      expect(continuation).toHaveBeenCalledWith([
+        {
+          isDefault: true,
+          name: 'c'
+        },
+        {
+          isDefault: true,
+          name: 'd'
+        },
+        {
+          isDefault: false,
+          name: 'a'
+        },
+        {
+          isDefault: false,
+          name: 'b'
+        }
+      ]);
+    });
+  });
+
   describe('when updating channels', function() {
     it('should set changes into the master repository at the correct location', function() {
       var channels = [];

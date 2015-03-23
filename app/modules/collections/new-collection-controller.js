@@ -11,7 +11,7 @@ angular.module('webApp').controller('newCollectionCtrl', function($scope, $state
 
   var channelRepository = channelRepositoryFactory.forCurrentUser();
 
-  channelRepository.getChannels()
+  channelRepository.getChannelsSorted()
     .then(function(channels) {
       $scope.model.channels = _.map(
         channels,

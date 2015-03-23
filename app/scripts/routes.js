@@ -200,7 +200,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.account.name, {
         url: '/account',
-        templateUrl: 'views/account.html',
+        templateUrl: 'modules/account/account.html',
         controller: 'AccountCtrl',
         data : {
           pageTitle: 'My Account',

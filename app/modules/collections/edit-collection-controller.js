@@ -24,7 +24,7 @@ angular.module('webApp').controller('editCollectionCtrl', function(
     hourOfWeek: defaultHourOfWeek
   };
 
-  channelRepository.getChannels()
+  channelRepository.getChannelsSorted()
     .then(function(channels) {
       $scope.model.channels = _.map(
         channels,

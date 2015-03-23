@@ -48,7 +48,7 @@ describe('edit collection controller', function () {
     releaseTimeFormatter = jasmine.createSpyObj('releaseTimeFormatter', ['getDayAndTimesOfWeek']);
     $state = jasmine.createSpyObj('$state', ['go']);
     $state.params = { id: collectionId };
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
+    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelsSorted']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
     collectionRepository = jasmine.createSpyObj('collectionRepository', ['getChannelForCollection']);
     collectionRepositoryFactory = { forCurrentUser: function() { return collectionRepository; }};
@@ -71,7 +71,7 @@ describe('edit collection controller', function () {
       channelNameFormatter = $injector.get('channelNameFormatter');
     });
 
-    channelRepository.getChannels.and.returnValue($q.when(channels));
+    channelRepository.getChannelsSorted.and.returnValue($q.when(channels));
     collectionRepository.getChannelForCollection.and.returnValue($q.when(channel));
     collectionService.updateCollection.and.returnValue($q.when());
     collectionService.deleteCollection.and.returnValue($q.when());
@@ -105,7 +105,7 @@ describe('edit collection controller', function () {
   });
 
   it('should display any error messages in getting these channels', function() {
-    channelRepository.getChannels.and.returnValue($q.reject('error'));
+    channelRepository.getChannelsSorted.and.returnValue($q.reject('error'));
 
     initializeTarget();
 
