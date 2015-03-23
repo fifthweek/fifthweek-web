@@ -243,6 +243,27 @@ describe('fw-date-time-picker-controller', function(){
           expect(ngModelCtrl.$setValidity.calls.count()).toBe(1);
         });
       });
+
+      describe('when assigning a non-utc date and time', function(){
+        beforeEach(function(){
+          ngModelCtrl.$setViewValue.calls.reset();
+          ngModelCtrl.$setValidity.calls.reset();
+          $scope.date = new Date('2015-03-11T13:37:19+05:00');
+          $scope.time = new Date('2016-04-12T14:36:20+05:00');
+          $scope.$apply();
+        });
+
+        it('should ignore the time zone and set the view value to the combination of date and time values but as UTC', function(){
+          var expectedResult = new Date('2015-03-11T14:36:00Z');
+          expect(ngModelCtrl.$setViewValue).toHaveBeenCalledWith(expectedResult);
+          expect(ngModelCtrl.$setViewValue.calls.count()).toBe(1);
+        });
+
+        it('should set the validity to valid', function(){
+          expect(ngModelCtrl.$setValidity).toHaveBeenCalledWith('dateTime', true);
+          expect(ngModelCtrl.$setValidity.calls.count()).toBe(1);
+        });
+      });
     });
 
     describe('when openDatePicker is called', function(){

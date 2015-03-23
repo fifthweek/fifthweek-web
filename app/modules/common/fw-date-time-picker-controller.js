@@ -3,7 +3,14 @@ angular.module('webApp')
     'use strict';
 
     var selected = new Date();
-    selected.setUTCHours(selected.getUTCHours() + 1, 0, 0, 0); // Default to the next hour.
+    // Default to the next hour.
+    selected.setUTCHours(selected.getUTCHours() + 1, 0, 0, 0);
+
+    // This fudges the fact that the datepicker and timepicker controls deal with local time, when we want them
+    // to be dealing with UTC. We add on the timezone offset to make the time look like it's UTC... in other words,
+    // with this line we end up displaying the next UTC hour, but without it we would be displaying their next local hour
+    // but then interpreting it as UTC, which would be strange.
+    selected.setUTCMinutes(selected.getUTCMinutes() + selected.getTimezoneOffset());
 
     var ngModelCtrl;
 
@@ -16,17 +23,13 @@ angular.module('webApp')
     };
 
     var updateTemplate = function(){
-      var dateOnly = new Date(selected);
-      dateOnly.setUTCHours(0, 0, 0, 0);
-
-      $scope.date = dateOnly;
+      $scope.date = new Date(selected);
       $scope.time = new Date(selected);
     };
 
     var setViewValue = function(){
       if($scope.date && $scope.time){
-        var result = new Date($scope.date);
-        result.setUTCHours($scope.time.getUTCHours(), $scope.time.getUTCMinutes(), 0, 0);
+        var result = new Date(Date.UTC($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate(), $scope.time.getHours(), $scope.time.getMinutes(), 0, 0));
         ngModelCtrl.$setViewValue( result );
         ngModelCtrl.$setValidity('dateTime', true);
       }
