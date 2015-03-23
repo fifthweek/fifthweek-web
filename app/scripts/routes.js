@@ -415,7 +415,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.collections.new.name, {
         url: '/new',
-        templateUrl: 'modules/creator-subscription/new-collection.html',
+        templateUrl: 'modules/collections/new-collection.html',
         controller: 'newCollectionCtrl',
         requireSubscription: true,
         data : {
@@ -427,7 +427,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.collections.edit.name, {
         url: '/{id}',
-        templateUrl: 'modules/creator-subscription/edit-collection.html',
+        templateUrl: 'modules/collections/edit-collection.html',
         controller: 'editCollectionCtrl',
         requireSubscription: true,
         data : {
@@ -439,7 +439,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.collections.list.name, {
         url: '',
-        templateUrl: 'modules/creator-subscription/list-collections.html',
+        templateUrl: 'modules/collections/list-collections.html',
         controller: 'listCollectionsCtrl',
         requireSubscription: true,
         data : {
@@ -463,7 +463,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.channels.new.name, {
         url: '/new',
-        templateUrl: 'modules/creator-subscription/new-channel.html',
+        templateUrl: 'modules/channels/new-channel.html',
         controller: 'newChannelCtrl',
         requireSubscription: true,
         data : {
@@ -475,7 +475,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.channels.edit.name, {
         url: '/{id}',
-        templateUrl: 'modules/creator-subscription/edit-channel.html',
+        templateUrl: 'modules/channels/edit-channel.html',
         controller: 'editChannelCtrl',
         requireSubscription: true,
         data : {
@@ -487,7 +487,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.subscription.channels.list.name, {
         url: '',
-        templateUrl: 'modules/creator-subscription/list-channels.html',
+        templateUrl: 'modules/channels/list-channels.html',
         controller: 'listChannelsCtrl',
         requireSubscription: true,
         data : {

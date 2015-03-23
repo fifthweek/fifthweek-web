@@ -10,6 +10,6 @@ angular.module('webApp').directive('fwFormInputSelectCollection', function () {
       createNewCollection:'&',
       id:'@'
     },
-    templateUrl:'views/partials/form-input-select-collection.html'
+    templateUrl:'modules/collections/directives/form-input-select-collection.html'
   };
 });
