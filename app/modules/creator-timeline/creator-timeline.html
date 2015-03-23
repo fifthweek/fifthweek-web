@@ -53,7 +53,7 @@
             <div class="post non-image-post channels">
               <div class="text">
                 <div class="content">
-                  <div class="row" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
+                  <div id="channel-{{$index}}" class="row" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
                     <div class="col-xs-7 name">
                       <h6>{{channel.name}}</h6>
                     </div>
