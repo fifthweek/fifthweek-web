@@ -101,7 +101,12 @@
     });
 
     it('should display the default channel', function() {
+      expect(page.channelCount).toBe(1);
 
+      var defaultChannel = page.getChannel(0);
+      expect(defaultChannel.getText()).toContain(defaults.channelName);
+      expect(defaultChannel.getText()).toContain(defaults.channelDescription);
+      expect(defaultChannel.getText()).toContain('$' + subscription.basePrice);
     });
 
     it('should display other channels below the default channel', function() {

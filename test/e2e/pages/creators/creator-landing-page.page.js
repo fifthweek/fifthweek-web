@@ -8,7 +8,8 @@ CreatorLandingPagePage.prototype = Object.create({}, {
   moreInfo: { get: function () { return element(by.id('more-info')); }},
   video: { get: function () { return element(by.css('#video iframe')); }},
   fullDescription: { get: function () { return element(by.id('full-description')); }},
-  pageUrl: { get: function () { return '/creators/landing-page'; }}
+  getChannel: { value: function (index) { return element(by.id('channel-' + index)); }},
+  channelCount: { get: function () { return element.all(by.css('.channels .channel')).count(); }}
 });
 
 module.exports = CreatorLandingPagePage;
