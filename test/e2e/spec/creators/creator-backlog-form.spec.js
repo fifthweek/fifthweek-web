@@ -101,7 +101,8 @@
       deleteConfirmationPage.describeDeletingWithoutVerification(
         'Post',
         function () {
-          header.futurePostsLink.click();
+          sidebar.helpLink.click();
+          navigateToPage();
           post.moreActionsButton.click();
           post.deletePostLink.click();
         },
