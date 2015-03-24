@@ -42,7 +42,7 @@
             <span ng-if="!post.collection">
               to
                <a ui-sref="creators.subscription.channels.edit({id: post.channelId})" class="container-name">
-                 {{post.channel.name}}
+                 {{post.channel.isDefault ? 'Everyone' : post.channel.name}}
                </a>
             </span>
           </li>

@@ -98,7 +98,7 @@
 
       expect(this.comment.getText()).toBe(postData.noteText);
       expect(this.usernameLink.getText()).toBe(registration.username);
-      expect(this.containerNameLink.getText()).toBe(postData.channelName || 'Basic Subscription');
+      expect(this.containerNameLink.getText()).toBe(postData.channelName || 'Everyone');
 
       this.expectFooter(true, postData, registration, navigateToPage);
     }},
