@@ -8,8 +8,6 @@
      
         npm install
         bower install
-        sudo gem update --system
-        sudo gem install compass
         grunt build
 
 3.  If you receive an `npm install` error relating to `pty.js`, do the following:
