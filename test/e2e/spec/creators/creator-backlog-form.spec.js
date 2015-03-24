@@ -90,10 +90,18 @@
       });
     });
 
+    var scrollIntoView = function(element){
+      var scrollIntoViewInner = function () {
+        arguments[0].scrollIntoView();
+      };
+      browser.executeScript(scrollIntoViewInner, element.getWebElement());
+    };
+
     var testDeletion = function(){
       deleteConfirmationPage.describeDeletingWithoutVerification(
         'Post',
         function () {
+          header.futurePostsLink.click();
           post.moreActionsButton.click();
           post.deletePostLink.click();
         },
@@ -167,7 +175,6 @@
       });
 
        testDeletion();
-
     });
 
     var navigateToPage = function() {
