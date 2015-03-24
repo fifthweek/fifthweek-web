@@ -38,7 +38,7 @@
     image: { get: function() { return element(this.byCss('.full-width-image')); }},
     scheduleTag: { get: function() { return element(this.byCss('.tag')); }},
     scheduleTags: { get: function() { return element.all(this.byCss('.tag')); }},
-    comment: { get: function() { return element(this.byCss('.text .content .post-comment')); }},
+    comment: { get: function() { return element(this.byCss('.text .content p:first-child')); }},
     fileDownloadLink: { get: function() { return element(this.byCss('.text .content .file-content')); }},
     fileSizeText: { get: function() { return element(this.byCss('.text .content .file-size')); }},
     profileImage: { get: function() { return element(this.byCss('.author-image')); }},

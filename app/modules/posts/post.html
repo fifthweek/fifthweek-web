@@ -11,9 +11,7 @@
   <div class="text">
     <div class="content" ng-if="post.comment || post.fileSource">
 
-      <div class="post-comment" ng-if="post.comment">
-        <md ng-model="post.comment"></md>
-      </div>
+      <md ng-model="post.comment" ng-if="post.comment"></md>
 
       <p ng-if="post.fileSource">
         <a class="btn-file-download file-content" ng-click="openFile(post.file)">
