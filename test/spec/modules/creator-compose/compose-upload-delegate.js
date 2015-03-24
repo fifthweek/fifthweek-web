@@ -249,6 +249,7 @@ describe('compose upload delegate', function(){
 
     describe('when postLater is called', function(){
       beforeEach(function(){
+        spyOn($scope, '$watch').and.callThrough();
         $scope.postLater();
       });
 
@@ -259,15 +260,37 @@ describe('compose upload delegate', function(){
       it('should set call updateEstimatedLiveDate', function(){
         expect(composeUtilities.updateEstimatedLiveDate).toHaveBeenCalled();
       });
+
+      it('should set up a watch on the selected date', function(){
+        expect($scope.$watch).toHaveBeenCalledWith('model.input.date', jasmine.any(Function));
+      });
+
+      it('should set postToQueue to false if the date changes', function(){
+        var delegate = $scope.$watch.calls.first().args[1];
+        $scope.model.postToQueue = true;
+        delegate(1, 2);
+        expect($scope.model.postToQueue).toBe(false);
+      });
     });
 
     describe('when cancelPostLater is called', function(){
+      var cancelCalled;
       beforeEach(function(){
+        cancelCalled = false;
+        spyOn($scope, '$watch').and.returnValue(function(){
+          cancelCalled = true;
+        });
+        $scope.postLater();
+        expect(cancelCalled).toBe(false);
         $scope.cancelPostLater();
       });
 
       it('should set postLater to false', function(){
         expect($scope.model.postLater).toBe(false);
+      });
+
+      it('should cancel the watch', function(){
+        expect(cancelCalled).toBe(true);
       });
     });
 

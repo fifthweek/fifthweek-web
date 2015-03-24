@@ -34,13 +34,22 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
         }
       };
 
+      var cancelWatch;
+
       $scope.postLater = function() {
         model.postLater = true;
         composeUtilities.updateEstimatedLiveDate(model);
+        cancelWatch = $scope.$watch('model.input.date', function(newValue, oldValue){
+          if(newValue !==  oldValue){
+            model.postToQueue = false;
+          }
+        });
       };
 
       $scope.cancelPostLater = function() {
         model.postLater = false;
+        cancelWatch();
+        cancelWatch = undefined;
       };
 
       $scope.postAnother = function(){
