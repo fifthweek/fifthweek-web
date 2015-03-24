@@ -11,6 +11,7 @@
 
     var collectionName = 'Cats';
     var filePath = '../../../sample-image-tiny.jpg';
+    var filePathTiff = '../../../sample-image-tiny.tif';
 
     var registration;
     var subscription;
@@ -174,6 +175,15 @@
         var postData = commonWorkflows.postImageNow(filePath, collectionName);
         navigateToPage();
         post.expectImagePost(postData, registration, navigateToPage);
+      });
+
+      testDeletion();
+
+      it('should show the post after posting a TIFF image now', function () {
+        navigateToSite();
+        var postData = commonWorkflows.postImageNow(filePathTiff, collectionName);
+        navigateToPage();
+        post.expectNonViewableImagePost(postData, registration, navigateToPage);
       });
 
       testDeletion();

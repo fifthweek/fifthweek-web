@@ -11,6 +11,7 @@
 
     var collectionName = 'Cats';
     var filePath = '../../../sample-image-tiny.jpg';
+    var filePathTiff = '../../../sample-image-tiny.tif';
 
     var registration;
     var subscription;
@@ -167,7 +168,7 @@
         post.expectImagePost(postData, registration, navigateToPage);
       });
 
-       testDeletion();
+      testDeletion();
 
       it('should show the post after posting a image to the queue', function () {
         var postData = commonWorkflows.postImageToQueue(filePath, collectionName);
@@ -175,7 +176,23 @@
         post.expectImagePost(postData, registration, navigateToPage);
       });
 
-       testDeletion();
+      testDeletion();
+
+      it('should show the post after posting a TIFF image on a date', function () {
+        var postData = commonWorkflows.postImageOnDate(filePathTiff, collectionName);
+        navigateToPage();
+        post.expectNonViewableImagePost(postData, registration, navigateToPage);
+      });
+
+      testDeletion();
+
+      it('should show the post after posting a TIFF image to the queue', function () {
+        var postData = commonWorkflows.postImageToQueue(filePathTiff, collectionName);
+        navigateToPage();
+        post.expectNonViewableImagePost(postData, registration, navigateToPage);
+      });
+
+      testDeletion();
     });
 
     var navigateToPage = function() {

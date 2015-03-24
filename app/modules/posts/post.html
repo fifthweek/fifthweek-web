@@ -1,5 +1,7 @@
-<h5 ng-if="!post.isScheduled && post.dayGrouping"><span>{{post.liveDate | date:fifthweekConstants.dayGroupingDateFormat:'UTC'}}</span></h5>
-<div class="post timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
+<h5 ng-if="!post.isScheduled && post.dayGrouping">
+  <span class="day-grouping">{{post.liveDate | date:fifthweekConstants.dayGroupingDateFormat:'UTC'}}</span>
+</h5>
+<div data-live-date="{{post.liveDate}}" class="post timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
   <img class="full-width-image" ng-if="post.image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
 

@@ -43,6 +43,8 @@
     allPosts: { get: function () { return element.all(by.css('.posts .post')); }},
 
     image: { get: function() { return element(this.byCss('.full-width-image')); }},
+    dayGrouping: { get: function() { return element(this.byCss('.day-grouping')); }},
+    dayGroupings: { get: function() { return element.all(this.byCss('.day-grouping')); }},
     scheduleTag: { get: function() { return element(this.byCss('.tag')); }},
     scheduleTags: { get: function() { return element.all(this.byCss('.tag')); }},
     comment: { get: function() { return element(this.byCss('.text .content p:first-child')); }},
@@ -56,9 +58,10 @@
     editPostLink: { get: function() { return element(this.byCssContainingText('.actions-drop-down a', 'Edit')); }},
     deletePostLink: { get: function() { return element(this.byCssContainingText('.actions-drop-down a', 'Delete')); }},
 
-    expectScheduledTag: { value: function(postData, registration){
+    expectHeader: { value: function(postData, registration){
       if(this.isBacklog){
         expect(this.scheduleTag.isDisplayed()).toBe(true);
+        expect(this.dayGroupings.count()).toBe(0);
 
         if(postData.isQueued){
           expect(this.scheduleTag.getText()).toContain('Queued');
@@ -70,6 +73,7 @@
       }
       else{
         expect(this.scheduleTags.count()).toBe(0);
+        expect(this.dayGrouping.isDisplayed()).toBe(true);
       }
     }},
 
@@ -94,7 +98,7 @@
     }},
 
     expectNotePost: { value: function(postData, registration, navigateToPage){
-      this.expectScheduledTag(postData,  registration);
+      this.expectHeader(postData,  registration);
 
       expect(this.comment.getText()).toBe(postData.noteText);
       expect(this.usernameLink.getText()).toBe(registration.username);
@@ -104,7 +108,7 @@
     }},
 
     expectImagePost: { value: function(postData, registration, navigateToPage){
-      this.expectScheduledTag(postData,  registration);
+      this.expectHeader(postData,  registration);
 
       expect(this.comment.getText()).toBe(postData.commentText);
 
@@ -115,7 +119,7 @@
     }},
 
     expectFilePost: { value: function(postData, registration, navigateToPage){
-      this.expectScheduledTag(postData,  registration);
+      this.expectHeader(postData,  registration);
 
       expect(this.comment.getText()).toBe(postData.commentText);
       expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
