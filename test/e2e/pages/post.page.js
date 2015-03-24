@@ -1,6 +1,13 @@
 (function(){
   'use strict';
 
+  var AccountPage = require('./account-settings.page.js');
+  var EditChannelPage = require('./creators/subscription/channel-edit.page.js');
+  var EditCollectionPage = require('./creators/subscription/collection-edit.page.js');
+
+  var accountPage = new AccountPage();
+  var editChannelPage = new EditChannelPage();
+  var editCollectionPage = new EditCollectionPage();
 
   var PostPage = function(isBacklog, postIndex) {
     if(postIndex){
@@ -66,42 +73,48 @@
       }
     }},
 
-    expectNotePost: { value: function(postData, registration){
+    expectFooter: { value: function(isNote, postData, registration, navigateToPage){
+
+      this.usernameLink.click();
+      expect(browser.getCurrentUrl()).toContain(accountPage.pageUrl);
+      navigateToPage();
+
+      if(isNote){
+        this.containerNameLink.click();
+        expect(browser.getCurrentUrl()).toContain(editChannelPage.pageUrl);
+        expect(editChannelPage.nameTextBox.getAttribute('value')).toBe(postData.channelName || 'Basic Subscription');
+        navigateToPage();
+      }
+      else{
+        this.containerNameLink.click();
+        expect(browser.getCurrentUrl()).toContain(editCollectionPage.pageUrl);
+        expect(editCollectionPage.nameTextBox.getAttribute('value')).toBe(postData.collectionName);
+        navigateToPage();
+      }
+    }},
+
+    expectNotePost: { value: function(postData, registration, navigateToPage){
       this.expectScheduledTag(postData,  registration);
 
       expect(this.comment.getText()).toBe(postData.noteText);
-
       expect(this.usernameLink.getText()).toBe(registration.username);
+      expect(this.containerNameLink.getText()).toBe(postData.channelName || 'Basic Subscription');
 
-      if(postData.channelName){
-        expect(this.containerNameLink.getText()).toBe(postData.channelName);
-      }
-      else{
-        expect(this.containerNameLink.getText()).toBe('Basic Subscription');
-      }
+      this.expectFooter(true, postData, registration, navigateToPage);
     }},
 
-    expectImagePost: { value: function(postData, registration){
+    expectImagePost: { value: function(postData, registration, navigateToPage){
       this.expectScheduledTag(postData,  registration);
 
       expect(this.comment.getText()).toBe(postData.commentText);
 
       expect(this.usernameLink.getText()).toBe(registration.username);
       expect(this.containerNameLink.getText()).toBe(postData.collectionName);
+
+      this.expectFooter(false, postData, registration, navigateToPage);
     }},
 
-    expectNonViewableImagePost: { value: function(postData, registration){
-      this.expectScheduledTag(postData,  registration);
-
-      expect(this.comment.getText()).toBe(postData.commentText);
-      expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
-      expect(this.fileSizeText.getText()).toContain('KB');
-
-      expect(this.usernameLink.getText()).toBe(registration.username);
-      expect(this.containerNameLink.getText()).toBe(postData.collectionName);
-    }},
-
-    expectFilePost: { value: function(postData, registration){
+    expectFilePost: { value: function(postData, registration, navigateToPage){
       this.expectScheduledTag(postData,  registration);
 
       expect(this.comment.getText()).toBe(postData.commentText);
@@ -110,7 +123,17 @@
 
       expect(this.usernameLink.getText()).toBe(registration.username);
       expect(this.containerNameLink.getText()).toBe(postData.collectionName);
+
+      this.expectFooter(false, postData, registration, navigateToPage);
+    }},
+
+    expectNonViewableImagePost: { value: function(postData, registration, navigateToPage){
+      expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
+      expect(this.fileSizeText.getText()).toContain('KB');
+
+      this.expectImagePost(postData, registration, navigateToPage);
     }}
+
   });
 
   module.exports = PostPage;

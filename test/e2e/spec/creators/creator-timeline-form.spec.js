@@ -155,7 +155,7 @@
         navigateToSite();
         var postData = commonWorkflows.postNoteNow();
         navigateToPage();
-        post.expectNotePost(postData, registration);
+        post.expectNotePost(postData, registration, navigateToPage);
       });
 
       testDeletion();
@@ -164,7 +164,7 @@
         navigateToSite();
         var postData = commonWorkflows.postFileNow(filePath, collectionName);
         navigateToPage();
-        post.expectFilePost(postData, registration);
+        post.expectFilePost(postData, registration, navigateToPage);
       });
 
       testDeletion();
@@ -173,7 +173,7 @@
         navigateToSite();
         var postData = commonWorkflows.postImageNow(filePath, collectionName);
         navigateToPage();
-        post.expectImagePost(postData, registration);
+        post.expectImagePost(postData, registration, navigateToPage);
       });
 
       testDeletion();

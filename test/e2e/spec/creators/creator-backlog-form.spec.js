@@ -140,7 +140,7 @@
       it('should show the post after posting a note on a date', function () {
         var postData = commonWorkflows.postNoteOnDate();
         navigateToPage();
-        post.expectNotePost(postData, registration);
+        post.expectNotePost(postData, registration, navigateToPage);
       });
 
       testDeletion();
@@ -148,7 +148,7 @@
       it('should show the post after posting a file on a date', function () {
         var postData = commonWorkflows.postFileOnDate(filePath, collectionName);
         navigateToPage();
-        post.expectFilePost(postData, registration);
+        post.expectFilePost(postData, registration, navigateToPage);
       });
 
        testDeletion();
@@ -156,7 +156,7 @@
       it('should show the post after posting a file to the queue', function () {
         var postData = commonWorkflows.postFileToQueue(filePath, collectionName);
         navigateToPage();
-        post.expectFilePost(postData, registration);
+        post.expectFilePost(postData, registration, navigateToPage);
       });
 
        testDeletion();
@@ -164,7 +164,7 @@
       it('should show the post after posting a image on a date', function () {
         var postData = commonWorkflows.postImageOnDate(filePath, collectionName);
         navigateToPage();
-        post.expectImagePost(postData, registration);
+        post.expectImagePost(postData, registration, navigateToPage);
       });
 
        testDeletion();
@@ -172,7 +172,7 @@
       it('should show the post after posting a image to the queue', function () {
         var postData = commonWorkflows.postImageToQueue(filePath, collectionName);
         navigateToPage();
-        post.expectImagePost(postData, registration);
+        post.expectImagePost(postData, registration, navigateToPage);
       });
 
        testDeletion();

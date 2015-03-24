@@ -3,6 +3,7 @@
 var AccountPage = function() {};
 
 AccountPage.prototype = Object.create({}, {
+  pageUrl: { get: function () { return '/account'; }},
   fileInput: { get: function() { return element(by.css('#file-upload-button-area input')); }},
   fileUploadButton: { get: function() { return element(by.css('#file-upload-button-area .btn')); }},
   profileImage: { get: function(){ return element(by.css('.available-image')); }},

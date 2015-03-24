@@ -11,6 +11,7 @@ var channelPriceInputPage = new ChannelPriceInputPage();
 var ChannelEditPage = function() {};
 
 ChannelEditPage.prototype = Object.create({}, {
+  pageUrl: { get: function () { return '/creators/subscription/channels/'; }},
   nameTextBox: { get: function () { return element(by.id('model-channel-name')); }},
   descriptionTextBox: { get: function () { return element(by.id('model-channel-description')); }},
   priceTextBox: { get: function () { return element(by.id('model-channel-price')); }},
