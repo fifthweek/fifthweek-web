@@ -148,14 +148,11 @@ DeleteConfirmationPage.prototype = Object.create({}, {
       });
 
       describe('the delete button', function() {
-        afterEach(function() {
-          self.confirmationTextBox.clear();
-        });
-
         describe('should be disabled', function() {
           afterEach(function() {
             expect(self.deleteVerifiedButton.isEnabled()).toBe(false);
             self.deleteVerifiedButton.click(); // Just in-case some nutcase hooks it up to a mouse-down event!
+            self.confirmationTextBox.clear();
           });
 
           it('should be disabled by default', function() {
@@ -178,6 +175,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
         it('should become enabled after entering the ' + itemTypeLower + '\'s name', function() {
           self.confirmationTextBox.sendKeys(itemName);
           expect(self.deleteVerifiedButton.isEnabled()).toBe(true);
+          self.cancelButton.click();
         });
       });
 

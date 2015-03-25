@@ -1,4 +1,5 @@
 var TestKit = require('../../../test-kit.js');
+var CommonWorkflows = require('../../../common-workflows.js');
 var RegisterPage = require('../../../pages/register.page.js');
 var SignOutPage = require('../../../pages/sign-out.page.js');
 var SubscriptionNameInputPage = require('../../../pages/subscription-name-input.page.js');
@@ -9,6 +10,7 @@ var CreateSubscriptionPage = require('../../../pages/creators/subscription/creat
 describe('create subscription form', function() {
   'use strict';
 
+  var commonWorkflows = new CommonWorkflows();
   var testKit = new TestKit();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
@@ -57,7 +59,7 @@ describe('create subscription form', function() {
 
     afterEach(function() {
       // Reset form state.
-      browser.refresh();
+      commonWorkflows.fastRefresh();
     });
 
     testKit.includeSadPaths(page, page.submitButton, page.helpMessages, subscriptionNameInputPage, 'nameTextBox', page.inputs);

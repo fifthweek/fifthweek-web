@@ -1,4 +1,5 @@
 var TestKit = require('../test-kit.js');
+var CommonWorkflows = require('../common-workflows.js');
 var RegisterPage = require('../pages/register.page.js');
 var SignOutPage = require('../pages/sign-out.page.js');
 var UsernameInputPage = require('../pages/username-input.page.js');
@@ -8,6 +9,7 @@ describe("registration form", function() {
   'use strict';
 
   var testKit = new TestKit();
+  var commonWorkflows = new CommonWorkflows();
   var signOutPage = new SignOutPage();
   var usernameInputPage = new UsernameInputPage();
   var passwordInputPage = new PasswordInputPage();
@@ -55,7 +57,7 @@ describe("registration form", function() {
 
     afterEach(function() {
       // Reset form state.
-      browser.refresh();
+      commonWorkflows.fastRefresh();
     });
 
     it('requires email address', function(){

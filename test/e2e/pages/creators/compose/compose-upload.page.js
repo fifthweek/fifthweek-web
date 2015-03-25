@@ -514,7 +514,7 @@
               dateTimePickerPage.includeSadPaths(page.postToBacklogButton, page.helpMessages, function() {});
 
               it('should run once after all', function(){
-                browser.refresh();
+                commonWorkflows.fastRefresh();
               });
             });
 
@@ -524,7 +524,7 @@
               });
 
               afterEach(function(){
-                browser.refresh();
+                commonWorkflows.fastRefresh();
               });
 
               it('should not allow a comment more than 2000 characters', function(){
@@ -555,7 +555,7 @@
                 });
 
                 afterEach(function(){
-                  browser.refresh();
+                  commonWorkflows.fastRefresh();
                 });
 
                 testKit.includeSadPaths(page, page.dialogContinueButton, page.helpMessages, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');

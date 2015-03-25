@@ -236,7 +236,7 @@ describe('customize landing page form', function() {
         expect(page.basicsSuccessMessage.isDisplayed()).toBe(true);
         expect(page.basicsSubmitButton.isEnabled()).toBe(false);
 
-        browser.refresh();
+        commonWorkflows.fastRefresh();
       });
 
       describe('for "basics" section', function() {
@@ -292,7 +292,7 @@ describe('customize landing page form', function() {
       };
 
       afterEach(function(){
-        browser.refresh();
+        commonWorkflows.fastRefresh();
       });
 
       describe('for "basics" section', function() {

@@ -1,4 +1,5 @@
 var TestKit = require('../test-kit.js');
+var CommonWorkflows = require('../common-workflows.js');
 var SignOutPage = require('../pages/sign-out.page.js');
 var HomePage = require('../pages/home.page.js');
 var RegisterPage = require('../pages/register.page.js');
@@ -17,6 +18,7 @@ describe('sign-in - reset password form', function() {
   var resetPasswordPageUrl;
 
   var testKit = new TestKit();
+  var commonWorkflows = new CommonWorkflows();
   var signOutPage = new SignOutPage();
   var homePage = new HomePage();
   var registerPage = new RegisterPage();
@@ -78,7 +80,7 @@ describe('sign-in - reset password form', function() {
 
     afterEach(function() {
       // Reset form state.
-      browser.refresh();
+      commonWorkflows.fastRefresh();
     });
 
     passwordInputPage.includeSadPaths(page.passwordTextBox, page.resetPasswordButton, page.helpMessages, function() { });

@@ -1,5 +1,5 @@
-var CommonWorkflows = require('../../../common-workflows.js');
 var TestKit = require('../../../test-kit.js');
+var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 var HeaderComposePage = require('../../../pages/header-compose.page.js');
 var TargetPage = require('../../../pages/creators/compose/compose-note.page.js');
@@ -170,13 +170,13 @@ describe('compose note form', function() {
         dateTimePickerPage.includeSadPaths(page.postToBacklogButton, page.helpMessages, function() {});
 
         it('should run once after all', function(){
-          browser.refresh();
+          commonWorkflows.fastRefresh();
         });
       });
 
       describe('when testing note', function(){
         afterEach(function(){
-          browser.refresh();
+          commonWorkflows.fastRefresh();
         });
 
         it('should not allow a note with more than 280 characters', function(){
