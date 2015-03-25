@@ -15,7 +15,7 @@ TestKit.prototype = Object.create({}, {
   assertMinLength: { value: function(helpMessages, length) {
     this.assertSingleValidationMessage(helpMessages, 'Must be at least ' + length + ' characters.');
   }},
-  assertMaxLength: { value: function(helpMessages, textBox, overSizedValue, length) {
+  assertMaxLength: { value: function(helpMessages, textBoxId, overSizedValue, length) {
     // Some browsers don't honor maxlength attribute with protractor's sendKeys
     // so we also check the ng-maxlength error as a backup.
     helpMessages.count().then(function(count){
@@ -24,7 +24,7 @@ TestKit.prototype = Object.create({}, {
         expect(helpMessages.get(0).getText()).toContain('Allowed ' + length + ' characters at most.')
       }
       else{
-        expect(textBox.getAttribute('value')).toBe(overSizedValue.substring(0, length));
+        expect(element(by.id(textBoxId)).getAttribute('value')).toBe(overSizedValue.substring(0, length));
       }
     });
   }},
@@ -224,6 +224,13 @@ TestKit.prototype = Object.create({}, {
 
       inputPage.includeSadPaths(page[inputName], button, helpMessages, isOptional);
     });
+  }},
+  clear: { value: function(elementId) {
+    browser.executeScript('angular.element(document.getElementById(\'' + elementId + '\')).val(\'\');');
+  }},
+  setValue: { value: function(elementId, value, blur) {
+    var changeValue = 'angular.element(document.getElementById(\'' + elementId + '\')).val(\'' + value + '\').trigger(\'change\')';
+    browser.executeScript(blur ? changeValue + '.blur()' : changeValue);
   }}
 });
 

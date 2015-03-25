@@ -9,19 +9,19 @@ PasswordInputPage.prototype = Object.create({},
 {
   // All happy paths in a suite typically share the same post-condition, which can be extracted into a afterEach.
   // This is why button clicks and expectations are not set here.
-  includeHappyPaths: { value: function(input, populateOtherInputsWithValidData) {
+  includeHappyPaths: { value: function(inputId, populateOtherInputsWithValidData) {
     it('should allow password with 6 characters or more', function(){
       populateOtherInputsWithValidData();
-      input.clear();
-      input.sendKeys('123456');
+      testKit.clear(inputId);
+      testKit.setValue(inputId, '123456');
     });
   }},
-  includeSadPaths: { value: function(input, button, helpMessages, populateOtherInputsWithValidData, isOptional) {
+  includeSadPaths: { value: function(inputId, button, helpMessages, populateOtherInputsWithValidData, isOptional) {
 
     if(!isOptional) {
       it('requires password', function () {
         populateOtherInputsWithValidData();
-        input.clear();
+        testKit.clear(inputId);
 
         button.click();
 
@@ -31,8 +31,8 @@ PasswordInputPage.prototype = Object.create({},
 
     it('should not allow passwords with fewer than 6 characters', function(){
       populateOtherInputsWithValidData();
-      input.clear();
-      input.sendKeys('pass');
+      testKit.clear(inputId);
+      testKit.setValue(inputId, 'pass');
 
       button.click();
 
@@ -44,10 +44,10 @@ PasswordInputPage.prototype = Object.create({},
       var overSizedValue = new Array(maxLength + 2).join('x');
 
       populateOtherInputsWithValidData();
-      input.clear();
-      input.sendKeys(overSizedValue);
+      testKit.clear(inputId);
+      testKit.setValue(inputId, overSizedValue, true);
 
-      testKit.assertMaxLength(helpMessages, input, overSizedValue, maxLength);
+      testKit.assertMaxLength(helpMessages, inputId, overSizedValue, maxLength);
     });
   }}
 });

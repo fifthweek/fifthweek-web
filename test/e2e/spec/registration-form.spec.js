@@ -33,19 +33,19 @@ describe("registration form", function() {
     });
 
     it('should allow a new user to register', function(){
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys('password1');
-      page.emailTextBox.sendKeys(email);
+      testKit.setValue(page.usernameTextBoxId, username);
+      testKit.setValue(page.passwordTextBoxId, 'password1');
+      testKit.setValue(page.emailTextBoxId, email);
     });
 
-    usernameInputPage.includeHappyPaths(page.usernameTextBox, function() {
-      page.passwordTextBox.sendKeys('password1');
-      page.emailTextBox.sendKeys(email);
+    usernameInputPage.includeHappyPaths(page.usernameTextBoxId, function() {
+      testKit.setValue(page.passwordTextBoxId, 'password1');
+      testKit.setValue(page.emailTextBoxId, email);
     });
 
-    passwordInputPage.includeHappyPaths(page.passwordTextBox, function() {
-      page.usernameTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
+    passwordInputPage.includeHappyPaths(page.passwordTextBoxId, function() {
+      testKit.setValue(page.usernameTextBoxId, username);
+      testKit.setValue(page.emailTextBoxId, email);
     });
   });
 
@@ -61,22 +61,22 @@ describe("registration form", function() {
     });
 
     it('requires email address', function(){
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys('password1');
+      testKit.setValue(page.usernameTextBoxId, username);
+      testKit.setValue(page.passwordTextBoxId, 'password1');
       page.registerButton.click();
 
       testKit.assertSingleValidationMessage(page.helpMessages,
         'A valid email address is required.');
     });
 
-    usernameInputPage.includeSadPaths(page.usernameTextBox, page.registerButton, page.helpMessages, function() {
-      page.passwordTextBox.sendKeys('password1');
-      page.emailTextBox.sendKeys(email);
+    usernameInputPage.includeSadPaths(page.usernameTextBoxId, page.registerButton, page.helpMessages, function() {
+      testKit.setValue(page.passwordTextBoxId, 'password1');
+      testKit.setValue(page.emailTextBoxId, email);
     });
 
-    passwordInputPage.includeSadPaths(page.passwordTextBox, page.registerButton, page.helpMessages, function() {
-      page.usernameTextBox.sendKeys(username);
-      page.emailTextBox.sendKeys(email);
+    passwordInputPage.includeSadPaths(page.passwordTextBoxId, page.registerButton, page.helpMessages, function() {
+      testKit.setValue(page.usernameTextBoxId, username);
+      testKit.setValue(page.emailTextBoxId, email);
     });
   });
 });

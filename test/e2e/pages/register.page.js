@@ -7,9 +7,12 @@ var RegisterPage = function() {};
 
 RegisterPage.prototype = Object.create({},
 {
-  emailTextBox: { get: function () { return element(by.model('registrationData.email')); }},
-  usernameTextBox: { get: function () { return element(by.id('registrationData-username')); }},
-  passwordTextBox: { get: function () { return element(by.id('registrationData-password')); }},
+  emailTextBoxId: { get: function () { return 'registrationData-email'; }},
+  usernameTextBoxId: { get: function () { return 'registrationData-username'; }},
+  passwordTextBoxId: { get: function () { return 'registrationData-password'; }},
+  emailTextBox: { get: function () { return element(by.id(this.emailTextBoxId)); }},
+  usernameTextBox: { get: function () { return element(by.id(this.usernameTextBoxId)); }},
+  passwordTextBox: { get: function () { return element(by.id(this.passwordTextBoxId)); }},
   registerButton: { get: function () { return element(by.id('register-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#registrationForm .help-block')); }},
   nextPageUrl: { get: function () { return new CreateSubscriptionPage().pageUrl; }},
