@@ -38,6 +38,10 @@
   var CommonWorkflows = function() {};
 
   CommonWorkflows.prototype = Object.create({}, {
+    fastRefresh: { value: function() {
+      browser.executeScript('angular.element(document.body).injector().get(\'$state\').reload();');
+    }},
+
     createSubscription: { value: function() {
       signOutPage.signOutAndGoHome();
       var registration = registerPage.registerSuccessfully();

@@ -44,7 +44,7 @@ describe('account settings form', function() {
         expect(page.savedSuccessfullyMessage.isDisplayed()).toBe(true);
         expect(page.saveChangesButton.isEnabled()).toBe(false);
 
-        browser.refresh();
+        commonWorkflows.fastRefresh();
       });
 
       it('should allow the user to change their email', function(){
@@ -65,7 +65,7 @@ describe('account settings form', function() {
     });
 
     afterEach(function() {
-      browser.refresh();
+      commonWorkflows.fastRefresh();
     });
 
     it('requires email address', function(){
