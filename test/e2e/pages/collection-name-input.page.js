@@ -47,10 +47,10 @@ CollectionNameInputPage.prototype = Object.create({},
       it('should not allow collection names with over than 50 characters', function(){
         var maxLength = 50;
         var overSizedValue = new Array(maxLength + 2).join('x'); // Produces maxLength+1 chars
-å
+
         testKit.setValue(inputId, overSizedValue, true);
 
-        testKit.assertMaxLength(helpMessages, input, overSizedValue, maxLength);
+        testKit.assertMaxLength(helpMessages, inputId, overSizedValue, maxLength);
       });
     }}
   });

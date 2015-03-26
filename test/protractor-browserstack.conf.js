@@ -12,7 +12,8 @@ exports.config = {
   jasmineNodeOpts: {
     defaultTimeoutInterval: 5 * 60 * 1000, // 5 Minutes
     browserNoActivityTimeout: 50000,
-    captureTimeout: 60000
+    captureTimeout: 60000,
+    includeStackTrace: true
   },
   maxSessions: 2,
   // Capabilities to be passed to the webdriver instance.

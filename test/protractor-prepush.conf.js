@@ -5,8 +5,15 @@ exports.config = {
   // Small subset of tests. Entire suite will be run as part of CI.
   specs: ['e2e/spec/sign-in-reset-form.spec.js'],
 
+  allScriptsTimeout: 60000,
+  jasmineNodeOpts: {
+    defaultTimeoutInterval: 5 * 60 * 1000, // 5 Minutes
+    browserNoActivityTimeout: 50000,
+    captureTimeout: 60000,
+    includeStackTrace: true
+  },
   capabilities: {
-    browserName: 'firefox'
+    browserName: 'chrome'
   },
   onPrepare: function () {
     require('jasmine-reporters');

@@ -1,6 +1,7 @@
 (function(){
   'use strict';
 
+  var path = require('path');
   var TestKit = require('../../../test-kit.js');
   var SidebarPage = require('../../../pages/sidebar.page.js');
   var HeaderComposePage = require('../../../pages/header-compose.page.js');
@@ -116,6 +117,7 @@
           }
           else{
             this.createCollectionLink.click();
+            browser.waitForAngular();
 
             testKit.setValue(this.dialogCreateCollectionNameTextBoxId, collectionName);
             if(channelName){
@@ -123,6 +125,7 @@
             }
 
             this.dialogContinueButton.click();
+            browser.waitForAngular();
           }
         }
       }
@@ -194,9 +197,8 @@
     }},
 
     setFileInput: { value: function(filePath) {
-      var absolutePath = __dirname + '/' + filePath;
-      //console.log(absolutePath);
-      this.uploadInput.sendKeys(absolutePath);
+      // console.log(filePath);
+      this.uploadInput.sendKeys(filePath);
     }},
 
     includeTests: { value: function(page){
@@ -217,8 +219,8 @@
         var header = new HeaderComposePage();
         var collectionNameInputPage = new CollectionNameInputPage();
 
-        var filePath = '../../../sample-image.jpg';
-        var tinyFilePath = '../../../sample-image-tiny.jpg';
+        var filePath = path.resolve(__dirname + '/../../../sample-image.jpg');
+        var tinyFilePath = path.resolve(__dirname + '/../../../sample-image-tiny.jpg');
 
         var channelNames;
 
@@ -389,10 +391,6 @@
             describe('when creator has one channel and one collection', function() {
 
               beforeEach(function () {
-
-                console.log('DEBUGGING!');
-                browser.sleep(99999999);
-
                 createCollection(firstCollectionName, channelNames[0], true);
               });
 
@@ -462,6 +460,11 @@
                   navigateToPage();
                   page.populateUpload(tinyFilePath);
                   page.createCollectionLink.click();
+                });
+
+                afterEach(function(){
+                  page.dialogContinueButton.click();
+                  browser.waitForAngular();
                 });
 
                 testKit.includeHappyPaths(page, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
