@@ -21,6 +21,20 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  var htmlMinOptions = {
+    conservativeCollapse:           true,
+    collapseBooleanAttributes:      true,
+    collapseWhitespace:             true,
+    removeAttributeQuotes:          true,
+    removeComments:                 true, // Only if you don't use comment directives!
+    removeEmptyAttributes:          true,
+    removeRedundantAttributes:      true,
+    removeScriptTypeAttributes:     true,
+    removeStyleLinkTypeAttributes:  true,
+    removeCommentsFromCDATA:        true,
+    removeOptionalTags:             true
+  };
+
   var developerName;
 
   function assignDeveloperName(err, stdout, stderr, cb) {
@@ -272,6 +286,30 @@ module.exports = function (grunt) {
       }
     },
 
+    ngtemplates: {
+      app: {
+        cwd: '<%= yeoman.app %>',
+        src: '*/**/*.html', // Include files from all child directory, recursively, but not the root.
+        dest: '<%= yeoman.app %>/scripts/generated/inline-views.js',
+        options: {
+          module: 'webApp',
+          htmlmin: htmlMinOptions
+        }
+      }
+    },
+
+    htmlmin: {
+      dist: {
+        options: htmlMinOptions,
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>',
+          src: ['*.html', '**/*.html'],
+          dest: '<%= yeoman.dist %>'
+        }]
+      }
+    },
+
     // The following *-min tasks will produce minified files in the dist folder
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
@@ -320,24 +358,6 @@ module.exports = function (grunt) {
       }
     },
 
-    htmlmin: {
-      dist: {
-        options: {
-          collapseWhitespace: true,
-          conservativeCollapse: true,
-          collapseBooleanAttributes: true,
-          removeCommentsFromCDATA: true,
-          removeOptionalTags: true
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.dist %>',
-          src: ['*.html', '**/*.html'],
-          dest: '<%= yeoman.dist %>'
-        }]
-      }
-    },
-
     // ng-annotate tries to make the code safe for minification automatically
     // by using the Angular long form for dependency injection.
     ngAnnotate: {
@@ -370,7 +390,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
-            '**/*.html',
+            // '**/*.html', // Do not copy views. These are in-lined via ngtemplates.
             'images/**/*',
             'images/**/*.{webp}',
             'fonts/**/*.*',
@@ -479,19 +499,19 @@ module.exports = function (grunt) {
 
     'file-creator': {
       local: {
-        'app/scripts/api.js': function(fs, fd, done) {
+        'app/scripts/generated/api.js': function(fs, fd, done) {
           fs.writeSync(fd, 'window.configuredApiBaseUri = \'https://10.211.55.3:44301/\';');
           done();
         }
       },
       live: {
-        'app/scripts/api.js': function(fs, fd, done) {
+        'app/scripts/generated/api.js': function(fs, fd, done) {
           fs.writeSync(fd, 'window.configuredApiBaseUri = \'https://api.fifthweek.com/\';');
           done();
         }
       },
       app: {
-        'app/scripts/developer.js': function(fs, fd, done) {
+        'app/scripts/generated/developer.js': function(fs, fd, done) {
           if(developerName){
             fs.writeSync(fd, 'window.developerName = \'' + developerName +  '\';');
           }
@@ -502,7 +522,7 @@ module.exports = function (grunt) {
         }
       },
       dist:{
-        'app/scripts/developer.js': function(fs, fd, done) {
+        'app/scripts/generated/developer.js': function(fs, fd, done) {
           fs.writeSync(fd, '');
           done();
         }
@@ -606,6 +626,7 @@ module.exports = function (grunt) {
   }
 
   grunt.registerTask('build', [
+    'ngtemplates',
     'clean:dist',
     'wiredep',
     'useminPrepare',

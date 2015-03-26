@@ -389,6 +389,10 @@
             describe('when creator has one channel and one collection', function() {
 
               beforeEach(function () {
+
+                console.log('DEBUGGING!');
+                browser.sleep(99999999);
+
                 createCollection(firstCollectionName, channelNames[0], true);
               });
 
