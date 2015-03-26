@@ -44,7 +44,6 @@ PasswordInputPage.prototype = Object.create({},
       var overSizedValue = new Array(maxLength + 2).join('x');
 
       populateOtherInputsWithValidData();
-      testKit.clear(inputId);
       testKit.setValue(inputId, overSizedValue, true);
 
       testKit.assertMaxLength(helpMessages, inputId, overSizedValue, maxLength);

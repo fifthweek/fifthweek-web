@@ -7,6 +7,7 @@
   var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
   var DateTimePickerPage = require('../../../pages/date-time-picker.page.js');
 
+  var testKit = new TestKit();
   var collectionNameInputPage = new CollectionNameInputPage();
   var dateTimePickerPage = new DateTimePickerPage();
 
@@ -38,15 +39,15 @@
     uploadInput: { get: function() { return element(by.css('#file-upload-button-area input')); }},
     uploadButton: { get: function() { return element(by.css('#file-upload-button-area .btn')); }},
 
-    commentTextBox: { get: function() { return element(by.id('model-input-comment')); }},
+    commentTextBoxId: { value: 'model-input-comment' },
     collectionSelect: { get: function() { return element(by.id('model-input-selected-collection')); }},
     createCollectionLink: { get: function() { return element(by.css('.create-collection-link')); }},
 
-    dialogCreateCollectionNameTextBox: { get: function() { return element(by.css('#create-collection-form input[type=text]')); }},
+    dialogCreateCollectionNameTextBoxId: { value: 'new-collection-modal-input' },
     dialogContinueButton: { get: function() { return element(by.css('#create-collection-form button[fw-form-submit="submit()"]')); }},
 
     createCollectionAreaCount: { get: function() { return element.all(by.id('new-collection-area')).count(); }},
-    createCollectionNameTextBox: { get: function() { return element(by.css('#new-collection-area input[type=text]')); }},
+    createCollectionNameTextBoxId: { value: 'new-collection-area-input' },
 
     postToQueueRadio: { get: function() { return element(by.css('input[ng-value="true"]')); }},
     postOnDateRadio: { get: function() { return element(by.css('input[ng-value="false"]')); }},
@@ -99,8 +100,7 @@
 
       var date = new Date();
       var commentText = 'Comment on ' + date.toISOString();
-      this.commentTextBox.clear();
-      this.commentTextBox.sendKeys(commentText);
+      testKit.setValue(this.commentTextBoxId, commentText);
 
       if(collectionName){
         if(!createCollection){
@@ -109,7 +109,7 @@
         }
         else{
           if(isFirstCollection){
-            this.createCollectionNameTextBox.sendKeys(collectionName);
+            testKit.setValue(this.createCollectionNameTextBoxId, collectionName);
             if(channelName){
               element(by.cssContainingText('#new-collection-area option', channelName)).click();
             }
@@ -117,7 +117,7 @@
           else{
             this.createCollectionLink.click();
 
-            this.dialogCreateCollectionNameTextBox.sendKeys(collectionName);
+            testKit.setValue(this.dialogCreateCollectionNameTextBoxId, collectionName);
             if(channelName){
               element(by.cssContainingText('#create-collection-form option', channelName)).click();
             }
@@ -215,7 +215,6 @@
         var commonWorkflows = new CommonWorkflows();
         var sidebar = new SidebarPage();
         var header = new HeaderComposePage();
-        var testKit = new TestKit();
         var collectionNameInputPage = new CollectionNameInputPage();
 
         var filePath = '../../../sample-image.jpg';
@@ -226,18 +225,15 @@
         var firstCollectionName = 'Collection 0';
         var secondCollectionName = 'Collection 1';
 
-        var createChannel = function(channelName){
+        var createChannel = function(){
           var result = commonWorkflows.createChannel();
           channelNames.push(result.name);
           navigateToPage();
         };
 
-        var createCollection = function(collectionName, channelName, isFirstCollection){
+        var createCollection = function(collectionName, channelName){
           commonWorkflows.createNamedCollection(channelName, collectionName);
           navigateToPage();
-          //page.createCollection(tinyFilePath, collectionName, channelName, isFirstCollection);
-          //expect(page.successMessage.isDisplayed()).toBe(true);
-          //page.postAnotherButton.click();
         };
 
         var verifySuccess = function(successMessage, collectionName, channelName){
@@ -313,7 +309,7 @@
                   page.populateUpload(tinyFilePath);
                   page.createCollectionLink.click();
 
-                  page.dialogCreateCollectionNameTextBox.sendKeys(firstCollectionName);
+                  testKit.setValue(page.dialogCreateCollectionNameTextBoxId, firstCollectionName);
 
                   page.dialogContinueButton.click();
 
@@ -445,13 +441,12 @@
 
               it('should allow symbols in the comment', function(){
                 testKit.setFormValues(page, page.inputs);
-                page.commentTextBox.clear();
-                page.commentTextBox.sendKeys(testKit.punctuation33);
+                testKit.setValue(page.commentTextBoxId, testKit.punctuation33);
               });
 
               it('should allow empty comments', function(){
                 testKit.setFormValues(page, page.inputs);
-                page.commentTextBox.clear();
+                testKit.clear(page.commentTextBoxId);
               });
 
               testKit.includeHappyPaths(page, collectionNameInputPage, 'createCollectionNameTextBox');
@@ -514,7 +509,7 @@
               dateTimePickerPage.includeSadPaths(page.postToBacklogButton, page.helpMessages, function() {});
 
               it('should run once after all', function(){
-                commonWorkflows.fastRefresh();
+                browser.refresh();
               });
             });
 
@@ -524,14 +519,13 @@
               });
 
               afterEach(function(){
-                commonWorkflows.fastRefresh();
+                browser.refresh();
               });
 
               it('should not allow a comment more than 2000 characters', function(){
                 testKit.setFormValues(page, page.inputs);
-                page.commentTextBox.clear();
                 var overSizedValue = new Array(2002).join( 'a' );
-                page.commentTextBox.sendKeys(overSizedValue);
+                testKit.setValue(page.commentTextBoxId, overSizedValue, true);
 
                 testKit.assertMaxLength(page.helpMessages, page.commentTextBox, overSizedValue, 2000);
               });
@@ -555,7 +549,7 @@
                 });
 
                 afterEach(function(){
-                  commonWorkflows.fastRefresh();
+                  browser.refresh();
                 });
 
                 testKit.includeSadPaths(page, page.dialogContinueButton, page.helpMessages, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');

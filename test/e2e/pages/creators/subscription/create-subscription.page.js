@@ -14,9 +14,9 @@ var CreateSubscriptionPage = function() {};
 
 CreateSubscriptionPage.prototype = Object.create({}, {
   pageUrl: { get: function () { return '/creators/create-subscription'; }},
-  nameTextBox: { get: function () { return element(by.model('newSubscriptionData.subscriptionName')); }},
-  taglineTextBox: { get: function () { return element(by.model('newSubscriptionData.tagline')); }},
-  basePriceTextBox: { get: function () { return element(by.id('newSubscriptionData-basePrice')); }},
+  nameTextBoxId: { value: 'newSubscriptionData-subscriptionName' },
+  taglineTextBoxId: { value: 'newSubscriptionData-tagline' },
+  basePriceTextBoxId: { value: 'newSubscriptionData-basePrice' },
   inputs: { value: [
     {
       name: 'nameTextBox',

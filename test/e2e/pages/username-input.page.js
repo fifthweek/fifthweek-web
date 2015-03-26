@@ -84,7 +84,6 @@ UsernameInputPage.prototype = Object.create({},
     });
 
     it('should not allow usernames with over than 20 characters', function(){
-      testKit.clear(inputId);
       var maxLength = 20;
       var overSizedValue = self.newUsername() + new Array(maxLength).join('x');
 

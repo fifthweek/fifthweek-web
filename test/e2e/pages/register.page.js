@@ -1,7 +1,10 @@
 'use strict';
 
+var TestKit = require('../test-kit.js');
 var UsernameInputPage = require('./username-input.page');
 var CreateSubscriptionPage = require('./creators/subscription/create-subscription.page.js');
+
+var testKit = new TestKit();
 
 var RegisterPage = function() {};
 
@@ -10,9 +13,6 @@ RegisterPage.prototype = Object.create({},
   emailTextBoxId: { get: function () { return 'registrationData-email'; }},
   usernameTextBoxId: { get: function () { return 'registrationData-username'; }},
   passwordTextBoxId: { get: function () { return 'registrationData-password'; }},
-  emailTextBox: { get: function () { return element(by.id(this.emailTextBoxId)); }},
-  usernameTextBox: { get: function () { return element(by.id(this.usernameTextBoxId)); }},
-  passwordTextBox: { get: function () { return element(by.id(this.passwordTextBoxId)); }},
   registerButton: { get: function () { return element(by.id('register-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#registrationForm .help-block')); }},
   nextPageUrl: { get: function () { return new CreateSubscriptionPage().pageUrl; }},
@@ -24,14 +24,10 @@ RegisterPage.prototype = Object.create({},
     var email = this.newEmail(username);
     var password = 'password1';
 
-    this.emailTextBox.sendKeys(email);
-    this.usernameTextBox.sendKeys(username);
-    this.passwordTextBox.sendKeys(password);
+    testKit.setValue(this.emailTextBoxId, email);
+    testKit.setValue(this.usernameTextBoxId, username);
+    testKit.setValue(this.passwordTextBoxId, password);
     this.registerButton.click();
-
-    // If the subsequent call is a `navigate` then the following is necessary to allow the
-    // registration to complete.
-    browser.waitForAngular();
 
     return {
       username: username,

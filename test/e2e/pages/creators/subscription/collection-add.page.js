@@ -11,7 +11,7 @@ var collectionNameInputPage = new CollectionNameInputPage();
 var CollectionAddPage = function() {};
 
 CollectionAddPage.prototype = Object.create({}, {
-  nameTextBox: { get: function () { return element(by.id('model-collection-name')); }},
+  nameTextBoxId: { value: 'model-collection-name' },
   channelSelectId: { get: function() { return 'model-selected-channel'; }},
   channelSelect: { get: function() { return element(by.id(this.channelSelectId)); }},
   inputs: { value: function(channelSelectTexts) { return [

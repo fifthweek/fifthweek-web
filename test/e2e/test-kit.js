@@ -43,23 +43,25 @@ TestKit.prototype = Object.create({}, {
     });
   }},
   clearForm: { value: function(page, inputs) {
+    var self = this;
     _.forEach(inputs, function(input) {
       var inputName = input.name;
       if (_.endsWith(inputName, 'TextBox')) {
-        page[inputName].clear();
+        self.clear(page[inputName + 'Id']);
       }
     });
   }},
   setFormValues: { value: function(page, inputsNeedingValues, values) {
+    var self = this;
     var newValues = {};
 
-    if (values) {
-      _.forOwn(values, function (value, inputName) {
-        if (page[inputName] === undefined) {
-          throw 'The given input "' + inputName + '" does not exist in the page object';
-        }
-      });
+    var validatePageObject = function(key) {
+      if (page[key] === undefined) {
+        throw 'The given property "' + key + '" does not exist in the page object';
+      }
+    };
 
+    if (values) {
       _.forOwn(values, function(value, inputName) {
         newValues[inputName] = value;
       });
@@ -76,10 +78,11 @@ TestKit.prototype = Object.create({}, {
 
     _.forOwn(newValues, function(newValue, inputName) {
       if (_.endsWith(inputName, 'TextBox')) {
-        page[inputName].clear();
-        page[inputName].sendKeys(newValue);
+        validatePageObject(inputName + 'Id');
+        self.setValue(page[inputName + 'Id'], newValue);
       }
       else if (_.endsWith(inputName, 'Checkbox')) {
+        validatePageObject(inputName);
         page[inputName].isSelected().then(function(currentValue) {
           if (currentValue != newValue) {
             page[inputName].click();
@@ -87,6 +90,8 @@ TestKit.prototype = Object.create({}, {
         });
       }
       else if (_.endsWith(inputName, 'Select')) {
+        validatePageObject(inputName + 'Id');
+
         element
           .all(by.css('#' + page[inputName + 'Id'] + ' option'))
           .filter(function(option) {
@@ -222,15 +227,27 @@ TestKit.prototype = Object.create({}, {
         }
       }
 
-      inputPage.includeSadPaths(page[inputName], button, helpMessages, isOptional);
+      inputPage.includeSadPaths(page[inputName + 'Id'], button, helpMessages, isOptional);
     });
   }},
   clear: { value: function(elementId) {
     browser.executeScript('angular.element(document.getElementById(\'' + elementId + '\')).val(\'\');');
   }},
   setValue: { value: function(elementId, value, blur) {
+
+    // One of the aspects that makes this method efficient is we do not await for angular before setting each input. If
+    // we did by enabling the following line, we would see waits between each input (similar to sendKeys, although still
+    // slightly faster). Therefore, we must intelligently use browser.waitForAngular when it is actually needed - i.e.
+    // after loading another page.
+    // browser.waitForAngular();
+
+    value = value.replace(/\n/g, '\\n');
+
     var changeValue = 'angular.element(document.getElementById(\'' + elementId + '\')).val(\'' + value + '\').trigger(\'change\')';
-    browser.executeScript(blur ? changeValue + '.blur()' : changeValue);
+    browser.controlFlow().execute(function() {
+      // console.log('SET ' + elementId + ' = ' + value);
+      browser.executeScript(blur ? changeValue + '.blur()' : changeValue);
+    });
   }}
 });
 

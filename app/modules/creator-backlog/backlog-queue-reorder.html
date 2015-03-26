@@ -6,7 +6,7 @@
 <div ng-if="false">
   <fw-breadcrumb current="{{model.collectionName}}"></fw-breadcrumb>
 
-  <div class="posts posts-with-margin tagged-posts queue" ui-sortable>
+  <div class="posts posts-with-margin tagged-posts queue"> <!-- ui-sortable -->
     <div class="post" ng-repeat="post in posts">
       <div ng-class="{'non-image-post': !post.imagePath, 'image-post': post.imagePath, 'file-post': post.filePath}">
         <img ng-if="post.imagePath" ng-src="{{post.imagePath}}" ng-click="viewImage(post)"/>

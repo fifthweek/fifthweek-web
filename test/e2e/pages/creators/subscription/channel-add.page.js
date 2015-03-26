@@ -13,9 +13,9 @@ var channelPriceInputPage = new ChannelPriceInputPage();
 var ChannelAddPage = function() {};
 
 ChannelAddPage.prototype = Object.create({}, {
-  nameTextBox: { get: function () { return element(by.id('model-channel-name')); }},
-  descriptionTextBox: { get: function () { return element(by.id('model-channel-description')); }},
-  priceTextBox: { get: function () { return element(by.id('model-channel-price')); }},
+  nameTextBoxId: { value: 'model-channel-name' },
+  descriptionTextBoxId: { value: 'model-channel-description' },
+  priceTextBoxId: { value: 'model-channel-price' },
   hiddenCheckboxSelector: { get: function () { return by.id('model-channel-hidden'); }},
   hiddenCheckbox: { get: function () { return element(this.hiddenCheckboxSelector); }},
   hiddenCheckboxCount: { get: function () { return element.all(this.hiddenCheckboxSelector).count(); }},

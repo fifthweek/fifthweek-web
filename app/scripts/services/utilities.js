@@ -102,7 +102,7 @@ angular.module('webApp')
         var scopeService = service.forScope(scope);
 
         if(attrs.ngModel){
-          scope.inputId = attrs.ngModel.replace(/\./g, '-');
+          scope.inputId = attrs.inputId || attrs.ngModel.replace(/\./g, '-');
 
           var modelAccessorInfo = scopeService.getAccessor(attrs.ngModel);
           scope.ngModel = modelAccessorInfo.root;

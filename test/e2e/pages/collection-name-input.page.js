@@ -32,11 +32,11 @@ CollectionNameInputPage.prototype = Object.create({},
         applyValue(' ' + normalizedValue + ' ', normalizedValue);
       });
     }},
-    includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
+    includeSadPaths: { value: function(inputId, button, helpMessages, isOptional) {
 
       if(!isOptional) {
         it('requires collection name', function () {
-          input.clear();
+          testKit.clear(inputId);
 
           button.click();
 
@@ -45,12 +45,10 @@ CollectionNameInputPage.prototype = Object.create({},
       }
 
       it('should not allow collection names with over than 50 characters', function(){
-        input.clear();
-
         var maxLength = 50;
         var overSizedValue = new Array(maxLength + 2).join('x'); // Produces maxLength+1 chars
-
-        input.sendKeys(overSizedValue);
+å
+        testKit.setValue(inputId, overSizedValue, true);
 
         testKit.assertMaxLength(helpMessages, input, overSizedValue, maxLength);
       });

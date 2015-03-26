@@ -2,8 +2,6 @@
 
 angular
   .module('webApp', [
-    'mgcrea.ngStrap',
-    'ngAnimate',
     'ngResource',
     'ngRoute',
     'ui.router',
@@ -14,7 +12,6 @@ angular
     'ui.bootstrap',
     'snap',
     'monospaced.elastic',
-    'ui.sortable',
     'angulartics',
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',
