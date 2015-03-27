@@ -42,16 +42,10 @@ describe('sign-in - reset password form', function() {
     signInPage.forgotDetailsLink.click();
 
     mailboxPage.getMailboxUrl(username).then(function(mailboxUrl) {
-      return signInForgotPage.emailTextBox.sendKeys(email)
-        .then(function() {
-          return signInForgotPage.resetPasswordButton.click();
-        })
-        .then(function() {
-          return browser.waitForAngular(); // Not automatically awaited on get.
-        })
-        .then(function() {
-          browser.get(mailboxUrl); // Thing that actually requires all these manual continuations!
-        });
+      testKit.setValue(signInForgotPage.emailTextBoxId, email);
+      signInForgotPage.resetPasswordButton.click();
+      browser.waitForAngular();
+      browser.get(mailboxUrl);
     });
 
     testKit.rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink).then(function(url) {
@@ -71,7 +65,7 @@ describe('sign-in - reset password form', function() {
       expect(page.successMessage.isDisplayed()).toBe(true);
     });
 
-    passwordInputPage.includeHappyPaths(page.passwordTextBox, function() { });
+    passwordInputPage.includeHappyPaths(page.passwordTextBoxId, function() { });
   });
 
   describe('when validating against bad input', function() {
@@ -83,7 +77,7 @@ describe('sign-in - reset password form', function() {
       commonWorkflows.fastRefresh();
     });
 
-    passwordInputPage.includeSadPaths(page.passwordTextBox, page.resetPasswordButton, page.helpMessages, function() { });
+    passwordInputPage.includeSadPaths(page.passwordTextBoxId, page.resetPasswordButton, page.helpMessages, function() { });
   });
 
   describe('after resetting password', function() {
@@ -92,7 +86,7 @@ describe('sign-in - reset password form', function() {
 
     it('should run once before all', function() {
       navigateToPage();
-      page.passwordTextBox.sendKeys(newPassword);
+      testKit.setValue(page.passwordTextBoxId, newPassword);
       page.resetPasswordButton.click();
     });
 
