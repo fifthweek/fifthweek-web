@@ -3,6 +3,7 @@
 
   var _ = require('lodash');
   var Defaults = require('../../defaults.js');
+  var TestKit = require('../../test-kit.js');
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
   var HeaderPage = require('../../pages/header.page.js');
@@ -18,6 +19,7 @@
     var visibleChannels = [];
 
     var defaults = new Defaults();
+    var testKit = new TestKit();
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
     var headerStandard = new HeaderPage();
@@ -66,8 +68,7 @@
         page.fifthweekLink.click();
         sidebar.subscriptionLink.click();
         customizeLandingPagePage.fullDescriptionTabLink.click();
-        customizeLandingPagePage.descriptionTextBox.clear();
-        customizeLandingPagePage.descriptionTextBox.sendKeys(fullDescription);
+        testKit.setValue(customizeLandingPagePage.descriptionTextBoxId, fullDescription);
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
         navigateToPage();
 
@@ -80,9 +81,8 @@
         page.fifthweekLink.click();
         sidebar.subscriptionLink.click();
         customizeLandingPagePage.fullDescriptionTabLink.click();
-        customizeLandingPagePage.descriptionTextBox.clear();
-        customizeLandingPagePage.videoTextBox.clear();
-        customizeLandingPagePage.videoTextBox.sendKeys('https://' + videoUrlDomain + '/' + videoUrlId);
+        testKit.clear(customizeLandingPagePage.descriptionTextBoxId);
+        testKit.setValue(customizeLandingPagePage.videoTextBoxId, 'https://' + videoUrlDomain + '/' + videoUrlId);
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
         navigateToPage();
 
@@ -96,7 +96,7 @@
         page.fifthweekLink.click();
         sidebar.subscriptionLink.click();
         customizeLandingPagePage.fullDescriptionTabLink.click();
-        customizeLandingPagePage.descriptionTextBox.sendKeys(fullDescription);
+        testKit.setValue(customizeLandingPagePage.descriptionTextBoxId, fullDescription);
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
         navigateToPage();
 
