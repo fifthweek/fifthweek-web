@@ -22,6 +22,7 @@ angular.module('webApp')
 
     // Clone this immediately so we can't accidentally modify it.
     post = _.cloneDeep(post);
+    delete post.moment; // The moment can't be used after cloning, and we don't need it.
 
     var postTypes = postEditDialogConstants.postTypes;
     var scheduleModes = postEditDialogConstants.scheduleModes;

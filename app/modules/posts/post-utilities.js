@@ -153,7 +153,7 @@ angular.module('webApp').factory('postUtilities',
       return firstPost.moment.isAfter(secondPost.moment) || firstPost.moment.isSame(secondPost.moment);
     };
 
-    service.reorderPostsIfRequired = function(isBacklog, posts, oldPostMoment, newPost){
+    service.replacePostAndReorderIfRequired = function(isBacklog, posts, oldPostMoment, newPost){
       var shouldRemove = false;
       if(isBacklog){
         shouldRemove = !newPost.isScheduled;
@@ -168,6 +168,11 @@ angular.module('webApp').factory('postUtilities',
       }
 
       if(posts.length === 1 || oldPostMoment.isSame(newPost.moment)){
+        var index = _.findIndex(posts, { postId: newPost.postId });
+        if(index !== -1){
+          newPost.dayGrouping = posts[index].dayGrouping;
+          posts[index] = newPost;
+        }
         return;
       }
 
@@ -189,7 +194,6 @@ angular.module('webApp').factory('postUtilities',
       posts.push(newPost);
       // We know there are at least two posts in the list at this point.
       processPostDayGrouping(posts[posts.length - 1], posts[posts.length - 2]);
-      return;
     };
 
     return service;

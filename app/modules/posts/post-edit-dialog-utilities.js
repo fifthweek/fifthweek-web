@@ -8,6 +8,11 @@ angular.module('webApp').factory('postEditDialogUtilities',
     var service = {};
     service.internal = {};
 
+    var areDatesEqual = function(a, b){
+      // http://stackoverflow.com/a/15470800
+      return a === b || a - b === 0;
+    };
+
     var getFileName = function(filePath){
       return filePath.replace(/^.*[\\\/]/, '');
     };
@@ -18,6 +23,18 @@ angular.module('webApp').factory('postEditDialogUtilities',
 
     var getFileNameWithoutExtension = function(fileName, fileExtension){
       return fileName.substring(0, fileName.length - fileExtension.length - 1);
+    };
+
+    var hasSchedulingChanged = function(model){
+      if(model.input.scheduleMode !== model.savedScheduleMode){
+        return true;
+      }
+
+      if(model.input.scheduleMode === scheduleModes.scheduled){
+        return !areDatesEqual(model.savedDate, model.input.date);
+      }
+
+      return false;
     };
 
     service.internal.saveContent = function(postId, model){
@@ -44,7 +61,7 @@ angular.module('webApp').factory('postEditDialogUtilities',
     };
 
     service.internal.saveSchedule = function(postId, model){
-      if(model.input.scheduleMode !== model.savedScheduleMode){
+      if(hasSchedulingChanged(model)){
         if(model.input.scheduleMode === scheduleModes.now){
           return postsStub.postToLive(postId);
         }
@@ -77,7 +94,6 @@ angular.module('webApp').factory('postEditDialogUtilities',
       };
     };
 
-
     service.performSave = function(postId, model){
       return service.internal.saveContent(postId, model)
         .then(function(){
@@ -100,17 +116,19 @@ angular.module('webApp').factory('postEditDialogUtilities',
       post.image = model.input.image;
       post.imageSource = model.input.imageSource;
 
-      if(model.input.scheduleMode === scheduleModes.now){
-        delete post.scheduledByQueue;
-        post.liveDate = new Date().toISOString();
-      }
-      else if(model.input.scheduleMode === scheduleModes.queued){
-        post.scheduledByQueue = true;
-        post.liveDate = model.queuedLiveDate.toISOString();
-      }
-      else if(model.input.scheduleMode === scheduleModes.scheduled){
-        post.scheduledByQueue = false;
-        post.liveDate = model.input.date.toISOString();
+      if(hasSchedulingChanged(model)){
+        if(model.input.scheduleMode === scheduleModes.now){
+          delete post.scheduledByQueue;
+          post.liveDate = new Date().toISOString();
+        }
+        else if(model.input.scheduleMode === scheduleModes.queued){
+          post.scheduledByQueue = true;
+          post.liveDate = model.queuedLiveDate.toISOString();
+        }
+        else if(model.input.scheduleMode === scheduleModes.scheduled){
+          post.scheduledByQueue = false;
+          post.liveDate = model.input.date.toISOString();
+        }
       }
 
       return postUtilities.processPostForRendering(post);

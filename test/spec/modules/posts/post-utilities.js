@@ -626,7 +626,7 @@ describe('post-utilities', function(){
     });
   });
 
-  describe('when calling reorderPostsIfRequired', function(){
+  describe('when calling replacePostAndReorderIfRequired', function(){
     var changedMoment;
     beforeEach(function(){
       changedMoment = moment(1);
@@ -635,14 +635,14 @@ describe('post-utilities', function(){
     it('should remove the post if it has become scheduled on the timeline', function(){
       var post = { postId: 'a', isScheduled: true };
       var posts = [post];
-      target.reorderPostsIfRequired(false, posts, undefined, post);
+      target.replacePostAndReorderIfRequired(false, posts, undefined, post);
       expect(posts.length).toBe(0);
     });
 
     it('should not remove the post if it has not become scheduled on the timeline', function(){
       var post = { postId: 'a', isScheduled: false };
       var posts = [post];
-      target.reorderPostsIfRequired(false, posts, undefined, post);
+      target.replacePostAndReorderIfRequired(false, posts, undefined, post);
       expect(posts.length).toBe(1);
       expect(posts[0]).toBe(post);
     });
@@ -650,14 +650,14 @@ describe('post-utilities', function(){
     it('should remove the post if it has become unscheduled on the backlog', function(){
       var post = { postId: 'a', isScheduled: false };
       var posts = [post];
-      target.reorderPostsIfRequired(true, posts, undefined, post);
+      target.replacePostAndReorderIfRequired(true, posts, undefined, post);
       expect(posts.length).toBe(0);
     });
 
     it('should not remove the post if it has not become unscheduled on the backlog', function(){
       var post = { postId: 'a', isScheduled: true };
       var posts = [post];
-      target.reorderPostsIfRequired(true, posts, undefined, post);
+      target.replacePostAndReorderIfRequired(true, posts, undefined, post);
       expect(posts.length).toBe(1);
       expect(posts[0]).toBe(post);
     });
@@ -668,8 +668,36 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: true, moment: moment(100) };
         var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(true, posts, moment(post2.moment), post2);
+        target.replacePostAndReorderIfRequired(true, posts, moment(post2.moment), post2);
         expect(posts).toEqual([post1, post2, post3]);
+      });
+
+      it('should replace the post if the order has not changed', function(){
+        var post1 = { postId: '1', isScheduled: true, moment: moment(20) };
+        var post2 = { postId: '2', isScheduled: true, moment: moment(100) };
+        var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
+        var posts = [post1, post2,  post3];
+        var newPost2 = _.cloneDeep(post2);
+        newPost2.moment = post2.moment;
+        target.replacePostAndReorderIfRequired(true, posts, moment(post2.moment), newPost2);
+        expect(posts[0]).toBe(post1);
+        expect(posts[1]).not.toBe(post2);
+        expect(posts[1]).toBe(newPost2);
+        expect(posts[2]).toBe(post3);
+      });
+
+      it('should replace the post if the order has changed', function(){
+        var post1 = { postId: '1', isScheduled: true, moment: moment(20) };
+        var post2 = { postId: '2', isScheduled: true, moment: moment(10) };
+        var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
+        var posts = [post1, post2,  post3];
+        var newPost2 = _.cloneDeep(post2);
+        newPost2.moment = post2.moment;
+        target.replacePostAndReorderIfRequired(true, posts, changedMoment, newPost2);
+        expect(posts[0]).not.toBe(post2);
+        expect(posts[0]).toBe(newPost2);
+        expect(posts[1]).toBe(post1);
+        expect(posts[2]).toBe(post3);
       });
 
       it('should reorder the posts ascending 1', function(){
@@ -677,7 +705,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: true, moment: moment(40) };
         var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(true, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(true, posts, changedMoment, post2);
         expect(posts).toEqual([post1, post2, post3]);
       });
 
@@ -686,7 +714,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: true, moment: moment(10) };
         var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(true, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(true, posts, changedMoment, post2);
         expect(posts).toEqual([post2, post1, post3]);
       });
 
@@ -695,7 +723,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: true, moment: moment(80) };
         var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(true, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(true, posts, changedMoment, post2);
         expect(posts).toEqual([post1, post3, post2]);
       });
 
@@ -704,7 +732,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: true, moment: moment(20) };
         var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(true, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(true, posts, changedMoment, post2);
         expect(posts).toEqual([post1, post2, post3]);
       });
 
@@ -713,7 +741,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: true, moment: moment(20) };
         var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(true, posts, changedMoment, post1);
+        target.replacePostAndReorderIfRequired(true, posts, changedMoment, post1);
         expect(posts).toEqual([post2, post1, post3]);
       });
     });
@@ -724,8 +752,49 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment(100) };
         var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, moment(post2.moment), post2);
+        target.replacePostAndReorderIfRequired(false, posts, moment(post2.moment), post2);
         expect(posts).toEqual([post1, post2, post3]);
+      });
+
+      it('should inherit dayGrouping if the post moment has not changed', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
+        var post2 = { postId: '2', isScheduled: false, moment: moment(100), dayGrouping: false };
+        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
+        var posts = [post1, post2,  post3];
+        var newPost2 = _.cloneDeep(post2);
+        newPost2.dayGrouping = true;
+        newPost2.moment = post2.moment;
+        target.replacePostAndReorderIfRequired(false, posts, moment(post2.moment), newPost2);
+        expect(posts).toEqual([post1, post2, post3]);
+        expect(newPost2.dayGrouping).toBe(false);
+      });
+
+      it('should replace the post if the order has not changed', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
+        var post2 = { postId: '2', isScheduled: false, moment: moment(100) };
+        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
+        var posts = [post1, post2,  post3];
+        var newPost2 = _.cloneDeep(post2);
+        newPost2.moment = post2.moment;
+        target.replacePostAndReorderIfRequired(false, posts, moment(post2.moment), newPost2);
+        expect(posts[0]).toBe(post1);
+        expect(posts[1]).not.toBe(post2);
+        expect(posts[1]).toBe(newPost2);
+        expect(posts[2]).toBe(post3);
+      });
+
+      it('should replace the post if the order has changed', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
+        var post2 = { postId: '2', isScheduled: false, moment: moment(10) };
+        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
+        var posts = [post1, post2,  post3];
+        var newPost2 = _.cloneDeep(post2);
+        newPost2.moment = post2.moment;
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, newPost2);
+        expect(posts[0]).toBe(post1);
+        expect(posts[1]).toBe(post3);
+        expect(posts[2]).not.toBe(post2);
+        expect(posts[2]).toBe(newPost2);
       });
 
       it('should reorder the posts descending 1', function(){
@@ -733,7 +802,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment(40) };
         var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
         expect(posts).toEqual([post1, post2, post3]);
       });
 
@@ -742,7 +811,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment(10) };
         var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
         expect(posts).toEqual([post1, post3, post2]);
       });
 
@@ -751,7 +820,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment(80) };
         var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
         expect(posts).toEqual([post2, post1, post3]);
       });
 
@@ -760,7 +829,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment(20) };
         var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
         expect(posts).toEqual([post1, post2, post3]);
       });
 
@@ -769,7 +838,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment(20) };
         var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post3);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post3);
         expect(posts).toEqual([post1, post3, post2]);
       });
 
@@ -778,7 +847,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-15T04'), dayGrouping: false };
         var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
         expect(posts).toEqual([post1, post2, post3]);
         expect(posts[0].dayGrouping).toBe(true);
         expect(posts[1].dayGrouping).toBe(false);
@@ -790,7 +859,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-15T02'), dayGrouping: false };
         var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
         expect(posts).toEqual([post1, post3, post2]);
         expect(posts[0].dayGrouping).toBe(true);
         expect(posts[1].dayGrouping).toBe(false);
@@ -802,7 +871,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-15T06'), dayGrouping: false };
         var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
         expect(posts).toEqual([post2, post1, post3]);
         expect(posts[0].dayGrouping).toBe(true);
         expect(posts[1].dayGrouping).toBe(false);
@@ -814,7 +883,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-16T04'), dayGrouping: false };
         var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
         expect(posts).toEqual([post2, post1, post3]);
         expect(posts[0].dayGrouping).toBe(true);
         expect(posts[1].dayGrouping).toBe(true);
@@ -826,7 +895,7 @@ describe('post-utilities', function(){
         var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-14T04'), dayGrouping: false };
         var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
         var posts = [post1, post2,  post3];
-        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
         expect(posts).toEqual([post1, post3, post2]);
         expect(posts[0].dayGrouping).toBe(true);
         expect(posts[1].dayGrouping).toBe(false);

@@ -58,7 +58,7 @@ angular.module('webApp').controller('fwPostListCtrl',
 
       modalResult.result.then(function(newPost){
         var isBacklog = $scope.source === fwPostListConstants.sources.creatorBacklog;
-        postUtilities.reorderPostsIfRequired(isBacklog, model.posts, post.moment, newPost);
+        postUtilities.replacePostAndReorderIfRequired(isBacklog, model.posts, post.moment, newPost);
       });
     };
 

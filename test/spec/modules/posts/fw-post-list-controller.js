@@ -30,7 +30,7 @@ describe('fw-post-list-controller', function(){
     fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateInParallel']);
     postsStub = jasmine.createSpyObj('postsStub', ['getCreatorBacklog', 'getCreatorNewsfeed']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
-    postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'processPostsForRendering', 'removePost', 'reorderPostsIfRequired']);
+    postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'processPostsForRendering', 'removePost', 'replacePostAndReorderIfRequired']);
 
     module('webApp');
     module(function($provide) {
@@ -233,7 +233,7 @@ describe('fw-post-list-controller', function(){
           });
 
           it('should reorder posts if required', function(){
-            expect(postUtilities.reorderPostsIfRequired).toHaveBeenCalledWith(
+            expect(postUtilities.replacePostAndReorderIfRequired).toHaveBeenCalledWith(
               true, $scope.model.posts, post1.moment, post2
             );
           });
@@ -255,7 +255,7 @@ describe('fw-post-list-controller', function(){
           });
 
           it('should reorder posts if required', function(){
-            expect(postUtilities.reorderPostsIfRequired).toHaveBeenCalledWith(
+            expect(postUtilities.replacePostAndReorderIfRequired).toHaveBeenCalledWith(
               false, $scope.model.posts, post1.moment, post2
             );
           });
@@ -276,7 +276,7 @@ describe('fw-post-list-controller', function(){
         });
 
         it('should not reorder posts', function(){
-          expect(postUtilities.reorderPostsIfRequired).not.toHaveBeenCalled();
+          expect(postUtilities.replacePostAndReorderIfRequired).not.toHaveBeenCalled();
         });
       });
     });
