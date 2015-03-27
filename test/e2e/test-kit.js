@@ -241,7 +241,7 @@ TestKit.prototype = Object.create({}, {
     // after loading another page.
     // browser.waitForAngular();
 
-    value = value.replace(/\n/g, '\\n').replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
+    value = value.replace(/\\/g, '\\\\').replace(/'/g, '\\\'').replace(/\n/g, '\\n');
 
     var changeValue = 'angular.element(document.getElementById(\'' + elementId + '\')).val(\'' + value + '\').trigger(\'change\')';
     browser.controlFlow().execute(function() {

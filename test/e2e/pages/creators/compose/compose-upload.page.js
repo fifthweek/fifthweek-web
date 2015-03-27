@@ -89,6 +89,8 @@
           return postButton.isPresent();
         });
       }
+
+      browser.waitForAngular();
     }},
 
     getCollectionOptionCount: { value: function(collectionName, channelName){
@@ -125,10 +127,11 @@
             }
 
             this.dialogContinueButton.click();
-            browser.waitForAngular();
           }
         }
       }
+
+      browser.waitForAngular();
 
       return {
         commentText: commentText,
