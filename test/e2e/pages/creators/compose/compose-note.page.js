@@ -1,7 +1,10 @@
 (function(){
   'use strict';
 
+  var TestKit = require('../../../test-kit.js');
   var DateTimePickerPage = require('../../../pages/date-time-picker.page.js');
+
+  var testKit = new TestKit();
   var dateTimePickerPage = new DateTimePickerPage();
 
   var composeNotePage = function() {};
@@ -14,7 +17,7 @@
     postToBacklogButton: { get: function() { return element(by.css('button[fw-form-submit="postToBacklog()"]')); }},
     cancelButton: { get: function() { return element(by.css('button[ng-click="cancelPostLater()"]')); }},
 
-    contentTextBox: { get: function() { return element(by.id('model-input-note')); }},
+    contentTextBoxId: { value: 'model-input-note' },
     channelSelect: { get: function() { return element(by.id('model-input-selected-channel')); }},
 
     successMessage: { get: function(){ return element(by.css('.alert-success')); }},
@@ -27,8 +30,7 @@
     populateContent: { value: function(channelName){
       var date = new Date();
       var noteText = 'Note on ' + date.toISOString();
-      this.contentTextBox.clear();
-      this.contentTextBox.sendKeys(noteText);
+      testKit.setValue(this.contentTextBoxId, noteText);
 
       if(channelName){
         element(by.cssContainingText('#model-input-selected-channel option', channelName)).click();

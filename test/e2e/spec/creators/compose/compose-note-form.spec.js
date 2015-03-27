@@ -122,20 +122,17 @@ describe('compose note form', function() {
         });
 
         it('should allow symbols in the content', function(){
-          page.contentTextBox.clear();
-          page.contentTextBox.sendKeys(testKit.punctuation33);
+          testKit.setValue(page.contentTextBoxId, testKit.punctuation33);
         });
 
         it('should allow numbers in the content', function(){
-          page.contentTextBox.clear();
-          page.contentTextBox.sendKeys('0123456789');
+          testKit.setValue(page.contentTextBoxId, '0123456789');
         });
       });
 
       describe('when posting to backlog', function(){
         beforeEach(function(){
-          page.contentTextBox.clear();
-          page.contentTextBox.sendKeys('0123456789');
+          testKit.setValue(page.contentTextBoxId, '0123456789');
           page.postLaterButton.click();
         });
 
@@ -162,8 +159,7 @@ describe('compose note form', function() {
       describe('when testing date time picker', function(){
 
         it('should run once before all', function() {
-          page.contentTextBox.clear();
-          page.contentTextBox.sendKeys('0123456789');
+          testKit.setValue(page.contentTextBoxId, '0123456789');
           page.postLaterButton.click();
         });
 
@@ -180,16 +176,15 @@ describe('compose note form', function() {
         });
 
         it('should not allow a note with more than 280 characters', function(){
-          page.contentTextBox.clear();
           var maxLength = 280;
           var overSizedValue = new Array(maxLength + 2).join( 'a' );
-          page.contentTextBox.sendKeys(overSizedValue);
+          testKit.setValue(page.contentTextBoxId, overSizedValue, true);
 
-          testKit.assertMaxLength(page.helpMessages, page.contentTextBox, overSizedValue, maxLength);
+          testKit.assertMaxLength(page.helpMessages, page.contentTextBoxId, overSizedValue, maxLength);
         });
 
         it('should not allow an empty note', function(){
-          page.contentTextBox.clear();
+          testKit.clear(page.contentTextBoxId);
           page.postNowButton.click();
 
           testKit.assertSingleValidationMessage(page.helpMessages,
@@ -197,7 +192,7 @@ describe('compose note form', function() {
         });
 
         it('should not allow an empty note when posting later', function(){
-          page.contentTextBox.clear();
+          testKit.clear(page.contentTextBoxId);
           page.postLaterButton.click();
 
           testKit.assertSingleValidationMessage(page.helpMessages,
