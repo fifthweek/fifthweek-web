@@ -1,7 +1,7 @@
 
 exports.config = {
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/sign-in-forgot-form.spec.js'],
+  specs: ['e2e/spec/**/sign-in-form.spec.js'],
   allScriptsTimeout: 60000,
   jasmineNodeOpts: {
     defaultTimeoutInterval: 5 * 60 * 1000, // 5 Minutes

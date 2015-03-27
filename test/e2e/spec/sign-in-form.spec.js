@@ -1,3 +1,4 @@
+var TestKit = require('../test-kit.js');
 var HomePage = require('../pages/home.page.js');
 var UsernameInputPage = require('../pages/username-input.page.js');
 var SignOutPage = require('../pages/sign-out.page.js');
@@ -7,6 +8,7 @@ var RegisterPage = require('../pages/register.page.js');
 describe('sign-in form', function() {
   'use strict';
 
+  var testKit = new TestKit();
   var homePage = new HomePage();
   var usernameInputPage = new UsernameInputPage();
   var signOutPage = new SignOutPage();
@@ -26,8 +28,8 @@ describe('sign-in form', function() {
       var username = usernameInputPage.newUsername();
       var password = username + '123';
 
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys(password);
+      testKit.setValue(page.usernameTextBoxId, username);
+      testKit.setValue(page.passwordTextBoxId, password);
       page.signInButton.click();
 
       expect(page.message.getText()).toContain('Invalid username or password');
@@ -48,8 +50,8 @@ describe('sign-in form', function() {
     afterEach(navigateToPage);
 
     it('should allow the existing user to sign in', function(){
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys(password);
+      testKit.setValue(page.usernameTextBoxId, username);
+      testKit.setValue(page.passwordTextBoxId, password);
       page.signInButton.click();
       expect(browser.getCurrentUrl()).toContain(page.nextPageUrl);
     });
@@ -60,23 +62,23 @@ describe('sign-in form', function() {
       expect(username.length === username2.length).toBeTruthy();
       expect(username !== username2).toBeTruthy();
 
-      page.usernameTextBox.sendKeys(username2);
-      page.passwordTextBox.sendKeys(password);
+      testKit.setValue(page.usernameTextBoxId, username2);
+      testKit.setValue(page.passwordTextBoxId, password);
       page.signInButton.click();
 
       expect(browser.getCurrentUrl()).toContain(page.nextPageUrl);
     });
 
     it('should require a valid password', function(){
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys(password + 'X');
+      testKit.setValue(page.usernameTextBoxId, username);
+      testKit.setValue(page.passwordTextBoxId, password + 'X');
       page.signInButton.click();
       expect(page.message.getText()).toContain('Invalid username or password');
     });
 
     it('should require a valid username', function(){
-      page.usernameTextBox.sendKeys(username + 'X');
-      page.passwordTextBox.sendKeys(password);
+      testKit.setValue(page.usernameTextBoxId, username + 'X');
+      testKit.setValue(page.passwordTextBoxId, password);
       page.signInButton.click();
       expect(page.message.getText()).toContain('Invalid username or password');
     });
@@ -87,8 +89,8 @@ describe('sign-in form', function() {
       expect(password.length === password2.length).toBeTruthy();
       expect(password !== password2).toBeTruthy();
 
-      page.usernameTextBox.sendKeys(username);
-      page.passwordTextBox.sendKeys(password2);
+      testKit.setValue(page.usernameTextBoxId, username);
+      testKit.setValue(page.passwordTextBoxId, password2);
       page.signInButton.click();
 
       expect(page.message.getText()).toContain('Invalid username or password');
