@@ -39,13 +39,13 @@ VideoUrlInputPage.prototype = Object.create({},
       applyValue('http://vimeo.com/37328349');
     });
   }},
-  includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
+  includeSadPaths: { value: function(inputId, button, helpMessages, isOptional) {
     var self = this;
     var errorMessage = 'YouTube and Vimeo videos only. Must start with \'http://\' or \'https://\'.';
 
     if(!isOptional) {
       it('requires video URL', function () {
-        input.clear();
+        testKit.clear(inputId);
 
         button.click();
 
@@ -54,20 +54,17 @@ VideoUrlInputPage.prototype = Object.create({},
     }
 
     it('should not allow video URLs with over than 100 characters', function(){
-      input.clear();
-
       var maxLength = 100;
       var prefix = 'https://www.youtube.com/';
       var overSizedValue = prefix + new Array((maxLength - prefix.length) + 2).join('x'); // Produces maxLength+1 chars
 
-      input.sendKeys(overSizedValue);
+      testKit.setValue(inputId, overSizedValue, true);
 
-      testKit.assertMaxLength(helpMessages, input, overSizedValue, maxLength);
+      testKit.assertMaxLength(helpMessages, inputId, overSizedValue, maxLength);
     });
 
     it('should not allow invalid URLs', function(){
-      input.clear();
-      input.sendKeys('abc');
+      testKit.setValue(inputId, 'abc');
 
       button.click();
 
@@ -75,8 +72,7 @@ VideoUrlInputPage.prototype = Object.create({},
     });
 
     it('should not allow unsupported URLs', function(){
-      input.clear();
-      input.sendKeys('http://en.wikipedia.org/wiki/Lorem_ipsum');
+      testKit.setValue(inputId, 'http://en.wikipedia.org/wiki/Lorem_ipsum');
 
       button.click();
 

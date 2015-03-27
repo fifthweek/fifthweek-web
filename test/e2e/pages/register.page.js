@@ -28,6 +28,7 @@ RegisterPage.prototype = Object.create({},
     testKit.setValue(this.usernameTextBoxId, username);
     testKit.setValue(this.passwordTextBoxId, password);
     this.registerButton.click();
+    browser.waitForAngular();
 
     return {
       username: username,

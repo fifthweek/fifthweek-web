@@ -37,7 +37,7 @@
     postToBacklogButton: { get: function() { return element(by.css('button[fw-form-submit="postToBacklog()"]')); }},
     cancelButton: { get: function() { return element(by.css('button[ng-click="cancelPostLater()"]')); }},
 
-    uploadInput: { get: function() { return element(by.css('#file-upload-button-area input')); }},
+    uploadInput: { get: function() { return element(by.id('file-upload-button-input')); }},
     uploadButton: { get: function() { return element(by.css('#file-upload-button-area .btn')); }},
 
     commentTextBoxId: { value: 'model-input-comment' },

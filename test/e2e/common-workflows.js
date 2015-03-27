@@ -47,7 +47,6 @@
     createSubscription: { value: function() {
       signOutPage.signOutAndGoHome();
       var registration = registerPage.registerSuccessfully();
-      browser.waitForAngular();
       var subscription = createSubscriptionPage.submitSuccessfully();
 
       return {

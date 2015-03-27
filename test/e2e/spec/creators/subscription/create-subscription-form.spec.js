@@ -34,15 +34,14 @@ describe('create subscription form', function() {
     });
 
     it('should allow a new subscription to be created', function(){
-      page.nameTextBox.sendKeys(subscriptionNameInputPage.newName());
-      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
-      page.basePriceTextBox.clear();
-      page.basePriceTextBox.sendKeys(channelPriceInputPage.newPrice());
+      testKit.setValue(page.nameTextBoxId, subscriptionNameInputPage.newName());
+      testKit.setValue(page.taglineTextBoxId, taglineInputPage.newTagline());
+      testKit.setValue(page.basePriceTextBoxId, channelPriceInputPage.newPrice());
     });
 
     it('should not require base price to be entered', function(){
-      page.nameTextBox.sendKeys(subscriptionNameInputPage.newName());
-      page.taglineTextBox.sendKeys(taglineInputPage.newTagline());
+      testKit.setValue(page.nameTextBoxId, subscriptionNameInputPage.newName());
+      testKit.setValue(page.taglineTextBoxId, taglineInputPage.newTagline());
     });
 
     testKit.includeHappyPaths(page, subscriptionNameInputPage, 'nameTextBox', page.inputs);

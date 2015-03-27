@@ -35,11 +35,11 @@ SubscriptionNameInputPage.prototype = Object.create({},
       applyValue(' ' + self.newName() + ' ');
     });
   }},
-  includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
+  includeSadPaths: { value: function(inputId, button, helpMessages, isOptional) {
 
     if(!isOptional) {
       it('requires subscription name', function () {
-        input.clear();
+        testKit.clear(inputId);
 
         button.click();
 
@@ -48,14 +48,12 @@ SubscriptionNameInputPage.prototype = Object.create({},
     }
 
     it('should not allow subscription names with over than 25 characters', function(){
-      input.clear();
-
       var maxLength = 25;
       var overSizedValue = new Array(maxLength + 2).join('x'); // Produces maxLength+1 chars
 
-      input.sendKeys(overSizedValue);
+      testKit.setValue(inputId, overSizedValue, true);
 
-      testKit.assertMaxLength(helpMessages, input, overSizedValue, maxLength);
+      testKit.assertMaxLength(helpMessages, inputId, overSizedValue, maxLength);
     });
   }}
 });

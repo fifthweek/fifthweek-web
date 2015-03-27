@@ -63,15 +63,15 @@ describe('customize landing page form', function() {
       });
 
       it('should contain the subscription name', function(){
-        expect(page.subscriptionNameTextBox.getAttribute('value')).toBe(subscription.name);
+        expect(element(by.id(page.subscriptionNameTextBoxId)).getAttribute('value')).toBe(subscription.name);
       });
 
       it('should contain the tagline', function(){
-        expect(page.taglineTextBox.getAttribute('value')).toBe(subscription.tagline);
+        expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(subscription.tagline);
       });
 
       it('should contain the default introduction', function(){
-        expect(page.introductionTextBox.getAttribute('value')).not.toBeFalsy();
+        expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).not.toBeFalsy();
       });
 
       it('should contain the submit button', function(){
@@ -114,11 +114,11 @@ describe('customize landing page form', function() {
       });
 
       it('should contain the video link', function(){
-        expect(page.videoTextBox.getAttribute('value')).toBe('');
+        expect(element(by.id(page.videoTextBoxId)).getAttribute('value')).toBe('');
       });
 
       it('should contain the description', function(){
-        expect(page.descriptionTextBox.getAttribute('value')).toBe('');
+        expect(element(by.id(page.descriptionTextBoxId)).getAttribute('value')).toBe('');
       });
 
       it('should contain the submit button', function(){
@@ -130,15 +130,21 @@ describe('customize landing page form', function() {
   };
 
   var populateForm = function(){
+    var newValues = {
+      introduction: 'Introduction ' + Math.round(Math.random() * 100000),
+      tagline: 'Tagline ' + Math.round(Math.random() * 100000),
+      name: 'Subscription ' + Math.round(Math.random() * 100000)
+    };
+
     it('should populate the form with new data', function(){
       page.basicsTabLink.click();
       expect(page.basicsSubmitButton.isEnabled()).toBe(false);
 
-      page.subscriptionNameTextBox.sendKeys('2');
+      testKit.setValue(page.subscriptionNameTextBoxId, newValues.name);
       expect(page.basicsSubmitButton.isEnabled()).toBe(true);
 
-      page.taglineTextBox.sendKeys('2');
-      page.introductionTextBox.sendKeys('stronger suffix!');
+      testKit.setValue(page.taglineTextBoxId, newValues.tagline);
+      testKit.setValue(page.introductionTextBoxId, newValues.introduction);
 
       page.headerImageTabLink.click();
       expect(page.headerImageSubmitButton.isEnabled()).toBe(true);
@@ -147,14 +153,16 @@ describe('customize landing page form', function() {
       browser.wait(function(){
         return page.headerImage.isPresent();
       });
-      expect(page.headerImage.isDisplayed()).toBe(true);
+      expect(page.headerImage.isPresent()).toBe(true);
 
       page.fullDescriptionTabLink.click();
       expect(page.fullDescriptionSubmitButton.isEnabled()).toBe(true);
 
-      page.videoTextBox.sendKeys(validVideo);
-      page.descriptionTextBox.sendKeys(validDescription);
+      testKit.setValue(page.videoTextBoxId, validVideo);
+      testKit.setValue(page.descriptionTextBoxId, validDescription);
     });
+
+    return newValues;
   };
 
   describe('when first loaded after creating a subscription', function(){
@@ -175,7 +183,7 @@ describe('customize landing page form', function() {
 
     describe('when saving changes', function(){
 
-      populateForm();
+      var formValues = populateForm();
 
       it('should save successfully and display the success message on all tabs', function(){
         page.fullDescriptionSubmitButton.click();
@@ -192,7 +200,7 @@ describe('customize landing page form', function() {
       });
 
       it('should reset the submit button and success message status on next change', function(){
-        page.subscriptionNameTextBox.sendKeys('1');
+        testKit.setValue(page.subscriptionNameTextBoxId, '1');
         expect(page.basicsSuccessMessage.isDisplayed()).toBe(false);
         expect(page.basicsSubmitButton.isEnabled()).toBe(true);
       });
@@ -201,9 +209,9 @@ describe('customize landing page form', function() {
         commonWorkflows.reSignIn(registration);
         navigateToPage();
 
-        expect(page.subscriptionNameTextBox.getAttribute('value')).toBe(subscription.name + '2');
-        expect(page.taglineTextBox.getAttribute('value')).toBe(subscription.tagline + '2');
-        expect(page.introductionTextBox.getAttribute('value')).toContain('stronger suffix!');
+        expect(element(by.id(page.subscriptionNameTextBoxId)).getAttribute('value')).toBe(formValues.name);
+        expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(formValues.tagline);
+        expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).toBe(formValues.introduction);
 
         page.headerImageTabLink.click();
 
@@ -214,8 +222,8 @@ describe('customize landing page form', function() {
 
         page.fullDescriptionTabLink.click();
 
-        expect(page.videoTextBox.getAttribute('value')).toBe(validVideo);
-        expect(page.descriptionTextBox.getAttribute('value')).toBe(validDescription);
+        expect(element(by.id(page.videoTextBoxId)).getAttribute('value')).toBe(validVideo);
+        expect(element(by.id(page.descriptionTextBoxId)).getAttribute('value')).toBe(validDescription);
       });
     });
   });
@@ -248,8 +256,7 @@ describe('customize landing page form', function() {
         testKit.includeHappyPaths(page, taglineInputPage, 'taglineTextBox');
 
         it('should allow symbols in introductions', function(){
-          page.introductionTextBox.clear();
-          page.introductionTextBox.sendKeys(testKit.punctuation33);
+          testKit.setValue(page.introductionTextBoxId, testKit.punctuation33);
         });
       });
 
@@ -261,16 +268,15 @@ describe('customize landing page form', function() {
         testKit.includeHappyPaths(page, videoUrlInputPage, 'videoTextBox');
 
         it('should allow symbols in descriptions', function(){
-          page.descriptionTextBox.clear();
-          page.descriptionTextBox.sendKeys(testKit.punctuation33);
+          testKit.setValue(page.descriptionTextBoxId, testKit.punctuation33);
         });
 
         it('should allow empty descriptions', function(){
-          page.descriptionTextBox.clear();
+          testKit.clear(page.descriptionTextBoxId);
         });
 
         it('should allow empty video urls', function(){
-          page.videoTextBox.clear();
+          testKit.clear(page.videoTextBoxId);
         });
       });
     });
@@ -304,7 +310,7 @@ describe('customize landing page form', function() {
         testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, taglineInputPage, 'taglineTextBox');
 
         it('should not allow an empty introduction', function(){
-          page.introductionTextBox.clear();
+          testKit.clear(page.introductionTextBoxId);
 
           page.basicsSubmitButton.click();
 
@@ -315,9 +321,8 @@ describe('customize landing page form', function() {
         });
 
         it('should not allow an introduction less than 15 characters', function(){
-          page.introductionTextBox.clear();
           var underSizedValue = new Array(15).join( 'a' );
-          page.introductionTextBox.sendKeys(underSizedValue);
+          testKit.setValue(page.introductionTextBoxId, underSizedValue);
 
           page.basicsSubmitButton.click();
 
@@ -328,11 +333,10 @@ describe('customize landing page form', function() {
         });
 
         it('should not allow an introduction more than 250 characters', function(){
-          page.introductionTextBox.clear();
           var overSizedValue = new Array(252).join( 'a' );
-          page.introductionTextBox.sendKeys(overSizedValue);
+          testKit.setValue(page.introductionTextBoxId, overSizedValue, true);
 
-          testKit.assertMaxLength(page.helpMessages, page.introductionTextBox, overSizedValue, 250);
+          testKit.assertMaxLength(page.helpMessages, page.introductionTextBoxId, overSizedValue, 250);
         });
       });
 
@@ -345,12 +349,11 @@ describe('customize landing page form', function() {
 
         it('should not allow descriptions over 2000 characters', function(){
           page.fullDescriptionTabLink.click();
-          page.descriptionTextBox.clear();
 
           var overSizedValue = new Array(2002).join( 'a' );
-          page.descriptionTextBox.sendKeys(overSizedValue);
+          testKit.setValue(page.descriptionTextBoxId, overSizedValue, true);
 
-          testKit.assertMaxLength(page.helpMessages, page.descriptionTextBox, overSizedValue, 2000);
+          testKit.assertMaxLength(page.helpMessages, page.descriptionTextBoxId, overSizedValue, 2000);
         });
       });
     });

@@ -27,11 +27,11 @@ TaglineInputPage.prototype = Object.create({},
       applyValue(' ' + self.newTagline() + ' ');
     });
   }},
-  includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
+  includeSadPaths: { value: function(inputId, button, helpMessages, isOptional) {
 
     if(!isOptional) {
       it('requires tagline', function () {
-        input.clear();
+        testKit.clear(inputId);
 
         button.click();
 
@@ -40,23 +40,19 @@ TaglineInputPage.prototype = Object.create({},
     }
 
     it('should not allow taglines with fewer than 5 characters', function(){
-      input.clear();
-
-      input.sendKeys('1234');
+      testKit.setValue(inputId, '1234');
       button.click();
 
       testKit.assertMinLength(helpMessages, 5);
     });
 
     it('should not allow taglines with over than 55 characters', function(){
-      input.clear();
-
       var maxLength = 55;
       var overSizedValue = new Array(maxLength + 2).join('x'); // Produces maxLength+1 chars
 
-      input.sendKeys(overSizedValue);
+      testKit.setValue(inputId, overSizedValue, true);
 
-      testKit.assertMaxLength(helpMessages, input, overSizedValue, maxLength);
+      testKit.assertMaxLength(helpMessages, inputId, overSizedValue, maxLength);
     });
   }}
 });

@@ -1,5 +1,10 @@
 'use strict';
 
+var path = require('path');
+var TestKit = require('../../../test-kit.js');
+
+var testKit = new TestKit();
+
 var CustomizeLandingPagePage = function() {};
 
 CustomizeLandingPagePage.prototype = Object.create({}, {
@@ -15,17 +20,17 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
   fullDescriptionTabLink: { get: function() { return element(by.css('.nav-tabs li:nth-child(3) a')); }},
 
   vanityUrl: { get: function() { return element(by.css('#vanity-url a')); }},
-  subscriptionNameTextBox: { get: function () { return element(by.model('model.settings.subscriptionName')); }},
-  taglineTextBox: { get: function () { return element(by.model('model.settings.tagline')); }},
-  introductionTextBox: { get: function () { return element(by.model('model.settings.introduction')); }},
+  subscriptionNameTextBoxId: { value: 'subscription-name' },
+  taglineTextBoxId: { value: 'tagline' },
+  introductionTextBoxId: { value: 'introduction' },
 
   headerImage: { get: function(){ return element(by.css('.available-image')); }},
   noHeaderImage: { get: function(){ return element(by.css('.blank-area')); }},
-  fileInput: { get: function() { return element(by.css('#file-upload-button-area input')); }},
+  fileInput: { get: function(){ return element(by.id('file-upload-button-input')); }},
   fileUploadButton: { get: function() { return element(by.css('#file-upload-button-area .btn')); }},
 
-  videoTextBox: { get: function () { return element(by.model('model.settings.video')); }},
-  descriptionTextBox: { get: function () { return element(by.model('model.settings.description')); }},
+  videoTextBoxId: { value: 'video' },
+  descriptionTextBoxId: { value: 'description' },
 
   basicsSubmitButton: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(1) .save-changes-button')); }},
   headerImageSubmitButton: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(2) .save-changes-button')); }},
@@ -48,9 +53,7 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
   pageUrl: { get: function () { return '/creators/subscription/landing-page'; }},
 
   setFileInput: { value: function(filePath) {
-    var absolutePath = __dirname + '/' + filePath;
-    console.log(absolutePath);
-    this.fileInput.sendKeys(absolutePath);
+    this.fileInput.sendKeys(path.resolve(__dirname + '/' + filePath));
   }}
 });
 
