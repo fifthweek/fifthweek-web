@@ -116,10 +116,10 @@ describe('edit collection form', function() {
       page.getReleaseTime(1).click();
       page.deleteReleaseTimeButton.click();
       page.confirmDeleteReleaseTimeButton.click();
+      browser.waitForAngular();
 
       // Add another release time, just to make a change to the number of release times from when we started.
       page.newReleaseTimeButton.click();
-      browser.waitForAngular();
       releaseTimes.push(testKit.setFormValues(page, page.releaseTimeInputs));
       page.addReleaseTimeButton.click();
 
@@ -213,6 +213,7 @@ describe('edit collection form', function() {
       page.getReleaseTime(0).click();
       page.deleteReleaseTimeButton.click();
       page.confirmDeleteReleaseTimeButton.click();
+      browser.waitForAngular();
       page.saveButton.click();
 
       releaseTimes.pop();

@@ -11,7 +11,7 @@ var CollectionEditPage = function() {};
 
 CollectionEditPage.prototype = Object.create({}, {
   pageUrl: { get: function () { return '/creators/subscription/collections/'; }},
-  nameTextBox: { get: function () { return element(by.id('model-name')); }},
+  nameTextBoxId: { value: 'model-name' },
   channelSelectId: { get: function() { return 'model-selected-channel'; }},
   daySelectId: { get: function() { return 'day-of-week'; }},
   hourSelectId: { get: function() { return 'hour-of-day'; }},
