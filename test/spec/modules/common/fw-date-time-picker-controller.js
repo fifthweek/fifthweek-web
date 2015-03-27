@@ -7,6 +7,23 @@ describe('fw-date-time-picker-controller', function(){
   var fifthweekConstants;
   var target;
 
+  var utcDateAsLocal = function(date){
+    var copy = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    return copy;
+  };
+
+  var utcTimeAsLocal = function(date){
+    var copy = new Date(date);
+    copy.setUTCMinutes(copy.getUTCMinutes() + copy.getTimezoneOffset());
+    return copy;
+  };
+
+  var localAsUtc = function(date){
+    var copy = new Date(date);
+    copy.setUTCMinutes(copy.getUTCMinutes() - copy.getTimezoneOffset());
+    return copy;
+  };
+
   beforeEach(function() {
 
     module('webApp');
@@ -22,11 +39,6 @@ describe('fw-date-time-picker-controller', function(){
     inject(function ($controller) {
       target = $controller('fwDateTimePickerCtrl', { $scope: $scope });
     });
-  };
-
-  var parseUtcDateAsLocal = function(dateString){
-    var date = new Date(dateString);
-    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
   };
 
   describe('when being created', function(){
@@ -51,7 +63,7 @@ describe('fw-date-time-picker-controller', function(){
 
     beforeEach(function(){
       jasmine.clock().install();
-      jasmine.clock().mockDate(new Date('2015-01-11T11:11:11Z'));
+      jasmine.clock().mockDate(new Date('2015-05-11T11:11:11Z'));
 
       createController();
     });
@@ -91,7 +103,7 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
-          ngModelCtrl.$modelValue = parseUtcDateAsLocal('2015-03-11T13:37:19Z');
+          ngModelCtrl.$modelValue = new Date('2015-05-11T13:37:19Z');
           ngModelCtrl.$render();
           $scope.$apply();
         });
@@ -101,14 +113,12 @@ describe('fw-date-time-picker-controller', function(){
           expect(ngModelCtrl.$setValidity.calls.count()).toBe(1);
         });
 
-        it('should set date to be a copy of the model value', function(){
-          expect($scope.date).toEqual(ngModelCtrl.$modelValue);
-          expect($scope.date).not.toBe(ngModelCtrl.$modelValue);
+        it('should set the date to a copy of the model value', function(){
+          expect($scope.date).toEqual(utcDateAsLocal(ngModelCtrl.$modelValue));
         });
 
-        it('should set time to be a copy of the model value', function(){
-          expect($scope.time).toEqual(ngModelCtrl.$modelValue);
-          expect($scope.time).not.toBe(ngModelCtrl.$modelValue);
+        it('should apply a timezone offset to make UTC look like local time for the time', function(){
+          expect($scope.time).toEqual(utcTimeAsLocal(ngModelCtrl.$modelValue));
         });
       });
 
@@ -127,11 +137,11 @@ describe('fw-date-time-picker-controller', function(){
         });
 
         it('should set date to the next whole hour', function(){
-          expect($scope.date).toEqual(new Date('2015-01-11T12:00:00Z'));
+          expect($scope.date).toEqual(utcDateAsLocal(new Date('2015-05-11T00:00:00Z')));
         });
 
         it('should set time to the next whole hour', function(){
-          expect($scope.time).toEqual(new Date('2015-01-11T12:00:00Z'));
+          expect($scope.time).toEqual(utcTimeAsLocal(new Date('2015-05-11T12:00:00Z')));
         });
       });
     });
@@ -159,7 +169,7 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
-          $scope.date = parseUtcDateAsLocal('2015-03-11T13:37:19Z');
+          $scope.date = utcDateAsLocal(new Date('2015-05-11T13:37:19Z'));
           $scope.$apply();
         });
 
@@ -176,12 +186,12 @@ describe('fw-date-time-picker-controller', function(){
           beforeEach(function(){
             ngModelCtrl.$setViewValue.calls.reset();
             ngModelCtrl.$setValidity.calls.reset();
-            $scope.time = parseUtcDateAsLocal('2016-04-12T14:36:20Z');
+            $scope.time = utcTimeAsLocal(new Date('2016-06-12T14:36:20Z'));
             $scope.$apply();
           });
 
-          it('should set the view value to the combination of date and time values', function(){
-            var expectedResult = new Date('2015-03-11T14:36:00Z');
+          it('should set the view value to the UTC combination of date and time values', function(){
+            var expectedResult = new Date('2015-05-11T14:36:00Z');
             expect(ngModelCtrl.$setViewValue).toHaveBeenCalledWith(expectedResult);
           });
 
@@ -196,7 +206,7 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
-          $scope.time = parseUtcDateAsLocal('2015-03-11T13:37:19Z');
+          $scope.time = utcTimeAsLocal(new Date('2015-05-11T13:37:19Z'));
           $scope.$apply();
         });
 
@@ -213,12 +223,12 @@ describe('fw-date-time-picker-controller', function(){
           beforeEach(function(){
             ngModelCtrl.$setViewValue.calls.reset();
             ngModelCtrl.$setValidity.calls.reset();
-            $scope.date = parseUtcDateAsLocal('2016-04-12T14:36:20Z');
+            $scope.date = utcDateAsLocal(new Date('2016-06-12T14:36:20Z'));
             $scope.$apply();
           });
 
-          it('should set the view value to the combination of date and time values', function(){
-            var expectedResult = new Date('2016-04-12T13:37:00Z');
+          it('should set the view value to the UTC combination of date and time values', function(){
+            var expectedResult = new Date('2016-06-12T13:37:00Z');
             expect(ngModelCtrl.$setViewValue).toHaveBeenCalledWith(expectedResult);
           });
 
@@ -233,13 +243,13 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
-          $scope.date = parseUtcDateAsLocal('2015-03-11T13:37:19Z');
-          $scope.time = parseUtcDateAsLocal('2016-04-12T14:36:20Z');
+          $scope.date = utcDateAsLocal(new Date('2015-05-11T13:37:19Z'));
+          $scope.time = utcTimeAsLocal(new Date('2016-06-12T14:36:20Z'));
           $scope.$apply();
         });
 
-        it('should set the view value to the combination of date and time values', function(){
-          var expectedResult = new Date('2015-03-11T14:36:00Z');
+        it('should set the view value to the UTC combination of date and time values', function(){
+          var expectedResult = new Date('2015-05-11T14:36:00Z');
           expect(ngModelCtrl.$setViewValue).toHaveBeenCalledWith(expectedResult);
           expect(ngModelCtrl.$setViewValue.calls.count()).toBe(1);
         });

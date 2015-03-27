@@ -2,33 +2,36 @@ angular.module('webApp')
   .controller('fwDateTimePickerCtrl', function ($scope, fifthweekConstants) {
     'use strict';
 
-    var selected = new Date();
     // Default to the next hour.
-    selected.setUTCHours(selected.getUTCHours() + 1, 0, 0, 0);
-
-    // This fudges the fact that the datepicker and timepicker controls deal with local time, when we want them
-    // to be dealing with UTC. We add on the timezone offset to make the time look like it's UTC... in other words,
-    // with this line we end up displaying the next UTC hour, but without it we would be displaying their next local hour
-    // but then interpreting it as UTC, which would be strange.
-    selected.setUTCMinutes(selected.getUTCMinutes() + selected.getTimezoneOffset());
+    var defaultValue = new Date();
+    defaultValue.setUTCHours(defaultValue.getUTCHours() + 1, 0, 0, 0);
 
     var ngModelCtrl;
 
     var render = function(){
+      var initial;
       if (ngModelCtrl.$modelValue) {
-        selected = new Date(ngModelCtrl.$modelValue);
+        initial = new Date(ngModelCtrl.$modelValue);
+      }
+      else{
+        initial = new Date(defaultValue);
       }
 
-      updateTemplate();
-    };
+      // This fudges the fact that the datepicker and timepicker controls deal with local time, when we want them
+      // to be dealing with UTC. We add on the timezone offset to make the time look like it's UTC... in other words,
+      // with this line we end up displaying the next UTC hour, but without it we would be displaying their next local hour
+      // but then interpreting it as UTC, which would be strange.
+      var date = new Date(initial.getUTCFullYear(), initial.getUTCMonth(), initial.getUTCDate());
+      var time = new Date(initial);
+      time.setUTCMinutes(time.getUTCMinutes() + time.getTimezoneOffset());
 
-    var updateTemplate = function(){
-      $scope.date = new Date(selected);
-      $scope.time = new Date(selected);
+      $scope.date = date;
+      $scope.time = time;
     };
 
     var setViewValue = function(){
       if($scope.date && $scope.time){
+        // This reverses the transformation in render, so in effect the user has selected a UTC date/time.
         var result = new Date(Date.UTC($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate(), $scope.time.getHours(), $scope.time.getMinutes(), 0, 0));
         ngModelCtrl.$setViewValue( result );
         ngModelCtrl.$setValidity('dateTime', true);
