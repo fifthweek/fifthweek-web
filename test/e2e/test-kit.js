@@ -122,7 +122,7 @@ TestKit.prototype = Object.create({}, {
 
     _.forOwn(values, function(value, inputName) {
       if (_.endsWith(inputName, 'TextBox')) {
-        expect(page[inputName].getAttribute('value')).toBe(value);
+        expect(element(by.id(page[inputName + 'Id'])).getAttribute('value')).toBe(value);
       }
       else if (_.endsWith(inputName, 'Checkbox')) {
         expect(page[inputName].isSelected()).toBe(value);
@@ -169,7 +169,7 @@ TestKit.prototype = Object.create({}, {
       var inputName = input.name;
       it('should become enabled after changing "' + inputName + '"', function(){
         if (_.endsWith(inputName, 'TextBox')) {
-          page[inputName].clear();
+          self.clear(page[inputName + 'Id']);
         }
         else if (_.endsWith(inputName, 'Checkbox')) {
           page[inputName].click();
@@ -231,7 +231,7 @@ TestKit.prototype = Object.create({}, {
     });
   }},
   clear: { value: function(elementId) {
-    browser.executeScript('angular.element(document.getElementById(\'' + elementId + '\')).val(\'\');');
+    browser.executeScript('angular.element(document.getElementById(\'' + elementId + '\')).val(\'\').trigger(\'change\');');
   }},
   setValue: { value: function(elementId, value, blur) {
 

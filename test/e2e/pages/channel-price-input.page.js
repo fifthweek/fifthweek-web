@@ -17,11 +17,11 @@ ChannelPriceInputPage.prototype = Object.create({},
       applyValue('0.01');
     });
   }},
-  includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
+  includeSadPaths: { value: function(inputId, button, helpMessages, isOptional) {
 
     if(!isOptional) {
       it('requires price', function () {
-        input.clear();
+        testKit.clear(inputId);
 
         button.click();
 
@@ -30,8 +30,7 @@ ChannelPriceInputPage.prototype = Object.create({},
     }
 
     it('should not allow a price of 0', function(){
-      input.clear();
-      input.sendKeys('0');
+      testKit.setValue(inputId, '0');
 
       button.click();
 
@@ -39,19 +38,23 @@ ChannelPriceInputPage.prototype = Object.create({},
     });
 
     it('should not allow non-monetary values', function(){
-      input.clear();
+
+      // We actually want to use sendKeys here, since the logic is at the key-press level.
+      var input = element(by.id(inputId));
+
+      testKit.clear(inputId);
       input.sendKeys('abc');
       expect(input.getAttribute('value')).toBe('');
 
-      input.clear();
+      testKit.clear(inputId);
       input.sendKeys('123abc');
       expect(input.getAttribute('value')).toBe('123');
 
-      input.clear();
+      testKit.clear(inputId);
       input.sendKeys('abc123abc');
       expect(input.getAttribute('value')).toBe('123');
 
-      input.clear();
+      testKit.clear(inputId);
       input.sendKeys('1.2.3');
       expect(input.getAttribute('value')).toBe('1.23');
     });

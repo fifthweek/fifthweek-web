@@ -47,11 +47,11 @@ ChannelDescriptionInputPage.prototype = Object.create({},
         applyValue(' ' + normalizedValue + ' ', normalizedValue);
       });
     }},
-    includeSadPaths: { value: function(input, button, helpMessages, isOptional) {
+    includeSadPaths: { value: function(inputId, button, helpMessages, isOptional) {
 
       if(!isOptional) {
         it('requires channel description', function () {
-          input.clear();
+          testKit.clear(inputId);
 
           button.click();
 
@@ -60,14 +60,12 @@ ChannelDescriptionInputPage.prototype = Object.create({},
       }
 
       it('should not allow channel descriptions with over than 250 characters', function(){
-        input.clear();
-
         var maxLength = 250;
         var overSizedValue = new Array(maxLength + 2).join('x'); // Produces maxLength+1 chars
 
-        input.sendKeys(overSizedValue);
+        testKit.setValue(inputId, overSizedValue, true);
 
-        testKit.assertMaxLength(helpMessages, input, overSizedValue, maxLength);
+        testKit.assertMaxLength(helpMessages, inputId, overSizedValue, maxLength);
       });
     }}
   });

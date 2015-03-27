@@ -58,6 +58,10 @@ module.exports = function (grunt) {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
+      html: {
+        files: ['<%= yeoman.app %>/**/*.html'],
+        tasks: ['ngtemplates']
+      },
       js: {
         files: ['<%= yeoman.app %>/**/*.js'],
         tasks: ['newer:jshint:all'],
@@ -626,8 +630,8 @@ module.exports = function (grunt) {
   }
 
   grunt.registerTask('build', [
-    'ngtemplates',
     'clean:dist',
+    'ngtemplates',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
@@ -668,6 +672,7 @@ module.exports = function (grunt) {
     {
       grunt.task.run([
         'clean:server',
+        'ngtemplates',
         'wiredep',
         'concurrent:server',
         'autoprefixer',
