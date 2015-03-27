@@ -45,7 +45,7 @@ describe('post-edit-dialog-utilities', function() {
           type: 'content/type',
           size: 1234
         }
-      }
+      };
     });
 
     it('should populate the file and fileSource correctly', function(){
@@ -461,9 +461,9 @@ describe('post-edit-dialog-utilities', function() {
     var queuedLiveDate;
     var nowDate;
     beforeEach(function(){
-      nowDate = new Date("2015-05-01T08:00:00Z");
-      inputDate = new Date("2015-05-01T12:00:00Z");
-      queuedLiveDate = new Date("2015-05-01T17:30:00Z");
+      nowDate = new Date('2015-05-01T08:00:00Z');
+      inputDate = new Date('2015-05-01T12:00:00Z');
+      queuedLiveDate = new Date('2015-05-01T17:30:00Z');
       jasmine.clock().install();
       jasmine.clock().mockDate(nowDate);
 
@@ -509,7 +509,7 @@ describe('post-edit-dialog-utilities', function() {
 
       it('should have called processPostForRendering', function(){
         expect(postUtilities.processPostForRendering).toHaveBeenCalledWith(post);
-      })
+      });
     };
 
     var runResultExpectations = function(){

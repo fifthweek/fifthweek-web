@@ -18,12 +18,6 @@ describe('fw-date-time-picker-controller', function(){
     return copy;
   };
 
-  var localAsUtc = function(date){
-    var copy = new Date(date);
-    copy.setUTCMinutes(copy.getUTCMinutes() - copy.getTimezoneOffset());
-    return copy;
-  };
-
   beforeEach(function() {
 
     module('webApp');

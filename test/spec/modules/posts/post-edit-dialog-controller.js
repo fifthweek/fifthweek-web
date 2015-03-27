@@ -220,10 +220,10 @@ describe('post-edit-dialog-controller', function() {
 
           it('should update the blob image if post is an image', function(){
             if(expectedPostType === postTypes.image){
-              expect($scope.blobImage.update).toHaveBeenCalledWith('newContainerName', 'newFileId')
+              expect($scope.blobImage.update).toHaveBeenCalledWith('newContainerName', 'newFileId');
             }
             else{
-              expect($scope.blobImage.update).not.toHaveBeenCalledWith()
+              expect($scope.blobImage.update).not.toHaveBeenCalledWith();
             }
           });
         });
@@ -239,7 +239,7 @@ describe('post-edit-dialog-controller', function() {
 
             it('should not change the schedule mode', function(){
               expect($scope.model.input.scheduleMode).toBe(originalScheduleMode);
-            })
+            });
           });
 
           describe('when the dates have changed', function(){
@@ -252,7 +252,7 @@ describe('post-edit-dialog-controller', function() {
 
             it('should change the schedule mode to scheduled', function(){
               expect($scope.model.input.scheduleMode).toBe(scheduleModes.scheduled);
-            })
+            });
           });
         });
 
@@ -263,7 +263,7 @@ describe('post-edit-dialog-controller', function() {
           });
 
           it('should update the estimated live date if not a note', function(){
-            if(expectedPostType != postTypes.note){
+            if(expectedPostType !== postTypes.note){
               expect(composeUtilities.updateEstimatedLiveDate).toHaveBeenCalledWith($scope.model);
               expect(composeUtilities.updateEstimatedLiveDate.calls.count()).toBe(2);
             }
