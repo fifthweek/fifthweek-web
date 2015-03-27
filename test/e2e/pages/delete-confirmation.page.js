@@ -11,7 +11,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
   modals: { get: function () { return element.all(by.css('.modal')); }},
   title: { get: function () { return element(by.id('modal-title')); }},
   deleteHintText: { get: function () { return element(by.id('delete-hint')); }},
-  confirmationTextBox: { get: function () { return element(by.id('deletion-confirmation-text')); }},
+  confirmationTextBoxId: { value: 'deletion-confirmation-text' },
   deleteVerifiedButton: { get: function () { return element(by.id('delete-item-verified-button')); }},
   deleteUnverifiedButton: { get: function () { return element(by.id('delete-item-unverified-button')); }},
   crossButton: { get: function () { return element(by.id('modal-cross-button')); }},
@@ -19,10 +19,14 @@ DeleteConfirmationPage.prototype = Object.create({}, {
   describeDeletingWithoutVerification: { value: function(itemType, displayModal, verifyItemNotDeleted, verifyItemDeleted) {
     var self = this;
     var itemTypeLower = itemType.toLowerCase();
+    var displayModalAndWait = function() {
+      displayModal();
+      browser.waitForAngular();
+    };
 
     describe('the modal for deleting a ' + itemTypeLower, function() {
       it('should run once before all', function () {
-        displayModal();
+        displayModalAndWait();
       });
 
       it('should have the title "Delete ' + itemType + '"', function() {
@@ -53,7 +57,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
           it('should cancel the operation', function () {
             cancelOperation.action();
             expect(self.modals.count()).toBe(0);
-            displayModal();
+            displayModalAndWait();
           });
         });
       });
@@ -67,7 +71,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
 
       it('should not have deleted the item up to this point', function() {
         verifyItemNotDeleted();
-        displayModal();
+        displayModalAndWait();
       });
 
       it('should delete the ' + itemTypeLower, function() {
@@ -81,8 +85,12 @@ DeleteConfirmationPage.prototype = Object.create({}, {
     var self = this;
     var itemTypeLower = itemType.toLowerCase();
     var nonMatchingInput = 'Suitably Random #' + Math.random();
+    var displayModalAndWait = function() {
+      displayModal();
+      browser.waitForAngular();
+    };
     var expectEmptyTextBox = function() {
-      expect(self.confirmationTextBox.getAttribute('value')).toBe('');
+      expect(element(by.id(self.confirmationTextBoxId)).getAttribute('value')).toBe('');
     };
 
     describe('the modal for deleting a ' + itemTypeLower, function() {
@@ -90,7 +98,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
 
       it('should run once before all', function () {
         itemName = getItemName();
-        displayModal();
+        displayModalAndWait();
       });
 
       it('should have the title "Delete ' + itemType + '"', function() {
@@ -129,7 +137,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
           afterEach(function() {
             cancelOperation.action();
             expect(self.modals.count()).toBe(0);
-            displayModal();
+            displayModalAndWait();
             expectEmptyTextBox();
           });
 
@@ -138,11 +146,11 @@ DeleteConfirmationPage.prototype = Object.create({}, {
           });
 
           it('should cancel the operation after invalid input has been entered', function () {
-            self.confirmationTextBox.sendKeys(nonMatchingInput);
+            testKit.setValue(self.confirmationTextBoxId, nonMatchingInput);
           });
 
           it('should cancel the operation after valid input has been entered', function () {
-            self.confirmationTextBox.sendKeys(itemName);
+            testKit.setValue(self.confirmationTextBoxId, itemName);
           });
         });
       });
@@ -151,8 +159,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
         describe('should be disabled', function() {
           afterEach(function() {
             expect(self.deleteVerifiedButton.isEnabled()).toBe(false);
-            self.deleteVerifiedButton.click(); // Just in-case some nutcase hooks it up to a mouse-down event!
-            self.confirmationTextBox.clear();
+            testKit.clear(self.confirmationTextBoxId);
           });
 
           it('should be disabled by default', function() {
@@ -160,20 +167,20 @@ DeleteConfirmationPage.prototype = Object.create({}, {
           });
 
           it('should be disabled after entering non-matching input', function() {
-            self.confirmationTextBox.sendKeys(nonMatchingInput);
+            testKit.setValue(self.confirmationTextBoxId, nonMatchingInput);
           });
 
           it('should be disabled after entering a subset of the ' + itemTypeLower + '\'s name', function() {
-            self.confirmationTextBox.sendKeys(itemName.substring(0, itemName.length - 1));
+            testKit.setValue(self.confirmationTextBoxId, itemName.substring(0, itemName.length - 1));
           });
 
           it('should be disabled after entering a superset of the ' + itemTypeLower + '\'s name', function() {
-            self.confirmationTextBox.sendKeys(itemName + '!');
+            testKit.setValue(self.confirmationTextBoxId, itemName + '!');
           });
         });
 
         it('should become enabled after entering the ' + itemTypeLower + '\'s name', function() {
-          self.confirmationTextBox.sendKeys(itemName);
+          testKit.setValue(self.confirmationTextBoxId, itemName);
           expect(self.deleteVerifiedButton.isEnabled()).toBe(true);
           self.cancelButton.click();
         });
@@ -181,12 +188,13 @@ DeleteConfirmationPage.prototype = Object.create({}, {
 
       it('should not have deleted the item up to this point', function() {
         verifyItemNotDeleted();
-        displayModal();
+        displayModalAndWait();
       });
 
       it('should delete the ' + itemTypeLower, function() {
-        self.confirmationTextBox.sendKeys(itemName);
+        testKit.setValue(self.confirmationTextBoxId, itemName);
         self.deleteVerifiedButton.click();
+        browser.waitForAngular();
         verifyItemDeleted();
       });
     });
