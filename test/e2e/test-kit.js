@@ -248,6 +248,14 @@ TestKit.prototype = Object.create({}, {
       // console.log('SET ' + elementId + ' = ' + value);
       browser.executeScript(blur ? changeValue + '.blur()' : changeValue);
     });
+  }},
+  scrollIntoView: { value: function(element) {
+    var scrollIntoViewInner = function () {
+      arguments[0].scrollIntoView();
+    };
+    browser.controlFlow().execute(function() {
+      browser.executeScript(scrollIntoViewInner, element.getWebElement());
+    });
   }}
 });
 

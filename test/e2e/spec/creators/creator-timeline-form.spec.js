@@ -1,6 +1,7 @@
 (function(){
   'use strict';
 
+  var TestKit = require('../../test-kit.js');
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
   var PostPage = require('../../pages/post.page.js');
@@ -16,6 +17,7 @@
     var registration;
     var subscription;
 
+    var testKit = new TestKit();
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
     var post = new PostPage(false);
@@ -101,22 +103,16 @@
       });
     });
 
-    var scrollIntoView = function(element){
-      var scrollIntoViewInner = function () {
-        arguments[0].scrollIntoView();
-      };
-      browser.executeScript(scrollIntoViewInner, element.getWebElement());
-    };
-
     var testDeletion = function(){
       deleteConfirmationPage.describeDeletingWithoutVerification(
         'Post',
         function () {
           navigateToSite();
           navigateToPage();
-          scrollIntoView(post.moreActionsButton);
+          testKit.scrollIntoView(post.moreActionsButton);
           post.moreActionsButton.click();
-          scrollIntoView(post.deletePostLink);
+          browser.waitForAngular();
+          testKit.scrollIntoView(post.deletePostLink);
           post.deletePostLink.click();
         },
         function () {
@@ -190,7 +186,7 @@
     });
 
     var navigateToSite = function() {
-      scrollIntoView(creatorLandingPagePage.fifthweekLink);
+      testKit.scrollIntoView(creatorLandingPagePage.fifthweekLink);
       creatorLandingPagePage.fifthweekLink.click();
     };
 

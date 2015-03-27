@@ -56,6 +56,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
         describe('clicking the ' + cancelOperation.name, function() {
           it('should cancel the operation', function () {
             cancelOperation.action();
+            browser.waitForAngular();
             expect(self.modals.count()).toBe(0);
             displayModalAndWait();
           });
@@ -136,6 +137,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
         describe('clicking the ' + cancelOperation.name, function() {
           afterEach(function() {
             cancelOperation.action();
+            browser.waitForAngular();
             expect(self.modals.count()).toBe(0);
             displayModalAndWait();
             expectEmptyTextBox();
