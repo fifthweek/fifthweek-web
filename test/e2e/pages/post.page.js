@@ -86,13 +86,13 @@
       if(isNote){
         this.containerNameLink.click();
         expect(browser.getCurrentUrl()).toContain(editChannelPage.pageUrl);
-        expect(editChannelPage.nameTextBox.getAttribute('value')).toBe(postData.channelName || 'Basic Subscription');
+        expect(element(by.id(editChannelPage.nameTextBoxId)).getAttribute('value')).toBe(postData.channelName || 'Basic Subscription');
         navigateToPage();
       }
       else{
         this.containerNameLink.click();
         expect(browser.getCurrentUrl()).toContain(editCollectionPage.pageUrl);
-        expect(editCollectionPage.nameTextBox.getAttribute('value')).toBe(postData.collectionName);
+        expect(element(by.id(editCollectionPage.nameTextBoxId)).getAttribute('value')).toBe(postData.collectionName);
         navigateToPage();
       }
     }},

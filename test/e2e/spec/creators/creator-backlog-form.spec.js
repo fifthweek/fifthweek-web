@@ -91,19 +91,11 @@
       });
     });
 
-    var scrollIntoView = function(element){
-      var scrollIntoViewInner = function () {
-        arguments[0].scrollIntoView();
-      };
-      browser.executeScript(scrollIntoViewInner, element.getWebElement());
-    };
-
     var testDeletion = function(){
       deleteConfirmationPage.describeDeletingWithoutVerification(
         'Post',
         function () {
-          sidebar.helpLink.click();
-          navigateToPage();
+          commonWorkflows.fastRefresh();
           post.moreActionsButton.click();
           post.deletePostLink.click();
         },
@@ -112,8 +104,7 @@
           expect(post.allPosts.count()).toBe(1);
 
           // Check not deleted from API.
-          sidebar.helpLink.click();
-          navigateToPage();
+          commonWorkflows.fastRefresh();
           expect(post.allPosts.count()).toBe(1);
         },
         function () {
@@ -121,8 +112,7 @@
           expect(post.allPosts.count()).toBe(0);
 
           // Check deleted from API.
-          sidebar.helpLink.click();
-          navigateToPage();
+          commonWorkflows.fastRefresh();
           expect(post.allPosts.count()).toBe(0);
         }
       );

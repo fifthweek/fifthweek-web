@@ -201,7 +201,7 @@
 
     setFileInput: { value: function(filePath) {
       // console.log(filePath);
-      this.uploadInput.sendKeys(filePath);
+      this.uploadInput.sendKeys(path.resolve(__dirname + '/' + filePath));
     }},
 
     includeTests: { value: function(page){
@@ -222,8 +222,8 @@
         var header = new HeaderComposePage();
         var collectionNameInputPage = new CollectionNameInputPage();
 
-        var filePath = path.resolve(__dirname + '/../../../sample-image.jpg');
-        var tinyFilePath = path.resolve(__dirname + '/../../../sample-image-tiny.jpg');
+        var filePath = '../../../sample-image.jpg';
+        var tinyFilePath = '../../../sample-image-tiny.jpg';
 
         var channelNames;
 
