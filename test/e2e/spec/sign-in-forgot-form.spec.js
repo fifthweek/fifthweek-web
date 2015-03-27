@@ -35,7 +35,7 @@ describe('sign-in - forgot details form', function() {
 
     it('should display a success message when username is provided', function () {
       var unregisteredUsername = usernameInputPage.newUsername();
-      page.usernameTextBox.sendKeys(unregisteredUsername);
+      testKit.setValue(page.usernameTextBoxId, unregisteredUsername);
 
       page.resetPasswordButton.click();
 
@@ -45,7 +45,7 @@ describe('sign-in - forgot details form', function() {
 
     it('should display a success message when email is provided', function () {
       var unregisteredEmail = registerPage.newEmail(usernameInputPage.newUsername());
-      page.emailTextBox.sendKeys(unregisteredEmail);
+      testKit.setValue(page.emailTextBoxId, unregisteredEmail);
 
       page.resetPasswordButton.click();
 
@@ -73,39 +73,43 @@ describe('sign-in - forgot details form', function() {
     afterEach(navigateToPage);
 
     it('should display a success message when username is provided', function () {
-      page.usernameTextBox.sendKeys(username);
+      testKit.setValue(page.usernameTextBoxId, username);
       page.resetPasswordButton.click();
       expectSuccessMessage();
     });
 
     it('should display a success message when email is provided', function () {
-      page.emailTextBox.sendKeys(email);
+      testKit.setValue(page.emailTextBoxId, email);
       page.resetPasswordButton.click();
       expectSuccessMessage();
     });
 
     describe('the "reset password" email', function() {
 
+      afterEach(function() {
+        browser.get('/#'); // Return to site.
+      });
+
       it('should be delivered when username is provided', function () {
-        page.usernameTextBox.sendKeys(username);
+        testKit.setValue(page.usernameTextBoxId, username);
         submitAndReadEmail();
         expect(mailboxPage.emailSubject.getText()).toContain('Reset Password');
       });
 
       it('should be delivered when email is provided', function () {
-        page.emailTextBox.sendKeys(email);
+        testKit.setValue(page.emailTextBoxId, email);
         submitAndReadEmail();
         expect(mailboxPage.emailSubject.getText()).toContain('Reset Password');
       });
 
       it('should remind user of username', function () {
-        page.emailTextBox.sendKeys(email);
+        testKit.setValue(page.emailTextBoxId, email);
         submitAndReadEmail();
         expect(signInResetEmailPage.username.getText()).toContain(username);
       });
 
       it('should link to "reset password" page', function () {
-        page.emailTextBox.sendKeys(email);
+        testKit.setValue(page.emailTextBoxId, email);
         submitAndReadEmail();
         testKit.rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink);
         expect(browser.getCurrentUrl()).toContain(signInResetPage.pageUrl);

@@ -5,11 +5,11 @@
   <fw-panel6 ng-show="!form.submissionSucceeded" id="password-reset-request-panel">
 
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Username" ng-model="passwordResetRequestData.username" focus=true>
+      <input id="passwordResetRequestData-username" type="text" class="form-control" placeholder="Username" ng-model="passwordResetRequestData.username" focus=true>
     </div>
     <h5 class="form-group">Or</h5>
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Email" ng-model="passwordResetRequestData.email">
+      <input id="passwordResetRequestData-email" type="text" class="form-control" placeholder="Email" ng-model="passwordResetRequestData.email">
     </div>
 
     <div class="row-btn">
