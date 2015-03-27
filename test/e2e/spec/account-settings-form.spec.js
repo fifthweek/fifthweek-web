@@ -48,13 +48,13 @@ describe('account settings form', function() {
       });
 
       it('should allow the user to change their email', function(){
-        page.emailTextBox.clear();
-        page.emailTextBox.sendKeys('a+' + registration.email);
+        testKit.clear(page.emailTextBoxId);
+        testKit.setValue(page.emailTextBoxId, 'a+' + registration.email);
       });
 
-      usernameInputPage.includeHappyPaths(page.usernameTextBox, function() {});
+      usernameInputPage.includeHappyPaths(page.usernameTextBoxId, function() {});
 
-      passwordInputPage.includeHappyPaths(page.passwordTextBox, function() {});
+      passwordInputPage.includeHappyPaths(page.passwordTextBoxId, function() {});
     });
   });
 
@@ -70,17 +70,16 @@ describe('account settings form', function() {
 
     it('requires email address', function(){
 
-      page.emailTextBox.clear();
-      page.emailTextBox.sendKeys('invalid');
+      testKit.setValue(page.emailTextBoxId, 'invalid');
       page.saveChangesButton.click();
 
       testKit.assertSingleValidationMessage(page.helpMessages,
         'A valid email address is required.');
     });
 
-    usernameInputPage.includeSadPaths(page.usernameTextBox, page.saveChangesButton, page.helpMessages, function() {});
+    usernameInputPage.includeSadPaths(page.usernameTextBoxId, page.saveChangesButton, page.helpMessages, function() {});
 
-    passwordInputPage.includeSadPaths(page.passwordTextBox, page.saveChangesButton, page.helpMessages, function() {}, true);
+    passwordInputPage.includeSadPaths(page.passwordTextBoxId, page.saveChangesButton, page.helpMessages, function() {}, true);
   });
 
   describe('when validating page behaviour', function(){
@@ -92,9 +91,9 @@ describe('account settings form', function() {
     it('should display current account settings', function(){
       expect(page.noProfileImage.isDisplayed()).toBe(true);
       expect(page.fileUploadButton.isDisplayed()).toBe(true);
-      expect(page.emailTextBox.getAttribute('value')).toBe(registration.email);
-      expect(page.usernameTextBox.getAttribute('value')).toBe(registration.username);
-      expect(page.passwordTextBox.getAttribute('value')).toBe('');
+      expect(element(by.id(page.emailTextBoxId)).getAttribute('value')).toBe(registration.email);
+      expect(element(by.id(page.usernameTextBoxId)).getAttribute('value')).toBe(registration.username);
+      expect(element(by.id(page.passwordTextBoxId)).getAttribute('value')).toBe('');
     });
 
     it('should not persist settings if the user does not save', function(){
@@ -102,26 +101,21 @@ describe('account settings form', function() {
       browser.wait(function(){
         return page.profileImage.isPresent();
       });
-      expect(page.profileImage.isDisplayed()).toBe(true);
+      expect(page.profileImage.isPresent()).toBe(true);
 
       var newUsername = usernameInputPage.newUsername();
       var newEmail = registerPage.newEmail(newUsername);
-      page.emailTextBox.clear();
-      page.emailTextBox.sendKeys(newUsername);
-
-      page.usernameTextBox.clear();
-      page.usernameTextBox.sendKeys(newEmail);
-
-      page.passwordTextBox.clear();
-      page.passwordTextBox.sendKeys('phil-the-cat');
+      testKit.setValue(page.emailTextBoxId, newUsername);
+      testKit.setValue(page.usernameTextBoxId, newEmail);
+      testKit.setValue(page.passwordTextBoxId, 'phil-the-cat');
 
       sidebar.helpLink.click();
       sidebar.accountLink.click();
 
-      expect(page.noProfileImage.isDisplayed()).toBe(true);
-      expect(page.emailTextBox.getAttribute('value')).toBe(registration.email);
-      expect(page.usernameTextBox.getAttribute('value')).toBe(registration.username);
-      expect(page.passwordTextBox.getAttribute('value')).toBe('');
+      expect(page.noProfileImage.isPresent()).toBe(true);
+      expect(element(by.id(page.emailTextBoxId)).getAttribute('value')).toBe(registration.email);
+      expect(element(by.id(page.usernameTextBoxId)).getAttribute('value')).toBe(registration.username);
+      expect(element(by.id(page.passwordTextBoxId)).getAttribute('value')).toBe('');
     });
 
     describe('when persisting new settings', function(){
@@ -135,7 +129,7 @@ describe('account settings form', function() {
         browser.wait(function(){
           return page.profileImage.isPresent();
         });
-        expect(page.profileImage.isDisplayed()).toBe(true);
+        expect(page.profileImage.isPresent()).toBe(true);
       });
 
       it('should enable the submit button after setting the profile image', function(){
@@ -147,16 +141,13 @@ describe('account settings form', function() {
         var newEmail = registerPage.newEmail(newUsername);
 
         registration.email = newEmail;
-        page.emailTextBox.clear();
-        page.emailTextBox.sendKeys(registration.email);
+        testKit.setValue(page.emailTextBoxId, registration.email);
 
         registration.username = newUsername;
-        page.usernameTextBox.clear();
-        page.usernameTextBox.sendKeys(registration.username);
+        testKit.setValue(page.usernameTextBoxId, registration.username);
 
         registration.password = 'phil-the-cat';
-        page.passwordTextBox.clear();
-        page.passwordTextBox.sendKeys(registration.password);
+        testKit.setValue(page.passwordTextBoxId, registration.password);
 
         page.saveChangesButton.click();
         expect(page.savedSuccessfullyMessage.isDisplayed()).toBe(true);
@@ -164,7 +155,7 @@ describe('account settings form', function() {
       });
 
       it('should reset the submit button and success message status on next change', function(){
-        page.usernameTextBox.clear();
+        testKit.clear(page.usernameTextBoxId);
         expect(page.savedSuccessfullyMessage.isDisplayed()).toBe(false);
         expect(page.saveChangesButton.isEnabled()).toBe(true);
       });
@@ -176,10 +167,10 @@ describe('account settings form', function() {
         browser.wait(function(){
           return page.profileImage.isPresent();
         });
-        expect(page.profileImage.isDisplayed()).toBe(true);
+        expect(page.profileImage.isPresent()).toBe(true);
 
-        expect(page.emailTextBox.getAttribute('value')).toBe(registration.email);
-        expect(page.usernameTextBox.getAttribute('value')).toBe(registration.username);
+        expect(element(by.id(page.emailTextBoxId)).getAttribute('value')).toBe(registration.email);
+        expect(element(by.id(page.usernameTextBoxId)).getAttribute('value')).toBe(registration.username);
       });
     });
   });
