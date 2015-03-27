@@ -425,3 +425,25 @@ $line-height-compensation: -5px;
     padding-top: 3px;
   }
 }
+
+.edit-post-form {
+
+  .image-container{
+    .image-area{
+      width: auto;
+      height: auto;
+      max-width: 300px;
+      max-height: 300px;
+      position: relative;
+    }
+
+    .pending-image{
+      width: 300px;
+      height: 200px;
+    }
+
+    .vertical-aspect-ratio{
+      padding-top: 0;
+    }
+  }
+}

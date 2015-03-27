@@ -30,7 +30,7 @@ describe('fw-post-list-controller', function(){
     fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateInParallel']);
     postsStub = jasmine.createSpyObj('postsStub', ['getCreatorBacklog', 'getCreatorNewsfeed']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
-    postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'processPostsForRendering', 'removePost']);
+    postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'processPostsForRendering', 'removePost', 'reorderPostsIfRequired']);
 
     module('webApp');
     module(function($provide) {
@@ -206,9 +206,79 @@ describe('fw-post-list-controller', function(){
       expect(postInteractions.openFile).toHaveBeenCalledWith('a');
     });
 
-    it('should forward the editPost function to postInteractions', function(){
-      $scope.editPost('a');
-      expect(postInteractions.editPost).toHaveBeenCalledWith('a');
+    describe('when calling editPost', function(){
+      var post1;
+      var post2;
+
+      beforeEach(function(){
+        post1 = { moment: 'moment' };
+        post2 = { moment: 'moment2' };
+        $scope.model.posts = [ post1 ];
+      });
+
+      describe('when the dialog is saved', function(){
+        describe('when the source is the backlog', function(){
+          beforeEach(function(){
+            $scope.source = fwPostListConstants.sources.creatorBacklog;
+            postInteractions.editPost.and.returnValue({
+              result: $q.when(post2)
+            });
+
+            $scope.editPost(post1);
+            $scope.$apply();
+          });
+
+          it('should forward the call to postInteractions', function(){
+            expect(postInteractions.editPost).toHaveBeenCalledWith(post1);
+          });
+
+          it('should reorder posts if required', function(){
+            expect(postUtilities.reorderPostsIfRequired).toHaveBeenCalledWith(
+              true, $scope.model.posts, post1.moment, post2
+            );
+          });
+        });
+
+        describe('when the source is the backlog', function(){
+          beforeEach(function(){
+            $scope.source = fwPostListConstants.sources.creatorTimeline;
+            postInteractions.editPost.and.returnValue({
+              result: $q.when(post2)
+            });
+
+            $scope.editPost(post1);
+            $scope.$apply();
+          });
+
+          it('should forward the call to postInteractions', function(){
+            expect(postInteractions.editPost).toHaveBeenCalledWith(post1);
+          });
+
+          it('should reorder posts if required', function(){
+            expect(postUtilities.reorderPostsIfRequired).toHaveBeenCalledWith(
+              false, $scope.model.posts, post1.moment, post2
+            );
+          });
+        });
+      });
+      describe('when the dialog is dismissed', function(){
+        beforeEach(function(){
+          postInteractions.editPost.and.returnValue({
+            result: $q.reject('rejected')
+          });
+
+          $scope.editPost(post1);
+          $scope.$apply();
+        });
+
+        it('should forward the call to postInteractions', function(){
+          expect(postInteractions.editPost).toHaveBeenCalledWith(post1);
+        });
+
+        it('should not reorder posts', function(){
+          expect(postUtilities.reorderPostsIfRequired).not.toHaveBeenCalled();
+        });
+      });
     });
 
     describe('when calling deletePost', function(){

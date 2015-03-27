@@ -64,19 +64,11 @@ angular.module('webApp').factory('postUtilities',
     };
 
     var processPostDayGrouping = function(post, previousPost){
-      var addGrouping = false;
       if(!previousPost){
-        addGrouping = true;
-      }
-      else{
-        addGrouping = !post.moment.isSame(previousPost.moment, 'day');
-      }
-
-      if(addGrouping){
         post.dayGrouping = true;
       }
       else{
-        post.dayGrouping = false;
+        post.dayGrouping = !post.moment.isSame(previousPost.moment, 'day');
       }
     };
 
@@ -129,6 +121,13 @@ angular.module('webApp').factory('postUtilities',
         });
     };
 
+    service.processPostForRendering = function(post){
+      return accessSignatures.getContainerAccessMap()
+        .then(function(accessMap){
+          processPost(post, undefined, accessMap);
+        });
+    };
+
     service.removePost = function(posts, postId){
       if(!posts || posts.length === 0){
         return $q.when();
@@ -145,6 +144,52 @@ angular.module('webApp').factory('postUtilities',
           return $q.when();
         }
       }
+    };
+
+    var backlogComparison = function(firstPost, secondPost){
+      return firstPost.moment.isBefore(secondPost.moment);
+    };
+    var timelineComparison = function(firstPost, secondPost){
+      return firstPost.moment.isAfter(secondPost.moment) || firstPost.moment.isSame(secondPost.moment);
+    };
+
+    service.reorderPostsIfRequired = function(isBacklog, posts, oldPostMoment, newPost){
+      var shouldRemove = false;
+      if(isBacklog){
+        shouldRemove = !newPost.isScheduled;
+      }
+      else{
+        shouldRemove = newPost.isScheduled;
+      }
+
+      if(shouldRemove){
+        service.removePost(posts, newPost.postId);
+        return;
+      }
+
+      if(posts.length === 1 || oldPostMoment.isSame(newPost.moment)){
+        return;
+      }
+
+      var shouldInsert = timelineComparison;
+      if(isBacklog) {
+        shouldInsert = backlogComparison;
+      }
+
+      service.removePost(posts, newPost.postId);
+      for(var i=0; i < posts.length; ++i){
+        if(shouldInsert(newPost, posts[i])){
+          posts.splice(i, 0, newPost);
+          processPostDayGrouping(posts[i], i === 0 ? undefined : posts[i - 1]);
+          processPostDayGrouping(posts[i + 1], posts[i]);
+          return;
+        }
+      }
+
+      posts.push(newPost);
+      // We know there are at least two posts in the list at this point.
+      processPostDayGrouping(posts[posts.length - 1], posts[posts.length - 2]);
+      return;
     };
 
     return service;

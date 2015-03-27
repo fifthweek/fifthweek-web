@@ -625,4 +625,213 @@ describe('post-utilities', function(){
       ]);
     });
   });
+
+  describe('when calling reorderPostsIfRequired', function(){
+    var changedMoment;
+    beforeEach(function(){
+      changedMoment = moment(1);
+    });
+
+    it('should remove the post if it has become scheduled on the timeline', function(){
+      var post = { postId: 'a', isScheduled: true };
+      var posts = [post];
+      target.reorderPostsIfRequired(false, posts, undefined, post);
+      expect(posts.length).toBe(0);
+    });
+
+    it('should not remove the post if it has not become scheduled on the timeline', function(){
+      var post = { postId: 'a', isScheduled: false };
+      var posts = [post];
+      target.reorderPostsIfRequired(false, posts, undefined, post);
+      expect(posts.length).toBe(1);
+      expect(posts[0]).toBe(post);
+    });
+
+    it('should remove the post if it has become unscheduled on the backlog', function(){
+      var post = { postId: 'a', isScheduled: false };
+      var posts = [post];
+      target.reorderPostsIfRequired(true, posts, undefined, post);
+      expect(posts.length).toBe(0);
+    });
+
+    it('should not remove the post if it has not become unscheduled on the backlog', function(){
+      var post = { postId: 'a', isScheduled: true };
+      var posts = [post];
+      target.reorderPostsIfRequired(true, posts, undefined, post);
+      expect(posts.length).toBe(1);
+      expect(posts[0]).toBe(post);
+    });
+
+    describe('when on the backlog', function(){
+      it('should not reorder the posts if the post moment has not changed', function(){
+        var post1 = { postId: '1', isScheduled: true, moment: moment(20) };
+        var post2 = { postId: '2', isScheduled: true, moment: moment(100) };
+        var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(true, posts, moment(post2.moment), post2);
+        expect(posts).toEqual([post1, post2, post3]);
+      });
+
+      it('should reorder the posts ascending 1', function(){
+        var post1 = { postId: '1', isScheduled: true, moment: moment(20) };
+        var post2 = { postId: '2', isScheduled: true, moment: moment(40) };
+        var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(true, posts, changedMoment, post2);
+        expect(posts).toEqual([post1, post2, post3]);
+      });
+
+      it('should reorder the posts ascending 2', function(){
+        var post1 = { postId: '1', isScheduled: true, moment: moment(20) };
+        var post2 = { postId: '2', isScheduled: true, moment: moment(10) };
+        var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(true, posts, changedMoment, post2);
+        expect(posts).toEqual([post2, post1, post3]);
+      });
+
+      it('should reorder the posts ascending 3', function(){
+        var post1 = { postId: '1', isScheduled: true, moment: moment(20) };
+        var post2 = { postId: '2', isScheduled: true, moment: moment(80) };
+        var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(true, posts, changedMoment, post2);
+        expect(posts).toEqual([post1, post3, post2]);
+      });
+
+      it('should reorder the posts with the modified one last if the dates match 1', function(){
+        var post1 = { postId: '1', isScheduled: true, moment: moment(20) };
+        var post2 = { postId: '2', isScheduled: true, moment: moment(20) };
+        var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(true, posts, changedMoment, post2);
+        expect(posts).toEqual([post1, post2, post3]);
+      });
+
+      it('should reorder the posts with the modified one last if the dates match 2', function(){
+        var post1 = { postId: '1', isScheduled: true, moment: moment(20) };
+        var post2 = { postId: '2', isScheduled: true, moment: moment(20) };
+        var post3 = { postId: '3', isScheduled: true, moment: moment(60) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(true, posts, changedMoment, post1);
+        expect(posts).toEqual([post2, post1, post3]);
+      });
+    });
+
+    describe('when on the timeline', function(){
+      it('should not reorder the posts if the post moment has not changed', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
+        var post2 = { postId: '2', isScheduled: false, moment: moment(100) };
+        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, moment(post2.moment), post2);
+        expect(posts).toEqual([post1, post2, post3]);
+      });
+
+      it('should reorder the posts descending 1', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
+        var post2 = { postId: '2', isScheduled: false, moment: moment(40) };
+        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        expect(posts).toEqual([post1, post2, post3]);
+      });
+
+      it('should reorder the posts descending 2', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
+        var post2 = { postId: '2', isScheduled: false, moment: moment(10) };
+        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        expect(posts).toEqual([post1, post3, post2]);
+      });
+
+      it('should reorder the posts descending 3', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
+        var post2 = { postId: '2', isScheduled: false, moment: moment(80) };
+        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        expect(posts).toEqual([post2, post1, post3]);
+      });
+
+      it('should reorder the posts with the modified one first if the dates match 1', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
+        var post2 = { postId: '2', isScheduled: false, moment: moment(20) };
+        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        expect(posts).toEqual([post1, post2, post3]);
+      });
+
+      it('should reorder the posts with the modified one first if the dates match 2', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
+        var post2 = { postId: '2', isScheduled: false, moment: moment(20) };
+        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post3);
+        expect(posts).toEqual([post1, post3, post2]);
+      });
+
+      it('should update day grouping 1', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true};
+        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-15T04'), dayGrouping: false };
+        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        expect(posts).toEqual([post1, post2, post3]);
+        expect(posts[0].dayGrouping).toBe(true);
+        expect(posts[1].dayGrouping).toBe(false);
+        expect(posts[2].dayGrouping).toBe(false);
+      });
+
+      it('should update day grouping 2', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true };
+        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-15T02'), dayGrouping: false };
+        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        expect(posts).toEqual([post1, post3, post2]);
+        expect(posts[0].dayGrouping).toBe(true);
+        expect(posts[1].dayGrouping).toBe(false);
+        expect(posts[2].dayGrouping).toBe(false);
+      });
+
+      it('should update day grouping 3', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true };
+        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-15T06'), dayGrouping: false };
+        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        expect(posts).toEqual([post2, post1, post3]);
+        expect(posts[0].dayGrouping).toBe(true);
+        expect(posts[1].dayGrouping).toBe(false);
+        expect(posts[2].dayGrouping).toBe(false);
+      });
+
+      it('should update day grouping 4', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true };
+        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-16T04'), dayGrouping: false };
+        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        expect(posts).toEqual([post2, post1, post3]);
+        expect(posts[0].dayGrouping).toBe(true);
+        expect(posts[1].dayGrouping).toBe(true);
+        expect(posts[2].dayGrouping).toBe(false);
+      });
+
+      it('should update day grouping 5', function(){
+        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true };
+        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-14T04'), dayGrouping: false };
+        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
+        var posts = [post1, post2,  post3];
+        target.reorderPostsIfRequired(false, posts, changedMoment, post2);
+        expect(posts).toEqual([post1, post3, post2]);
+        expect(posts[0].dayGrouping).toBe(true);
+        expect(posts[1].dayGrouping).toBe(false);
+        expect(posts[2].dayGrouping).toBe(true);
+      });
+    });
+  });
 });

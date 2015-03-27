@@ -27,13 +27,13 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
         });
     };
 
-    service.editPost = function(postId) {
-      $modal.open({
+    service.editPost = function(post) {
+      return $modal.open({
         controller: 'postEditDialogCtrl',
-        templateUrl: 'modules/creator-backlog/post-edit-dialog.html',
+        templateUrl: 'modules/posts/post-edit-dialog.html',
         resolve: {
-          postId: function() {
-            return postId;
+          post: function() {
+            return post;
           }
         }
       });

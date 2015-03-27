@@ -53,8 +53,13 @@ angular.module('webApp').controller('fwPostListCtrl',
       return postInteractions.openFile(file);
     };
 
-    $scope.editPost = function(postId) {
-      postInteractions.editPost(postId);
+    $scope.editPost = function(post) {
+      var modalResult = postInteractions.editPost(post);
+
+      modalResult.result.then(function(newPost){
+        var isBacklog = $scope.source === fwPostListConstants.sources.creatorBacklog;
+        postUtilities.reorderPostsIfRequired(isBacklog, model.posts, post.moment, newPost);
+      });
     };
 
     $scope.deletePost = function(postId) {

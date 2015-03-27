@@ -72,15 +72,15 @@ angular.module('webApp').controller('queueReorderCtrl',
     ];
 
     $scope.viewImage = function (post) {
-      postInteractions.viewImage(post.imagePath, true);
+      postInteractions.viewImage(post.image, post.imageSource);
     };
 
-    $scope.edit = function(postId) {
-      postInteractions.edit(postId, true);
+    $scope.editPost = function(post) {
+      postInteractions.editPost(post);
     };
 
-    $scope.delete = function(postId) {
-      postInteractions.delete(postId, true);
+    $scope.deletePost = function(postId) {
+      postInteractions.deletePost(postId);
     };
   }
 );

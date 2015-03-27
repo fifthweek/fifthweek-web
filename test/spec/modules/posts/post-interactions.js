@@ -74,15 +74,15 @@ describe('post-interactions', function(){
         modalParameter = data;
       });
 
-      target.editPost('postId');
+      target.editPost('post');
     });
 
     it('should open a modal dialog', function(){
       expect($modal.open).toHaveBeenCalled();
     });
 
-    it('should configure injection of postId', function(){
-      expect(modalParameter.resolve.postId()).toBe('postId');
+    it('should configure injection of post', function(){
+      expect(modalParameter.resolve.post()).toBe('post');
     });
   });
 
