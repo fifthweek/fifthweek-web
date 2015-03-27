@@ -78,19 +78,11 @@
       this.setFileInput(filePath);
 
       if(waitFormUploadedIndicator){
-        var indicator = this.uploadIndicator;
-        browser.wait(function(){
-          return indicator.isPresent();
-        });
+        testKit.waitForElementToDisplay(this.uploadIndicator);
       }
       else{
-        var postButton = this.postNowButton;
-        browser.wait(function(){
-          return postButton.isPresent();
-        });
+        testKit.waitForElementToDisplay(this.postNowButton);
       }
-
-      browser.waitForAngular();
     }},
 
     getCollectionOptionCount: { value: function(collectionName, channelName){
@@ -434,6 +426,7 @@
               subscription = context.subscription;
               navigateToPage();
               page.populateUpload(tinyFilePath);
+              testKit.waitForElementToDisplay(element(by.id(page.createCollectionNameTextBoxId)));
             });
 
             describe('when posting now', function(){
@@ -526,6 +519,7 @@
             describe('when a collection does not exist', function(){
               beforeEach(function(){
                 page.populateUpload(tinyFilePath);
+                testKit.waitForElementToDisplay(element(by.id(page.createCollectionNameTextBoxId)));
               });
 
               afterEach(function(){
@@ -537,7 +531,7 @@
                 var overSizedValue = new Array(2002).join( 'a' );
                 testKit.setValue(page.commentTextBoxId, overSizedValue, true);
 
-                testKit.assertMaxLength(page.helpMessages, page.commentTextBox, overSizedValue, 2000);
+                testKit.assertMaxLength(page.helpMessages, page.commentTextBoxId, overSizedValue, 2000);
               });
 
               testKit.includeSadPaths(page, page.postNowButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');

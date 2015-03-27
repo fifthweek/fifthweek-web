@@ -50,6 +50,8 @@ CollectionNameInputPage.prototype = Object.create({},
 
         testKit.setValue(inputId, overSizedValue, true);
 
+        button.click();
+
         testKit.assertMaxLength(helpMessages, inputId, overSizedValue, maxLength);
       });
     }}
