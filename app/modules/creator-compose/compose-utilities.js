@@ -135,7 +135,7 @@ angular.module('webApp')
       if(model.input.selectedCollection && !model.input.selectedCollection.isNewCollection) {
         collectionStub.getLiveDateOfNewQueuedPost(model.input.selectedCollection.collectionId)
           .then(function(result){
-            model.queuedLiveDate = result.data;
+            model.queuedLiveDate = new Date(result.data);
           })
           .catch(function(error){
             model.queuedLiveDate = undefined;

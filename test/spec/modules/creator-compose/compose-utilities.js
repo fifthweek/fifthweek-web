@@ -593,7 +593,7 @@ describe('compose utilities', function(){
 
     describe('when the selected collection is an existing collection', function(){
       beforeEach(function(){
-        collectionStub.getLiveDateOfNewQueuedPost.and.returnValue($q.when({ data:'someDate' }));
+        collectionStub.getLiveDateOfNewQueuedPost.and.returnValue($q.when({ data:'2015-06-01T12:00:00Z' }));
         model.input.selectedCollection  = { collectionId: collectionId };
         target.updateEstimatedLiveDate(model);
         $rootScope.$apply();
@@ -604,7 +604,7 @@ describe('compose utilities', function(){
       });
 
       it('should update queuedLiveDate', function(){
-        expect(model.queuedLiveDate).toBe('someDate');
+        expect(model.queuedLiveDate).toEqual(new Date('2015-06-01T12:00:00Z'));
       });
     });
 
