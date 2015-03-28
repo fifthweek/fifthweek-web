@@ -10,13 +10,17 @@ env:
   - secure: d74TeeWKxyF3U6y0+G+P4qF+D+TGtpT1GfG1ruZe+dog8ESesSLJBiigua81DPwMOlRatFAecF/hGOFQjw7L/xEvKFu65zHrD6RNUIE/A4gi7ohnbl8UW6q8grX89GzhqLeH0s93c8VhWPMRXgDrG+dK5SQ0SbcTxCldurB3ZD0=
   - secure: Ru6FxbtxL48nS69L1hMqeM6uJCMuVJOhurHmcYZQtEUx5b5VLxtTV1BVQZ1zLkgT4FMM9rvthOCjl+zzeJj0/cCSwXtwtz/cVnVP7gTkQ+MVWHsNosR3M8atXppXJpTxEHL32lHf1sECFHlkzT1ebocjIltOhCeTSSloYbqlTYw=
 before_install:
-- export CHROME_BIN=chromium-browser
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
 - openssl aes-256-cbc -K $encrypted_3f34a1933f92_key -iv $encrypted_3f34a1933f92_iv
   -in .travis/fifthweek-web-build-failure-reports-deploy-key.enc -out .travis/fifthweek-web-build-failure-reports-deploy-key -d
 - openssl aes-256-cbc -K $encrypted_f5a6d6d93a89_key -iv $encrypted_f5a6d6d93a89_iv
   -in .travis/fifthweek-web-dist-deploy-key.enc -out .travis/fifthweek-web-dist-deploy-key -d
+- wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+- sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+- sudo apt-get update
+- sudo apt-get install google-chrome-stable
+- export CHROME_BIN=google-chrome
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 - gem install compass
 - npm install -g npm@2
 - npm --version
