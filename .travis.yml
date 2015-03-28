@@ -17,7 +17,6 @@ before_install:
   -in .travis/fifthweek-web-build-failure-reports-deploy-key.enc -out .travis/fifthweek-web-build-failure-reports-deploy-key -d
 - openssl aes-256-cbc -K $encrypted_f5a6d6d93a89_key -iv $encrypted_f5a6d6d93a89_iv
   -in .travis/fifthweek-web-dist-deploy-key.enc -out .travis/fifthweek-web-dist-deploy-key -d
-- gem install compass
 - npm install -g npm@2
 - npm --version
 - npm install -g bower grunt-cli
