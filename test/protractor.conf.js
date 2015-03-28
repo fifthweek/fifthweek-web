@@ -13,7 +13,7 @@ exports.config = {
   capabilities: {
     browserName: 'chrome',
     chromeOptions: {
-      'args': ['no-sandbox']
+      'args': ['no-sandbox'] // Requirement for Travis.
     },
     shardTestFiles: true,
     maxInstances: 3
@@ -28,16 +28,10 @@ exports.config = {
       baseDirectory: 'reports',
       preserveDirectory: true,
       takeScreenShotsOnlyForFailedSpecs: true,
-      pathBuilder: function pathBuilder(spec, descriptions, results, capabilities) {
-
-        // When sharding, we discriminate by session ID since browser names will be non-unique, and will cause sessions
-        // to overwrite each other's index.html.
-        var sessionId = capabilities.caps_['webdriver.remote.sessionid'];
-
+      pathBuilder: function pathBuilder(spec, descriptions, results) {
         var hasFailures = results.failedCount > 0;
         return path.join(
           hasFailures ? 'failure' : 'success',
-          sessionId,
           descriptions.join(', '));
       }
     }));
