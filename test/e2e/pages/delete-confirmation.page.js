@@ -45,12 +45,6 @@ DeleteConfirmationPage.prototype = Object.create({}, {
           action: function() {
             self.crossButton.click();
           }
-        },
-        {
-          name: 'background',
-          action: function() {
-            element(by.css('body > .modal')).click();
-          }
         }
       ], function(cancelOperation) {
         describe('clicking the ' + cancelOperation.name, function() {
@@ -125,12 +119,6 @@ DeleteConfirmationPage.prototype = Object.create({}, {
           name: 'X button',
           action: function() {
             self.crossButton.click();
-          }
-        },
-        {
-          name: 'background',
-          action: function() {
-            element(by.css('body > .modal')).click();
           }
         }
       ], function(cancelOperation) {

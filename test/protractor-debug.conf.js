@@ -1,7 +1,7 @@
 
 exports.config = {
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/compose-file-form.spec.js'],
+  specs: ['e2e/spec/**/*.spec.js'],
   directConnect: true,
   allScriptsTimeout: 60000,
   jasmineNodeOpts: {
