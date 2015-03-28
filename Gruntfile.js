@@ -21,20 +21,6 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
-  var htmlMinOptions = {
-    conservativeCollapse:           true,
-    collapseBooleanAttributes:      true,
-    collapseWhitespace:             true,
-    removeAttributeQuotes:          true,
-    removeComments:                 true, // Only if you don't use comment directives!
-    removeEmptyAttributes:          true,
-    removeRedundantAttributes:      true,
-    removeScriptTypeAttributes:     true,
-    removeStyleLinkTypeAttributes:  true,
-    removeCommentsFromCDATA:        true,
-    removeOptionalTags:             true
-  };
-
   var developerName;
 
   function assignDeveloperName(err, stdout, stderr, cb) {
@@ -60,7 +46,7 @@ module.exports = function (grunt) {
       },
       html: {
         files: ['<%= yeoman.app %>/**/*.html'],
-        tasks: ['ngtemplates']
+        tasks: ['copy:viewsToTmp', 'ngtemplates']
       },
       js: {
         files: ['<%= yeoman.app %>/**/*.js'],
@@ -171,14 +157,13 @@ module.exports = function (grunt) {
         files: [{
           dot: true,
           src: [
-            '.tmp',
             '<%= yeoman.dist %>/**/*',
             '!<%= yeoman.dist %>/.git**/*'
           ]
         }]
       },
       reports: 'reports',
-      server: '.tmp'
+      tmp: '.tmp'
     },
 
     // Add vendor prefixed styles
@@ -244,20 +229,21 @@ module.exports = function (grunt) {
     },
 
     'ddescribe-iit': {
-      files: [
-        'test/**/*.js',
-        'test/**/*.js'
-      ]
+      files: [ 'test/**/*.js' ]
     },
 
     // Renames files for browser caching purposes
     filerev: {
-      dist: {
+      nonScripts: {
         src: [
-          '<%= yeoman.dist %>/**/*.js',
           '<%= yeoman.dist %>/styles/**/*.css',
           '<%= yeoman.dist %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
+        ]
+      },
+      scripts: {
+        src: [
+          '<%= yeoman.dist %>/**/*.js'
         ]
       }
     },
@@ -283,7 +269,7 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/**/*.html'],
+      html: ['.tmp/views/**/*.html', '<%= yeoman.dist %>/**/*.html'],
       css: ['<%= yeoman.dist %>/styles/**/*.css'],
       options: {
         assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
@@ -292,53 +278,56 @@ module.exports = function (grunt) {
 
     ngtemplates: {
       app: {
-        cwd: '<%= yeoman.app %>',
-        src: '*/**/*.html', // Include files from all child directory, recursively, but not the root.
+        cwd: '.tmp/views',
+        src: '**/*.html',
         dest: '<%= yeoman.app %>/scripts/generated/inline-views.js',
         options: {
-          module: 'webApp',
-          htmlmin: htmlMinOptions
+          module: 'webApp'
         }
       }
     },
 
     htmlmin: {
-      dist: {
-        options: htmlMinOptions,
+      options: {
+        conservativeCollapse:           true,
+        collapseBooleanAttributes:      true,
+        collapseWhitespace:             true,
+        removeAttributeQuotes:          true,
+        removeComments:                 true, // Only if you don't use comment directives!
+        removeEmptyAttributes:          true,
+        removeRedundantAttributes:      true,
+        removeScriptTypeAttributes:     true,
+        removeStyleLinkTypeAttributes:  true,
+        removeCommentsFromCDATA:        true,
+        removeOptionalTags:             true
+      },
+      views: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/views',
+          src: '**/*.html',
+          dest: '.tmp/views'
+        }]
+      },
+      nonViews: {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', '**/*.html'],
+          src: '**/*.html',
           dest: '<%= yeoman.dist %>'
         }]
       }
     },
 
-    // The following *-min tasks will produce minified files in the dist folder
-    // By default, your `index.html`'s <!-- Usemin block --> will take care of
-    // minification. These next options are pre-configured if you do not wish
-    // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/styles/main.css': [
-    //         '.tmp/styles/**/*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/scripts/scripts.js': [
-    //         '<%= yeoman.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
+    cssmin: {
+       dist: {
+         files: {
+           '<%= yeoman.dist %>/styles/main.css': [
+             '.tmp/styles/**/*.css'
+           ]
+         }
+       }
+    },
 
     imagemin: {
       dist: {
@@ -375,16 +364,9 @@ module.exports = function (grunt) {
       }
     },
 
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/*.html']
-      }
-    },
-
     // Copies remaining files to places other tasks can use
     copy: {
-      dist: {
+      nonConcatenatedFilesToDist: {
         files: [{
           expand: true,
           dot: true,
@@ -393,8 +375,7 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-            '*.html',
-            // '**/*.html', // Do not copy views. These are in-lined via ngtemplates.
+            '*.html', // Root HTML files only. Views are in-lined into a JS file, so shouldn't be distributed.
             'images/**/*',
             'images/**/*.{webp}',
             'fonts/**/*.*',
@@ -404,7 +385,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
-          src: ['generated/*']
+          src: 'generated/*'
         }, {
           expand: true,
           cwd: '.',
@@ -412,29 +393,46 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>'
         }]
       },
-      styles: {
+      plainCssToTmp: {
         expand: true,
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '**/*.css'
+      },
+      viewsToTmp: {
+        expand: true,
+        cwd: '<%= yeoman.app %>',
+        src: '*/**/*.html', // Skip root files. Views only.
+        dest: '.tmp/views/'
       }
     },
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'sass:server',
-        'copy:styles'
+        'copy:viewsToTmp',
+        'copy:plainCssToTmp',
+        'sass:server'
       ],
       test: [
-        'sass',
-        'copy:styles'
+        'copy:viewsToTmp',
+        'copy:plainCssToTmp',
+        'sass'
       ],
-      dist: [
+      buildPhase1: [
+        'copy:viewsToTmp',
+        'copy:plainCssToTmp',
         'sass:dist',
-        'copy:styles',
         'imagemin',
         'svgmin'
+      ],
+      buildPhase2: [
+        'autoprefixer', // Apply cross-browser vendor prefixes to all CSS in `.tmp`.
+        'copy:nonConcatenatedFilesToDist', // Copy everything generated so far into dist.
+      ],
+      buildPhase3: [
+        'ngAnnotate', // Ensure JS minimisation does not break Angular DI.
+        'cssmin' // Minimise CSS. Creates file in `dist`.
       ]
     },
 
@@ -601,14 +599,14 @@ module.exports = function (grunt) {
     if (isDist(targetBase)) {
       tasks.push(
         'build',
-        'clean:server',
         'connect:testdist');
     }
     else if(isApp(targetBase))
     {
       tasks.push(
-        'clean:server',
+        'clean:tmp',
         'concurrent:test',
+        'ngtemplates',
         'autoprefixer',
         'connect:test');
     }
@@ -630,21 +628,43 @@ module.exports = function (grunt) {
   }
 
   grunt.registerTask('build', [
+    'clean:tmp',
     'clean:dist',
-    'ngtemplates',
+
+    // Process the `index.html`.
     'wiredep',
     'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
+
+    // Run unrelated build steps concurrently.
+    'concurrent:buildPhase1',
+    'concurrent:buildPhase2',
+
+    // Append hash to non-script file-names, and update references in views only.
+    // Other HTML files in `dist` will be updated with a later call to `usemin`,
+    // as will the CSS in `dist`. The final CSS does not exist at this point, thus
+    // making the full `usemin` which includes `usemin:css` redundant.
+    'filerev:nonScripts',
+    'usemin:html',
+    'htmlmin:views',
+
+    // Inline all views in `.tmp` and output to file in `app`.
+    'ngtemplates',
+
+    // Combine all scripts and styles into single files. These files are
+    // taken from the `index.html`, which was processed with `useminPrepare`.
+    // Files remain in `.tmp` at this point.
     'concat',
-    'ngAnnotate',
-    'copy:dist',
-    'cdnify',
-    'cssmin',
+
+    // Run unrelated build steps concurrently.
+    'concurrent:buildPhase3',
+
+    // Minimise JS. Creates files in `dist`.
     'uglify',
-    'filerev',
+
+    // Append hash to script file-names, and update references.
+    'filerev:scripts',
     'usemin',
-    'htmlmin'
+    'htmlmin:nonViews'
   ]);
 
   grunt.registerTask('serve', '', function (targetApi, targetBase) {
@@ -671,10 +691,10 @@ module.exports = function (grunt) {
     else if(isApp(targetBase))
     {
       grunt.task.run([
-        'clean:server',
-        'ngtemplates',
+        'clean:tmp',
         'wiredep',
         'concurrent:server',
+        'ngtemplates',
         'autoprefixer',
         'connect:livereload',
         'watch'
