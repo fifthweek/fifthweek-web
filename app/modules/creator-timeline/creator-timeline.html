@@ -6,7 +6,7 @@
   <fw-azure-image-loader output-url="model.headerImageUrl" thumbnail="header" file-id="{{model.subscription.headerImage.fileId}}" container-name="{{model.subscription.headerImage.containerName}}"></fw-azure-image-loader>
 
   <div class="header-image" style="background-image:url('{{model.subscription.headerImage.fileId ? model.headerImageUrl : 'images/header-default.jpg'}}')" id="header-image">
-    <div ng-include="'../../views/partials/logo-sm.html'"></div>
+    <div ng-include="'views/partials/logo-sm.html'"></div>
   </div>
 
   <div class="main-content">
@@ -102,7 +102,7 @@
               <div class="post image-post" ng-if="model.videoUrl">
                 <div id="video" class="video">
                   <embed-video data-ng-href="{{model.videoUrl}}" controls=0></embed-video>
-                  <div ng-include="'../../views/partials/video-radius-fix.html'"></div>
+                  <div ng-include="'views/partials/video-radius-fix.html'"></div>
                 </div>
                 <div class="text">
                   <div id="full-description" class="content">
