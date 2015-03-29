@@ -9,7 +9,19 @@ var minute = 60 * 1000;
 exports.config = {
   seleniumAddress: 'http://hub.browserstack.com/wd/hub',
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/account-settings-form.spec.js'],
+
+  specs: ['e2e/spec/**/*.spec.js'],
+
+  // We cannot run any file upload tests until BrowserStack upgrade to Selenium 2.45.0
+  exclude: [
+    'compose-file-form.spec.js',
+    'compose-image-form.spec.js',
+    'creator-backlog-form.spec.js',
+    'creator-timeline-form.spec.js',
+    'account-settings-form.spec.js',
+    'customize-landing-page-form.spec.js'
+  ],
+
   allScriptsTimeout: minute,
   jasmineNodeOpts: {
     defaultTimeoutInterval: minute,
