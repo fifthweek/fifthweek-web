@@ -57,8 +57,10 @@ angular.module('webApp').controller('fwPostListCtrl',
       var modalResult = postInteractions.editPost(post);
 
       modalResult.result.then(function(newPost){
-        var isBacklog = $scope.source === fwPostListConstants.sources.creatorBacklog;
-        postUtilities.replacePostAndReorderIfRequired(isBacklog, model.posts, post.moment, newPost);
+        if(newPost){
+          var isBacklog = $scope.source === fwPostListConstants.sources.creatorBacklog;
+          postUtilities.replacePostAndReorderIfRequired(isBacklog, model.posts, post.moment, newPost);
+        }
       });
     };
 

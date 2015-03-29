@@ -261,10 +261,30 @@ describe('fw-post-list-controller', function(){
           });
         });
       });
-      describe('when the dialog is dismissed', function(){
+
+      describe('when the dialog is dismissed as a rejected promise', function(){
         beforeEach(function(){
           postInteractions.editPost.and.returnValue({
             result: $q.reject('rejected')
+          });
+
+          $scope.editPost(post1);
+          $scope.$apply();
+        });
+
+        it('should forward the call to postInteractions', function(){
+          expect(postInteractions.editPost).toHaveBeenCalledWith(post1);
+        });
+
+        it('should not reorder posts', function(){
+          expect(postUtilities.replacePostAndReorderIfRequired).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('when the dialog is dismissed as a resolved promise', function(){
+        beforeEach(function(){
+          postInteractions.editPost.and.returnValue({
+            result: $q.when()
           });
 
           $scope.editPost(post1);
