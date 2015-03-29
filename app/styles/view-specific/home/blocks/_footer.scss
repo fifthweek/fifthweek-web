@@ -2,6 +2,7 @@
   @media (min-width:$screen-sm-min) and (min-height:$screen-xs-max - 50px) {
     position:fixed;
     bottom:0;
+    left:0;
     background:rgba(30, 30, 30, 0.3);
   }
   p {
