@@ -116,6 +116,12 @@ angular.module('webApp').factory('postEditDialogUtilities',
       post.image = model.input.image;
       post.imageSource = model.input.imageSource;
 
+      // When requesting posts from the API, backlog posts
+      // have a scheduledByQueue property where as timeline
+      // posts do not.  Therefore the presence of this property
+      // is used by postUtilities to determine if a post is scheduled.
+      // We replicate that here by removing the property for
+      // non-scheduled posts.
       if(hasSchedulingChanged(model)){
         if(model.input.scheduleMode === scheduleModes.now){
           delete post.scheduledByQueue;
@@ -126,7 +132,14 @@ angular.module('webApp').factory('postEditDialogUtilities',
           post.liveDate = model.queuedLiveDate.toISOString();
         }
         else if(model.input.scheduleMode === scheduleModes.scheduled){
-          post.scheduledByQueue = false;
+          var now = moment();
+          if(now.isBefore(model.input.date)){
+            post.scheduledByQueue = false;
+          }
+          else{
+            // The post is live.
+            delete post.scheduledByQueue;
+          }
           post.liveDate = model.input.date.toISOString();
         }
       }

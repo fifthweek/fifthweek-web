@@ -458,11 +458,13 @@ describe('post-edit-dialog-utilities', function() {
     var model;
     var result;
     var inputDate;
+    var pastInputDate;
     var queuedLiveDate;
     var nowDate;
     beforeEach(function(){
       nowDate = new Date('2015-05-01T08:00:00Z');
       inputDate = new Date('2015-05-01T12:00:00Z');
+      pastInputDate = new Date('2015-05-01T05:00:00Z');
       queuedLiveDate = new Date('2015-05-01T17:30:00Z');
       jasmine.clock().install();
       jasmine.clock().mockDate(nowDate);
@@ -552,11 +554,21 @@ describe('post-edit-dialog-utilities', function() {
 
     var runScheduleDateExpectations = function(){
       it('should set scheduledByQueue to be false', function(){
-        expect(post.scheduledByQueue).toBe(false);
+        if(model.input.date === pastInputDate){
+          expect(_.has(post, 'scheduledByQueue')).toBe(false);
+        }
+        else{
+          expect(post.scheduledByQueue).toBe(false);
+        }
       });
 
       it('should have a live date of the input date', function(){
-        expect(post.liveDate).toBe(inputDate.toISOString());
+        if(model.input.date === pastInputDate) {
+          expect(post.liveDate).toBe(pastInputDate.toISOString());
+        }
+        else{
+          expect(post.liveDate).toBe(inputDate.toISOString());
+        }
       });
     };
 
@@ -599,6 +611,17 @@ describe('post-edit-dialog-utilities', function() {
         runScheduleDateExpectations();
         runResultExpectations();
       });
+
+      describe('when the scheduleMode is scheduled in the past', function(){
+        beforeEach(function(){
+          model.postType = postTypes.note;
+          model.input.scheduleMode = scheduleModes.scheduled;
+          model.input.date = pastInputDate;
+          result = target.applyChangesToPost(post, model);
+        });
+
+        runScheduleDateExpectations();
+      });
     });
 
     describe('when the post is a file', function(){
@@ -640,6 +663,17 @@ describe('post-edit-dialog-utilities', function() {
         runScheduleDateExpectations();
         runResultExpectations();
       });
+
+      describe('when the scheduleMode is scheduled in the past', function(){
+        beforeEach(function(){
+          model.postType = postTypes.file;
+          model.input.scheduleMode = scheduleModes.scheduled;
+          model.input.date = pastInputDate;
+          result = target.applyChangesToPost(post, model);
+        });
+
+        runScheduleDateExpectations();
+      });
     });
 
     describe('when the post is a image', function(){
@@ -680,6 +714,17 @@ describe('post-edit-dialog-utilities', function() {
         runFileAndImageExpectations();
         runScheduleDateExpectations();
         runResultExpectations();
+      });
+
+      describe('when the scheduleMode is scheduled in the past', function(){
+        beforeEach(function(){
+          model.postType = postTypes.image;
+          model.input.scheduleMode = scheduleModes.scheduled;
+          model.input.date = pastInputDate;
+          result = target.applyChangesToPost(post, model);
+        });
+
+        runScheduleDateExpectations();
       });
     });
   });
