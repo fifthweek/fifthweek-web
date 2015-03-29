@@ -8,7 +8,6 @@ exports.config = {
   seleniumAddress: 'http://hub.browserstack.com/wd/hub',
   baseUrl: 'http://localhost:9001',
   specs: ['e2e/spec/**/account-settings-form.spec.js'],
-  directConnect: true,
   allScriptsTimeout: 60000,
   jasmineNodeOpts: {
     defaultTimeoutInterval: 5 * 60 * 1000, // 5 Minutes
