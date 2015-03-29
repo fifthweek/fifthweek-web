@@ -5,7 +5,6 @@ exports.config = {
   // Small subset of tests. Entire suite will be run as part of CI.
   specs: ['e2e/spec/sign-in-reset-form.spec.js'],
 
-  directConnect: true,
   allScriptsTimeout: 60000,
   jasmineNodeOpts: {
     defaultTimeoutInterval: 5 * 60 * 1000, // 5 Minutes
