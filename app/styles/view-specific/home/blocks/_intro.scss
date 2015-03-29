@@ -15,9 +15,9 @@
   @media (min-width:$screen-md-min) {
     padding:{
       top:5%;
-      bottom:210px;
     }
   }
+  
   h2,
   h3 {
     @include text-shadow-black-soft;
