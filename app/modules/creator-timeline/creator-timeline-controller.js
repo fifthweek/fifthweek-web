@@ -7,6 +7,12 @@ angular.module('webApp').controller('timelineCtrl',
     var channelRepository = channelRepositoryFactory.forCurrentUser();
 
     $scope.model = {
+
+      // These need to appear in a JS file, as the Grunt task for swapping file names that appear within JS will only
+      // inspect *.js files.
+      defaultHeaderImageUrl: 'images/header-default.jpg',
+      defaultProfileImageUrl: 'images/avatar-default.jpg',
+
       tracking: {
         title: 'Subscribed',
         category: 'Timeline'
