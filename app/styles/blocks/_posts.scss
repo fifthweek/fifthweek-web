@@ -114,14 +114,18 @@ $line-height-compensation: -5px;
           margin: 12px 0;
         }
 
-        p:first-child {
+        p{
+          margin-bottom:$p-margin-bottom;
+        }
+
+        > span:first-of-type > p:first-child {
           margin-top: $line-height-compensation;
 
           img {
             margin-top: $line-height-compensation * -1;
           }
         }
-        p:last-child {
+        > span:last-of-type > p:last-child {
           margin-bottom: $line-height-compensation;
 
           img {

@@ -95,7 +95,7 @@
               <div class="post non-image-post" ng-if="!model.videoUrl">
                 <div class="text">
                   <div id="full-description" class="content">
-                    <md ng-model="model.subscription.description"></md>
+                    <fw-markdown replace="true" ng-model="model.subscription.description"></fw-markdown>
                   </div>
                 </div>
               </div>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="text">
                   <div id="full-description" class="content">
-                    <md ng-model="model.subscription.description" ng-if="model.subscription.description"></md>
+                    <fw-markdown replace="true" ng-model="model.subscription.description" ng-if="model.subscription.description"></fw-markdown>
                     <p ng-if="!model.subscription.description">More of your favourites each and every week -- for less than a coffee!</p>
                   </div>
                 </div>

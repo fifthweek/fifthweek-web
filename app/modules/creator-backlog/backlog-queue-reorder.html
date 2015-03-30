@@ -15,7 +15,7 @@
 
         <div class="text">
           <div class="content" ng-if="post.comment || post.filePath">
-            <md ng-model="post.comment" ng-if="post.comment"></md>
+            <fw-markdown replace="true" ng-model="post.comment" ng-if="post.comment"></fw-markdown>
 
             <p ng-if="post.filePath" class="content-file">
               <a class="btn-file-download file-content" href="{{post.filePath}}" target="_blank">

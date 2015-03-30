@@ -95,6 +95,7 @@ h5 {
 }
 
 p {
+  margin-bottom:$p-margin-bottom;
   font-size:$p-font-size;
   &.last, &:last-child {
     margin-bottom:0;
