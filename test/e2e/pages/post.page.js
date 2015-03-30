@@ -49,7 +49,7 @@
     dayGroupings: { get: function() { return element.all(this.byCss('.day-grouping')); }},
     scheduleTag: { get: function() { return element(this.byCss('.tag')); }},
     scheduleTags: { get: function() { return element.all(this.byCss('.tag')); }},
-    comment: { get: function() { return element(this.byCss('.text .content p:first-child')); }},
+    comment: { get: function() { return element(this.byCss('#post-comment')); }},
     fileDownloadLink: { get: function() { return element(this.byCss('.text .content .file-content')); }},
     fileSizeText: { get: function() { return element(this.byCss('.text .content .file-size')); }},
     profileImage: { get: function() { return element(this.byCss('.author-image')); }},
