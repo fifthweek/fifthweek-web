@@ -45,12 +45,14 @@
     allPosts: { get: function () { return element.all(by.css('.posts .post')); }},
 
     image: { get: function() { return element(this.byCss('.full-width-image')); }},
+    images: { get: function() { return element.all(this.byCss('.full-width-image')); }},
     dayGrouping: { get: function() { return element(this.byCss('.day-grouping')); }},
     dayGroupings: { get: function() { return element.all(this.byCss('.day-grouping')); }},
     scheduleTag: { get: function() { return element(this.byCss('.tag')); }},
     scheduleTags: { get: function() { return element.all(this.byCss('.tag')); }},
     comment: { get: function() { return element(this.byCss('#post-comment')); }},
     fileDownloadLink: { get: function() { return element(this.byCss('.text .content .file-content')); }},
+    fileDownloadLinks: { get: function() { return element.all(this.byCss('.text .content .file-content')); }},
     fileSizeText: { get: function() { return element(this.byCss('.text .content .file-size')); }},
     profileImage: { get: function() { return element(this.byCss('.author-image')); }},
     usernameLink: { get: function() { return element(this.byCss('.poster-name')); }},
@@ -102,8 +104,10 @@
     }},
 
     expectNotePost: { value: function(postData, registration, navigateToPage){
-      this.expectHeader(postData,  registration);
+      this.expectHeader(postData, registration);
 
+      expect(this.images.count()).toBe(0);
+      expect(this.fileDownloadLinks.count()).toBe(0);
       expect(this.comment.getText()).toBe(postData.noteText);
       expect(this.usernameLink.getText()).toBe(registration.username);
       expect(this.containerNameLink.getText()).toBe(postData.channelName || 'Everyone');
@@ -112,8 +116,9 @@
     }},
 
     expectImagePost: { value: function(postData, registration, navigateToPage){
-      this.expectHeader(postData,  registration);
+      this.expectHeader(postData, registration);
 
+      expect(this.image.isPresent()).toBe(true);
       expect(this.comment.getText()).toBe(postData.commentText);
 
       expect(this.usernameLink.getText()).toBe(registration.username);
@@ -123,8 +128,9 @@
     }},
 
     expectFilePost: { value: function(postData, registration, navigateToPage){
-      this.expectHeader(postData,  registration);
+      this.expectHeader(postData, registration);
 
+      expect(this.images.count()).toBe(0);
       expect(this.comment.getText()).toBe(postData.commentText);
       expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
       expect(this.fileSizeText.getText()).toContain('KB');

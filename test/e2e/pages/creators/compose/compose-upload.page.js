@@ -129,7 +129,8 @@
         commentText: commentText,
         channelName: channelName,
         collectionName: collectionName,
-        filePath: filePath
+        filePath: filePath,
+        uploadType: this.uploadType
       }
     }},
 

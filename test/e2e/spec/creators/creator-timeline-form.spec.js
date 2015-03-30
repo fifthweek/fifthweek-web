@@ -7,6 +7,7 @@
   var PostPage = require('../../pages/post.page.js');
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
   var DeleteConfirmationPage = require('../../pages/delete-confirmation.page.js');
+  var EditPostDialogPage = require('../../pages/creators/edit-post-dialog.page.js');
 
   describe('creator-timeline form', function() {
 
@@ -23,6 +24,7 @@
     var post = new PostPage(false);
     var creatorLandingPagePage = new CreatorLandingPagePage();
     var deleteConfirmationPage = new DeleteConfirmationPage();
+    var editPostDialogPage = new EditPostDialogPage();
 
     describe('when posting many posts', function(){
 
@@ -138,51 +140,82 @@
       );
     };
 
+    var testEditing = function(inputData){
+      editPostDialogPage.describeEditingPostContent(
+        false,
+        inputData,
+        function() {
+          sidebar.usernameLink.click();
+          creatorLandingPagePage.subscribeButton.click();
+        },
+        function () {
+          navigateToSite();
+          navigateToPage();
+          testKit.scrollIntoView(post.moreActionsButton);
+          post.moreActionsButton.click();
+          browser.waitForAngular();
+          testKit.scrollIntoView(post.editPostLink);
+          post.editPostLink.click();
+        },
+        function () {
+          navigateToSite();
+          navigateToPage();
+        });
+    };
+
     describe('when posting single posts', function(){
+      var inputData = {};
       it('should run once before all', function() {
         var context = commonWorkflows.createSubscription();
         registration = context.registration;
         subscription = context.subscription;
 
+        inputData.registration = registration;
         commonWorkflows.createNamedCollection(undefined, collectionName);
         navigateToPage();
       });
 
       it('should show the post after posting a note now', function () {
         navigateToSite();
-        var postData = commonWorkflows.postNoteNow();
+        var postData = inputData.postData = commonWorkflows.postNoteNow();
         navigateToPage();
         post.expectNotePost(postData, registration, navigateToPage);
       });
 
+      testEditing(inputData);
       testDeletion();
 
       it('should show the post after posting a file now', function () {
         navigateToSite();
-        var postData = commonWorkflows.postFileNow(filePath, collectionName);
+        var postData = inputData.postData = commonWorkflows.postFileNow(filePath, collectionName);
         navigateToPage();
         post.expectFilePost(postData, registration, navigateToPage);
       });
 
+      testEditing(inputData);
       testDeletion();
 
       it('should show the post after posting a image now', function () {
         navigateToSite();
-        var postData = commonWorkflows.postImageNow(filePath, collectionName);
+        var postData = inputData.postData = commonWorkflows.postImageNow(filePath, collectionName);
         navigateToPage();
         post.expectImagePost(postData, registration, navigateToPage);
       });
 
+      testEditing(inputData);
       testDeletion();
 
       it('should show the post after posting a TIFF image now', function () {
         navigateToSite();
-        var postData = commonWorkflows.postImageNow(filePathTiff, collectionName);
+        var postData = inputData.postData = commonWorkflows.postImageNow(filePathTiff, collectionName);
         navigateToPage();
         post.expectNonViewableImagePost(postData, registration, navigateToPage);
       });
 
-      testDeletion();
+      testEditing(inputData);
+      testDeletion(); // TODO: Delete by moving to live
+
+      // TODO: Test schedule in the past
     });
 
     var navigateToSite = function() {

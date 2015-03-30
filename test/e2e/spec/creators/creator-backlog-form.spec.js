@@ -6,6 +6,7 @@
   var HeaderBacklogPage = require('../../pages/header-backlog.page.js');
   var PostPage = require('../../pages/post.page.js');
   var DeleteConfirmationPage = require('../../pages/delete-confirmation.page.js');
+  var EditPostDialogPage = require('../../pages/creators/edit-post-dialog.page.js');
 
   describe('creator-backlog form', function() {
 
@@ -21,6 +22,7 @@
     var header = new HeaderBacklogPage();
     var post = new PostPage(true);
     var deleteConfirmationPage = new DeleteConfirmationPage();
+    var editPostDialogPage = new EditPostDialogPage();
 
     describe('when posting many posts', function(){
       it('should run once before all', function() {
@@ -118,7 +120,101 @@
       );
     };
 
-    describe('when posting single posts', function(){
+    var testEditing = function(inputData){
+      editPostDialogPage.describeEditingPostContent(
+        true,
+        inputData,
+        function() {
+          sidebar.backlogLink.click();
+          header.futurePostsLink.click();
+        },
+        function () {
+          commonWorkflows.fastRefresh();
+          post.moreActionsButton.click();
+          post.editPostLink.click();
+        },
+        function () {
+          commonWorkflows.fastRefresh();
+        });
+    };
+
+    ddescribe('when posting single posts', function(){
+      var inputData = {};
+      it('should run once before all', function() {
+        var context = commonWorkflows.createSubscription();
+        registration = context.registration;
+        subscription = context.subscription;
+
+        inputData.registration = registration;
+        commonWorkflows.createNamedCollection(undefined, collectionName);
+        navigateToPage();
+      });
+
+      it('should show the post after posting a note on a date', function () {
+        var postData = inputData.postData = commonWorkflows.postNoteOnDate();
+        navigateToPage();
+        post.expectNotePost(postData, registration, navigateToPage);
+      });
+
+      testEditing(inputData);
+      testDeletion();
+
+      it('should show the post after posting a file on a date', function () {
+        var postData = inputData.postData = commonWorkflows.postFileOnDate(filePath, collectionName);
+        navigateToPage();
+        post.expectFilePost(postData, registration, navigateToPage);
+      });
+
+      testEditing(inputData);
+      testDeletion();
+
+      it('should show the post after posting a file to the queue', function () {
+        var postData = inputData.postData = commonWorkflows.postFileToQueue(filePath, collectionName);
+        navigateToPage();
+        post.expectFilePost(postData, registration, navigateToPage);
+      });
+
+      testEditing(inputData);
+      testDeletion();
+
+      it('should show the post after posting a image on a date', function () {
+        var postData = inputData.postData = commonWorkflows.postImageOnDate(filePath, collectionName);
+        navigateToPage();
+        post.expectImagePost(postData, registration, navigateToPage);
+      });
+
+      testEditing(inputData);
+      testDeletion();
+
+      it('should show the post after posting a image to the queue', function () {
+        var postData = inputData.postData = commonWorkflows.postImageToQueue(filePath, collectionName);
+        navigateToPage();
+        post.expectImagePost(postData, registration, navigateToPage);
+      });
+
+      testEditing(inputData);
+      testDeletion();
+
+      it('should show the post after posting a TIFF image on a date', function () {
+        var postData = inputData.postData = commonWorkflows.postImageOnDate(filePathTiff, collectionName);
+        navigateToPage();
+        post.expectNonViewableImagePost(postData, registration, navigateToPage);
+      });
+
+      testEditing(inputData);
+      testDeletion();  // TODO: Delete by moving to live
+
+      it('should show the post after posting a TIFF image to the queue', function () {
+        var postData = inputData.postData = commonWorkflows.postImageToQueue(filePathTiff, collectionName);
+        navigateToPage();
+        post.expectNonViewableImagePost(postData, registration, navigateToPage);
+      });
+
+      testEditing(inputData);
+      testDeletion(); // TODO: Delete by moving to live
+    });
+/*
+    describe('when editing posts', function(){
       it('should run once before all', function() {
         var context = commonWorkflows.createSubscription();
         registration = context.registration;
@@ -128,63 +224,16 @@
         navigateToPage();
       });
 
-      it('should show the post after posting a note on a date', function () {
-        var postData = commonWorkflows.postNoteOnDate();
-        navigateToPage();
-        post.expectNotePost(postData, registration, navigateToPage);
-      });
 
-      testDeletion();
 
-      it('should show the post after posting a file on a date', function () {
-        var postData = commonWorkflows.postFileOnDate(filePath, collectionName);
-        navigateToPage();
-        post.expectFilePost(postData, registration, navigateToPage);
-      });
+      // Add two posts.
+      // move post before other
+      // move post after other
+      // post live
+      // schedule live
 
-       testDeletion();
-
-      it('should show the post after posting a file to the queue', function () {
-        var postData = commonWorkflows.postFileToQueue(filePath, collectionName);
-        navigateToPage();
-        post.expectFilePost(postData, registration, navigateToPage);
-      });
-
-       testDeletion();
-
-      it('should show the post after posting a image on a date', function () {
-        var postData = commonWorkflows.postImageOnDate(filePath, collectionName);
-        navigateToPage();
-        post.expectImagePost(postData, registration, navigateToPage);
-      });
-
-      testDeletion();
-
-      it('should show the post after posting a image to the queue', function () {
-        var postData = commonWorkflows.postImageToQueue(filePath, collectionName);
-        navigateToPage();
-        post.expectImagePost(postData, registration, navigateToPage);
-      });
-
-      testDeletion();
-
-      it('should show the post after posting a TIFF image on a date', function () {
-        var postData = commonWorkflows.postImageOnDate(filePathTiff, collectionName);
-        navigateToPage();
-        post.expectNonViewableImagePost(postData, registration, navigateToPage);
-      });
-
-      testDeletion();
-
-      it('should show the post after posting a TIFF image to the queue', function () {
-        var postData = commonWorkflows.postImageToQueue(filePathTiff, collectionName);
-        navigateToPage();
-        post.expectNonViewableImagePost(postData, registration, navigateToPage);
-      });
-
-      testDeletion();
     });
-
+*/
     var navigateToPage = function() {
       sidebar.backlogLink.click();
       header.futurePostsLink.click();
