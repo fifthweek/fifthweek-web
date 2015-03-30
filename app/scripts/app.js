@@ -16,8 +16,7 @@ angular
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',
     'angulartics.kissmetrics',
-    'videosharing-embed',
-    'yaru22.md'
+    'videosharing-embed'
   ])
   .constant('fifthweekConstants', {
     apiBaseUri: window.configuredApiBaseUri,
