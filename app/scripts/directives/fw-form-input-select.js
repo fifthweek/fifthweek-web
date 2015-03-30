@@ -6,6 +6,7 @@ angular.module('webApp').directive('fwFormInputSelect', function () {
     scope: {
       items:'=',
       selectedItem:'=',
+      ngDisabled:'@',
       id:'@'
     },
     templateUrl:'views/partials/form-input-select.html'
