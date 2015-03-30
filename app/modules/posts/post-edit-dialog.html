@@ -43,7 +43,7 @@
         </fw-form-input-comment>
 
         <label>Post to</label>
-        <fw-form-input-select selected-item="model.input.selectedCollection" items="model.collections"></fw-form-input-select>
+        <fw-form-input-select selected-item="model.input.selectedCollection" items="model.collections" ng-disabled="true"></fw-form-input-select>
       </div>
 
       <div ng-if="model.postType === postTypes.note">
@@ -52,7 +52,7 @@
 
         <label>Share with</label>
         <div ng-if="model.channels.length > 1">
-          <fw-form-input-select selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
+          <fw-form-input-select selected-item="model.input.selectedChannel" items="model.channels" ng-disabled="true"></fw-form-input-select>
         </div>
       </div>
 
