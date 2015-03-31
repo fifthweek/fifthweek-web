@@ -98,6 +98,22 @@ $line-height-compensation: -5px;
   margin: 0 auto;
   max-width: $post-max-width;
 
+  h5 {
+    text-transform: uppercase;
+    font-size: $p-font-size;
+    font-weight: normal;
+    color:#fff;
+    padding: 31px 0 16px;
+    span {
+      @include post-left-right-padding;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      border-radius: $border-radius;
+      box-shadow: $post-shadow;
+      background: $grey-dark;
+    }
+  }
+
   .post {
     @include post-core;
 

@@ -237,21 +237,6 @@ $header-height:108px;
         margin-right: 16%;
       }
     }
-    h5 {
-      text-transform: uppercase;
-      font-size: $p-font-size;
-      font-weight: normal;
-      color:#fff;
-      padding: 31px 0 16px;
-      span {
-        @include post-left-right-padding;
-        padding-top: 3px;
-        padding-bottom: 3px;
-        border-radius: $border-radius;
-        box-shadow: $post-shadow;
-        background: $grey-dark;
-      }
-    }
     .channels {
       margin-bottom: 25px;
       .subscribe-now {
