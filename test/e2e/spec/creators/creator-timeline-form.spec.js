@@ -150,14 +150,16 @@
       );
     };
 
-    var displayModal = function () {
+    var displayEditModal = function (targetPost) {
+      targetPost = targetPost || post;
       navigateToSite();
       navigateToPage();
-      testKit.scrollIntoView(post.moreActionsButton);
-      post.moreActionsButton.click();
+      testKit.scrollIntoView(targetPost.moreActionsButton);
+      targetPost.moreActionsButton.click();
       browser.waitForAngular();
-      testKit.scrollIntoView(post.editPostLink);
-      post.editPostLink.click();
+      testKit.scrollIntoView(targetPost.editPostLink);
+      targetPost.editPostLink.click();
+      testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
     };
 
     var refresh = function () {
@@ -170,7 +172,7 @@
         false,
         inputData,
         navigateToPage,
-        displayModal,
+        displayEditModal,
         refresh);
     };
 
@@ -180,7 +182,7 @@
         false,
         inputData,
         navigateToPage,
-        displayModal,
+        displayEditModal,
         refresh);
     };
 
@@ -189,7 +191,7 @@
         false,
         inputData,
         navigateToPage,
-        displayModal,
+        displayEditModal,
         refresh,
         2);
     };
@@ -255,6 +257,140 @@
 
       testEditingContent(inputData);
       testEditToFutureDate();
+    });
+
+    describe('when reordering posts', function(){
+      it('should re-order correctly', function() {
+        var context = commonWorkflows.createSubscription();
+        registration = context.registration;
+        subscription = context.subscription;
+
+        commonWorkflows.createNamedCollection(undefined, collectionName);
+
+        var post1 = new PostPage(false, 0);
+        var post2 = new PostPage(false, 1);
+        var post3 = new PostPage(false, 2);
+
+        commonWorkflows.postNoteOnPastDate();
+        commonWorkflows.fastRefresh();
+        commonWorkflows.postNoteOnPastDate();
+        commonWorkflows.fastRefresh();
+        commonWorkflows.postNoteOnPastDate();
+        navigateToPage();
+        displayEditModal(post1);
+        editPostDialogPage.editPostComment('One');
+        displayEditModal(post2);
+        editPostDialogPage.editPostComment('Two');
+        displayEditModal(post3);
+        editPostDialogPage.editPostComment('Three');
+
+        expect(post1.comment.getText()).toBe('One');
+        expect(post2.comment.getText()).toBe('Two');
+        expect(post3.comment.getText()).toBe('Three');
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(0);
+        expect(post3.dayGroupings.count()).toBe(0);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+        refresh();
+        expect(post1.comment.getText()).toBe('One');
+        expect(post2.comment.getText()).toBe('Two');
+        expect(post3.comment.getText()).toBe('Three');
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(0);
+        expect(post3.dayGroupings.count()).toBe(0);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+
+        displayEditModal(post1);
+        editPostDialogPage.editPostDate(-3);
+
+        expect(post1.comment.getText()).toBe('Two');
+        expect(post2.comment.getText()).toBe('Three');
+        expect(post3.comment.getText()).toBe('One');
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(0);
+        expect(post3.dayGroupings.count()).toBe(1);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+        refresh();
+        expect(post1.comment.getText()).toBe('Two');
+        expect(post2.comment.getText()).toBe('Three');
+        expect(post3.comment.getText()).toBe('One');
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(0);
+        expect(post3.dayGroupings.count()).toBe(1);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+
+        displayEditModal(post2);
+        editPostDialogPage.editPostDate(-2);
+
+        expect(post1.comment.getText()).toBe('Two');
+        expect(post2.comment.getText()).toBe('Three');
+        expect(post3.comment.getText()).toBe('One');
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(1);
+        expect(post3.dayGroupings.count()).toBe(1);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+        refresh();
+        expect(post1.comment.getText()).toBe('Two');
+        expect(post2.comment.getText()).toBe('Three');
+        expect(post3.comment.getText()).toBe('One');
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(1);
+        expect(post3.dayGroupings.count()).toBe(1);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+
+        displayEditModal(post3);
+        editPostDialogPage.editPostDate(2);
+
+        expect(post1.comment.getText()).toBe('Two');
+        expect(post2.comment.getText()).toBe('One');
+        expect(post3.comment.getText()).toBe('Three');
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(1);
+        expect(post3.dayGroupings.count()).toBe(1);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+        refresh();
+        expect(post1.comment.getText()).toBe('Two');
+        expect(post2.comment.getText()).toBe('One');
+        expect(post3.comment.getText()).toBe('Three');
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(1);
+        expect(post3.dayGroupings.count()).toBe(1);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+
+        displayEditModal(post1);
+        editPostDialogPage.editPostDate(-1);
+
+        // Can't guarantee ordering here because of time rounding to nearest minute.
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(0);
+        expect(post3.dayGroupings.count()).toBe(1);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+        refresh();
+        expect(post1.dayGroupings.count()).toBe(1);
+        expect(post2.dayGroupings.count()).toBe(0);
+        expect(post3.dayGroupings.count()).toBe(1);
+        expect(post1.scheduleTags.count()).toBe(0);
+        expect(post2.scheduleTags.count()).toBe(0);
+        expect(post3.scheduleTags.count()).toBe(0);
+      });
     });
   });
 })();

@@ -16,7 +16,7 @@
   var runDialogTests = function (self,displayModal,refresh,editPost,verifyItemNotEdited,verifyItemEdited){
     var displayModalAndWait = function() {
       displayModal();
-      browser.waitForAngular();
+      testKit.waitForElementToDisplay(self.expandButton);
     };
 
     it('should run once before all', function () {
@@ -88,9 +88,40 @@
     postToLiveRadio: { get: function() { return element(by.css('input[type="radio"][value="0"]')); }},
     postToQueueRadio: { get: function() { return element(by.css('input[type="radio"][value="2"]')); }},
     postToDateRadio: { get: function() { return element(by.css('input[type="radio"][value="1"]')); }},
+    imageUploadIndicator: { get: function(){ return element(by.css('.available-image')); }},
 
     commentTextBoxId: { value: 'model-input-comment' },
     commentTextBox: { get: function () { return element(by.id(this.commentTextBoxId)); }},
+
+    editPostComment: { value: function(comment) {
+      testKit.setValue(this.commentTextBoxId, comment);
+      browser.waitForAngular();
+      this.saveButton.click();
+      browser.waitForAngular();
+    }},
+
+    editPostDate: { value: function(monthCount) {
+      this.expandButton.click();
+      this.postToDateRadio.click();
+      dateTimePickerPage.datepickerButton.click();
+
+      var i;
+      if(monthCount > 0){
+        for(i=0;i<monthCount;++i){
+          dateTimePickerPage.datepickerNextMonthButton.click();
+        }
+      }
+      else if(monthCount < 0){
+        monthCount = -1 * monthCount;
+        for(i=0;i<monthCount;++i){
+          dateTimePickerPage.datepickerPreviousMonthButton.click();
+        }
+      }
+
+      dateTimePickerPage.datepicker15Button.click();
+      this.saveButton.click();
+      browser.waitForAngular();
+    }},
 
     describeEditingPostToLive: { value: function(isBacklog, inputData, navigateToPage, displayModal, refresh) {
       var self = this;
@@ -214,9 +245,13 @@
 
       var editPost = function(){
         testKit.setValue(self.commentTextBoxId, editedText);
+        browser.waitForAngular();
 
         if(inputData.postData.filePath){
-          setFileInput('../../sample-image-tiny-edited.tif')
+          setFileInput('../../sample-image-tiny-edited.tif');
+          if(inputData.postData.uploadType === 'image') {
+            testKit.waitForElementToDisplay(self.imageUploadIndicator);
+          }
         }
       };
 
