@@ -14,12 +14,12 @@ exports.config = {
 
   // We cannot run any file upload tests until BrowserStack upgrade to Selenium 2.45.0
   exclude: [
-    'compose-file-form.spec.js',
-    'compose-image-form.spec.js',
-    'creator-backlog-form.spec.js',
-    'creator-timeline-form.spec.js',
-    'account-settings-form.spec.js',
-    'customize-landing-page-form.spec.js'
+    'e2e/spec/**/compose-file-form.spec.js',
+    'e2e/spec/**/compose-image-form.spec.js',
+    'e2e/spec/**/creator-backlog-form.spec.js',
+    'e2e/spec/**/creator-timeline-form.spec.js',
+    'e2e/spec/**/account-settings-form.spec.js',
+    'e2e/spec/**/customize-landing-page-form.spec.js'
   ],
 
   allScriptsTimeout: minute,
