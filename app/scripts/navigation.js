@@ -73,6 +73,21 @@ angular.module('webApp')
         color: 'yellow'
       },
       {
+        name: 'Collections',
+        state: states.creators.subscription.collections.name,
+        icon: 'fa fa-th',
+        color: 'green',
+        secondary:
+          [
+            {
+              name: 'Collections',
+              state: states.creators.subscription.collections.name,
+              icon: 'fa fa-th',
+              color: 'green'
+            }
+          ]
+      },
+      {
         name: 'Channels',
         state: states.creators.subscription.channels.name,
         icon: 'fa fa-check-square-o',
@@ -83,21 +98,6 @@ angular.module('webApp')
             name: 'Channels',
             state: states.creators.subscription.channels.name,
             icon: 'fa fa-check-square-o',
-            color: 'green'
-          }
-        ]
-      },
-      {
-        name: 'Collections',
-        state: states.creators.subscription.collections.name,
-        icon: 'fa fa-th',
-        color: 'green',
-        secondary:
-        [
-          {
-            name: 'Collections',
-            state: states.creators.subscription.collections.name,
-            icon: 'fa fa-th',
             color: 'green'
           }
         ]
