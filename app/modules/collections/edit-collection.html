@@ -16,7 +16,7 @@
       <fw-form-input-select id="model-selected-channel" selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
 
       <div class="form-group" id="manageReleaseTimes">
-        <fw-form-subsection name="Schedule">
+        <fw-form-subsection name="Weekly Schedule">
           <summary>
             <p class="release-times">
               <span class="release-time" ng-repeat="time in model.schedule">{{time.day}}</span>
@@ -25,8 +25,8 @@
           <summary-expanded>
             <p>
               When you add posts to ‘the queue’ they automatically become
-              published according to the schedule defined against the
-              collection you are posting into. You can set that schedule here:
+              published according to the weekly schedule that is associated with the collection
+              you are posting to. You can define that here:
             </p>
           </summary-expanded>
           <section>
