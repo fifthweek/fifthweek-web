@@ -101,7 +101,7 @@
         data-event-title="Backlog post edited"
         data-event-category="Edited post"
         fw-form-submit="save()">
-        <span ng-if="model.savedScheduleMode === scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Save' : 'Post Later'}}</span>
+        <span ng-if="model.savedScheduleMode === scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Save' : 'Schedule'}}</span>
         <span ng-if="model.savedScheduleMode !== scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Post Now' : 'Save'}}</span>
       </button>
     </form-buttons>

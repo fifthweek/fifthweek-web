@@ -26,6 +26,16 @@
     var deleteConfirmationPage = new DeleteConfirmationPage();
     var editPostDialogPage = new EditPostDialogPage();
 
+    var navigateToSite = function() {
+      testKit.scrollIntoView(creatorLandingPagePage.fifthweekLink);
+      creatorLandingPagePage.fifthweekLink.click();
+    };
+
+    var navigateToPage = function() {
+      sidebar.usernameLink.click();
+      creatorLandingPagePage.subscribeButton.click();
+    };
+
     describe('when posting many posts', function(){
 
       it('should run once before all', function() {
@@ -140,27 +150,48 @@
       );
     };
 
-    var testEditing = function(inputData){
+    var displayModal = function () {
+      navigateToSite();
+      navigateToPage();
+      testKit.scrollIntoView(post.moreActionsButton);
+      post.moreActionsButton.click();
+      browser.waitForAngular();
+      testKit.scrollIntoView(post.editPostLink);
+      post.editPostLink.click();
+    };
+
+    var refresh = function () {
+      navigateToSite();
+      navigateToPage();
+    };
+
+    var testEditingContent = function(inputData){
       editPostDialogPage.describeEditingPostContent(
         false,
         inputData,
-        function() {
-          sidebar.usernameLink.click();
-          creatorLandingPagePage.subscribeButton.click();
-        },
-        function () {
-          navigateToSite();
-          navigateToPage();
-          testKit.scrollIntoView(post.moreActionsButton);
-          post.moreActionsButton.click();
-          browser.waitForAngular();
-          testKit.scrollIntoView(post.editPostLink);
-          post.editPostLink.click();
-        },
-        function () {
-          navigateToSite();
-          navigateToPage();
-        });
+        navigateToPage,
+        displayModal,
+        refresh);
+    };
+
+
+    var testEditToQueue= function(inputData){
+      editPostDialogPage.describeEditingPostToQueue(
+        false,
+        inputData,
+        navigateToPage,
+        displayModal,
+        refresh);
+    };
+
+    var testEditToFutureDate = function(inputData){
+      editPostDialogPage.describeEditingPostToFutureDate(
+        false,
+        inputData,
+        navigateToPage,
+        displayModal,
+        refresh,
+        2);
     };
 
     describe('when posting single posts', function(){
@@ -182,7 +213,7 @@
         post.expectNotePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
+      testEditingContent(inputData);
       testDeletion();
 
       it('should show the post after posting a file now', function () {
@@ -192,7 +223,7 @@
         post.expectFilePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
+      testEditingContent(inputData);
       testDeletion();
 
       it('should show the post after posting a image now', function () {
@@ -202,7 +233,7 @@
         post.expectImagePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
+      testEditingContent(inputData);
       testDeletion();
 
       it('should show the post after posting a TIFF image now', function () {
@@ -212,20 +243,18 @@
         post.expectNonViewableImagePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
-      testDeletion(); // TODO: Delete by moving to live
+      testEditingContent(inputData);
+      testEditToQueue();
 
-      // TODO: Test schedule in the past
+      it('should show the post after posting a note to the past', function () {
+        navigateToSite();
+        var postData = inputData.postData = commonWorkflows.postNoteOnPastDate();
+        navigateToPage();
+        post.expectNotePost(postData, registration, navigateToPage);
+      });
+
+      testEditingContent(inputData);
+      testEditToFutureDate();
     });
-
-    var navigateToSite = function() {
-      testKit.scrollIntoView(creatorLandingPagePage.fifthweekLink);
-      creatorLandingPagePage.fifthweekLink.click();
-    };
-
-    var navigateToPage = function() {
-      sidebar.usernameLink.click();
-      creatorLandingPagePage.subscribeButton.click();
-    };
   });
 })();

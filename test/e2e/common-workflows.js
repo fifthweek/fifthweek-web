@@ -108,6 +108,12 @@
       return composeNotePage.postOnDate(channelName);
     }},
 
+    postNoteOnPastDate: { value: function(channelName) {
+      sidebar.newPostLink.click();
+      headerCompose.noteLink.click();
+      return composeNotePage.postOnPastDate(channelName);
+    }},
+    
     postFileNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
       sidebar.newPostLink.click();
       headerCompose.fileLink.click();

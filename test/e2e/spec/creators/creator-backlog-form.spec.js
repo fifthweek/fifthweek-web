@@ -24,6 +24,11 @@
     var deleteConfirmationPage = new DeleteConfirmationPage();
     var editPostDialogPage = new EditPostDialogPage();
 
+    var navigateToPage = function() {
+      sidebar.backlogLink.click();
+      header.futurePostsLink.click();
+    };
+
     describe('when posting many posts', function(){
       it('should run once before all', function() {
         var context = commonWorkflows.createSubscription();
@@ -120,25 +125,45 @@
       );
     };
 
-    var testEditing = function(inputData){
+    var displayModal = function () {
+      commonWorkflows.fastRefresh();
+      post.moreActionsButton.click();
+      post.editPostLink.click();
+    };
+
+    var refresh = function () {
+      commonWorkflows.fastRefresh();
+    };
+
+    var testEditingContent = function(inputData){
       editPostDialogPage.describeEditingPostContent(
         true,
         inputData,
-        function() {
-          sidebar.backlogLink.click();
-          header.futurePostsLink.click();
-        },
-        function () {
-          commonWorkflows.fastRefresh();
-          post.moreActionsButton.click();
-          post.editPostLink.click();
-        },
-        function () {
-          commonWorkflows.fastRefresh();
-        });
+        navigateToPage,
+        displayModal,
+        refresh);
     };
 
-    ddescribe('when posting single posts', function(){
+    var testEditToLive = function(inputData){
+      editPostDialogPage.describeEditingPostToLive(
+        true,
+        inputData,
+        navigateToPage,
+        displayModal,
+        refresh);
+    };
+
+    var testEditToPastDate = function(inputData){
+      editPostDialogPage.describeEditingPostToPastDate(
+        false,
+        inputData,
+        navigateToPage,
+        displayModal,
+        refresh,
+        6);
+    };
+
+    describe('when posting single posts', function(){
       var inputData = {};
       it('should run once before all', function() {
         var context = commonWorkflows.createSubscription();
@@ -156,7 +181,7 @@
         post.expectNotePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
+      testEditingContent(inputData);
       testDeletion();
 
       it('should show the post after posting a file on a date', function () {
@@ -165,7 +190,7 @@
         post.expectFilePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
+      testEditingContent(inputData);
       testDeletion();
 
       it('should show the post after posting a file to the queue', function () {
@@ -174,7 +199,7 @@
         post.expectFilePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
+      testEditingContent(inputData);
       testDeletion();
 
       it('should show the post after posting a image on a date', function () {
@@ -183,7 +208,7 @@
         post.expectImagePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
+      testEditingContent(inputData);
       testDeletion();
 
       it('should show the post after posting a image to the queue', function () {
@@ -192,7 +217,7 @@
         post.expectImagePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
+      testEditingContent(inputData);
       testDeletion();
 
       it('should show the post after posting a TIFF image on a date', function () {
@@ -201,8 +226,8 @@
         post.expectNonViewableImagePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
-      testDeletion();  // TODO: Delete by moving to live
+      testEditingContent(inputData);
+      testEditToLive();
 
       it('should show the post after posting a TIFF image to the queue', function () {
         var postData = inputData.postData = commonWorkflows.postImageToQueue(filePathTiff, collectionName);
@@ -210,8 +235,8 @@
         post.expectNonViewableImagePost(postData, registration, navigateToPage);
       });
 
-      testEditing(inputData);
-      testDeletion(); // TODO: Delete by moving to live
+      testEditingContent(inputData);
+      testEditToPastDate();
     });
 /*
     describe('when editing posts', function(){
@@ -234,9 +259,5 @@
 
     });
 */
-    var navigateToPage = function() {
-      sidebar.backlogLink.click();
-      header.futurePostsLink.click();
-    };
   });
 })();

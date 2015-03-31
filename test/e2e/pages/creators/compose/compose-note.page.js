@@ -73,6 +73,28 @@
       this.postToBacklogButton.click();
 
       return result;
+    }},
+
+    postOnPastDate: { value: function(channelName) {
+      var result = this.populateContent(channelName);
+
+      this.postLaterButton.click();
+
+      dateTimePickerPage.datepickerButton.click();
+      dateTimePickerPage.datepickerPreviousMonthButton.click();
+      dateTimePickerPage.datepicker15Button.click();
+
+      dateTimePickerPage.timeHoursTextBox.clear();
+      dateTimePickerPage.timeHoursTextBox.sendKeys('3');
+      dateTimePickerPage.timeMinutesTextBox.clear();
+      dateTimePickerPage.timeMinutesTextBox.sendKeys('13');
+
+      result.dayOfMonth = '15';
+      result.timeOfDay = '13:17';
+
+      this.postToBacklogButton.click();
+
+      return result;
     }}
   });
 
