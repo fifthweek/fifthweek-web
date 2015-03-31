@@ -24,7 +24,7 @@
   </fw-panel12>
 
   <fw-panel12 ng-show="form.submissionSucceeded && !tokenInvalid" id="password-reset-confirmation-success">
-    <h4 class="text-success">Password has been reset</h4>
+    <h4 class="text-suffix text-success">Password has been reset</h4>
       <p>
         Please sign in with your new password. <strong><a ui-sref="signIn">Continue to sign in page &raquo;</a></strong>
       </p>
@@ -33,7 +33,7 @@
 </form>
 
 <fw-panel12 ng-show="tokenInvalid" id="password-reset-token-invalid">
-  <h4 class="text-warning">This link has expired</h4>
+  <h4 class="text-suffix text-warning">This link has expired</h4>
   <p>
     If you still need to reset your password, please go to the <strong><a ui-sref="signIn.forgot">forgot your details</a></strong> page.
   </p>

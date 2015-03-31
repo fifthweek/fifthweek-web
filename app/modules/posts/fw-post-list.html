@@ -14,6 +14,11 @@
     <p>Use this feature by clicking 'Post Later' when creating a post.</p>
   </fw-panel12>
 
+  <fw-panel12 ng-if="model.posts.length === 0 && source ===  sources.creatorPosts">
+    <h4>Blog empty</h4>
+    <p>Your blog contains no live posts. Add posts to your blog by clicking 'New Post' in the menu.</p>
+  </fw-panel12>
+
   <fw-panel12 ng-if="model.posts.length === 0 && source ===  sources.creatorTimeline">
     <h4>This creator has not released any posts</h4>
     <p>Don't panic! You will only be billed for the weeks where you receive content.</p>

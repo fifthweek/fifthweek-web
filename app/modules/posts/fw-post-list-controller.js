@@ -81,7 +81,7 @@ angular.module('webApp').controller('fwPostListCtrl',
       if($scope.source === fwPostListConstants.sources.creatorBacklog){
         loadNext = function() { return postsStub.getCreatorBacklog(userId); };
       }
-      else if($scope.source === fwPostListConstants.sources.creatorTimeline) {
+      else if($scope.source === fwPostListConstants.sources.creatorTimeline || $scope.source === fwPostListConstants.sources.creatorPosts) {
         loadNext = function(startIndex, count) { return postsStub.getCreatorNewsfeed(userId, startIndex, count); };
       }
 

@@ -1,0 +1,94 @@
+.post-new {
+  padding-bottom: $post-bottom-margin-lg;
+  .panel {
+    margin-bottom: $post-bottom-margin-lg / 1.618;
+  }
+  .panel-body {
+    padding: 10px 0;
+  }
+}
+
+ul.post-new-options {
+  list-style: none;
+  margin:0;
+  padding:0;
+  li {
+    margin:0;
+    padding:0;
+    float:left;
+    width:20%;
+    text-align:center;
+    border-left: 1px solid $grey-light-3;
+    &:first-child {
+      border-left: none;
+    }
+    &:last-child {
+      margin-bottom: 0; /* Should not be necessary - needed due to overzealous styling on rightContainer lists. */
+    }
+    span:before {
+      font-family:'FontAwesome';
+      font-weight: normal;
+      font-size: 30px;
+      display:block;
+      width:30px;
+      margin:0 auto;
+    }
+    a {
+      font-size:13px;
+      color: $grey-dark;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    &.post-new-options-disabled {
+      color: $grey-light-4;
+      a {
+        color: $grey-light-4;
+        &:hover {
+          cursor: default;
+        }
+      }
+    }
+  }
+}
+.post-new-announcement {
+  text-align: center;
+}
+.post-new-announcement-link {
+  margin-left: 6px;
+  font-weight: bold;
+  &:hover {
+    text-decoration: none;
+  }
+  &:after {
+    content:"\f0a1";
+    font-family:'FontAwesome';
+    font-weight: normal;
+    font-size: 16px;
+    margin-left: 6px;
+  }
+}
+
+.post-new-options-image span:before {
+  content:"\f03e";
+}
+
+.post-new-options-file span:before {
+  content:"\f016";
+}
+
+.post-new-options-video span:before {
+  content:"\f03d";
+}
+
+.post-new-options-audio span:before {
+  content:"\f025";
+}
+
+.post-new-options-article span:before {
+  content:"\f031";
+}
+
+.post-new-options-announcement span:before {
+  content:"\f0a1";
+}

@@ -1,0 +1,11 @@
+@import '_base';
+
+$html-name-space:'.page-notifications';
+
+#{$html-name-space} {
+
+  .text-suffix:after {
+    content:"\f1f7";
+  }
+
+}

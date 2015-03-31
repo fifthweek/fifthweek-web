@@ -27,30 +27,39 @@ angular.module('routes', ['ui.router'])
     account: {
       name: 'account'
     },
-    user: {
-      name: 'user',
-      timeline: {
-        name: 'user.timeline'
+    dashboard: {
+      name: 'dashboard',
+      newsFeed: {
+        name: 'dashboard.newsFeed'
+      },
+      notifications: {
+        name: 'dashboard.notifications'
       }
     },
     creators: {
       name: 'creators',
-      landingPage: {
-        name: 'creators.landingPage'
-      },
       createSubscription: {
         name: 'creators.createSubscription'
       },
-      post: {
-        name: 'creators.post',
-        note: {
-          name: 'creators.post.note'
+      blog: {
+        name: 'creators.blog',
+        newPost: {
+          name: 'creators.blog.newPost',
+          note: {
+            name: 'creators.blog.newPost.note'
+          },
+          image: {
+            name: 'creators.blog.newPost.image'
+          },
+          file: {
+            name: 'creators.blog.newPost.file'
+          }
         },
-        image: {
-          name: 'creators.post.image'
+        posts: {
+          name: 'creators.blog.posts'
         },
-        file: {
-          name: 'creators.post.file'
+        landingPage: {
+          name: 'creators.blog.landingPage'
         }
       },
       backlog: {
@@ -211,27 +220,35 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.user.name, {
+      .state(states.dashboard.name, {
         abstract: false,
-        url: '/my',
+        url: '/home',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.user.timeline.name,
+        redirectTo: states.dashboard.newsFeed.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.user.timeline.name, {
-        url: '/landing-page',
-        templateUrl: 'modules/creator-timeline/creator-timeline.html',
-        controller: 'timelineCtrl',
-        requireSubscription: true,
+      .state(states.dashboard.newsFeed.name, {
+        url: '/timeline',
+        templateUrl: 'modules/newsfeed/newsfeed.html',
         data : {
-          pageTitle: 'Timeline',
-          headTitle: ': ' + 'Timeline',
-          navigationHidden: true,
-          bodyClass: 'page-timeline',
+          pageTitle: 'News Feed',
+          headTitle: ': ' + 'News Feed',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.dashboard.notifications.name, {
+        url: '/notifications',
+        templateUrl: 'modules/notifications/notifications.html',
+        data : {
+          pageTitle: 'Notifications',
+          headTitle: ': ' + 'Notifications',
+          bodyClass: 'page-notifications',
           access: {
             requireAuthenticated: true
           }
@@ -239,9 +256,9 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.creators.name, {
         abstract: false,
-        url: '/creators',
+        url: '/creator',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creators.landingPage.name,
+        redirectTo: states.creators.blog.name,
         data : {
           access: {
             requireAuthenticated: true
@@ -261,10 +278,23 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.post.name, {
+      .state(states.creators.blog.name, {
+        abstract: false,
+        url: '/blog',
+        templateUrl: 'modules/common/ui-view.html',
+        requireSubscription: true,
+        redirectTo: states.creators.blog.posts.name,
+        data : {
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.blog.newPost.name, {
         url: '/post',
         templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
+        redirectTo: states.creators.blog.newPost.note.name,
         data : {
           pageTitle: 'Compose',
           headTitle: ': ' + 'Compose',
@@ -274,7 +304,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.post.note.name, {
+      .state(states.creators.blog.newPost.note.name, {
         url: '/note',
         templateUrl: 'modules/creator-compose/compose-note.html',
         controller: 'composeNoteCtrl',
@@ -288,7 +318,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.post.image.name, {
+      .state(states.creators.blog.newPost.image.name, {
         url: '/image',
         templateUrl: 'modules/creator-compose/compose-upload.html',
         controller: 'composeImageCtrl',
@@ -302,7 +332,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.post.file.name, {
+      .state(states.creators.blog.newPost.file.name, {
         url: '/file',
         templateUrl: 'modules/creator-compose/compose-upload.html',
         controller: 'composeFileCtrl',
@@ -311,6 +341,34 @@ angular.module('routes', ['ui.router'])
           pageTitle: ' File',
           headTitle: ': ' + 'Upload File',
           bodyClass: 'page-creators-post-file',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.blog.posts.name, {
+        url: '/posts',
+        templateUrl: 'modules/creator-posts/creator-posts.html',
+        controller: 'timelineCtrl',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Posts',
+          headTitle: ': ' + 'Posts',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.blog.landingPage.name, {
+        url: '/landing-page',
+        templateUrl: 'modules/creator-timeline/creator-timeline.html',
+        controller: 'timelineCtrl',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Landing Page',
+          headTitle: ': ' + 'Landing Page',
+          navigationHidden: true,
+          bodyClass: 'page-timeline',
           access: {
             requireAuthenticated: true
           }
@@ -333,8 +391,8 @@ angular.module('routes', ['ui.router'])
         controller: 'backlogPostListCtrl',
         requireSubscription: true,
         data : {
-          pageTitle: 'Future Posts',
-          headTitle: ': ' + 'Future Posts',
+          pageTitle: 'Queued Posts',
+          headTitle: ': ' + 'Queue',
           bodyClass: 'page-creators-backlog-post-list',
           access: {
             requireAuthenticated: true
@@ -383,8 +441,8 @@ angular.module('routes', ['ui.router'])
         templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
         data : {
-          pageTitle: 'Subscription',
-          headTitle: ': ' + 'Subscription',
+          pageTitle: 'Subscriptions',
+          headTitle: ': ' + 'Subscriptions',
           bodyClass: 'page-subscription',
           access: {
             requireAuthenticated: true
@@ -397,8 +455,8 @@ angular.module('routes', ['ui.router'])
         controller: 'customizeLandingPageCtrl',
         requireSubscription: true,
         data : {
-          pageTitle: ' Landing page',
-          headTitle: ': ' + 'Landing page',
+          pageTitle: 'Blog Appearance',
+          headTitle: ': ' + 'Appearance',
           bodyClass: 'page-subscription-landing'
         }
       })
@@ -491,8 +549,8 @@ angular.module('routes', ['ui.router'])
         controller: 'listChannelsCtrl',
         requireSubscription: true,
         data : {
-          pageTitle: 'Channels',
-          headTitle: ': ' + 'Channels',
+          pageTitle: 'Subscriptions',
+          headTitle: ': ' + 'Subscriptions',
           access: {
             requireAuthenticated: true
           }

@@ -16,14 +16,55 @@ angular.module('webApp')
         color: 'green'
       },
       {
-        name: aggregateUserStateUtilities.getUsername,
-        id: 'Username',
-        state: states.user.timeline.name,
-        icon: 'fa fa-user',
+        name: 'Home',
+        state: states.dashboard.name,
+        icon: 'fa fa-home',
+        color: 'pink',
+        secondary:
+        [
+          {
+            name: 'News Feed',
+            state: states.dashboard.newsFeed.name,
+            icon: 'fa fa-align-left',
+            color: 'orange'
+          },
+          {
+            name: 'Notifications',
+            state: states.dashboard.notifications.name,
+            icon: 'fa fa-bell-o',
+            color: 'orange'
+          }
+        ]
+      },
+      {
+        name: 'Landing Page',
+        state: states.creators.blog.landingPage.name,
+        icon: 'fa fa-bookmark-o',
         color: 'pink'
       },
       {
         separator: true
+      },
+      {
+        name: 'Posts',
+        state: states.creators.blog.name,
+        icon: 'fa fa-file-text-o',
+        color: 'orange',
+        secondary:
+        [
+          {
+            name: 'Live Now',
+            state: states.creators.blog.posts.name,
+            icon: 'fa fa-file-text-o',
+            color: 'pink'
+          },
+          {
+            name: 'Queued',
+            state: states.creators.backlog.futurePosts.name,
+            icon: 'fa fa-clock-o',
+            color: 'yellow'
+          }
+        ]
       },
       {
         name: 'Create Subscription',
@@ -32,72 +73,27 @@ angular.module('webApp')
         color: 'yellow'
       },
       {
-        name: 'New Post',
-        state: states.creators.post.note.name,
-        icon: 'fa fa-pencil-square-o',
-        color: 'orange',
-        secondary:
-        [
-          {
-            name: 'Write a Note',
-            state: states.creators.post.note.name,
-            icon: 'fa fa-quote-left',
-            color: 'orange'
-          },
-          {
-            name: 'Upload Image',
-            state: states.creators.post.image.name,
-            icon: 'fa fa-image',
-            color: 'orange'
-          },
-          {
-            name: 'Upload File',
-            state: states.creators.post.file.name,
-            icon: 'fa fa-file-o',
-            color: 'orange'
-          }
-        ]
-      },
-      {
-        name: 'Backlog',
-        state: states.creators.backlog.name,
-        icon: 'fa fa-clock-o',
-        color: 'yellow',
-        secondary:
-          [
-            {
-              name: 'Future Posts',
-              state: states.creators.backlog.futurePosts.name,
-              icon: 'fa fa-sort-amount-desc',
-              color: 'yellow'
-            },
-            {
-              name: 'Queues',
-              state: states.creators.backlog.queues.name,
-              icon: 'fa fa-caret-square-o-right',
-              color: 'yellow'
-            }
-          ]
-      },
-      {
-        name: 'Subscription',
-        state: states.creators.subscription.landingPage.name,
-        icon: 'fa fa-eye',
+        name: 'Channels',
+        state: states.creators.subscription.channels.name,
+        icon: 'fa fa-check-square-o',
         color: 'green',
         secondary:
         [
           {
-            name: 'Landing Page',
-            state: states.creators.subscription.landingPage.name,
-            icon: 'fa fa-arrow-circle-down',
-            color: 'green'
-          },
-          {
             name: 'Channels',
             state: states.creators.subscription.channels.name,
-            icon: 'fa fa-list-ul',
+            icon: 'fa fa-check-square-o',
             color: 'green'
-          },
+          }
+        ]
+      },
+      {
+        name: 'Collections',
+        state: states.creators.subscription.collections.name,
+        icon: 'fa fa-th',
+        color: 'green',
+        secondary:
+        [
           {
             name: 'Collections',
             state: states.creators.subscription.collections.name,
@@ -108,16 +104,16 @@ angular.module('webApp')
       },
       { separator: true },
       {
-        name: 'Account',
+        name: aggregateUserStateUtilities.getUsername,
         state: states.account.name,
-        icon: 'fa fa-cog',
+        icon: 'fa fa-user',
         color: 'blue',
         secondary:
           [
             {
               name: 'Account Settings',
               state: states.account.name,
-              icon: 'fa fa-child',
+              icon: 'fa fa-user',
               color: 'blue'
             },
             {

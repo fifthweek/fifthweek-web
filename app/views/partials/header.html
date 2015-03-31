@@ -4,7 +4,7 @@
       <ng-include src="'views/partials/header-sidebar-toggle.html'" class="header-wrapper"></ng-include>
 
       <div class="header-navbar-menu-wrap">
-        <ul ng-if="navigation.length <= 1" id="header-navbar" class="header-navbar-menu">
+        <ul ng-if="navigation.length === 0" id="header-navbar" class="header-navbar-menu">
           <li>
             <a class="active"
                id="header-title"
@@ -14,7 +14,7 @@
           </li>
         </ul>
 
-        <ul ng-if="navigation.length > 1" id="header-navbar" class="header-navbar-menu">
+        <ul ng-if="navigation.length > 0" id="header-navbar" class="header-navbar-menu">
           <li ng-repeat="item in navigation">
             <a ng-if="!item.separator"
                ng-class="{active: item.isActive}"

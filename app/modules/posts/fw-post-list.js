@@ -2,7 +2,8 @@ angular.module('webApp')
   .constant('fwPostListConstants', {
     sources: {
       creatorBacklog: 'creator-backlog',
-      creatorTimeline: 'creator-timeline'
+      creatorTimeline: 'creator-timeline',
+      creatorPosts: 'creator-posts'
     }
   })
   .directive('fwPostList', function (fwPostListConstants, fifthweekConstants) {

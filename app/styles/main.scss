@@ -28,13 +28,14 @@
 @import 'blocks/form-input-hour-of-week';
 @import 'blocks/form-input-select-collection';
 @import 'blocks/posts';
+@import 'blocks/_post-new';
 
-@import 'view-specific/empty/_empty';
-@import 'view-specific/home/_home';
 @import 'view-specific/account/_account';
-@import 'view-specific/dashboard/_dashboard';
-@import 'view-specific/faq/_faq';
 @import 'view-specific/creator/_creator';
+@import 'view-specific/empty/_empty';
+@import 'view-specific/faq/_faq';
+@import 'view-specific/home/_home';
+@import 'view-specific/notifications/_notifications';
 
 @import 'modules/creator-backlog/backlog-post-list';
 
