@@ -4,10 +4,10 @@ var ChannelListPage = function() {};
 
 ChannelListPage.prototype = Object.create({}, {
   addChannelButton: { get: function () { return element(by.id('add-button')); }},
-  channels: { get: function () { return element.all(by.css('#channels .item')); }},
-  getChannel: { value: function(name) {
+  channels: { get: function () { return element.all(by.css('#channels .item-content')); }},
+  getChannel: { value: function(name, includeButton) {
     return element
-      .all(by.css('#channels .item'))
+      .all(by.css('#channels ' + (includeButton ? '.item' : '.item-content')))
       .filter(function(elem) {
         return elem.element(by.css('h5 a')).getText().then(function(text) {
           return text === name;
@@ -16,7 +16,7 @@ ChannelListPage.prototype = Object.create({}, {
       .first();
   }},
   getEditChannelButton: { value: function(name) {
-    return this.getChannel(name).element(by.tagName('button'));
+    return this.getChannel(name, true).element(by.tagName('button'));
   }},
   expectChannel: { value: function(channelData) {
     var element = this.getChannel(channelData.name);
