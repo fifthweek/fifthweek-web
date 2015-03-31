@@ -1,8 +1,8 @@
 <div class="page-subscription-channels">
 
   <fw-managed-list id="channels" ng-if="!model.errorMessage" item-name="channel" items="model.channels" new-item-state="creators.subscription.channels.new" manage-item-state="creators.subscription.channels.edit">
-    <h5><a href>{{item.name}}</a> <span ng-if="item.isDefault" class="tail">Everyone</span></h5>
-    <ul>
+    <h5><a class="channel-name" href>{{item.name}}</a> <span ng-if="item.isDefault" class="tail">Everyone</span></h5>
+    <ul class="channel-description">
       <li ng-repeat="description in item.description">{{description}}</li>
     </ul>
   </fw-managed-list>

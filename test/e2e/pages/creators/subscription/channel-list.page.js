@@ -1,15 +1,18 @@
 'use strict';
 
+var TestKit = require('../../../test-kit.js');
 var ChannelListPage = function() {};
+
+var testKit = new TestKit();
 
 ChannelListPage.prototype = Object.create({}, {
   addChannelButton: { get: function () { return element(by.id('add-button')); }},
-  channels: { get: function () { return element.all(by.css('#channels .item-content')); }},
-  getChannel: { value: function(name, includeButton) {
+  channels: { get: function () { return element.all(by.css('#channels .channel-name')); }},
+  getChannel: { value: function(name) {
     return element
-      .all(by.css('#channels ' + (includeButton ? '.item' : '.item-content')))
+      .all(by.css('#channels .item'))
       .filter(function(elem) {
-        return elem.element(by.css('h5 a')).getText().then(function(text) {
+        return elem.element(by.css('.channel-name')).getText().then(function(text) {
           return text === name;
         });
       })
@@ -20,14 +23,15 @@ ChannelListPage.prototype = Object.create({}, {
   }},
   expectChannel: { value: function(channelData) {
     var element = this.getChannel(channelData.name);
-    expect(element.getText()).toContain(channelData.name);
-    expect(element.getText()).toContain(channelData.description);
+    var channelName = element.element(by.css('.channel-name'));
+    var channelDescription = element.element(by.css('.channel-description'));
+
+    expect(channelName.getText()).toBe(channelData.name);
+    expect(channelDescription.getText()).toContain(channelData.description);
   }},
   waitForPage: { value: function() {
     var self = this;
-    browser.wait(function(){
-      return self.addChannelButton.isPresent();
-    });
+    testKit.waitForElementToDisplay(self.addChannelButton);
   }}
 });
 

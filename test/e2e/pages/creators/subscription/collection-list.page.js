@@ -10,12 +10,12 @@ var CollectionListPage = function() {};
 
 CollectionListPage.prototype = Object.create({}, {
   addCollectionButton: { get: function () { return element(by.id('add-button')); }},
-  collections: { get: function () { return element.all(by.css('#collections .item-content')); }},
-  getCollection: { value: function(name, includeButton) {
+  collections: { get: function () { return element.all(by.css('#collections .collection-name')); }},
+  getCollection: { value: function(name) {
     return element
-      .all(by.css('#collections ' + (includeButton ? '.item' : '.item-content')))
+      .all(by.css('#collections .item'))
       .filter(function(elem) {
-        return elem.element(by.css('h5 a')).getText().then(function(text) {
+        return elem.element(by.css('.collection-name')).getText().then(function(text) {
           return text === name;
         });
       })
@@ -28,8 +28,11 @@ CollectionListPage.prototype = Object.create({}, {
     var expectedChannelName = collectionData.channelName === defaults.channelName ? 'Everyone' : collectionData.channelName;
 
     var element = this.getCollection(collectionData.name);
+    var collectionName = element.element(by.css('.collection-name'));
+    var channelName = element.element(by.css('.channel-name'));
 
-    expect(element.getText()).toContain(expectedChannelName);
+    expect(collectionName.getText()).toBe(collectionData.name);
+    expect(channelName.getText()).toBe(expectedChannelName);
   }},
   waitForPage: { value: function() {
     var self = this;

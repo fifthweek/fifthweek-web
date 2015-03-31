@@ -98,10 +98,7 @@ describe('account settings form', function() {
 
     it('should not persist settings if the user does not save', function(){
       page.setFileInput('../sample-image.jpg');
-      browser.wait(function(){
-        return page.profileImage.isPresent();
-      });
-      expect(page.profileImage.isPresent()).toBe(true);
+      testKit.waitForElementToDisplay(page.profileImage);
 
       var newUsername = usernameInputPage.newUsername();
       var newEmail = registerPage.newEmail(newUsername);
@@ -109,10 +106,9 @@ describe('account settings form', function() {
       testKit.setValue(page.usernameTextBoxId, newEmail);
       testKit.setValue(page.passwordTextBoxId, 'phil-the-cat');
 
-      sidebar.helpLink.click();
-      sidebar.accountLink.click();
+      commonWorkflows.fastRefresh();
 
-      expect(page.noProfileImage.isPresent()).toBe(true);
+      testKit.waitForElementToDisplay(page.noProfileImage);
       expect(element(by.id(page.emailTextBoxId)).getAttribute('value')).toBe(registration.email);
       expect(element(by.id(page.usernameTextBoxId)).getAttribute('value')).toBe(registration.username);
       expect(element(by.id(page.passwordTextBoxId)).getAttribute('value')).toBe('');
@@ -126,10 +122,7 @@ describe('account settings form', function() {
 
       it('should display a thumbnail', function(){
         page.setFileInput('../sample-image.jpg');
-        browser.wait(function(){
-          return page.profileImage.isPresent();
-        });
-        expect(page.profileImage.isPresent()).toBe(true);
+        testKit.waitForElementToDisplay(page.profileImage);
       });
 
       it('should enable the submit button after setting the profile image', function(){
@@ -164,10 +157,7 @@ describe('account settings form', function() {
         commonWorkflows.reSignIn(registration);
         sidebar.accountLink.click();
 
-        browser.wait(function(){
-          return page.profileImage.isPresent();
-        });
-        expect(page.profileImage.isPresent()).toBe(true);
+        testKit.waitForElementToDisplay(page.profileImage);
 
         expect(element(by.id(page.emailTextBoxId)).getAttribute('value')).toBe(registration.email);
         expect(element(by.id(page.usernameTextBoxId)).getAttribute('value')).toBe(registration.username);

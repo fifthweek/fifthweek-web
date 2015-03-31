@@ -20,7 +20,7 @@
   <fw-panel12 ng-if="items.length > 0">
     <div class="row-selection item" ng-repeat="item in items" ui-sref="{{manageItemState}}({id: item.id})">
       <div class="row">
-        <div class="col-xs-9 item-content" ng-transclude="parent">
+        <div class="col-xs-9" ng-transclude="parent">
         </div>
         <div class="col-xs-3">
           <button class="btn btn-default btn-slim">

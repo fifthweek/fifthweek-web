@@ -1,7 +1,7 @@
 <fw-managed-list id="collections" ng-if="!model.errorMessage" item-name="collection" items="model.collections" new-item-state="creators.subscription.collections.new" manage-item-state="creators.subscription.collections.edit">
   <h5>
-    <a href>{{item.name}}</a>
-    <span class="tail">{{item.isDefaultChannel ? 'Everyone' : item.channel}}</span>
+    <a class="collection-name" href>{{item.name}}</a>
+    <span class="channel-name tail">{{item.isDefaultChannel ? 'Everyone' : item.channel}}</span>
   </h5>
   <p class="release-times">
     <span ng-repeat="time in item.schedule | orderBy:'sortKey'">{{time.day}}</span>

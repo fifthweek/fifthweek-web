@@ -392,12 +392,7 @@
               it('should receive an estimated live date from the server', function(){
                 page.populateUpload(tinyFilePath);
                 page.postLaterButton.click();
-
-                browser.wait(function(){
-                  return page.postToQueueDate.isPresent();
-                });
-
-                expect(page.postToQueueDate.isDisplayed()).toBe(true);
+                testKit.waitForElementToDisplay(page.postToQueueDate);
               });
             });
 

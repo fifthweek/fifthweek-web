@@ -150,10 +150,7 @@ describe('customize landing page form', function() {
       expect(page.headerImageSubmitButton.isEnabled()).toBe(true);
 
       page.setFileInput('../../../sample-image.jpg');
-      browser.wait(function(){
-        return page.headerImage.isPresent();
-      });
-      expect(page.headerImage.isPresent()).toBe(true);
+      testKit.waitForElementToDisplay(page.headerImage);
 
       page.fullDescriptionTabLink.click();
       expect(page.fullDescriptionSubmitButton.isEnabled()).toBe(true);
@@ -214,11 +211,7 @@ describe('customize landing page form', function() {
         expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).toBe(formValues.introduction);
 
         page.headerImageTabLink.click();
-
-        browser.wait(function(){
-          return page.headerImage.isPresent();
-        });
-        expect(page.headerImage.isDisplayed()).toBe(true);
+        testKit.waitForElementToDisplay(page.headerImage);
 
         page.fullDescriptionTabLink.click();
 
