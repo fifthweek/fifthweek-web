@@ -26,11 +26,11 @@ ul.header-navbar-menu {
     a {
       color:$grey-light-4;
       text-transform:uppercase;
-      padding-bottom:14px;
+      padding-bottom:15px;
       outline:0 none;
 
       @media (min-width:$navbar-lg-min) {
-        padding-bottom: 17px;
+        padding-bottom: 18px;
       }
 
       &:hover{
@@ -38,8 +38,8 @@ ul.header-navbar-menu {
         color: $grey-dark-2;
       }
       &.active{
-        border-bottom: 3px solid $brand-highlight;
-        color: $grey-dark-2;
+        border-bottom: 2px solid $brand-highlight;
+        color: $black-off;
       }
 
       span{
@@ -47,13 +47,14 @@ ul.header-navbar-menu {
         height: 24px;
         font-size: 16px; //this hack removes excess height
         &:last-child {
-          font-size: 12px;
+          font-size: 11px;
+          letter-spacing: 0.9px;
           font-weight:bold;
           line-height: 19px;
         }
         i {
           margin-right: 4px;
-          font-size: 17px;
+          font-size: 15px;
         }
       }
     }
