@@ -15,7 +15,7 @@ exports.config = {
       'args': ['no-sandbox'] // Requirement for Travis.
     },
     shardTestFiles: true,
-    maxInstances: 2
+    maxInstances: 3
   },
   onPrepare: function () {
     require('jasmine-reporters');
