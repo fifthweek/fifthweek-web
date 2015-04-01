@@ -130,8 +130,10 @@
     var displayEditModal = function (targetPost) {
       targetPost = targetPost || post;
       commonWorkflows.fastRefresh();
+      testKit.scrollIntoView(targetPost.moreActionsButton);
       targetPost.moreActionsButton.click();
       browser.waitForAngular();
+      testKit.scrollIntoView(targetPost.editPostLink);
       targetPost.editPostLink.click();
       testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
     };
