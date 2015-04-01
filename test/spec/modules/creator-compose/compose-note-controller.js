@@ -48,10 +48,6 @@ describe('compose note controller', function () {
         createController();
       });
 
-      it('should set submissionSucceeded to false', function(){
-        expect($scope.model.submissionSucceeded).toBe(false);
-      });
-
       it('should set postLater to false', function(){
         expect($scope.model.postLater).toBe(false);
       });
@@ -120,6 +116,7 @@ describe('compose note controller', function () {
       describe('when postNote succeeds', function(){
         beforeEach(function(){
           postsStub.postNote.and.returnValue($q.when());
+          $scope.$close = jasmine.createSpy('$close');
           $scope.postNow();
           $scope.$apply();
         });
@@ -132,8 +129,8 @@ describe('compose note controller', function () {
           });
         });
 
-        it('should set submissionSucceeded to true', function(){
-          expect($scope.model.submissionSucceeded).toBe(true);
+        it('should close the dialog', function(){
+          expect($scope.$close).toHaveBeenCalled();
         });
       });
 
@@ -155,6 +152,7 @@ describe('compose note controller', function () {
       describe('when postNote succeeds', function(){
         beforeEach(function(){
           postsStub.postNote.and.returnValue($q.when());
+          $scope.$close = jasmine.createSpy('$close');
           $scope.postToBacklog();
           $scope.$apply();
         });
@@ -168,8 +166,8 @@ describe('compose note controller', function () {
           });
         });
 
-        it('should set submissionSucceeded to true', function(){
-          expect($scope.model.submissionSucceeded).toBe(true);
+        it('should close the dialog', function(){
+          expect($scope.$close).toHaveBeenCalled();
         });
       });
 
@@ -204,16 +202,6 @@ describe('compose note controller', function () {
 
       it('should set postLater to false', function(){
         expect($scope.model.postLater).toBe(false);
-      });
-    });
-
-    describe('when postAnother is called', function(){
-      beforeEach(function(){
-        $scope.postAnother();
-      });
-
-      it('should set postLater to false', function(){
-        expect($state.reload).toHaveBeenCalled();
       });
     });
   });

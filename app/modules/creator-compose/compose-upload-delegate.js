@@ -5,7 +5,6 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
 
     service.initialize = function($scope, onUploadComplete, post){
       var model = {
-        submissionSucceeded: false,
         fileUploaded: false,
         postLater: false,
         postToQueue: true,
@@ -34,6 +33,13 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
         }
       };
 
+      var onSuccessfullyPosted = function() {
+        // Ensures post appears on current view (live posts / scheduled) if posted to current view.
+        // Oddly this does not hide the modal, which is actually what we want!
+        $state.reload();
+        $scope.$close();
+      };
+
       var cancelWatch;
 
       $scope.postLater = function() {
@@ -50,10 +56,6 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
         model.postLater = false;
         cancelWatch();
         cancelWatch = undefined;
-      };
-
-      $scope.postAnother = function(){
-        $state.reload();
       };
 
       $scope.createNewCollection = function(){
@@ -76,7 +78,7 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
 
             return post(data)
               .then(function(){
-                model.submissionSucceeded = true;
+                onSuccessfullyPosted();
               });
           });
       };
@@ -94,7 +96,7 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
 
             return post(data)
               .then(function(){
-                model.submissionSucceeded = true;
+                onSuccessfullyPosted();
               });
           });
       };

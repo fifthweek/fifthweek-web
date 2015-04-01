@@ -4,7 +4,6 @@ angular.module('webApp').controller(
     'use strict';
 
     var model = {
-      submissionSucceeded: false,
       postLater: false,
       input: {
         note: '',
@@ -29,10 +28,17 @@ angular.module('webApp').controller(
 
     loadForm();
 
+    var onSuccessfullyPosted = function() {
+      // Ensures post appears on current view (live posts / scheduled) if posted to current view.
+      // Oddly this does not hide the modal, which is actually what we want!
+      $state.reload();
+      $scope.$close();
+    };
+
     var postNote = function(data){
       return postsStub.postNote(data)
         .then(function(){
-          model.submissionSucceeded = true;
+          onSuccessfullyPosted();
         });
     };
 
@@ -62,10 +68,6 @@ angular.module('webApp').controller(
 
     $scope.cancelPostLater = function() {
       model.postLater = false;
-    };
-
-    $scope.postAnother = function(){
-      $state.reload();
     };
   }
 );

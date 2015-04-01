@@ -1,11 +1,9 @@
 @import '_base';
 
-$html-name-space:'.page-creators-post-image';
-
 /*
  * Non-default settings required since we do not know the aspect ratio of the uploaded image.
  */
-#{$html-name-space} {
+.compose-upload-form {
 
   .image-container{
     .image-area{
@@ -24,5 +22,11 @@ $html-name-space:'.page-creators-post-image';
     .vertical-aspect-ratio{
       padding-top: 0px;
     }
+  }
+}
+
+.compose-upload-schedule {
+  .radio {
+    margin-bottom:15px;
   }
 }

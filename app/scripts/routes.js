@@ -43,18 +43,6 @@ angular.module('routes', ['ui.router'])
       },
       blog: {
         name: 'creators.blog',
-        newPost: {
-          name: 'creators.blog.newPost',
-          note: {
-            name: 'creators.blog.newPost.note'
-          },
-          image: {
-            name: 'creators.blog.newPost.image'
-          },
-          file: {
-            name: 'creators.blog.newPost.file'
-          }
-        },
         posts: {
           name: 'creators.blog.posts'
         },
@@ -285,62 +273,6 @@ angular.module('routes', ['ui.router'])
         requireSubscription: true,
         redirectTo: states.creators.blog.posts.name,
         data : {
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.blog.newPost.name, {
-        url: '/post',
-        templateUrl: 'modules/common/ui-view.html',
-        requireSubscription: true,
-        redirectTo: states.creators.blog.newPost.note.name,
-        data : {
-          pageTitle: 'Compose',
-          headTitle: ': ' + 'Compose',
-          bodyClass: 'page-creators-post',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.blog.newPost.note.name, {
-        url: '/note',
-        templateUrl: 'modules/creator-compose/compose-note.html',
-        controller: 'composeNoteCtrl',
-        requireSubscription: true,
-        data : {
-          pageTitle: ' Note',
-          headTitle: ': ' + 'Write a Note',
-          bodyClass: 'page-creators-post-note',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.blog.newPost.image.name, {
-        url: '/image',
-        templateUrl: 'modules/creator-compose/compose-upload.html',
-        controller: 'composeImageCtrl',
-        requireSubscription: true,
-        data : {
-          pageTitle: ' Image',
-          headTitle: ': ' + 'Upload Image',
-          bodyClass: 'page-creators-post-image',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.blog.newPost.file.name, {
-        url: '/file',
-        templateUrl: 'modules/creator-compose/compose-upload.html',
-        controller: 'composeFileCtrl',
-        requireSubscription: true,
-        data : {
-          pageTitle: ' File',
-          headTitle: ': ' + 'Upload File',
-          bodyClass: 'page-creators-post-file',
           access: {
             requireAuthenticated: true
           }

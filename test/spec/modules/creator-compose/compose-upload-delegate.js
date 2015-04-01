@@ -42,10 +42,6 @@ describe('compose upload delegate', function(){
         initializeTarget();
       });
 
-      it('should set submissionSucceeded to false', function(){
-        expect($scope.model.submissionSucceeded).toBe(false);
-      });
-
       it('should set fileUploaded to false', function(){
         expect($scope.model.fileUploaded).toBe(false);
       });
@@ -83,7 +79,6 @@ describe('compose upload delegate', function(){
         expect(_.isFunction($scope.onUploadComplete)).toBe(true);
         expect(_.isFunction($scope.postLater)).toBe(true);
         expect(_.isFunction($scope.cancelPostLater)).toBe(true);
-        expect(_.isFunction($scope.postAnother)).toBe(true);
         expect(_.isFunction($scope.createNewCollection)).toBe(true);
         expect(_.isFunction($scope.postNow)).toBe(true);
         expect(_.isFunction($scope.postToBacklog)).toBe(true);
@@ -122,6 +117,7 @@ describe('compose upload delegate', function(){
       describe('when postFile succeeds', function(){
         beforeEach(function(){
           post.and.returnValue($q.when());
+          $scope.$close = jasmine.createSpy('$close');
           $scope.postNow();
           $scope.$apply();
         });
@@ -140,8 +136,8 @@ describe('compose upload delegate', function(){
           });
         });
 
-        it('should set submissionSucceeded to true', function(){
-          expect($scope.model.submissionSucceeded).toBe(true);
+        it('should close the dialog', function(){
+          expect($scope.$close).toHaveBeenCalled();
         });
       });
 
@@ -176,6 +172,7 @@ describe('compose upload delegate', function(){
       describe('when postFile succeeds', function(){
         beforeEach(function(){
           post.and.returnValue($q.when());
+          $scope.$close = jasmine.createSpy('$close');
           $scope.postToBacklog();
           $scope.$apply();
         });
@@ -195,8 +192,8 @@ describe('compose upload delegate', function(){
           });
         });
 
-        it('should set submissionSucceeded to true', function(){
-          expect($scope.model.submissionSucceeded).toBe(true);
+        it('should close the dialog', function(){
+          expect($scope.$close).toHaveBeenCalled();
         });
       });
 
@@ -231,6 +228,7 @@ describe('compose upload delegate', function(){
       beforeEach(function(){
         $scope.model.postToQueue = false;
         post.and.returnValue($q.when());
+        $scope.$close = jasmine.createSpy('$close');
         $scope.postToBacklog();
         $scope.$apply();
       });
@@ -244,6 +242,10 @@ describe('compose upload delegate', function(){
           isQueued: false,
           scheduledPostTime: 'date'
         });
+      });
+
+      it('should close the dialog', function(){
+        expect($scope.$close).toHaveBeenCalled();
       });
     });
 
@@ -291,16 +293,6 @@ describe('compose upload delegate', function(){
 
       it('should cancel the watch', function(){
         expect(cancelCalled).toBe(true);
-      });
-    });
-
-    describe('when postAnother is called', function(){
-      beforeEach(function(){
-        $scope.postAnother();
-      });
-
-      it('should set postLater to false', function(){
-        expect($state.reload).toHaveBeenCalled();
       });
     });
 

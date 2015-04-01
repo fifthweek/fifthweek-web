@@ -24,11 +24,12 @@
 @import 'blocks/_tabs';
 @import 'blocks/_form-subsection';
 @import 'blocks/_blob-image';
-@import 'blocks/form-input-date-time-picker';
-@import 'blocks/form-input-hour-of-week';
-@import 'blocks/form-input-select-collection';
-@import 'blocks/posts';
+@import 'blocks/_form-input-date-time-picker';
+@import 'blocks/_form-input-hour-of-week';
+@import 'blocks/_form-input-select-collection';
+@import 'blocks/_posts';
 @import 'blocks/_post-new';
+@import 'blocks/_compose-upload';
 
 @import 'view-specific/account/_account';
 @import 'view-specific/creator/_creator';
@@ -37,7 +38,7 @@
 @import 'view-specific/home/_home';
 @import 'view-specific/notifications/_notifications';
 
-@import 'modules/creator-backlog/backlog-post-list';
+@import 'modules/creator-backlog/_backlog-post-list';
 
 @import '_misc';
 @import '_shame';
