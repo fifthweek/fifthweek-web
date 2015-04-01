@@ -30,6 +30,7 @@ CollectionAddPage.prototype = Object.create({}, {
   submitSuccessfully: { value: function(channelNames) {
     var channelSelectInputPage = new ChannelSelectInputPage();
     var channelSelectTexts = channelSelectInputPage.mapToSelectTexts(channelNames);
+    testKit.waitForElementToDisplay(this.channelSelect);
     var formValues = testKit.setFormValues(this, this.inputs(channelSelectTexts));
     this.createButton.click();
     return {
@@ -40,6 +41,7 @@ CollectionAddPage.prototype = Object.create({}, {
   submitCollectionSuccessfully: { value: function(channelName, newCollectionName) {
     var channelSelectInputPage = new ChannelSelectInputPage();
     var channelSelectText = channelSelectInputPage.mapToSelectText(channelName);
+    testKit.waitForElementToDisplay(this.channelSelect);
     testKit.setFormValues(this, this.inputs(), { nameTextBox: newCollectionName, channelSelect: channelSelectText});
     this.createButton.click();
     return {

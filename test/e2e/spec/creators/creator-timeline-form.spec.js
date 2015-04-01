@@ -156,7 +156,7 @@
       navigateToPage();
       testKit.scrollIntoView(targetPost.moreActionsButton);
       targetPost.moreActionsButton.click();
-      browser.waitForAngular();
+      testKit.waitForElementToDisplay(targetPost.editPostLink);
       testKit.scrollIntoView(targetPost.editPostLink);
       targetPost.editPostLink.click();
       testKit.waitForElementToDisplay(editPostDialogPage.expandButton);

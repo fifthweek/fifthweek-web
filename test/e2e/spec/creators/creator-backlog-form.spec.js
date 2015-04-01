@@ -106,6 +106,10 @@
         function () {
           commonWorkflows.fastRefresh();
           post.moreActionsButton.click();
+          testKit.scrollIntoView(post.moreActionsButton);
+          post.moreActionsButton.click();
+          testKit.waitForElementToDisplay(post.deletePostLink);
+          testKit.scrollIntoView(post.deletePostLink);
           post.deletePostLink.click();
         },
         function () {
@@ -129,11 +133,10 @@
 
     var displayEditModal = function (targetPost) {
       targetPost = targetPost || post;
-      sidebar.helpLink.click();
-      navigateToPage();
+      commonWorkflows.fastRefresh();
       testKit.scrollIntoView(targetPost.moreActionsButton);
       targetPost.moreActionsButton.click();
-      testKit.waitForElementToDisplay(post.deletePostLink);
+      testKit.waitForElementToDisplay(post.editPostLink);
       testKit.scrollIntoView(targetPost.editPostLink);
       targetPost.editPostLink.click();
       testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
