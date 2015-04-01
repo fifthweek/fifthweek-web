@@ -18,32 +18,40 @@ ul.post-new-options {
     float:left;
     width:20%;
     text-align:center;
-    border-left: 1px solid $grey-light-3;
     &:first-child {
       border-left: none;
     }
     &:last-child {
       margin-bottom: 0; /* Should not be necessary - needed due to overzealous styling on rightContainer lists. */
     }
-    span:before {
-      font-family:'FontAwesome';
-      font-weight: normal;
-      font-size: 30px;
-      display:block;
-      width:30px;
-      margin:0 auto;
+    span{
+      display: inline-block;
+      &:before {
+        font-family:'FontAwesome';
+        font-weight: normal;
+        font-size: 30px;
+        display:block;
+        width:30px;
+        margin:0 auto;
+      }
     }
     a {
-      font-size:13px;
-      color: $grey-dark;
+      transition: color 0.2s;
+      font-size:10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: $grey-dark-2;
       &:hover {
+        color: $brand-highlight-2;
         text-decoration: none;
+        cursor:pointer;
       }
     }
     &.post-new-options-disabled {
-      color: $grey-light-4;
+      color: $grey-light-6;
       a {
-        color: $grey-light-4;
+        color: $grey-light-6;
         &:hover {
           cursor: default;
         }
