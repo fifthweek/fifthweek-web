@@ -123,7 +123,7 @@
           navigateToPage();
           testKit.scrollIntoView(post.moreActionsButton);
           post.moreActionsButton.click();
-          browser.waitForAngular();
+          testKit.waitForElementToDisplay(post.deletePostLink);
           testKit.scrollIntoView(post.deletePostLink);
           post.deletePostLink.click();
         },
