@@ -352,8 +352,8 @@ angular.module('routes', ['ui.router'])
         controller: 'timelineCtrl',
         requireSubscription: true,
         data : {
-          pageTitle: 'Posts',
-          headTitle: ': ' + 'Posts',
+          pageTitle: 'Live Posts',
+          headTitle: ': ' + 'Live Posts',
           access: {
             requireAuthenticated: true
           }
@@ -391,8 +391,8 @@ angular.module('routes', ['ui.router'])
         controller: 'backlogPostListCtrl',
         requireSubscription: true,
         data : {
-          pageTitle: 'Queued Posts',
-          headTitle: ': ' + 'Queue',
+          pageTitle: 'Scheduled Posts',
+          headTitle: ': ' + 'Scheduled Posts',
           bodyClass: 'page-creators-backlog-post-list',
           access: {
             requireAuthenticated: true

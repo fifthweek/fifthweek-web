@@ -4,7 +4,7 @@
 
   <div ng-if="model.submissionSucceeded">
     <div class="alert alert-success" >
-      <p>{{model.postLater ? (model.postToQueue ? 'Queued' : 'Scheduled') : 'Posted'}} successfully</p>
+      <p>{{model.postLater ? 'Scheduled' : 'Posted'}} successfully</p>
     </div>
     <button class="btn btn-default btn-block"
             ng-click="postAnother()">Post Another</button>
@@ -40,7 +40,7 @@
             <button type="submit"
                     class="btn btn-block btn-success"
                     data-loading-text="Posting..."
-                    data-event-title="Image posted"
+                    data-event-title="{{postType}} posted"
                     data-event-category="New post"
                     can-submit="contentForm.$valid"
                     fw-form-submit="postNow()">Post Now</button>
@@ -64,7 +64,7 @@
                           ng-value="true"/>
               After other posts in queue
               <span ng-if="!model.queuedLiveDate && !shouldCreateCollection()">(loading...)</span>
-              <span ng-if="model.queuedLiveDate">(<strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
+              <span ng-if="model.queuedLiveDate">(will appear <strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
             </label>
           </div>
 
@@ -82,11 +82,11 @@
         <div class="row-btn">
           <button type="submit"
                   class="btn btn-block btn-success"
-                  data-loading-text="Posting to Backlog..."
-                  data-event-title="Image queued"
+                  data-loading-text="Scheduling..."
+                  data-event-title="{{postType}} scheduled"
                   data-event-category="New post"
                   can-submit="scheduleForm.$valid"
-                  fw-form-submit="postToBacklog()">Post to Backlog</button>
+                  fw-form-submit="postToBacklog()">Schedule</button>
 
           <!-- Note we do not use fw-form-submit here because we don't care about validity -->
           <button class="btn btn-default btn-block"

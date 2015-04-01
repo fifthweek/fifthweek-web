@@ -3,6 +3,7 @@ angular.module('webApp').controller('composeImageCtrl',
     'use strict';
 
     $scope.uploadFormFile = 'image';
+    $scope.postType = 'Image';
 
     $scope.blobImage = blobImageControlFactory.createControl();
 

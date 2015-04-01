@@ -59,8 +59,8 @@
       <div class="form-group">
         <fw-form-subsection name="Release time">
           <summary>
-            <p ng-if="model.savedScheduleMode === scheduleModes.now">This post has been released</p>
-            <p ng-if="model.savedScheduleMode !== scheduleModes.now">Currently scheduled for <strong>{{model.savedDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong></p>
+            <p ng-if="model.savedScheduleMode === scheduleModes.now">This post has been released.</p>
+            <p ng-if="model.savedScheduleMode !== scheduleModes.now">Currently scheduled for <strong>{{model.savedDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>.</p>
           </summary>
           <section>
             <div class="radio">
@@ -75,15 +75,15 @@
                   type="radio"
                   ng-model="model.input.scheduleMode"
                   ng-value="scheduleModes.queued" />
-                Scheduled by queue
-                <span ng-if="model.savedScheduleMode !== scheduleModes.queued">(<strong>{{model.queuedLiveDate | date:fifthweekConstants.dayGroupingDateFormat:'UTC'}}</strong>)</span>
+                Schedule with queue
+                <span ng-if="model.savedScheduleMode !== scheduleModes.queued">(will appear <strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
               </label>
             </div>
 
             <div class="radio">
               <label><input type="radio"
                             ng-model="model.input.scheduleMode"
-                            ng-value="scheduleModes.scheduled" /> On specific date (UTC):</label>
+                            ng-value="scheduleModes.scheduled" /> Schedule for specific time (UTC):</label>
             </div>
 
             <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>

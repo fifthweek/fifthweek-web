@@ -39,8 +39,7 @@
     outline:0 none;
   }
 
-  @media (min-width: $screen-s-min) {
-
+  @media (min-width: $screen-ss-min) {
     .timepicker {
       font-size: $p-font-size;
       margin-top: -35px;

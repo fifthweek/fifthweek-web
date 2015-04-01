@@ -12,8 +12,16 @@
   background: $grey-light-2;
   border: solid 1px $grey-light-5;
   #{$state-active-hover-focus} {
+    color:$grey-dark;
     background: $white-full;
+    border: solid 1px $grey-light-5;
   }
+}
+
+.btn-info.active {
+  color:$brand-highlight-2;
+  background: $white-full;
+  border: solid 1px $brand-highlight-3;
 }
 
 .btn-success {

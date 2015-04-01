@@ -3,6 +3,7 @@ angular.module('webApp').controller('composeFileCtrl',
     'use strict';
 
     $scope.uploadFormFile = 'file';
+    $scope.postType = 'File';
 
     var onUploadComplete = function(data) {
       $scope.fileName = data.file.name;

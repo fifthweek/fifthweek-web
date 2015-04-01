@@ -59,7 +59,7 @@ angular.module('webApp')
             color: 'pink'
           },
           {
-            name: 'Queued',
+            name: 'Scheduled',
             state: states.creators.backlog.futurePosts.name,
             icon: 'fa fa-clock-o',
             color: 'yellow'

@@ -9,8 +9,8 @@
   <div ng-repeat="post in model.posts track by post.postId" ng-include="'modules/posts/post.html'" id="post-{{$index}}"></div>
 
   <fw-panel12 ng-if="model.posts.length === 0 && source ===  sources.creatorBacklog">
-    <h4>Queue empty</h4>
-    <p>The queue makes it easy for you to provide a steady flow of posts to your subscribers.</p>
+    <h4>Nothing scheduled</h4>
+    <p>The schedule makes it easy for you to provide a steady flow of posts to your subscribers.</p>
     <p>Use this feature by clicking 'Schedule' when creating a post.</p>
   </fw-panel12>
 
