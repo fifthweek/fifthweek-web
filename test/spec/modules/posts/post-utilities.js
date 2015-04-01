@@ -490,12 +490,12 @@ describe('post-utilities', function(){
       describe('when calling re-order', function(){
         it('should change state to the queue reorder page when reorder is called on post 1', function(){
           posts[0].reorder();
-          expect($state.go).toHaveBeenCalledWith('creators.backlog.queues.reorder', { id: 'collectionId1' });
+          expect($state.go).toHaveBeenCalledWith('creators.posts.scheduled.queues.reorder', { id: 'collectionId1' });
         });
 
         it('should change state to the queue reorder page when reorder is called on post 2', function(){
           posts[1].reorder();
-          expect($state.go).toHaveBeenCalledWith('creators.backlog.queues.reorder', { id: 'collectionId2' });
+          expect($state.go).toHaveBeenCalledWith('creators.posts.scheduled.queues.reorder', { id: 'collectionId2' });
         });
       });
 

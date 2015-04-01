@@ -12,7 +12,7 @@
 ]">
 
   <fw-panel12>
-    <div class="row-selection" ng-repeat="item in collections" ui-sref="creators.backlog.queues.reorder({id: item.id})" ng-class="{'row-selection-disabled': item.postCount === 0}">
+    <div class="row-selection" ng-repeat="item in collections" ui-sref="creators.posts.scheduled.queues.reorder({id: item.id})" ng-class="{'row-selection-disabled': item.postCount === 0}">
       <div class="row">
         <div class="col-xs-9">
           <h5 ng-if="item.postCount > 0">

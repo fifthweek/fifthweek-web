@@ -41,58 +41,52 @@ angular.module('routes', ['ui.router'])
       createSubscription: {
         name: 'creators.createSubscription'
       },
-      blog: {
-        name: 'creators.blog',
-        posts: {
-          name: 'creators.blog.posts'
-        },
-        landingPage: {
-          name: 'creators.blog.landingPage'
-        }
+      landingPage: {
+        name: 'creators.landingPage'
       },
-      backlog: {
-        name: 'creators.backlog',
-        futurePosts: {
-          name: 'creators.backlog.futurePosts'
+      posts: {
+        name: 'creators.posts',
+        live: {
+          name: 'creators.posts.live'
         },
-        queues: {
-          name: 'creators.backlog.queues',
+        scheduled: {
+          name: 'creators.posts.scheduled',
+          list: {
+            name: 'creators.posts.scheduled.list'
+          },
           queues: {
-            name: 'creators.backlog.queues.queues'
-          },
-          reorder: {
-            name: 'creators.backlog.queues.reorder'
+            name: 'creators.posts.scheduled.queues',
+            list: {
+              name: 'creators.posts.scheduled.queues.list'
+            },
+            reorder: {
+              name: 'creators.posts.scheduled.queues.reorder'
+            }
           }
         }
       },
-      subscription: {
-        name: 'creators.subscription',
-        landingPage: {
-          name: 'creators.subscription.landingPage'
+      collections: {
+        name: 'creators.collections',
+        new: {
+          name: 'creators.collections.new'
         },
-        collections: {
-          name: 'creators.subscription.collections',
-          new: {
-            name: 'creators.subscription.collections.new'
-          },
-          edit: {
-            name: 'creators.subscription.collections.edit'
-          },
-          list: {
-            name: 'creators.subscription.collections.list'
-          }
+        edit: {
+          name: 'creators.collections.edit'
         },
-        channels: {
-          name: 'creators.subscription.channels',
-          new: {
-            name: 'creators.subscription.channels.new'
-          },
-          edit: {
-            name: 'creators.subscription.channels.edit'
-          },
-          list: {
-            name: 'creators.subscription.channels.list'
-          }
+        list: {
+          name: 'creators.collections.list'
+        }
+      },
+      channels: {
+        name: 'creators.channels',
+        new: {
+          name: 'creators.channels.new'
+        },
+        edit: {
+          name: 'creators.channels.edit'
+        },
+        list: {
+          name: 'creators.channels.list'
         }
       }
     },
@@ -210,7 +204,7 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.dashboard.name, {
         abstract: false,
-        url: '/home',
+        url: '/dashboard',
         templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.dashboard.newsFeed.name,
         data : {
@@ -220,7 +214,7 @@ angular.module('routes', ['ui.router'])
         }
       })
       .state(states.dashboard.newsFeed.name, {
-        url: '/timeline',
+        url: '/news-feed',
         templateUrl: 'modules/newsfeed/newsfeed.html',
         data : {
           pageTitle: 'News Feed',
@@ -246,7 +240,7 @@ angular.module('routes', ['ui.router'])
         abstract: false,
         url: '/creator',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creators.blog.name,
+        redirectTo: states.creators.posts.name,
         data : {
           access: {
             requireAuthenticated: true
@@ -266,20 +260,20 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.blog.name, {
+      .state(states.creators.posts.name, {
         abstract: false,
-        url: '/blog',
+        url: '/posts',
         templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
-        redirectTo: states.creators.blog.posts.name,
+        redirectTo: states.creators.posts.live.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.blog.posts.name, {
-        url: '/posts',
+      .state(states.creators.posts.live.name, {
+        url: '/live',
         templateUrl: 'modules/creator-posts/creator-posts.html',
         controller: 'timelineCtrl',
         requireSubscription: true,
@@ -291,7 +285,68 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.blog.landingPage.name, {
+      .state(states.creators.posts.scheduled.name, {
+        url: '/scheduled',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.creators.posts.scheduled.list.name,
+        requireSubscription: true,
+        data : {
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.posts.scheduled.list.name, {
+        url: '',
+        templateUrl: 'modules/creator-backlog/backlog-post-list.html',
+        controller: 'backlogPostListCtrl',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Scheduled Posts',
+          headTitle: ': ' + 'Scheduled Posts',
+          bodyClass: 'page-creators-backlog-post-list',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.posts.scheduled.queues.name, {
+        url: '/queues',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.creators.posts.scheduled.queues.list.name,
+        requireSubscription: true,
+        data : {
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.posts.scheduled.queues.list.name, {
+        url: '/',
+        templateUrl: 'modules/creator-backlog/backlog-queue-list.html',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Queues',
+          headTitle: ': ' + 'Queues',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.posts.scheduled.queues.reorder.name, {
+        url: '/{id}',
+        templateUrl: 'modules/creator-backlog/backlog-queue-reorder.html',
+        controller: 'queueReorderCtrl',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Reorder Queue',
+          headTitle: ': ' + 'Reorder Queues',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.landingPage.name, {
         url: '/landing-page',
         templateUrl: 'modules/creator-timeline/creator-timeline.html',
         controller: 'timelineCtrl',
@@ -306,104 +361,18 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.backlog.name, {
-        url: '/backlog',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creators.backlog.futurePosts.name,
-        requireSubscription: true,
-        data : {
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.backlog.futurePosts.name, {
-        url: '',
-        templateUrl: 'modules/creator-backlog/backlog-post-list.html',
-        controller: 'backlogPostListCtrl',
-        requireSubscription: true,
-        data : {
-          pageTitle: 'Scheduled Posts',
-          headTitle: ': ' + 'Scheduled Posts',
-          bodyClass: 'page-creators-backlog-post-list',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.backlog.queues.name, {
-        url: '/queues',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creators.backlog.queues.queues.name,
-        requireSubscription: true,
-        data : {
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.backlog.queues.queues.name, {
-        url: '/',
-        templateUrl: 'modules/creator-backlog/backlog-queue-list.html',
-        requireSubscription: true,
-        data : {
-          pageTitle: 'Queues',
-          headTitle: ': ' + 'Queues',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.backlog.queues.reorder.name, {
-        url: '/{id}',
-        templateUrl: 'modules/creator-backlog/backlog-queue-reorder.html',
-        controller: 'queueReorderCtrl',
-        requireSubscription: true,
-        data : {
-          pageTitle: 'Reorder Queue',
-          headTitle: ': ' + 'Reorder Queues',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.subscription.name, {
-        url: '/subscription',
-        redirectTo: states.creators.subscription.landingPage.name,
-        templateUrl: 'modules/common/ui-view.html',
-        requireSubscription: true,
-        data : {
-          pageTitle: 'Subscriptions',
-          headTitle: ': ' + 'Subscriptions',
-          bodyClass: 'page-subscription',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.subscription.landingPage.name, {
-        url: '/landing-page',
-        templateUrl: 'modules/creator-subscription/customize-landing-page.html',
-        controller: 'customizeLandingPageCtrl',
-        requireSubscription: true,
-        data : {
-          pageTitle: 'Blog Appearance',
-          headTitle: ': ' + 'Appearance',
-          bodyClass: 'page-subscription-landing'
-        }
-      })
-      .state(states.creators.subscription.collections.name, {
+      .state(states.creators.collections.name, {
         url: '/collections',
         templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
-        redirectTo: states.creators.subscription.collections.list.name,
+        redirectTo: states.creators.collections.list.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.subscription.collections.new.name, {
+      .state(states.creators.collections.new.name, {
         url: '/new',
         templateUrl: 'modules/collections/new-collection.html',
         controller: 'newCollectionCtrl',
@@ -415,7 +384,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.subscription.collections.edit.name, {
+      .state(states.creators.collections.edit.name, {
         url: '/{id}',
         templateUrl: 'modules/collections/edit-collection.html',
         controller: 'editCollectionCtrl',
@@ -427,7 +396,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.subscription.collections.list.name, {
+      .state(states.creators.collections.list.name, {
         url: '',
         templateUrl: 'modules/collections/list-collections.html',
         controller: 'listCollectionsCtrl',
@@ -440,18 +409,18 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.subscription.channels.name, {
+      .state(states.creators.channels.name, {
         url: '/channels',
         templateUrl: 'modules/common/ui-view.html',
         requireSubscription: true,
-        redirectTo: states.creators.subscription.channels.list.name,
+        redirectTo: states.creators.channels.list.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.subscription.channels.new.name, {
+      .state(states.creators.channels.new.name, {
         url: '/new',
         templateUrl: 'modules/channels/new-channel.html',
         controller: 'newChannelCtrl',
@@ -463,7 +432,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.subscription.channels.edit.name, {
+      .state(states.creators.channels.edit.name, {
         url: '/{id}',
         templateUrl: 'modules/channels/edit-channel.html',
         controller: 'editChannelCtrl',
@@ -475,7 +444,7 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
-      .state(states.creators.subscription.channels.list.name, {
+      .state(states.creators.channels.list.name, {
         url: '',
         templateUrl: 'modules/channels/list-channels.html',
         controller: 'listChannelsCtrl',

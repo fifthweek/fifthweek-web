@@ -11,7 +11,7 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
     }
   };
 
-  $scope.previousState = states.creators.subscription.channels.name;
+  $scope.previousState = states.creators.channels.name;
 
   $scope.create = function() {
     var channel = $scope.model.channel;

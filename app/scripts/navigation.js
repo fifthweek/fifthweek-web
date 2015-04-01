@@ -38,7 +38,7 @@ angular.module('webApp')
       },
       {
         name: 'Landing Page',
-        state: states.creators.blog.landingPage.name,
+        state: states.creators.landingPage.name,
         icon: 'fa fa-bookmark-o',
         color: 'pink'
       },
@@ -47,20 +47,20 @@ angular.module('webApp')
       },
       {
         name: 'Posts',
-        state: states.creators.blog.name,
+        state: states.creators.posts.name,
         icon: 'fa fa-file-text-o',
         color: 'orange',
         secondary:
         [
           {
             name: 'Live Now',
-            state: states.creators.blog.posts.name,
+            state: states.creators.posts.live.name,
             icon: 'fa fa-file-text-o',
             color: 'pink'
           },
           {
             name: 'Scheduled',
-            state: states.creators.backlog.futurePosts.name,
+            state: states.creators.posts.scheduled.list.name,
             icon: 'fa fa-clock-o',
             color: 'yellow'
           }
@@ -74,14 +74,14 @@ angular.module('webApp')
       },
       {
         name: 'Collections',
-        state: states.creators.subscription.collections.name,
+        state: states.creators.collections.name,
         icon: 'fa fa-th',
         color: 'green',
         secondary:
           [
             {
               name: 'Collections',
-              state: states.creators.subscription.collections.name,
+              state: states.creators.collections.name,
               icon: 'fa fa-th',
               color: 'green'
             }
@@ -89,14 +89,14 @@ angular.module('webApp')
       },
       {
         name: 'Channels',
-        state: states.creators.subscription.channels.name,
+        state: states.creators.channels.name,
         icon: 'fa fa-check-square-o',
         color: 'green',
         secondary:
         [
           {
             name: 'Channels',
-            state: states.creators.subscription.channels.name,
+            state: states.creators.channels.name,
             icon: 'fa fa-check-square-o',
             color: 'green'
           }
