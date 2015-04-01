@@ -131,6 +131,7 @@
       targetPost = targetPost || post;
       commonWorkflows.fastRefresh();
       targetPost.moreActionsButton.click();
+      browser.waitForAngular();
       targetPost.editPostLink.click();
       testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
     };
