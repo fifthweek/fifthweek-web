@@ -9,7 +9,7 @@
   @include modal-box-shadow;
 
   h4 {
-    font-size:15.5px;
+    font-size:15px;
     background: $body-bg;
     border-bottom: 1px solid $grey-light-3;
     border-top-left-radius: $border-radius;
@@ -35,7 +35,7 @@
   }
 
   .modal-body, h4 {
-    padding:$modal-padding;
+    padding:($modal-padding - 1) $modal-padding;
   }
 
   .form-modal-body {
@@ -52,6 +52,13 @@
   position:fixed;
   height:100%;
   opacity:0.4;
+}
+
+.modal.fade .modal-dialog {
+  @include translate(0, -30px); // Lessen default animation.
+}
+.modal.in .modal-dialog {
+  @include translate(0, 0);
 }
 
 .modal-sm {
