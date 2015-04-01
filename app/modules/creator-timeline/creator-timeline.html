@@ -19,7 +19,12 @@
               <div class="subscribe-button-wrapper">
                 <button id="subscribed-button"
                         class="btn btn-block"
-                        type="submit">Subscribed</button>
+                        type="submit"
+                        data-event-title="Unsubscribed"
+                        data-event-category="{{model.tracking.category}}"
+                        data-loading-text="Unsubscribing..."
+                        can-submit="true"
+                        fw-form-submit="unsubscribe()">Subscribed</button>
               </div>
               <p class="button-footer">1 Subscriber</p>
             </div>

@@ -53,6 +53,10 @@ angular.module('webApp').controller('timelineCtrl',
       $scope.model.subscribed = true;
     };
 
+    $scope.unsubscribe = function() {
+      $scope.model.subscribed = false;
+    };
+
     $scope.$watch('model.channels', function() {
 
       $scope.model.totalPrice = _($scope.model.channels)
