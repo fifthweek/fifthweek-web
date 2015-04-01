@@ -14,6 +14,7 @@ AccountPage.prototype = Object.create({}, {
   usernameTextBoxId: { value: 'model-accountSettings-username' },
   passwordTextBoxId: { value: 'model-password' },
   saveChangesButton: { get: function(){ return element(by.id('save-changes-button')); }},
+  cancelButton: { get: function(){ return element(by.id('cancel-button')); }},
   savedSuccessfullyMessage: { get: function(){ return element(by.css('.alert-success')); }},
   helpMessages: { get: function () { return element.all(by.css('#accountSettingsForm .help-block')); }},
   setFileInput: { value: function(filePath) {

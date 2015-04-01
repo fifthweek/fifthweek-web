@@ -114,6 +114,24 @@ describe('account settings form', function() {
       expect(element(by.id(page.passwordTextBoxId)).getAttribute('value')).toBe('');
     });
 
+    it('should not persist settings if the user cancels', function(){
+      page.setFileInput('../sample-image.jpg');
+      testKit.waitForElementToDisplay(page.profileImage);
+
+      var newUsername = usernameInputPage.newUsername();
+      var newEmail = registerPage.newEmail(newUsername);
+      testKit.setValue(page.emailTextBoxId, newUsername);
+      testKit.setValue(page.usernameTextBoxId, newEmail);
+      testKit.setValue(page.passwordTextBoxId, 'phil-the-cat');
+
+      page.cancelButton.click();
+
+      testKit.waitForElementToDisplay(page.noProfileImage);
+      expect(element(by.id(page.emailTextBoxId)).getAttribute('value')).toBe(registration.email);
+      expect(element(by.id(page.usernameTextBoxId)).getAttribute('value')).toBe(registration.username);
+      expect(element(by.id(page.passwordTextBoxId)).getAttribute('value')).toBe('');
+    });
+
     describe('when persisting new settings', function(){
 
       it('should disable the submit button until changes are made', function(){
