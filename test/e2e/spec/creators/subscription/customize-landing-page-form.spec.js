@@ -166,13 +166,24 @@ describe('customize landing page form', function() {
 
     testInitialContent();
 
+    describe('when not saving changes', function(){
+
+      populateForm();
+
+      it('should not save the changes', function(){
+        sidebar.helpLink.click();
+        sidebar.subscriptionLink.click();
+      });
+
+      testInitialContent();
+    });
+
     describe('when cancelling changes', function(){
 
       populateForm();
 
       it('should cancel the changes', function(){
-        sidebar.helpLink.click();
-        sidebar.subscriptionLink.click();
+        page.fullDescriptionCancelButton.click();
       });
 
       testInitialContent();

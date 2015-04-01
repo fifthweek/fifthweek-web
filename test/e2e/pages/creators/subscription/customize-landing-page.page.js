@@ -36,6 +36,8 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
   headerImageSubmitButton: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(2) .save-changes-button')); }},
   fullDescriptionSubmitButton: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(3) .save-changes-button')); }},
 
+  fullDescriptionCancelButton: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(3) .form-cancel-button')); }},
+
   basicsSuccessMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(1) .alert-success')); }},
   headerImageSuccessMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(2) .alert-success')); }},
   fullDescriptionSuccessMessage: { get: function () { return element(by.css('.tab-content .tab-pane:nth-child(3) .alert-success')); }},
