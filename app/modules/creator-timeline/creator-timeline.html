@@ -6,7 +6,14 @@
   <fw-azure-image-loader output-url="model.headerImageUrl" thumbnail="header" file-id="{{model.subscription.headerImage.fileId}}" container-name="{{model.subscription.headerImage.containerName}}"></fw-azure-image-loader>
 
   <div class="header-image" ng-style="{'background-image':'url(' + (model.subscription.headerImage.fileId ? model.headerImageUrl : model.defaultHeaderImageUrl) + ')'}" id="header-image">
-    <div ng-include="'views/partials/logo-sm.html'"></div>
+    <div class="header-image-control-overlay">
+      <h1 class="fifthweek-logo-sm">
+        <a ui-sref="creators">fw</a>
+      </h1>
+      <a id="edit-appearance-link" class="btn btn-transparent btn-transparent-emphasized" ui-sref="creators.landingPage.edit">
+        edit page
+      </a>
+    </div>
   </div>
 
   <div class="main-content">

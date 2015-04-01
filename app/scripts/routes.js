@@ -42,7 +42,13 @@ angular.module('routes', ['ui.router'])
         name: 'creators.createSubscription'
       },
       landingPage: {
-        name: 'creators.landingPage'
+        name: 'creators.landingPage',
+        preview: {
+          name: 'creators.landingPage.preview'
+        },
+        edit: {
+          name: 'creators.landingPage.edit'
+        }
       },
       posts: {
         name: 'creators.posts',
@@ -260,6 +266,44 @@ angular.module('routes', ['ui.router'])
           }
         }
       })
+      .state(states.creators.landingPage.name, {
+        abstract: false,
+        url: '/landing-page',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.creators.landingPage.preview.name,
+        requireSubscription: true,
+        data : {
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.landingPage.preview.name, {
+        url: '/preview',
+        templateUrl: 'modules/creator-timeline/creator-timeline.html',
+        controller: 'timelineCtrl',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Landing Page',
+          headTitle: ': ' + 'Landing Page',
+          navigationHidden: true,
+          bodyClass: 'page-timeline',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.landingPage.edit.name, {
+        url: '/edit',
+        templateUrl: 'modules/creator-subscription/customize-landing-page.html',
+        controller: 'customizeLandingPageCtrl',
+        requireSubscription: true,
+        data : {
+          pageTitle: 'Edit Appearance',
+          headTitle: ': ' + 'Edit Appearance',
+          bodyClass: 'page-subscription-landing'
+        }
+      })
       .state(states.creators.posts.name, {
         abstract: false,
         url: '/posts',
@@ -341,21 +385,6 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Reorder Queue',
           headTitle: ': ' + 'Reorder Queues',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.creators.landingPage.name, {
-        url: '/landing-page',
-        templateUrl: 'modules/creator-timeline/creator-timeline.html',
-        controller: 'timelineCtrl',
-        requireSubscription: true,
-        data : {
-          pageTitle: 'Landing Page',
-          headTitle: ': ' + 'Landing Page',
-          navigationHidden: true,
-          bodyClass: 'page-timeline',
           access: {
             requireAuthenticated: true
           }

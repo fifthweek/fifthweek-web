@@ -40,7 +40,22 @@ angular.module('webApp')
         name: 'Landing Page',
         state: states.creators.landingPage.name,
         icon: 'fa fa-bookmark-o',
-        color: 'pink'
+        color: 'pink',
+        secondary:
+        [
+          {
+            name: 'Preview',
+            state: states.creators.landingPage.preview.name,
+            icon: 'fa fa-eye',
+            color: 'pink'
+          },
+          {
+            name: 'Edit Page',
+            state: states.creators.landingPage.edit.name,
+            icon: 'fa fa-pencil',
+            color: 'pink'
+          }
+        ]
       },
       {
         separator: true

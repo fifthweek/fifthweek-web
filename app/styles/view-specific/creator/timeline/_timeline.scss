@@ -35,21 +35,32 @@ $header-height:108px;
   }
 }
 
+#edit-appearance-link {
+  float:right;
+}
+
 #{$html-name-space} {
-  #{$logo-sm} {
+  .header-image-control-overlay {
     position: absolute;
-    top: 12px;
+    top: $main-cont-padding-small;
     left: $main-cont-padding-small;
+    right: $main-cont-padding-small;
     z-index: 1;
+    @media (min-width:$screen-s-min) {
+      top: 27px;
+      left: 27px;
+      right: 27px;
+    }
+  }
+  #{$logo-sm} {
     background-color: $black-off;
     border-radius: 3px;
     width:39px;
     height:39px;
     text-align: center;
     padding-top: 9px;
-    @media (min-width:$screen-s-min) {
-      left: 27px;
-    }
+    margin:0;
+    float:left;
   }
   .header-image {
     @include header-shadow;

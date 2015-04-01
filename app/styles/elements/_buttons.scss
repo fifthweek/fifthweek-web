@@ -92,6 +92,11 @@ input[type="button"].btn-block,
   }
 }
 
+.btn-transparent-emphasized {
+  @include text-shadow-black-hard;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
 .btn-transparent-text {
   @extend .btn-transparent;
   border:0 none;
