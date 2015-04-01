@@ -5,6 +5,7 @@ var RegisterPage = require('../pages/register.page.js');
 var PasswordInputPage = require('../pages/password-input.page.js');
 var AccountSettingsPage = require('../pages/account-settings.page.js');
 var SidebarPage = require('../pages/sidebar.page.js');
+var DiscardChangesPage = require('../pages/discard-changes.page.js');
 
 describe('account settings form', function() {
   'use strict';
@@ -19,6 +20,7 @@ describe('account settings form', function() {
   var passwordInputPage = new PasswordInputPage();
   var page = new AccountSettingsPage();
   var sidebar = new SidebarPage();
+  var discardChanges = new DiscardChangesPage();
 
   var navigateToPage = function() {
     var context = commonWorkflows.createSubscription();
@@ -96,41 +98,50 @@ describe('account settings form', function() {
       expect(element(by.id(page.passwordTextBoxId)).getAttribute('value')).toBe('');
     });
 
-    it('should not persist settings if the user does not save', function(){
+    var setNewValues = function () {
       page.setFileInput('../sample-image.jpg');
       testKit.waitForElementToDisplay(page.profileImage);
 
       var newUsername = usernameInputPage.newUsername();
       var newEmail = registerPage.newEmail(newUsername);
-      testKit.setValue(page.emailTextBoxId, newUsername);
-      testKit.setValue(page.usernameTextBoxId, newEmail);
+      testKit.setValue(page.emailTextBoxId, newEmail);
+      testKit.setValue(page.usernameTextBoxId, newUsername);
       testKit.setValue(page.passwordTextBoxId, 'phil-the-cat');
+    };
 
-      commonWorkflows.fastRefresh();
-
+    var verifyOldValues = function () {
       testKit.waitForElementToDisplay(page.noProfileImage);
       expect(element(by.id(page.emailTextBoxId)).getAttribute('value')).toBe(registration.email);
       expect(element(by.id(page.usernameTextBoxId)).getAttribute('value')).toBe(registration.username);
       expect(element(by.id(page.passwordTextBoxId)).getAttribute('value')).toBe('');
+    };
+
+    var verifyNewValues = function(){
+      testKit.waitForElementToDisplay(page.profileImage);
+
+      expect(element(by.id(page.emailTextBoxId)).getAttribute('value')).not.toBe(registration.email);
+      expect(element(by.id(page.usernameTextBoxId)).getAttribute('value')).not.toBe(registration.username);
+    };
+
+    it('should not persist settings if the user does not save', function(){
+      setNewValues();
+      commonWorkflows.fastRefresh();
+      verifyOldValues();
     });
 
     it('should not persist settings if the user cancels', function(){
-      page.setFileInput('../sample-image.jpg');
-      testKit.waitForElementToDisplay(page.profileImage);
-
-      var newUsername = usernameInputPage.newUsername();
-      var newEmail = registerPage.newEmail(newUsername);
-      testKit.setValue(page.emailTextBoxId, newUsername);
-      testKit.setValue(page.usernameTextBoxId, newEmail);
-      testKit.setValue(page.passwordTextBoxId, 'phil-the-cat');
-
+      setNewValues();
       page.cancelButton.click();
-
-      testKit.waitForElementToDisplay(page.noProfileImage);
-      expect(element(by.id(page.emailTextBoxId)).getAttribute('value')).toBe(registration.email);
-      expect(element(by.id(page.usernameTextBoxId)).getAttribute('value')).toBe(registration.username);
-      expect(element(by.id(page.passwordTextBoxId)).getAttribute('value')).toBe('');
+      verifyOldValues();
     });
+
+    discardChanges.describeDiscardingChanges(
+      function(){ sidebar.accountLink.click(); },
+      function(){ sidebar.helpLink.click(); },
+      setNewValues,
+      verifyNewValues,
+      verifyOldValues
+    );
 
     describe('when persisting new settings', function(){
 
@@ -172,6 +183,7 @@ describe('account settings form', function() {
       });
 
       it('should persist new settings between sessions', function(){
+        commonWorkflows.fastRefresh();
         commonWorkflows.reSignIn(registration);
         sidebar.accountLink.click();
 
