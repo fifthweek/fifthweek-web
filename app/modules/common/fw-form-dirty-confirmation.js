@@ -5,12 +5,19 @@ angular.module('webApp').directive('fwFormDirtyConfirmation',
     return {
       restrict: 'E',
       scope: {
-        form: '='
+        form: '=',
+        formDirty: '=?'
       },
       link: function(scope) {
 
         if(!scope.form){
           return;
+        }
+
+        if(!scope.formDirty){
+          scope.formDirty = function(){
+            return scope.form.$dirty;
+          };
         }
 
         scope.form.discard = function(){
@@ -26,7 +33,7 @@ angular.module('webApp').directive('fwFormDirtyConfirmation',
         scope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
 
           var shouldDisplay = scope.enabled &&
-            scope.form.$dirty &&
+            scope.formDirty() &&
             !scope.form.isSubmitting &&
             !scope.form.discardChanges &&
             toState.name !== currentStateName;
