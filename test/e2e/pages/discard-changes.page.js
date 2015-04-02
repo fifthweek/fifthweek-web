@@ -21,6 +21,11 @@ DiscardChangesPage.prototype = Object.create({}, {
     };
 
     describe('the modal for discarding changes', function() {
+      var dirtyValues;
+      it('should run once before all', function(){
+        dirtyValues = undefined;
+      });
+
       it('should not display if the form is not dirty', function(){
         navigateAwayFromPage();
         browser.waitForAngular();
@@ -29,7 +34,7 @@ DiscardChangesPage.prototype = Object.create({}, {
       });
 
       it('should display if the form is dirty', function(){
-        makeFormDirty();
+        dirtyValues = makeFormDirty();
         navigateAwayAndWait();
         expect(self.modals.count()).toBe(1);
       });
@@ -70,7 +75,7 @@ DiscardChangesPage.prototype = Object.create({}, {
       });
 
       it('should not have discarded changes up to this point', function() {
-        verifyFormDirty();
+        verifyFormDirty(dirtyValues);
       });
 
       it('should discard changes when discard button is clicked', function() {

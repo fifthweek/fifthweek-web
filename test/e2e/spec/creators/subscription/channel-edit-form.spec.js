@@ -11,6 +11,7 @@ var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js
 var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
 var ChannelEditPage = require('../../../pages/creators/subscription/channel-edit.page.js');
 var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
+var DiscardChangesPage = require('../../../pages/discard-changes.page.js');
 
 describe('edit channel form', function() {
   'use strict';
@@ -31,6 +32,7 @@ describe('edit channel form', function() {
   var channelListPage = new ChannelListPage();
   var collectionListPage = new CollectionListPage();
   var page = new ChannelEditPage();
+  var discardChanges = new DiscardChangesPage();
 
   it('should run once before all', function() {
     var context = commonWorkflows.createSubscription();
@@ -96,6 +98,18 @@ describe('edit channel form', function() {
         testKit.expectFormValues(page, savedValues);
       });
 
+      discardChanges.describeDiscardingChanges(
+        function(){
+          sidebar.subscriptionLink.click();
+          header.channelsLink.click();
+          navigateToPage();
+        },
+        function(){ sidebar.helpLink.click(); },
+        function(){ return testKit.setFormValues(page, inputs); },
+        function(newValues){ testKit.expectFormValues(page, newValues); },
+        function(){ testKit.expectFormValues(page, savedValues); }
+      );
+
       it('should allow user to cancel when form is invalid', function () {
         testKit.clearForm(page, inputs);
 
@@ -149,8 +163,7 @@ describe('edit channel form', function() {
 
       describe('when validating bad input', function () {
         afterEach(function () {
-          header.channelsLink.click(); // Reset form state.
-          navigateToPage();
+          commonWorkflows.fastRefresh();
         });
 
         testKit.includeSadPaths(page, page.saveButton, page.helpMessages, channelNameInputPage, 'nameTextBox');
@@ -160,8 +173,7 @@ describe('edit channel form', function() {
 
       describe('submit button', function () {
         afterEach(function () {
-          header.channelsLink.click(); // Reset form state.
-          navigateToPage();
+          commonWorkflows.fastRefresh();
         });
 
         testKit.itShouldHaveSubmitButtonDisabledUntilDirty(page, inputs, page.saveButton);
