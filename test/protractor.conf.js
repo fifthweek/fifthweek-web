@@ -31,7 +31,7 @@ exports.config = {
         var hasFailures = results.failedCount > 0;
         return path.join(
           hasFailures ? 'failure' : 'success',
-          descriptions.join(', '));
+          descriptions.join(', ').substring(0, 250));
       }
     }));
 

@@ -46,6 +46,7 @@
     collectionSelect: { get: function() { return element(by.id('model-input-selected-collection')); }},
     createCollectionLink: { get: function() { return element(by.css('.create-collection-link')); }},
 
+    dialogCreateCollectionCloseButton: { get: function() { return modal.getCrossButton('create-collection'); }},
     dialogCreateCollectionNameTextBoxId: { value: 'new-collection-modal-input' },
     dialogContinueButton: { get: function() { return element(by.css('#create-collection-form button[fw-form-submit="submit()"]')); }},
 
@@ -235,8 +236,7 @@
         };
 
         var verifySuccess = function(successMessage, collectionName, channelName){
-          browser.waitForAngular();
-          expect(modal.modalCount).toBe(0);
+          expectSuccessfulFinalState();
 
           navigateToPage();
           page.populateUpload(tinyFilePath);
@@ -277,7 +277,10 @@
 
         var leavePage = function() {
           modal.crossButton.click();
-          browser.waitForAngular();
+        };
+
+        var expectSuccessfulFinalState = function() {
+          expect(modal.modalCount).toBe(0);
         };
 
         beforeEach(function(){
@@ -303,7 +306,7 @@
               describe('when the creator has one collection', function(){
 
                 beforeEach(function(){
-                  createCollection(firstCollectionName, channelNames[0], true);
+                  createCollection(firstCollectionName, channelNames[0]);
                   navigateToPage();
                 });
 
@@ -340,7 +343,7 @@
 
                 beforeEach(function(){
                   createChannel();
-                  createCollection(firstCollectionName, channelNames[0], true);
+                  createCollection(firstCollectionName, channelNames[0]);
                   navigateToPage();
                 });
 
@@ -354,8 +357,8 @@
 
                 beforeEach(function(){
                   createChannel();
-                  createCollection(firstCollectionName, channelNames[0], true);
-                  createCollection(firstCollectionName, channelNames[1], false);
+                  createCollection(firstCollectionName, channelNames[0]);
+                  createCollection(firstCollectionName, channelNames[1]);
                   navigateToPage();
                 });
 
@@ -378,8 +381,8 @@
 
               beforeEach(function(){
                 createChannel();
-                createCollection(firstCollectionName, channelNames[0], true);
-                createCollection(firstCollectionName, channelNames[1], false);
+                createCollection(firstCollectionName, channelNames[0]);
+                createCollection(firstCollectionName, channelNames[1]);
                 navigateToPage();
               });
 
@@ -400,7 +403,7 @@
             describe('when creator has one channel and one collection', function() {
 
               beforeEach(function () {
-                createCollection(firstCollectionName, channelNames[0], true);
+                createCollection(firstCollectionName, channelNames[0]);
                 navigateToPage();
               });
 
@@ -416,8 +419,8 @@
 
               beforeEach(function(){
                 createChannel();
-                createCollection(firstCollectionName, channelNames[0], true);
-                createCollection(firstCollectionName, channelNames[1], false);
+                createCollection(firstCollectionName, channelNames[0]);
+                createCollection(firstCollectionName, channelNames[1]);
                 navigateToPage();
               });
 
@@ -429,153 +432,157 @@
           });
         });
 
-        //describe('when validating inputs', function() {
-        //
-        //  describe('happy path', function(){
-        //    beforeEach(function(){
-        //      var context = commonWorkflows.createSubscription();
-        //      registration = context.registration;
-        //      subscription = context.subscription;
-        //      navigateToPage();
-        //      page.populateUpload(tinyFilePath);
-        //      testKit.waitForElementToDisplay(element(by.id(page.createCollectionNameTextBoxId)));
-        //    });
-        //
-        //    describe('when posting now', function(){
-        //      afterEach(function(){
-        //        page.postNowButton.click();
-        //        expect(page.successMessage.isDisplayed()).toBe(true);
-        //
-        //        page.postAnotherButton.click();
-        //      });
-        //
-        //      it('should allow symbols in the comment', function(){
-        //        testKit.setFormValues(page, page.inputs);
-        //        testKit.setValue(page.commentTextBoxId, testKit.punctuation33);
-        //      });
-        //
-        //      it('should allow empty comments', function(){
-        //        testKit.setFormValues(page, page.inputs);
-        //        testKit.clear(page.commentTextBoxId);
-        //      });
-        //
-        //      testKit.includeHappyPaths(page, collectionNameInputPage, 'createCollectionNameTextBox');
-        //
-        //      describe('when a collection exists', function(){
-        //
-        //        beforeEach(function(){
-        //          createCollection(firstCollectionName, channelNames[0], true);
-        //          navigateToPage();
-        //          page.populateUpload(tinyFilePath);
-        //          page.createCollectionLink.click();
-        //        });
-        //
-        //        afterEach(function(){
-        //          page.dialogContinueButton.click();
-        //          browser.waitForAngular();
-        //        });
-        //
-        //        testKit.includeHappyPaths(page, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
-        //      });
-        //
-        //    });
-        //
-        //    describe('when posting to backlog', function(){
-        //      beforeEach(function(){
-        //        testKit.setFormValues(page, page.inputs);
-        //        page.postLaterButton.click();
-        //      });
-        //
-        //      afterEach(function(){
-        //        page.postToBacklogButton.click();
-        //        expect(page.successMessage.isDisplayed()).toBe(true);
-        //
-        //        page.postAnotherButton.click();
-        //      });
-        //
-        //      describe('when testing date time picker', function(){
-        //        beforeEach(function(){
-        //          page.postOnDateRadio.click();
-        //        });
-        //
-        //        dateTimePickerPage.includeHappyPaths(function() {});
-        //      });
-        //    });
-        //  });
-        //
-        //  describe('sad path', function() {
-        //
-        //    it('should run once before all', function() {
-        //      var context = commonWorkflows.createSubscription();
-        //      registration = context.registration;
-        //      subscription = context.subscription;
-        //      navigateToPage();
-        //    });
-        //
-        //    describe('when testing date time picker', function(){
-        //
-        //      it('should run once before all', function() {
-        //        page.populateUpload(tinyFilePath);
-        //        testKit.setFormValues(page, page.inputs);
-        //        page.postLaterButton.click();
-        //        page.postOnDateRadio.click();
-        //      });
-        //
-        //      dateTimePickerPage.includeSadPaths(page.postToBacklogButton, page.helpMessages, function() {});
-        //
-        //      it('should run once after all', function(){
-        //        modal.crossButton.click();
-        //        navigateToPage();
-        //      });
-        //    });
-        //
-        //    describe('when a collection does not exist', function(){
-        //      beforeEach(function(){
-        //        page.populateUpload(tinyFilePath);
-        //        testKit.waitForElementToDisplay(element(by.id(page.createCollectionNameTextBoxId)));
-        //      });
-        //
-        //      afterEach(function(){
-        //        modal.crossButton.click();
-        //        navigateToPage();
-        //      });
-        //
-        //      it('should not allow a comment more than 2000 characters', function(){
-        //        testKit.setFormValues(page, page.inputs);
-        //        var overSizedValue = new Array(2002).join( 'a' );
-        //        testKit.setValue(page.commentTextBoxId, overSizedValue, true);
-        //
-        //        testKit.assertMaxLength(page.helpMessages, page.commentTextBoxId, overSizedValue, 2000);
-        //      });
-        //
-        //      testKit.includeSadPaths(page, page.postNowButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
-        //      testKit.includeSadPaths(page, page.postLaterButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
-        //    });
-        //
-        //    describe('when a collection exists', function(){
-        //
-        //      it('should run once before all', function() {
-        //        createCollection(firstCollectionName, channelNames[0], true);
-        //        navigateToPage();
-        //      });
-        //
-        //      describe('then', function(){
-        //
-        //        beforeEach(function(){
-        //          page.populateUpload(tinyFilePath);
-        //          page.createCollectionLink.click();
-        //        });
-        //
-        //        afterEach(function(){
-        //          modal.crossButton.click();
-        //          navigateToPage();
-        //        });
-        //
-        //        testKit.includeSadPaths(page, page.dialogContinueButton, page.helpMessages, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
-        //      });
-        //    });
-        //  });
-        //});
+        describe('when validating inputs', function() {
+          describe('happy path', function(){
+            describe('when posting now', function(){
+
+              describe('when no collections exist', function(){
+                beforeEach(function() {
+                  var context = commonWorkflows.createSubscription();
+                  registration = context.registration;
+                  subscription = context.subscription;
+                  navigateToPage();
+                  page.populateUpload(tinyFilePath);
+                  testKit.waitForElementToDisplay(element(by.id(page.createCollectionNameTextBoxId)));
+                });
+
+                afterEach(function(){
+                  page.postNowButton.click();
+                  expectSuccessfulFinalState();
+                });
+
+                testKit.includeHappyPaths(page, collectionNameInputPage, 'createCollectionNameTextBox');
+              });
+
+              describe('when a collection exists (pre)', function(){
+                it('should run once before all', function() {
+                  var context = commonWorkflows.createSubscription();
+                  registration = context.registration;
+                  subscription = context.subscription;
+                  createCollection(firstCollectionName, channelNames[0]);
+                });
+
+                describe('when a collection exists', function() {
+                  beforeEach(function() {
+                    navigateToPage();
+                    page.populateUpload(tinyFilePath);
+                  });
+
+                  afterEach(function(){
+                    page.postNowButton.click();
+                    expectSuccessfulFinalState();
+                  });
+
+                  it('should allow symbols in the comment', function(){
+                    testKit.setValue(page.commentTextBoxId, testKit.punctuation33);
+                  });
+
+                  it('should allow empty comments', function(){
+                    // No action.
+                  });
+
+                  describe('when creating a collection', function() {
+                    beforeEach(function() {
+                      page.createCollectionLink.click();
+                    });
+
+                    afterEach(function(){
+                      page.dialogContinueButton.click();
+                      browser.waitForAngular();
+                    });
+
+                    testKit.includeHappyPaths(page, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
+                  });
+                });
+              });
+
+            });
+
+            describe('when testing date time picker', function(){
+              beforeEach(function(){
+                navigateToPage();
+                page.populateUpload(tinyFilePath);
+                page.postLaterButton.click();
+                page.postOnDateRadio.click();
+              });
+
+              afterEach(function(){
+                page.postToBacklogButton.click();
+                expectSuccessfulFinalState();
+              });
+
+              dateTimePickerPage.includeHappyPaths(function() {});
+            });
+          });
+
+          describe('sad path', function() {
+
+            it('should run once before all', function() {
+              navigateToPage();
+            });
+
+            describe('when testing date time picker', function(){
+
+              it('should run once before all', function() {
+                page.populateUpload(tinyFilePath);
+                page.postLaterButton.click();
+                page.postOnDateRadio.click();
+              });
+
+              dateTimePickerPage.includeSadPaths(page.postToBacklogButton, page.helpMessages, function() {});
+
+              it('should run once after all', function(){
+                leavePage();
+              });
+            });
+
+            describe('when a collection exists', function(){
+              it('should run once before all', function() {
+                navigateToPage();
+                page.populateUpload(tinyFilePath);
+                page.createCollectionLink.click();
+              });
+
+              testKit.includeSadPaths(page, page.dialogContinueButton, page.helpMessages, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
+
+              it('should run once after all', function(){
+                page.dialogCreateCollectionCloseButton.click();
+                leavePage();
+              });
+            });
+
+            describe('when a collection does not exist', function(){
+              it('should run once before all', function() {
+                var context = commonWorkflows.createSubscription();
+                registration = context.registration;
+                subscription = context.subscription;
+              });
+
+              describe('then', function() {
+                beforeEach(function(){
+                  navigateToPage();
+                  page.populateUpload(tinyFilePath);
+                  testKit.waitForElementToDisplay(element(by.id(page.createCollectionNameTextBoxId)));
+                });
+
+                afterEach(function(){
+                  leavePage();
+                });
+
+                it('should not allow a comment more than 2000 characters', function(){
+                  testKit.setFormValues(page, page.inputs);
+                  var overSizedValue = new Array(2002).join( 'a' );
+                  testKit.setValue(page.commentTextBoxId, overSizedValue, true);
+
+                  testKit.assertMaxLength(page.helpMessages, page.commentTextBoxId, overSizedValue, 2000);
+                });
+
+                testKit.includeSadPaths(page, page.postNowButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
+                testKit.includeSadPaths(page, page.postLaterButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
+              });
+            });
+          });
+        });
       });
     }}
   });

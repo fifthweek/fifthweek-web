@@ -33,7 +33,7 @@ exports.config = {
         return path.join(
           hasFailures ? 'failure' : 'success',
           capabilities.caps_.platform + '-' + capabilities.caps_.browserName + '-' + capabilities.caps_.version,
-          descriptions.join(', '));
+          descriptions.join(', ').substring(0, 250));
       }
     }));
 
