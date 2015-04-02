@@ -29,7 +29,7 @@
     var page = new CreatorLandingPagePage();
 
     var navigateToPage = function() {
-      sidebar.usernameLink.click();
+      sidebar.landingPageLink.click();
     };
 
     it('should not contain the standard sidebar or header', function() {
@@ -65,8 +65,7 @@
       });
 
       it('should display full description when provided', function() {
-        page.fifthweekLink.click();
-        sidebar.subscriptionLink.click();
+        page.editPageLink.click();
         customizeLandingPagePage.fullDescriptionTabLink.click();
         testKit.setValue(customizeLandingPagePage.descriptionTextBoxId, fullDescription);
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
@@ -78,8 +77,7 @@
       });
 
       it('should display video when provided', function() {
-        page.fifthweekLink.click();
-        sidebar.subscriptionLink.click();
+        page.editPageLink.click();
         customizeLandingPagePage.fullDescriptionTabLink.click();
         testKit.clear(customizeLandingPagePage.descriptionTextBoxId);
         testKit.setValue(customizeLandingPagePage.videoTextBoxId, 'https://' + videoUrlDomain + '/' + videoUrlId);
@@ -93,8 +91,7 @@
       });
 
       it('should display full description and video when both are provided', function() {
-        page.fifthweekLink.click();
-        sidebar.subscriptionLink.click();
+        page.editPageLink.click();
         customizeLandingPagePage.fullDescriptionTabLink.click();
         testKit.setValue(customizeLandingPagePage.descriptionTextBoxId, fullDescription);
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
