@@ -32,7 +32,7 @@
     };
 
     var navigateToPage = function() {
-      sidebar.usernameLink.click();
+      sidebar.landingPageLink.click();
       creatorLandingPagePage.subscribeButton.click();
     };
 
