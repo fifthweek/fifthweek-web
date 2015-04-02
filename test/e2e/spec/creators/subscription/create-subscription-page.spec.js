@@ -21,18 +21,22 @@ describe('create subscription page', function() {
   describe('header', function() {
 
     it('should contain title', function() {
-      expect(header.title.getText()).toContain('About Your Subscription'.toUpperCase());
+      expect(header.title.getText()).toContain('About Your Blog'.toUpperCase());
     });
   });
 
   describe('sidebar', function() {
 
-    it('should contain 3 links', function () {
-      expect(sidebar.links.count()).toBe(3);
+    it('should contain 4 links', function () {
+      expect(sidebar.links.count()).toBe(4);
+    });
+
+    it('should contain "Home" link', function () {
+      expect(sidebar.dashboardLink.isDisplayed()).toBe(true);
     });
 
     it('should contain highlighted link for current page', function () {
-      expect(sidebar.createSubscriptionLink.getAttribute('class')).toContain('active');
+      expect(sidebar.createBlogLink.getAttribute('class')).toContain('active');
     });
 
     it('should contain "Settings" link', function () {

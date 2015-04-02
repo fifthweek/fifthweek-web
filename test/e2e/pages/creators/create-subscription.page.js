@@ -33,7 +33,7 @@ CreateSubscriptionPage.prototype = Object.create({}, {
   ]},
   submitButton: { get: function () { return element(by.id('create-subscription-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#createSubscriptionForm .help-block')); }},
-  nextPageUrl: { get: function () { return '/creators/post/note'; }}, // Todo: replace with page object
+  nextPageUrl: { get: function () { return '/dashboard/news-feed'; }}, // Todo: replace with page object
   submitSuccessfully: { value: function() {
     var formValues = testKit.setFormValues(this, this.inputs);
     this.submitButton.click();

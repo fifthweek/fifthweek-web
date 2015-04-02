@@ -7,7 +7,7 @@ SidebarPage.prototype = Object.create({}, {
   links: { get: function () { return element.all(by.css('#sidebar ul a')); }},
   signInLink: { get: function () { return element(by.id('sidebar-navigation-sign-in')); }},
   registerLink: { get: function () { return element(by.id('sidebar-navigation-register')); }},
-  createSubscriptionLink: { get: function () { return element(by.id('sidebar-navigation-create-subscription')); }},
+  createBlogLink: { get: function () { return element(by.id('sidebar-navigation-create-blog')); }},
   dashboardLink: { get: function () { return element(by.id('sidebar-navigation-home')); }},
   landingPageLink: { get: function () { return element(by.id('sidebar-navigation-landing-page')); }},
   postsLink: { get: function () { return element(by.id('sidebar-navigation-posts')); }},
