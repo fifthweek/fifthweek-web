@@ -10,7 +10,7 @@ HeaderPostsPage.prototype = Object.create(HeaderPage.prototype, {
     this.includeBasicTestsBase(highlightedLink, [
       {
         name: 'Live Now',
-        element: this.collectionsLink
+        element: this.liveNowLink
       },
       {
         name: 'Scheduled',
