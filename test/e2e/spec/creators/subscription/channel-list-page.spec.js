@@ -7,7 +7,7 @@ describe('channel list page', function() {
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
+  var header = new HeaderChannelsPage();
 
   it('should run once before all', function() {
     commonWorkflows.createSubscription();

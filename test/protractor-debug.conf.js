@@ -1,7 +1,7 @@
 
 exports.config = {
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/channel-edit-form.spec.js'],
+  specs: ['e2e/spec/**/channel-list-page.spec.js'],
   allScriptsTimeout: 60000,
   jasmineNodeOpts: {
     defaultTimeoutInterval: 5 * 60 * 1000, // 5 Minutes
