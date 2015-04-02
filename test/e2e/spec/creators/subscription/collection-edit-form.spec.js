@@ -228,7 +228,7 @@ describe('edit collection form', function() {
   describe('when deleting release times', function() {
     afterEach(function () {
       commonWorkflows.fastRefresh();
-      header.collectionsLink.click(); // Reset form state.
+      sidebar.collectionsLink.click(); // Reset form state.
       navigateToPage();
     });
 
@@ -261,14 +261,13 @@ describe('edit collection form', function() {
     },
     function () {
       // Check not deleted from client-side.
-      header.collectionsLink.click();
+      sidebar.collectionsLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
 
       // Check not deleted from API.
       commonWorkflows.reSignIn(registration);
-      sidebar.subscriptionLink.click();
-      header.collectionsLink.click();
+      sidebar.collectionsLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
     },
@@ -280,8 +279,7 @@ describe('edit collection form', function() {
 
       // Check deleted from API.
       commonWorkflows.reSignIn(registration);
-      sidebar.subscriptionLink.click();
-      header.collectionsLink.click();
+      sidebar.collectionsLink.click();
       collectionListPage.waitForPage();
       expect(collectionListPage.collections.count()).toBe(0);
       expect(collectionListPage.collections.getText()).not.toContain(savedValues.nameTextBox);
