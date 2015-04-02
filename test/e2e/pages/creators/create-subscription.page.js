@@ -13,7 +13,7 @@ var channelPriceInputPage = new ChannelPriceInputPage();
 var CreateSubscriptionPage = function() {};
 
 CreateSubscriptionPage.prototype = Object.create({}, {
-  pageUrl: { get: function () { return '/creators/create-subscription'; }},
+  pageUrl: { get: function () { return '/creator/create-subscription'; }},
   nameTextBoxId: { value: 'newSubscriptionData-subscriptionName' },
   taglineTextBoxId: { value: 'newSubscriptionData-tagline' },
   basePriceTextBoxId: { value: 'newSubscriptionData-basePrice' },
