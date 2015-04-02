@@ -39,5 +39,15 @@ exports.config = {
     var window = browser.manage().window();
     window.setSize(1280, 850);
     browser.get('/');
+
+    // Fail fast when debugging.
+    afterEach(function() {
+      var passed = jasmine.getEnv().currentSpec.results().passed();
+      if(!passed) {
+        jasmine.getEnv().specFilter = function() {
+          return false;
+        };
+      }
+    });
   }
 };

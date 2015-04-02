@@ -4,6 +4,7 @@
   var path = require('path');
   var TestKit = require('../../../test-kit.js');
   var SidebarPage = require('../../../pages/sidebar.page.js');
+  var ModalPage = require('../../../pages/modal.page.js');
   var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
   var DateTimePickerPage = require('../../../pages/date-time-picker.page.js');
   var ComposeOptionsPage = require('./compose-options.page.js');
@@ -211,6 +212,7 @@
         var CommonWorkflows = require('../../../common-workflows.js');
 
         var commonWorkflows = new CommonWorkflows();
+        var modal = new ModalPage();
         var sidebar = new SidebarPage();
         var composeOptions = new ComposeOptionsPage();
         var collectionNameInputPage = new CollectionNameInputPage();
@@ -235,14 +237,10 @@
         };
 
         var verifySuccess = function(successMessage, collectionName, channelName){
-          expect(page.successMessage.isDisplayed()).toBe(true);
-          expect(page.successMessage.getText()).toBe(successMessage);
-          expect(page.postAnotherButton.isDisplayed()).toBe(true);
+          browser.waitForAngular();
+          expect(modal.modalCount).toBe(0);
 
-          page.postAnotherButton.click();
-
-          expect(page.uploadButton.isDisplayed()).toBe(true);
-
+          navigateToPage();
           page.populateUpload(tinyFilePath);
 
           expect(page.getCollectionOptionCount(collectionName, channelName)).not.toBe(0);
@@ -278,6 +276,11 @@
           browser.waitForAngular();
         };
 
+        var leavePage = function() {
+          modal.crossButton.click();
+          browser.waitForAngular();
+        };
+
         beforeEach(function(){
           channelNames = [undefined];  // Set initial default channel name to undefined.
         });
@@ -287,7 +290,10 @@
             var context = commonWorkflows.createSubscription();
             registration = context.registration;
             subscription = context.subscription;
-            navigateToPage();
+          });
+
+          afterEach(function() {
+            leavePage();
           });
 
           describe('when posting now', function(){
@@ -295,6 +301,7 @@
             describe('when creator has one channel', function(){
 
               describe('when the creator has no collections', function(){
+                beforeEach(navigateToPage);
                 postNow(firstCollectionName, 0, true, true);
               });
 
@@ -302,6 +309,7 @@
 
                 beforeEach(function(){
                   createCollection(firstCollectionName, channelNames[0], true);
+                  navigateToPage();
                 });
 
                 it('should select the existing collection if a duplicate collection is added', function(){
@@ -313,6 +321,7 @@
                   page.dialogContinueButton.click();
 
                   expect(page.getCollectionOptionCount(firstCollectionName, channelNames[0])).toBe(1);
+                  leavePage();
                 });
 
                 postNow(firstCollectionName, 0, false, false);
@@ -324,6 +333,7 @@
 
               beforeEach(function(){
                 createChannel();
+                navigateToPage();
               });
 
               describe('when the creator has no collections', function(){
@@ -361,6 +371,7 @@
           describe('when posting on schedule', function(){
 
             describe('when creator has one channel', function(){
+              beforeEach(navigateToPage);
               postOnDate(firstCollectionName, 0, true, true);
             });
 
@@ -370,6 +381,7 @@
                 createChannel();
                 createCollection(firstCollectionName, channelNames[0], true);
                 createCollection(firstCollectionName, channelNames[1], false);
+                navigateToPage();
               });
 
               postOnDate(firstCollectionName, 0, false, false);
@@ -382,6 +394,7 @@
           describe('when posting to queue', function(){
 
             describe('when creator has one channel', function(){
+              beforeEach(navigateToPage);
               postToQueue(firstCollectionName, 0, true, true);
             });
 
@@ -389,6 +402,7 @@
 
               beforeEach(function () {
                 createCollection(firstCollectionName, channelNames[0], true);
+                navigateToPage();
               });
 
               it('should receive an estimated live date from the server', function(){
@@ -404,6 +418,7 @@
                 createChannel();
                 createCollection(firstCollectionName, channelNames[0], true);
                 createCollection(firstCollectionName, channelNames[1], false);
+                navigateToPage();
               });
 
               postToQueue(firstCollectionName, 0, false, false);
@@ -509,7 +524,8 @@
               dateTimePickerPage.includeSadPaths(page.postToBacklogButton, page.helpMessages, function() {});
 
               it('should run once after all', function(){
-                browser.refresh();
+                modal.crossButton.click();
+                navigateToPage();
               });
             });
 
@@ -520,7 +536,8 @@
               });
 
               afterEach(function(){
-                browser.refresh();
+                modal.crossButton.click();
+                navigateToPage();
               });
 
               it('should not allow a comment more than 2000 characters', function(){
@@ -550,7 +567,8 @@
                 });
 
                 afterEach(function(){
-                  browser.refresh();
+                  modal.crossButton.click();
+                  navigateToPage();
                 });
 
                 testKit.includeSadPaths(page, page.dialogContinueButton, page.helpMessages, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');

@@ -2,20 +2,18 @@
 
 var _ = require('lodash');
 var TestKit = require('../test-kit.js');
+var ModalPage = require('./modal.page.js');
 
 var testKit = new TestKit();
+var modalPage = new ModalPage();
 
 var DeleteConfirmationPage = function() {};
 
 DeleteConfirmationPage.prototype = Object.create({}, {
-  modals: { get: function () { return element.all(by.css('.modal')); }},
-  title: { get: function () { return element(by.id('modal-title')); }},
   deleteHintText: { get: function () { return element(by.id('delete-hint')); }},
   confirmationTextBoxId: { value: 'deletion-confirmation-text' },
   deleteVerifiedButton: { get: function () { return element(by.id('delete-item-verified-button')); }},
   deleteUnverifiedButton: { get: function () { return element(by.id('delete-item-unverified-button')); }},
-  crossButton: { get: function () { return element(by.id('modal-cross-button')); }},
-  cancelButton: { get: function () { return element(by.id('modal-cancel-button')); }},
   describeDeletingWithoutVerification: { value: function(itemType, displayModal, verifyItemNotDeleted, verifyItemDeleted) {
     var self = this;
     var itemTypeLower = itemType.toLowerCase();
@@ -30,20 +28,20 @@ DeleteConfirmationPage.prototype = Object.create({}, {
       });
 
       it('should have the title "Delete ' + itemType + '"', function() {
-        expect(self.title.getText()).toBe('Delete ' + itemType);
+        expect(modalPage.title.getText()).toBe('Delete ' + itemType);
       });
 
       _.forEach([
         {
           name: 'cancel button',
           action: function() {
-            self.cancelButton.click();
+            modalPage.cancelButton.click();
           }
         },
         {
           name: 'X button',
           action: function() {
-            self.crossButton.click();
+            modalPage.crossButton.click();
           }
         }
       ], function(cancelOperation) {
@@ -51,7 +49,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
           it('should cancel the operation', function () {
             cancelOperation.action();
             browser.waitForAngular();
-            expect(self.modals.count()).toBe(0);
+            expect(modalPage.modalCount).toBe(0);
             displayModalAndWait();
           });
         });
@@ -60,7 +58,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
       describe('the delete button', function() {
         it('should be enabled', function() {
           expect(self.deleteUnverifiedButton.isEnabled()).toBe(true);
-          self.crossButton.click();
+          modalPage.crossButton.click();
         });
       });
 
@@ -97,7 +95,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
       });
 
       it('should have the title "Delete ' + itemType + '"', function() {
-        expect(self.title.getText()).toBe('Delete ' + itemType);
+        expect(modalPage.title.getText()).toBe('Delete ' + itemType);
       });
 
       it('should contain the ' + itemTypeLower + '\'s name in the confirmation message', function() {
@@ -112,13 +110,13 @@ DeleteConfirmationPage.prototype = Object.create({}, {
         {
           name: 'cancel button',
           action: function() {
-            self.cancelButton.click();
+            modalPage.cancelButton.click();
           }
         },
         {
           name: 'X button',
           action: function() {
-            self.crossButton.click();
+            modalPage.crossButton.click();
           }
         }
       ], function(cancelOperation) {
@@ -126,7 +124,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
           afterEach(function() {
             cancelOperation.action();
             browser.waitForAngular();
-            expect(self.modals.count()).toBe(0);
+            expect(modalPage.modalCount).toBe(0);
             displayModalAndWait();
             expectEmptyTextBox();
           });
@@ -172,7 +170,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
         it('should become enabled after entering the ' + itemTypeLower + '\'s name', function() {
           testKit.setValue(self.confirmationTextBoxId, itemName);
           expect(self.deleteVerifiedButton.isEnabled()).toBe(true);
-          self.cancelButton.click();
+          modalPage.cancelButton.click();
         });
       });
 
