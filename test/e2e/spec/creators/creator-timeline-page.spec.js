@@ -24,7 +24,7 @@
       var context = commonWorkflows.createSubscription();
       registration = context.registration;
       subscription = context.subscription;
-      sidebar.usernameLink.click();
+      sidebar.landingPageLink.click();
       creatorLandingPagePage.subscribeButton.click();
       expect(sidebar.sidebar.isDisplayed()).toBe(false);
       expect(headerStandard.navbar.isDisplayed()).toBe(false);
