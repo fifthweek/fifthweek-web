@@ -1,8 +1,8 @@
-var CommonWorkflows = require('../../../common-workflows.js');
-var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderChannelsPage = require('../../../pages/header-channels.page.js');
-var BreadcrumbPage = require('../../../pages/breadcrumb.page.js');
-var ChannelListPage = require('../../../pages/creators/channel-list.page.js');
+var CommonWorkflows = require('../../common-workflows.js');
+var SidebarPage = require('../../pages/sidebar.page.js');
+var HeaderChannelsPage = require('../../pages/header-channels.page.js');
+var BreadcrumbPage = require('../../pages/breadcrumb.page.js');
+var ChannelListPage = require('../../pages/creators/channel-list.page.js');
 
 describe('add channel page', function() {
   'use strict';

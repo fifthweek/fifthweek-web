@@ -1,7 +1,7 @@
-var CommonWorkflows = require('../../../common-workflows.js');
-var HeaderLandingPagePage = require('../../../pages/header-landing-page.page.js');
-var SidebarPage = require('../../../pages/sidebar.page.js');
-var CreatorLandingPagePage = require('../../../pages/creators/creator-landing-page.page.js');
+var CommonWorkflows = require('../../common-workflows.js');
+var HeaderLandingPagePage = require('../../pages/header-landing-page.page.js');
+var SidebarPage = require('../../pages/sidebar.page.js');
+var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
 
 describe('customize landing page page', function() {
   'use strict';

@@ -1,12 +1,12 @@
 var _ = require('lodash');
-var TestKit = require('../../../test-kit.js');
-var CommonWorkflows = require('../../../common-workflows.js');
-var ChannelNameInputPage = require('../../../pages/channel-name-input.page.js');
-var ChannelDescriptionInputPage = require('../../../pages/channel-description-input.page.js');
-var ChannelPriceInputPage = require('../../../pages/channel-price-input.page.js');
-var SidebarPage = require('../../../pages/sidebar.page.js');
-var ChannelListPage = require('../../../pages/creators/channel-list.page.js');
-var ChannelAddPage = require('../../../pages/creators/channel-add.page.js');
+var TestKit = require('../../test-kit.js');
+var CommonWorkflows = require('../../common-workflows.js');
+var ChannelNameInputPage = require('../../pages/channel-name-input.page.js');
+var ChannelDescriptionInputPage = require('../../pages/channel-description-input.page.js');
+var ChannelPriceInputPage = require('../../pages/channel-price-input.page.js');
+var SidebarPage = require('../../pages/sidebar.page.js');
+var ChannelListPage = require('../../pages/creators/channel-list.page.js');
+var ChannelAddPage = require('../../pages/creators/channel-add.page.js');
 
 describe('add channel form', function() {
   'use strict';

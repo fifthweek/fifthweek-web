@@ -1,11 +1,11 @@
-var CommonWorkflows = require('../../../common-workflows.js');
-var TestKit = require('../../../test-kit.js');
-var SidebarPage = require('../../../pages/sidebar.page.js');
-var CreatorLandingPagePage = require('../../../pages/creators/creator-landing-page.page.js');
-var LandingPagePage = require('../../../pages/creators/customize-landing-page.page.js');
-var SubscriptionNameInputPage = require('../../../pages/subscription-name-input.page.js');
-var TaglineInputPage = require('../../../pages/tagline-input.page.js');
-var VideoUrlInputPage = require('../../../pages/video-url-input.page');
+var CommonWorkflows = require('../../common-workflows.js');
+var TestKit = require('../../test-kit.js');
+var SidebarPage = require('../../pages/sidebar.page.js');
+var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
+var LandingPagePage = require('../../pages/creators/customize-landing-page.page.js');
+var SubscriptionNameInputPage = require('../../pages/subscription-name-input.page.js');
+var TaglineInputPage = require('../../pages/tagline-input.page.js');
+var VideoUrlInputPage = require('../../pages/video-url-input.page.js');
 
 describe('customize landing page form', function() {
   'use strict';

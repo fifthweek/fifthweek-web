@@ -1,6 +1,6 @@
-var CommonWorkflows = require('../../../common-workflows.js');
-var HeaderCollectionsPage = require('../../../pages/header-collections.page.js');
-var SidebarPage = require('../../../pages/sidebar.page.js');
+var CommonWorkflows = require('../../common-workflows.js');
+var HeaderCollectionsPage = require('../../pages/header-collections.page.js');
+var SidebarPage = require('../../pages/sidebar.page.js');
 
 describe('collection list page', function() {
   'use strict';

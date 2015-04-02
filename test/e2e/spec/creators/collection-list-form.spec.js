@@ -1,6 +1,6 @@
-var CommonWorkflows = require('../../../common-workflows.js');
-var SidebarPage = require('../../../pages/sidebar.page.js');
-var CollectionListPage = require('../../../pages/creators/collection-list.page.js');
+var CommonWorkflows = require('../../common-workflows.js');
+var SidebarPage = require('../../pages/sidebar.page.js');
+var CollectionListPage = require('../../pages/creators/collection-list.page.js');
 
 describe('collection list form', function() {
   'use strict';

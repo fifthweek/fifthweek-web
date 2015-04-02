@@ -1,14 +1,14 @@
 var _ = require('lodash');
-var Defaults = require('../../../defaults.js');
-var TestKit = require('../../../test-kit.js');
-var CommonWorkflows = require('../../../common-workflows.js');
-var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
-var ChannelSelectInputPage = require('../../../pages/channel-select-input.page.js');
-var SidebarPage = require('../../../pages/sidebar.page.js');
-var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js');
-var DiscardChangesPage = require('../../../pages/discard-changes.page.js');
-var CollectionListPage = require('../../../pages/creators/collection-list.page.js');
-var CollectionEditPage = require('../../../pages/creators/collection-edit.page.js');
+var Defaults = require('../../defaults.js');
+var TestKit = require('../../test-kit.js');
+var CommonWorkflows = require('../../common-workflows.js');
+var CollectionNameInputPage = require('../../pages/collection-name-input.page.js');
+var ChannelSelectInputPage = require('../../pages/channel-select-input.page.js');
+var SidebarPage = require('../../pages/sidebar.page.js');
+var DeleteConfirmationPage = require('../../pages/delete-confirmation.page.js');
+var DiscardChangesPage = require('../../pages/discard-changes.page.js');
+var CollectionListPage = require('../../pages/creators/collection-list.page.js');
+var CollectionEditPage = require('../../pages/creators/collection-edit.page.js');
 
 describe('edit collection form', function() {
   'use strict';

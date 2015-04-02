@@ -1,16 +1,16 @@
 var _ = require('lodash');
-var Defaults = require('../../../defaults.js');
-var TestKit = require('../../../test-kit.js');
-var CommonWorkflows = require('../../../common-workflows.js');
-var ChannelNameInputPage = require('../../../pages/channel-name-input.page.js');
-var ChannelDescriptionInputPage = require('../../../pages/channel-description-input.page.js');
-var ChannelPriceInputPage = require('../../../pages/channel-price-input.page.js');
-var SidebarPage = require('../../../pages/sidebar.page.js');
-var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js');
-var ChannelListPage = require('../../../pages/creators/channel-list.page.js');
-var ChannelEditPage = require('../../../pages/creators/channel-edit.page.js');
-var CollectionListPage = require('../../../pages/creators/collection-list.page.js');
-var DiscardChangesPage = require('../../../pages/discard-changes.page.js');
+var Defaults = require('../../defaults.js');
+var TestKit = require('../../test-kit.js');
+var CommonWorkflows = require('../../common-workflows.js');
+var ChannelNameInputPage = require('../../pages/channel-name-input.page.js');
+var ChannelDescriptionInputPage = require('../../pages/channel-description-input.page.js');
+var ChannelPriceInputPage = require('../../pages/channel-price-input.page.js');
+var SidebarPage = require('../../pages/sidebar.page.js');
+var DeleteConfirmationPage = require('../../pages/delete-confirmation.page.js');
+var ChannelListPage = require('../../pages/creators/channel-list.page.js');
+var ChannelEditPage = require('../../pages/creators/channel-edit.page.js');
+var CollectionListPage = require('../../pages/creators/collection-list.page.js');
+var DiscardChangesPage = require('../../pages/discard-changes.page.js');
 
 describe('edit channel form', function() {
   'use strict';

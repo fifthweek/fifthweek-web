@@ -1,6 +1,6 @@
-var CommonWorkflows = require('../../../common-workflows.js');
-var HeaderChannelsPage = require('../../../pages/header-channels.page.js');
-var SidebarPage = require('../../../pages/sidebar.page.js');
+var CommonWorkflows = require('../../common-workflows.js');
+var HeaderChannelsPage = require('../../pages/header-channels.page.js');
+var SidebarPage = require('../../pages/sidebar.page.js');
 
 describe('channel list page', function() {
   'use strict';
