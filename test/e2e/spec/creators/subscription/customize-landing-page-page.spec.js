@@ -17,7 +17,7 @@ describe('customize landing page page', function() {
     creatorLandingPagePage.editPageLink.click();
   });
 
-  header.includeBasicTests(header.landingPageLink);
+  header.includeBasicTests(header.editPageLink);
 
   sidebar.includeEstablishedCreatorTests(sidebar.landingPageLink);
 });

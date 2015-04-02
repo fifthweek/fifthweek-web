@@ -1,28 +1,23 @@
 'use strict';
 
 var HeaderPage = require('./header.page.js');
-var HeaderCustomizePage = function() {};
+var HeaderLandingPagePage = function() {};
 
-HeaderCustomizePage.prototype = Object.create(HeaderPage.prototype, {
-  landingPageLink: { get: function () { return element(by.id('navigation-landing-page')); }},
-  channelsLink: { get: function () { return element(by.id('navigation-channels')); }},
-  collectionsLink: { get: function () { return element(by.id('navigation-collections')); }},
+HeaderLandingPagePage.prototype = Object.create(HeaderPage.prototype, {
+  previewLink: { get: function () { return element(by.id('navigation-preview')); }},
+  editPageLink: { get: function () { return element(by.id('navigation-edit-page')); }},
   includeBasicTests: { value: function(highlightedLink) {
     this.includeBasicTestsBase(highlightedLink, [
       {
-        name: 'Landing Page',
-        element: this.landingPageLink
+        name: 'Preview',
+        element: this.previewLink
       },
       {
-        name: 'Channels',
-        element: this.channelsLink
-      },
-      {
-        name: 'Collections',
-        element: this.collectionsLink
+        name: 'Edit Page',
+        element: this.editPageLink
       }
     ]);
   }}
 });
 
-module.exports = HeaderCustomizePage;
+module.exports = HeaderLandingPagePage;
