@@ -197,11 +197,11 @@ describe('edit channel form', function() {
           },
           function () {
             // Check deleted from client-side.
-            header.collectionsLink.click();
+            sidebar.collectionsLink.click();
             collectionListPage.waitForPage();
             expect(collectionListPage.collections.count()).toBe(defaultChannelCollectionCount);
 
-            header.channelsLink.click();
+            sidebar.channelsLink.click();
             channelListPage.waitForPage();
             expect(channelListPage.channels.count()).toBe(1);
             expect(channelListPage.channels.getText()).not.toContain(savedValues.nameTextBox);
