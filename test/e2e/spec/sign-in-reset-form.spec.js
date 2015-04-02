@@ -101,7 +101,6 @@ describe('sign-in - reset password form', function() {
       browser.waitForAngular(); // Not automatically awaited on get.
       browser.get(resetPasswordPageUrl);
       browser.waitForAngular(); // Sometimes get sync errors here too.
-      testKit.waitForElementToDisplay(page.linkExpiredMessage);
       expect(page.formPanel.isDisplayed()).toBe(false);
       expect(page.linkExpiredMessage.isDisplayed()).toBe(true);
     });
