@@ -34,7 +34,8 @@
             <button
               id="cancel-button"
               class="btn btn-default btn-block"
-              ui-sref="{{previousState}}">Cancel</button>
+              ui-sref="{{previousState}}"
+              ng-click="form.discard()">Cancel</button>
           </div>
           <div class="col-s-4" ng-if="!model.channel.isDefault">
             <fw-form-input-delete
@@ -43,7 +44,7 @@
               link-id="delete-channel-link"
               data-event-title="Channel deleted"
               data-event-category="Customization"
-              delete="delete()"></fw-form-input-delete>
+              delete="form.discard(); delete();"></fw-form-input-delete>
           </div>
         </div>
       </div>
@@ -52,6 +53,7 @@
         <p>{{form.message}}</p>
       </div>
 
+      <fw-form-dirty-confirmation form="form"></fw-form-dirty-confirmation>
     </form>
 
   </fw-panel12>
