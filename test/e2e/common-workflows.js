@@ -63,6 +63,8 @@
     createChannel: { value: function(values) {
       sidebar.channelsLink.click();
       channelListPage.addChannelButton.click();
+      browser.waitForAngular();
+
       return channelAddPage.submitSuccessfully(values);
     }},
 
@@ -83,6 +85,8 @@
     createCollection: { value: function(channelNames) {
       sidebar.collectionsLink.click();
       collectionListPage.addCollectionButton.click();
+      browser.waitForAngular();
+
       return collectionAddPage.submitSuccessfully(channelNames || [defaults.channelName]);
     }},
 

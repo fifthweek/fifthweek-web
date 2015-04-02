@@ -5,16 +5,16 @@ var SidebarPage = function() {};
 SidebarPage.prototype = Object.create({}, {
   sidebar: { get: function () { return element(by.id('sidebar')); }},
   links: { get: function () { return element.all(by.css('#sidebar ul a')); }},
-  signInLink: { get: function () { return element(by.id('navigation-sign-in')); }},
-  registerLink: { get: function () { return element(by.id('navigation-register')); }},
-  createSubscriptionLink: { get: function () { return element(by.id('navigation-create-subscription')); }},
-  dashboardLink: { get: function () { return element(by.id('navigation-home')); }},
-  landingPageLink: { get: function () { return element(by.id('navigation-landing-page')); }},
-  postsLink: { get: function () { return element(by.id('navigation-posts')); }},
-  collectionsLink: { get: function () { return element(by.id('navigation-collections')); }},
-  channelsLink: { get: function () { return element(by.id('navigation-channels')); }},
-  accountLink: { get: function () { return element(by.id('navigation-account')); }},
-  helpLink: { get: function () { return element(by.id('navigation-help')); }},
+  signInLink: { get: function () { return element(by.id('sidebar-navigation-sign-in')); }},
+  registerLink: { get: function () { return element(by.id('sidebar-navigation-register')); }},
+  createSubscriptionLink: { get: function () { return element(by.id('sidebar-navigation-create-subscription')); }},
+  dashboardLink: { get: function () { return element(by.id('sidebar-navigation-home')); }},
+  landingPageLink: { get: function () { return element(by.id('sidebar-navigation-landing-page')); }},
+  postsLink: { get: function () { return element(by.id('sidebar-navigation-posts')); }},
+  collectionsLink: { get: function () { return element(by.id('sidebar-navigation-collections')); }},
+  channelsLink: { get: function () { return element(by.id('sidebar-navigation-channels')); }},
+  accountLink: { get: function () { return element(by.id('sidebar-navigation-account')); }},
+  helpLink: { get: function () { return element(by.id('sidebar-navigation-help')); }},
   includeEstablishedCreatorTests: { value: function(highlightedLink) {
     var self = this;
 

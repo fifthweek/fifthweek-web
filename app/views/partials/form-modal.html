@@ -1,4 +1,4 @@
-<fw-form-modal-title name="{{name}}"></fw-form-modal-title>
+<fw-form-modal-title name="{{name}}" id-prefix="{{idPrefix}}"></fw-form-modal-title>
 
 <div class="modal-body form-modal-body">
   <form-body-placeholder></form-body-placeholder>
@@ -7,7 +7,7 @@
 <div class="row-btn">
   <form-buttons-placeholder></form-buttons-placeholder>
   <button
-    id="modal-cancel-button"
+    id="{{idPrefix}}-cancel-button"
     class="btn btn-default btn-block"
     ng-click="$close()">Cancel</button>
 </div>

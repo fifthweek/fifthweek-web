@@ -7,6 +7,7 @@ angular.module('webApp').directive('fwFormModalTitle', function () {
     templateUrl: 'views/partials/form-modal-title.html',
     link: function(scope, element, attrs) {
       scope.name = attrs.name;
+      scope.idPrefix = attrs.idPrefix || 'modal';
     }
   };
 });

@@ -6,7 +6,7 @@
       <a ng-if="!item.separator"
          class="{{item.color}}"
          ng-class="{active: item.isActive}"
-         id="{{item.id}}"
+         id="sidebar-{{item.id}}"
          ui-sref="{{item.state}}"
          snap-close>
         <i ng-class="item.icon"></i>{{item.name}}

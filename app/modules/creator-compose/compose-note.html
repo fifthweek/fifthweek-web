@@ -1,12 +1,13 @@
+<fw-form-modal-title name="New Announcement"></fw-form-modal-title>
+
 <div ng-show="!model.postLater">
   <form novalidate name="contentForm" id="content-form">
-    <fw-form-modal-title name="New Announcement"></fw-form-modal-title>
 
     <div class="modal-body form-modal-body">
       <fw-form-input-note ng-model="model.input.note" required focus></fw-form-input-note>
 
       <div ng-if="model.channels.length > 1">
-        <fw-form-input-select id="model-input-selected-channel" selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
+        <fw-form-input-select input-id="model-input-selected-channel" selected-item="model.input.selectedChannel" items="model.channels"></fw-form-input-select>
       </div>
     </div>
 
@@ -30,8 +31,6 @@
 
 <div ng-show="model.postLater">
   <form novalidate name="scheduleForm" id="schedule-form">
-    <fw-form-modal-title name="New Announcement"></fw-form-modal-title>
-
     <div class="modal-body form-modal-body">
       <label>On specific date and time (UTC):</label>
       <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>

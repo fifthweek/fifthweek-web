@@ -10,6 +10,7 @@
   var ComposeOptionsPage = require('./compose-options.page.js');
 
   var testKit = new TestKit();
+  var modal = new ModalPage();
   var collectionNameInputPage = new CollectionNameInputPage();
   var dateTimePickerPage = new DateTimePickerPage();
 
@@ -212,7 +213,6 @@
         var CommonWorkflows = require('../../../common-workflows.js');
 
         var commonWorkflows = new CommonWorkflows();
-        var modal = new ModalPage();
         var sidebar = new SidebarPage();
         var composeOptions = new ComposeOptionsPage();
         var collectionNameInputPage = new CollectionNameInputPage();
@@ -228,12 +228,10 @@
         var createChannel = function(){
           var result = commonWorkflows.createChannel();
           channelNames.push(result.name);
-          navigateToPage();
         };
 
         var createCollection = function(collectionName, channelName){
           commonWorkflows.createNamedCollection(channelName, collectionName);
-          navigateToPage();
         };
 
         var verifySuccess = function(successMessage, collectionName, channelName){
@@ -244,6 +242,7 @@
           page.populateUpload(tinyFilePath);
 
           expect(page.getCollectionOptionCount(collectionName, channelName)).not.toBe(0);
+          leavePage();
         };
 
         var postNow = function(collectionName, channelIndex, createCollection, isFirstCollection){
@@ -292,10 +291,6 @@
             subscription = context.subscription;
           });
 
-          afterEach(function() {
-            leavePage();
-          });
-
           describe('when posting now', function(){
 
             describe('when creator has one channel', function(){
@@ -331,12 +326,12 @@
 
             describe('when creator has two channels', function(){
 
-              beforeEach(function(){
-                createChannel();
-                navigateToPage();
-              });
-
               describe('when the creator has no collections', function(){
+                beforeEach(function(){
+                  createChannel();
+                  navigateToPage();
+                });
+
                 postNow(firstCollectionName, 0, true, true);
                 postNow(firstCollectionName, 1, true, true);
               });
@@ -344,7 +339,9 @@
               describe('when the creator has one collection', function(){
 
                 beforeEach(function(){
+                  createChannel();
                   createCollection(firstCollectionName, channelNames[0], true);
+                  navigateToPage();
                 });
 
                 postNow(firstCollectionName, 0, false, false);
@@ -356,8 +353,10 @@
               describe('when the creator has two collections', function(){
 
                 beforeEach(function(){
+                  createChannel();
                   createCollection(firstCollectionName, channelNames[0], true);
                   createCollection(firstCollectionName, channelNames[1], false);
+                  navigateToPage();
                 });
 
                 postNow(firstCollectionName, 0, false, false);
@@ -409,6 +408,7 @@
                 page.populateUpload(tinyFilePath);
                 page.postLaterButton.click();
                 testKit.waitForElementToDisplay(page.postToQueueDate);
+                leavePage();
               });
             });
 

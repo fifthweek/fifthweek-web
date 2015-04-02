@@ -16,6 +16,7 @@ angular.module('webApp').directive('fwFormModal', function () {
       return {
         pre: function(scope, element, attrs) {
           scope.name = attrs.name;
+          scope.idPrefix = attrs.idPrefix || 'modal';
         }
       };
     }

@@ -1,8 +1,8 @@
+<fw-form-modal-title name="Post {{postType}}"></fw-form-modal-title>
+
 <div class="compose-upload-form">
   <div ng-show="!model.postLater">
     <form novalidate name="contentForm" id="content-form">
-      <fw-form-modal-title name="Post {{postType}}"></fw-form-modal-title>
-
       <div class="modal-body form-modal-body">
         <div ng-include="'modules/creator-compose/compose-' + uploadFormFile + '.html'"></div>
 
@@ -48,8 +48,6 @@
 
   <div ng-show="model.postLater" class="compose-upload-schedule">
     <form novalidate name="scheduleForm" id="schedule-form">
-      <fw-form-modal-title name="Post {{postType}}"></fw-form-modal-title>
-
       <div class="modal-body form-modal-body">
         <div class="form-group">
           <div class="radio bottom-buffer-l">
