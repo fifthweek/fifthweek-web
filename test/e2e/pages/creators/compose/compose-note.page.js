@@ -46,6 +46,7 @@
       var result = this.populateContent(channelName);
 
       this.postNowButton.click();
+      browser.waitForAngular();
 
       return result;
     }},
@@ -71,6 +72,7 @@
       result.timeOfDay = '13:17';
 
       this.postToBacklogButton.click();
+      browser.waitForAngular();
 
       return result;
     }},
@@ -93,6 +95,7 @@
       result.timeOfDay = '13:17';
 
       this.postToBacklogButton.click();
+      browser.waitForAngular();
 
       return result;
     }}

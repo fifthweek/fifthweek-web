@@ -4,7 +4,7 @@
   var TestKit = require('../../test-kit.js');
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
-  var HeaderBacklogPage = require('../../pages/header-backlog.page.js');
+  var HeaderPostsPage = require('../../pages/header-posts.page.js');
   var PostPage = require('../../pages/post.page.js');
   var DeleteConfirmationPage = require('../../pages/delete-confirmation.page.js');
   var EditPostDialogPage = require('../../pages/creators/edit-post-dialog.page.js');
@@ -21,14 +21,14 @@
     var testKit = new TestKit();
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
-    var header = new HeaderBacklogPage();
+    var header = new HeaderPostsPage();
     var post = new PostPage(true);
     var deleteConfirmationPage = new DeleteConfirmationPage();
     var editPostDialogPage = new EditPostDialogPage();
 
     var navigateToPage = function() {
-      sidebar.backlogLink.click();
-      header.futurePostsLink.click();
+      sidebar.postsLink.click();
+      header.scheduledLink.click();
     };
 
     describe('when posting many posts', function(){
@@ -105,7 +105,6 @@
         'Post',
         function () {
           commonWorkflows.fastRefresh();
-          post.moreActionsButton.click();
           testKit.scrollIntoView(post.moreActionsButton);
           post.moreActionsButton.click();
           testKit.waitForElementToDisplay(post.deletePostLink);
@@ -136,7 +135,7 @@
       commonWorkflows.fastRefresh();
       testKit.scrollIntoView(targetPost.moreActionsButton);
       targetPost.moreActionsButton.click();
-      testKit.waitForElementToDisplay(post.editPostLink);
+      testKit.waitForElementToDisplay(targetPost.editPostLink);
       testKit.scrollIntoView(targetPost.editPostLink);
       targetPost.editPostLink.click();
       testKit.waitForElementToDisplay(editPostDialogPage.expandButton);

@@ -93,6 +93,8 @@
     createNamedCollection: { value: function(channelName, newCollectionName) {
       sidebar.collectionsLink.click();
       collectionListPage.addCollectionButton.click();
+      browser.waitForAngular();
+
       return collectionAddPage.submitCollectionSuccessfully(channelName || defaults.channelName, newCollectionName);
     }},
 

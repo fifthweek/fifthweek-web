@@ -141,6 +141,7 @@
       var result = this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
 
       this.postNowButton.click();
+      browser.waitForAngular();
 
       return result;
     }},
@@ -163,6 +164,7 @@
       result.timeOfDay = '13:17';
 
       this.postToBacklogButton.click();
+      browser.waitForAngular();
 
       return result;
     }},
@@ -174,6 +176,7 @@
       this.postLaterButton.click();
 
       this.postToBacklogButton.click();
+      browser.waitForAngular();
 
       return result;
     }},

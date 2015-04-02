@@ -10,7 +10,7 @@ var collectionNameInputPage = new CollectionNameInputPage();
 var CollectionEditPage = function() {};
 
 CollectionEditPage.prototype = Object.create({}, {
-  pageUrl: { get: function () { return '/creators/subscription/collections/'; }},
+  pageUrl: { get: function () { return '/creator/collections/'; }},
   nameTextBoxId: { value: 'model-name' },
   channelSelectId: { get: function() { return 'model-selected-channel'; }},
   daySelectId: { get: function() { return 'day-of-week'; }},
