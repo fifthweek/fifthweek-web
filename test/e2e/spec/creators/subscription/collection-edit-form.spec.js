@@ -5,11 +5,10 @@ var CommonWorkflows = require('../../../common-workflows.js');
 var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
 var ChannelSelectInputPage = require('../../../pages/channel-select-input.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js');
-var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
-var CollectionEditPage = require('../../../pages/creators/subscription/collection-edit.page.js');
 var DiscardChangesPage = require('../../../pages/discard-changes.page.js');
+var CollectionListPage = require('../../../pages/creators/collection-list.page.js');
+var CollectionEditPage = require('../../../pages/creators/collection-edit.page.js');
 
 describe('edit collection form', function() {
   'use strict';
@@ -26,7 +25,6 @@ describe('edit collection form', function() {
   var collectionNameInputPage = new CollectionNameInputPage();
   var channelSelectInputPage = new ChannelSelectInputPage();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
   var deleteConfirmationPage = new DeleteConfirmationPage();
   var collectionListPage = new CollectionListPage();
   var page = new CollectionEditPage();
@@ -57,8 +55,7 @@ describe('edit collection form', function() {
       channelSelect: channelSelectInputPage.mapToSelectText(collection.channelName)
     };
 
-    sidebar.subscriptionLink.click();
-    header.collectionsLink.click();
+    sidebar.collectionsLink.click();
     navigateToPage();
   });
 
@@ -83,8 +80,7 @@ describe('edit collection form', function() {
 
   discardChanges.describeDiscardingChanges(
     function(){
-      sidebar.subscriptionLink.click();
-      header.collectionsLink.click();
+      sidebar.collectionsLink.click();
       navigateToPage();
     },
     function(){ sidebar.helpLink.click(); },
@@ -160,8 +156,7 @@ describe('edit collection form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.subscriptionLink.click();
-      header.collectionsLink.click();
+      sidebar.collectionsLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
       expectReleaseTimes();
@@ -183,7 +178,7 @@ describe('edit collection form', function() {
   describe('when validating bad input', function() {
     afterEach(function () {
       commonWorkflows.fastRefresh();
-      header.collectionsLink.click(); // Reset form state.
+      sidebar.collectionsLink.click(); // Reset form state.
       navigateToPage();
     });
 
@@ -193,7 +188,7 @@ describe('edit collection form', function() {
   describe('submit button', function () {
     afterEach(function () {
       commonWorkflows.fastRefresh();
-      header.collectionsLink.click(); // Reset form state.
+      sidebar.collectionsLink.click(); // Reset form state.
       navigateToPage();
     });
 

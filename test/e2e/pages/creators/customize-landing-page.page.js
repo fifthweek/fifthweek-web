@@ -1,7 +1,7 @@
 'use strict';
 
 var path = require('path');
-var TestKit = require('../../../test-kit.js');
+var TestKit = require('../../test-kit.js');
 
 var testKit = new TestKit();
 

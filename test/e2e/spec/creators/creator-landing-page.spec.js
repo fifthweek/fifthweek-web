@@ -8,7 +8,7 @@
   var SidebarPage = require('../../pages/sidebar.page.js');
   var HeaderPage = require('../../pages/header.page.js');
   var HeaderCreatorPage = require('../../pages/header-creator.page.js');
-  var CustomizeLandingPagePage = require('../../pages/creators/subscription/customize-landing-page.page.js');
+  var CustomizeLandingPagePage = require('../../pages/creators/customize-landing-page.page.js');
   var CreatorTimelinePage = require('../../pages/creators/creator-timeline.page.js');
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
 

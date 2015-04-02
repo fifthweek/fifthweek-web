@@ -1,9 +1,9 @@
 var TestKit = require('../../../test-kit.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderComposePage = require('../../../pages/header-compose.page.js');
 var TargetPage = require('../../../pages/creators/compose/compose-note.page.js');
 var DateTimePickerPage = require('../../../pages/date-time-picker.page.js');
+var ComposeOptionsPage = require('./compose-options.page.js');
 
 describe('compose note form', function() {
   'use strict';
@@ -13,16 +13,17 @@ describe('compose note form', function() {
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
-  var header = new HeaderComposePage();
   var page = new TargetPage();
   var testKit = new TestKit();
   var dateTimePickerPage = new DateTimePickerPage();
+  var composeOptions = new ComposeOptionsPage();
 
   var channelNames;
 
   var navigateToPage = function() {
-    sidebar.newPostLink.click();
-    header.noteLink.click();
+    sidebar.postsLink.click();
+    composeOptions.noteLink.click();
+    browser.waitForAngular();
   };
 
   var createChannel = function(){

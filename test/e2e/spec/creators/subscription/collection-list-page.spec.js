@@ -1,5 +1,5 @@
 var CommonWorkflows = require('../../../common-workflows.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
+var HeaderCollectionsPage = require('../../../pages/header-collections.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 
 describe('collection list page', function() {
@@ -7,15 +7,14 @@ describe('collection list page', function() {
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
+  var header = new HeaderCollectionsPage();
 
   it('should run once before all', function() {
     commonWorkflows.createSubscription();
-    sidebar.subscriptionLink.click();
-    header.collectionsLink.click();
+    sidebar.collectionsLink.click();
   });
 
   header.includeBasicTests(header.collectionsLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.subscriptionLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.collectionsLink);
 });

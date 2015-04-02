@@ -1,9 +1,9 @@
 'use strict';
 
-var TestKit = require('../../../test-kit.js');
-var SubscriptionNameInputPage = require('../../subscription-name-input.page.js');
-var TaglineInputPage = require('../../tagline-input.page.js');
-var ChannelPriceInputPage = require('../../channel-price-input.page.js');
+var TestKit = require('../../test-kit.js');
+var SubscriptionNameInputPage = require('../subscription-name-input.page.js');
+var TaglineInputPage = require('../tagline-input.page.js');
+var ChannelPriceInputPage = require('../channel-price-input.page.js');
 
 var testKit = new TestKit();
 var subscriptionNameInputPage = new SubscriptionNameInputPage();

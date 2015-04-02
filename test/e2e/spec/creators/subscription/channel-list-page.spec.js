@@ -1,5 +1,5 @@
 var CommonWorkflows = require('../../../common-workflows.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
+var HeaderChannelsPage = require('../../../pages/header-channels.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
 
 describe('channel list page', function() {
@@ -11,11 +11,10 @@ describe('channel list page', function() {
 
   it('should run once before all', function() {
     commonWorkflows.createSubscription();
-    sidebar.subscriptionLink.click();
-    header.channelsLink.click();
+    sidebar.channelsLink.click();
   });
 
   header.includeBasicTests(header.channelsLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.subscriptionLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.channelsLink);
 });

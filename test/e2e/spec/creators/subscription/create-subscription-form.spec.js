@@ -5,7 +5,7 @@ var SignOutPage = require('../../../pages/sign-out.page.js');
 var SubscriptionNameInputPage = require('../../../pages/subscription-name-input.page.js');
 var TaglineInputPage = require('../../../pages/tagline-input.page.js');
 var ChannelPriceInputPage = require('../../../pages/channel-price-input.page.js');
-var CreateSubscriptionPage = require('../../../pages/creators/subscription/create-subscription.page.js');
+var CreateSubscriptionPage = require('../../../pages/creators/create-subscription.page.js');
 
 describe('create subscription form', function() {
   'use strict';

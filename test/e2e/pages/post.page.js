@@ -3,8 +3,8 @@
 
   var TestKit = require('../test-kit.js');
   var AccountPage = require('./account-settings.page.js');
-  var EditChannelPage = require('./creators/subscription/channel-edit.page.js');
-  var EditCollectionPage = require('./creators/subscription/collection-edit.page.js');
+  var EditChannelPage = require('./creators/channel-edit.page.js');
+  var EditCollectionPage = require('./creators/collection-edit.page.js');
 
   var testKit = new TestKit();
   var accountPage = new AccountPage();

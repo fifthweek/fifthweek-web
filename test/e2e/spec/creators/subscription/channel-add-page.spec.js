@@ -1,31 +1,30 @@
 var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
+var HeaderChannelsPage = require('../../../pages/header-channels.page.js');
 var BreadcrumbPage = require('../../../pages/breadcrumb.page.js');
-var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
+var ChannelListPage = require('../../../pages/creators/channel-list.page.js');
 
 describe('add channel page', function() {
   'use strict';
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
+  var header = new HeaderChannelsPage();
   var breadcrumb = new BreadcrumbPage();
   var channelListPage = new ChannelListPage();
 
   it('should run once before all', function() {
     commonWorkflows.createSubscription();
-    sidebar.subscriptionLink.click();
-    header.channelsLink.click();
+    sidebar.channelsLink.click();
     channelListPage.addChannelButton.click();
   });
 
   breadcrumb.includeTests(['Channels', 'New Channel'], function() {
-    header.channelsLink.click();
+    sidebar.channelsLink.click();
     channelListPage.addChannelButton.click();
   });
 
   header.includeBasicTests(header.channelsLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.subscriptionLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.channelsLink);
 });

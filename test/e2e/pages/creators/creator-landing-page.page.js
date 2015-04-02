@@ -4,6 +4,7 @@ var CreatorLandingPagePage = function() {};
 
 CreatorLandingPagePage.prototype = Object.create({}, {
   fifthweekLink: { get: function() { return element(by.css('.fifthweek-logo-sm a')); }},
+  editPageLink: { get: function() { return element(by.id('edit-page-link')); }},
   subscribeButton: { get: function() { return element(by.id('subscribe-button')); }},
   moreInfo: { get: function () { return element(by.id('more-info')); }},
   video: { get: function () { return element(by.css('#video iframe')); }},

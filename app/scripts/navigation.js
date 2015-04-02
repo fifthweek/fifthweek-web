@@ -119,6 +119,7 @@ angular.module('webApp')
       },
       { separator: true },
       {
+        id: 'account',
         name: aggregateUserStateUtilities.getUsername,
         state: states.account.name,
         icon: 'fa fa-user',

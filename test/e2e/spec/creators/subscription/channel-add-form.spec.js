@@ -5,9 +5,8 @@ var ChannelNameInputPage = require('../../../pages/channel-name-input.page.js');
 var ChannelDescriptionInputPage = require('../../../pages/channel-description-input.page.js');
 var ChannelPriceInputPage = require('../../../pages/channel-price-input.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
-var ChannelAddPage = require('../../../pages/creators/subscription/channel-add.page.js');
+var ChannelListPage = require('../../../pages/creators/channel-list.page.js');
+var ChannelAddPage = require('../../../pages/creators/channel-add.page.js');
 
 describe('add channel form', function() {
   'use strict';
@@ -22,7 +21,6 @@ describe('add channel form', function() {
   var channelDescriptionInputPage = new ChannelDescriptionInputPage();
   var channelPriceInputPage = new ChannelPriceInputPage();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
   var channelListPage = new ChannelListPage();
   var page = new ChannelAddPage();
 
@@ -37,8 +35,7 @@ describe('add channel form', function() {
     var context = commonWorkflows.createSubscription();
     registration = context.registration;
     subscription = context.subscription;
-    sidebar.subscriptionLink.click();
-    header.channelsLink.click();
+    sidebar.channelsLink.click();
     channelListPage.addChannelButton.click();
   });
 
@@ -79,8 +76,7 @@ describe('add channel form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.subscriptionLink.click();
-      header.channelsLink.click();
+      sidebar.channelsLink.click();
 
       expectChangesAppliedAndNavigateToPage(newFormValues);
     });
@@ -110,8 +106,7 @@ describe('add channel form', function() {
 
   describe('when validating bad input', function() {
     afterEach(function() {
-      header.channelsLink.click(); // Reset form state.
-      channelListPage.addChannelButton.click();
+      commonWorkflows.fastRefresh();
     });
 
     testKit.includeSadPaths(page, page.createButton, page.helpMessages, channelNameInputPage, 'nameTextBox', page.inputs);

@@ -1,7 +1,6 @@
 var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
+var CollectionListPage = require('../../../pages/creators/collection-list.page.js');
 
 describe('collection list form', function() {
   'use strict';
@@ -14,7 +13,6 @@ describe('collection list form', function() {
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
   var page = new CollectionListPage();
 
   it('should run once before all', function() {
@@ -39,7 +37,6 @@ describe('collection list form', function() {
   });
 
   var navigateToPage = function() {
-    sidebar.subscriptionLink.click();
-    header.collectionsLink.click();
+    sidebar.collectionsLink.click();
   };
 });

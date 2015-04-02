@@ -5,9 +5,8 @@ var CommonWorkflows = require('../../../common-workflows.js');
 var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
 var ChannelSelectInputPage = require('../../../pages/channel-select-input.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
-var CollectionAddPage = require('../../../pages/creators/subscription/collection-add.page.js');
+var CollectionListPage = require('../../../pages/creators/collection-list.page.js');
+var CollectionAddPage = require('../../../pages/creators/collection-add.page.js');
 
 describe('add collection form', function() {
   'use strict';
@@ -23,7 +22,6 @@ describe('add collection form', function() {
   var collectionNameInputPage = new CollectionNameInputPage();
   var channelSelectInputPage = new ChannelSelectInputPage();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
   var collectionListPage = new CollectionListPage();
   var page = new CollectionAddPage();
 
@@ -48,8 +46,7 @@ describe('add collection form', function() {
     var channelSelectTexts = channelSelectInputPage.mapToSelectTexts(channelNames);
     inputs = page.inputs(channelSelectTexts);
 
-    sidebar.subscriptionLink.click();
-    header.collectionsLink.click();
+    sidebar.collectionsLink.click();
     collectionListPage.addCollectionButton.click();
   });
 
@@ -90,8 +87,7 @@ describe('add collection form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.subscriptionLink.click();
-      header.collectionsLink.click();
+      sidebar.collectionsLink.click();
 
       expectChangesAppliedAndNavigateToPage(newFormValues);
     });
@@ -113,8 +109,7 @@ describe('add collection form', function() {
 
   describe('when validating bad input', function() {
     afterEach(function() {
-      header.collectionsLink.click(); // Reset form state.
-      collectionListPage.addCollectionButton.click();
+      commonWorkflows.fastRefresh();
     });
 
     testKit.includeSadPaths(page, page.createButton, page.helpMessages, collectionNameInputPage, 'nameTextBox', getInputs);

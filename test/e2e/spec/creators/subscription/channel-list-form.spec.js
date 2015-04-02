@@ -1,8 +1,7 @@
 var Defaults = require('../../../defaults.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
+var ChannelListPage = require('../../../pages/creators/channel-list.page.js');
 
 describe('channel list form', function() {
   'use strict';
@@ -16,7 +15,6 @@ describe('channel list form', function() {
   var defaults = new Defaults();
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
   var page = new ChannelListPage();
 
   it('should run once before all', function() {
@@ -45,8 +43,7 @@ describe('channel list form', function() {
   });
 
   var navigateToPage = function() {
-    sidebar.subscriptionLink.click();
-    header.channelsLink.click();
+    sidebar.channelsLink.click();
   };
 
   var expectBaseChannel = function() {

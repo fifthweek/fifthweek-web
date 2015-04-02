@@ -1,9 +1,9 @@
 'use strict';
 
 var _ = require('lodash');
-var TestKit = require('../../../test-kit.js');
-var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
-var ChannelSelectInputPage = require('../../../pages/channel-select-input.page.js');
+var TestKit = require('../../test-kit.js');
+var CollectionNameInputPage = require('../collection-name-input.page.js');
+var ChannelSelectInputPage = require('../channel-select-input.page.js');
 
 var testKit = new TestKit();
 var collectionNameInputPage = new CollectionNameInputPage();

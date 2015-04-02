@@ -1,6 +1,6 @@
 'use strict';
 
-var TestKit = require('../../../test-kit.js');
+var TestKit = require('../../test-kit.js');
 var ChannelListPage = function() {};
 
 var testKit = new TestKit();

@@ -6,11 +6,10 @@ var ChannelNameInputPage = require('../../../pages/channel-name-input.page.js');
 var ChannelDescriptionInputPage = require('../../../pages/channel-description-input.page.js');
 var ChannelPriceInputPage = require('../../../pages/channel-price-input.page.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js');
-var ChannelListPage = require('../../../pages/creators/subscription/channel-list.page.js');
-var ChannelEditPage = require('../../../pages/creators/subscription/channel-edit.page.js');
-var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
+var ChannelListPage = require('../../../pages/creators/channel-list.page.js');
+var ChannelEditPage = require('../../../pages/creators/channel-edit.page.js');
+var CollectionListPage = require('../../../pages/creators/collection-list.page.js');
 var DiscardChangesPage = require('../../../pages/discard-changes.page.js');
 
 describe('edit channel form', function() {
@@ -27,7 +26,6 @@ describe('edit channel form', function() {
   var channelDescriptionInputPage = new ChannelDescriptionInputPage();
   var channelPriceInputPage = new ChannelPriceInputPage();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
   var deleteConfirmationPage = new DeleteConfirmationPage();
   var channelListPage = new ChannelListPage();
   var collectionListPage = new CollectionListPage();
@@ -38,8 +36,7 @@ describe('edit channel form', function() {
     var context = commonWorkflows.createSubscription();
     registration = context.registration;
     subscription = context.subscription;
-    sidebar.subscriptionLink.click();
-    header.channelsLink.click();
+    sidebar.channelsLink.click();
   });
 
   var describeForm = function(isDefault) {
@@ -70,7 +67,7 @@ describe('edit channel form', function() {
           channel = commonWorkflows.createChannel();
           commonWorkflows.createCollection();
           commonWorkflows.createCollection([channel.name]);
-          header.channelsLink.click();
+          sidebar.channelsLink.click();
         }
 
         determineCorrectInitialValues();
@@ -100,8 +97,7 @@ describe('edit channel form', function() {
 
       discardChanges.describeDiscardingChanges(
         function(){
-          sidebar.subscriptionLink.click();
-          header.channelsLink.click();
+          sidebar.channelsLink.click();
           navigateToPage();
         },
         function(){ sidebar.helpLink.click(); },
@@ -133,8 +129,7 @@ describe('edit channel form', function() {
 
         it('should persist the changes, between sessions', function () {
           commonWorkflows.reSignIn(registration);
-          sidebar.subscriptionLink.click();
-          header.channelsLink.click();
+          sidebar.channelsLink.click();
           navigateToPage();
           testKit.expectFormValues(page, savedValues);
         });
@@ -190,14 +185,13 @@ describe('edit channel form', function() {
           },
           function () {
             // Check not deleted from client-side.
-            header.channelsLink.click();
+            sidebar.channelsLink.click();
             navigateToPage();
             testKit.expectFormValues(page, savedValues);
 
             // Check not deleted from API.
             commonWorkflows.reSignIn(registration);
-            sidebar.subscriptionLink.click();
-            header.channelsLink.click();
+            sidebar.channelsLink.click();
             navigateToPage();
             testKit.expectFormValues(page, savedValues);
           },
@@ -214,12 +208,11 @@ describe('edit channel form', function() {
 
             // Check deleted from API.
             commonWorkflows.reSignIn(registration);
-            sidebar.subscriptionLink.click();
-            header.collectionsLink.click();
+            sidebar.collectionsLink.click();
             collectionListPage.waitForPage();
             expect(collectionListPage.collections.count()).toBe(defaultChannelCollectionCount);
 
-            header.channelsLink.click();
+            sidebar.channelsLink.click();
             channelListPage.waitForPage();
             expect(channelListPage.channels.count()).toBe(1);
             expect(channelListPage.channels.getText()).not.toContain(savedValues.nameTextBox);

@@ -4,9 +4,9 @@
   var path = require('path');
   var TestKit = require('../../../test-kit.js');
   var SidebarPage = require('../../../pages/sidebar.page.js');
-  var HeaderComposePage = require('../../../pages/header-compose.page.js');
   var CollectionNameInputPage = require('../../../pages/collection-name-input.page.js');
   var DateTimePickerPage = require('../../../pages/date-time-picker.page.js');
+  var ComposeOptionsPage = require('./compose-options.page.js');
 
   var testKit = new TestKit();
   var collectionNameInputPage = new CollectionNameInputPage();
@@ -212,7 +212,7 @@
 
         var commonWorkflows = new CommonWorkflows();
         var sidebar = new SidebarPage();
-        var header = new HeaderComposePage();
+        var composeOptions = new ComposeOptionsPage();
         var collectionNameInputPage = new CollectionNameInputPage();
 
         var filePath = '../../../sample-image.jpg';
@@ -273,8 +273,9 @@
         };
 
         var navigateToPage = function() {
-          sidebar.newPostLink.click();
-          header[headerLink].click();
+          sidebar.postsLink.click();
+          composeOptions[headerLink].click();
+          browser.waitForAngular();
         };
 
         beforeEach(function(){

@@ -1,8 +1,8 @@
 var CommonWorkflows = require('../../../common-workflows.js');
 var TestKit = require('../../../test-kit.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
-var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
-var LandingPagePage = require('../../../pages/creators/subscription/customize-landing-page.page.js');
+var CreatorLandingPagePage = require('../../../pages/creators/creator-landing-page.page.js');
+var LandingPagePage = require('../../../pages/creators/customize-landing-page.page.js');
 var SubscriptionNameInputPage = require('../../../pages/subscription-name-input.page.js');
 var TaglineInputPage = require('../../../pages/tagline-input.page.js');
 var VideoUrlInputPage = require('../../../pages/video-url-input.page');
@@ -15,9 +15,9 @@ describe('customize landing page form', function() {
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
-  var header = new HeaderCustomizePage();
   var page = new LandingPagePage();
   var testKit = new TestKit();
+  var creatorLandingPagePage = new CreatorLandingPagePage();
   var subscriptionNameInputPage = new SubscriptionNameInputPage();
   var taglineInputPage = new TaglineInputPage();
   var videoUrlInputPage = new VideoUrlInputPage();
@@ -26,7 +26,8 @@ describe('customize landing page form', function() {
   var validDescription = 'In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content that could be distracting with placeholder text may allow viewers to focus on graphic aspects such as font, typography, and page layout. It also reduces the need for the designer to come up with meaningful text, as they can instead use hastily generated lorem ipsum text.';
 
   var navigateToPage = function() {
-    sidebar.subscriptionLink.click();
+    sidebar.landingPageLink.click();
+    creatorLandingPagePage.editPageLink.click();
   };
 
   it('should run once before all', function() {

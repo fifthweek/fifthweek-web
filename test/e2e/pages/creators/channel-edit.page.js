@@ -1,18 +1,17 @@
 'use strict';
 
-var TestKit = require('../../../test-kit.js');
-var ChannelNameInputPage = require('../../../pages/channel-name-input.page.js');
-var ChannelDescriptionInputPage = require('../../../pages/channel-description-input.page.js');
-var ChannelPriceInputPage = require('../../../pages/channel-price-input.page.js');
+var ChannelNameInputPage = require('../channel-name-input.page.js');
+var ChannelDescriptionInputPage = require('../channel-description-input.page.js');
+var ChannelPriceInputPage = require('../channel-price-input.page.js');
 
-var testKit = new TestKit();
 var channelNameInputPage = new ChannelNameInputPage();
 var channelDescriptionInputPage = new ChannelDescriptionInputPage();
 var channelPriceInputPage = new ChannelPriceInputPage();
 
-var ChannelAddPage = function() {};
+var ChannelEditPage = function() {};
 
-ChannelAddPage.prototype = Object.create({}, {
+ChannelEditPage.prototype = Object.create({}, {
+  pageUrl: { get: function () { return '/creators/subscription/channels/'; }},
   nameTextBoxId: { value: 'model-channel-name' },
   descriptionTextBoxId: { value: 'model-channel-description' },
   priceTextBoxId: { value: 'model-channel-price' },
@@ -37,19 +36,12 @@ ChannelAddPage.prototype = Object.create({}, {
       newValue: function() { return  Math.random() > 0.5; }
     }
   ]},
-  helpMessages: { get: function () { return element.all(by.css('#createChannelForm .help-block')); }},
-  createButton: { get: function () { return element(by.id('create-channel-button')); }},
+  helpMessages: { get: function () { return element.all(by.css('#editChannelForm .help-block')); }},
+  saveButton: { get: function () { return element(by.id('save-channel-button')); }},
   cancelButton: { get: function () { return element(by.id('cancel-button')); }},
-  submitSuccessfully: { value: function(values) {
-    var formValues = testKit.setFormValues(this, this.inputs, values);
-    this.createButton.click();
-    return {
-      name: formValues.nameTextBox,
-      description: formValues.descriptionTextBox,
-      price: formValues.priceTextBox,
-      hidden: formValues.hiddenCheckbox
-    };
-  }}
+  deleteButtonSelector: { get: function () { return by.id('delete-channel-link'); }},
+  deleteButton: { get: function () { return element(this.deleteButtonSelector); }},
+  deleteButtonCount: { get: function () { return element.all(this.deleteButtonSelector).count(); }}
 });
 
-module.exports = ChannelAddPage;
+module.exports = ChannelEditPage;
