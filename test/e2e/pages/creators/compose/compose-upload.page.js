@@ -137,23 +137,6 @@
       }
     }},
 
-    createCollection: { value: function(filePath, collectionName, channelName, isFirstCollection) {
-
-      if(!collectionName){
-        collectionName = collectionNameInputPage.newName();
-      }
-
-      this.populateContent(filePath, collectionName,  channelName, true, isFirstCollection);
-
-      this.postNowButton.click();
-
-      return {
-        filePath: filePath,
-        collectionName: collectionName,
-        channelName: channelName
-      };
-    }},
-
     postNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
       var result = this.populateContent(filePath, collectionName,  channelName, createCollection, isFirstCollection);
 
