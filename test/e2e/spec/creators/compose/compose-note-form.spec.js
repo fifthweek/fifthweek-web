@@ -1,9 +1,10 @@
 var TestKit = require('../../../test-kit.js');
 var CommonWorkflows = require('../../../common-workflows.js');
 var SidebarPage = require('../../../pages/sidebar.page.js');
+var ModalPage = require('../../../pages/modal.page.js');
 var TargetPage = require('../../../pages/creators/compose/compose-note.page.js');
+var ComposeOptionsPage = require('../../../pages/creators/compose/compose-options.page.js');
 var DateTimePickerPage = require('../../../pages/date-time-picker.page.js');
-var ComposeOptionsPage = require('./compose-options.page.js');
 
 describe('compose note form', function() {
   'use strict';
@@ -14,6 +15,7 @@ describe('compose note form', function() {
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
   var page = new TargetPage();
+  var modal = new ModalPage();
   var testKit = new TestKit();
   var dateTimePickerPage = new DateTimePickerPage();
   var composeOptions = new ComposeOptionsPage();
@@ -29,24 +31,30 @@ describe('compose note form', function() {
   var createChannel = function(){
     var result = commonWorkflows.createChannel();
     channelNames.push(result.name);
-    navigateToPage();
   };
 
-  var verifySuccess = function(successMessage){
-    expect(page.successMessage.isDisplayed()).toBe(true);
-    expect(page.successMessage.getText()).toBe(successMessage);
-    expect(page.postAnotherButton.isDisplayed()).toBe(true);
+  var verifySuccess = function(){
+    expectSuccessfulFinalState();
 
-    page.postAnotherButton.click();
-
+    navigateToPage();
     expect(page.postNowButton.isDisplayed()).toBe(true);
+
+    leavePage();
+  };
+
+  var leavePage = function() {
+    modal.crossButton.click();
+  };
+
+  var expectSuccessfulFinalState = function() {
+    expect(modal.modalCount).toBe(0);
   };
 
   var postNow = function(channelIndex){
     it('should post a note to channel ' + channelIndex, function(){
       var channelName = channelNames[channelIndex];
       page.postNow(channelName);
-      verifySuccess('Posted successfully');
+      verifySuccess();
     });
   };
 
@@ -54,7 +62,7 @@ describe('compose note form', function() {
     it('should schedule a note to channel' + channelIndex, function(){
       var channelName = channelNames[channelIndex];
       page.postOnDate(channelName);
-      verifySuccess('Scheduled successfully');
+      verifySuccess();
     });
   };
 
@@ -67,19 +75,19 @@ describe('compose note form', function() {
       var context = commonWorkflows.createSubscription();
       registration = context.registration;
       subscription = context.subscription;
-      navigateToPage();
     });
 
     describe('when posting now', function(){
 
       describe('when creator has one channel', function(){
+        beforeEach(navigateToPage);
         postNow(0);
       });
 
       describe('when creator has two channels', function(){
-
         beforeEach(function(){
           createChannel();
+          navigateToPage();
         });
 
         postNow(1);
@@ -89,6 +97,7 @@ describe('compose note form', function() {
     describe('when posting later', function(){
 
       describe('when creator has one channel', function(){
+        beforeEach(navigateToPage);
         postOnDate(0);
       });
 
@@ -96,6 +105,7 @@ describe('compose note form', function() {
 
         beforeEach(function(){
           createChannel();
+          navigateToPage();
         });
 
         postOnDate(1);
@@ -106,9 +116,6 @@ describe('compose note form', function() {
   describe('when validating inputs', function() {
 
     it('should run once before all', function() {
-      var context = commonWorkflows.createSubscription();
-      registration = context.registration;
-      subscription = context.subscription;
       navigateToPage();
     });
 
@@ -117,9 +124,8 @@ describe('compose note form', function() {
       describe('when posting now', function(){
         afterEach(function(){
           page.postNowButton.click();
-          expect(page.successMessage.isDisplayed()).toBe(true);
-
-          page.postAnotherButton.click();
+          expectSuccessfulFinalState();
+          navigateToPage();
         });
 
         it('should allow symbols in the content', function(){
@@ -139,9 +145,8 @@ describe('compose note form', function() {
 
         afterEach(function(){
           page.postToBacklogButton.click();
-          expect(page.successMessage.isDisplayed()).toBe(true);
-
-          page.postAnotherButton.click();
+          expectSuccessfulFinalState();
+          navigateToPage();
         });
 
         dateTimePickerPage.includeHappyPaths(function() {});
@@ -149,13 +154,6 @@ describe('compose note form', function() {
     });
 
     describe('sad path', function() {
-
-      it('should run once before all', function() {
-        var context = commonWorkflows.createSubscription();
-        registration = context.registration;
-        subscription = context.subscription;
-        navigateToPage();
-      });
 
       describe('when testing date time picker', function(){
 
@@ -167,13 +165,16 @@ describe('compose note form', function() {
         dateTimePickerPage.includeSadPaths(page.postToBacklogButton, page.helpMessages, function() {});
 
         it('should run once after all', function(){
-          commonWorkflows.fastRefresh();
+          leavePage();
         });
       });
 
       describe('when testing note', function(){
+        beforeEach(function() {
+          navigateToPage();
+        });
         afterEach(function(){
-          commonWorkflows.fastRefresh();
+          leavePage();
         });
 
         it('should not allow a note with more than 280 characters', function(){

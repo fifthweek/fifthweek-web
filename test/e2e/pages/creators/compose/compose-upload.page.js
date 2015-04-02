@@ -218,13 +218,13 @@
           commonWorkflows.createNamedCollection(channelName, collectionName);
         };
 
-        var verifySuccess = function(successMessage, collectionName, channelName){
+        var verifySuccess = function(collectionName, channelName){
           expectSuccessfulFinalState();
 
           navigateToPage();
           page.populateUpload(tinyFilePath);
-
           expect(page.getCollectionOptionCount(collectionName, channelName)).not.toBe(0);
+
           leavePage();
         };
 
@@ -232,7 +232,7 @@
           it('should post an ' + uploadType + ' to ' + collectionName + ' (Channel ' + channelIndex + ')', function(){
             var channelName = channelNames[channelIndex];
             page.postNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
-            verifySuccess('Posted successfully', collectionName, channelName);
+            verifySuccess(collectionName, channelName);
           });
         };
 
@@ -240,7 +240,7 @@
           it('should schedule an ' + uploadType + ' to ' + collectionName + ' (Channel ' + channelIndex + ')', function(){
             var channelName = channelNames[channelIndex];
             page.postOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
-            verifySuccess('Scheduled successfully', collectionName, channelName);
+            verifySuccess(collectionName, channelName);
           });
         };
 
@@ -248,7 +248,7 @@
           it('should queue an ' + uploadType + ' to ' + collectionName + ' (Channel ' + channelIndex + ')', function(){
             var channelName = channelNames[channelIndex];
             page.postToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
-            verifySuccess('Queued successfully', collectionName, channelName);
+            verifySuccess(collectionName, channelName);
           });
         };
 
