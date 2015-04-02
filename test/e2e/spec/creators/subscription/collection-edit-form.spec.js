@@ -9,6 +9,7 @@ var HeaderCustomizePage = require('../../../pages/header-customize.page.js');
 var DeleteConfirmationPage = require('../../../pages/delete-confirmation.page.js');
 var CollectionListPage = require('../../../pages/creators/subscription/collection-list.page.js');
 var CollectionEditPage = require('../../../pages/creators/subscription/collection-edit.page.js');
+var DiscardChangesPage = require('../../../pages/discard-changes.page.js');
 
 describe('edit collection form', function() {
   'use strict';
@@ -29,6 +30,7 @@ describe('edit collection form', function() {
   var deleteConfirmationPage = new DeleteConfirmationPage();
   var collectionListPage = new CollectionListPage();
   var page = new CollectionEditPage();
+  var discardChanges = new DiscardChangesPage();
 
   var navigateToPage = function() {
     collectionListPage.waitForPage();
@@ -78,6 +80,30 @@ describe('edit collection form', function() {
     testKit.expectFormValues(page, savedValues);
     expect(page.releaseTimeSummaries.count()).toBe(1);
   });
+
+  discardChanges.describeDiscardingChanges(
+    function(){
+      sidebar.subscriptionLink.click();
+      header.collectionsLink.click();
+      navigateToPage();
+    },
+    function(){ sidebar.helpLink.click(); },
+    function(){
+      var newValues = testKit.setFormValues(page, inputs);
+      page.expandReleaseTimesButton.click();
+      page.newReleaseTimeButton.click();
+      page.addReleaseTimeButton.click();
+      return newValues;
+    },
+    function(newValues){
+      testKit.expectFormValues(page, newValues);
+      expect(page.releaseTimeSummaries.count()).toBe(2);
+    },
+    function(){
+      testKit.expectFormValues(page, savedValues);
+      expect(page.releaseTimeSummaries.count()).toBe(1);
+    }
+  );
 
   it('should allow user to cancel when form is invalid', function() {
     testKit.clearForm(page, inputs);
@@ -156,6 +182,7 @@ describe('edit collection form', function() {
 
   describe('when validating bad input', function() {
     afterEach(function () {
+      commonWorkflows.fastRefresh();
       header.collectionsLink.click(); // Reset form state.
       navigateToPage();
     });
@@ -165,6 +192,7 @@ describe('edit collection form', function() {
 
   describe('submit button', function () {
     afterEach(function () {
+      commonWorkflows.fastRefresh();
       header.collectionsLink.click(); // Reset form state.
       navigateToPage();
     });
@@ -204,6 +232,7 @@ describe('edit collection form', function() {
 
   describe('when deleting release times', function() {
     afterEach(function () {
+      commonWorkflows.fastRefresh();
       header.collectionsLink.click(); // Reset form state.
       navigateToPage();
     });
