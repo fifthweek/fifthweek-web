@@ -57,7 +57,8 @@
             <button
               id="cancel-button"
               class="btn btn-default btn-block"
-              ui-sref="{{previousState}}">Cancel</button>
+              ui-sref="{{previousState}}"
+              ng-click="manageCollectionForm.discard()">Cancel</button>
           </div>
           <div class="col-s-4">
             <fw-form-input-delete
@@ -66,7 +67,7 @@
               link-id="delete-collection-link"
               data-event-title="Collection deleted"
               data-event-category="Customization"
-              delete="delete()"></fw-form-input-delete>
+              delete="manageCollectionForm.discard(); delete()"></fw-form-input-delete>
           </div>
         </div>
       </div>
@@ -75,6 +76,7 @@
         <p>{{manageCollectionForm.message}}</p>
       </div>
     </fw-panel12>
+    <fw-form-dirty-confirmation form="manageCollectionForm" form-dirty="mainFormDirty"></fw-form-dirty-confirmation>
   </form>
 
   <!-- Sub-forms use NG-IF to ensure their state is cleared on exit -->
