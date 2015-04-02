@@ -172,8 +172,7 @@ describe('customize landing page form', function() {
       populateForm();
 
       it('should not save the changes', function(){
-        sidebar.helpLink.click();
-        sidebar.subscriptionLink.click();
+        commonWorkflows.fastRefresh();
       });
 
       testInitialContent();
