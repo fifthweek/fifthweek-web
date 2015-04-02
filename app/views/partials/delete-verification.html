@@ -29,7 +29,7 @@
         data-loading-text="Deleting..."
         data-event-title="{{model.dataEventTitle}}"
         data-event-category="{{model.dataEventCategory}}"
-        ng-disabled="model.item !== model.confirmationText"
+        ng-disabled="verifiedDeleteForm.isSubmitting || model.item !== model.confirmationText"
         fw-form-submit="confirmDelete()">I understand, delete this {{model.itemTypeLowered}}</button>
     </form-buttons>
   </fw-form-modal>
