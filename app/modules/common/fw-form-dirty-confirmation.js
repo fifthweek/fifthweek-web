@@ -13,13 +13,25 @@ angular.module('webApp').directive('fwFormDirtyConfirmation',
           return;
         }
 
+        scope.form.discard = function(){
+          scope.form.discardChanges = true;
+        };
+
+        scope.form.discardChanges = false;
         scope.enabled = true;
         scope.displayed = false;
 
         var currentStateName = $state.current.name;
 
         scope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
-          if(scope.enabled && scope.form.$dirty && toState.name !== currentStateName){
+
+          var shouldDisplay = scope.enabled &&
+            scope.form.$dirty &&
+            !scope.form.isSubmitting &&
+            !scope.form.discardChanges &&
+            toState.name !== currentStateName;
+
+          if(shouldDisplay){
             event.preventDefault();
 
             if(!scope.displayed){

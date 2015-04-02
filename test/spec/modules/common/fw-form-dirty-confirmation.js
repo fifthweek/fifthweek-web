@@ -60,6 +60,24 @@ describe('fw-form-dirty-confirmation directive', function(){
         expect(isolateScope.displayed).toBe(false);
       });
 
+      it('should be set discardChanges to false on the form', function(){
+        expect(scope.someForm.discardChanges).toBe(false);
+      });
+
+      it('should be add a discard method to the form', function(){
+        expect(scope.someForm.discard).toBeDefined();
+      });
+
+      describe('when discard is called', function(){
+        beforeEach(function(){
+          scope.someForm.discard();
+        });
+
+        it('should set discardChanges to true on the form', function(){
+          expect(scope.someForm.discardChanges).toBe(true);
+        });
+      });
+
       describe('when the dialog should be displayed', function(){
         var toState;
         var dialogResult;
@@ -175,6 +193,56 @@ describe('fw-form-dirty-confirmation directive', function(){
           scope.someForm.$dirty = true;
           toState = { name: 'state2' };
           isolateScope.enabled = false;
+        });
+
+        describe('when the stateChangeStart event is raised', function(){
+          var event;
+          beforeEach(function(){
+            event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+            scope.$apply();
+          });
+
+          it('should should not prevent the default behaviour', function(){
+            expect(event.defaultPrevented).toBe(false);
+          });
+
+          it('should not open the dialog', function(){
+            expect($modal.open).not.toHaveBeenCalled();
+          });
+        });
+      });
+
+      describe('when the dialog should not be displayed because discardChanges is set on the form', function(){
+        var toState;
+        beforeEach(function(){
+          scope.someForm.$dirty = true;
+          toState = { name: 'state2' };
+          scope.someForm.discardChanges = true;
+        });
+
+        describe('when the stateChangeStart event is raised', function(){
+          var event;
+          beforeEach(function(){
+            event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+            scope.$apply();
+          });
+
+          it('should should not prevent the default behaviour', function(){
+            expect(event.defaultPrevented).toBe(false);
+          });
+
+          it('should not open the dialog', function(){
+            expect($modal.open).not.toHaveBeenCalled();
+          });
+        });
+      });
+
+      describe('when the dialog should not be displayed because the form is submitting', function(){
+        var toState;
+        beforeEach(function(){
+          scope.someForm.$dirty = true;
+          toState = { name: 'state2' };
+          scope.someForm.isSubmitting = true;
         });
 
         describe('when the stateChangeStart event is raised', function(){
