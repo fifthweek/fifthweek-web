@@ -40,5 +40,6 @@ exports.config = {
     var window = browser.manage().window();
     window.setSize(1280, 850);
     browser.get('/');
+    browser.waitForAngular();
   }
 };

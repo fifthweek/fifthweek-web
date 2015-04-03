@@ -48,3 +48,8 @@ img {
   margin-top:-2px;
 }
 
+.disable-animations *,
+.disable-animations *:after,
+.disable-animations *:before {
+  transition: none !important;
+}
