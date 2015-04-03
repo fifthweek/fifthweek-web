@@ -37,12 +37,35 @@
   var CommonWorkflows = function() {};
 
   CommonWorkflows.prototype = Object.create({}, {
+    getRoot: { value: function() {
+      this.getPage('/');
+    }},
+    getPage: { value: function(url) {
+      browser.get(url);
+      browser.waitForAngular();
+      browser.controlFlow().execute(function() {
+        browser.executeScript('angular.element(document.body).addClass("disable-animations")');
+      });
+    }},
     fastRefresh: { value: function() {
       browser.controlFlow().execute(function() {
         var script =
           'angular.element(document.body).injector().get(\'$state\').reload(); ' +
           'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
         browser.executeScript(script);
+      });
+    }},
+    rebaseLinkAndClick: { value: function(linkElement) {
+      var self = this;
+      return linkElement.getAttribute('href').then(function(href) {
+        var pathArray = href.split( '/' );
+        var protocol = pathArray[0];
+        var host = pathArray[2];
+        var baseUrl = protocol + '//' + host;
+        var path = href.substring(baseUrl.length);
+
+        self.getPage(path);
+        return path;
       });
     }},
 

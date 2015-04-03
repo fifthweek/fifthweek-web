@@ -28,20 +28,6 @@ TestKit.prototype = Object.create({}, {
       }
     });
   }},
-  rebaseLinkAndClick: { value: function(linkElement) {
-    return linkElement.getAttribute('href').then(function(href) {
-      var pathArray = href.split( '/' );
-      var protocol = pathArray[0];
-      var host = pathArray[2];
-      var baseUrl = protocol + '//' + host;
-      var path = href.substring(baseUrl.length);
-
-      browser.waitForAngular(); // Not automatically awaited on get.
-      return browser.get(path).then(function() {
-        return path;
-      });
-    });
-  }},
   clearForm: { value: function(page, inputs) {
     var self = this;
     _.forEach(inputs, function(input) {

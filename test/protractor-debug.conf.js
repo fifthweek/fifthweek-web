@@ -1,8 +1,10 @@
+var CommonWorkflows = require('./e2e/common-workflows.js');
+var commonWorkflows = new CommonWorkflows();
 var minute = 60 * 1000;
 
 exports.config = {
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/*.spec.js'],
+  specs: ['e2e/spec/**/sign-in-reset-form.spec.js'],
   allScriptsTimeout: minute,
   jasmineNodeOpts: {
     defaultTimeoutInterval: minute,
@@ -39,7 +41,6 @@ exports.config = {
 
     var window = browser.manage().window();
     window.setSize(1280, 850);
-    browser.get('/');
-    browser.waitForAngular();
+    commonWorkflows.getRoot();
   }
 };

@@ -1,4 +1,5 @@
 var TestKit = require('../test-kit.js');
+var CommonWorkflows = require('../common-workflows.js');
 var HomePage = require('../pages/home.page.js');
 var UsernameInputPage = require('../pages/username-input.page.js');
 var SignOutPage = require('../pages/sign-out.page.js');
@@ -13,6 +14,7 @@ describe('sign-in - forgot details form', function() {
   'use strict';
 
   var testKit = new TestKit();
+  var commonWorkflows = new CommonWorkflows();
   var homePage = new HomePage();
   var usernameInputPage = new UsernameInputPage();
   var signOutPage = new SignOutPage();
@@ -111,7 +113,7 @@ describe('sign-in - forgot details form', function() {
       it('should link to "reset password" page', function () {
         testKit.setValue(page.emailTextBoxId, email);
         submitAndReadEmail();
-        testKit.rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink);
+        commonWorkflows.rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink);
         expect(browser.getCurrentUrl()).toContain(signInResetPage.pageUrl);
       });
     });

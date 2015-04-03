@@ -1,10 +1,12 @@
+var CommonWorkflows = require('./e2e/common-workflows.js');
+var commonWorkflows = new CommonWorkflows();
+var minute = 60 * 1000;
+
 var bsConfig = {
   'build': 'E2E Tests - ' + new Date().toISOString(),
   'project': 'Fifthweek',
   'debug': false
 };
-
-var minute = 60 * 1000;
 
 exports.config = {
   seleniumAddress: 'http://hub.browserstack.com/wd/hub',
@@ -66,7 +68,6 @@ exports.config = {
 
     var window = browser.manage().window();
     window.setSize(1280, 850);
-    browser.get('/');
-    browser.waitForAngular();
+    commonWorkflows.getRoot();
   }
 };

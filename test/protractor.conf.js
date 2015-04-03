@@ -1,3 +1,5 @@
+var CommonWorkflows = require('./e2e/common-workflows.js');
+var commonWorkflows = new CommonWorkflows();
 var minute = 60 * 1000;
 
 exports.config = {
@@ -38,7 +40,6 @@ exports.config = {
 
     var window = browser.manage().window();
     window.setSize(1280, 850);
-    browser.get('/');
-    browser.waitForAngular();
+    commonWorkflows.getRoot();
   }
 };

@@ -48,7 +48,7 @@ describe('sign-in - reset password form', function() {
       browser.get(mailboxUrl);
     });
 
-    testKit.rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink).then(function(url) {
+    commonWorkflows.rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink).then(function(url) {
       resetPasswordPageUrl = url;
     });
   };
