@@ -264,7 +264,12 @@ TestKit.prototype = Object.create({}, {
       element.isPresent().then(function(isPresent) {
         if (isPresent) {
           element.isDisplayed().then(function(isDisplayed) {
-            deferred.fulfill(isDisplayed);
+            if (isDisplayed === true) {
+              deferred.fulfill(true);
+            }
+            else {
+              deferred.fulfill(false);
+            }
           });
         }
         else {
