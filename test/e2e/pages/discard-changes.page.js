@@ -81,6 +81,7 @@ DiscardChangesPage.prototype = Object.create({}, {
       it('should discard changes when discard button is clicked', function() {
         navigateAwayAndWait();
         self.discardButton.click();
+        browser.waitForAngular();
         navigateToPage();
         verifyFormClean();
       });
