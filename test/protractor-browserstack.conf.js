@@ -26,15 +26,26 @@ exports.config = {
 
   allScriptsTimeout: minute,
   jasmineNodeOpts: {
-    defaultTimeoutInterval: minute,
-    browserNoActivityTimeout: minute,
-    captureTimeout: minute,
+    defaultTimeoutInterval: 5 * minute, // Need to allow slightly longer for BrowserStack tests.
     includeStackTrace: true
   },
+
   maxSessions: 2,
   // Capabilities to be passed to the webdriver instance.
 
-  multiCapabilities: [{
+  multiCapabilities: [
+    {
+      'browserName': 'firefox',
+      'os': 'Windows',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
     'browserName': 'firefox',
     'version': '34',
     'os': 'OS X',
@@ -45,7 +56,53 @@ exports.config = {
     'browserstack.tunnel': 'true',
     'browserstack.user': process.env.BROWSER_STACK_USERNAME,
     'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-  }],
+    },
+    {
+      'browserName': 'IE',
+      'browser_version': '11.0',
+      'os': 'Windows',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'browserName': 'safari',
+      'os': 'OS X',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'browserName': 'chrome',
+      'os': 'Windows',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'browserName': 'chrome',
+      'os': 'OS X',
+      'os_version': 'Mountain Lion',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    }],
 
   onPrepare: function () {
     var path = require('path');

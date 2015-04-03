@@ -10,9 +10,7 @@ exports.config = {
 
   allScriptsTimeout: minute,
   jasmineNodeOpts: {
-    defaultTimeoutInterval: minute,
-    browserNoActivityTimeout: minute,
-    captureTimeout: minute,
+    defaultTimeoutInterval: 2 * minute,
     includeStackTrace: true
   },
   capabilities: {

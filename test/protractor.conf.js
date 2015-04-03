@@ -5,13 +5,13 @@ var minute = 60 * 1000;
 exports.config = {
   baseUrl: 'http://localhost:9001',
   specs: ['e2e/spec/**/*.spec.js'],
+
   allScriptsTimeout: minute,
   jasmineNodeOpts: {
-    defaultTimeoutInterval: minute,
-    browserNoActivityTimeout: minute,
-    captureTimeout: minute,
+    defaultTimeoutInterval: 2 * minute,
     includeStackTrace: true
   },
+
   capabilities: {
     browserName: 'chrome',
     chromeOptions: {
