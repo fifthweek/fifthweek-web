@@ -156,6 +156,50 @@ describe('utilities', function() {
     var attrs;
     var directiveUtilities;
 
+    var itShouldSupportFlag = function(flagName, methodName) {
+      it('should set "' + flagName + '" to true if specified without value', function() {
+        attrs[flagName] = '';
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope[flagName]).toBe(true);
+        if (methodName) {
+          expect(scope[methodName]()).toBe(true);
+        }
+      });
+
+      it('should set "' + flagName + '" to true if specified with "true"', function() {
+        attrs[flagName] = true;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope[flagName]).toBe(true);
+        if (methodName) {
+          expect(scope[methodName]()).toBe(true);
+        }
+      });
+
+      it('should set "' + flagName + '" to false if not specified', function() {
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope[flagName]).toBe(false);
+        if (methodName) {
+          expect(scope[methodName]()).toBe(false);
+        }
+      });
+
+      it('should set "' + flagName + '" to false if specified with "false"', function() {
+        attrs[flagName] = false;
+
+        directiveUtilities.scaffoldFormInput();
+
+        expect(scope[flagName]).toBe(false);
+        if (methodName) {
+          expect(scope[methodName]()).toBe(false);
+        }
+      });
+    };
+
     beforeEach(function() {
       scope = {};
       element = {};
@@ -165,65 +209,9 @@ describe('utilities', function() {
 
     describe('scaffolding form input', function() {
 
-      it('should set "required" to true if specified without value', function() {
-        attrs.required = '' ;
-
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.required).toBe(true);
-      });
-
-      it('should evaluate isRequired as true if specified without value', function() {
-        attrs.required = '' ;
-
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.isRequired()).toBe(true);
-      });
-
-      it('should set "required" to true if specified with "true"', function() {
-        attrs.required = true ;
-
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.required).toBe(true);
-      });
-
-      it('should evaluate isRequired as true if specified with "true"', function() {
-        attrs.required = true ;
-
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.isRequired()).toBe(true);
-      });
-
-      it('should set "required" to false if not specified', function() {
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.required).toBe(false);
-      });
-
-      it('should set evaluate isRequired as false if not specified', function() {
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.isRequired()).toBe(false);
-      });
-
-      it('should set "required" to false if specified with "false"', function() {
-        attrs.required = false ;
-
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.required).toBe(false);
-      });
-
-      it('should evaluate isRequired as false if specified with "false"', function() {
-        attrs.required = false ;
-
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.isRequired()).toBe(false);
-      });
+      itShouldSupportFlag('showHelp');
+      itShouldSupportFlag('focus');
+      itShouldSupportFlag('required', 'isRequired');
 
       it('should evaluate isRequired as the value of the scope object if specified', function() {
         scope.a = { b: { c: true } };
@@ -292,36 +280,6 @@ describe('utilities', function() {
 
         expect(scope.ngModel).toBeUndefined();
         expect(scope.ngModelAccessor).toBeUndefined();
-      });
-
-      it('should set "focus" to true if specified without value', function() {
-        attrs.focus = '' ;
-
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.focus).toBe(true);
-      });
-
-      it('should set "focus" to true if specified with "true"', function() {
-        attrs.focus = true ;
-
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.focus).toBe(true);
-      });
-
-      it('should set "focus" to false if not specified', function() {
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.focus).toBe(false);
-      });
-
-      it('should set "focus" to false if specified with "false"', function() {
-        attrs.focus = false ;
-
-        directiveUtilities.scaffoldFormInput();
-
-        expect(scope.focus).toBe(false);
       });
 
       it('should set "placeholder" straight from attribute', function() {

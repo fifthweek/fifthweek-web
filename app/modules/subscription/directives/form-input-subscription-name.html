@@ -1,0 +1,26 @@
+<fw-form-group input-name="subscriptionName">
+  <div class="row">
+    <div class="col-{{breakpoint}}-6">
+      <div fw-form-input-glyphs>
+        <input
+          id="{{inputId}}"
+          ng-model="ngModel[ngModelAccessor]"
+          name="subscriptionName"
+          type="text"
+          class="form-control"
+          placeholder="{{placeholder}}"
+          ng-maxlength="25"
+          maxlength="25"
+          focus="{{focus}}"
+          ng-required="required">
+      </div>
+      <small ng-if="showHelp">e.g. your name</small>
+    </div>
+    <div class="col-{{breakpoint}}-6">
+      <p fw-form-input-invalid-p="maxlength">Allowed 25 characters at most.</p>
+      <span ng-if="required">
+        <p fw-form-input-invalid-p="required">A name is required.</p>
+      </span>
+    </div>
+  </div>
+</fw-form-group>

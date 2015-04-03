@@ -5,58 +5,11 @@
         name="form"
         id="createSubscriptionForm">
 
-    <fw-form-group>
-      <div class="row">
-        <div class="col-sm-6">
-          <div fw-form-input-glyphs>
-            <input
-              id="newSubscriptionData-subscriptionName"
-              type="text"
-              class="form-control"
-              name="subscriptionName"
-              placeholder="Blog title"
-              ng-model="newSubscriptionData.subscriptionName"
-              ng-maxlength="25"
-              maxlength="25"
-              required
-              focus=true />
-            </div>
-          <small>e.g. your name</small>
-        </div>
-        <div class="col-sm-6">
-          <p fw-form-input-invalid-p="maxlength">Allowed 25 characters at most.</p>
-          <p fw-form-input-invalid-p="required">A name is required.</p>
-        </div>
-      </div>
-    </fw-form-group>
+    <fw-form-input-subscription-name ng-model="newSubscriptionData.subscriptionName" placeholder="Blog title" required focus show-help></fw-form-input-subscription-name>
 
-    <fw-form-group>
-      <div class="row">
-        <div class="col-sm-6">
-          <div fw-form-input-glyphs>
-            <input
-              id="newSubscriptionData-tagline"
-              type="text"
-              class="form-control"
-              name="subscriptionTagline"
-              placeholder="Tagline"
-              ng-model="newSubscriptionData.tagline"
-              ng-minlength="5"
-              ng-maxlength="55"
-              maxlength="55"
-              required/>
-          </div>
-          <small>e.g. &#34;Web Comics And More&#34;</small>
-        </div>
-        <div class="col-sm-6">
-          <p fw-form-input-invalid-p="minlength">Must be at least 5 characters.</p>
-          <p fw-form-input-invalid-p="maxlength">Allowed 55 characters at most.</p>
-          <p fw-form-input-invalid-p="required">A tagline is required.</p>
-        </div>
-      </div>
-    </fw-form-group>
+    <fw-form-input-tagline ng-model="newSubscriptionData.tagline" placeholder="Tagline" required show-help></fw-form-input-tagline>
 
-    <fw-form-input-channel-price ng-model="newSubscriptionData.basePrice" show-help required></fw-form-input-channel-price>
+    <fw-form-input-channel-price ng-model="newSubscriptionData.basePrice" required show-help></fw-form-input-channel-price>
 
     <div class="row-btn">
       <button

@@ -13,45 +13,11 @@
         </div>
       </div>
 
-      <fw-form-group>
-        <label for="subscription-name">Title</label>
-        <div class="row">
-          <div class="col-md-6">
-            <div fw-form-input-glyphs>
-              <input type="text" id="subscription-name" class="form-control" name="subscriptionName"
-                     ng-model="model.settings.subscriptionName"
-                     ng-maxlength="25"
-                     maxlength="25"
-                     placeholder="e.g. Your name or product" required/>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <p fw-form-input-invalid-p="maxlength">Allowed 25 characters at most.</p>
-            <p fw-form-input-invalid-p="required">A name is required.</p>
-          </div>
-        </div>
-      </fw-form-group>
+      <label>Title</label>
+      <fw-form-input-subscription-name ng-model="model.settings.subscriptionName" placeholder="e.g. Your name or product" required focus></fw-form-input-subscription-name>
 
-      <fw-form-group>
-        <label for="tagline">Tagline</label>
-        <div class="row">
-          <div class="col-md-6">
-            <div fw-form-input-glyphs>
-              <input type="text" id="tagline" class="form-control" name="tagline"
-                     ng-model="model.settings.tagline"
-                     ng-minlength="5"
-                     ng-maxlength="55"
-                     maxlength="55"
-                     placeholder="A snappy summary" required/>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <p fw-form-input-invalid-p="minlength">Must be at least 5 characters.</p>
-            <p fw-form-input-invalid-p="maxlength">Allowed 55 characters at most.</p>
-            <p fw-form-input-invalid-p="required">A tagline is required.</p>
-          </div>
-        </div>
-      </fw-form-group>
+      <label>Tagline</label>
+      <fw-form-input-tagline ng-model="model.settings.tagline" placeholder="A snappy summary" required></fw-form-input-tagline>
 
       <fw-form-group>
         <label for="introduction">Quick introduction</label>

@@ -144,6 +144,9 @@
     <script src="modules/common/fw-form-cancel-button.js"></script>
     <script src="modules/common/fw-form-dirty-confirmation.js"></script>
 
+    <script src="modules/account/account-controller.js"></script>
+    <script src="modules/account/account-settings-repository-factory.js"></script>
+
     <script src="modules/creator-backlog/backlog-post-list-controller.js"></script>
     <script src="modules/creator-backlog/backlog-queue-reorder-controller.js"></script>
 
@@ -154,10 +157,6 @@
     <script src="modules/azure/fw-azure-image-loader.js"></script>
 
     <script src="modules/aggregate-user-state/aggregate-user-state.js"></script>
-    <script src="modules/channels/services/channel-repository-factory.js"></script>
-    <script src="modules/collections/services/collection-repository-factory.js"></script>
-    <script src="modules/account/account-settings-repository-factory.js"></script>
-    <script src="modules/subscription/subscription-repository-factory.js"></script>
     <script src="modules/aggregate-user-state/fetch-aggregate-user-state.js"></script>
     <script src="modules/aggregate-user-state/master-repository-factory.js"></script>
     <script src="modules/aggregate-user-state/aggregate-user-state-utilities.js"></script>
@@ -170,12 +169,16 @@
     <script src="modules/channels/directives/fw-form-input-channel-price.js"></script>
     <script src="modules/channels/directives/fw-form-input-channel-visibility.js"></script>
     <script src="modules/channels/services/channel-name-formatter.js"></script>
+    <script src="modules/channels/services/channel-repository-factory.js"></script>
 
     <script src="modules/collections/directives/fw-form-input-collection-name.js"></script>
+    <script src="modules/collections/directives/fw-form-input-select-collection.js"></script>
     <script src="modules/collections/list-collecitons-controller.js"></script>
     <script src="modules/collections/edit-collection-controller.js"></script>
     <script src="modules/collections/new-collection-controller.js"></script>
-    <script src="scripts/services/calculated-states.js"></script>
+    <script src="modules/collections/services/collection-repository-factory.js"></script>
+    <script src="modules/collections/services/collection-service.js"></script>
+    <script src="modules/collections/services/release-time-formatter.js"></script>
 
     <script src="modules/creator-compose/directives/compose-options-controller.js"></script>
     <script src="modules/creator-compose/directives/fw-compose-options.js"></script>
@@ -188,7 +191,6 @@
 
     <script src="modules/creator-subscription/create-subscription-controller.js"></script>
     <script src="modules/creator-subscription/customize-landing-page-controller.js"></script>
-    <script src="modules/subscription/subscription-service.js"></script>
 
     <script src="modules/posts/full-size-image-modal-controller.js"></script>
     <script src="modules/posts/post-utilities.js"></script>
@@ -198,13 +200,17 @@
     <script src="modules/posts/post-edit-dialog-controller.js"></script>
     <script src="modules/posts/post-edit-dialog-utilities.js"></script>
 
+    <script src="modules/subscription/subscription-repository-factory.js"></script>
+    <script src="modules/subscription/subscription-service.js"></script>
+    <script src="modules/subscription/directives/fw-form-input-subscription-name.js"></script>
+    <script src="modules/subscription/directives/fw-form-input-tagline.js"></script>
+
     <script src="scripts/controllers/signin.js"></script>
     <script src="scripts/controllers/signin-forgot.js"></script>
     <script src="scripts/controllers/signin-reset.js"></script>
     <script src="scripts/controllers/home.js"></script>
     <script src="scripts/controllers/header.js"></script>
     <script src="scripts/controllers/sidebar.js"></script>
-    <script src="modules/account/account-controller.js"></script>
     <script src="scripts/controllers/directives/delete-link.js"></script>
     <script src="scripts/controllers/directives/delete-verification.js"></script>
     <script src="scripts/controllers/directives/file-upload.js"></script>
@@ -227,7 +233,6 @@
     <script src="scripts/directives/fw-form-input-invalid-p.js"></script>
     <script src="scripts/directives/fw-form-input-note.js"></script>
     <script src="scripts/directives/fw-form-input-select.js"></script>
-    <script src="scripts/directives/fw-form-input-select-collection.js"></script>
     <script src="scripts/directives/fw-form-input-valid.js"></script>
     <script src="scripts/directives/fw-markdown.js"></script>
 
@@ -247,7 +252,6 @@
     <script src="scripts/directives/fw-file-input-on-change.js"></script>
     <script src="scripts/directives/fw-blob-image.js"></script>
     <script src="scripts/directives/fw-error-message.js"></script>
-
     <script src="scripts/directives/vimeo-video.js"></script>
 
     <script src="scripts/services/access-signatures.js"></script>
@@ -255,14 +259,13 @@
     <script src="scripts/services/authentication-interceptor.js"></script>
     <script src="scripts/services/authentication-service.js"></script>
     <script src="scripts/services/authorization-service.js"></script>
-    <script src="modules/collections/services/collection-service.js"></script>
+    <script src="scripts/services/calculated-states.js"></script>
     <script src="scripts/services/dom-utilities.js"></script>
     <script src="scripts/services/delete-verification.js"></script>
     <script src="scripts/services/developer-request-interceptor.js"></script>
     <script src="scripts/services/error-facade.js"></script>
     <script src="scripts/services/log-service.js"></script>
     <script src="scripts/services/navigation-orchestrator.js"></script>
-    <script src="modules/collections/services/release-time-formatter.js"></script>
     <script src="scripts/services/state-change-authorization-service.js"></script>
     <script src="scripts/services/state-change-redirection-service.js"></script>
     <script src="scripts/services/state-change-require-subscription-service.js"></script>

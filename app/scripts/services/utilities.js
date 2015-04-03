@@ -93,6 +93,7 @@ angular.module('webApp')
       var directiveUtilities = {};
 
       directiveUtilities.scaffoldFormInput = function() {
+        scope.showHelp = service.parseFlag(attrs, 'showHelp');
         scope.required = service.parseFlag(attrs, 'required');
         scope.focus = service.parseFlag(attrs, 'focus');
         scope.placeholder = attrs.placeholder;
