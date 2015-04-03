@@ -1,17 +1,24 @@
 @import '_base';
 
-$drop-down-right-margin-sm: 23px;
-$drop-down-right-margin-lg: 60px;
+$drop-down-right-margin-sm: 70px;
+$drop-down-right-margin-lg: 20px;
 $drop-down-width: 110px;
 
 .dropdown-menu {
   @include panel-box-shadow;
+  left: $drop-down-right-margin-sm * -1;
+  min-width: $drop-down-width;
   width:$drop-down-width;
   background:$white-full;
   color:$grey-dark;
   border:solid 1px $gray-light;
   border-radius: $border-radius;
   padding: 5px 0;
+
+  @media (min-width:$screen-sm-min) {
+    left: $drop-down-right-margin-lg * -1;
+  }
+
   li {
     margin:0 !important;
     padding:0 !important;
