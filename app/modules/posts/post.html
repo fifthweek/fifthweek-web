@@ -66,8 +66,8 @@
                 <i class="fa fa-ellipsis-h"></i>
               </button>
               <ul class="dropdown-menu">
-                <li><a ng-mousedown="editPost(post)">Edit</a></li>
-                <li ng-if="post.isScheduled && post.scheduledByQueue"><a ng-mousedown="post.reorder()">Reorder</a></li>
+                <li><a ng-click="editPost(post)">Edit</a></li>
+                <li ng-if="post.isScheduled && post.scheduledByQueue"><a ng-click="post.reorder()">Reorder</a></li>
                 <li>
                   <fw-delete-link
                     item-type="Post"
