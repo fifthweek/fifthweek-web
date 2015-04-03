@@ -150,7 +150,7 @@ describe('customize landing page form', function() {
       page.headerImageTabLink.click();
       expect(page.headerImageSubmitButton.isEnabled()).toBe(true);
 
-      page.setFileInput('../../../sample-image.jpg');
+      page.setFileInput('../../sample-image.jpg');
       testKit.waitForElementToDisplay(page.headerImage);
 
       page.fullDescriptionTabLink.click();

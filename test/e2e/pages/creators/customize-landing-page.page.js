@@ -20,8 +20,8 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
   fullDescriptionTabLink: { get: function() { return element(by.css('.nav-tabs li:nth-child(3) a')); }},
 
   vanityUrl: { get: function() { return element(by.css('#vanity-url a')); }},
-  subscriptionNameTextBoxId: { value: 'subscription-name' },
-  taglineTextBoxId: { value: 'tagline' },
+  subscriptionNameTextBoxId: { value: 'model-settings-subscriptionName' },
+  taglineTextBoxId: { value: 'model-settings-tagline' },
   introductionTextBoxId: { value: 'introduction' },
 
   headerImage: { get: function(){ return element(by.css('.available-image')); }},
