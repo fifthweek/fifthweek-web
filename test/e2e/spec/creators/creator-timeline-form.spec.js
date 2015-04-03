@@ -156,7 +156,9 @@
       navigateToPage();
       testKit.scrollIntoView(targetPost.moreActionsButton);
       targetPost.moreActionsButton.click();
+      browser.sleep(3000);
       testKit.scrollIntoView(targetPost.editPostLink);
+      browser.sleep(3000);
       targetPost.editPostLink.click();
       testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
     };
