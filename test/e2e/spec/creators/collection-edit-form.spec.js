@@ -144,7 +144,7 @@ describe('edit collection form', function() {
       page.newReleaseTimeButton.click();
 
       // Often Protractor complains that it can't find the 'option' elements for this input.
-      browser.wait(element(by.css('#' + page.daySelectId + ' option:first-child')).isPresent);
+      commonWorkflows.digestAndWaitForAngular();
       releaseTimes.push(testKit.setFormValues(page, page.releaseTimeInputs));
       page.addReleaseTimeButton.click();
 

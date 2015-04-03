@@ -8,7 +8,6 @@
   var RegisterPage = require('./pages/register.page.js');
   var SignOutPage = require('./pages/sign-out.page.js');
   var SidebarPage = require('./pages/sidebar.page.js');
-  var HeaderCustomizePage = require('./pages/header-landing-page.page.js');
   var ComposeOptionsPage = require('./pages/creators/compose/compose-options.page.js');
   var ChannelListPage = require('./pages/creators/channel-list.page.js');
   var ChannelAddPage = require('./pages/creators/channel-add.page.js');
@@ -37,6 +36,12 @@
   var CommonWorkflows = function() {};
 
   CommonWorkflows.prototype = Object.create({}, {
+    digestAndWaitForAngular: { value: function() {
+      browser.controlFlow().execute(function() {
+        browser.executeScript('angular.element(document.body).injector().get(\'$rootScope\').$digest();');
+      });
+      browser.waitForAngular();
+    }},
     getRoot: { value: function() {
       this.getPage('/');
     }},
