@@ -59,8 +59,8 @@
     containerNameLink: { get: function() { return element(this.byCss('.container-name')); }},
     liveInLink: { get: function() { return element(this.byCss('.live-in-info')); }},
     moreActionsButton: { get: function() { return element(this.byCss('.actions-more button')); }},
-    editPostLink: { get: function() { return element(this.byCssContainingText('.actions-drop-down a', 'Edit')); }},
-    deletePostLink: { get: function() { return element(this.byCssContainingText('.actions-drop-down a', 'Delete')); }},
+    editPostLink: { get: function() { return element(this.byCssContainingText('.dropdown-menu a', 'Edit')); }},
+    deletePostLink: { get: function() { return element(this.byCssContainingText('.dropdown-menu a', 'Delete')); }},
 
     expectHeader: { value: function(postData, registration){
       if(this.isBacklog){

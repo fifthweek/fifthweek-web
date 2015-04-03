@@ -21,12 +21,14 @@ $drop-down-width: 110px;
   a {
     display:block;
     padding:5px 16px;
-    color:$grey-dark;
+    color:$grey-dark-2;
     font-weight:normal;
     font-size:$p-font-size;
     text-decoration:none;
     #{$state-hover} {
+      color:$brand-highlight;
       background:$white-3;
+      border-radius: $border-radius;
     }
   }
 }
