@@ -259,9 +259,10 @@ TestKit.prototype = Object.create({}, {
   }},
   waitForElementToDisplay: { value: function(element) {
     browser.wait(function(){
-      return element.isPresent().then(function(isPresent) {
-        return isPresent && element.isDisplayed();
-      });
+      return element.isPresent();
+    });
+    browser.wait(function(){
+      return element.isDisplayed();
     });
     browser.waitForAngular();
 
