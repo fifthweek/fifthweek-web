@@ -244,7 +244,6 @@ TestKit.prototype = Object.create({}, {
     });
   }},
   waitForElementToDisplay: { value: function(element) {
-    browser.waitForAngular();
     browser.wait(function() {
       var deferred = protractor.promise.defer();
       element.isPresent().then(function(isPresent) {
