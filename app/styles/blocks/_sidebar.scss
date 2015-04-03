@@ -96,6 +96,9 @@ $item-padding:$item-padding-tb $item-padding-lr;
     &.version {
       text-transform:uppercase;
       margin-bottom:10px;
+      font-weight: bold;
+      font-size:10px;
+      letter-spacing: 0.8px;
     }
   }
 }
