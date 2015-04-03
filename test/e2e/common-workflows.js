@@ -39,7 +39,10 @@
   CommonWorkflows.prototype = Object.create({}, {
     fastRefresh: { value: function() {
       browser.controlFlow().execute(function() {
-        browser.executeScript('angular.element(document.body).injector().get(\'$state\').reload();');
+        var script =
+          'angular.element(document.body).injector().get(\'$state\').reload(); ' +
+          'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
+        browser.executeScript(script);
       });
     }},
 

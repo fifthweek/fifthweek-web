@@ -6,8 +6,12 @@ SignOutPage.prototype = Object.create({},
 {
   signOutAndGoHome: { value: function() {
     browser.controlFlow().execute(function() {
-      browser.executeScript('angular.element(document.body).injector().get(\'$state\').go(\'signOut\')');
-      browser.executeScript('angular.element(document.body).injector().get(\'$state\').go(\'home\')');
+      var script =
+        'angular.element(document.body).injector().get(\'$state\').go(\'signOut\'); ' +
+        'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ' +
+        'angular.element(document.body).injector().get(\'$state\').go(\'home\'); ' +
+        'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
+      browser.executeScript(script);
     });
   }}
 });

@@ -91,7 +91,6 @@ TestKit.prototype = Object.create({}, {
       }
       else if (_.endsWith(inputName, 'Select')) {
         validatePageObject(inputName + 'Id');
-
         element
           .all(by.css('#' + page[inputName + 'Id'] + ' option'))
           .filter(function(option) {
@@ -265,6 +264,10 @@ TestKit.prototype = Object.create({}, {
       });
     });
     browser.waitForAngular();
+
+    // Weirdly this also eliminates other race conditions not picked up by the above! Example is the intermittent
+    // failure on adding release times to a collection, where the select 'option' elements cannot be found.
+    expect(element.isDisplayed()).toBe(true);
   }}
 });
 

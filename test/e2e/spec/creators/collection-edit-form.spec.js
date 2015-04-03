@@ -142,6 +142,9 @@ describe('edit collection form', function() {
 
       // Add another release time, just to make a change to the number of release times from when we started.
       page.newReleaseTimeButton.click();
+
+      // Often Protractor complains that it can't find the 'option' elements for this input.
+      testKit.waitForElementToDisplay(element(by.id(page.daySelectId)));
       releaseTimes.push(testKit.setFormValues(page, page.releaseTimeInputs));
       page.addReleaseTimeButton.click();
 
