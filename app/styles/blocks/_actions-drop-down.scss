@@ -4,21 +4,14 @@ $drop-down-right-margin-sm: 23px;
 $drop-down-right-margin-lg: 60px;
 $drop-down-width: 110px;
 
-.actions-drop-down {
+.dropdown-menu {
   @include panel-box-shadow;
-  position:absolute;
-  z-index:1;
-  top:20px;
-  left:(-1 * $drop-down-width) + $drop-down-right-margin-sm;
   width:$drop-down-width;
   background:$white-full;
   color:$grey-dark;
   border:solid 1px $gray-light;
   border-radius: $border-radius;
   padding: 5px 0;
-  @media (min-width:$screen-sm-min) {
-    left:(-1 * $drop-down-width) + $drop-down-right-margin-lg;
-  }
   li {
     margin:0 !important;
     padding:0 !important;

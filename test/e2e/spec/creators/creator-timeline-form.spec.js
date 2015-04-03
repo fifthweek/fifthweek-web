@@ -123,7 +123,6 @@
           navigateToPage();
           testKit.scrollIntoView(post.moreActionsButton);
           post.moreActionsButton.click();
-          testKit.waitForElementToDisplay(post.deletePostLink);
           testKit.scrollIntoView(post.deletePostLink);
           post.deletePostLink.click();
         },
@@ -156,9 +155,7 @@
       navigateToPage();
       testKit.scrollIntoView(targetPost.moreActionsButton);
       targetPost.moreActionsButton.click();
-      browser.sleep(3000);
       testKit.scrollIntoView(targetPost.editPostLink);
-      browser.sleep(3000);
       targetPost.editPostLink.click();
       testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
     };

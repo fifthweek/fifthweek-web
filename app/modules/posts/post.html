@@ -61,13 +61,11 @@
         <ul>
           <li class="actions-more"
               ng-class="{'active-actions-drop-down': post.showMenu}">
-            <button
-              ng-click="post.showMenu = !post.showMenu"
-              ng-blur="post.showMenu = false">
-              <i class="fa fa-ellipsis-h"></i>
-            </button>
-            <div class="actions-drop-down" ng-show="post.showMenu">
-              <ul>
+            <span class="dropdown" dropdown on-toggle="toggled(open)">
+              <button class="dropdown-toggle" dropdown-toggle>
+                <i class="fa fa-ellipsis-h"></i>
+              </button>
+              <ul class="dropdown-menu">
                 <li><a ng-mousedown="editPost(post)">Edit</a></li>
                 <li ng-if="post.isScheduled && post.scheduledByQueue"><a ng-mousedown="post.reorder()">Reorder</a></li>
                 <li>
@@ -80,7 +78,7 @@
                   </fw-delete-link>
                 </li>
               </ul>
-            </div>
+            </span>
           </li>
         </ul>
       </div>

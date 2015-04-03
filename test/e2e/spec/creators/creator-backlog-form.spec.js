@@ -107,10 +107,7 @@
           commonWorkflows.fastRefresh();
           testKit.scrollIntoView(post.moreActionsButton);
           post.moreActionsButton.click();
-          testKit.waitForElementToDisplay(post.deletePostLink);
-          browser.sleep(3000);
           testKit.scrollIntoView(post.deletePostLink);
-          browser.sleep(3000);
           post.deletePostLink.click();
         },
         function () {
@@ -137,9 +134,7 @@
       commonWorkflows.fastRefresh();
       testKit.scrollIntoView(targetPost.moreActionsButton);
       targetPost.moreActionsButton.click();
-      browser.sleep(3000);
       testKit.scrollIntoView(targetPost.editPostLink);
-      browser.sleep(3000);
       targetPost.editPostLink.click();
       testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
     };
