@@ -57,18 +57,18 @@ exports.config = {
     'browserstack.user': process.env.BROWSER_STACK_USERNAME,
     'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
     },
-    {
-      'browserName': 'IE',
-      'browser_version': '11.0',
-      'os': 'Windows',
-      'build': bsConfig.build,
-      'project': bsConfig.project,
-      'resolution': '1280x1024',
-      'browserstack.debug': bsConfig.debug,
-      'browserstack.tunnel': 'true',
-      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    },
+    //{
+    //  'browserName': 'IE',
+    //  'browser_version': '11.0',
+    //  'os': 'Windows',
+    //  'build': bsConfig.build,
+    //  'project': bsConfig.project,
+    //  'resolution': '1280x1024',
+    //  'browserstack.debug': bsConfig.debug,
+    //  'browserstack.tunnel': 'true',
+    //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+    //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    //},
     {
       'browserName': 'safari',
       'os': 'OS X',
