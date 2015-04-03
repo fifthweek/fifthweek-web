@@ -407,7 +407,11 @@ describe('post-utilities', function(){
             liveDate: new Date('2015-03-19T17:00:00Z'),
             imageSource: {
               size: 1048576,
-              contentType: 'image/jpeg'
+              contentType: 'image/jpeg',
+              renderSize: {
+                width: 800,
+                height: 600
+              }
             },
             image: {
               fileId: 'fileId1',
@@ -516,6 +520,13 @@ describe('post-utilities', function(){
       it('should add image resolvedUri data', function(){
         expect(posts[2].image.resolvedUri).toBe('uri1/fileId1/feed?signature1');
         expect(posts[3].image.resolvedUri).toBe('uri2/fileId2/feed?signature2');
+      });
+
+      it('should add renderSizeRatio data when required', function(){
+        expect(posts[0].renderSizeRatio).toBeUndefined();
+        expect(posts[1].renderSizeRatio).toBeUndefined();
+        expect(posts[2].renderSizeRatio).toBe('75%');
+        expect(posts[3].renderSizeRatio).toBeUndefined();
       });
     });
   });

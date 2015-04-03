@@ -57,7 +57,19 @@ $line-height-compensation: -5px;
 }
 
 @mixin post-visual {
-  > img:first-child, > .video:first-child iframe {
+  > .full-width-image-container{
+    display: inline-block;
+    position: relative;
+    > img {
+      @include post-border-top-radius;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+  > img:first-child, > .full-width-image-container, > .video:first-child iframe {
     @include post-border-top-radius;
     cursor: pointer;
     width: 100%;

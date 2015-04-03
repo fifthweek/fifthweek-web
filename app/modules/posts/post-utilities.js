@@ -41,6 +41,7 @@ angular.module('webApp').factory('postUtilities',
         post.fileSource.readableSize = humanFileSize(post.fileSource.size);
       }
 
+      delete post.renderSizeRatio;
       if(post.imageSource){
         post.imageSource.readableSize = humanFileSize(post.imageSource.size);
         post.imageSource.viewable = isViewable(post.imageSource.contentType);
@@ -48,6 +49,10 @@ angular.module('webApp').factory('postUtilities',
         if(!post.imageSource.viewable){
           // This gives us a link to the non-viewable image file.
           post.fileSource = post.imageSource;
+        }
+
+        if(post.imageSource.renderSize){
+          post.renderSizeRatio = ((post.imageSource.renderSize.height / post.imageSource.renderSize.width)*100) + '%';
         }
       }
 
