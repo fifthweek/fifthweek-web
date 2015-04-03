@@ -259,15 +259,22 @@ TestKit.prototype = Object.create({}, {
   }},
   waitForElementToDisplay: { value: function(element) {
     browser.waitForAngular();
-    browser.wait(function(){
-      return element.isPresent();
-    });
-    browser.wait(function(){
-      return element.isDisplayed();
+    browser.wait(function() {
+      var deferred = protractor.promise.defer();
+      element.isPresent().then(function(isPresent) {
+        if (isPresent) {
+          element.isDisplayed().then(function(isDisplayed) {
+            deferred.fulfill(isDisplayed);
+          });
+        }
+        else {
+          deferred.fulfill(false);
+        }
+      });
+      return deferred.promise;
     });
 
-    // Weirdly this also eliminates other race conditions not picked up by the above! Example is the intermittent
-    // failure on adding release times to a collection, where the select 'option' elements cannot be found.
+    // Fail fast: ensures the above tricky-trick has actually worked.
     expect(element.isDisplayed()).toBe(true);
   }}
 });
