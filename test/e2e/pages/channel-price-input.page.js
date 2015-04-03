@@ -58,7 +58,8 @@ ChannelPriceInputPage.prototype = Object.create({},
 
       testKit.clear(inputId);
       input.sendKeys('1.2.3');
-      expect(input.getAttribute('value')).toBe('1.23');
+      expect(input.getAttribute('value')).toContain('1.2');
+      expect(input.getAttribute('value')).not.toContain('1.2.3');
     });
   }}
 });
