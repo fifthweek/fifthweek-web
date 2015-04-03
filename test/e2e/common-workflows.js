@@ -36,12 +36,6 @@
   var CommonWorkflows = function() {};
 
   CommonWorkflows.prototype = Object.create({}, {
-    digestAndWaitForAngular: { value: function() {
-      browser.controlFlow().execute(function() {
-        browser.executeScript('angular.element(document.body).injector().get(\'$rootScope\').$digest();');
-      });
-      browser.waitForAngular();
-    }},
     getRoot: { value: function() {
       this.getPage('/');
     }},

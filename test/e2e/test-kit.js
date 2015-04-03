@@ -77,6 +77,9 @@ TestKit.prototype = Object.create({}, {
       }
       else if (_.endsWith(inputName, 'Select')) {
         validatePageObject(inputName + 'Id');
+
+        expect(element.all(by.css('#' + page[inputName + 'Id'] + ' option')).count()).toBeGreaterThan(0);
+
         element
           .all(by.css('#' + page[inputName + 'Id'] + ' option'))
           .filter(function(option) {
