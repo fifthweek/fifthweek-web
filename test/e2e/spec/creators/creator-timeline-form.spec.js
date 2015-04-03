@@ -156,7 +156,6 @@
       navigateToPage();
       testKit.scrollIntoView(targetPost.moreActionsButton);
       targetPost.moreActionsButton.click();
-      testKit.waitForElementToDisplay(targetPost.editPostLink);
       testKit.scrollIntoView(targetPost.editPostLink);
       targetPost.editPostLink.click();
       testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
