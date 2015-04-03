@@ -15,7 +15,7 @@ $drop-down-width: 110px;
   border-radius: $border-radius;
   padding: 5px 0;
 
-  @media (min-width:$screen-sm-min) {
+  @media (min-width:$screen-s-min) {
     left: $drop-down-right-margin-lg * -1;
   }
 
