@@ -258,13 +258,13 @@ TestKit.prototype = Object.create({}, {
     });
   }},
   waitForElementToDisplay: { value: function(element) {
+    browser.waitForAngular();
     browser.wait(function(){
       return element.isPresent();
     });
     browser.wait(function(){
       return element.isDisplayed();
     });
-    browser.waitForAngular();
 
     // Weirdly this also eliminates other race conditions not picked up by the above! Example is the intermittent
     // failure on adding release times to a collection, where the select 'option' elements cannot be found.
