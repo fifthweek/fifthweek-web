@@ -48,11 +48,13 @@ ChannelPriceInputPage.prototype = Object.create({},
 
       testKit.clear(inputId);
       input.sendKeys('123abc');
-      expect(input.getAttribute('value')).toBe('123');
+      expect(input.getAttribute('value')).toContain('123');
+      expect(input.getAttribute('value')).not.toContain('abc');
 
       testKit.clear(inputId);
       input.sendKeys('abc123abc');
-      expect(input.getAttribute('value')).toBe('123');
+      expect(input.getAttribute('value')).toContain('123');
+      expect(input.getAttribute('value')).not.toContain('abc');
 
       testKit.clear(inputId);
       input.sendKeys('1.2.3');
