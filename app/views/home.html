@@ -66,8 +66,8 @@
         <div class="col-md-6">
           <a id="play-video-link"
              class="btn btn-lg btn-transparent-text btn-video"
+             ng-class="{'fade-out': form.$dirty}"
              ng-href
-             ng-if="!form.$dirty"
              ng-click="openModal()"><i class="fa fa-play"></i> Play the video</a>
         </div>
       </div>

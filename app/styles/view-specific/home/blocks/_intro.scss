@@ -65,16 +65,12 @@
   }
   .btn-video {
     margin:12px auto 0 auto;
+    opacity:1;
   }
-  .btn-video.ng-leave {
+  .btn-video.fade-out {
     -webkit-transition:all 0.4s linear;
     transition:all 0.4s linear;
-  }
-  .btn-video.ng-leave.ng-leave-active {
     opacity:0;
-  }
-  .btn-video.ng-leave {
-    opacity:1;
   }
 }
 
