@@ -91,9 +91,12 @@ $header-height:108px;
         height:$header-height;
         background: $image-overlay;
         margin-left:-200px;
-        @media (min-width:$screen-lg-min) {
-          margin-left:-400px;
-        }
+      }
+    }
+
+    @media (min-width:$screen-lg-min) {
+      &:before {
+        margin-left:-400px;
       }
     }
 
