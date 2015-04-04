@@ -28,5 +28,7 @@ describe("homepage", function() {
   it('should link to the "creator journey" video', function() {
     homePage.playVideoLink.click();
     expect(homePage.videoIFrame.getAttribute('src')).toContain('player.vimeo.com/video/114229222');
+    homePage.videoIFrameCloseButton.click();
+    expect(homePage.videoIFrame.isPresent()).toBe(false);
   });
 });

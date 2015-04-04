@@ -103,8 +103,14 @@ $html-name-space:'.page-home';
   }
 
   .modal-content {
+    background: none;
+    box-shadow: none;
+    border:none;
+  }
+  .modal-body {
     background-color:$grey-dark;
     border-radius: 6px;
+    box-shadow:0 0 2px rgba(0, 0, 0, 0.5), 0 0 100px rgba(30, 30, 30, 0.8);
   }
   .modal iframe {
     width:100%;

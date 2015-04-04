@@ -29,7 +29,8 @@ angular.module('webApp').controller('HomeCtrl',
 
   $scope.openModal = function(){
     $modal.open({
-      templateUrl: 'views/home-modal.html'
+      templateUrl: 'views/home-modal.html',
+      size: 'lg'
     });
   };
 });

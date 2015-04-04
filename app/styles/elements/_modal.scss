@@ -43,6 +43,35 @@
   }
 }
 
+.has-modal-cross-button-outside {
+  margin-top: 40px; // Ensure cross always visible.
+}
+
+.modal-cross-button-outside {
+  position: absolute;
+  opacity: 0.5;
+  right:-32px;
+  top:-60px;
+
+  // Provides a larger area to activate hover state.
+  background: transparent;
+  width: 80px;
+  height: 80px;
+  padding-top: 30px;
+  padding-right: 30px;
+
+  i {
+    width:100%;
+    text-align: right;
+    font-size:24px;
+    color:#fff;
+  }
+}
+
+.modal-body:hover .modal-cross-button-outside {
+  opacity: 1;
+}
+
 .modal-dialog {
   @media (min-width:$screen-sm-min) {
     margin:9.5% auto;

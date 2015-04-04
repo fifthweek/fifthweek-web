@@ -111,6 +111,12 @@ a {
   &:hover {
     color:$link-color;
   }
+  &:focus {
+    outline: 0;
+  }
+  &::-moz-focus-inner {
+    border:0;
+  }
 }
 
 
