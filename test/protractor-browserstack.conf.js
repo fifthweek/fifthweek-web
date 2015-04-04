@@ -33,7 +33,40 @@ exports.config = {
   maxSessions: 2,
   // Capabilities to be passed to the webdriver instance.
 
-  multiCapabilities: [
+  // Browser version strategy. Statistics taken from: https://www.netmarketshare.com/
+  //
+  // Top 95% of OS products:
+  //
+  //  - Windows
+  //  - Mac
+  //
+  // Top 95% of browser products:
+  //
+  //  - IE
+  //  - Chrome
+  //  - Firefox
+  //  - Safari
+  //
+  // Top 80% of OS versions, including the most popular version from each OS product listed above:
+  //
+  //  - Windows 7
+  //  - Windows XP (excluded - latest supported version of IE is too old)
+  //  - Windows 8.1
+  //  - Mac OSX 10.10
+  //
+  // For each of these OS versions, take the most popular version of each supported browser product:
+  //
+  //  - Windows 7 / IE 11
+  //  - Windows 7 / Chrome 39
+  //  - Windows 7 / Firefox 34
+  //  - Windows 8.1 / IE 11
+  //  - Windows 8.1 / Chrome 39
+  //  - Windows 8.1 / Firefox 34
+  //  - Mac OSX 10.10 / Chrome 39
+  //  - Mac OSX 10.10 / Firefox 34
+  //  - Mac OSX 10.10 / Safari 8
+
+multiCapabilities: [
     //{
     //  'browserName': 'firefox',
     //  'os': 'Windows',
@@ -57,18 +90,18 @@ exports.config = {
     //'browserstack.user': process.env.BROWSER_STACK_USERNAME,
     //'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
     //},
-    //{
-    //  'browserName': 'IE',
-    //  'browser_version': '11.0',
-    //  'os': 'Windows',
-    //  'build': bsConfig.build,
-    //  'project': bsConfig.project,
-    //  'resolution': '1280x1024',
-    //  'browserstack.debug': bsConfig.debug,
-    //  'browserstack.tunnel': 'true',
-    //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-    //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    //},
+    {
+      'browserName': 'IE',
+      'browser_version': '11.0',
+      'os': 'Windows',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
     //{
     //  'browserName': 'safari',
     //  'os': 'OS X',
@@ -80,29 +113,30 @@ exports.config = {
     //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
     //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
     //},
-    {
-      'browserName': 'chrome',
-      'os': 'Windows',
-      'build': bsConfig.build,
-      'project': bsConfig.project,
-      'resolution': '1280x1024',
-      'browserstack.debug': bsConfig.debug,
-      'browserstack.tunnel': 'true',
-      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    },
-    {
-      'browserName': 'chrome',
-      'os': 'OS X',
-      'os_version': 'Mountain Lion',
-      'build': bsConfig.build,
-      'project': bsConfig.project,
-      'resolution': '1280x1024',
-      'browserstack.debug': bsConfig.debug,
-      'browserstack.tunnel': 'true',
-      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    }],
+    //{
+    //  'browserName': 'chrome',
+    //  'os': 'Windows',
+    //  'build': bsConfig.build,
+    //  'project': bsConfig.project,
+    //  'resolution': '1280x1024',
+    //  'browserstack.debug': bsConfig.debug,
+    //  'browserstack.tunnel': 'true',
+    //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+    //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    //},
+    //{
+    //  'browserName': 'chrome',
+    //  'os': 'OS X',
+    //  'os_version': 'Mountain Lion',
+    //  'build': bsConfig.build,
+    //  'project': bsConfig.project,
+    //  'resolution': '1280x1024',
+    //  'browserstack.debug': bsConfig.debug,
+    //  'browserstack.tunnel': 'true',
+    //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+    //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    //}
+  ],
 
   onPrepare: function () {
     var path = require('path');
