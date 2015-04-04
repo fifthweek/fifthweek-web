@@ -38,14 +38,24 @@ angular.module('webApp').factory('azureBlobStub',
         });
     };
 
-    service.checkAvailability = function(uri){
+    service.tryGetAvailableBlobInformation = function(uri){
       return $http.head(uri)
-        .then(function(){
-          return $q.when(true);
+        .then(function(response){
+          var result = {
+            uri: uri
+          };
+          var headers = response.headers();
+          var width = headers['x-ms-meta-width'];
+          var height = headers['x-ms-meta-height'];
+          if(width && height){
+            result.width = width;
+            result.height = height;
+          }
+          return $q.when(result);
         })
         .catch(function(response){
           if(response.status === 404){
-            return $q.when(false);
+            return $q.when(undefined);
           }
 
           return $q.reject(new AzureError('Failed to check blob availability.', response));

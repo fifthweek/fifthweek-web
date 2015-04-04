@@ -90,42 +90,51 @@ describe('azure stubs', function(){
       expect(error).toBeDefined();
       expect(error instanceof AzureError).toBeTruthy();
     });
+  });
 
-    describe('when calling checkAvailability', function(){
+  describe('when calling tryGetAvailableBlobInformation', function(){
 
-      var url;
+    var url;
 
-      beforeEach(function(){
-        url = 'blah.com/?abc';
-      });
+    beforeEach(function(){
+      url = 'blah.com/?abc';
+    });
 
-      it('should return true if available', function(){
-        $httpBackend.expectHEAD(url).respond(200);
+    it('should return url if available and no interesting headers', function(){
+      $httpBackend.expectHEAD(url).respond(200);
 
-        target.checkAvailability(url)
-          .then(function(result){ expect(result).toBe(true); });
+      target.tryGetAvailableBlobInformation(url)
+        .then(function(result){ expect(result).toEqual({ uri: url }); });
 
-        $httpBackend.flush();
-      });
+      $httpBackend.flush();
+    });
 
-      it('should return true if available', function(){
-        $httpBackend.expectHEAD(url).respond(404);
+    it('should return url if blob available and width and height if headers available', function(){
+      $httpBackend.expectHEAD(url).respond(200, '', { 'x-ms-meta-width': '800', 'x-ms-meta-height': '600' });
 
-        target.checkAvailability(url)
-          .then(function(result){ expect(result).toBe(false); });
+      target.tryGetAvailableBlobInformation(url)
+        .then(function(result){ expect(result).toEqual({ uri: url, width: '800', height: '600' }); });
 
-        $httpBackend.flush();
-      });
+      $httpBackend.flush();
+    });
 
-      it('should return the error if there is an unexpected response', function(){
-        $httpBackend.expectHEAD(url).respond(401);
+    it('should return undefined if unavailable', function(){
+      $httpBackend.expectHEAD(url).respond(404);
 
-        target.checkAvailability(url)
-          .then(function(){ fail('This should not occur'); })
-          .catch(function(error){ expect(error instanceof AzureError).toBeTruthy(); });
+      target.tryGetAvailableBlobInformation(url)
+        .then(function(result){ expect(result).toBe(undefined); });
 
-        $httpBackend.flush();
-      });
+      $httpBackend.flush();
+    });
+
+    it('should return the error if there is an unexpected response', function(){
+      $httpBackend.expectHEAD(url).respond(401);
+
+      target.tryGetAvailableBlobInformation(url)
+        .then(function(){ fail('This should not occur'); })
+        .catch(function(error){ expect(error instanceof AzureError).toBeTruthy(); });
+
+      $httpBackend.flush();
     });
   });
 });
