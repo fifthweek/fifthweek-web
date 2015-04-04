@@ -18,6 +18,7 @@ SignInPage.prototype = Object.create({}, {
     testKit.setValue(this.usernameTextBoxId, username);
     testKit.setValue(this.passwordTextBoxId, password);
     this.signInButton.click();
+    browser.waitForAngular();
   }}
 });
 

@@ -98,9 +98,7 @@ describe('sign-in - reset password form', function() {
 
     it('the link should become expired', function() {
       signOutPage.signOutAndGoHome();
-      browser.waitForAngular(); // Not automatically awaited on get.
-      browser.get(resetPasswordPageUrl);
-      browser.waitForAngular(); // Sometimes get sync errors here too.
+      commonWorkflows.getPage(resetPasswordPageUrl);
       expect(page.formPanel.isDisplayed()).toBe(false);
       expect(page.linkExpiredMessage.isDisplayed()).toBe(true);
     });
