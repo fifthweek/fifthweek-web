@@ -37,7 +37,7 @@ CollectionEditPage.prototype = Object.create({}, {
         'Friday',
         'Saturday',
         'Sunday'
-      ][Math.round(Math.random() * 7)]; }
+      ][Math.round(Math.random() * 6)]; }
     },
     {
       name: 'hourSelect',
@@ -45,7 +45,7 @@ CollectionEditPage.prototype = Object.create({}, {
         '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00',
         '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',
         '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'
-      ][Math.round(Math.random() * 24)]; }
+      ][Math.round(Math.random() * 23)]; }
     }
   ]; }},
   helpMessages: { get: function () { return element.all(by.css('#manageCollectionForm .help-block')); }},
