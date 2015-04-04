@@ -17,15 +17,13 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
       });
     };
 
-    service.tryGetAvailableBlobUri = function(containerName, blobName){
+    service.tryGetAvailableBlobInformation = function(containerName, blobName){
       return service.getBlobUri(containerName, blobName).then(function(uriWithSignature){
-        return azureBlobStub.checkAvailability(uriWithSignature).then(function(exists) {
-          return $q.when(exists ? uriWithSignature : undefined);
-        });
+        return azureBlobStub.tryGetAvailableBlobInformation(uriWithSignature);
       });
     };
 
-    service.getAvailableBlobUri = function(containerName, blobName, cancellationToken) {
+    service.getAvailableBlobInformation = function(containerName, blobName, cancellationToken) {
       var pendingImageDataExpiry = _.now() + (azureConstants.timeoutMilliseconds);
 
       var waitForImage = function() {
@@ -37,7 +35,7 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
           return $q.reject(new DisplayableError('Timeout', 'Timed out waiting for blob ' + blobName + ' in container ' + containerName + ' to be available.'));
         }
 
-        return service.tryGetAvailableBlobUri(containerName, blobName).then(function(urlWithSignature) {
+        return service.tryGetAvailableBlobInformation(containerName, blobName).then(function(urlWithSignature) {
           if (urlWithSignature) {
             return urlWithSignature;
           }
@@ -50,17 +48,17 @@ angular.module('webApp').factory('azureUriService', function($q, $timeout, azure
       return waitForImage();
     };
 
-    service.getAvailableImageUri = function(containerName, fileId, thumbnail, cancellationToken) {
+    service.getAvailableImageInformation = function(containerName, fileId, thumbnail, cancellationToken) {
       var blobName = getBlobName(fileId, thumbnail);
-      return service.getAvailableBlobUri(containerName, blobName, cancellationToken);
+      return service.getAvailableBlobInformation(containerName, blobName, cancellationToken);
     };
 
-    service.getAvailableFileUri = function(containerName, fileId, cancellationToken) {
-      return service.getAvailableBlobUri(containerName, fileId, cancellationToken);
+    service.getAvailableFileInformation = function(containerName, fileId, cancellationToken) {
+      return service.getAvailableBlobInformation(containerName, fileId, cancellationToken);
     };
 
-    service.tryGetAvailableFileUri = function(containerName, fileId){
-      return service.tryGetAvailableBlobUri(containerName, fileId);
+    service.tryGetAvailableFileInformation = function(containerName, fileId){
+      return service.tryGetAvailableBlobInformation(containerName, fileId);
     };
 
     service.getImageUri = function(containerName, fileId, thumbnail) {
