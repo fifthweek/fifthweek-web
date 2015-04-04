@@ -37,15 +37,12 @@ angular.module('webApp').factory('postUtilities',
       post.moment = moment(post.liveDate);
       post.liveIn = post.moment.fromNow();
 
-      if(post.fileSource){
-        post.fileSource.readableSize = humanFileSize(post.fileSource.size);
-      }
-
       delete post.renderSizeRatio;
       if(post.imageSource){
         post.imageSource.readableSize = humanFileSize(post.imageSource.size);
         post.imageSource.viewable = isViewable(post.imageSource.contentType);
 
+        delete post.fileSource;
         if(!post.imageSource.viewable){
           // This gives us a link to the non-viewable image file.
           post.fileSource = post.imageSource;
@@ -54,6 +51,9 @@ angular.module('webApp').factory('postUtilities',
         if(post.imageSource.renderSize){
           post.renderSizeRatio = ((post.imageSource.renderSize.height / post.imageSource.renderSize.width)*100) + '%';
         }
+      }
+      else if(post.fileSource){
+        post.fileSource.readableSize = humanFileSize(post.fileSource.size);
       }
 
       post.isScheduled = _.has(post, 'scheduledByQueue');
