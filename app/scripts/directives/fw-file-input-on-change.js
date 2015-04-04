@@ -9,7 +9,7 @@ angular.module('webApp').directive('fwFileInputOnChange', function() {
     link: function (scope, element) {
       element.on('change', function (event) {
         scope.fwFileInputOnChange({ files: event.target.files });
-        element.val('');
+        element.attr('value', '');
       });
     }
   };
