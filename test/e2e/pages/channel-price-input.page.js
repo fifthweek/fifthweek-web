@@ -44,20 +44,24 @@ ChannelPriceInputPage.prototype = Object.create({},
 
       testKit.clear(inputId);
       input.sendKeys('abc');
+      browser.waitForAngular(); // IE requirement.
       expect(input.getAttribute('value')).toBe('');
 
       testKit.clear(inputId);
       input.sendKeys('123abc');
+      browser.waitForAngular(); // IE requirement.
       expect(input.getAttribute('value')).toContain('123');
       expect(input.getAttribute('value')).not.toContain('abc');
 
       testKit.clear(inputId);
       input.sendKeys('abc123abc');
+      browser.waitForAngular(); // IE requirement.
       expect(input.getAttribute('value')).toContain('123');
       expect(input.getAttribute('value')).not.toContain('abc');
 
       testKit.clear(inputId);
       input.sendKeys('1.2.3');
+      browser.waitForAngular(); // IE requirement.
       expect(input.getAttribute('value')).toContain('1.2');
       expect(input.getAttribute('value')).not.toContain('1.2.3');
     });
