@@ -111,6 +111,10 @@ select {
   }
 }
 
+select::-ms-expand {
+  display: none;
+}
+
 .has-error .form-control:focus {
   box-shadow: $form-input-inset-shadow, 0 0 $form-input-focus-shadow lighten($state-danger-text, 20%);
 }
