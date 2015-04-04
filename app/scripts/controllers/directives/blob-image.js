@@ -8,6 +8,7 @@ angular.module('webApp')
 
     $scope.model = {
       imageUri: undefined,
+      renderSize: undefined,
       errorMessage: undefined,
       updating: false
     };
@@ -31,21 +32,28 @@ angular.module('webApp')
       cancellationToken = {};
       $scope.model.updating = true;
 
-      var getImageUrl = function() {
-        return azureUriService.getAvailableImageUri(containerName, fileId, thumbnail, cancellationToken);
+      var getImageInformation = function() {
+        return azureUriService.getAvailableImageInformation(containerName, fileId, thumbnail, cancellationToken);
       };
 
-      var imageUrlPromise;
+      var imageInformationPromise;
       if (availableImmediately) {
-        imageUrlPromise = getImageUrl();
+        imageInformationPromise = getImageInformation();
       }
       else {
-        imageUrlPromise = $timeout(getImageUrl, blobImageCtrlConstants.initialWaitMilliseconds);
+        imageInformationPromise = $timeout(getImageInformation, blobImageCtrlConstants.initialWaitMilliseconds);
       }
 
-      imageUrlPromise
-        .then(function(imageUrl) {
-          $scope.model.imageUri = imageUrl;
+      imageInformationPromise
+        .then(function(imageInformation) {
+          $scope.model.imageUri = imageInformation.uri;
+          $scope.model.renderSize = undefined;
+          if(imageInformation.width && imageInformation.height){
+            $scope.model.renderSize = {
+              width: (imageInformation.width / 2) + 'px',
+              height: (imageInformation.height / 2) + 'px'
+            };
+          }
           $scope.model.updating = false;
         })
         .catch(function(error) {

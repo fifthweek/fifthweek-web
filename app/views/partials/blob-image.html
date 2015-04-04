@@ -1,15 +1,15 @@
 <div ng-controller="blobImageCtrl" class="image-container">
   <div class="vertical-aspect-ratio"></div>
   <div ng-if="model.imageUri" class="thumbnail-area">
-    <img ng-src="{{model.imageUri}}" class="image-area available-image"/>
+    <img ng-src="{{model.imageUri}}" class="image-area available-image" ng-style="model.renderSize"/>
   </div>
-  <div ng-if="model.errorMessage" class="image-area error-area pending-image">
+  <div ng-if="model.errorMessage" class="image-area error-area pending-image" ng-style="model.renderSize">
     <i class="fa fa-exclamation-circle"></i>
   </div>
-  <div ng-if="model.updating" class="image-area updating-area pending-image">
+  <div ng-if="model.updating" class="image-area updating-area pending-image" ng-style="model.renderSize">
     <i class="fa fa-refresh fa-spin"></i>
   </div>
-  <div ng-if="!model.updating && !model.imageUri && !model.errorMessage" class="image-area blank-area pending-image">
+  <div ng-if="!model.updating && !model.imageUri && !model.errorMessage" class="image-area blank-area pending-image" ng-style="model.renderSize">
       <i class="fa fa-camera"></i>
   </div>
 </div>
