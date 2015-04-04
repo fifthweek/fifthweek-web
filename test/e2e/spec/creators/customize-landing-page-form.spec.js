@@ -60,7 +60,6 @@ describe('customize landing page form', function() {
 
       it('should contain a vanity url', function(){
         expect(page.vanityUrl.getText()).toBe('https://www.fifthweek.com/' + registration.username);
-        expect(page.vanityUrl.getAttribute('ui-sref')).toBe('user.timeline');
       });
 
       it('should contain the subscription name', function(){
