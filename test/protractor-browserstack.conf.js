@@ -67,33 +67,11 @@ exports.config = {
   //  - Mac OSX 10.10 / Safari 8
 
 multiCapabilities: [
-    //{
-    //  'browserName': 'firefox',
-    //  'os': 'Windows',
-    //  'build': bsConfig.build,
-    //  'project': bsConfig.project,
-    //  'resolution': '1280x1024',
-    //  'browserstack.debug': bsConfig.debug,
-    //  'browserstack.tunnel': 'true',
-    //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-    //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    //},
-    //{
-    //'browserName': 'firefox',
-    //'version': '34',
-    //'os': 'OS X',
-    //'build': bsConfig.build,
-    //'project': bsConfig.project,
-    //'resolution': '1280x1024',
-    //'browserstack.debug': bsConfig.debug,
-    //'browserstack.tunnel': 'true',
-    //'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-    //'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    //},
     {
-      'browserName': 'IE',
-      'browser_version': '11.0',
       'os': 'Windows',
+      'os_version': '7',
+      'browser': 'IE',
+      'browser_version': '11',
       'build': bsConfig.build,
       'project': bsConfig.project,
       'resolution': '1280x1024',
@@ -102,40 +80,110 @@ multiCapabilities: [
       'browserstack.user': process.env.BROWSER_STACK_USERNAME,
       'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
     },
-    //{
-    //  'browserName': 'safari',
-    //  'os': 'OS X',
-    //  'build': bsConfig.build,
-    //  'project': bsConfig.project,
-    //  'resolution': '1280x1024',
-    //  'browserstack.debug': bsConfig.debug,
-    //  'browserstack.tunnel': 'true',
-    //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-    //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    //},
-    //{
-    //  'browserName': 'chrome',
-    //  'os': 'Windows',
-    //  'build': bsConfig.build,
-    //  'project': bsConfig.project,
-    //  'resolution': '1280x1024',
-    //  'browserstack.debug': bsConfig.debug,
-    //  'browserstack.tunnel': 'true',
-    //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-    //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    //},
-    //{
-    //  'browserName': 'chrome',
-    //  'os': 'OS X',
-    //  'os_version': 'Mountain Lion',
-    //  'build': bsConfig.build,
-    //  'project': bsConfig.project,
-    //  'resolution': '1280x1024',
-    //  'browserstack.debug': bsConfig.debug,
-    //  'browserstack.tunnel': 'true',
-    //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-    //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    //}
+    {
+      'os': 'Windows',
+      'os_version': '7',
+      'browser': 'Chrome',
+      'browser_version': '39',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'os': 'Windows',
+      'os_version': '7',
+      'browser': 'Firefox',
+      'browser_version': '34',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'os': 'Windows',
+      'os_version': '8.1',
+      'browser': 'IE',
+      'browser_version': '11',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'os': 'Windows',
+      'os_version': '8.1',
+      'browser': 'Chrome',
+      'browser_version': '39',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'os': 'Windows',
+      'os_version': '8.1',
+      'browser': 'Firefox',
+      'browser_version': '34',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'os': 'OS X',
+      'os_version': 'Yosemite',
+      'browser': 'Safari',
+      'browser_version': '8',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'os': 'OS X',
+      'os_version': 'Yosemite',
+      'browser': 'Chrome',
+      'browser_version': '39',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    },
+    {
+      'os': 'OS X',
+      'os_version': 'Yosemite',
+      'browser': 'Firefox',
+      'browser_version': '34',
+      'build': bsConfig.build,
+      'project': bsConfig.project,
+      'resolution': '1280x1024',
+      'browserstack.debug': bsConfig.debug,
+      'browserstack.tunnel': 'true',
+      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    }
   ],
 
   onPrepare: function () {
