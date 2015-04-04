@@ -78,17 +78,17 @@ TestKit.prototype = Object.create({}, {
       else if (_.endsWith(inputName, 'Select')) {
         validatePageObject(inputName + 'Id');
 
-        expect(element.all(by.css('#' + page[inputName + 'Id'] + ' option')).count()).toBeGreaterThan(0);
+        var options = element.all(by.css('#' + page[inputName + 'Id'] + ' option'));
+        //expect(options.count()).toBeGreaterThan(0);
 
-        element
-          .all(by.css('#' + page[inputName + 'Id'] + ' option'))
-          .filter(function(option) {
-            return option.getText().then(function(text) {
-              return text === newValue;
-            });
-          })
-          .first()
-          .click();
+        var option = options.filter(function(option) {
+          return option.getAttribute('label').then(function(text) {
+            return text === newValue;
+          });
+        });
+
+        //expect(option.count()).toBe(1);
+        option.click();
       }
       else {
         throw 'Unknown inputName type: ' + inputName;
