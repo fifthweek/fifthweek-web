@@ -62,9 +62,9 @@ exports.config = {
   //  - Windows 8.1 / IE 11
   //  - Windows 8.1 / Chrome 39
   //  - Windows 8.1 / Firefox 34
+  //  - Mac OSX 10.10 / Safari 8
   //  - Mac OSX 10.10 / Chrome 39
   //  - Mac OSX 10.10 / Firefox 34
-  //  - Mac OSX 10.10 / Safari 8
 
 multiCapabilities: [
     {

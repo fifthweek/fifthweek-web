@@ -115,6 +115,13 @@ select::-ms-expand {
   display: none;
 }
 
+.form-control-lines-1 {
+  min-height: (2 * $input-padding-top-bottom) + $input-line-height;
+}
+.form-control-lines-2 {
+  min-height: (2 * $input-padding-top-bottom) + ($input-line-height * 2);
+}
+
 .has-error .form-control:focus {
   box-shadow: $form-input-inset-shadow, 0 0 $form-input-focus-shadow lighten($state-danger-text, 20%);
 }
