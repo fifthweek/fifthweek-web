@@ -162,7 +162,6 @@ input[type="button"].btn-block,
 // http://www.abeautifulsite.net/whipping-file-inputs-into-shape-with-bootstrap-3/
 .btn-file {
   position: relative;
-  overflow: hidden;
   @media (max-width:$screen-s-max) {
     padding: 9px 12px;
   }
