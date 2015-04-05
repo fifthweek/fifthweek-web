@@ -1,0 +1,61 @@
+<div>
+
+<fw-breadcrumb current="{{model.savedChannelName}}"></fw-breadcrumb>
+
+  <fw-panel12>
+
+    <form novalidate
+          id="editChannelForm"
+          role="form"
+          name="form">
+
+      <label>Name</label>
+      <fw-form-input-channel-name ng-model="model.channel.name" placeholder="Channel name" required focus></fw-form-input-channel-name>
+
+      <label>Description</label>
+      <fw-form-input-channel-description ng-model="model.channel.description" required></fw-form-input-channel-description>
+
+      <label>Subscription price</label>
+      <fw-form-input-channel-price ng-model="model.channel.price" required></fw-form-input-channel-price>
+
+      <fw-form-input-channel-visibility ng-if="!model.channel.isDefault" ng-model="model.channel.hidden" required></fw-form-input-channel-visibility>
+
+      <div class="row-btn">
+        <div class="row">
+          <div class="col-s-8">
+            <button
+              id="save-channel-button"
+              class="btn btn-block btn-success"
+              data-loading-text="Saving..."
+              data-event-title="Channel edited"
+              data-event-category="Customization"
+              ng-disabled="form.$pristine || form.isSubmitting"
+              fw-form-submit="save()">Save Changes</button>
+            <button
+              id="cancel-button"
+              class="btn btn-default btn-block"
+              ui-sref="{{previousState}}"
+              ng-click="form.discard()">Cancel</button>
+          </div>
+          <div class="col-s-4" ng-if="!model.channel.isDefault">
+            <fw-form-input-delete
+              item="model.savedChannelName"
+              item-type="Channel"
+              link-id="delete-channel-link"
+              data-event-title="Channel deleted"
+              data-event-category="Customization"
+              delete="form.discard(); delete();"></fw-form-input-delete>
+          </div>
+        </div>
+      </div>
+
+      <div ng-show="form.message" class="alert alert-danger sub-form-alert">
+        <p>{{form.message}}</p>
+      </div>
+
+      <fw-form-dirty-confirmation form="form"></fw-form-dirty-confirmation>
+    </form>
+
+  </fw-panel12>
+
+</div>

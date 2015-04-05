@@ -1,0 +1,24 @@
+<fw-form-group input-name="channelDescription">
+  <div class="row">
+    <div class="col-xs-12">
+      <textarea
+        id="{{inputId}}"
+        name="channelDescription"
+        ng-model="ngModel[ngModelAccessor]"
+        class="form-control"
+        placeholder="What will the subscriber receive?
+Multiple points can be entered over new lines."
+        ng-maxlength="250"
+        maxlength="250"
+        focus="{{focus}}"
+        ng-required="required"
+        msd-elastic></textarea>
+    </div>
+    <div class="col-xs-12">
+      <p fw-form-input-invalid-p="maxlength">Allowed 250 characters at most.</p>
+      <span ng-if="required">
+        <p fw-form-input-invalid-p="required">A description is required.</p>
+      </span>
+    </div>
+  </div>
+</fw-form-group>

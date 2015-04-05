@@ -1,0 +1,8 @@
+<div class="form-group">
+  <div class="row">
+    <div class="col-xs-12" ng-class="{'btn-file-change': fileName}">
+      <p class="file-name" ng-if="fileName">{{fileName}}</p>
+      <fw-file-upload description="{{fileName ? 'Change' : 'Upload File'}}" on-upload-complete="onUploadComplete(data)" file-purpose="post-file" accept=""></fw-file-upload>
+    </div>
+  </div>
+</div>

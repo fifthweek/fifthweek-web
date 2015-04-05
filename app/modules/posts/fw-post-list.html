@@ -1,0 +1,27 @@
+<div class="posts" ng-class="{ 'tagged-posts': source ===  sources.creatorBacklog }">
+
+  <div ng-if="model.isLoading && !model.errorMessage" class="updating-area">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <div ng-repeat="post in model.posts track by post.postId" ng-include="'modules/posts/post.html'" id="post-{{$index}}"></div>
+
+  <fw-panel12 ng-if="model.posts.length === 0 && source ===  sources.creatorBacklog">
+    <h4>Nothing scheduled</h4>
+    <p>The schedule makes it easy for you to provide a steady flow of posts to your subscribers.</p>
+    <p>Use this feature by clicking 'Schedule' when creating a post.</p>
+  </fw-panel12>
+
+  <fw-panel12 ng-if="model.posts.length === 0 && source ===  sources.creatorPosts">
+    <h4>Blog empty</h4>
+    <p>Your blog contains no live posts. Add posts to your blog by clicking 'New Post' in the menu.</p>
+  </fw-panel12>
+
+  <fw-panel12 ng-if="model.posts.length === 0 && source ===  sources.creatorTimeline">
+    <h4>This creator has not released any posts</h4>
+    <p>Don't panic! You will only be billed for the weeks where you receive content.</p>
+    <p>Hopefully something will come along shortly :)</p>
+  </fw-panel12>
+</div>

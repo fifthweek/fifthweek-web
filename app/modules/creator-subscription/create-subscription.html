@@ -1,0 +1,33 @@
+<fw-panel12>
+
+  <form novalidate
+        role="form"
+        name="form"
+        id="createSubscriptionForm">
+
+    <fw-form-input-subscription-name ng-model="newSubscriptionData.subscriptionName" placeholder="Blog title" required focus show-help></fw-form-input-subscription-name>
+
+    <fw-form-input-tagline ng-model="newSubscriptionData.tagline" placeholder="Tagline" required show-help></fw-form-input-tagline>
+
+    <fw-form-input-channel-price ng-model="newSubscriptionData.basePrice" required show-help></fw-form-input-channel-price>
+
+    <div class="row-btn">
+      <button
+        id="create-subscription-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Saving..."
+        data-event-title="Subscription created"
+        data-event-category="Registration"
+        fw-form-submit="continue()">Save and Continue</button>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div ng-show="form.message" class="alert alert-danger sub-form-alert" id="sign-in-message">
+          <p>{{form.message}}</p>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</fw-panel12>

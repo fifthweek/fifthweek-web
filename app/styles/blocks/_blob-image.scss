@@ -1,0 +1,43 @@
+@import '_base';
+
+
+.image-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border-radius: $post-border-radius;
+
+  .vertical-aspect-ratio {
+    padding-top: 100%; /* Default ratio is square (so 64x64 including default width) */
+  }
+
+  .image-area {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: $post-border-radius;
+  }
+
+  img.image-area {
+    width:100%; // Left and top do not scale the image beyond its native size.
+  }
+
+  .pending-image {
+    color: $grey-light-1;
+    border: 1px solid $grey-light-3;
+    box-sizing: border-box;
+    font-size: 16px;
+
+    .fa {
+      position: absolute;
+      font-size: 20px;
+      top:50%;
+      left:50%;
+      margin: -10px 0 0 -10px;
+    }
+  }
+}
+

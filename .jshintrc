@@ -23,11 +23,20 @@
     "ga": false,
     "$f": false,
     "angular": false,
+    "moment": false,
     "alert": false,
     "jQuery": false,
+    "marked": false,
     "ApiError": false,
     "FifthweekError": false,
+    "CancellationError": false,
+    "InputValidationError": false,
+    "UnauthenticatedError": false,
+    "UnauthorizedError": false,
+    "AzureError": false,
     "ConnectionError": false,
-    "ActiveXObject": false
+    "DisplayableError": false,
+    "ActiveXObject": false,
+    "_": false
   }
 }

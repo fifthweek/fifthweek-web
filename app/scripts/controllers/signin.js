@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'SignInCtrl',
-    function($scope, $location, authenticationService, fifthweekConstants, logService, utilities) {
+    function($scope, $state, calculatedStates, authenticationService) {
       'use strict';
 
       $scope.signInData = {
@@ -8,19 +8,10 @@ angular.module('webApp').controller(
         password: ''
       };
 
-      $scope.message = '';
-      $scope.isSubmitting = false;
-
       $scope.signIn = function() {
-        $scope.isSubmitting = true;
-
-        return authenticationService.signIn($scope.signInData).then(
-          function() {
-            $location.path(fifthweekConstants.dashboardPage);
-          }).catch(function(error) {
-            $scope.message = utilities.getFriendlyErrorMessage(error);
-            $scope.isSubmitting = false;
-            return logService.error(error);
+        return authenticationService.signIn($scope.signInData)
+          .then(function() {
+            $state.go(calculatedStates.getDefaultState());
           });
       };
     }

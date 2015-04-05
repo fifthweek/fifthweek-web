@@ -1,0 +1,45 @@
+@import '_base';
+
+ul.nav-tabs > li {
+  > a {
+    padding:10px $main-cont-padding-large;
+    @media (max-width: $screen-s-max) {
+      padding:10px $main-cont-padding-small;
+    }
+
+    &:hover, &:focus {
+      border-color:transparent;
+      background: none;
+    }
+  }
+
+  &:not(.active) > a:hover {
+    text-decoration: underline;
+  }
+
+  &.active {
+    > a, > a:hover, > a:focus {
+      box-shadow: $panel-shadow;
+      border-color:transparent;
+
+      /* World's hackiest hack? */
+      &:after {
+        background-color: #fff;
+        height: 10px;
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: -3px;
+        right: -3px;
+      }
+    }
+
+    &:first-child {
+      > a, > a:hover, > a:focus {
+        &:after {
+          left: -1px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,148 @@
+<div class="page-subscription-collections-manage">
+  <form novalidate
+        id="manageCollectionForm"
+        name="manageCollectionForm"
+        role="form"
+        ng-show="!model.addingReleaseTime && !model.selectedReleaseTime">
+
+    <fw-breadcrumb current="{{model.savedName}}"></fw-breadcrumb>
+
+    <fw-panel12>
+
+      <label>Name</label>
+      <fw-form-input-collection-name ng-model="model.name" placeholder="Collection name" required focus></fw-form-input-collection-name>
+
+      <label>Available in</label>
+      <fw-form-input-select input-id="model-selected-channel" selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
+
+      <div class="form-group" id="manageReleaseTimes">
+        <fw-form-subsection name="Weekly release schedule">
+          <summary>
+            <p class="release-times">
+              <span class="release-time" ng-repeat="time in model.schedule">{{time.day}}</span>
+            </p>
+          </summary>
+          <summary-expanded>
+            <p>
+              When you add posts to ‘the queue’ they automatically become
+              published according to the weekly schedule that is associated with the collection
+              you are posting to. You can define that here:
+            </p>
+          </summary-expanded>
+          <section>
+            <fw-managed-list-sm
+              id="release-time-list"
+              item-name="release time"
+              items="model.schedule"
+              new-item="addReleaseTime()"
+              manage-item="manageReleaseTime(item)">
+              <p>{{item.day}} <span class="release-time-of-day">@ {{item.time}} UTC</span></p>
+            </fw-managed-list-sm>
+          </section>
+        </fw-form-subsection>
+      </div>
+
+      <div class="row-btn">
+        <div class="row">
+          <div class="col-s-8">
+            <button
+              id="save-collection-button"
+              class="btn btn-block btn-success"
+              data-loading-text="Saving..."
+              data-event-title="Collection edited"
+              data-event-category="Customization"
+              ng-disabled="!mainFormDirty() || manageCollectionForm.isSubmitting"
+              can-submit="manageCollectionForm.$valid && mainFormDirty()"
+              fw-form-submit="save()">Save Changes</button>
+            <button
+              id="cancel-button"
+              class="btn btn-default btn-block"
+              ui-sref="{{previousState}}"
+              ng-click="manageCollectionForm.discard()">Cancel</button>
+          </div>
+          <div class="col-s-4">
+            <fw-form-input-delete
+              item="model.savedName"
+              item-type="Collection"
+              link-id="delete-collection-link"
+              data-event-title="Collection deleted"
+              data-event-category="Customization"
+              delete="manageCollectionForm.discard(); delete()"></fw-form-input-delete>
+          </div>
+        </div>
+      </div>
+
+      <div ng-show="manageCollectionForm.message" class="alert alert-danger sub-form-alert">
+        <p>{{manageCollectionForm.message}}</p>
+      </div>
+    </fw-panel12>
+    <fw-form-dirty-confirmation form="manageCollectionForm" form-dirty="mainFormDirty"></fw-form-dirty-confirmation>
+  </form>
+
+  <!-- Sub-forms use NG-IF to ensure their state is cleared on exit -->
+  <form novalidate
+        role="form"
+        name="newReleaseTimeForm"
+        ng-if="model.addingReleaseTime">
+
+    <fw-breadcrumb
+      current="New Release Time"
+      previous="{{model.savedName}}"
+      previous-state="model.addingReleaseTime = false"></fw-breadcrumb>
+
+    <fw-panel12>
+
+      <fw-form-input-hour-of-week ng-model="model.hourOfWeek"></fw-form-input-hour-of-week>
+
+      <button
+        id="add-release-time-button"
+        class="btn btn-block btn-success"
+        ng-click="saveNewReleaseTime()">Add Release Time</button>
+      <button
+        id="cancel-release-time-button"
+        class="btn btn-default btn-block"
+        ng-click="model.addingReleaseTime = false">Cancel</button>
+
+    </fw-panel12>
+
+  </form>
+
+  <!-- Sub-forms use NG-IF to ensure their state is cleared on exit -->
+  <form novalidate
+        role="form"
+        name="manageReleaseTimeForm"
+        ng-if="model.selectedReleaseTime">
+
+    <fw-breadcrumb
+      current="Edit Release Time"
+      previous="{{model.savedName}}"
+      previous-state="model.selectedReleaseTime = null"></fw-breadcrumb>
+
+    <fw-panel12>
+      <fw-form-input-hour-of-week ng-model="model.hourOfWeek"></fw-form-input-hour-of-week>
+
+      <div class="row">
+        <div class="col-s-8">
+          <button
+            id="save-release-time-button"
+            class="btn btn-block btn-success"
+            ng-disabled="manageReleaseTimeForm.$pristine || manageReleaseTimeForm.isSubmitting"
+            ng-click="saveReleaseTime()">Update Release Time</button>
+          <button
+            id="cancel-release-time-button"
+            class="btn btn-default btn-block"
+            ng-click="model.selectedReleaseTime = null">Cancel</button>
+        </div>
+        <div class="col-s-4">
+          <fw-form-input-delete
+            ng-if="model.schedule.length > 1"
+            item-type="Release Time"
+            link-id="delete-release-time-link"
+            delete="deleteReleaseTime()"></fw-form-input-delete>
+        </div>
+      </div>
+
+    </fw-panel12>
+  </form>
+
+</div>

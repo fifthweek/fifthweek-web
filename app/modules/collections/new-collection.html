@@ -1,0 +1,35 @@
+<fw-breadcrumb current="New Collection"></fw-breadcrumb>
+
+<fw-panel12>
+
+  <form novalidate
+        role="form"
+        id="createCollectionForm"
+        name="form">
+
+    <fw-form-input-collection-name ng-model="model.collection.name" placeholder="New collection name" required focus></fw-form-input-collection-name>
+
+    <fw-form-input-select input-id="model-selected-channel" selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
+
+
+    <div class="row-btn">
+      <button
+        id="create-collection-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Creating..."
+        data-event-title="Collection created"
+        data-event-category="Customization"
+        fw-form-submit="createCollection()">Create Collection</button>
+      <button
+        id="cancel-button"
+        class="btn btn-default btn-block"
+        ui-sref="{{previousState}}">Cancel</button>
+    </div>
+
+    <div ng-show="form.message" class="alert alert-danger sub-form-alert">
+      <p>{{form.message}}</p>
+    </div>
+
+  </form>
+
+</fw-panel12>

@@ -1,0 +1,104 @@
+@import '_base';
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
+
+@mixin make-grid-columns-2($i: 1, $list: ".col-ss-#{$i}, .col-s-#{$i}") {
+  @for $i from (1 + 1) through $grid-columns {
+    $list: "#{$list}, .col-ss-#{$i}, .col-s-#{$i}";
+  }
+  #{$list} {
+    position: relative;
+    // Prevent columns from collapsing when empty
+    min-height: 1px;
+    // Inner gutter via padding
+    padding-left:  ($grid-gutter-width / 2);
+    padding-right: ($grid-gutter-width / 2);
+  }
+}
+
+@import 'bootstrap-sass-official/assets/stylesheets/_bootstrap.scss';
+
+/* IMPORTANT:
+ * Custom breakpoints must be generated after Bootstrap, and in complete order including those existing Bootstrap
+ * breakpoints. Otherwise col-* classes will not override each other correctly.
+ */
+@include make-grid(xs);
+
+@media (min-width: $screen-ss-min) {
+  @include make-grid(ss);
+}
+@media (min-width: $screen-s-min) {
+  @include make-grid(s);
+}
+@media (min-width: $screen-sm-min) {
+  @include make-grid(sm);
+}
+@media (min-width: $screen-md-min) {
+  @include make-grid(md);
+}
+@media (min-width: $screen-lg-min) {
+  @include make-grid(lg);
+}
+
+
+.visible-over-xs {
+  @media (max-width: $screen-xs-max) {
+    display: none !important;
+  }
+}
+.visible-over-ss {
+  @media (max-width: $screen-ss-max) {
+    display: none !important;
+  }
+}
+.visible-over-s {
+  @media (max-width: $screen-s-max) {
+    display: none !important;
+  }
+}
+.visible-over-sm {
+  @media (max-width: $screen-sm-max) {
+    display: none !important;
+  }
+}
+.visible-over-md {
+  @media (max-width: $screen-md-max) {
+    display: none !important;
+  }
+}
+
+.visible-under-ss {
+  @media (min-width: $screen-ss-min) {
+    display: none !important;
+  }
+}
+.visible-under-s {
+  @media (min-width: $screen-s-min) {
+    display: none !important;
+  }
+}
+.visible-under-sm {
+  @media (min-width: $screen-sm-min) {
+    display: none !important;
+  }
+}
+.visible-under-md {
+  @media (min-width: $screen-md-min) {
+    display: none !important;
+  }
+}
+.visible-under-lg {
+  @media (min-width: $screen-lg-min) {
+    display: none !important;
+  }
+}
+
+@include make-grid-columns-2;
+
+@media (max-width: $screen-ss-max) {
+  @include responsive-invisibility('.hidden-ss');
+}
+
+@media (max-width: $screen-s-max) {
+  @include responsive-invisibility('.hidden-s');
+}

@@ -1,0 +1,41 @@
+﻿<form novalidate
+      name="form"
+      role="form">
+
+  <fw-panel6 ng-show="!form.submissionSucceeded" id="password-reset-request-panel">
+
+    <div class="form-group">
+      <input id="passwordResetRequestData-username" type="text" class="form-control" placeholder="Username" ng-model="passwordResetRequestData.username" focus=true>
+    </div>
+    <h5 class="form-group">Or</h5>
+    <div class="form-group">
+      <input id="passwordResetRequestData-email" type="text" class="form-control" placeholder="Email" ng-model="passwordResetRequestData.email">
+    </div>
+
+    <div class="row-btn">
+      <button
+        id="password-reset-request-button"
+        class="btn btn-success btn-block"
+        type="submit"
+        data-event-title="Password reset requested"
+        data-event-category="Sign-in"
+        data-loading-text="Sending request..."
+        fw-form-submit="requestPasswordReset()">Reset Password</button>
+    </div>
+
+    <div ng-show="form.message" class="alert alert-danger sub-form-alert" id="password-reset-request-message">
+      <p>{{form.message}}</p>
+    </div>
+
+  </fw-panel6>
+
+  <fw-panel12 ng-show="form.submissionSucceeded" id="password-reset-request-success">
+    <h4 class="text-suffix text-success">Please check your inbox</h4>
+    <p>You should receive an email from us containing a link to reset your password.</p>
+  </fw-panel12>
+
+</form>
+
+
+
+

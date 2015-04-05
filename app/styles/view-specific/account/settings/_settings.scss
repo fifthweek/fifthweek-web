@@ -1,0 +1,13 @@
+@import '_base';
+
+$html-name-space:'.page-account-settings';
+
+#{$html-name-space} {
+  .form-wrap {
+    margin-bottom:0;
+  }
+
+  .image-container{
+    width: 150px;
+  }
+}

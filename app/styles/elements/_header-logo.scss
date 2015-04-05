@@ -1,0 +1,24 @@
+@import '_base';
+
+#{$logo}, #{$logo-sm} {
+  font:{
+    family: 'Merriweather', serif;
+    size:24px;
+    weight:900;
+  }
+  letter-spacing: -1.2px;
+  a {
+    color:$white-1;
+    #{$state-hover-focus} {
+      text-decoration:none;
+    }
+  }
+}
+.navbar-default #{$logo} {
+  padding:7px 15px 7px 3px;
+  height:auto;
+  line-height:36px;
+  @media (min-width:$screen-md-min) {
+    display:none;
+  }
+}

@@ -1,0 +1,95 @@
+@import '_base';
+
+@mixin modal-box-shadow {
+  box-shadow: 0 2px 26px rgba(0, 0, 0, .3), 0 0 0 1px rgba(0, 0, 0, .05);
+}
+
+.modal-content {
+  border-radius: $border-radius;
+  @include modal-box-shadow;
+
+  h4 {
+    font-size:15px;
+    background: $body-bg;
+    border-bottom: 1px solid $grey-light-3;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    margin-bottom: 0;
+  }
+
+  .row-btn {
+    background: $white-2;
+    border-top: 1px solid $grey-light-3;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    padding:($modal-padding - 5) $modal-padding;
+  }
+
+  .btn-close {
+    float:right;
+    font-size: 18px;
+    color:$grey-light-5;
+    &:hover {
+      color:$grey-light-4;
+    }
+  }
+
+  .modal-body, h4 {
+    padding:($modal-padding - 1) $modal-padding;
+  }
+
+  .form-modal-body {
+    padding-bottom: 0;
+  }
+}
+
+.has-modal-cross-button-outside {
+  margin-top: 40px; // Ensure cross always visible.
+}
+
+.modal-cross-button-outside {
+  position: absolute;
+  opacity: 0.5;
+  right:-32px;
+  top:-60px;
+
+  // Provides a larger area to activate hover state.
+  background: transparent;
+  width: 80px;
+  height: 80px;
+  padding-top: 30px;
+  padding-right: 30px;
+
+  i {
+    width:100%;
+    text-align: right;
+    font-size:24px;
+    color:#fff;
+  }
+}
+
+.modal-body:hover .modal-cross-button-outside {
+  opacity: 1;
+}
+
+.modal-dialog {
+  @media (min-width:$screen-sm-min) {
+    margin:9.5% auto;
+  }
+}
+.modal-backdrop.in {
+  position:fixed;
+  height:100%;
+  opacity:0.4;
+}
+
+.modal.fade .modal-dialog {
+  @include translate(0, -30px); // Lessen default animation.
+}
+.modal.in .modal-dialog {
+  @include translate(0, 0);
+}
+
+.modal-sm {
+  width: 360px; /* Deleting release times is currently the longest modal */
+}

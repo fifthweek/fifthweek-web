@@ -1,0 +1,19 @@
+<form novalidate
+      role="form"
+      name="form">
+  <fw-form-modal name="Discard changes?">
+    <form-body>
+      <div class="form-group">
+        <p class="bottom-buffer">
+          You have unsaved changes, do you want to continue?
+        </p>
+      </div>
+    </form-body>
+    <form-buttons>
+      <button
+        id="discard-button"
+        class="btn btn-block btn-danger"
+        ng-click="$close(true)">Yes, discard changes</button>
+    </form-buttons>
+  </fw-form-modal>
+</form>

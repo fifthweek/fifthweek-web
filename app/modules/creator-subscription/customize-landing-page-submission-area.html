@@ -1,0 +1,21 @@
+<div class="row-btn">
+  <div ng-show="form.submissionSucceeded && form.$pristine" class="alert alert-success" >
+    <p>Saved successfully</p>
+  </div>
+  <div ng-show="form.message" class="alert alert-danger form-message">
+    <p>{{form.message}}</p>
+  </div>
+  <div ng-show="form.hasAttemptedSubmit && !form.$valid" class="alert alert-danger form-invalid-message">
+    <p>Please correct all invalid fields before proceeding.</p>
+  </div>
+  <button type="submit"
+         class="btn btn-block btn-success save-changes-button"
+         data-loading-text="Saving..."
+         data-event-title="Customize Landing Page form submitted"
+         data-event-category="Customize Landing Page"
+         ng-disabled="form.$pristine || form.isSubmitting"
+         fw-form-submit="submitForm()">
+    Save Changes
+  </button>
+  <fw-form-cancel-button ng-disabled="form.$pristine || form.isSubmitting" class="form-cancel-button"></fw-form-cancel-button>
+</div>

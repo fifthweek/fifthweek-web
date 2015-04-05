@@ -1,0 +1,91 @@
+<h5 ng-if="source ===  sources.creatorTimeline && post.dayGrouping">
+  <span class="day-grouping">{{post.liveDate | date:fifthweekConstants.dayGroupingDateFormat:'UTC'}}</span>
+</h5>
+<div data-live-date="{{post.liveDate}}" class="post timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
+
+  <div ng-if="post.image && post.renderSizeRatio" class="full-width-image-container">
+    <div ng-style="{'padding-top': post.renderSizeRatio}"></div>
+    <img class="full-width-image" ng-if="post.image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
+  </div>
+  <img ng-if="post.image && !post.renderSizeRatio" class="full-width-image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
+
+  <div ng-if="post.isScheduled">
+    <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
+    <p class="tag" ng-if="post.scheduledByQueue">Queued, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
+  </div>
+
+  <div class="text">
+    <div class="content" ng-if="post.comment || post.fileSource">
+
+      <span  fw-markdown id="post-comment" ng-model="post.comment" ng-if="post.comment"></span>
+
+      <span id="post-link" ng-if="post.fileSource">
+        <p>
+          <a class="btn-file-download file-content" ng-click="openFile(post.file)">
+            {{post.fileSource.fileName}}.{{post.fileSource.fileExtension}}
+          </a>
+          <span class="file-size">{{post.fileSource.readableSize}}</span>
+        </p>
+      </span>
+    </div>
+
+    <hr />
+
+    <div class="row info-actions">
+      <div class="col-xs-8 info">
+        <a class="author" ui-sref="account">
+          <img class="author-image" ng-src="{{post.creator.profileImage.resolvedUri}}" />
+        </a>
+        <ul>
+          <li>
+            <a ui-sref="account" class="poster-name">
+              {{post.creator.username}}
+            </a>
+            <span ng-if="post.collection">
+              in
+              <a ui-sref="creators.collections.edit({id: post.collectionId})" class="container-name">
+                {{post.collection.name}}
+              </a>
+            </span>
+            <span ng-if="!post.collection">
+              to
+               <a ui-sref="creators.channels.edit({id: post.channelId})" class="container-name">
+                 {{post.channel.isDefault ? 'Everyone' : post.channel.name}}
+               </a>
+            </span>
+          </li>
+          <li>
+            <a ng-click="editPost(post)" class="live-in-info">
+              <span ng-if="post.isScheduled">live </span>{{post.liveIn}}
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-xs-4 actions">
+        <ul>
+          <li class="actions-more">
+            <span class="dropdown" dropdown on-toggle="toggled(open)">
+              <button class="dropdown-toggle" dropdown-toggle>
+                <i class="fa fa-ellipsis-h"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a ng-click="editPost(post)">Edit</a></li>
+                <li ng-if="post.isScheduled && post.scheduledByQueue"><a ng-click="post.reorder()">Reorder</a></li>
+                <li>
+                  <fw-delete-link
+                    item-type="Post"
+                    event-title="Post deleted"
+                    event-category="{{sourceName}}"
+                    delete="deletePost(post.postId)">
+                    Delete
+                  </fw-delete-link>
+                </li>
+              </ul>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>

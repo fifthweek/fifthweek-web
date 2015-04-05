@@ -1,0 +1,37 @@
+<div ng-include="'../creator-compose/directives/compose-options.html'"></div>
+
+<fw-panel12>
+  <h4>Coming soon...</h4>
+  <p>The ability to reorder queued posts is coming very soon.</p>
+</fw-panel12>
+
+<div class="managed-list" ng-if="false" ng-init="collections = [
+  {id:'a', name:'Blog', postCount:6, postCountText:'6 Posts', schedule:['Monday', 'Wednesday', 'Friday']},
+  {id:'c', name:'Wallpapers', postCount:1, postCountText:'1 Post', schedule:['Tuesday', 'Thursday']},
+  {id:'b', name:'Side Comic', postCount:0, postCountText:'No Posts', schedule:['Sunday']}
+]">
+
+  <fw-panel12>
+    <div class="row-selection" ng-repeat="item in collections" ui-sref="creators.posts.scheduled.queues.reorder({id: item.id})" ng-class="{'row-selection-disabled': item.postCount === 0}">
+      <div class="row">
+        <div class="col-xs-9">
+          <h5 ng-if="item.postCount > 0">
+            <a href>{{item.name}}</a>
+          </h5>
+          <h5 ng-if="item.postCount === 0">{{item.name}}</h5>
+          <p class="release-times">
+            <span ng-repeat="weekday in item.schedule">{{weekday}}</span>
+          </p>
+        </div>
+        <div class="col-xs-3">
+          <button class="btn btn-default btn-slim" ng-disabled="item.postCount === 0">
+            <span class="visible-over-s">{{item.postCountText}}</span>
+            <span class="visible-under-sm">{{item.postCount}}</span>
+            <i class="fa fa-chevron-right btn-icon-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </fw-panel12>
+
+</div>

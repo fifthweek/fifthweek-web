@@ -1,0 +1,55 @@
+@import '_base';
+
+.browsehappy {
+  margin: 0px;
+  padding: 8px 24px;
+  background: #ccc;
+  color: #000;
+  text-align: center;
+}
+
+[ng\:cloak],
+[ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+  display:none !important;
+}
+
+::-moz-selection {
+  background:$brand-highlight;
+  color:$white-full;
+  text-shadow:none;
+}
+::selection {
+  background:$brand-highlight;
+  color:$white-full;
+  text-shadow:none;
+}
+
+.vcenter {
+  @include vcenter;
+}
+
+.full-width-float {
+  width:100%;
+  float:left;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0;
+}
+
+img {
+  max-width:100%;
+}
+
+.tab-content {
+  margin-top:-2px;
+}
+
+.disable-animations *,
+.disable-animations *:after,
+.disable-animations *:before {
+  transition: none !important;
+}

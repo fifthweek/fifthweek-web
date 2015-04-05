@@ -1,0 +1,36 @@
+@import '_base';
+
+.snap-content {
+  background:$body-bg;
+  transition:none !important;
+}
+.snap-drawer-left {
+  background:#fff;
+  border-right: 1px solid $grey-light-3;
+}
+
+//active snap-drawer with overlay
+/*
+.snapjs-left {
+  .navbar-default {
+    background:rgba(0, 0, 0, 0.75);
+  }
+  .snap-drawers {
+    background:#111;
+  }
+
+  .snap-overlay {
+    position:absolute;
+    width:100%;
+    height:100%;
+    &::before {
+      content:'';
+      position:fixed;
+      height:100%;
+      width:100%;
+      background:rgba(0, 0, 0, 0.75);
+      z-index:1040;
+    }
+  }
+}
+*/

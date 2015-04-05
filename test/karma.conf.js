@@ -21,19 +21,25 @@ module.exports = function(config) {
       'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-resource/angular-resource.js',
       'bower_components/angular-route/angular-route.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
-      'bower_components/angular-strap/dist/angular-strap.js',
-      'bower_components/angular-strap/dist/angular-strap.tpl.js',
+      'bower_components/snapjs/snap.js',
+      'bower_components/angular-snap/angular-snap.js',
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
       'bower_components/ng-focus/ng-focus.js',
-      'bower_components/AngularJS-Toaster/toaster.js',
-      'bower_components/angular-loading-bar/build/loading-bar.js',
+      'bower_components/angular-elastic/elastic.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/lodash/lodash.js',
+      'bower_components/marked/lib/marked.js',
+      'bower_components/ng-videosharing-embed/build/ng-videosharing-embed.min.js',
+      'bower_components/moment/moment.js',
+      'app/scripts/app.js',
       'app/scripts/**/*.js',
+      'app/modules/**/*.js',
+      'app/**/*.html',
       'test/mock/*.js',
-      'test/pages/**/*.js',
       'test/spec/**/*.js'
     ],
 
@@ -41,7 +47,7 @@ module.exports = function(config) {
     exclude: [
       'app/scripts/authComplete.js',
       'app/scripts/startup.js',
-      'app/scripts/analytics/startupanalytics.js'
+      'app/scripts/analytics/startup-analytics.js'
     ],
 
     // web server port
@@ -56,12 +62,20 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: [
-      'Chrome'
+      'ChromeNoSandbox'
     ],
+
+    customLaunchers: {
+      ChromeNoSandbox: {
+        base: 'Chrome',
+        flags: ['--no-sandbox'] // Requirement for Travis.
+      }
+    },
 
     // Which plugins to enable
     plugins: [
       'karma-phantomjs-launcher',
+      'karma-ng-html2js-preprocessor',
       'karma-chrome-launcher',
       'karma-safari-launcher',
       'karma-firefox-launcher',
@@ -77,6 +91,15 @@ module.exports = function(config) {
     // level of logging
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
     logLevel: config.LOG_INFO,
+
+    preprocessors: {
+      'app/**/*.html': ['ng-html2js']
+    },
+
+    ngHtml2JsPreprocessor: {
+      stripPrefix: 'app/',
+      moduleName: 'webApp.views'
+    }
 
     // Uncomment the following lines if you are using grunt's server to run the tests
     // proxies: {

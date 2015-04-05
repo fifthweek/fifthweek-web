@@ -1,0 +1,26 @@
+<fw-form-group input-name="collectionName">
+  <div class="row">
+    <div class="col-{{breakpoint}}-6">
+      <div fw-form-input-glyphs>
+        <input
+          id="{{inputId}}"
+          ng-model="ngModel[ngModelAccessor]"
+          name="collectionName"
+          type="text"
+          class="form-control"
+          placeholder="{{placeholder}}"
+          ng-maxlength="50"
+          maxlength="50"
+          focus="{{focus}}"
+          ng-required="required">
+      </div>
+      <small ng-if="showHelp">(like an album, except not just for photos)</small>
+    </div>
+    <div class="col-{{breakpoint}}-6">
+      <p fw-form-input-invalid-p="maxlength">Allowed 50 characters at most.</p>
+      <span ng-if="required">
+        <p fw-form-input-invalid-p="required">A name is required.</p>
+      </span>
+    </div>
+  </div>
+</fw-form-group>

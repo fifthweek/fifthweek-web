@@ -1,0 +1,35 @@
+<fw-breadcrumb current="New Channel"></fw-breadcrumb>
+
+<fw-panel12>
+
+  <form novalidate
+        role="form"
+        id="createChannelForm"
+        name="form">
+
+    <fw-form-input-channel-name ng-model="model.channel.name" placeholder="New channel name" required focus></fw-form-input-channel-name>
+    <fw-form-input-channel-description ng-model="model.channel.description" required></fw-form-input-channel-description>
+    <fw-form-input-channel-price ng-model="model.channel.price" required></fw-form-input-channel-price>
+    <fw-form-input-channel-visibility ng-model="model.channel.hidden" required></fw-form-input-channel-visibility>
+
+    <div class="row-btn">
+      <button
+        id="create-channel-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Creating..."
+        data-event-title="Channel created"
+        data-event-category="Customization"
+        fw-form-submit="create()">Create Channel</button>
+      <button
+        id="cancel-button"
+        class="btn btn-default btn-block"
+        ui-sref="{{previousState}}">Cancel</button>
+    </div>
+
+    <div ng-show="form.message" class="alert alert-danger sub-form-alert">
+      <p>{{form.message}}</p>
+    </div>
+
+  </form>
+
+</fw-panel12>

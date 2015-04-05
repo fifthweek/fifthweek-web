@@ -1,0 +1,21 @@
+<div id="sidebar" class="sidebar" snap-drawer="left" data-ng-controller="SidebarCtrl">
+  <div ng-include="'views/partials/logo.html'"></div>
+  <ul>
+    <li ng-repeat="item in navigation">
+      <hr ng-if="item.separator" />
+      <a ng-if="!item.separator"
+         class="{{item.color}}"
+         ng-class="{active: item.isActive}"
+         id="sidebar-{{item.id}}"
+         ui-sref="{{item.state}}"
+         snap-close>
+        <i ng-class="item.icon"></i>{{item.name}}
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="sidebar-footer">
+    <p class="version"><a ui-sref="help.faq" snap-close>Public Beta</a></p>
+    <p id="browserStackMention">Tested on <a ng-href="http://www.browserstack.com/" target="_blank">BrowserStack</a></p>
+    <p>&copy; Fifthweek 2015</p>
+</div>

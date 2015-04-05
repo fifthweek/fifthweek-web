@@ -1,0 +1,14 @@
+@import '_base';
+
+.panel {
+  box-shadow: $panel-shadow;
+  margin-top:15px;
+  border: none;
+  border-radius: $panel-border-radius;
+  h2:first-child {
+    margin-top: 0;
+  }
+}
+.panel:first-child {
+  margin-top:0;
+}

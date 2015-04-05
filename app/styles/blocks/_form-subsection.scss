@@ -1,0 +1,70 @@
+@import '_base';
+
+.form-subsection {
+  border:1px solid transparent;
+  border-top-color: $grey-light-3;
+  margin-left: -6px;
+  margin-right: -6px;
+  padding:15px 6px;
+
+  &:last-child {
+    border-bottom-color: $grey-light-3;
+  }
+
+  .form-subsection-toggle button {
+    float:right;
+  }
+
+  /* So contrast is below form group label */
+  strong {
+    color: $grey-dark-2;
+  }
+
+  .form-subsection-section > *:first-child {
+    margin-top: 10px;
+  }
+}
+
+.form-group {
+  /* Exceptional rules for when the page is filled exclusively with form-subsections */
+  &:first-child {
+    .form-subsection {
+      &:first-child {
+        border-top: none;
+        padding-top:0;
+      }
+      &:last-child {
+        border-bottom: none;
+        padding-bottom:0;
+      }
+    }
+  }
+}
+
+.modal-content {
+  .form-subsection {
+    margin-left: $modal-padding * -1;
+    margin-right: $modal-padding * -1;
+    padding-left: $modal-padding;
+    padding-right: $modal-padding;
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom:0;
+    }
+  }
+}
+
+.form-subsection-expanded {
+  padding-bottom: 0; /* Expanded complex is typically quite complex and includes its own bottom margins */
+
+  .if-collapsed {
+    display: none;
+  }
+}
+
+.form-subsection-collapsed {
+  .if-expanded {
+    display: none;
+  }
+}

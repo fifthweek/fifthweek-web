@@ -1,0 +1,77 @@
+@import '_base';
+
+html,
+body {
+  height:100%;
+}
+
+body {
+  overflow-x:hidden;
+}
+
+.panel-body,
+.footer {
+  .row {
+    margin:0 -15px;
+  }
+}
+
+.left-right-container-wrap {
+  @media (min-width:$screen-md-min) {
+    display:table;
+    width:100%;
+    height:100vh;
+  }
+}
+
+#{$left-container},
+#{$right-container} {
+  @media (min-width:$screen-md-min) {
+    display:table-cell;
+    vertical-align:top;
+  }
+}
+
+#{$left-container} {
+  @media (min-width:$screen-md-min) {
+    background:#fff;
+    width:$sidebar-width;
+    min-width:$sidebar-width;
+    border-right:1px solid $grey-light-3;
+  }
+}
+
+#{$right-container} {
+  padding:0;
+  @media (min-width:$screen-s-min) {
+    padding:0 60px;
+  }
+}
+
+.main-container {
+  margin-top:81px;
+  padding-bottom: 80px; /* Allow users to bring bottom of a scrolling page further into view */
+  @media (min-width:$navbar-lg-min) {
+    margin-top:92px;
+  }
+
+  max-width:630px;
+
+  > div {
+    padding-left: $main-cont-padding-small;
+    padding-right: $main-cont-padding-small;
+  }
+}
+
+.navigation-hidden {
+  .main-container {
+    max-width:100%;
+    margin-top:0;
+  }
+  .navbar-fixed-top {
+    display:none;
+  }
+  #{$right-container} {
+    padding:0;
+  }
+}

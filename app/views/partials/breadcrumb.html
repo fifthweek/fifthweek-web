@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h4 id="breadcrumb">
+      <a class="item" ui-sref="{{rootState}}"><i class="{{rootIcon}}"></i> {{rootName}}</a>
+
+      <span ng-repeat="item in intermediateStates">
+        <i class="fa fa-angle-right"></i>
+        <a class="item" ng-click="item.click()" href>{{item.name}}</a>
+      </span>
+
+      <span class="item">
+        <i class="fa fa-angle-right"></i>
+        <span>{{current}}</span>
+      </span>
+    </h4>
+  </div>
+</div>

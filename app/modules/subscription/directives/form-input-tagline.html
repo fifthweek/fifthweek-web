@@ -1,0 +1,28 @@
+<fw-form-group input-name="tagline">
+  <div class="row">
+    <div class="col-{{breakpoint}}-6">
+      <div fw-form-input-glyphs>
+        <input
+          id="{{inputId}}"
+          ng-model="ngModel[ngModelAccessor]"
+          name="tagline"
+          type="text"
+          class="form-control"
+          placeholder="{{placeholder}}"
+          ng-minlength="5"
+          ng-maxlength="55"
+          maxlength="55"
+          focus="{{focus}}"
+          ng-required="required">
+      </div>
+      <small ng-if="showHelp">e.g. &#34;Web Comics And More&#34;</small>
+    </div>
+    <div class="col-{{breakpoint}}-6">
+      <p fw-form-input-invalid-p="minlength">Must be at least 5 characters.</p>
+      <p fw-form-input-invalid-p="maxlength">Allowed 55 characters at most.</p>
+      <span ng-if="required">
+        <p fw-form-input-invalid-p="required">A tagline is required.</p>
+      </span>
+    </div>
+  </div>
+</fw-form-group>

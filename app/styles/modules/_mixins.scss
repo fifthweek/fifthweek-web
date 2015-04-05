@@ -1,0 +1,98 @@
+@mixin text-shadow-black {
+  text-shadow:0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(30, 30, 30, 0.3);
+}
+@mixin text-shadow-black-soft {
+  text-shadow:0 1px 1px rgba(0, 0, 0, 0.5), 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+@mixin text-shadow-black-hard {
+  text-shadow:0 0.5px 0.5px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+@mixin vcenter {
+  display: flex;
+  align-items: center;
+}
+
+@mixin vbottom {
+  display: flex;
+  align-items: flex-end;
+}
+
+@mixin mobile-nav-scroll ($width){
+  .header-navbar-menu-wrap {
+    @media (max-width:$width + 10px) {
+      overflow-y:hidden;
+      overflow-x:visible;
+      height:50px;
+    }
+  }
+  ul.header-navbar-menu {
+    @media (max-width:$width + 10px) {
+      width:$width;
+      //height:100%;
+      height:35px;
+      overflow:hidden;
+      text-align:left;
+    }
+  }
+}
+
+@mixin header-navbar-heading-spacing {
+  @media (min-width:$screen-ss-min) {
+    padding-top:11px;
+  }
+  @media (min-width:$screen-s-min) {
+    padding-left:75px;
+  }
+}
+
+@mixin remove-blob-image-styling {
+  .fa {
+    display:none;
+  }
+  .pending-image {
+    border:none;
+  }
+}
+
+@mixin inline-block($v-align) {
+  display:inline-block;
+  vertical-align:$v-align;
+}
+
+//panel-box-shadow is bootstrap default.
+//used in backlog > actionsDropDown
+@mixin panel-box-shadow {
+  box-shadow:0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+@mixin form-control-height($height) {
+  .form-control {
+    height:$height;
+  }
+  .form-control-feedback {
+    line-height:$height;
+    height:$height;
+    width:$height;
+  }
+}
+
+@mixin panel-body-slim {
+  .panel-body {
+    padding-top: $main-cont-padding-small;
+    padding-bottom: $main-cont-padding-small;
+  }
+}
+
+@mixin dot-separator {
+  content: '.';
+  display: inline-block;
+  vertical-align: top;
+  font-size: 20px;
+  line-height: 8px;
+}
+
+@mixin transition-delays($transition-delay...) {
+  -webkit-transition-delay: $transition-delay;
+  transition-delay: $transition-delay;
+}

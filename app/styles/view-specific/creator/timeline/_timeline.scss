@@ -1,0 +1,370 @@
+@import '_base';
+
+$html-name-space:'.page-timeline';
+$header-image-height:500px;
+$header-image-height-sm:300px;
+$header-image-height-xs:220px;
+$header-height:108px;
+
+@mixin light-text {
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  font-weight: 200;
+  text-shadow: 0.5px 0.5px 0 #ddd;
+  color: $grey-dark-4;
+}
+
+@mixin header-shadow {
+  box-shadow: 0 2px 9px $image-overlay;
+}
+
+@mixin dark-button {
+  margin-left:12px;
+  border:1px solid transparent;
+  padding: 6px 8px;
+  color:#fff;
+  border-radius: 4px;
+  font-size: $p-font-size - 2;
+  font-weight: bold;
+}
+
+@mixin h4-bottom-margin {
+  margin-bottom: 10px;
+  @media (min-width:$screen-lg-min) {
+    margin-bottom: -20px;
+  }
+}
+
+#edit-page-link {
+  float:right;
+}
+
+#{$html-name-space} {
+  .header-image-control-overlay {
+    position: absolute;
+    top: $main-cont-padding-small;
+    left: $main-cont-padding-small;
+    right: $main-cont-padding-small;
+    z-index: 1;
+    @media (min-width:$screen-s-min) {
+      top: 27px;
+      left: 27px;
+      right: 27px;
+    }
+  }
+  #{$logo-sm} {
+    background-color: $black-off;
+    border-radius: 3px;
+    width:39px;
+    height:39px;
+    text-align: center;
+    padding-top: 9px;
+    margin:0;
+    float:left;
+  }
+  .header-image {
+    @include header-shadow;
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    background-size: cover;
+    background-position: center center;
+    height:$header-image-height-xs;
+    @media (min-width:$screen-ss-min) {
+      height:$header-image-height-sm;
+    }
+    @media (min-width:$screen-s-min) {
+      height:$header-image-height;
+    }
+  }
+  .header {
+    margin-top:90px;
+    @media (min-width:$screen-s-min) {
+      margin-top:$header-image-height - $header-height;
+      &:before {
+        content:' ';
+        display:block;
+        position: absolute;
+        left:50%;
+        right:0;
+        height:$header-height;
+        background: $image-overlay;
+        margin-left:-200px;
+      }
+    }
+
+    @media (min-width:$screen-lg-min) {
+      &:before {
+        margin-left:-400px;
+      }
+    }
+
+    .header-text {
+      @include post-left-right-padding;
+    }
+
+    h2, h3 {
+      color: $grey-dark-4;
+      text-align: center;
+      @media (min-width:$screen-s-min) {
+        color: #fff;
+        text-align:left;
+        text-shadow:0 1px 1px #1d1d1b;
+      }
+    }
+    h2 {
+      font-size: 36px;
+      font-weight:bold;
+      letter-spacing: -1.8px;
+      margin-top:0;
+      padding-top:17px;
+      margin-bottom: 5px;
+    }
+    h3 {
+      font-size: 24px;
+      font-weight: normal;
+      margin-bottom: 20px;
+      @media (min-width:$screen-s-min) {
+        margin-bottom: 48px;
+      }
+      @media (min-width:$screen-lg-min) {
+        width:125%; // Allow larger text to be displayed on one line.
+      }
+    }
+    h4 {
+      @include light-text;
+      text-align: center;
+      font-size: 20px;
+      line-height: 26px;
+      padding: 0;
+      margin: 0 0 50px;
+      @include h4-bottom-margin;
+      @media (min-width:$screen-s-min) {
+        text-align: left;
+      }
+    }
+    .creator {
+      position: relative;
+      width:70%;
+      margin: -25px auto 0 auto;
+      @include h4-bottom-margin;
+      @media (min-width:$screen-ss-min) {
+        width:60%;
+        margin-top:0;
+      }
+      @media (min-width:$screen-s-min) {
+        width:auto;
+        margin-top:-20px;
+      }
+      @media (min-width:$screen-sm-min) {
+        margin-right:-30px;
+        margin-left:30px;
+      }
+      @media (min-width:$screen-md-min - 70px) {
+        margin-top:-48px;
+      }
+      @media (min-width:($screen-lg-min + 70px)) {
+        margin-left:0;
+        margin-right:0;
+      }
+      .image-container {
+        background: $body-bg;
+        border-radius: 6px;
+        min-width: 176px; /* Ensures button is never wider than image */
+        .image-area {
+          @include header-shadow;
+          border-radius: 6px;
+        }
+      }
+
+      button {
+        font-size: $p-font-size;
+        color:#fff;
+        box-shadow: $post-shadow;
+        border:none;
+        height: auto;
+        padding: 10px 20px;
+        margin:0 auto;
+        display: block;
+        width:auto;
+      }
+      #subscribe-button {
+        margin-top:-25px;
+        padding: 13px 16px 15px 24px;
+        color:#fff;
+        background-color: $landing-page-highlight;
+        font-size: $p-font-size + 1;
+
+        @media (min-width:$screen-s-min) {
+          font-size: $p-font-size;
+        }
+
+        @media (min-width:$screen-sm-min + 100) {
+          font-size: $p-font-size + 1;
+        }
+
+        span {
+          @include dark-button;
+          background: $landing-page-highlight-2;
+        }
+      }
+      #subscribed-button {
+        margin-top:-20px;
+        text-transform: uppercase;
+        font-weight: 200;
+        letter-spacing: 1px;
+        background-color: $brand-highlight;
+        padding-right: 15px;
+        &:after {
+          content:"\f00c";
+          font-family:'FontAwesome';
+          margin-left: 8px;
+        }
+      }
+      .subscribe-button-wrapper {
+        position: absolute;
+        width:100%;
+      }
+      .button-footer {
+        @include light-text;
+        text-align:center;
+        padding-top: 42px;
+      }
+      .subscribed {
+        text-transform: uppercase;
+      }
+    }
+  }
+  .main-content {
+    margin:0 auto;
+    max-width:945px; /* Creates a col-8 with width of 600px for posts */
+    .col-s-4:first-child { /* must make up normal width of 33.3333333333% */
+      @media (min-width:$screen-sm-min) {
+        margin-left: 3.66666666666%;
+        width: 29.66666666666%;
+      }
+    }
+    .left-margin-offset {
+      @media (min-width:$screen-lg-min) {
+        margin-left: -16%;
+        margin-right: 16%;
+      }
+    }
+    .channels {
+      margin-bottom: 25px;
+      .subscribe-now {
+        text-align: right;
+        font-weight: bold;
+        a {
+          color: $landing-page-highlight;
+          font-size: $post-font-size + 1;
+        }
+      }
+      .subscribe-now-total {
+        position:absolute;
+        background: #fff;
+        padding:0 8px;
+        margin:0;
+        bottom:42px;
+        right:$post-margin-sm - 8px;
+        font-weight: bold;
+        font-size:$p-font-size;
+        color: $grey-light-4;
+        @media (min-width:$post-lg-min) {
+          right:$post-margin-lg - 8px;
+          bottom:66px;
+        }
+
+        span {
+          margin-right:3px;
+        }
+      }
+      .row {
+        h6 {
+          font-size: $p-font-size + 1;
+          font-weight: bold;
+          line-height: $p-line-height-hug + 1;
+          margin-bottom: 15px;
+        }
+        .channel-price-column {
+          text-align: right;
+          line-height: $p-line-height-hug + 1;
+          span {
+            @include dark-button;
+            background: $landing-page-highlight-3;
+            display: inline-block;
+            font-size: $p-font-size - 1;
+
+            &.unchecked {
+              border-color:$landing-page-highlight;
+              color: $landing-page-highlight;
+              background: none;
+              &:hover {
+                background:$landing-page-highlight-2;
+                border-color:transparent;
+                color:#fff;
+              }
+            }
+
+            &.non-default {
+              &:before {
+                content:"+";
+                font-size:$p-font-size + 1;
+                line-height: 10px;
+                margin: 0 4px 0 2px;
+              }
+              &:hover {
+                cursor: pointer;
+              }
+            }
+
+            &.checked {
+              &:before {
+                content:"\f00c";
+                font-family:'FontAwesome';
+                line-height: 10px;
+                font-size:12px;
+                font-weight: normal;
+                margin: 0 3px 0 0px;
+              }
+            }
+
+            &.default {
+              &:before {
+                content:none;
+              }
+            }
+          }
+        }
+        ul {
+          padding: 0 0 30px 0;
+          margin: 0;
+
+          li {
+            position: relative;
+            list-style: none;
+            margin-bottom: 10px;
+            padding-left: 25px;
+            &:last-child {
+              margin-bottom: 0;
+            }
+            &:before {
+              content:"\f105";
+              font-family:'FontAwesome';
+              position:absolute;
+              left:0;
+              font-size:18px;
+              line-height:$p-line-height;
+            }
+          }
+        }
+        &.last {
+          ul {
+            padding-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

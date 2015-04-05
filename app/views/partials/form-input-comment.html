@@ -1,0 +1,19 @@
+<fw-form-group input-name="comment">
+  <div class="row">
+    <div class="col-xs-12">
+      <textarea
+        id="{{inputId}}"
+        name="comment"
+        ng-model="ngModel[ngModelAccessor]"
+        class="form-control"
+        placeholder="{{placeholder}}"
+        ng-maxlength="2000"
+        maxlength="2000"
+        focus="{{focus}}"
+        msd-elastic></textarea>
+    </div>
+    <div class="col-xs-12">
+      <p fw-form-input-invalid-p="maxlength">Allowed 2000 characters at most.</p>
+    </div>
+  </div>
+</fw-form-group>

@@ -1,0 +1,79 @@
+@import '_base';
+
+ul.header-navbar-menu {
+  list-style-type: none;
+  @include inline-block(top);
+  padding:11px 11px 9px 45px;
+  margin:0;
+  white-space: nowrap;
+  font-size:18px;
+
+  @media (min-width:$screen-s-min) {
+    float:left;
+    margin-left:0;
+    padding-left:75px;
+  }
+
+  @media (min-width:$navbar-lg-min) {
+    padding-top: 12px;
+  }
+
+  li {
+    display: inline;
+    margin: 0px 40px 0px 0px;
+    font-size: 14px; //this hack removes excess height
+
+    a {
+      color:$grey-light-4;
+      text-transform:uppercase;
+      padding-bottom:15px;
+      outline:0 none;
+
+      @media (min-width:$navbar-lg-min) {
+        padding-bottom: 18px;
+      }
+
+      &:hover{
+        text-decoration: none;
+        color: $grey-dark-2;
+      }
+      &.active{
+        border-bottom: 2px solid $brand-highlight;
+        color: #222;
+      }
+
+      span{
+        vertical-align: middle;
+        height: 24px;
+        font-size: 16px; //this hack removes excess height
+        &:last-child {
+          font-size: 11px;
+          letter-spacing: 0.9px;
+          font-weight:bold;
+          line-height: 19px;
+        }
+        i {
+          margin-right: 4px;
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}
+
+//mobile navbar scrolling page specifics
+.page-help {
+  @include mobile-nav-scroll(360px);
+}
+
+.page-creators-post,
+.page-creators-post-note,
+.page-creators-post-image,
+.page-creators-post-file {
+  @include mobile-nav-scroll(440px);
+}
+
+.page-subscription,
+.page-subscription-landing {
+  @include mobile-nav-scroll(490px);
+}

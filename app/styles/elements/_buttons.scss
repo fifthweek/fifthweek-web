@@ -1,0 +1,234 @@
+@import '_base';
+
+.btn {
+  font-size:$button-font-size;
+  font-weight:bold;
+  height:$button-height-base;
+  border-radius: $input-border-radius;
+}
+
+.btn-default {
+  color:$grey-dark;
+  background: $grey-light-2;
+  border: solid 1px $grey-light-5;
+  #{$state-active-hover-focus} {
+    color:$grey-dark;
+    background: $white-full;
+    border: solid 1px $grey-light-5;
+  }
+}
+
+.btn-info.active {
+  color:$brand-highlight-2;
+  background: $white-full;
+  border: solid 1px $brand-highlight-3;
+}
+
+.btn-success {
+  #{$state-active-hover-focus} {
+    background:darken($brand-success, 5%);
+    border-color:darken($brand-success, 5%);
+  }
+}
+
+.btn-blue {
+  background:$blue-light-4;
+  color:$white-full;
+  #{$state-active-hover-focus} {
+    color:$white-full;
+  }
+}
+
+.btn-sm {
+  font-size:12px;
+}
+
+.btn-no-border {
+  border:0 none;
+}
+
+.input-group-btn .btn {
+  height:auto;
+}
+
+.btn + .btn {
+  @media (min-width:$screen-s-min) {
+    margin-left:$main-cont-padding-small;
+  }
+}
+
+.btn-link {
+  font-weight: normal;
+}
+
+input[type="submit"].btn-block,
+input[type="reset"].btn-block,
+input[type="button"].btn-block,
+.btn-block {
+  @include inline-block(top);
+  @media (min-width:$screen-s-min) {
+    width:auto;
+  }
+  @media (max-width:$screen-s-max) {
+    height: $input-height-base;
+  }
+}
+
+.btn-block + .btn-block {
+  margin-top:$main-cont-padding-small;
+  @media (min-width:$screen-s-min) {
+    margin-top:0;
+  }
+}
+
+.btn-transparent {
+  @include text-shadow-black;
+  background:none;
+  border:solid 1px $white-full;
+  color:$white-full;
+  #{$state-active-hover-focus} {
+    background:none;
+    color:$white-full;
+  }
+}
+
+.btn-transparent-emphasized {
+  @include text-shadow-black-hard;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.btn-transparent-text {
+  @extend .btn-transparent;
+  border:0 none;
+}
+
+.btn-icon-right, .btn-icon-right-collapsible {
+  margin-left: 6px;
+}
+.btn-icon-right-collapsible {
+  @media (max-width: $screen-s-max) {
+    margin: 0;
+  }
+}
+.btn-icon-left, .btn-icon-left-collapsible {
+  margin-right: 6px;
+}
+.btn-icon-left-collapsible {
+  @media (max-width: $screen-s-max) {
+    margin: 0;
+  }
+}
+
+.btn {
+  i {
+    font-size: 14px;
+  }
+  *:not( [style*='display: none'] ) {
+    &.btn-icon-right:first-child {
+      margin: 0;
+    }
+  }
+}
+
+.btn-slim {
+  height: 35px;
+  font-size:$p-font-size;
+}
+
+.form-group small {
+  padding-top: 5px;
+  display: block;
+}
+
+.row-btn {
+  padding-top:10px;
+}
+
+.help-block {
+  margin: 11px 0 0 0;
+}
+
+.btn-alternate-action {
+  text-align:right;
+  line-height: $button-height-base;
+  @media (max-width:$screen-s-max) {
+    line-height: $input-height-base;
+  }
+  @media (max-width:$screen-ss-max) {
+    text-align:center;
+  }
+}
+
+// http://www.abeautifulsite.net/whipping-file-inputs-into-shape-with-bootstrap-3/
+.btn-file {
+  position: relative;
+  overflow: hidden;
+  @media (max-width:$screen-s-max) {
+    padding: 9px 12px;
+  }
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+.btn-file-change {
+  .file-name {
+    font-weight: bold;
+    float:left;
+    margin-bottom: 0;
+  }
+  .btn-file-container {
+    float:left;
+    margin-left: 10px;
+  }
+  .btn-file {
+    color: $link-color;
+    font-size: $p-font-size;
+    font-weight: normal;
+    background: none;
+    border: none;
+    height: auto;
+    padding: 0;
+    &:hover {
+      text-decoration: underline;
+    }
+    &:before {
+      content: '(';
+    }
+    &:after {
+      content: ')';
+    }
+  }
+}
+
+.btn-delete-item hr {
+  margin: 15px 0;
+}
+
+.btn-file-download {
+  position: relative;
+  display: block;
+  float:left;
+  &:after {
+    position: absolute;
+    content:"\f06b";
+    font-family:'FontAwesome';
+    right: -21px;
+    top:-2px;
+    font-size:17px;
+  }
+  &:hover {
+    color: $link-color;
+  }
+}

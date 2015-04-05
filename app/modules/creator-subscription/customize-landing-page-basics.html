@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+  <div class="panel-body jumbo-panel">
+
+    <div ng-include="'modules/creator-subscription/customize-landing-page-loading-area.html'"></div>
+
+    <div ng-show="model.settings">
+      <div class="form-group" id="vanity-url">
+        <div class="row">
+          <div class="col-xs-12">
+            <h5>URL</h5>
+            <p><a ui-sref="creators.landingPage">{{model.landingPageUrl}}</a></p>
+          </div>
+        </div>
+      </div>
+
+      <label>Title</label>
+      <fw-form-input-subscription-name ng-model="model.settings.subscriptionName" placeholder="e.g. Your name or product" required focus></fw-form-input-subscription-name>
+
+      <label>Tagline</label>
+      <fw-form-input-tagline ng-model="model.settings.tagline" placeholder="A snappy summary" required></fw-form-input-tagline>
+
+      <fw-form-group>
+        <label for="introduction">Quick introduction</label>
+        <div class="row">
+          <div class="col-xs-12">
+            <textarea msd-elastic id="introduction" class="form-control" name="introduction"
+                    ng-model="model.settings.introduction"
+                    ng-minlength="15"
+                    ng-maxlength="250"
+                    maxlength="250"
+                    rows="4"
+                    placeholder="For example, who are you? And why are you here?" required></textarea>
+          </div>
+          <div class="col-xs-12">
+            <p fw-form-input-invalid-p="minlength">Must be at least 15 characters.</p>
+            <p fw-form-input-invalid-p="maxlength">Allowed 250 characters at most.</p>
+            <p fw-form-input-invalid-p="required">An introduction is required.</p>
+          </div>
+        </div>
+      </fw-form-group>
+
+      <div ng-include="'modules/creator-subscription/customize-landing-page-submission-area.html'"></div>
+    </div>
+  </div>
+</div>

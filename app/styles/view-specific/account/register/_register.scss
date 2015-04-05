@@ -1,0 +1,13 @@
+@import '_base';
+
+$html-name-space:'.page-register';
+
+#{$html-name-space} {
+  .col-lg-12 {
+    max-width:450px;
+    margin:0 auto;
+    @media (min-width:$screen-sm-min) {
+      max-width:100%;
+    }
+  }
+}

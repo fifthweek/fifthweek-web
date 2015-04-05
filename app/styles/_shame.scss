@@ -1,0 +1,10 @@
+#{$right-container} .nav-tabs {
+  padding-left:0;
+  li {
+    margin-bottom:0;
+
+    &.active a {
+      background:$white-full !important;
+    }
+  }
+}

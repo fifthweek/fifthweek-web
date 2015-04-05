@@ -1,0 +1,197 @@
+@import '_base';
+
+@include form-control-height($input-height-base);
+
+label {
+  display:block;
+  font-size:$p-font-size;
+  color:$grey-dark;
+}
+
+h5.form-group-heading {
+  margin-bottom: 5px;
+}
+
+div[fw-file-upload] {
+  input[type="submit"] {
+    margin-top:10px;
+    font-weight:bold;
+  }
+}
+
+.form-group {
+  margin-bottom: $form-group-margin;
+}
+
+// Can be applied as the parent of an element, so useful when including a control that optionally needs a bottom
+// margin depending on form state. E.g. upload image. Also, negative margin is required as a way for allowing
+// 'bottom-buffers' to stay effective within a form-group, but for the form-group itself to have no bottom margin.
+.form-group-no-bottom-margin {
+  margin-bottom: $form-group-margin * -1;
+}
+
+.form-group-has-buffers {
+  margin-bottom: 0;
+
+  .bottom-buffer {
+    margin-bottom:$form-group-margin;
+  }
+
+  .bottom-buffer-l {
+    margin-bottom: 2 * $form-group-margin;
+  }
+}
+
+.sub-form-alert {
+  margin: $grid-gutter-width 0 0 0;
+}
+
+.sub-image-input {
+  margin-top:5px;
+}
+
+textarea.form-control {
+  width:100%;
+  max-width:100%;
+  resize:none !important;
+}
+
+.input-group {
+  .form-control {
+    margin-bottom:0;
+  }
+}
+
+.has-feedback .form-control {
+  padding-right: 38px;
+}
+
+input[type="file"] {
+  font-size:10px;
+}
+
+select {
+  width:100%;
+  @media (min-width:$screen-s-min) {
+    width:auto;
+  }
+
+  &.select-full-width {
+    width:100%;
+  }
+}
+
+.radio, .checkbox {
+  margin-top:0;
+
+  &:last-child {
+    margin-bottom:0;
+  }
+}
+
+.help-block {
+  margin: 11px 0 0 0;
+}
+
+.form-control,select {
+  font-size:$input-font-size;
+  padding:$input-padding;
+  border:1px solid $input-border;
+  border-radius:$input-border-radius;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
+  outline:0;
+  color:$grey-dark;
+  width:100%;
+  max-width:100%;
+  font-family:'Lato',sans-serif;
+  &:focus {
+    box-shadow: $form-input-inset-shadow, 0 0 $form-input-focus-shadow rgba(130, 130, 130, 0.3);
+  }
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.form-control-lines-1 {
+  min-height: (2 * $input-padding-top-bottom) + $input-line-height;
+}
+.form-control-lines-2 {
+  min-height: (2 * $input-padding-top-bottom) + ($input-line-height * 2);
+}
+
+.has-error .form-control:focus {
+  box-shadow: $form-input-inset-shadow, 0 0 $form-input-focus-shadow lighten($state-danger-text, 20%);
+}
+
+.has-success .form-control:focus {
+  box-shadow: $form-input-inset-shadow, 0 0 $form-input-focus-shadow lighten($state-success-text, 20%);
+}
+
+.alert-success, .alert-danger {
+  p:before {
+    vertical-align: middle;
+    font-family:'FontAwesome';
+    line-height: $p-line-height;
+  }
+}
+
+.alert-success p:before {
+  content:"\f00c";
+  font-size:17px;
+  margin-right: 12px;
+
+}
+
+.alert-danger p:before {
+  content:"\f06a";
+  font-size:18px;
+  margin-right: 13px;
+}
+
+input[type="text"]::-ms-clear,input[type="number"]::-ms-clear,input[type="email"]::-ms-clear,input[type="password"]::-ms-clear,textarea::-ms-clear,select::-ms-clear {
+  display:none
+}
+
+//override bootstrap disabled cursor
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  cursor:default;
+}
+
+.select {
+  position:relative;
+  select {
+    background:white;
+    padding-right:3rem
+  }
+  &:after {
+    content:"\f0d7";
+    font-family:'FontAwesome';
+    position:absolute;
+    right:18px;
+    top:6px;
+    font-size:22px;
+    pointer-events:none
+  }
+}
+
+.progress-container {
+  position: relative;
+}
+.progress {
+  margin-bottom: 0;
+  height:$p-line-height;
+}
+.progress-text {
+  text-shadow:0 0.5px 0.5px rgba(0, 0, 0, 0.7), 0 1px 1px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 10px;
+  margin-top: $p-line-height * -1;
+  line-height: $p-line-height;
+}

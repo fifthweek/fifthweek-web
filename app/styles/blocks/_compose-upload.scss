@@ -1,0 +1,32 @@
+@import '_base';
+
+/*
+ * Non-default settings required since we do not know the aspect ratio of the uploaded image.
+ */
+.compose-upload-form {
+
+  .image-container{
+    .image-area{
+      width: auto;
+      height: auto;
+      max-width: 300px;
+      max-height: 300px;
+      position: relative;
+    }
+
+    .pending-image{
+      width: 300px;
+      height: 200px;
+    }
+
+    .vertical-aspect-ratio{
+      padding-top: 0px;
+    }
+  }
+}
+
+.compose-upload-schedule {
+  .radio {
+    margin-bottom:15px;
+  }
+}

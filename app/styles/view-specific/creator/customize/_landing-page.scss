@@ -1,0 +1,50 @@
+@import '_base';
+
+$html-name-space:'.page-subscription-landing';
+
+#{$html-name-space} {
+
+  .panel:first-child {
+    margin-top:0;
+  }
+
+  .header-image {
+    .row {
+      overflow-x:hidden;
+      > div {
+        &:first-child {
+          @media (min-width:$screen-sm-min) {
+            padding:{
+              right:15px;
+              bottom:0;
+            }
+          }
+        }
+        &:last-child {
+          @media (min-width:$screen-sm-min) {
+            padding-left:15px;
+          }
+        }
+      }
+      img {
+        width:100%;
+      }
+    }
+  }
+
+  .full-description {
+    textarea {
+      min-height:300px;
+    }
+  }
+
+  .alert {
+    margin-top: -13px;
+  }
+
+  .image-container {
+    .vertical-aspect-ratio {
+      padding-top: 27.33333333%;
+    }
+  }
+}

@@ -8,9 +8,15 @@
      
         npm install
         bower install
-        sudo gem update --system
-        sudo gem install compass
         grunt build
+
+3.  If you receive an `npm install` error relating to `pty.js`, do the following:
+
+        mkdir /tmp/pty.js
+        git clone https://github.com/chjj/pty.js.git /tmp/pty.js
+        <open in editor /tmp/pty.js/src/unix/pty.cc>
+        <replace failing line with `#include "/usr/include/util.h"`>
+        npm install -g /tmp/pty.js
 
 -   Serve site against local API:
 
@@ -27,7 +33,6 @@
 -   Serve site against live API and dist folder:
 
         grunt serve:live:dist
-   
 
 ## Running tests
 
@@ -60,7 +65,7 @@ The `targetBase` parameter defaults to `app` and the `browserLocation` parameter
 -   Karma tests with a fast refresh:
 
         cd test
-        ../node_modules/karma/bin/karma start
+        ../node_modules/karma/bin/karma start --reporters dots
 
 -   Protractor tests against local API:
 
@@ -74,11 +79,7 @@ The `targetBase` parameter defaults to `app` and the `browserLocation` parameter
 
 The following must succeed locally before any changes are pushed:
 
-    grunt test:local:dist
-    
-Or:
-
-    grunt test:live:dist
+    grunt prepush
     
 ### Cross-repository changes
 

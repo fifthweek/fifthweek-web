@@ -1,0 +1,21 @@
+<div ng-controller="fileUploadCtrl" class="btn-file-container">
+  <div ng-if="!model.fileApiSupported" id="file-upload-not-supported-area">
+    <label>Sorry, we do not support uploading files with your current browser.</label>
+  </div>
+  <div ng-if="model.fileApiSupported">
+    <div ng-if="!model.isSubmitting" id="file-upload-button-area">
+      <!-- IMPORTANT: Must contain no surrounding whitespace so we can add '(...)' around button text using :before/:after. No whitespace means the parenthesis hug the content. -->
+      <span class="btn btn-default btn-block btn-file">{{description || 'Upload'}}<input id="file-upload-button-input" type="file" fw-file-input-on-change="upload(files)" accept="{{accept}}"></span>
+    </div>
+    <div ng-if="model.isSubmitting" class="progress-container" id="file-upload-progress-area">
+      <progressbar value="model.progress" type="success"></progressbar>
+      <p ng-if="abbreviateProgress" class="progress-text">{{model.progress}}%</p>
+      <p ng-if="!abbreviateProgress" class="progress-text">Uploading: {{model.progress}}% complete</p>
+    </div>
+    <div class="has-error" ng-if="model.errorMessage" id="file-upload-error-area">
+      <p class="help-block">
+        {{model.errorMessage}}
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,9 @@
-
 angular.module('webApp')
-  .controller('SignOutCtrl', ['$location', 'authenticationService', 'fifthweekConstants',
-  	function($location, authenticationService, fifthweekConstants) {
+  .controller('SignOutCtrl',
+  	function($state, states, authenticationService) {
 		'use strict';
+
 			authenticationService.signOut();
-			$location.path(fifthweekConstants.signInPage);
+			$state.go(states.signIn.name, {}, { location: 'replace' });
   	}
-  ]);
+  );

@@ -1,154 +1,44 @@
-$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+@import '_bootstrap-overrides';
 
-$gray-base: #000;
-$gray-lighter: #e0e0e0;
-$gray-light: #e0e0e0;
-$body-bg: #f5f5f5;
-$panel-default-border: $gray-light;
-$panel-default-heading-bg: #ebebeb;
-$navbar-default-bg: #ffffff;
-$brand-primary: darken(#428bca, 6.5%);
-$navbar-default-link-color: $brand-primary;
-$navbar-default-link-hover-color: darken($navbar-default-link-color, 15%);
-$navbar-default-link-active-color: #ffffff;
-$navbar-default-link-active-bg: $navbar-default-link-color;
-$well-bg: #fff;
-$well-border: $gray-light;
+@import "lib/fontawesome/css/_font-awesome";
 
-// bower:scss
-@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
-// endbower
+@import 'lib/_angular-snap';
 
-.browsehappy {
-  margin: 0px;
-  padding: 8px 24px;
-  background: #ccc;
-  color: #000;
-  text-align: center;
-}
+@import '_typography';
 
-.navbar-fixed-top {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.22);
-  border: none;
-}
+@import 'elements/_header-logo';
+@import 'elements/_forms';
+@import 'elements/_buttons';
+@import 'elements/_modal';
+@import 'elements/_row-selection';
+@import 'elements/_video';
 
-/*
- * Required to clear fixed navbar.
- */
-body {
-  padding-top: 70px;
-}
-h1 {
-  font-weight: 200;
-  margin:10px 0 20px 0;
-}
-h2 {
-  font-weight: 200;
-  margin:10px 0 20px 0;
-}
+@import 'blocks/_layout-containers';
+@import 'blocks/_snapjs-customisation';
+@import 'blocks/_header-navbar';
+@import 'blocks/_sidebar';
+@import 'blocks/_panel';
+@import 'blocks/_jumbo-panel';
+@import 'blocks/_managed-list';
+@import 'blocks/_breadcrumb';
+@import 'blocks/_tabs';
+@import 'blocks/_form-subsection';
+@import 'blocks/_blob-image';
+@import 'blocks/_form-input-date-time-picker';
+@import 'blocks/_form-input-hour-of-week';
+@import 'blocks/_form-input-select-collection';
+@import 'blocks/_posts';
+@import 'blocks/_post-new';
+@import 'blocks/_compose-upload';
 
-.panel h2:first-child {
-  margin-top: 0;
-}
+@import 'view-specific/account/_account';
+@import 'view-specific/creator/_creator';
+@import 'view-specific/empty/_empty';
+@import 'view-specific/faq/_faq';
+@import 'view-specific/home/_home';
+@import 'view-specific/notifications/_notifications';
 
-.jumbo-panel-starts-with-header {
-  padding-top: 0;
-}
+@import 'modules/creator-backlog/_backlog-post-list';
 
-@media (min-width: $screen-sm-min) {
-  .jumbo-panel {
-    padding: $grid-gutter-width;
-  }
-
-  .jumbo-panel-starts-with-header {
-    padding-top: ($grid-gutter-width - 20px);
-  }
-}
-
-.top-of-page {
-  margin-top:15px;
-}
-
-.help-block {
-  margin-bottom:9px;
-}
-.sub-form-alert {
-  margin: ($grid-gutter-width / 2) 0 0 0;
-}
-
-@media (min-width: $screen-md-min) {
-  .fullscreen-validated-form h2 {
-    text-align: center;
-  }
-}
-
-/*
- * override the default Loading Bar CSS
- */
-#loading-bar .bar {
-  background: #DDDDDD;
-}
-#loading-bar-spinner {
-  top: 20px;
-  left: 1px;
-
-  .spinner-icon {
-    border-top-color: #DDDDDD;
-    border-left-color: #DDDDDD;
-  }
-}
-@media (min-width: $screen-sm-min) {
-  #loading-bar-spinner {
-    left: 6px;
-  }
-}
-
-/*
- * Fifthweek logo
- */
-.fifthweek-logo{
-  font-family: 'Oleo Script', cursive;
-}
-.header-logo{
-  font-size: 32px;
-}
-
-
-
-/*
- * Fifthweek video
- */
-.fifthweek-video{
-
-}
-.fifthweek-video p {
-  margin-bottom: 20px;
-}
-
-@media (min-width: $screen-md-min) {
-  .fifthweek-video h4:first-child {
-    margin-top: 0;
-  }
-}
-
-@media (max-width: $screen-sm-max) {
-  .fifthweek-video .embed-responsive {
-    margin-bottom: 20px;
-  }
-}
-
-/*
- * Misc
- */
-.vcenter {
-    vertical-align: middle;
-}
-
-[ng\:cloak],
-[ng-cloak],
-[data-ng-cloak],
-[x-ng-cloak],
-.ng-cloak,
-.x-ng-cloak {
-  display: none !important;
-}
+@import '_misc';
+@import '_shame';

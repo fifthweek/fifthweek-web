@@ -1,0 +1,96 @@
+@import '_base';
+
+.header-wrapper {
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:1030;
+  @media (min-width:$navbar-lg-min) {
+    &:after {
+      content: "";
+      position: fixed;
+      left: $sidebar-width - 2px;
+      top: 0;
+      background: #fff;
+      width: 5px;
+      height: $navbar-height-lg;
+      z-index:1040;
+    }
+  }
+}
+
+
+/* Dirty hack to remove unwanted box shadow */
+.header-wrapper {
+  @media (min-width:$navbar-lg-min) {
+    &:after {
+      content: "";
+      position: fixed;
+      left: $sidebar-width - 2px;
+      top: 0;
+      background: #fff;
+      width: 5px;
+      height: $navbar-height-lg;
+      z-index:1040;
+    }
+  }
+}
+
+.navigation-hidden .header-wrapper {
+  @media (min-width:$navbar-lg-min) {
+    &:after {
+      display: none;
+    }
+  }
+}
+
+.navbar {
+  height: $navbar-height-sm;
+  @media (min-width:$navbar-lg-min) {
+    height: $navbar-height-lg;
+  }
+}
+
+.navbar-fixed-top {
+  background:$navbar-default-bg;
+  border:0 none;
+  box-shadow:0 1px 2px 0 #E2E2E2;
+  overflow:hidden;
+  @media (min-width:$screen-md-min) {
+    left:$sidebar-width;
+  }
+  .inner {
+    text-align:center;
+    @media (min-width:$screen-sm-min) {
+      text-align:left;
+    }
+    @media(min-width:$screen-lg-min) {
+      max-width:810px;
+    }
+  }
+  .container {
+    padding-left:0;
+    @media (min-width:$screen-ss-min) {
+      padding-left:15px;
+    }
+  }
+  h1 {
+    @include inline-block(top);
+    font-size:18px;
+    padding:15px 11px;
+    margin:0;
+    @include header-navbar-heading-spacing;
+
+    @media (min-width:$screen-ss-min) {
+      font-size:21px;
+    }
+    @media (min-width:$screen-s-min) {
+      float:left;
+      margin-left:0;
+    }
+  }
+}
+
+//@import '../elements/_header-navbar-brand';
+@import '../elements/_header-navbar-toggle';
+@import '../elements/_header-navbar-menu';

@@ -1,0 +1,19 @@
+@import '_base';
+
+$html-name-space:'.page-subscription-channels';
+
+#{$html-name-space} {
+  .row {
+    ul {
+      margin-bottom: 0;
+
+      li {
+        margin-bottom:5px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

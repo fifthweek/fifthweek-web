@@ -1,0 +1,32 @@
+﻿<header ng-controller="HeaderCtrl">
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation" bs-navbar>
+    <div class="inner">
+      <ng-include src="'views/partials/header-sidebar-toggle.html'" class="header-wrapper"></ng-include>
+
+      <div class="header-navbar-menu-wrap">
+        <ul ng-if="navigation.length === 0" id="header-navbar" class="header-navbar-menu">
+          <li>
+            <a class="active"
+               id="header-title"
+               snap-close>
+              <span>{{$state.current.data.pageTitle}}</span>
+            </a>
+          </li>
+        </ul>
+
+        <ul ng-if="navigation.length > 0" id="header-navbar" class="header-navbar-menu">
+          <li ng-repeat="item in navigation">
+            <a ng-if="!item.separator"
+               ng-class="{active: item.isActive}"
+               id="header-{{item.id}}"
+               ui-sref="{{item.state}}"
+               snap-close>
+              <span><i ng-class="item.icon"></i></span>
+              <span>{{item.name}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
