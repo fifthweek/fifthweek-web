@@ -70,7 +70,7 @@ multiCapabilities: [
     {
       'os': 'Windows',
       'os_version': '7',
-      'browser': 'IE',
+      'browserName': 'IE',
       'browser_version': '11',
       'build': bsConfig.build,
       'project': bsConfig.project,
@@ -83,7 +83,7 @@ multiCapabilities: [
     {
       'os': 'Windows',
       'os_version': '7',
-      'browser': 'Chrome',
+      'browserName': 'Chrome',
       'browser_version': '39',
       'build': bsConfig.build,
       'project': bsConfig.project,
@@ -96,7 +96,7 @@ multiCapabilities: [
     {
       'os': 'Windows',
       'os_version': '7',
-      'browser': 'Firefox',
+      'browserName': 'Firefox',
       'browser_version': '34',
       'build': bsConfig.build,
       'project': bsConfig.project,
@@ -109,7 +109,7 @@ multiCapabilities: [
     {
       'os': 'Windows',
       'os_version': '8.1',
-      'browser': 'IE',
+      'browserName': 'IE',
       'browser_version': '11',
       'build': bsConfig.build,
       'project': bsConfig.project,
@@ -122,7 +122,7 @@ multiCapabilities: [
     {
       'os': 'Windows',
       'os_version': '8.1',
-      'browser': 'Chrome',
+      'browserName': 'Chrome',
       'browser_version': '39',
       'build': bsConfig.build,
       'project': bsConfig.project,
@@ -135,7 +135,7 @@ multiCapabilities: [
     {
       'os': 'Windows',
       'os_version': '8.1',
-      'browser': 'Firefox',
+      'browserName': 'Firefox',
       'browser_version': '34',
       'build': bsConfig.build,
       'project': bsConfig.project,
@@ -148,7 +148,7 @@ multiCapabilities: [
     {
       'os': 'OS X',
       'os_version': 'Yosemite',
-      'browser': 'Safari',
+      'browserName': 'Safari',
       'browser_version': '8',
       'build': bsConfig.build,
       'project': bsConfig.project,
@@ -161,7 +161,7 @@ multiCapabilities: [
     {
       'os': 'OS X',
       'os_version': 'Yosemite',
-      'browser': 'Chrome',
+      'browserName': 'Chrome',
       'browser_version': '39',
       'build': bsConfig.build,
       'project': bsConfig.project,
@@ -174,7 +174,7 @@ multiCapabilities: [
     {
       'os': 'OS X',
       'os_version': 'Yosemite',
-      'browser': 'Firefox',
+      'browserName': 'Firefox',
       'browser_version': '34',
       'build': bsConfig.build,
       'project': bsConfig.project,
