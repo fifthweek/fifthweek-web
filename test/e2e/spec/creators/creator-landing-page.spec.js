@@ -124,10 +124,14 @@
       var expectVisibleChannels = function() {
         expect(page.channelCount).toBe(visibleChannels.length);
         for (var i = 0; i < visibleChannels.length; i++) {
-          var defaultChannel = page.getChannel(i);
-          expect(defaultChannel.getText()).toContain(visibleChannels[i].name);
-          expect(defaultChannel.getText()).toContain(visibleChannels[i].description);
-          expect(defaultChannel.getText()).toContain('$' + visibleChannels[i].price);
+          var channel = page.getChannel(i);
+          var channelName = channel.element(by.css('.channel-name'));
+          var channelDescription = channel.element(by.css('.channel-description'));
+          var channelPrice = channel.element(by.css('.channel-price'));
+
+          expect(channelName.getText()).toContain(visibleChannels[i].name);
+          expect(channelDescription.getText()).toContain(visibleChannels[i].description);
+          expect(channelPrice.getText()).toContain('$' + visibleChannels[i].price);
         }
       };
 

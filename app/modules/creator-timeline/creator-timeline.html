@@ -66,17 +66,17 @@
               <div class="text">
                 <div class="content">
                   <div id="channel-{{$index}}" class="row channel" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
-                    <div class="col-xs-7 name">
-                      <h6>{{channel.name}}</h6>
+                    <div class="col-xs-7">
+                      <h6 class="channel-name">{{channel.name}}</h6>
                     </div>
-                    <div class="col-xs-5 price">
-                      <span id="channel-price-{{$index}}" ng-click="channel.checked = !channel.checked || channel.isDefault"
+                    <div class="col-xs-5 channel-price-column">
+                      <span class="channel-price" id="channel-price-{{$index}}" ng-click="channel.checked = !channel.checked || channel.isDefault"
                          ng-class="{'unchecked':!channel.checked, 'checked':channel.checked, 'non-default':!channel.isDefault, 'default':channel.isDefault}">
                         &#36;{{channel.price}}/week
                       </span>
                     </div>
                     <div class="col-xs-8">
-                      <ul>
+                      <ul class="channel-description">
                         <li ng-repeat="descriptionLine in channel.description">{{descriptionLine}}</li>
                       </ul>
                     </div>
