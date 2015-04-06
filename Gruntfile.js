@@ -377,6 +377,12 @@ module.exports = function (grunt) {
       }
     },
 
+    cdnify: {
+      dist: {
+        html: ['<%= yeoman.dist %>/index.html']
+      }
+    },
+
     // ng-annotate tries to make the code safe for minification automatically
     // by using the Angular long form for dependency injection.
     ngAnnotate: {
@@ -664,6 +670,9 @@ module.exports = function (grunt) {
     // Run unrelated build steps concurrently.
     'concurrent:buildPhase1',
     'concurrent:buildPhase2',
+
+    // Convert some bower component links to google CDN links.
+    'cdnify',
 
     // Append hash to non-script file-names, and update references in views only.
     // Other HTML files in `dist` will be updated with a later call to `usemin`,
