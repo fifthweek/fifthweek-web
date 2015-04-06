@@ -6,6 +6,7 @@ var LandingPagePage = require('../../pages/creators/customize-landing-page.page.
 var SubscriptionNameInputPage = require('../../pages/subscription-name-input.page.js');
 var TaglineInputPage = require('../../pages/tagline-input.page.js');
 var VideoUrlInputPage = require('../../pages/video-url-input.page.js');
+var DiscardChangesPage = require('../../pages/discard-changes.page.js');
 
 describe('customize landing page form', function() {
   'use strict';
@@ -21,6 +22,7 @@ describe('customize landing page form', function() {
   var subscriptionNameInputPage = new SubscriptionNameInputPage();
   var taglineInputPage = new TaglineInputPage();
   var videoUrlInputPage = new VideoUrlInputPage();
+  var discardChanges = new DiscardChangesPage();
 
   var validVideo = 'https://www.youtube.com/watch?v=vEQrP3bGX8k';
   var validDescription = 'In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content that could be distracting with placeholder text may allow viewers to focus on graphic aspects such as font, typography, and page layout. It also reduces the need for the designer to come up with meaningful text, as they can instead use hastily generated lorem ipsum text.';
@@ -188,6 +190,14 @@ describe('customize landing page form', function() {
       testInitialContent();
     });
 
+    discardChanges.describeDiscardingChanges(
+      navigateToPage,
+      function(){ sidebar.helpLink.click(); },
+      function(){ testKit.setValue(page.taglineTextBoxId, 'New Tagline');},
+      function(){ expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe('New Tagline'); },
+      function(){ expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(subscription.tagline); }
+    );
+
     describe('when saving changes', function(){
 
       var formValues = populateForm();
@@ -210,6 +220,7 @@ describe('customize landing page form', function() {
         testKit.setValue(page.subscriptionNameTextBoxId, '1');
         expect(page.basicsSuccessMessage.isDisplayed()).toBe(false);
         expect(page.basicsSubmitButton.isEnabled()).toBe(true);
+        commonWorkflows.fastRefresh();
       });
 
       it('should persist new settings between sessions', function(){
