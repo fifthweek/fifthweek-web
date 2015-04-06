@@ -236,7 +236,7 @@ module.exports = function (grunt) {
     filerev: {
       assets: {
         src: [
-          '<%= yeoman.dist %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.dist %>/**/*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
       },
@@ -321,6 +321,9 @@ module.exports = function (grunt) {
         }]
       },
       nonViews: {
+        options: {
+          removeAttributeQuotes:          false // For CDN conversion compatibility
+        },
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
@@ -359,6 +362,18 @@ module.exports = function (grunt) {
           src: '**/*.svg',
           dest: '<%= yeoman.dist %>/images'
         }]
+      }
+    },
+
+    cdn: {
+      options: {
+        cdn: '//az743635.vo.msecnd.net/',
+        flatten: true
+      },
+      dist: {
+        cwd: '<%= yeoman.dist %>',
+        dest: '<%= yeoman.dist %>',
+        src: ['index.html', 'styles/*.css']
       }
     },
 
@@ -676,7 +691,7 @@ module.exports = function (grunt) {
     'filerev:css',
     'filerev:scripts',
     'usemin',
-    'htmlmin:nonViews'
+    'htmlmin:nonViews',
   ]);
 
   grunt.registerTask('serve', '', function (targetApi, targetBase) {
@@ -755,7 +770,8 @@ module.exports = function (grunt) {
     }
     else if(isTravisSuccess(scenario)){
       grunt.task.run([
-        'replace:newRelic'
+        'replace:newRelic',
+        'cdn:dist'
       ]);
     }
   });
