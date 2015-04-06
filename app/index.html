@@ -67,9 +67,10 @@
   <body fw-assign-css-class-from-state fw-set-navigation-visibility-from-state class="navigation-hidden">
 
 
-    <!--[if lt IE 7]>
+    <!--[if lt IE 10]>
       <p class="browsehappy">You are using an outdated browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+
     <div class="wrapper">
 
       <div class="left-right-container-wrap">
@@ -89,6 +90,8 @@
         </div>
       </div>
     </div>
+
+    <!--[if !lt IE 10]>
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
@@ -294,6 +297,8 @@
         ga('create', 'UA-55851529-1', 'www.fifthweek.com');
       }
     </script>
+
+    <![endif]-->
 
 </body>
 </html>
