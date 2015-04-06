@@ -234,11 +234,15 @@ module.exports = function (grunt) {
 
     // Renames files for browser caching purposes
     filerev: {
-      nonScripts: {
+      assets: {
         src: [
-          '<%= yeoman.dist %>/styles/**/*.css',
           '<%= yeoman.dist %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
+        ]
+      },
+      css: {
+        src: [
+          '<%= yeoman.dist %>/styles/**/*.css',
         ]
       },
       scripts: {
@@ -650,7 +654,7 @@ module.exports = function (grunt) {
     // Other HTML files in `dist` will be updated with a later call to `usemin`,
     // as will the CSS in `dist`. The final CSS does not exist at this point, thus
     // making the full `usemin` which includes `usemin:css` redundant.
-    'filerev:nonScripts',
+    'filerev:assets',
     'usemin:html',
     'htmlmin:views',
 
@@ -669,6 +673,7 @@ module.exports = function (grunt) {
     'uglify',
 
     // Append hash to script file-names, and update references.
+    'filerev:css',
     'filerev:scripts',
     'usemin',
     'htmlmin:nonViews'
