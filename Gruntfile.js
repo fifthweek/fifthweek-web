@@ -411,7 +411,7 @@ module.exports = function (grunt) {
             'images/**/*',
             'images/**/*.{webp}',
             'fonts/**/*.*',
-            'Web.config'
+            '**/Web.config'
           ]
         }, {
           expand: true,
@@ -423,7 +423,12 @@ module.exports = function (grunt) {
           cwd: '.',
           src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
           dest: '<%= yeoman.dist %>'
-        }]
+        },
+        { src: '<%= yeoman.app %>/Caching.config', dest: '<%= yeoman.dist %>/fonts/Web.config' },
+        { src: '<%= yeoman.app %>/Caching.config', dest: '<%= yeoman.dist %>/images/Web.config' },
+        { src: '<%= yeoman.app %>/Caching.config', dest: '<%= yeoman.dist %>/scripts/Web.config' },
+        { src: '<%= yeoman.app %>/Caching.config', dest: '<%= yeoman.dist %>/styles/Web.config' }
+        ]
       },
       plainCssToTmp: {
         expand: true,
