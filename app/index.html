@@ -72,26 +72,18 @@
     <![endif]-->
 
     <div class="wrapper">
-
       <div class="left-right-container-wrap">
         <div ng-include="'views/partials/sidebar.html'" class="left-container"></div>
-
         <div class="right-container" snap-content>
-          <!--<div class="snap-overlay"></div>-->
-
           <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
           <div class="snap-overlay"></div>
 
           <div class="main-container">
-
             <div ui-view></div>
-
           </div>
         </div>
       </div>
     </div>
-
-    <!--[if !lt IE 10]>
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
@@ -297,8 +289,6 @@
         ga('create', 'UA-55851529-1', 'www.fifthweek.com');
       }
     </script>
-
-    <![endif]-->
 
 </body>
 </html>
