@@ -18,7 +18,7 @@ module.exports = function (grunt) {
   // For angular HTML 5 history mode support.
   var rewrite = require('connect-modrewrite');
   var rewriteRules = [
-    "!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif|\\.woff|\\.woff2|\\.ttf$ /index.html"
+    '!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif|\\.woff|\\.woff2|\\.ttf$ /index.html'
   ];
 
   // Configurable paths for the application
