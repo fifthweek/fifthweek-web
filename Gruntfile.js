@@ -234,6 +234,10 @@ module.exports = function (grunt) {
 
     // Renames files for browser caching purposes
     filerev: {
+      options: {
+        algorithm: 'md5',
+        length: 7
+      },
       assets: {
         src: [
           '<%= yeoman.dist %>/*.{png,jpg,jpeg,gif,webp,svg}',
