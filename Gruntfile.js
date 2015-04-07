@@ -238,7 +238,10 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/static/**/*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/static/styles/fonts/*'
+          '<%= yeoman.dist %>/static/styles/fonts/*',
+          '<%= yeoman.dist %>/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
+          // Fontawesome doesn't need this as it uses ?v=version, but putting it here for consistency with bootstrap.
+          '<%= yeoman.dist %>/bower_components/fontawesome/fonts/*'
         ]
       },
       css: {
