@@ -10,8 +10,8 @@ angular.module('webApp').controller('timelineCtrl',
 
       // These need to appear in a JS file, as the Grunt task for swapping file names that appear within JS will only
       // inspect *.js files.
-      defaultHeaderImageUrl: 'images/header-default.jpg',
-      defaultProfileImageUrl: 'images/avatar-default.jpg',
+      defaultHeaderImageUrl: '/static/images/header-default.jpg',
+      defaultProfileImageUrl: '/static/images/avatar-default.jpg',
 
       tracking: {
         title: 'Subscribed',

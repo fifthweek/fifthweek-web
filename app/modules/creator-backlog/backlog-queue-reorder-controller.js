@@ -30,7 +30,7 @@ angular.module('webApp').controller('queueReorderCtrl',
         date:'25th Jan',
         comment:'Almost there',
         collection:'Blog',
-        imagePath:'images/tmp-queue-thumb.jpg',
+        imagePath:'/static/images/tmp-queue-thumb.jpg',
       },
       {
         postId: 'c',
@@ -38,7 +38,7 @@ angular.module('webApp').controller('queueReorderCtrl',
         dayOfWeek:'Sun',
         date:'25th Jan',
         collection:'Side Comic',
-        imagePath:'images/tmp-queue-thumb-2.jpg',
+        imagePath:'/static/images/tmp-queue-thumb-2.jpg',
       },
       {
         postId: 'd',
@@ -47,7 +47,7 @@ angular.module('webApp').controller('queueReorderCtrl',
         date:'26th Jan',
         comment:'Very nearly there',
         collection:'Blog',
-        filePath:'images/avatar-default.jpg',
+        filePath:'/static/images/avatar-default.jpg',
         fileName:'comic-ebook.pdf'
       },
       {
@@ -57,7 +57,7 @@ angular.module('webApp').controller('queueReorderCtrl',
         date:'26th Jan',
         comment:'Certain internet providers exploit the fact that fill text cannot be recognized by automatic search engines - meaningful information cannot be distinguished from meaningless: Target-generated dummy text mixed with a certain combination of search terms can lead to an increased frequency of visits by search machine users. As a consequence, advertising revenues, which rely on website hits, are increased.',
         collection:'Blog',
-        filePath:'images/avatar-default.jpg',
+        filePath:'/static/images/avatar-default.jpg',
         fileName:'another-comic-ebook.pdf'
       },
       {
@@ -66,7 +66,7 @@ angular.module('webApp').controller('queueReorderCtrl',
         dayOfWeek:'Mon',
         date:'26th Jan',
         collection:'Side Comic',
-        filePath:'images/avatar-default.jpg',
+        filePath:'/static/images/avatar-default.jpg',
         fileName:'something-different-ebook.pdf'
       }
     ];

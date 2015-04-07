@@ -7,12 +7,12 @@
     <meta name="description" content="">
     <meta name="viewport" content="height=device-height,width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
+    <!-- build:css(.) static/styles/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="/styles/main.css">
+    <!-- build:css(.tmp) static/styles/main.css -->
+    <link rel="stylesheet" href="/static/styles/main.css">
     <!-- endbuild -->
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/apple-touch-icon-114x114.png" />
@@ -85,7 +85,7 @@
       </div>
     </div>
 
-    <!-- build:js(.) scripts/oldieshim.js -->
+    <!-- build:js(.) static/scripts/oldieshim.js -->
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.js"></script>
@@ -98,8 +98,9 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 
-    <!-- build:js(.) scripts/vendor.js -->
+    <!-- build:js(.) static/scripts/vendor.js -->
     <!-- bower:js -->
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -119,7 +120,7 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <!-- build:js({.tmp,app}) static/scripts/scripts.js -->
     <!--[if !IE | gte IE 10 ]><!-->
     <script src="scripts/generated/api.js"></script>
     <script src="scripts/generated/developer.js"></script>
