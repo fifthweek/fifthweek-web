@@ -116,12 +116,20 @@ angular.module('routes', ['ui.router'])
     },
     notAuthorized: {
       name: 'notAuthorized'
+    },
+    notFound: {
+      name: 'notFound'
+    },
+    comingSoon: {
+      name: 'comingSoon'
     }
   })
-  .config(function($stateProvider, $urlRouterProvider, states) {
+  .config(function($stateProvider, $urlRouterProvider, $locationProvider, states) {
+
+    $locationProvider.html5Mode(true);
 
     //for any unmatched url, redirect to home page
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/coming-soon');
 
     $stateProvider
       .state(states.home.name, {
@@ -541,10 +549,26 @@ angular.module('routes', ['ui.router'])
       })
       .state(states.notAuthorized.name, {
         url: '/not-authorized',
-        templateUrl: 'views/not-authorized/not-authorized.html',
+        templateUrl: 'views/not-authorized.html',
         data : {
           pageTitle: 'Not Authorized',
           headTitle: ': ' + 'Not Authorized'
+        }
+      })
+      .state(states.notFound.name, {
+        url: '/not-found',
+        templateUrl: 'views/not-found.html',
+        data : {
+          pageTitle: 'Not Found',
+          headTitle: ': ' + 'Not Found'
+        }
+      })
+      .state(states.comingSoon.name, {
+        url: '/coming-soon',
+        templateUrl: 'views/coming-soon.html',
+        data : {
+          pageTitle: 'Coming Soon',
+          headTitle: ': ' + 'Coming Soon'
         }
       });
 });

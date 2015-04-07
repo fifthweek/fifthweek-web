@@ -15,6 +15,12 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  // For angular HTML 5 history mode support.
+  var rewrite = require('connect-modrewrite');
+  var rewriteRules = [
+    "!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif|\\.woff|\\.woff2|\\.ttf$ /index.html"
+  ];
+
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
@@ -84,13 +90,18 @@ module.exports = function (grunt) {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
-        livereload: 35729
+        livereload: 35729,
+        middleware: function ( connect, options, middlewares ) {
+          middlewares.unshift( rewrite( rewriteRules ) );
+          return middlewares;
+        }
       },
       livereload: {
         options: {
           open: true,
           middleware: function (connect) {
             return [
+              rewrite( rewriteRules ),
               connect.static('.tmp'),
               connect().use(
                 '/bower_components',
@@ -106,6 +117,7 @@ module.exports = function (grunt) {
           port: 9001,
           middleware: function (connect) {
             return [
+              rewrite( rewriteRules ),
               connect.static('.tmp'),
               connect.static('test'),
               connect().use(
