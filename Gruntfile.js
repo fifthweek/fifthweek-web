@@ -565,7 +565,7 @@ module.exports = function (grunt) {
       },
       live: {
         'app/scripts/generated/api.js': function(fs, fd, done) {
-          fs.writeSync(fd, 'window.configuredApiBaseUri = \'https://api.fifthweek.com/\';');
+          fs.writeSync(fd, 'window.configuredApiBaseUri = window.location.host === \'www.fifthweek.com\' ? \'https://api.fifthweek.com/\' : \'https://fifthweek-api-staging.azurewebsites.net/\';');
           done();
         }
       },
