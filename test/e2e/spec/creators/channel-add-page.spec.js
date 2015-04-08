@@ -14,7 +14,7 @@ describe('add channel page', function() {
   var channelListPage = new ChannelListPage();
 
   it('should run once before all', function() {
-    commonWorkflows.createSubscription();
+    commonWorkflows.createBlog();
     sidebar.channelsLink.click();
     channelListPage.addChannelButton.click();
   });

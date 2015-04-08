@@ -1,5 +1,5 @@
 angular.module('webApp').factory('calculatedStates',
-  function($q, states, subscriptionService, authenticationService, authenticationServiceConstants) {
+  function($q, states, blogService, authenticationService, authenticationServiceConstants) {
     'use strict';
 
     var service = {};
@@ -9,11 +9,11 @@ angular.module('webApp').factory('calculatedStates',
 
       if (currentUser.authenticated === true) {
         if (_.includes(currentUser.roles, authenticationServiceConstants.roles.creator)) {
-          if (subscriptionService.hasSubscription) {
+          if (blogService.hasBlog) {
             return states.dashboard.name;
           }
           else {
-            return states.creators.createSubscription.name;
+            return states.creators.createBlog.name;
           }
         }
         else {

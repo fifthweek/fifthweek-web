@@ -1,14 +1,14 @@
 /// <reference path='../angular.module('webApp')js' />
 
-angular.module('webApp').factory('stateChangeRequireSubscriptionService',
-  function($state, calculatedStates, subscriptionService) {
+angular.module('webApp').factory('stateChangeRequireBlogService',
+  function($state, calculatedStates, blogService) {
     'use strict';
 
     var service = {};
 
     service.isPermitted = function(toState){
-      if (toState.requireSubscription !== undefined) {
-        if (toState.requireSubscription !== subscriptionService.hasSubscription) {
+      if (toState.requireBlog !== undefined) {
+        if (toState.requireBlog !== blogService.hasBlog) {
           return false;
         }
       }

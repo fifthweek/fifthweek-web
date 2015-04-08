@@ -1,7 +1,7 @@
 <div class="panel panel-default full-description">
   <div class="panel-body jumbo-panel">
 
-    <div ng-include="'modules/creator-subscription/customize-landing-page-loading-area.html'"></div>
+    <div ng-include="'modules/creator-blog/customize-landing-page-loading-area.html'"></div>
 
     <div ng-show="model.settings">
       <fw-form-group>
@@ -27,14 +27,14 @@
       </fw-form-group>
 
       <fw-form-group>
-        <label for="description">About the subscription</label>
+        <label for="description">About the blog</label>
         <div class="row">
           <div class="col-xs-12">
             <textarea msd-elastic id="description" name="description" class="form-control"
                     ng-model="model.settings.description"
                     ng-maxlength="2000"
                     maxlength="2000"
-                    placeholder="This is where you can really sell your subscription... tell everyone why they need to subscribe."></textarea>
+                    placeholder="This is where you can really sell your blog... tell everyone why they need to subscribe."></textarea>
             <p class="light-grey"><small>Syntax: <strong>&#42;&#42;bold&#42;&#42;</strong> &#124; <i>&#42;italic&#42;</i> &#124; ![alt text](image_url)</small></p>
           </div>
           <div class="col-xs-12">
@@ -43,7 +43,7 @@
         </div>
       </fw-form-group>
 
-      <div ng-include="'modules/creator-subscription/customize-landing-page-submission-area.html'"></div>
+      <div ng-include="'modules/creator-blog/customize-landing-page-submission-area.html'"></div>
     </div>
   </div>
 </div>

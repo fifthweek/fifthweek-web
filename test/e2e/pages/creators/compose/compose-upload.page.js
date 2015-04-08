@@ -195,7 +195,7 @@
         'use strict';
 
         var registration;
-        var subscription;
+        var blog;
 
         var CommonWorkflows = require('../../../common-workflows.js');
 
@@ -275,9 +275,9 @@
 
         describe('workflows', function(){
           beforeEach(function(){
-            var context = commonWorkflows.createSubscription();
+            var context = commonWorkflows.createBlog();
             registration = context.registration;
-            subscription = context.subscription;
+            blog = context.blog;
           });
 
           describe('when posting now', function(){
@@ -424,9 +424,9 @@
 
               describe('when no collections exist', function(){
                 beforeEach(function() {
-                  var context = commonWorkflows.createSubscription();
+                  var context = commonWorkflows.createBlog();
                   registration = context.registration;
-                  subscription = context.subscription;
+                  blog = context.blog;
                   navigateToPage();
                   page.populateUpload(tinyFilePath);
                   testKit.waitForElementToDisplay(element(by.id(page.createCollectionNameTextBoxId)));
@@ -442,9 +442,9 @@
 
               describe('when a collection exists (pre)', function(){
                 it('should run once before all', function() {
-                  var context = commonWorkflows.createSubscription();
+                  var context = commonWorkflows.createBlog();
                   registration = context.registration;
-                  subscription = context.subscription;
+                  blog = context.blog;
                   createCollection(firstCollectionName, channelNames[0]);
                 });
 
@@ -539,9 +539,9 @@
 
             describe('when a collection does not exist', function(){
               it('should run once before all', function() {
-                var context = commonWorkflows.createSubscription();
+                var context = commonWorkflows.createBlog();
                 registration = context.registration;
-                subscription = context.subscription;
+                blog = context.blog;
               });
 
               describe('then', function() {

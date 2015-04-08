@@ -1,21 +1,21 @@
-describe('subscription service', function() {
+describe('blog service', function() {
   'use strict';
 
   var basePrice = '1.99';
-  var subscriptionId = 'subscriptionId';
-  var subscriptionData = { basePrice: basePrice };
+  var blogId = 'blogId';
+  var blogData = { basePrice: basePrice };
   var error = 'error';
   var userId = 'user_id';
 
   var $rootScope;
   var $q;
-  var subscriptionStub;
+  var blogStub;
   var aggregateUserState;
   var aggregateUserStateConstants;
   var authenticationService;
-  var subscriptionServiceConstants;
-  var subscriptionRepositoryFactory;
-  var subscriptionRepository;
+  var blogServiceConstants;
+  var blogRepositoryFactory;
+  var blogRepository;
   var target;
 
   var date;
@@ -25,33 +25,33 @@ describe('subscription service', function() {
     jasmine.clock().install();
     jasmine.clock().mockDate(date);
 
-    subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['postSubscription', 'putSubscription']);
+    blogStub = jasmine.createSpyObj('blogStub', ['postBlog', 'putBlog']);
     aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['setDelta']);
-    subscriptionRepositoryFactory = jasmine.createSpyObj('subscriptionRepositoryFactory', ['forCurrentUser']);
-    subscriptionRepository = jasmine.createSpyObj('subscriptionRespository', ['setSubscription']);
+    blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
+    blogRepository = jasmine.createSpyObj('blogRespository', ['setBlog']);
     authenticationService = { currentUser: { userId: userId }};
 
-    subscriptionRepositoryFactory.forCurrentUser.and.returnValue(subscriptionRepository);
+    blogRepositoryFactory.forCurrentUser.and.returnValue(blogRepository);
 
     module('webApp');
     module(function($provide) {
-      $provide.value('subscriptionStub', subscriptionStub);
+      $provide.value('blogStub', blogStub);
       $provide.value('aggregateUserState', aggregateUserState);
       $provide.value('authenticationService', authenticationService);
-      $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
-      $provide.value('subscriptionRepository', subscriptionRepository);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
+      $provide.value('blogRepository', blogRepository);
     });
 
     inject(function($injector) {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
       aggregateUserStateConstants = $injector.get('aggregateUserStateConstants');
-      subscriptionServiceConstants = $injector.get('subscriptionServiceConstants');
-      target = $injector.get('subscriptionService');
+      blogServiceConstants = $injector.get('blogServiceConstants');
+      target = $injector.get('blogService');
     });
 
-    subscriptionStub.postSubscription.and.returnValue($q.when());
-    subscriptionStub.putSubscription.and.returnValue($q.when());
+    blogStub.postBlog.and.returnValue($q.when());
+    blogStub.putBlog.and.returnValue($q.when());
   });
 
   afterEach(function(){
@@ -60,29 +60,29 @@ describe('subscription service', function() {
 
   it('should synchronize on initialization', function() {
     aggregateUserState.currentValue = null;
-    expect(target.subscriptionId).toBe(null);
-    expect(target.hasSubscription).toBe(false);
+    expect(target.blogId).toBe(null);
+    expect(target.hasBlog).toBe(false);
 
     aggregateUserState.currentValue = { };
-    expect(target.subscriptionId).toBe(null);
-    expect(target.hasSubscription).toBe(false);
+    expect(target.blogId).toBe(null);
+    expect(target.hasBlog).toBe(false);
 
     aggregateUserState.currentValue = { creatorStatus: null };
-    expect(target.subscriptionId).toBe(null);
-    expect(target.hasSubscription).toBe(false);
+    expect(target.blogId).toBe(null);
+    expect(target.hasBlog).toBe(false);
 
-    aggregateUserState.currentValue = { creatorStatus: { subscriptionId: subscriptionId } };
-    expect(target.subscriptionId).toBe(subscriptionId);
-    expect(target.hasSubscription).toBe(true);
+    aggregateUserState.currentValue = { creatorStatus: { blogId: blogId } };
+    expect(target.blogId).toBe(blogId);
+    expect(target.hasBlog).toBe(true);
   });
 
-  describe('when creating first subscription', function() {
+  describe('when creating first blog', function() {
 
-    it('should require user to not have a subscription', function() {
-      aggregateUserState.currentValue = { creatorStatus: { subscriptionId: subscriptionId } };
+    it('should require user to not have a blog', function() {
+      aggregateUserState.currentValue = { creatorStatus: { blogId: blogId } };
 
       var result = null;
-      target.createFirstSubscription(subscriptionData).catch(function(error) {
+      target.createFirstBlog(blogData).catch(function(error) {
         result = error;
       });
       $rootScope.$apply();
@@ -90,33 +90,33 @@ describe('subscription service', function() {
       expect(result instanceof FifthweekError).toBeTruthy();
     });
 
-    describe('when the user does not have a subscription', function(){
+    describe('when the user does not have a blog', function(){
 
       beforeEach(function(){
         aggregateUserState.currentValue = { };
 
-        subscriptionStub.postSubscription.and.returnValue($q.when({ data: subscriptionId }));
+        blogStub.postBlog.and.returnValue($q.when({ data: blogId }));
 
-        target.createFirstSubscription(subscriptionData);
+        target.createFirstBlog(blogData);
         $rootScope.$apply();
       });
 
-      it('should persist the new subscription with the API', function() {
-        expect(subscriptionStub.postSubscription).toHaveBeenCalledWith(subscriptionData);
+      it('should persist the new blog with the API', function() {
+        expect(blogStub.postBlog).toHaveBeenCalledWith(blogData);
       });
 
       it('should set the creator status to aggregate user state', function(){
-        expect(aggregateUserState.setDelta).toHaveBeenCalledWith(userId, 'creatorStatus', {subscriptionId: subscriptionId});
+        expect(aggregateUserState.setDelta).toHaveBeenCalledWith(userId, 'creatorStatus', {blogId: blogId});
       });
 
       it('should set the default channel to aggregate user state', function(){
         expect(aggregateUserState.setDelta).toHaveBeenCalledWith(userId, 'createdChannelsAndCollections', {
           channels: [
             {
-              channelId: subscriptionId,
-              name: subscriptionServiceConstants.defaultChannelName,
+              channelId: blogId,
+              name: blogServiceConstants.defaultChannelName,
               priceInUsCentsPerWeek: basePrice,
-              description: subscriptionServiceConstants.defaultChannelDescription,
+              description: blogServiceConstants.defaultChannelDescription,
               isDefault: true,
               isVisibleToNonSubscribers: true,
               collections: []
@@ -125,44 +125,44 @@ describe('subscription service', function() {
         });
       });
 
-      it('should set the subscription data to aggregate user state', function(){
-        expect(subscriptionRepository.setSubscription).toHaveBeenCalledWith({
-          subscriptionId: subscriptionId,
+      it('should set the blog data to aggregate user state', function(){
+        expect(blogRepository.setBlog).toHaveBeenCalledWith({
+          blogId: blogId,
           creatorId: userId,
-          introduction: subscriptionServiceConstants.defaultSubscriptionIntroduction,
+          introduction: blogServiceConstants.defaultBlogIntroduction,
           creationDate: date
         });
       });
     });
 
-    it('should request a subscription repository before calling the API', function() {
+    it('should request a blog repository before calling the API', function() {
       aggregateUserState.currentValue = { };
 
-      subscriptionStub.postSubscription.and.returnValue($q.when({ data: subscriptionId }));
+      blogStub.postBlog.and.returnValue($q.when({ data: blogId }));
 
-      target.createFirstSubscription(subscriptionData);
+      target.createFirstBlog(blogData);
 
-      expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalled();
+      expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalled();
     });
 
     it('should retain read the current user ID before calling the API', function() {
       aggregateUserState.currentValue = { };
 
-      subscriptionStub.postSubscription.and.returnValue($q.when({ data: subscriptionId }));
+      blogStub.postBlog.and.returnValue($q.when({ data: blogId }));
 
-      target.createFirstSubscription(subscriptionData);
+      target.createFirstBlog(blogData);
       authenticationService.currentUser.userId = 'changed_user_id';
       $rootScope.$apply();
 
       expect(aggregateUserState.setDelta.calls.allArgs()).toEqual([
-        [userId, 'creatorStatus', {subscriptionId: subscriptionId}],
+        [userId, 'creatorStatus', {blogId: blogId}],
         [userId, 'createdChannelsAndCollections', {
           channels: [
             {
-              channelId: subscriptionId,
-              name: subscriptionServiceConstants.defaultChannelName,
+              channelId: blogId,
+              name: blogServiceConstants.defaultChannelName,
               priceInUsCentsPerWeek: basePrice,
-              description: subscriptionServiceConstants.defaultChannelDescription,
+              description: blogServiceConstants.defaultChannelDescription,
               isDefault: true,
               isVisibleToNonSubscribers: true,
               collections: []
@@ -171,10 +171,10 @@ describe('subscription service', function() {
         }]
       ]);
 
-      expect(subscriptionRepository.setSubscription).toHaveBeenCalledWith({
-        subscriptionId: subscriptionId,
+      expect(blogRepository.setBlog).toHaveBeenCalledWith({
+        blogId: blogId,
         creatorId: userId,
-        introduction: subscriptionServiceConstants.defaultSubscriptionIntroduction,
+        introduction: blogServiceConstants.defaultBlogIntroduction,
         creationDate: date
       });
     });
@@ -182,16 +182,16 @@ describe('subscription service', function() {
     it('should propagate errors', function() {
       aggregateUserState.currentValue = { };
 
-      subscriptionStub.postSubscription.and.returnValue($q.reject(error));
+      blogStub.postBlog.and.returnValue($q.reject(error));
 
       var result = null;
-      target.createFirstSubscription(subscriptionData).catch(function(error) {
+      target.createFirstBlog(blogData).catch(function(error) {
         result = error;
       });
       $rootScope.$apply();
 
       expect(result).toBe(error);
-      expect(subscriptionStub.postSubscription).toHaveBeenCalledWith(subscriptionData);
+      expect(blogStub.postBlog).toHaveBeenCalledWith(blogData);
       expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
     });
   });

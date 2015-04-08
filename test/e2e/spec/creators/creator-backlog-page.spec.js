@@ -12,7 +12,7 @@
     var sidebar = new SidebarPage();
 
     it('should run once before all', function() {
-      commonWorkflows.createSubscription();
+      commonWorkflows.createBlog();
       sidebar.postsLink.click();
       header.scheduledLink.click();
     });

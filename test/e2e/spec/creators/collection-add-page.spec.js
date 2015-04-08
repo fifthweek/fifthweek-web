@@ -14,7 +14,7 @@ describe('add collection page', function() {
   var collectionListPage = new CollectionListPage();
 
   it('should run once before all', function() {
-    commonWorkflows.createSubscription();
+    commonWorkflows.createBlog();
     sidebar.collectionsLink.click();
     collectionListPage.addCollectionButton.click();
   });

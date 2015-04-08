@@ -10,7 +10,7 @@ describe('account settings page', function() {
   var sidebar = new SidebarPage();
 
   it('should run once before all', function() {
-    commonWorkflows.createSubscription();
+    commonWorkflows.createBlog();
     sidebar.accountLink.click();
   });
 

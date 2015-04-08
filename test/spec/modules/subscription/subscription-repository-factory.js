@@ -6,7 +6,7 @@ describe('account settings repository factory', function(){
   var $rootScope;
   var masterRepositoryFactory;
   var masterRepository;
-  var subscriptionRepositoryFactoryConstants;
+  var blogRepositoryFactoryConstants;
   var targetFactory;
   var target;
 
@@ -23,8 +23,8 @@ describe('account settings repository factory', function(){
     inject(function($injector) {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
-      subscriptionRepositoryFactoryConstants = $injector.get('subscriptionRepositoryFactoryConstants');
-      targetFactory = $injector.get('subscriptionRepositoryFactory');
+      blogRepositoryFactoryConstants = $injector.get('blogRepositoryFactoryConstants');
+      targetFactory = $injector.get('blogRepositoryFactory');
     });
 
     target = targetFactory.forCurrentUser();
@@ -36,27 +36,27 @@ describe('account settings repository factory', function(){
       var actual;
       masterRepository.get.and.returnValue($q.when(expected));
 
-      target.getSubscription().then(function(settings) {
+      target.getBlog().then(function(settings) {
         actual = settings;
       });
       $rootScope.$apply();
 
-      expect(masterRepository.get).toHaveBeenCalledWith(subscriptionRepositoryFactoryConstants.subscriptionKey);
+      expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
       expect(expected).toBe(actual);
     });
 
-    it('should fail if there is no subscription data', function() {
+    it('should fail if there is no blog data', function() {
       var error;
       masterRepository.get.and.returnValue($q.when(undefined));
 
-      target.getSubscription().catch(function(e) {
+      target.getBlog().catch(function(e) {
         error = e;
       });
       $rootScope.$apply();
 
-      expect(masterRepository.get).toHaveBeenCalledWith(subscriptionRepositoryFactoryConstants.subscriptionKey);
+      expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
       expect(error instanceof DisplayableError).toBe(true);
-      expect(error.message).toBe('You do not have a subscription.');
+      expect(error.message).toBe('You do not have a blog.');
     });
   });
 
@@ -64,9 +64,9 @@ describe('account settings repository factory', function(){
     it('should set settings into the master repository at the correct location', function() {
       var settings = { name: 'phil' };
 
-      target.setSubscription(settings);
+      target.setBlog(settings);
 
-      expect(masterRepository.set).toHaveBeenCalledWith(subscriptionRepositoryFactoryConstants.subscriptionKey, settings);
+      expect(masterRepository.set).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey, settings);
     });
   });
 });

@@ -2,7 +2,7 @@
 
 var TestKit = require('../test-kit.js');
 var UsernameInputPage = require('./username-input.page');
-var CreateSubscriptionPage = require('./creators/create-subscription.page.js');
+var CreateBlogPage = require('./creators/create-blog.page.js');
 
 var testKit = new TestKit();
 
@@ -15,7 +15,7 @@ RegisterPage.prototype = Object.create({},
   passwordTextBoxId: { get: function () { return 'registrationData-password'; }},
   registerButton: { get: function () { return element(by.id('register-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#registrationForm .help-block')); }},
-  nextPageUrl: { get: function () { return new CreateSubscriptionPage().pageUrl; }},
+  nextPageUrl: { get: function () { return new CreateBlogPage().pageUrl; }},
   newEmail: { value: function(username) {
     return username + '@testing.fifthweek.com';
   }},

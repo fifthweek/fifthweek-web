@@ -5,10 +5,10 @@ describe('customize landing page controller', function () {
   var $scope;
   var target;
 
-  var subscriptionRepositoryFactory;
-  var subscriptionRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var aggregateUserState;
-  var subscriptionStub;
+  var blogStub;
   var blobImageControlFactory;
   var aggregateUserStateUtilities;
   var errorFacade;
@@ -17,26 +17,26 @@ describe('customize landing page controller', function () {
 
   beforeEach(function() {
 
-    subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['getSubscription', 'setSubscription']);
-    subscriptionRepositoryFactory = jasmine.createSpyObj('subscriptionRepositoryFactory', ['forCurrentUser']);
-    aggregateUserState = { currentValue: { creatorStatus: { subscriptionId: 'subscriptionId' } } };
-    subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['putSubscription']);
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getBlog', 'setBlog']);
+    blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
+    aggregateUserState = { currentValue: { creatorStatus: { blogId: 'blogId' } } };
+    blogStub = jasmine.createSpyObj('blogStub', ['putBlog']);
     blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
     aggregateUserStateUtilities = jasmine.createSpyObj('aggregateUserStateUtilities', ['getUsername']);
 
     defaultBlobControl = { control: true };
     blobImageControlFactory.createControl.and.returnValue(defaultBlobControl);
-    subscriptionRepositoryFactory.forCurrentUser.and.returnValue(subscriptionRepository);
+    blogRepositoryFactory.forCurrentUser.and.returnValue(blogRepository);
 
     aggregateUserStateUtilities.getUsername.and.returnValue('username');
 
     module('webApp');
     module(function($provide) {
       $provide.value('aggregateUserState', aggregateUserState);
-      $provide.value('subscriptionStub', subscriptionStub);
+      $provide.value('blogStub', blogStub);
       $provide.value('blobImageControlFactory', blobImageControlFactory);
-      $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
       $provide.value('errorFacade', errorFacade);
       $provide.value('aggregateUserStateUtilities', aggregateUserStateUtilities);
     });
@@ -67,19 +67,19 @@ describe('customize landing page controller', function () {
     describe('when initializing', function(){
 
       beforeEach(function(){
-        subscriptionRepository.getSubscription.and.returnValue($q.when({
+        blogRepository.getBlog.and.returnValue($q.when({
           blah: 'blah'
         }));
 
         createController();
       });
 
-      it('should get the subscription repository', function(){
-        expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalled();
+      it('should get the blog repository', function(){
+        expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalled();
       });
 
-      it('should call getSubscription', function(){
-        expect(subscriptionRepository.getSubscription).toHaveBeenCalled();
+      it('should call getBlog', function(){
+        expect(blogRepository.getBlog).toHaveBeenCalled();
       });
 
       it('should set the blobImage control variable', function(){
@@ -99,8 +99,8 @@ describe('customize landing page controller', function () {
     describe('when the user does not have a profile header image', function(){
 
       beforeEach(function(){
-        subscriptionRepository.getSubscription.and.returnValue($q.when({
-          subscriptionName: 'name',
+        blogRepository.getBlog.and.returnValue($q.when({
+          blogName: 'name',
           headerImage: undefined
         }));
 
@@ -114,7 +114,7 @@ describe('customize landing page controller', function () {
 
       it('should set the settings', function(){
         expect($scope.model.settings).toBeDefined();
-        expect($scope.model.settings.subscriptionName).toBe('name');
+        expect($scope.model.settings.blogName).toBe('name');
         expect($scope.model.settings.headerImage).toBeUndefined();
       });
 
@@ -130,8 +130,8 @@ describe('customize landing page controller', function () {
     describe('when the user does have a profile image', function(){
 
       beforeEach(function(){
-        subscriptionRepository.getSubscription.and.returnValue($q.when({
-          subscriptionName: 'name',
+        blogRepository.getBlog.and.returnValue($q.when({
+          blogName: 'name',
           headerImage: {
             containerName: 'containerName',
             fileId: 'fileId'
@@ -148,7 +148,7 @@ describe('customize landing page controller', function () {
 
       it('should set the settings', function(){
         expect($scope.model.settings).toBeDefined();
-        expect($scope.model.settings.subscriptionName).toBe('name');
+        expect($scope.model.settings.blogName).toBe('name');
         expect($scope.model.settings.headerImage.fileId).toBe('fileId');
         expect($scope.model.settings.headerImage.containerName).toBe('containerName');
       });
@@ -165,7 +165,7 @@ describe('customize landing page controller', function () {
     describe('when there is an error loading settings', function(){
 
       beforeEach(function(){
-        subscriptionRepository.getSubscription.and.returnValue($q.reject('error'));
+        blogRepository.getBlog.and.returnValue($q.reject('error'));
         createController();
         $scope.model.settings = { blah: 'blah' };
         $scope.$apply();
@@ -187,9 +187,9 @@ describe('customize landing page controller', function () {
 
   describe('when created', function(){
     beforeEach(function(){
-      subscriptionRepository.getSubscription.and.returnValue($q.when({
-        subscriptionId: 'subscriptionId',
-        subscriptionName: 'name',
+      blogRepository.getBlog.and.returnValue($q.when({
+        blogId: 'blogId',
+        blogName: 'name',
         tagline: 'tagline',
         introduction: 'introduction',
         video: 'video',
@@ -234,17 +234,17 @@ describe('customize landing page controller', function () {
 
         beforeEach(function(){
           $scope.model.settings.headerImage = undefined;
-          subscriptionStub.putSubscription.and.returnValue($q.when());
-          subscriptionRepository.setSubscription.and.returnValue($q.when());
+          blogStub.putBlog.and.returnValue($q.when());
+          blogRepository.setBlog.and.returnValue($q.when());
           $scope.submitForm();
           $scope.$apply();
         });
 
-        it('should save the subscription settings', function(){
-          expect(subscriptionStub.putSubscription).toHaveBeenCalledWith(
-            'subscriptionId',
+        it('should save the blog settings', function(){
+          expect(blogStub.putBlog).toHaveBeenCalledWith(
+            'blogId',
             {
-              subscriptionName: 'name',
+              blogName: 'name',
               tagline: 'tagline',
               introduction: 'introduction',
               headerImageFileId: undefined,
@@ -255,10 +255,10 @@ describe('customize landing page controller', function () {
         });
 
         it('should update the aggregate user state', function(){
-          expect(subscriptionRepository.setSubscription).toHaveBeenCalledWith(
+          expect(blogRepository.setBlog).toHaveBeenCalledWith(
             {
-              subscriptionId: 'subscriptionId',
-              subscriptionName: 'name',
+              blogId: 'blogId',
+              blogName: 'name',
               tagline: 'tagline',
               introduction: 'introduction',
               video: 'video',
@@ -276,17 +276,17 @@ describe('customize landing page controller', function () {
       describe('when a header image exists', function(){
 
         beforeEach(function(){
-          subscriptionStub.putSubscription.and.returnValue($q.when());
-          subscriptionRepository.setSubscription.and.returnValue($q.when());
+          blogStub.putBlog.and.returnValue($q.when());
+          blogRepository.setBlog.and.returnValue($q.when());
           $scope.submitForm();
           $scope.$apply();
         });
 
-        it('should save the subscription settings', function(){
-          expect(subscriptionStub.putSubscription).toHaveBeenCalledWith(
-            'subscriptionId',
+        it('should save the blog settings', function(){
+          expect(blogStub.putBlog).toHaveBeenCalledWith(
+            'blogId',
             {
-              subscriptionName: 'name',
+              blogName: 'name',
               tagline: 'tagline',
               introduction: 'introduction',
               headerImageFileId: 'fileId',
@@ -297,10 +297,10 @@ describe('customize landing page controller', function () {
         });
 
         it('should update the aggregate user state', function(){
-          expect(subscriptionRepository.setSubscription).toHaveBeenCalledWith(
+          expect(blogRepository.setBlog).toHaveBeenCalledWith(
             {
-              subscriptionId: 'subscriptionId',
-              subscriptionName: 'name',
+              blogId: 'blogId',
+              blogName: 'name',
               tagline: 'tagline',
               introduction: 'introduction',
               video: 'video',
@@ -319,18 +319,18 @@ describe('customize landing page controller', function () {
         });
       });
 
-      describe('when saving subscription settings fails', function(){
+      describe('when saving blog settings fails', function(){
 
         var error;
 
         beforeEach(function(){
-          subscriptionStub.putSubscription.and.returnValue($q.reject('error'));
+          blogStub.putBlog.and.returnValue($q.reject('error'));
           $scope.submitForm().catch(function(e){ error = e; });
           $scope.$apply();
         });
 
         it('should not update the aggregate user state', function(){
-          expect(subscriptionRepository.setSubscription).not.toHaveBeenCalled();
+          expect(blogRepository.setBlog).not.toHaveBeenCalled();
         });
 
         it('should not set the form to pristine', function(){
@@ -347,14 +347,14 @@ describe('customize landing page controller', function () {
         var error;
 
         beforeEach(function(){
-          subscriptionStub.putSubscription.and.returnValue($q.when());
-          subscriptionRepository.setSubscription.and.returnValue($q.reject('error'));
+          blogStub.putBlog.and.returnValue($q.when());
+          blogRepository.setBlog.and.returnValue($q.reject('error'));
           $scope.submitForm().catch(function(e){ error = e; });
           $scope.$apply();
         });
 
-        it('should save the subscription settings', function(){
-          expect(subscriptionStub.putSubscription).toHaveBeenCalled();
+        it('should save the blog settings', function(){
+          expect(blogStub.putBlog).toHaveBeenCalled();
         });
 
         it('should not set the form to pristine', function(){

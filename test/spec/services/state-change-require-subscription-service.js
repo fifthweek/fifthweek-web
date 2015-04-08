@@ -1,4 +1,4 @@
-describe('state change require subscription service', function(){
+describe('state change require blog service', function(){
   'use strict';
 
   var nextState = 'nextState';
@@ -8,7 +8,7 @@ describe('state change require subscription service', function(){
   var toParams;
 
   var calculatedStates;
-  var subscriptionService;
+  var blogService;
   var $state;
   var target;
 
@@ -18,17 +18,17 @@ describe('state change require subscription service', function(){
     toParams = {};
 
     calculatedStates = jasmine.createSpyObj('calculatedStates', [ 'getDefaultState' ]);
-    subscriptionService = {};
+    blogService = {};
 
     module('webApp', 'stateMock');
     module(function($provide) {
       $provide.value('calculatedStates', calculatedStates);
-      $provide.value('subscriptionService', subscriptionService);
+      $provide.value('blogService', blogService);
     });
 
     inject(function($injector) {
       $state = $injector.get('$state');
-      target = $injector.get('stateChangeRequireSubscriptionService');
+      target = $injector.get('stateChangeRequireBlogService');
     });
   });
 
@@ -38,15 +38,15 @@ describe('state change require subscription service', function(){
 
   describe('when determining access permission', function() {
 
-    it('should pass if the "requireSubscription" field is not present', function () {
+    it('should pass if the "requireBlog" field is not present', function () {
       var result = target.isPermitted(toState);
 
       expect(result).toBe(true);
     });
 
     it('should pass if the flag matches the service response', function () {
-      toState.requireSubscription = true;
-      subscriptionService.hasSubscription = true;
+      toState.requireBlog = true;
+      blogService.hasBlog = true;
 
       var result = target.isPermitted(toState);
 
@@ -54,8 +54,8 @@ describe('state change require subscription service', function(){
     });
 
     it('should fail if the flag is true and service returns false', function () {
-      toState.requireSubscription = true;
-      subscriptionService.hasSubscription = false;
+      toState.requireBlog = true;
+      blogService.hasBlog = false;
 
       var result = target.isPermitted(toState);
 
@@ -63,8 +63,8 @@ describe('state change require subscription service', function(){
     });
 
     it('should fail if the flag is false and service returns true', function () {
-      toState.requireSubscription = false;
-      subscriptionService.hasSubscription = true;
+      toState.requireBlog = false;
+      blogService.hasBlog = true;
 
       var result = target.isPermitted(toState);
 
@@ -74,15 +74,15 @@ describe('state change require subscription service', function(){
 
   describe('when routing', function() {
 
-    it('should not do anything if the "requireSubscription" field is not present', function () {
+    it('should not do anything if the "requireBlog" field is not present', function () {
       target.redirectAwayIfRequired(event, toState, toParams);
 
       expect(event.preventDefault).not.toHaveBeenCalled();
     });
 
     it('should redirect to the default state if the flag is true and service returns false', function () {
-      toState.requireSubscription = true;
-      subscriptionService.hasSubscription = false;
+      toState.requireBlog = true;
+      blogService.hasBlog = false;
       calculatedStates.getDefaultState.and.returnValue(nextState);
 
       $state.expectTransitionTo(nextState);
@@ -93,8 +93,8 @@ describe('state change require subscription service', function(){
     });
 
     it('should redirect to the default state if the flag is false and service returns true', function () {
-      toState.requireSubscription = false;
-      subscriptionService.hasSubscription = true;
+      toState.requireBlog = false;
+      blogService.hasBlog = true;
       calculatedStates.getDefaultState.and.returnValue(nextState);
 
       $state.expectTransitionTo(nextState);

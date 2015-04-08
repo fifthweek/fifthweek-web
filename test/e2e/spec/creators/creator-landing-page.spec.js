@@ -14,7 +14,7 @@
 
   describe('creator landing page', function() {
 
-    var subscription;
+    var blog;
     var registration;
     var visibleChannels = [];
 
@@ -33,8 +33,8 @@
     };
 
     it('should not contain the standard sidebar or header', function() {
-      var context = commonWorkflows.createSubscription();
-      subscription = context.subscription;
+      var context = commonWorkflows.createBlog();
+      blog = context.blog;
       registration = context.registration;
 
       navigateToPage();
@@ -42,8 +42,8 @@
       expect(headerStandard.navbar.isDisplayed()).toBe(false);
     });
 
-    describe('after creating a subscription', function() {
-      headerCreator.includeTests(function() { return subscription; }, function() { return defaults.introduction });
+    describe('after creating a blog', function() {
+      headerCreator.includeTests(function() { return blog; }, function() { return defaults.introduction });
     });
 
     describe('after signing back in', function() {
@@ -52,7 +52,7 @@
         navigateToPage();
       });
 
-      headerCreator.includeTests(function() { return subscription; }, function() { return defaults.introduction });
+      headerCreator.includeTests(function() { return blog; }, function() { return defaults.introduction });
     });
 
     describe('more info', function() {
@@ -110,7 +110,7 @@
         visibleChannels.push({
           name: defaults.channelName,
             description: defaults.channelDescription,
-          price: subscription.basePrice
+          price: blog.basePrice
         });
 
         expectVisibleChannels();
@@ -148,16 +148,16 @@
       var priceSum;
 
       it('should equal the default channel price by default', function() {
-        expectPrice(subscription.basePrice);
+        expectPrice(blog.basePrice);
       });
 
       it('should always include the default channel price (it may not be deselected)', function() {
         page.getChannelPrice(0).click();
-        expectPrice(subscription.basePrice);
+        expectPrice(blog.basePrice);
       });
 
       it('should sum all selected channels as they are selected', function() {
-        priceSum = subscription.basePrice;
+        priceSum = blog.basePrice;
         for (var i = 1; i < visibleChannels.length; i++) {
           priceSum = (parseFloat(priceSum) + parseFloat(visibleChannels[i].price)).toFixed(2);
           page.getChannelPrice(i).click();

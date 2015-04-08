@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'customizeLandingPageCtrl',
-  function($scope, $q, subscriptionRepositoryFactory, aggregateUserStateUtilities, subscriptionStub, errorFacade, blobImageControlFactory) {
+  function($scope, $q, blogRepositoryFactory, aggregateUserStateUtilities, blogStub, errorFacade, blobImageControlFactory) {
     'use strict';
 
     var model = {
@@ -9,11 +9,11 @@ angular.module('webApp').controller(
       landingPageUrl: undefined
     };
 
-    var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+    var blogRepository = blogRepositoryFactory.forCurrentUser();
 
     var loadForm = function(){
 
-      return subscriptionRepository.getSubscription()
+      return blogRepository.getBlog()
         .then(function(data){
           model.settings = data;
 
@@ -50,8 +50,8 @@ angular.module('webApp').controller(
       if(model.settings.headerImage){
         fileId = model.settings.headerImage.fileId;
       }
-      var subscriptionData = {
-        subscriptionName: model.settings.subscriptionName,
+      var blogData = {
+        blogName: model.settings.blogName,
         tagline: model.settings.tagline,
         introduction: model.settings.introduction,
         headerImageFileId: fileId,
@@ -59,9 +59,9 @@ angular.module('webApp').controller(
         description: model.settings.description
       };
 
-      return subscriptionStub.putSubscription(model.settings.subscriptionId, subscriptionData)
+      return blogStub.putBlog(model.settings.blogId, blogData)
         .then(function() {
-          return subscriptionRepository.setSubscription(model.settings);
+          return blogRepository.setBlog(model.settings);
         })
         .then(function(){
           $scope.form.$setPristine();

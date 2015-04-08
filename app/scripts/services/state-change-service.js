@@ -1,13 +1,13 @@
 /// <reference path='../angular.module('webApp')js' />
 
 angular.module('webApp').factory('stateChangeService',
-  function(stateChangeAuthorizationService, stateChangeRedirectionService, stateChangeRequireSubscriptionService) {
+  function(stateChangeAuthorizationService, stateChangeRedirectionService, stateChangeRequireBlogService) {
     'use strict';
 
     var stateChangeServices = [
       stateChangeAuthorizationService,
       stateChangeRedirectionService,
-      stateChangeRequireSubscriptionService
+      stateChangeRequireBlogService
     ];
 
     var service = {};

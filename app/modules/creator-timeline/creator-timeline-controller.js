@@ -1,9 +1,9 @@
 angular.module('webApp').controller('timelineCtrl',
-  function($scope, $sce, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, channelRepositoryFactory) {
+  function($scope, $sce, accountSettingsRepositoryFactory, blogRepositoryFactory, channelRepositoryFactory) {
     'use strict';
 
     var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
-    var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+    var blogRepository = blogRepositoryFactory.forCurrentUser();
     var channelRepository = channelRepositoryFactory.forCurrentUser();
 
     $scope.model = {
@@ -24,8 +24,8 @@ angular.module('webApp').controller('timelineCtrl',
       $scope.model.accountSettings = accountSettings;
     });
 
-    subscriptionRepository.getSubscription().then(function(data) {
-      $scope.model.subscription = data;
+    blogRepository.getBlog().then(function(data) {
+      $scope.model.blog = data;
 
       if (data.video) {
         $scope.model.videoUrl = $sce.trustAsResourceUrl(data.video.replace('http://', '//').replace('https://', '//'));

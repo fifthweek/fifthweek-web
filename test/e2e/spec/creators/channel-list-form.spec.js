@@ -10,7 +10,7 @@ describe('channel list form', function() {
   // Tests for listing non-default channels are covered by the add/edit collection specs.
 
   var registration;
-  var subscription;
+  var blog;
 
   var defaults = new Defaults();
   var commonWorkflows = new CommonWorkflows();
@@ -18,9 +18,9 @@ describe('channel list form', function() {
   var page = new ChannelListPage();
 
   it('should run once before all', function() {
-    var context = commonWorkflows.createSubscription();
+    var context = commonWorkflows.createBlog();
     registration = context.registration;
-    subscription = context.subscription;
+    blog = context.blog;
     navigateToPage();
   });
 
@@ -50,7 +50,7 @@ describe('channel list form', function() {
     expect(page.channels.count()).toBe(1);
     page.expectChannel({
       name: defaults.channelName,
-      price: subscription.basePrice,
+      price: blog.basePrice,
       description: defaults.channelDescription
     });
   };

@@ -7,7 +7,7 @@ describe('state change service', function(){
 
   var stateChangeAuthorizationService;
   var stateChangeRedirectionService;
-  var stateChangeRequireSubscriptionService;
+  var stateChangeRequireBlogService;
   var target;
 
   beforeEach(function(){
@@ -17,13 +17,13 @@ describe('state change service', function(){
 
     stateChangeAuthorizationService = jasmine.createSpyObj('stateChangeAuthorizationService', [ 'isPermitted', 'redirectAwayIfRequired' ]);
     stateChangeRedirectionService = jasmine.createSpyObj('stateChangeRedirectionService', [ 'isPermitted', 'redirectAwayIfRequired' ]);
-    stateChangeRequireSubscriptionService = jasmine.createSpyObj('stateChangeRequireSubscriptionService', [ 'isPermitted', 'redirectAwayIfRequired' ]);
+    stateChangeRequireBlogService = jasmine.createSpyObj('stateChangeRequireBlogService', [ 'isPermitted', 'redirectAwayIfRequired' ]);
 
     module('webApp');
     module(function($provide) {
       $provide.value('stateChangeAuthorizationService', stateChangeAuthorizationService);
       $provide.value('stateChangeRedirectionService', stateChangeRedirectionService);
-      $provide.value('stateChangeRequireSubscriptionService', stateChangeRequireSubscriptionService);
+      $provide.value('stateChangeRequireBlogService', stateChangeRequireBlogService);
     });
 
     inject(function($injector) {
@@ -36,27 +36,27 @@ describe('state change service', function(){
     it('should pass if all composed services pass', function () {
       stateChangeAuthorizationService.isPermitted.and.returnValue(true);
       stateChangeRedirectionService.isPermitted.and.returnValue(true);
-      stateChangeRequireSubscriptionService.isPermitted.and.returnValue(true);
+      stateChangeRequireBlogService.isPermitted.and.returnValue(true);
 
       var result = target.isPermitted(toState);
 
       expect(result).toBe(true);
       expect(stateChangeAuthorizationService.isPermitted).toHaveBeenCalledWith(toState);
       expect(stateChangeRedirectionService.isPermitted).toHaveBeenCalledWith(toState);
-      expect(stateChangeRequireSubscriptionService.isPermitted).toHaveBeenCalledWith(toState);
+      expect(stateChangeRequireBlogService.isPermitted).toHaveBeenCalledWith(toState);
     });
 
     it('should fail if any composed services fail', function () {
       stateChangeAuthorizationService.isPermitted.and.returnValue(true);
       stateChangeRedirectionService.isPermitted.and.returnValue(false);
-      stateChangeRequireSubscriptionService.isPermitted.and.returnValue(true);
+      stateChangeRequireBlogService.isPermitted.and.returnValue(true);
 
       var result = target.isPermitted(toState);
 
       expect(result).toBe(false);
       expect(stateChangeAuthorizationService.isPermitted).toHaveBeenCalledWith(toState);
       expect(stateChangeRedirectionService.isPermitted).toHaveBeenCalledWith(toState);
-      expect(stateChangeRequireSubscriptionService.isPermitted).not.toHaveBeenCalled();
+      expect(stateChangeRequireBlogService.isPermitted).not.toHaveBeenCalled();
     });
   });
 
@@ -67,7 +67,7 @@ describe('state change service', function(){
 
       expect(stateChangeAuthorizationService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
       expect(stateChangeRedirectionService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
-      expect(stateChangeRequireSubscriptionService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
+      expect(stateChangeRequireBlogService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
     });
   });
 });

@@ -11,7 +11,7 @@
   describe('creator-timeline page', function() {
 
     var registration;
-    var subscription;
+    var blog;
 
     var defaults = new Defaults();
     var commonWorkflows = new CommonWorkflows();
@@ -21,15 +21,15 @@
     var creatorLandingPagePage = new CreatorLandingPagePage();
 
     it('should not contain a sidebar or header', function() {
-      var context = commonWorkflows.createSubscription();
+      var context = commonWorkflows.createBlog();
       registration = context.registration;
-      subscription = context.subscription;
+      blog = context.blog;
       sidebar.landingPageLink.click();
       creatorLandingPagePage.subscribeButton.click();
       expect(sidebar.sidebar.isDisplayed()).toBe(false);
       expect(headerStandard.navbar.isDisplayed()).toBe(false);
     });
 
-    headerCreator.includeTests(function() { return subscription; }, function() { return defaults.introduction });
+    headerCreator.includeTests(function() { return blog; }, function() { return defaults.introduction });
   });
 })();

@@ -16,7 +16,7 @@
     var filePathTiff = '../../../sample-image-tiny.tif';
 
     var registration;
-    var subscription;
+    var blog;
 
     var testKit = new TestKit();
     var commonWorkflows = new CommonWorkflows();
@@ -39,9 +39,9 @@
     describe('when posting many posts', function(){
 
       it('should run once before all', function() {
-        var context = commonWorkflows.createSubscription();
+        var context = commonWorkflows.createBlog();
         registration = context.registration;
-        subscription = context.subscription;
+        blog = context.blog;
 
         commonWorkflows.createNamedCollection(undefined, collectionName);
         navigateToPage();
@@ -197,9 +197,9 @@
     describe('when posting single posts', function(){
       var inputData = {};
       it('should run once before all', function() {
-        var context = commonWorkflows.createSubscription();
+        var context = commonWorkflows.createBlog();
         registration = context.registration;
-        subscription = context.subscription;
+        blog = context.blog;
 
         inputData.registration = registration;
         commonWorkflows.createNamedCollection(undefined, collectionName);
@@ -259,9 +259,9 @@
 
     describe('when reordering posts', function(){
       it('should re-order correctly', function() {
-        var context = commonWorkflows.createSubscription();
+        var context = commonWorkflows.createBlog();
         registration = context.registration;
-        subscription = context.subscription;
+        blog = context.blog;
 
         commonWorkflows.createNamedCollection(undefined, collectionName);
 

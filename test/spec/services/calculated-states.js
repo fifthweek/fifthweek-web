@@ -3,7 +3,7 @@ describe('ui state provider', function() {
 
   var $q;
   var states;
-  var subscriptionService;
+  var blogService;
   var authenticationService;
   var authenticationServiceConstants;
   var target;
@@ -11,10 +11,10 @@ describe('ui state provider', function() {
   beforeEach(function() {
     module('webApp');
     module(function($provide) {
-      subscriptionService = {};
+      blogService = {};
       authenticationService = { currentUser: {}};
 
-      $provide.value('subscriptionService', subscriptionService);
+      $provide.value('blogService', blogService);
       $provide.value('authenticationService', authenticationService);
     });
 
@@ -45,20 +45,20 @@ describe('ui state provider', function() {
       expect(result).toBe(states.dashboard.name);
     });
 
-    it('it should return "create your subscription" for creators without a subscription', function() {
+    it('it should return "create your blog" for creators without a blog', function() {
       authenticationService.currentUser.authenticated = true;
       authenticationService.currentUser.roles = [ authenticationServiceConstants.roles.creator ];
-      subscriptionService.hasSubscription = false;
+      blogService.hasBlog = false;
 
       var result = target.getDefaultState();
 
-      expect(result).toBe(states.creators.createSubscription.name);
+      expect(result).toBe(states.creators.createBlog.name);
     });
 
-    it('it should return "compose note" for creators with a subscription', function() {
+    it('it should return "compose note" for creators with a blog', function() {
       authenticationService.currentUser.authenticated = true;
       authenticationService.currentUser.roles = [ authenticationServiceConstants.roles.creator ];
-      subscriptionService.hasSubscription = true;
+      blogService.hasBlog = true;
 
       var result = target.getDefaultState();
 

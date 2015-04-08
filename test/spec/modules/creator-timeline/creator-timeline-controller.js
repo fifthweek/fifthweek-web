@@ -12,8 +12,8 @@ describe('creator timeline controller', function () {
   var accountSettingsRepository;
   var channelRepositoryFactory;
   var channelRepository;
-  var subscriptionRepositoryFactory;
-  var subscriptionRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var $controller;
   var target;
 
@@ -23,15 +23,15 @@ describe('creator timeline controller', function () {
     accountSettingsRepositoryFactory = { forCurrentUser: function() { return accountSettingsRepository; }};
     channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
     channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
-    subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['getSubscription']);
-    subscriptionRepositoryFactory = { forCurrentUser: function() { return subscriptionRepository; }};
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getBlog']);
+    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
 
     module('webApp');
     module(function($provide) {
       $provide.value('$sce', $sce);
       $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
       $provide.value('channelRepositoryFactory', channelRepositoryFactory);
-      $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
     });
 
     inject(function ($injector) {
@@ -42,7 +42,7 @@ describe('creator timeline controller', function () {
 
     accountSettingsRepository.getAccountSettings.and.returnValue($q.defer().promise);
     channelRepository.getChannels.and.returnValue($q.defer().promise);
-    subscriptionRepository.getSubscription.and.returnValue($q.defer().promise);
+    blogRepository.getBlog.and.returnValue($q.defer().promise);
   });
 
   var initializeTarget = function() {
@@ -95,7 +95,7 @@ describe('creator timeline controller', function () {
     expect($scope.model.tracking.category).toBe('Timeline');
   });
 
-  it('should expose a default subscription state of "unsubscribed"', function() {
+  it('should expose a default blog state of "unsubscribed"', function() {
     initializeTarget();
 
     expect($scope.model.subscribed).toBe(false);
@@ -109,16 +109,16 @@ describe('creator timeline controller', function () {
     expect($scope.model.accountSettings).toBe('account settings');
   });
 
-  it('should expose subscription', function() {
-    subscriptionRepository.getSubscription.and.returnValue($q.when('subscription settings'));
+  it('should expose blog', function() {
+    blogRepository.getBlog.and.returnValue($q.when('blog settings'));
 
     initializeTarget();
 
-    expect($scope.model.subscription).toBe('subscription settings');
+    expect($scope.model.blog).toBe('blog settings');
   });
 
   it('should expose video as a trusted resource', function() {
-    subscriptionRepository.getSubscription.and.returnValue($q.when({ video: 'http://url' }));
+    blogRepository.getBlog.and.returnValue($q.when({ video: 'http://url' }));
     $sce.trustAsResourceUrl.and.returnValue('trusted url');
 
     initializeTarget();

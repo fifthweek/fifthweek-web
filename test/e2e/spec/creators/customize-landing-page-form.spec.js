@@ -3,7 +3,7 @@ var TestKit = require('../../test-kit.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
 var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
 var LandingPagePage = require('../../pages/creators/customize-landing-page.page.js');
-var SubscriptionNameInputPage = require('../../pages/subscription-name-input.page.js');
+var BlogNameInputPage = require('../../pages/blog-name-input.page.js');
 var TaglineInputPage = require('../../pages/tagline-input.page.js');
 var VideoUrlInputPage = require('../../pages/video-url-input.page.js');
 var DiscardChangesPage = require('../../pages/discard-changes.page.js');
@@ -12,14 +12,14 @@ describe('customize landing page form', function() {
   'use strict';
 
   var registration;
-  var subscription;
+  var blog;
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
   var page = new LandingPagePage();
   var testKit = new TestKit();
   var creatorLandingPagePage = new CreatorLandingPagePage();
-  var subscriptionNameInputPage = new SubscriptionNameInputPage();
+  var blogNameInputPage = new BlogNameInputPage();
   var taglineInputPage = new TaglineInputPage();
   var videoUrlInputPage = new VideoUrlInputPage();
   var discardChanges = new DiscardChangesPage();
@@ -33,9 +33,9 @@ describe('customize landing page form', function() {
   };
 
   it('should run once before all', function() {
-    var context = commonWorkflows.createSubscription();
+    var context = commonWorkflows.createBlog();
     registration = context.registration;
-    subscription = context.subscription;
+    blog = context.blog;
     navigateToPage();
   });
 
@@ -64,12 +64,12 @@ describe('customize landing page form', function() {
         expect(page.vanityUrl.getText()).toBe('https://www.fifthweek.com/' + registration.username);
       });
 
-      it('should contain the subscription name', function(){
-        expect(element(by.id(page.subscriptionNameTextBoxId)).getAttribute('value')).toBe(subscription.name);
+      it('should contain the blog name', function(){
+        expect(element(by.id(page.blogNameTextBoxId)).getAttribute('value')).toBe(blog.name);
       });
 
       it('should contain the tagline', function(){
-        expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(subscription.tagline);
+        expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(blog.tagline);
       });
 
       it('should contain the default introduction', function(){
@@ -135,14 +135,14 @@ describe('customize landing page form', function() {
     var newValues = {
       introduction: 'Introduction ' + Math.round(Math.random() * 100000),
       tagline: 'Tagline ' + Math.round(Math.random() * 100000),
-      name: 'Subscription ' + Math.round(Math.random() * 100000)
+      name: 'Blog ' + Math.round(Math.random() * 100000)
     };
 
     it('should populate the form with new data', function(){
       page.basicsTabLink.click();
       expect(page.basicsSubmitButton.isEnabled()).toBe(false);
 
-      testKit.setValue(page.subscriptionNameTextBoxId, newValues.name);
+      testKit.setValue(page.blogNameTextBoxId, newValues.name);
       expect(page.basicsSubmitButton.isEnabled()).toBe(true);
 
       testKit.setValue(page.taglineTextBoxId, newValues.tagline);
@@ -164,7 +164,7 @@ describe('customize landing page form', function() {
     return newValues;
   };
 
-  describe('when first loaded after creating a subscription', function(){
+  describe('when first loaded after creating a blog', function(){
 
     testInitialContent();
 
@@ -195,7 +195,7 @@ describe('customize landing page form', function() {
       function(){ sidebar.helpLink.click(); },
       function(){ testKit.setValue(page.taglineTextBoxId, 'New Tagline');},
       function(){ expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe('New Tagline'); },
-      function(){ expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(subscription.tagline); }
+      function(){ expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(blog.tagline); }
     );
 
     describe('when saving changes', function(){
@@ -217,7 +217,7 @@ describe('customize landing page form', function() {
       });
 
       it('should reset the submit button and success message status on next change', function(){
-        testKit.setValue(page.subscriptionNameTextBoxId, '1');
+        testKit.setValue(page.blogNameTextBoxId, '1');
         expect(page.basicsSuccessMessage.isDisplayed()).toBe(false);
         expect(page.basicsSubmitButton.isEnabled()).toBe(true);
         commonWorkflows.fastRefresh();
@@ -227,7 +227,7 @@ describe('customize landing page form', function() {
         commonWorkflows.reSignIn(registration);
         navigateToPage();
 
-        expect(element(by.id(page.subscriptionNameTextBoxId)).getAttribute('value')).toBe(formValues.name);
+        expect(element(by.id(page.blogNameTextBoxId)).getAttribute('value')).toBe(formValues.name);
         expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(formValues.tagline);
         expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).toBe(formValues.introduction);
 
@@ -245,9 +245,9 @@ describe('customize landing page form', function() {
   describe('when validating inputs', function() {
 
     it('should run once before all', function() {
-      var context = commonWorkflows.createSubscription();
+      var context = commonWorkflows.createBlog();
       registration = context.registration;
-      subscription = context.subscription;
+      blog = context.blog;
       navigateToPage();
     });
 
@@ -266,7 +266,7 @@ describe('customize landing page form', function() {
           page.basicsTabLink.click();
         });
 
-        testKit.includeHappyPaths(page, subscriptionNameInputPage, 'subscriptionNameTextBox');
+        testKit.includeHappyPaths(page, blogNameInputPage, 'blogNameTextBox');
         testKit.includeHappyPaths(page, taglineInputPage, 'taglineTextBox');
 
         it('should allow symbols in introductions', function(){
@@ -320,7 +320,7 @@ describe('customize landing page form', function() {
           page.basicsTabLink.click();
         });
 
-        testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, subscriptionNameInputPage, 'subscriptionNameTextBox');
+        testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, blogNameInputPage, 'blogNameTextBox');
         testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, taglineInputPage, 'taglineTextBox');
 
         it('should not allow an empty introduction', function(){

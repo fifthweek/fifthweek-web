@@ -12,7 +12,7 @@ describe('add collection form', function() {
   'use strict';
 
   var registration;
-  var subscription;
+  var blog;
   var defaultChannelSelectText = 'Share with everyone';
 
   var collectionCount = 0;
@@ -35,9 +35,9 @@ describe('add collection form', function() {
   };
 
   it('should run once before all', function() {
-    var context = commonWorkflows.createSubscription();
+    var context = commonWorkflows.createBlog();
     registration = context.registration;
-    subscription = context.subscription;
+    blog = context.blog;
 
     var channelNames = [ defaults.channelName ];
     channelNames.push(commonWorkflows.createChannel().name);

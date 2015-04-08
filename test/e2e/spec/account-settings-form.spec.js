@@ -11,7 +11,7 @@ describe('account settings form', function() {
   'use strict';
 
   var registration;
-  var subscription;
+  var blog;
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
@@ -23,9 +23,9 @@ describe('account settings form', function() {
   var discardChanges = new DiscardChangesPage();
 
   var navigateToPage = function() {
-    var context = commonWorkflows.createSubscription();
+    var context = commonWorkflows.createBlog();
     registration = context.registration;
-    subscription = context.subscription;
+    blog = context.blog;
     sidebar.accountLink.click();
   };
 

@@ -14,7 +14,7 @@ angular.module('webApp')
         service.getChannels = function() {
           return masterRepository.get(channelsKey).then(function(channels) {
             if (channels.length === 0) {
-              return $q.reject(new DisplayableError('You must create a subscription.'));
+              return $q.reject(new DisplayableError('You must create a blog.'));
             }
 
             return $q.when(channels);
@@ -30,7 +30,7 @@ angular.module('webApp')
         service.getChannelMap = function() {
           return masterRepository.get(channelsKey).then(function(channels) {
             if (channels.length === 0) {
-              return $q.reject(new DisplayableError('You must create a subscription.'));
+              return $q.reject(new DisplayableError('You must create a blog.'));
             }
 
             var channelMap = _.reduce(channels, function(channelResult, channel){

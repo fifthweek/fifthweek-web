@@ -50,7 +50,7 @@ describe('channel repository factory', function(){
 
       target.getChannels().catch(function(error) {
         expect(error instanceof DisplayableError).toBeTruthy();
-        expect(error.message).toBe('You must create a subscription.');
+        expect(error.message).toBe('You must create a blog.');
       });
       $rootScope.$apply();
     });
@@ -256,7 +256,7 @@ describe('channel repository factory', function(){
 
       it('should fail with a displayable error', function(){
         expect(error instanceof DisplayableError).toBe(true);
-        expect(error.message).toBe('You must create a subscription.');
+        expect(error.message).toBe('You must create a blog.');
       });
     });
 

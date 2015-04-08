@@ -2,22 +2,22 @@ var TestKit = require('../../test-kit.js');
 var CommonWorkflows = require('../../common-workflows.js');
 var RegisterPage = require('../../pages/register.page.js');
 var SignOutPage = require('../../pages/sign-out.page.js');
-var SubscriptionNameInputPage = require('../../pages/subscription-name-input.page.js');
+var BlogNameInputPage = require('../../pages/blog-name-input.page.js');
 var TaglineInputPage = require('../../pages/tagline-input.page.js');
 var ChannelPriceInputPage = require('../../pages/channel-price-input.page.js');
-var CreateSubscriptionPage = require('../../pages/creators/create-subscription.page.js');
+var CreateBlogPage = require('../../pages/creators/create-blog.page.js');
 
-describe('create subscription form', function() {
+describe('create blog form', function() {
   'use strict';
 
   var commonWorkflows = new CommonWorkflows();
   var testKit = new TestKit();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
-  var subscriptionNameInputPage = new SubscriptionNameInputPage();
+  var blogNameInputPage = new BlogNameInputPage();
   var taglineInputPage = new TaglineInputPage();
   var channelPriceInputPage = new ChannelPriceInputPage();
-  var page = new CreateSubscriptionPage();
+  var page = new CreateBlogPage();
 
   describe('happy path', function () {
 
@@ -33,18 +33,18 @@ describe('create subscription form', function() {
       expect(browser.getCurrentUrl()).toContain(page.nextPageUrl);
     });
 
-    it('should allow a new subscription to be created', function(){
-      testKit.setValue(page.nameTextBoxId, subscriptionNameInputPage.newName());
+    it('should allow a new blog to be created', function(){
+      testKit.setValue(page.nameTextBoxId, blogNameInputPage.newName());
       testKit.setValue(page.taglineTextBoxId, taglineInputPage.newTagline());
       testKit.setValue(page.basePriceTextBoxId, channelPriceInputPage.newPrice());
     });
 
     it('should not require base price to be entered', function(){
-      testKit.setValue(page.nameTextBoxId, subscriptionNameInputPage.newName());
+      testKit.setValue(page.nameTextBoxId, blogNameInputPage.newName());
       testKit.setValue(page.taglineTextBoxId, taglineInputPage.newTagline());
     });
 
-    testKit.includeHappyPaths(page, subscriptionNameInputPage, 'nameTextBox', page.inputs);
+    testKit.includeHappyPaths(page, blogNameInputPage, 'nameTextBox', page.inputs);
     testKit.includeHappyPaths(page, taglineInputPage, 'taglineTextBox', page.inputs);
     testKit.includeHappyPaths(page, channelPriceInputPage, 'basePriceTextBox', page.inputs);
   });
@@ -61,7 +61,7 @@ describe('create subscription form', function() {
       commonWorkflows.fastRefresh();
     });
 
-    testKit.includeSadPaths(page, page.submitButton, page.helpMessages, subscriptionNameInputPage, 'nameTextBox', page.inputs);
+    testKit.includeSadPaths(page, page.submitButton, page.helpMessages, blogNameInputPage, 'nameTextBox', page.inputs);
     testKit.includeSadPaths(page, page.submitButton, page.helpMessages, taglineInputPage, 'taglineTextBox', page.inputs);
     testKit.includeSadPaths(page, page.submitButton, page.helpMessages, channelPriceInputPage, 'basePriceTextBox', page.inputs);
   });

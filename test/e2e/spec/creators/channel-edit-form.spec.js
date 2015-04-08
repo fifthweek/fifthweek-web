@@ -16,7 +16,7 @@ describe('edit channel form', function() {
   'use strict';
 
   var registration;
-  var subscription;
+  var blog;
   var defaultChannelCollectionCount = 1;
 
   var defaults = new Defaults();
@@ -33,9 +33,9 @@ describe('edit channel form', function() {
   var discardChanges = new DiscardChangesPage();
 
   it('should run once before all', function() {
-    var context = commonWorkflows.createSubscription();
+    var context = commonWorkflows.createBlog();
     registration = context.registration;
-    subscription = context.subscription;
+    blog = context.blog;
     sidebar.channelsLink.click();
   });
 
@@ -48,7 +48,7 @@ describe('edit channel form', function() {
         savedValues = {
           nameTextBox: isDefault ? defaults.channelName : channel.name,
           descriptionTextBox: isDefault ? defaults.channelDescription : channel.description,
-          priceTextBox: isDefault ? subscription.basePrice : channel.price
+          priceTextBox: isDefault ? blog.basePrice : channel.price
         };
 
         if (!isDefault) {

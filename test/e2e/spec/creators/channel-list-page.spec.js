@@ -10,7 +10,7 @@ describe('channel list page', function() {
   var header = new HeaderChannelsPage();
 
   it('should run once before all', function() {
-    commonWorkflows.createSubscription();
+    commonWorkflows.createBlog();
     sidebar.channelsLink.click();
   });
 

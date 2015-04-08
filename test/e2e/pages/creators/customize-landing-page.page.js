@@ -20,7 +20,7 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
   fullDescriptionTabLink: { get: function() { return element(by.css('.nav-tabs li:nth-child(3) a')); }},
 
   vanityUrl: { get: function() { return element(by.css('#vanity-url a')); }},
-  subscriptionNameTextBoxId: { value: 'model-settings-subscriptionName' },
+  blogNameTextBoxId: { value: 'model-settings-blogName' },
   taglineTextBoxId: { value: 'model-settings-tagline' },
   introductionTextBoxId: { value: 'introduction' },
 
@@ -52,7 +52,7 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
 
   helpMessages: { get: function () { return element.all(by.css('#customizeLandingPageForm .help-block')); }},
 
-  pageUrl: { get: function () { return '/creators/subscription/landing-page'; }},
+  pageUrl: { get: function () { return '/creators/blog/landing-page'; }},
 
   setFileInput: { value: function(filePath) {
     this.fileInput.sendKeys(path.resolve(__dirname + '/' + filePath));

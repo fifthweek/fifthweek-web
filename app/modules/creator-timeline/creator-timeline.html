@@ -3,9 +3,9 @@
       role="form">
 
   <fw-azure-image-loader output-url="model.profileImageUrl" thumbnail="header" file-id="{{model.accountSettings.profileImage.fileId}}" container-name="{{model.accountSettings.profileImage.containerName}}"></fw-azure-image-loader>
-  <fw-azure-image-loader output-url="model.headerImageUrl" thumbnail="header" file-id="{{model.subscription.headerImage.fileId}}" container-name="{{model.subscription.headerImage.containerName}}"></fw-azure-image-loader>
+  <fw-azure-image-loader output-url="model.headerImageUrl" thumbnail="header" file-id="{{model.blog.headerImage.fileId}}" container-name="{{model.blog.headerImage.containerName}}"></fw-azure-image-loader>
 
-  <div class="header-image" ng-style="{'background-image':'url(' + (model.subscription.headerImage.fileId ? model.headerImageUrl : model.defaultHeaderImageUrl) + ')'}" id="header-image">
+  <div class="header-image" ng-style="{'background-image':'url(' + (model.blog.headerImage.fileId ? model.headerImageUrl : model.defaultHeaderImageUrl) + ')'}" id="header-image">
     <div class="header-image-control-overlay">
       <h1 class="fifthweek-logo-sm">
         <a ui-sref="creators">fw</a>
@@ -52,9 +52,9 @@
         </div>
         <div class="col-s-8">
           <div class="header-text">
-            <h2 id="subscription-name">{{model.subscription.subscriptionName}}</h2>
-            <h3 id="subscription-tagline">{{model.subscription.tagline}}</h3>
-            <h4 id="subscription-introduction">{{model.subscription.introduction}}</h4>
+            <h2 id="blog-name">{{model.blog.blogName}}</h2>
+            <h3 id="blog-tagline">{{model.blog.tagline}}</h3>
+            <h4 id="blog-introduction">{{model.blog.introduction}}</h4>
           </div>
         </div>
       </div>
@@ -102,12 +102,12 @@
               </div>
             </div>
 
-            <div id="more-info" ng-if="model.videoUrl || model.subscription.description">
+            <div id="more-info" ng-if="model.videoUrl || model.blog.description">
               <h5><span>More Info</span></h5>
               <div class="post non-image-post" ng-if="!model.videoUrl">
                 <div class="text">
                   <div id="full-description" class="content">
-                    <fw-markdown replace="true" ng-model="model.subscription.description"></fw-markdown>
+                    <fw-markdown replace="true" ng-model="model.blog.description"></fw-markdown>
                   </div>
                 </div>
               </div>
@@ -118,8 +118,8 @@
                 </div>
                 <div class="text">
                   <div id="full-description" class="content">
-                    <fw-markdown replace="true" ng-model="model.subscription.description" ng-if="model.subscription.description"></fw-markdown>
-                    <p ng-if="!model.subscription.description">More of your favourites each and every week -- for less than a coffee!</p>
+                    <fw-markdown replace="true" ng-model="model.blog.description" ng-if="model.blog.description"></fw-markdown>
+                    <p ng-if="!model.blog.description">More of your favourites each and every week -- for less than a coffee!</p>
                   </div>
                 </div>
               </div>

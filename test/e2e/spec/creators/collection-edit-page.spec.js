@@ -16,7 +16,7 @@ describe('edit collection page', function() {
   var collectionName;
 
   it('should run once before all', function() {
-    commonWorkflows.createSubscription();
+    commonWorkflows.createBlog();
     collectionName = commonWorkflows.createCollection().name;
     collectionListPage.getEditCollectionButton(collectionName).click();
   });

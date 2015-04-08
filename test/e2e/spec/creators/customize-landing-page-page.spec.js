@@ -12,7 +12,7 @@ describe('customize landing page page', function() {
   var creatorLandingPagePage = new CreatorLandingPagePage();
 
   it('should run once before all', function() {
-    commonWorkflows.createSubscription();
+    commonWorkflows.createBlog();
     sidebar.landingPageLink.click();
     creatorLandingPagePage.editPageLink.click();
   });

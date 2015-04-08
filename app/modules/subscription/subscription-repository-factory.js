@@ -1,15 +1,15 @@
 angular.module('webApp')
-  .constant('subscriptionRepositoryFactoryConstants', {
-    subscriptionKey: 'subscription'
+  .constant('blogRepositoryFactoryConstants', {
+    blogKey: 'blog'
   })
-  .factory('subscriptionRepositoryFactory',
-  function($q, masterRepositoryFactory, subscriptionRepositoryFactoryConstants) {
+  .factory('blogRepositoryFactory',
+  function($q, masterRepositoryFactory, blogRepositoryFactoryConstants) {
     'use strict';
 
     return {
       forCurrentUser: function() {
 
-        var subscriptionKey = subscriptionRepositoryFactoryConstants.subscriptionKey;
+        var blogKey = blogRepositoryFactoryConstants.blogKey;
         var masterRepository = masterRepositoryFactory.forCurrentUser();
 
         var service = {};
@@ -18,19 +18,19 @@ angular.module('webApp')
           return masterRepository.getUserId();
         };
 
-        service.getSubscription = function(){
-          return masterRepository.get(subscriptionKey)
+        service.getBlog = function(){
+          return masterRepository.get(blogKey)
             .then(function(data){
               if(data){
                 return $q.when(data);
               }
 
-              return $q.reject(new DisplayableError('You do not have a subscription.'));
+              return $q.reject(new DisplayableError('You do not have a blog.'));
             });
         };
 
-        service.setSubscription = function(newSubscription){
-          return masterRepository.set(subscriptionKey, newSubscription);
+        service.setBlog = function(newBlog){
+          return masterRepository.set(blogKey, newBlog);
         };
 
         return service;

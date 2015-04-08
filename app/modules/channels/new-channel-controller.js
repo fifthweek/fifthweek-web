@@ -1,4 +1,4 @@
-angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $state, states, channelRepositoryFactory, channelStub, subscriptionService) {
+angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $state, states, channelRepositoryFactory, channelStub, blogService) {
   'use strict';
 
   var channelRepository = channelRepositoryFactory.forCurrentUser();
@@ -16,7 +16,7 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
   $scope.create = function() {
     var channel = $scope.model.channel;
     var channelData = {
-      subscriptionId: subscriptionService.subscriptionId,
+      blogId: blogService.blogId,
       name: channel.name,
       description: channel.description,
       price: Math.round(channel.price * 100),
@@ -30,7 +30,7 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
         channelData.priceInUsCentsPerWeek = channelData.price;
         channelData.isDefault = false;
         delete channelData.price;
-        delete channelData.subscriptionId;
+        delete channelData.blogId;
 
         return channelRepository.createChannel(channelData).then(function() {
           $state.go($scope.previousState);

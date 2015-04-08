@@ -1,7 +1,7 @@
 describe('new channel controller', function () {
   'use strict';
 
-  var subscriptionId = 'subscriptionId';
+  var blogId = 'blogId';
   var channelId = 'channelId';
 
   var boundaryRoundingValue = '2.51'; // 2.51 * 100 = 250.99999999999997
@@ -17,10 +17,10 @@ describe('new channel controller', function () {
   var channelRepositoryFactory;
   var channelRepository;
   var channelStub;
-  var subscriptionService;
+  var blogService;
 
   beforeEach(function() {
-    subscriptionService = { subscriptionId: subscriptionId };
+    blogService = { blogId: blogId };
     $state = jasmine.createSpyObj('$state', ['go']);
     channelStub = jasmine.createSpyObj('channelStub', ['postChannel']);
     channelRepository = jasmine.createSpyObj('channelRepository', ['createChannel']);
@@ -28,7 +28,7 @@ describe('new channel controller', function () {
 
     module('webApp');
     module(function($provide) {
-      $provide.value('subscriptionService', subscriptionService);
+      $provide.value('blogService', blogService);
       $provide.value('$state', $state);
       $provide.value('channelStub', channelStub);
       $provide.value('channelRepositoryFactory', channelRepositoryFactory);
@@ -66,7 +66,7 @@ describe('new channel controller', function () {
     $scope.$apply();
 
     expect(channelStub.postChannel).toHaveBeenCalledWith({
-      subscriptionId: subscriptionId,
+      blogId: blogId,
       name: 'name',
       description: 'description',
       price: priceInCents,

@@ -12,7 +12,7 @@ describe('add channel form', function() {
   'use strict';
 
   var registration;
-  var subscription;
+  var blog;
   var channelCount = 1; // Account for default channel.
 
   var testKit = new TestKit();
@@ -32,9 +32,9 @@ describe('add channel form', function() {
   };
 
   it('should run once before all', function() {
-    var context = commonWorkflows.createSubscription();
+    var context = commonWorkflows.createBlog();
     registration = context.registration;
-    subscription = context.subscription;
+    blog = context.blog;
     sidebar.channelsLink.click();
     channelListPage.addChannelButton.click();
   });

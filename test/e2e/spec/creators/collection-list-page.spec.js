@@ -10,7 +10,7 @@ describe('collection list page', function() {
   var header = new HeaderCollectionsPage();
 
   it('should run once before all', function() {
-    commonWorkflows.createSubscription();
+    commonWorkflows.createBlog();
     sidebar.collectionsLink.click();
   });
 

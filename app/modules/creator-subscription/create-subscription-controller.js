@@ -1,21 +1,21 @@
-angular.module('webApp').controller('createSubscriptionCtrl',
-  function($scope, $state, calculatedStates, subscriptionService) {
+angular.module('webApp').controller('createBlogCtrl',
+  function($scope, $state, calculatedStates, blogService) {
     'use strict';
 
-    $scope.newSubscriptionData = {
-       subscriptionName: '',
+    $scope.newBlogData = {
+       blogName: '',
        tagline: '',
        basePrice: '1.00'
     };
 
     var buildDTO = function() {
-      var newSubscriptionData = _.cloneDeep($scope.newSubscriptionData);
-      newSubscriptionData.basePrice = Math.round(newSubscriptionData.basePrice * 100);
-      return newSubscriptionData;
+      var newBlogData = _.cloneDeep($scope.newBlogData);
+      newBlogData.basePrice = Math.round(newBlogData.basePrice * 100);
+      return newBlogData;
     };
 
     $scope.continue = function() {
-      return subscriptionService.createFirstSubscription(buildDTO()).then(function() {
+      return blogService.createFirstBlog(buildDTO()).then(function() {
         $state.go(calculatedStates.getDefaultState());
       });
     };

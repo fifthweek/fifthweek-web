@@ -10,7 +10,7 @@ describe('compose note form', function() {
   'use strict';
 
   var registration;
-  var subscription;
+  var blog;
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
@@ -72,9 +72,9 @@ describe('compose note form', function() {
 
   describe('workflows', function(){
     beforeEach(function(){
-      var context = commonWorkflows.createSubscription();
+      var context = commonWorkflows.createBlog();
       registration = context.registration;
-      subscription = context.subscription;
+      blog = context.blog;
     });
 
     describe('when posting now', function(){

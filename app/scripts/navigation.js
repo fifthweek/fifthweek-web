@@ -83,7 +83,7 @@ angular.module('webApp')
       },
       {
         name: 'Create Blog',
-        state: states.creators.createSubscription.name,
+        state: states.creators.createBlog.name,
         icon: 'fa fa-asterisk',
         color: 'yellow'
       },

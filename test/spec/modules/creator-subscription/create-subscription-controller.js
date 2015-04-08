@@ -1,4 +1,4 @@
-describe('creator - create subscription controller', function () {
+describe('creator - create blog controller', function () {
   'use strict';
 
   var nextState = 'nextState';
@@ -9,49 +9,49 @@ describe('creator - create subscription controller', function () {
   var $scope;
   var $state;
   var calculatedStates;
-  var subscriptionService;
+  var blogService;
   var target;
 
   beforeEach(function() {
     $state = jasmine.createSpyObj('$state', ['go']);
     calculatedStates = jasmine.createSpyObj('calculatedStates', ['getDefaultState']);
-    subscriptionService = jasmine.createSpyObj('subscriptionService', ['createFirstSubscription']);
+    blogService = jasmine.createSpyObj('blogService', ['createFirstBlog']);
 
     module('webApp');
     module(function($provide) {
       $provide.value('$state', $state);
       $provide.value('calculatedStates', calculatedStates);
-      $provide.value('subscriptionService', subscriptionService);
+      $provide.value('blogService', blogService);
     });
 
     inject(function ($injector, $controller) {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
-      target = $controller('createSubscriptionCtrl', { $scope: $scope });
+      target = $controller('createBlogCtrl', { $scope: $scope });
     });
 
-    subscriptionService.createFirstSubscription.and.returnValue($q.when());
+    blogService.createFirstBlog.and.returnValue($q.when());
   });
 
   it('should initialize with appropriate default state', function() {
-    expect($scope.newSubscriptionData.subscriptionName).toBe('');
-    expect($scope.newSubscriptionData.tagline).toBe('');
-    expect($scope.newSubscriptionData.basePrice).toBe('1.00');
+    expect($scope.newBlogData.blogName).toBe('');
+    expect($scope.newBlogData.tagline).toBe('');
+    expect($scope.newBlogData.basePrice).toBe('1.00');
   });
 
-  it('should create first subscription', function() {
-    var subscriptionName = 'subscriptionName';
+  it('should create first blog', function() {
+    var blogName = 'blogName';
     var tagline = 'tagline';
     var basePrice = '2.59';
-    $scope.newSubscriptionData.subscriptionName = subscriptionName;
-    $scope.newSubscriptionData.tagline = tagline;
-    $scope.newSubscriptionData.basePrice = basePrice;
+    $scope.newBlogData.blogName = blogName;
+    $scope.newBlogData.tagline = tagline;
+    $scope.newBlogData.basePrice = basePrice;
 
     $scope.continue();
     $scope.$apply();
 
-    expect(subscriptionService.createFirstSubscription).toHaveBeenCalledWith({
-      subscriptionName: subscriptionName,
+    expect(blogService.createFirstBlog).toHaveBeenCalledWith({
+      blogName: blogName,
       tagline: tagline,
       basePrice: 259
     });
@@ -60,7 +60,7 @@ describe('creator - create subscription controller', function () {
   describe('when service call fails', function() {
 
     it('should not redirect', function() {
-      subscriptionService.createFirstSubscription.and.returnValue($q.reject(error));
+      blogService.createFirstBlog.and.returnValue($q.reject(error));
 
       $scope.continue();
       $scope.$apply();

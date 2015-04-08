@@ -1,17 +1,17 @@
 var SignOutPage = require('../../pages/sign-out.page.js');
 var RegisterPage = require('../../pages/register.page.js');
-var CreateSubscriptionPage = require('../../pages/creators/create-subscription.page.js');
+var CreateBlogPage = require('../../pages/creators/create-blog.page.js');
 var HeaderPage = require('../../pages/header.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
 
-describe('create subscription page', function() {
+describe('create blog page', function() {
   'use strict';
 
   var header = new HeaderPage();
   var sidebar = new SidebarPage();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
-  var page = new CreateSubscriptionPage();
+  var page = new CreateBlogPage();
 
   it('should run once before all', function() {
     signOutPage.signOutAndGoHome();

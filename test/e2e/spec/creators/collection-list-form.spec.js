@@ -9,16 +9,16 @@ describe('collection list form', function() {
   // Tests for listing collections are covered by the add/edit collection specs.
 
   var registration;
-  var subscription;
+  var blog;
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
   var page = new CollectionListPage();
 
   it('should run once before all', function() {
-    var context = commonWorkflows.createSubscription();
+    var context = commonWorkflows.createBlog();
     registration = context.registration;
-    subscription = context.subscription;
+    blog = context.blog;
     navigateToPage();
   });
 

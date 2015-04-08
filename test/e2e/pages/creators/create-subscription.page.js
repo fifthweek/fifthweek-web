@@ -1,26 +1,26 @@
 'use strict';
 
 var TestKit = require('../../test-kit.js');
-var SubscriptionNameInputPage = require('../subscription-name-input.page.js');
+var BlogNameInputPage = require('../blog-name-input.page.js');
 var TaglineInputPage = require('../tagline-input.page.js');
 var ChannelPriceInputPage = require('../channel-price-input.page.js');
 
 var testKit = new TestKit();
-var subscriptionNameInputPage = new SubscriptionNameInputPage();
+var blogNameInputPage = new BlogNameInputPage();
 var taglineInputPage = new TaglineInputPage();
 var channelPriceInputPage = new ChannelPriceInputPage();
 
-var CreateSubscriptionPage = function() {};
+var CreateBlogPage = function() {};
 
-CreateSubscriptionPage.prototype = Object.create({}, {
-  pageUrl: { get: function () { return '/creator/create-subscription'; }},
-  nameTextBoxId: { value: 'newSubscriptionData-subscriptionName' },
-  taglineTextBoxId: { value: 'newSubscriptionData-tagline' },
-  basePriceTextBoxId: { value: 'newSubscriptionData-basePrice' },
+CreateBlogPage.prototype = Object.create({}, {
+  pageUrl: { get: function () { return '/creator/create-blog'; }},
+  nameTextBoxId: { value: 'newBlogData-blogName' },
+  taglineTextBoxId: { value: 'newBlogData-tagline' },
+  basePriceTextBoxId: { value: 'newBlogData-basePrice' },
   inputs: { value: [
     {
       name: 'nameTextBox',
-      newValue: function() { return subscriptionNameInputPage.newName(); }
+      newValue: function() { return blogNameInputPage.newName(); }
     },
     {
       name: 'taglineTextBox',
@@ -31,8 +31,8 @@ CreateSubscriptionPage.prototype = Object.create({}, {
       newValue: function() { return channelPriceInputPage.newPrice(); }
     }
   ]},
-  submitButton: { get: function () { return element(by.id('create-subscription-button')); }},
-  helpMessages: { get: function () { return element.all(by.css('#createSubscriptionForm .help-block')); }},
+  submitButton: { get: function () { return element(by.id('create-blog-button')); }},
+  helpMessages: { get: function () { return element.all(by.css('#createBlogForm .help-block')); }},
   nextPageUrl: { get: function () { return '/dashboard/news-feed'; }}, // Todo: replace with page object
   submitSuccessfully: { value: function() {
     var formValues = testKit.setFormValues(this, this.inputs);
@@ -47,4 +47,4 @@ CreateSubscriptionPage.prototype = Object.create({}, {
   }}
 });
 
-module.exports = CreateSubscriptionPage;
+module.exports = CreateBlogPage;

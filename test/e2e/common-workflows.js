@@ -4,7 +4,7 @@
   var Defaults = require('./defaults.js');
   var HomePage = require('./pages/home.page.js');
   var SignInPage = require('./pages/sign-in.page.js');
-  var CreateSubscriptionPage = require('./pages/creators/create-subscription.page.js');
+  var CreateBlogPage = require('./pages/creators/create-blog.page.js');
   var RegisterPage = require('./pages/register.page.js');
   var SignOutPage = require('./pages/sign-out.page.js');
   var SidebarPage = require('./pages/sidebar.page.js');
@@ -20,7 +20,7 @@
   var defaults = new Defaults();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
-  var createSubscriptionPage = new CreateSubscriptionPage();
+  var createBlogPage = new CreateBlogPage();
   var homePage = new HomePage();
   var signInPage = new SignInPage();
   var sidebar = new SidebarPage();
@@ -68,14 +68,14 @@
       });
     }},
 
-    createSubscription: { value: function() {
+    createBlog: { value: function() {
       signOutPage.signOutAndGoHome();
       var registration = registerPage.registerSuccessfully();
-      var subscription = createSubscriptionPage.submitSuccessfully();
+      var blog = createBlogPage.submitSuccessfully();
 
       return {
         registration: registration,
-        subscription: subscription
+        blog: blog
       };
     }},
 

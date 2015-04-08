@@ -360,7 +360,7 @@ describe('account controller', function () {
           $scope.$apply();
         });
 
-        it('should save the subscription settings', function(){
+        it('should save the blog settings', function(){
           expect(accountSettingsStub.put).toHaveBeenCalled();
         });
 

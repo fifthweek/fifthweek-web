@@ -16,7 +16,7 @@ describe('edit channel page', function() {
   var channelListPage = new ChannelListPage();
 
   it('should run once before all', function() {
-    commonWorkflows.createSubscription();
+    commonWorkflows.createBlog();
     sidebar.channelsLink.click();
     channelListPage.getEditChannelButton(defaults.channelName).click();
   });
