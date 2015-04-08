@@ -70,6 +70,7 @@
       self.saveButton.click();
       browser.waitForAngular();
       refresh();
+      browser.waitForAngular();
       verifyItemEdited();
       refresh();
     });
