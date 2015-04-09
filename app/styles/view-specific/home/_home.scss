@@ -9,16 +9,16 @@ $html-name-space:'.page-home';
     margin:0;
   }
 
-  background:{
-    image:image-url('home/bg/960-1400.jpg');
-    repeat:repeat;
-    size:cover;
-    attachment:scroll;
-  }
-  @media (min-width:$screen-md-min) {
+  .main-container-inner {
     background:{
-      repeat:no-repeat;
-      image:image-url('home/bg/2048.jpg');
+      image:image-url('home/bg/960-1400.jpg');
+      size: cover;
+      position: center center;
+    }
+    @media (min-width:$screen-md-min) {
+      background:{
+        image:image-url('home/bg/2048.jpg');
+      }
     }
   }
 

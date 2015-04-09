@@ -6,28 +6,18 @@
     background:rgba(30, 30, 30, 0.3);
   }
   p {
-    @include text-shadow-black;
+    text-shadow:0 1px 1px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(30, 30, 30, 0.5);
     font:{
       size:16px;
     }
-    color:#CECECE;
+    color:$grey-light-3;
     margin:0;
     @media (min-width:$screen-s-min) {
+      @include text-shadow-black;
       font-size:19px;
     }
     @media (min-width:$screen-sm-min) {
       color:#ffffff;
-    }
-    span {
-      display:block;
-      @media (min-width:$screen-sm-min) {
-        display:inline;
-      }
-    }
-    br {
-      @media (min-width:420px) {
-        display:block;
-      }
     }
   }
   a {
@@ -36,7 +26,9 @@
     #{$state-active-hover-focus} {
       text-decoration:none;
     }
-
+    @media (max-width:$screen-xs-max) {
+      display: block;
+    }
   }
   .text-wrap {
     max-width:420px;
