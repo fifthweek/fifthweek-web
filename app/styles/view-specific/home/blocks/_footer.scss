@@ -28,9 +28,6 @@
       @media (min-width:420px) {
         display:block;
       }
-      @media (min-width:$screen-sm-min) {
-        display:none;
-      }
     }
   }
   a {
@@ -50,7 +47,7 @@
       max-width:535px;
     }
     @media (min-width:$screen-sm-min) {
-      max-width:735px;
+      max-width:765px;
     }
   }
 }
