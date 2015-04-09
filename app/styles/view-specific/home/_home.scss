@@ -9,18 +9,31 @@ $html-name-space:'.page-home';
     margin:0;
   }
 
-  .main-container-inner {
-    background:{
-      image:image-url('home/bg/960-1400.jpg');
-      size: cover;
-      position: center center;
-    }
-    @media (min-width:$screen-md-min) {
-      background:{
-        image:image-url('home/bg/2048.jpg');
+  @media (max-width:$screen-xs-max) {
+    .main-container-inner {
+      background: {
+        image: image-url('home/bg/960-1400.jpg');
+        size: cover;
+        position: center center;
       }
     }
   }
+  @media (min-width:$screen-ss-min) {
+    background: {
+      image: image-url('home/bg/960-1400.jpg');
+      repeat: repeat;
+      size: cover;
+      position: center center;
+      attachment: scroll;
+    }
+  }
+  @media (min-width:$screen-md-min) {
+    background:{
+      repeat:no-repeat;
+      image:image-url('home/bg/2048.jpg');
+    }
+  }
+
 
   .navbar,
   footer {
