@@ -86,19 +86,19 @@ exports.config = {
       'browserstack.user': process.env.BROWSER_STACK_USERNAME,
       'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
     },
-    {
-      'os': 'OS X',
-      'os_version': 'Yosemite',
-      'browserName': 'Safari',
-      'browser_version': '8',
-      'build': bsConfig.build,
-      'project': bsConfig.project,
-      'resolution': '1280x1024',
-      'browserstack.debug': bsConfig.debug,
-      'browserstack.tunnel': 'true',
-      'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-      'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
-    },
+    //{
+    //  'os': 'OS X',
+    //  'os_version': 'Yosemite',
+    //  'browserName': 'Safari',
+    //  'browser_version': '8',
+    //  'build': bsConfig.build,
+    //  'project': bsConfig.project,
+    //  'resolution': '1280x1024',
+    //  'browserstack.debug': bsConfig.debug,
+    //  'browserstack.tunnel': 'true',
+    //  'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+    //  'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY
+    //},
     {
       'os': 'OS X',
       'os_version': 'Yosemite',
