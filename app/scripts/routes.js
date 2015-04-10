@@ -98,6 +98,9 @@ angular.module('routes', ['ui.router'])
     },
     help: {
       name: 'help',
+      about: {
+        name: 'help.about'
+      },
       faq: {
         name: 'help.faq'
       },
@@ -498,11 +501,20 @@ angular.module('routes', ['ui.router'])
         abstract: false,
         url: '/help',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.help.faq.name,
+        redirectTo: states.help.about.name,
         data : {
           pageTitle: 'Help',
           headTitle: ': ' + 'Help',
           bodyClass: 'page-help'
+        }
+      })
+      .state(states.help.about.name, {
+        url: '/about',
+        templateUrl: 'views/help/about.html',
+        data : {
+          bodyClass: 'page-help-about',
+          pageTitle: 'About Us',
+          headTitle: ': ' + 'About Us'
         }
       })
       .state(states.help.faq.name, {

@@ -142,11 +142,17 @@ angular.module('webApp')
       },
       {
         name: 'Help',
-        state: states.help.faq.name,
+        state: states.help.name,
         icon: 'fa fa-question-circle',
         color: 'indigo',
         secondary:
         [
+          {
+            name: 'About Us',
+            state: states.help.about.name,
+            icon: 'fa fa-question-circle',
+            color: 'indigo'
+          },
           {
             name: 'FAQ',
             state: states.help.faq.name,
