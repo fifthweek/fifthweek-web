@@ -18,6 +18,10 @@
     }
   }
 
+  h2 {
+    letter-spacing: -1px;
+  }
+
   h2,
   h3 {
     @include text-shadow-black-soft;
@@ -25,7 +29,7 @@
   }
   h2 {
     color:$white-1;
-    margin-bottom:20px;
+    margin-bottom:10px;
     font:{
       weight:bold;
       size:37px;
@@ -34,10 +38,11 @@
       font-size:45px;
     }
     @media (min-width:$screen-sm-min) {
-      font-size:49px;
+      font-size:60px;
     }
     @media (min-width:$screen-md-min) {
-      font-size:65px;
+      margin-bottom:12px;
+      font-size:68px;
     }
     br {
       @media (min-width:$screen-s-min) {
@@ -57,10 +62,10 @@
     @media (min-width:$screen-sm-min) {
       color:$white-1;
       max-width:100%;
-      font-size:21px;
+      font-size:20px;
     }
     @media (min-width:$screen-md-min) {
-      font-size:24px;
+      font-size:22px;
     }
   }
   .btn-video {

@@ -14,10 +14,18 @@
     margin:0;
     @media (min-width:$screen-s-min) {
       @include text-shadow-black;
-      font-size:19px;
+      font-size:18px;
     }
     @media (min-width:$screen-sm-min) {
       color:#ffffff;
+    }
+
+    &:first-child {
+      margin-bottom: 10px;
+    }
+
+    .separator {
+      margin: 0 4px;
     }
   }
   a {
