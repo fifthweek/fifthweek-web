@@ -71,6 +71,10 @@
   .btn-video {
     margin:12px auto 0 auto;
     opacity:1;
+    i {
+      margin-left: 5px;
+      font-size: 16px;
+    }
   }
   .btn-video.fade-out {
     -webkit-transition:all 0.4s linear;
