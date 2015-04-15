@@ -4,7 +4,7 @@
     margin-bottom: $post-bottom-margin-lg / 1.618;
   }
   .panel-body {
-    padding: 10px 0;
+    padding: 0;
   }
 }
 
@@ -14,10 +14,36 @@ ul.post-new-options {
   padding:0;
   li {
     margin:0;
-    padding:0;
+    padding: 10px 0;
     float:left;
     width:20%;
     text-align:center;
+
+    border:1px solid transparent;
+    border-top-width: 0;
+    border-bottom-width: 0;
+
+    &:first-child {
+      border-top-left-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
+      border-left-width: 0;
+    }
+
+    &:last-child {
+      border-top-right-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+      border-right-width: 0;
+    }
+
+    #{$state-active-hover-focus} {
+      background: $body-bg;
+      border-color: $grey-light-3;
+      cursor: pointer;
+      a {
+        color: $brand-highlight-2;
+      }
+    }
+
     &:first-child {
       border-left: none;
     }
@@ -36,20 +62,21 @@ ul.post-new-options {
       }
     }
     a {
-      transition: color 0.2s;
       font-size:10px;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       color: $grey-dark-2;
       &:hover {
-        color: $brand-highlight-2;
         text-decoration: none;
         cursor:pointer;
       }
     }
     &.post-new-options-disabled {
       color: $grey-light-6;
+      cursor: default;
+      background: none;
+      border: none;
       a {
         color: $grey-light-6;
         &:hover {
