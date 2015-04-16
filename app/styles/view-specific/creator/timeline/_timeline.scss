@@ -4,7 +4,7 @@ $screen-price-break-point: 370px;
 $html-name-space:'.page-timeline';
 $header-image-height:500px;
 $header-image-height-sm:300px;
-$header-image-height-xs:220px;
+$header-image-height-xs:240px;
 $header-height:108px;
 
 @mixin light-text {
@@ -79,7 +79,7 @@ $header-height:108px;
     }
   }
   .header {
-    margin-top:90px;
+    margin-top:110px;
     @media (min-width:$screen-s-min) {
       margin-top:$header-image-height - $header-height;
       &:before {
