@@ -108,14 +108,27 @@ angular.module('webApp')
         icon: 'fa fa-check-square-o',
         color: 'green',
         secondary:
-        [
-          {
-            name: 'Channels',
-            state: states.creators.channels.name,
-            icon: 'fa fa-check-square-o',
-            color: 'green'
-          }
-        ]
+          [
+            {
+              name: 'Channels',
+              state: states.creators.channels.name,
+              icon: 'fa fa-check-square-o',
+              color: 'green'
+            }
+          ]
+      },
+      {
+        name: 'Subscribers',
+        state: states.creators.subscribers.name,
+        icon: 'fa fa-users',
+        secondary:
+          [
+            {
+              name: 'Guest List',
+              state: states.creators.subscribers.guestList.name,
+              icon: 'fa fa-street-view'
+            }
+          ]
       },
       { separator: true },
       {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('routes', ['ui.router'])
+angular.module('webApp')
   .constant('uiRouterConstants', {
     stateChangeStartEvent: '$stateChangeStart',
     stateChangeSuccessEvent: '$stateChangeSuccess'
@@ -94,6 +94,12 @@ angular.module('routes', ['ui.router'])
         list: {
           name: 'creators.channels.list'
         }
+      },
+      subscribers: {
+        name: 'creators.subscribers',
+        guestList: {
+          name: 'creators.subscribers.guestList'
+        }
       }
     },
     help: {
@@ -127,7 +133,7 @@ angular.module('routes', ['ui.router'])
       name: 'comingSoon'
     }
   })
-  .config(function($stateProvider, $urlRouterProvider, $locationProvider, states) {
+  .config(function($stateProvider, $urlRouterProvider, $locationProvider, states, authenticationServiceConstants) {
 
     $locationProvider.html5Mode(true);
 
@@ -492,6 +498,32 @@ angular.module('routes', ['ui.router'])
         data : {
           pageTitle: 'Blogs',
           headTitle: ': ' + 'Blogs',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.creators.subscribers.name, {
+        url: '/subscribers',
+        templateUrl: 'modules/common/ui-view.html',
+        requireBlog: true,
+        redirectTo: states.creators.subscribers.guestList.name,
+        data : {
+          access: {
+            requireAuthenticated: true,
+            roles: [authenticationServiceConstants.roles.preRelease]
+          }
+        }
+      })
+      .state(states.creators.subscribers.guestList.name, {
+        url: '/guest-list',
+        templateUrl: 'modules/guest-list/guest-list.html',
+        controller: 'guestListCtrl',
+        requireBlog: true,
+        data : {
+          bodyClass: 'page-guest-list',
+          pageTitle: 'Guest List',
+          headTitle: ': ' + 'Guest List',
           access: {
             requireAuthenticated: true
           }

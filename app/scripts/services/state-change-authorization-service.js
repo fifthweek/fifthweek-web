@@ -14,7 +14,7 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
       return authorizationService.authorize(
         toState.data.access.requireAuthenticated,
         toState.data.access.roles,
-        toState.data.access.fwRoleCheckType);
+        toState.data.access.roleCheckType);
     };
 
     service.isPermitted = function(toState){

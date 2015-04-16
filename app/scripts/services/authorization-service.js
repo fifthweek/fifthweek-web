@@ -6,7 +6,7 @@ angular.module('webApp').constant('authorizationServiceConstants', {
     loginRequired: 'loginRequired',
     notAuthorized: 'notAuthorized'
   },
-  fwRoleCheckType: {
+  roleCheckType: {
     atLeastOne: 'atLeastOne',
     all: 'all'
   }
@@ -20,7 +20,7 @@ angular.module('webApp').constant('authorizationServiceConstants', {
       var result = constants.authorizationResult.authorized;
       var hasRole = true;
 
-      roleCheckType = roleCheckType || constants.fwRoleCheckType.atLeastOne;
+      roleCheckType = roleCheckType || constants.roleCheckType.atLeastOne;
       if (loginRequired === true && authenticationService.currentUser.authenticated === false) {
         result = constants.authorizationResult.loginRequired;
       }
@@ -39,14 +39,14 @@ angular.module('webApp').constant('authorizationServiceConstants', {
         for (var i = 0; i < requiredRoles.length; i += 1) {
           var role = requiredRoles[i].toLowerCase();
 
-          if (roleCheckType === constants.fwRoleCheckType.all) {
+          if (roleCheckType === constants.roleCheckType.all) {
             hasRole = hasRole && loweredRoles.indexOf(role) > -1;
             // if all the roles are required and hasRole is false there is no point carrying on
             if (hasRole === false) {
               break;
             }
           }
-          else if (roleCheckType === constants.fwRoleCheckType.atLeastOne) {
+          else if (roleCheckType === constants.roleCheckType.atLeastOne) {
             hasRole = loweredRoles.indexOf(role) > -1;
             // if we only need one of the roles and we have it there is no point carrying on
             if (hasRole) {

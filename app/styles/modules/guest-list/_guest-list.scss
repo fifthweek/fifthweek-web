@@ -1,0 +1,24 @@
+@import '_base';
+
+$html-name-space:'.page-guest-list';
+
+#{$html-name-space} {
+  .updating-area{
+    font-size: 18px;
+    text-align: center;
+  }
+
+  table{
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+
+  li{
+    margin-bottom: 0;
+  }
+
+  textarea{
+    height: 300px;
+  }
+}
+

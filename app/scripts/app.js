@@ -5,7 +5,6 @@ angular
     'ngResource',
     'ngRoute',
     'ui.router',
-    'routes',
     'ngSanitize',
     'LocalStorageModule',
     'ng-focus',

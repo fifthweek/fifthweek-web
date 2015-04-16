@@ -1,0 +1,8 @@
+<div class="bs-callout-warning" ng-if="model.invalidEmails && model.invalidEmails.length">
+  <p>
+    The following invalid emails were ignored:
+  <ul>
+    <li ng-repeat="item in model.invalidEmails">{{ item }}</li>
+  </ul>
+  </p>
+</div>

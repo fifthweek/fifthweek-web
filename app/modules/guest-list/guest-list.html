@@ -1,0 +1,91 @@
+<fw-panel12>
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <div ng-if="model.isLoading && !model.errorMessage" class="updating-area">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+
+  <div ng-if="!model.isLoading">
+    <div ng-if="!model.isEditing && !model.errorMessage">
+      <div ng-if="!model.freeAccessUsers || model.freeAccessUsers.length === 0">
+        <p>
+          Your guest list is currently empty.
+        </p>
+        <div ng-include="'/modules/guest-list/invalid-emails-warning.html'"></div>
+        <div class="bs-callout-primary">
+          <p>
+            Add people to your guest list to give them free access to your blog.  This can be useful for
+            getting early feedback, giving VIP access to certain people, or for rewarding Patreon supporters.
+          </p>
+        </div>
+        <p>
+          <button class="btn btn-default btn-block"
+                  ng-click="editList()">Create Guest List</button>
+        </p>
+      </div>
+      <div ng-if="model.freeAccessUsers && model.freeAccessUsers.length">
+
+        <p>
+          You have <strong>{{model.freeAccessUsers.length}}</strong> {{model.freeAccessUsers.length === 1 ? 'person' : 'people'}} in your guest list,
+          of which <strong>{{model.registeredCount}}</strong> {{model.registeredCount === 1 ? 'has' : 'have'}} registered on Fifthweek
+          and <strong>{{model.subscribedCount}}</strong> {{model.subscribedCount === 1 ? 'has' : 'have'}} subscribed to your blog.
+        </p>
+
+        <p>
+          <button class="btn btn-default btn-block"
+                  ng-click="editList()">Edit Guest List</button>
+        </p>
+
+        <div ng-include="'/modules/guest-list/invalid-emails-warning.html'"></div>
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Subscribed</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in model.freeAccessUsers">
+              <td><p>{{ item.email }}</p></td>
+              <td><p>{{ item.username }}</p></td>
+              <td><p ng-if="item.isSubscribed"><i class="fa fa-check"></i></p></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div ng-if="model.isEditing">
+      <form novalidate name="editForm" id="edit-form">
+
+        <div class="row-btn-top">
+          <button type="submit"
+                  class="btn btn-block btn-success"
+                  data-loading-text="Saving..."
+                  data-event-title="Guest list saved"
+                  data-event-category="Guest list"
+                  ng-disabled="editForm.$pristine || editForm.isSubmitting"
+                  fw-form-submit="save()">Save Guest List</button>
+
+          <button class="btn btn-default btn-block"
+                  ng-disabled="editForm.isSubmitting"
+                  ng-click="viewList()">Cancel</button>
+        </div>
+
+      <textarea
+        id="emails-text"
+        class="form-control form-control-lines-2"
+        name="emails-text"
+        ng-model="model.input.emailsText"
+        placeholder="Enter one email address per line"
+        ng-disabled="editForm.isSubmitting"
+        ng-maxlength="3000"
+        maxlength="3000"></textarea>
+
+        <fw-form-dirty-confirmation form="editForm"></fw-form-dirty-confirmation>
+      </form>
+    </div>
+  </div>
+
+</fw-panel12>
