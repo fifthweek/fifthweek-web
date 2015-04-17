@@ -58,7 +58,6 @@
     </div>
     <div ng-if="model.isEditing">
       <form novalidate name="editForm" id="edit-form">
-
         <div class="row-btn-top">
           <button type="submit"
                   class="btn btn-block btn-success"
@@ -66,7 +65,8 @@
                   data-event-title="Guest list saved"
                   data-event-category="Guest list"
                   ng-disabled="editForm.$pristine || editForm.isSubmitting"
-                  fw-form-submit="save()">Save Guest List</button>
+                  fw-form-submit="save()"
+                  error-message="model.errorMessage">Save Guest List</button>
 
           <button class="btn btn-default btn-block"
                   ng-disabled="editForm.isSubmitting"

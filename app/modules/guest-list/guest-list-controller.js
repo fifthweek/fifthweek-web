@@ -1,15 +1,15 @@
 angular.module('webApp').controller('guestListCtrl',
-  function($scope, $q, blogAccessStub, blogService, errorFacade) {
+  function($scope, initializer, blogAccessStub, blogService, errorFacade) {
     'use strict';
 
     var model = {
       isLoading: false,
-      freeAccessUsers: undefined,
-      registeredCount: 0,
-      subscribedCount: 0,
-      invalidEmails: undefined,
       isEditing: false,
       errorMessage: undefined,
+      freeAccessUsers: undefined,
+      invalidEmails: undefined,
+      registeredCount: 0,
+      subscribedCount: 0,
       input: {
         emailsText: ''
       }
@@ -33,26 +33,7 @@ angular.module('webApp').controller('guestListCtrl',
       model.isLoading = true;
       return blogAccessStub.getFreeAccessList(blogService.blogId)
         .then(function(result) {
-          model.freeAccessUsers = result.data.freeAccessUsers;
-
-          if(model.freeAccessUsers){
-            model.input.emailsText = _.map(model.freeAccessUsers, 'email').join('\n');
-            model.registeredCount = _.filter(model.freeAccessUsers, function(v) { return v.username; }).length;
-
-            var subscribedCount = 0;
-            _.forEach(model.freeAccessUsers, function(item){
-              if(item.channelIds && item.channelIds.length){
-                ++subscribedCount;
-                item.isSubscribed = true;
-              }
-            });
-            model.subscribedCount = subscribedCount;
-          }
-          else{
-            model.registeredCount = 0;
-            model.subscribedCount = 0;
-            model.input.emailsText = '';
-          }
+          internal.processResult(result.data.freeAccessUsers);
         })
         .catch(function(error) {
           return errorFacade.handleError(error, function(message) {
@@ -64,19 +45,44 @@ angular.module('webApp').controller('guestListCtrl',
         });
     };
 
+    internal.processResult = function(freeAccessUsers){
+      if(freeAccessUsers && freeAccessUsers.length){
+        model.freeAccessUsers = freeAccessUsers;
+        model.input.emailsText = _.map(freeAccessUsers, 'email').join('\n');
+        model.registeredCount = _.filter(freeAccessUsers, function(v) { return v.username; }).length;
+
+        var subscribedCount = 0;
+        _.forEach(freeAccessUsers, function(item){
+          if(item.channelIds && item.channelIds.length){
+            ++subscribedCount;
+            item.isSubscribed = true;
+          }
+          else{
+            item.isSubscribed = false;
+          }
+        });
+        model.subscribedCount = subscribedCount;
+      }
+      else{
+        model.freeAccessUsers = undefined;
+        model.registeredCount = 0;
+        model.subscribedCount = 0;
+        model.input.emailsText = '';
+      }
+    };
+
     $scope.save = function(){
-      model.errorMessage = undefined;
-
-      var emails = model.input.emailsText.split('\n');
-
       var data = {
-        emails: emails
+        emails: model.input.emailsText.split('\n')
       };
 
       return blogAccessStub.putFreeAccessList(blogService.blogId, data)
         .then(function(result){
           if(result.data && result.data.invalidEmailAddresses){
             model.invalidEmails = result.data.invalidEmailAddresses;
+          }
+          else{
+            model.invalidEmails = undefined;
           }
 
           model.isEditing = false;
@@ -94,6 +100,6 @@ angular.module('webApp').controller('guestListCtrl',
       model.isEditing = false;
     };
 
-    internal.loadForm();
+    initializer.initialize(internal.loadForm);
   }
 );
