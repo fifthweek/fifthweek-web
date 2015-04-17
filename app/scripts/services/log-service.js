@@ -11,7 +11,7 @@ angular.module('webApp')
 
     service.shouldLog = function(payload)
     {
-      return payload !== undefined && !jQuery.isEmptyObject(payload);
+      return payload !== undefined && (payload instanceof Error || !jQuery.isEmptyObject(payload));
     };
 
     var logToServer = function(level, message) {
