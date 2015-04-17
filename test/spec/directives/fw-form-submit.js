@@ -486,6 +486,45 @@ describe('submit form directive', function(){
     });
   });
 
+  describe('when click event is triggered with error-message attribute', function() {
+
+    var scope;
+    var element;
+    var deferred;
+
+    beforeEach(function () {
+      scope = $rootScope.$new();
+      scope.submit = function() { };
+      scope.model = {};
+      deferred = $q.defer();
+      wrapUserAction.and.returnValue(deferred.promise);
+
+      element = angular.element(getFormHtml('error-message="model.clickErrorMessage"'));
+      $compile(element)(scope);
+      element = element.find('button');
+      scope.$digest();
+      scope.form.$valid = true;
+      scope.form.$dirty = true;
+    });
+
+    it('should set the message to the error message after an unsuccessful submission', function(){
+      expect(scope.form.message).toBe('');
+      expect(scope.model.clickErrorMessage).toBeUndefined();
+
+      element.click();
+      $rootScope.$apply();
+
+      expect(scope.form.message).toBe('');
+      expect(scope.model.clickErrorMessage).toBe('');
+
+      deferred.resolve('error message');
+      $rootScope.$apply();
+
+      expect(scope.form.message).toBe('error message');
+      expect(scope.model.clickErrorMessage).toBe('error message');
+    });
+  });
+
   describe('when click event is triggered without can-submit attribute', function() {
 
     var scope;

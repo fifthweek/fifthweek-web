@@ -8,7 +8,8 @@ angular.module('webApp').directive('fwFormSubmit',
     require: '^form',
     scope: {
       canSubmit: '&',
-      fwFormSubmit: '&'
+      fwFormSubmit: '&',
+      errorMessage: '=?'
     },
     link: function(scope, element, attrs, form) {
       var canSubmit = attrs.canSubmit ? scope.canSubmit : null;
@@ -41,6 +42,7 @@ angular.module('webApp').directive('fwFormSubmit',
         form.isSubmitting = true;
         form.submissionSucceeded = false;
         form.message = '';
+        scope.errorMessage = '';
 
         if (!attrs.hasOwnProperty('ngDisabled')) {
           element.addClass('disabled').attr('disabled', 'disabled');
@@ -60,6 +62,7 @@ angular.module('webApp').directive('fwFormSubmit',
         return wrapUserAction(submit, submitMetadata).then(function(errorMessage) {
           if (errorMessage) {
             form.message = errorMessage;
+            scope.errorMessage = errorMessage;
           }
           else {
             form.submissionSucceeded = true;
