@@ -68,11 +68,9 @@
     it('should edit the post', function() {
       editPost();
       self.saveButton.click();
-      browser.sleep(10000);
-      refresh();
-      browser.sleep(10000);
       verifyItemEdited();
-      browser.sleep(10000);
+      refresh();
+      verifyItemEdited();
       refresh();
     });
   };
