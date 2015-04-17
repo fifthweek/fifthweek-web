@@ -69,6 +69,7 @@
       editPost();
       self.saveButton.click();
       verifyItemEdited();
+      browser.sleep(5000);
       refresh();
       verifyItemEdited();
       refresh();
