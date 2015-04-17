@@ -41,7 +41,6 @@ describe('guest-list-controller', function() {
     });
   };
 
-
   describe('when creating', function(){
     beforeEach(function(){
       createController();
