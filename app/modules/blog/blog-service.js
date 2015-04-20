@@ -46,7 +46,6 @@ angular.module('webApp')
 
           var localBlog = _.cloneDeep(blogData);
           localBlog.blogId = blogId;
-          localBlog.creatorId = blogUserId;
           delete localBlog.basePrice;
           localBlog.introduction = blogServiceConstants.defaultBlogIntroduction;
           localBlog.creationDate = new Date();
