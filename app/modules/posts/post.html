@@ -33,23 +33,23 @@
 
     <div class="row info-actions">
       <div class="col-xs-8 info">
-        <a class="author" ui-sref="account">
+        <a class="author" ui-sref="user.account">
           <img class="author-image" ng-src="{{post.creator.profileImage.resolvedUri}}" />
         </a>
         <ul>
           <li>
-            <a ui-sref="account" class="poster-name">
+            <a ui-sref="user.account" class="poster-name">
               {{post.creator.username}}
             </a>
             <span ng-if="post.collection">
               in
-              <a ui-sref="creators.collections.edit({id: post.collectionId})" class="container-name">
+              <a ui-sref="creator.collections.edit({id: post.collectionId})" class="container-name">
                 {{post.collection.name}}
               </a>
             </span>
             <span ng-if="!post.collection">
               to
-               <a ui-sref="creators.channels.edit({id: post.channelId})" class="container-name">
+               <a ui-sref="creator.channels.edit({id: post.channelId})" class="container-name">
                  {{post.channel.isDefault ? 'Everyone' : post.channel.name}}
                </a>
             </span>

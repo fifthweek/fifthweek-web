@@ -52,7 +52,7 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
 
   helpMessages: { get: function () { return element.all(by.css('#customizeLandingPageForm .help-block')); }},
 
-  pageUrl: { get: function () { return '/creators/blog/landing-page'; }},
+  pageUrl: { get: function () { return '/creator/blog/landing-page'; }},
 
   setFileInput: { value: function(filePath) {
     this.fileInput.sendKeys(path.resolve(__dirname + '/' + filePath));

@@ -10,14 +10,14 @@ angular.module('webApp').factory('calculatedStates',
       if (currentUser.authenticated === true) {
         if (_.includes(currentUser.roles, authenticationServiceConstants.roles.creator)) {
           if (blogService.hasBlog) {
-            return states.dashboard.name;
+            return states.user.name;
           }
           else {
-            return states.creators.createBlog.name;
+            return states.creator.createBlog.name;
           }
         }
         else {
-          return states.dashboard.name;
+          return states.user.name;
         }
       }
       else {

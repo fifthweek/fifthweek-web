@@ -59,7 +59,7 @@ angular.module('webApp').factory('postUtilities',
       post.isScheduled = _.has(post, 'scheduledByQueue');
       if(post.isScheduled){
         post.reorder = function(){
-          $state.go(states.creators.posts.scheduled.queues.reorder.name, {id: post.collectionId});
+          $state.go(states.creator.posts.scheduled.queues.reorder.name, {id: post.collectionId});
         };
       }
 

@@ -17,20 +17,20 @@ angular.module('webApp')
       },
       {
         name: 'Home',
-        state: states.dashboard.name,
+        state: states.user.newsFeed.name,
         icon: 'fa fa-home',
         color: 'pink',
         secondary:
         [
           {
             name: 'News Feed',
-            state: states.dashboard.newsFeed.name,
+            state: states.user.newsFeed.name,
             icon: 'fa fa-align-left',
             color: 'orange'
           },
           {
             name: 'Notifications',
-            state: states.dashboard.notifications.name,
+            state: states.user.notifications.name,
             icon: 'fa fa-bell-o',
             color: 'orange'
           }
@@ -38,20 +38,20 @@ angular.module('webApp')
       },
       {
         name: 'Landing Page',
-        state: states.creators.landingPage.name,
+        state: states.creator.landingPage.name,
         icon: 'fa fa-bookmark-o',
         color: 'pink',
         secondary:
         [
           {
             name: 'Preview',
-            state: states.creators.landingPage.preview.name,
+            state: states.creator.landingPage.preview.name,
             icon: 'fa fa-eye',
             color: 'pink'
           },
           {
             name: 'Edit Page',
-            state: states.creators.landingPage.edit.name,
+            state: states.creator.landingPage.edit.name,
             icon: 'fa fa-pencil',
             color: 'pink'
           }
@@ -62,20 +62,20 @@ angular.module('webApp')
       },
       {
         name: 'Posts',
-        state: states.creators.posts.name,
+        state: states.creator.posts.name,
         icon: 'fa fa-file-text-o',
         color: 'orange',
         secondary:
         [
           {
             name: 'Live Now',
-            state: states.creators.posts.live.name,
+            state: states.creator.posts.live.name,
             icon: 'fa fa-file-text-o',
             color: 'pink'
           },
           {
             name: 'Scheduled',
-            state: states.creators.posts.scheduled.list.name,
+            state: states.creator.posts.scheduled.list.name,
             icon: 'fa fa-clock-o',
             color: 'yellow'
           }
@@ -83,20 +83,20 @@ angular.module('webApp')
       },
       {
         name: 'Create Blog',
-        state: states.creators.createBlog.name,
+        state: states.creator.createBlog.name,
         icon: 'fa fa-asterisk',
         color: 'yellow'
       },
       {
         name: 'Collections',
-        state: states.creators.collections.name,
+        state: states.creator.collections.name,
         icon: 'fa fa-th',
         color: 'green',
         secondary:
           [
             {
               name: 'Collections',
-              state: states.creators.collections.name,
+              state: states.creator.collections.name,
               icon: 'fa fa-th',
               color: 'green'
             }
@@ -104,14 +104,14 @@ angular.module('webApp')
       },
       {
         name: 'Channels',
-        state: states.creators.channels.name,
+        state: states.creator.channels.name,
         icon: 'fa fa-check-square-o',
         color: 'green',
         secondary:
           [
             {
               name: 'Channels',
-              state: states.creators.channels.name,
+              state: states.creator.channels.name,
               icon: 'fa fa-check-square-o',
               color: 'green'
             }
@@ -119,13 +119,13 @@ angular.module('webApp')
       },
       {
         name: 'Subscribers',
-        state: states.creators.subscribers.name,
+        state: states.creator.subscribers.name,
         icon: 'fa fa-users',
         secondary:
           [
             {
               name: 'Guest List',
-              state: states.creators.subscribers.guestList.name,
+              state: states.creator.subscribers.guestList.name,
               icon: 'fa fa-street-view'
             }
           ]
@@ -134,20 +134,20 @@ angular.module('webApp')
       {
         id: 'account',
         name: aggregateUserStateUtilities.getUsername,
-        state: states.account.name,
+        state: states.user.account.name,
         icon: 'fa fa-user',
         color: 'blue',
         secondary:
           [
             {
               name: 'Account Settings',
-              state: states.account.name,
+              state: states.user.account.name,
               icon: 'fa fa-user',
               color: 'blue'
             },
             {
               name: 'Sign Out',
-              state: states.signOut.name,
+              state: states.user.signOut.name,
               icon: 'fa fa-sign-out',
               color: 'blue'
             }

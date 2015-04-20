@@ -21,84 +21,84 @@ angular.module('webApp')
         name: 'signIn.reset'
       }
     },
-    signOut: {
-      name: 'signOut'
-    },
-    account: {
-      name: 'account'
-    },
-    dashboard: {
-      name: 'dashboard',
+    user: {
+      name: 'user',
+      signOut: {
+        name: 'user.signOut'
+      },
+      account: {
+        name: 'user.account'
+      },
       newsFeed: {
-        name: 'dashboard.newsFeed'
+        name: 'user.newsFeed'
       },
       notifications: {
-        name: 'dashboard.notifications'
+        name: 'user.notifications'
       }
     },
-    creators: {
-      name: 'creators',
+    creator: {
+      name: 'creator',
       createBlog: {
-        name: 'creators.createBlog'
+        name: 'creator.createBlog'
       },
       landingPage: {
-        name: 'creators.landingPage',
+        name: 'creator.landingPage',
         preview: {
-          name: 'creators.landingPage.preview'
+          name: 'creator.landingPage.preview'
         },
         edit: {
-          name: 'creators.landingPage.edit'
+          name: 'creator.landingPage.edit'
         }
       },
       posts: {
-        name: 'creators.posts',
+        name: 'creator.posts',
         live: {
-          name: 'creators.posts.live'
+          name: 'creator.posts.live'
         },
         scheduled: {
-          name: 'creators.posts.scheduled',
+          name: 'creator.posts.scheduled',
           list: {
-            name: 'creators.posts.scheduled.list'
+            name: 'creator.posts.scheduled.list'
           },
           queues: {
-            name: 'creators.posts.scheduled.queues',
+            name: 'creator.posts.scheduled.queues',
             list: {
-              name: 'creators.posts.scheduled.queues.list'
+              name: 'creator.posts.scheduled.queues.list'
             },
             reorder: {
-              name: 'creators.posts.scheduled.queues.reorder'
+              name: 'creator.posts.scheduled.queues.reorder'
             }
           }
         }
       },
       collections: {
-        name: 'creators.collections',
+        name: 'creator.collections',
         new: {
-          name: 'creators.collections.new'
+          name: 'creator.collections.new'
         },
         edit: {
-          name: 'creators.collections.edit'
+          name: 'creator.collections.edit'
         },
         list: {
-          name: 'creators.collections.list'
+          name: 'creator.collections.list'
         }
       },
       channels: {
-        name: 'creators.channels',
+        name: 'creator.channels',
         new: {
-          name: 'creators.channels.new'
+          name: 'creator.channels.new'
         },
         edit: {
-          name: 'creators.channels.edit'
+          name: 'creator.channels.edit'
         },
         list: {
-          name: 'creators.channels.list'
+          name: 'creator.channels.list'
         }
       },
       subscribers: {
-        name: 'creators.subscribers',
+        name: 'creator.subscribers',
         guestList: {
-          name: 'creators.subscribers.guestList'
+          name: 'creator.subscribers.guestList'
         }
       }
     },
@@ -200,19 +200,17 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.signOut.name, {
-        url: '/sign-out',
-        templateUrl: 'views/signout.html',
-        controller: 'SignOutCtrl',
+      .state(states.user.name, {
+        url: '/user',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.user.newsFeed.name,
         data : {
-          pageTitle: 'Sign Out',
-          headTitle: ': ' + 'Sign Out',
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.account.name, {
+      .state(states.user.account.name, {
         url: '/account',
         templateUrl: 'modules/account/account.html',
         controller: 'AccountCtrl',
@@ -225,18 +223,19 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.dashboard.name, {
-        abstract: false,
-        url: '/dashboard',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.dashboard.newsFeed.name,
+      .state(states.user.signOut.name, {
+        url: '/sign-out',
+        templateUrl: 'views/signout.html',
+        controller: 'SignOutCtrl',
         data : {
+          pageTitle: 'Sign Out',
+          headTitle: ': ' + 'Sign Out',
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.dashboard.newsFeed.name, {
+      .state(states.user.newsFeed.name, {
         url: '/news-feed',
         templateUrl: 'modules/newsfeed/newsfeed.html',
         data : {
@@ -247,7 +246,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.dashboard.notifications.name, {
+      .state(states.user.notifications.name, {
         url: '/notifications',
         templateUrl: 'modules/notifications/notifications.html',
         data : {
@@ -259,18 +258,18 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.name, {
+      .state(states.creator.name, {
         abstract: false,
         url: '/creator',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creators.posts.name,
+        redirectTo: states.creator.posts.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.createBlog.name, {
+      .state(states.creator.createBlog.name, {
         url: '/create-blog',
         templateUrl: 'modules/creator-blog/create-blog.html',
         controller: 'createBlogCtrl',
@@ -283,11 +282,11 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.landingPage.name, {
+      .state(states.creator.landingPage.name, {
         abstract: false,
         url: '/landing-page',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creators.landingPage.preview.name,
+        redirectTo: states.creator.landingPage.preview.name,
         requireBlog: true,
         data : {
           access: {
@@ -295,7 +294,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.landingPage.preview.name, {
+      .state(states.creator.landingPage.preview.name, {
         url: '/preview',
         templateUrl: 'modules/creator-timeline/creator-timeline.html',
         controller: 'timelineCtrl',
@@ -310,7 +309,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.landingPage.edit.name, {
+      .state(states.creator.landingPage.edit.name, {
         url: '/edit',
         templateUrl: 'modules/creator-blog/customize-landing-page.html',
         controller: 'customizeLandingPageCtrl',
@@ -321,19 +320,19 @@ angular.module('webApp')
           bodyClass: 'page-blog-landing'
         }
       })
-      .state(states.creators.posts.name, {
+      .state(states.creator.posts.name, {
         abstract: false,
         url: '/posts',
         templateUrl: 'modules/common/ui-view.html',
         requireBlog: true,
-        redirectTo: states.creators.posts.live.name,
+        redirectTo: states.creator.posts.live.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.posts.live.name, {
+      .state(states.creator.posts.live.name, {
         url: '/live',
         templateUrl: 'modules/creator-posts/creator-posts.html',
         controller: 'timelineCtrl',
@@ -346,10 +345,10 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.posts.scheduled.name, {
+      .state(states.creator.posts.scheduled.name, {
         url: '/scheduled',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creators.posts.scheduled.list.name,
+        redirectTo: states.creator.posts.scheduled.list.name,
         requireBlog: true,
         data : {
           access: {
@@ -357,7 +356,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.posts.scheduled.list.name, {
+      .state(states.creator.posts.scheduled.list.name, {
         url: '',
         templateUrl: 'modules/creator-backlog/backlog-post-list.html',
         controller: 'backlogPostListCtrl',
@@ -365,16 +364,16 @@ angular.module('webApp')
         data : {
           pageTitle: 'Scheduled Posts',
           headTitle: ': ' + 'Scheduled Posts',
-          bodyClass: 'page-creators-backlog-post-list',
+          bodyClass: 'page-creator-backlog-post-list',
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.posts.scheduled.queues.name, {
+      .state(states.creator.posts.scheduled.queues.name, {
         url: '/queues',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creators.posts.scheduled.queues.list.name,
+        redirectTo: states.creator.posts.scheduled.queues.list.name,
         requireBlog: true,
         data : {
           access: {
@@ -382,7 +381,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.posts.scheduled.queues.list.name, {
+      .state(states.creator.posts.scheduled.queues.list.name, {
         url: '/',
         templateUrl: 'modules/creator-backlog/backlog-queue-list.html',
         requireBlog: true,
@@ -394,7 +393,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.posts.scheduled.queues.reorder.name, {
+      .state(states.creator.posts.scheduled.queues.reorder.name, {
         url: '/{id}',
         templateUrl: 'modules/creator-backlog/backlog-queue-reorder.html',
         controller: 'queueReorderCtrl',
@@ -407,18 +406,18 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.collections.name, {
+      .state(states.creator.collections.name, {
         url: '/collections',
         templateUrl: 'modules/common/ui-view.html',
         requireBlog: true,
-        redirectTo: states.creators.collections.list.name,
+        redirectTo: states.creator.collections.list.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.collections.new.name, {
+      .state(states.creator.collections.new.name, {
         url: '/new',
         templateUrl: 'modules/collections/new-collection.html',
         controller: 'newCollectionCtrl',
@@ -430,7 +429,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.collections.edit.name, {
+      .state(states.creator.collections.edit.name, {
         url: '/{id}',
         templateUrl: 'modules/collections/edit-collection.html',
         controller: 'editCollectionCtrl',
@@ -442,7 +441,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.collections.list.name, {
+      .state(states.creator.collections.list.name, {
         url: '',
         templateUrl: 'modules/collections/list-collections.html',
         controller: 'listCollectionsCtrl',
@@ -455,18 +454,18 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.channels.name, {
+      .state(states.creator.channels.name, {
         url: '/channels',
         templateUrl: 'modules/common/ui-view.html',
         requireBlog: true,
-        redirectTo: states.creators.channels.list.name,
+        redirectTo: states.creator.channels.list.name,
         data : {
           access: {
             requireAuthenticated: true
           }
         }
       })
-      .state(states.creators.channels.new.name, {
+      .state(states.creator.channels.new.name, {
         url: '/new',
         templateUrl: 'modules/channels/new-channel.html',
         controller: 'newChannelCtrl',
@@ -478,7 +477,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.channels.edit.name, {
+      .state(states.creator.channels.edit.name, {
         url: '/{id}',
         templateUrl: 'modules/channels/edit-channel.html',
         controller: 'editChannelCtrl',
@@ -490,7 +489,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.channels.list.name, {
+      .state(states.creator.channels.list.name, {
         url: '',
         templateUrl: 'modules/channels/list-channels.html',
         controller: 'listChannelsCtrl',
@@ -503,11 +502,11 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.subscribers.name, {
+      .state(states.creator.subscribers.name, {
         url: '/subscribers',
         templateUrl: 'modules/common/ui-view.html',
         requireBlog: true,
-        redirectTo: states.creators.subscribers.guestList.name,
+        redirectTo: states.creator.subscribers.guestList.name,
         data : {
           access: {
             requireAuthenticated: true,
@@ -515,7 +514,7 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.creators.subscribers.guestList.name, {
+      .state(states.creator.subscribers.guestList.name, {
         url: '/guest-list',
         templateUrl: 'modules/guest-list/guest-list.html',
         controller: 'guestListCtrl',

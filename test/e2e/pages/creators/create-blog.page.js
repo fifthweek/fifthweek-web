@@ -33,7 +33,7 @@ CreateBlogPage.prototype = Object.create({}, {
   ]},
   submitButton: { get: function () { return element(by.id('create-blog-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#createBlogForm .help-block')); }},
-  nextPageUrl: { get: function () { return '/dashboard/news-feed'; }}, // Todo: replace with page object
+  nextPageUrl: { get: function () { return '/user/news-feed'; }}, // Todo: replace with page object
   submitSuccessfully: { value: function() {
     var formValues = testKit.setFormValues(this, this.inputs);
     this.submitButton.click();

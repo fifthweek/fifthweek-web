@@ -42,7 +42,7 @@ describe('ui state provider', function() {
 
       var result = target.getDefaultState();
 
-      expect(result).toBe(states.dashboard.name);
+      expect(result).toBe(states.user.name);
     });
 
     it('it should return "create your blog" for creators without a blog', function() {
@@ -52,7 +52,7 @@ describe('ui state provider', function() {
 
       var result = target.getDefaultState();
 
-      expect(result).toBe(states.creators.createBlog.name);
+      expect(result).toBe(states.creator.createBlog.name);
     });
 
     it('it should return "compose note" for creators with a blog', function() {
@@ -62,7 +62,7 @@ describe('ui state provider', function() {
 
       var result = target.getDefaultState();
 
-      expect(result).toBe(states.dashboard.name);
+      expect(result).toBe(states.user.name);
     });
   });
 });
