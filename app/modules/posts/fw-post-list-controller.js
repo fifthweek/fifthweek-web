@@ -76,12 +76,12 @@ angular.module('webApp').controller('fwPostListCtrl',
       accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
       channelRepository = channelRepositoryFactory.forCurrentUser();
 
-      userId = authenticationService.currentUser.userId;
+      userId = $scope.userId || authenticationService.currentUser.userId;
 
       if($scope.source === fwPostListConstants.sources.creatorBacklog){
         loadNext = function() { return postsStub.getCreatorBacklog(userId); };
       }
-      else if($scope.source === fwPostListConstants.sources.creatorTimeline || $scope.source === fwPostListConstants.sources.creatorPosts) {
+      else if($scope.source === fwPostListConstants.sources.creatorTimeline) {
         loadNext = function(startIndex, count) { return postsStub.getCreatorNewsfeed(userId, startIndex, count); };
       }
 

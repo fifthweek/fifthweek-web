@@ -128,7 +128,6 @@ describe('blog service', function() {
       it('should set the blog data to aggregate user state', function(){
         expect(blogRepository.setBlog).toHaveBeenCalledWith({
           blogId: blogId,
-          creatorId: userId,
           introduction: blogServiceConstants.defaultBlogIntroduction,
           creationDate: date
         });
@@ -173,7 +172,6 @@ describe('blog service', function() {
 
       expect(blogRepository.setBlog).toHaveBeenCalledWith({
         blogId: blogId,
-        creatorId: userId,
         introduction: blogServiceConstants.defaultBlogIntroduction,
         creationDate: date
       });

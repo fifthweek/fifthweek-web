@@ -38,7 +38,7 @@ angular.module('webApp')
       },
       {
         name: 'Landing Page',
-        state: states.creator.landingPage.name,
+        state: states.creator.landingPage.preview.name,
         icon: 'fa fa-bookmark-o',
         color: 'pink',
         secondary:

@@ -2,8 +2,7 @@ angular.module('webApp')
   .constant('fwPostListConstants', {
     sources: {
       creatorBacklog: 'creator-backlog',
-      creatorTimeline: 'creator-timeline',
-      creatorPosts: 'creator-posts'
+      creatorTimeline: 'creator-timeline'
     }
   })
   .directive('fwPostList', function (fwPostListConstants, fifthweekConstants) {
@@ -12,7 +11,8 @@ angular.module('webApp')
   return {
     restrict: 'E',
     scope: {
-      source: '@'
+      source: '@',
+      userId: '@?'
     },
     require: ['fwPostList'],
     templateUrl: 'modules/posts/fw-post-list.html',

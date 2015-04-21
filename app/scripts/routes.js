@@ -9,6 +9,9 @@ angular.module('webApp')
     home: {
       name: 'home'
     },
+    landingPage: {
+      name: 'landingPage'
+    },
     signIn: {
       name: 'signIn',
       signIn: {
@@ -138,7 +141,7 @@ angular.module('webApp')
     $locationProvider.html5Mode(true);
 
     //for any unmatched url, redirect to home page
-    $urlRouterProvider.otherwise('/coming-soon');
+    $urlRouterProvider.otherwise('/not-found');
 
     $stateProvider
       .state(states.home.name, {
@@ -286,7 +289,7 @@ angular.module('webApp')
         abstract: false,
         url: '/landing-page',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creator.landingPage.preview.name,
+        redirectTo: states.creator.landingPage.edit.name,
         requireBlog: true,
         data : {
           access: {
@@ -296,14 +299,9 @@ angular.module('webApp')
       })
       .state(states.creator.landingPage.preview.name, {
         url: '/preview',
-        templateUrl: 'modules/creator-timeline/creator-timeline.html',
-        controller: 'timelineCtrl',
+        controller: 'landingPageRedirectCtrl',
         requireBlog: true,
         data : {
-          pageTitle: 'Landing Page',
-          headTitle: ': ' + 'Landing Page',
-          navigationHidden: true,
-          bodyClass: 'page-timeline',
           access: {
             requireAuthenticated: true
           }
@@ -335,7 +333,6 @@ angular.module('webApp')
       .state(states.creator.posts.live.name, {
         url: '/live',
         templateUrl: 'modules/creator-posts/creator-posts.html',
-        controller: 'timelineCtrl',
         requireBlog: true,
         data : {
           pageTitle: 'Live Posts',
@@ -612,6 +609,20 @@ angular.module('webApp')
         data : {
           pageTitle: 'Coming Soon',
           headTitle: ': ' + 'Coming Soon'
+        }
+      })
+      .state(states.landingPage.name, {
+        url: '/{username:[a-zA-Z0-9_]{2,20}}',
+        templateUrl: 'modules/landing-page/landing-page.html',
+        controller: 'landingPageCtrl',
+        data : {
+          pageTitle: 'Landing Page',
+          headTitle: ': ' + 'Landing Page',
+          navigationHidden: true,
+          bodyClass: 'page-landing-page',
+          access: {
+            requireAuthenticated: false
+          }
         }
       });
 });
