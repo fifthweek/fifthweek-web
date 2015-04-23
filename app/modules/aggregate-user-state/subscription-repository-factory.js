@@ -1,15 +1,15 @@
 angular.module('webApp')
-  .constant('subscriptionsRepositoryFactoryConstants', {
+  .constant('subscriptionRepositoryFactoryConstants', {
     key: 'subscriptions.blogs'
   })
-  .factory('subscriptionsRepositoryFactory',
-  function($q, masterRepositoryFactory, subscriptionsRepositoryFactoryConstants) {
+  .factory('subscriptionRepositoryFactory',
+  function($q, masterRepositoryFactory, subscriptionRepositoryFactoryConstants) {
     'use strict';
 
     return {
       forCurrentUser: function() {
 
-        var key = subscriptionsRepositoryFactoryConstants.key;
+        var key = subscriptionRepositoryFactoryConstants.key;
         var masterRepository = masterRepositoryFactory.forCurrentUser();
 
         var service = {};

@@ -5,7 +5,7 @@ describe('subscription repository factory', function(){
   var $rootScope;
   var masterRepositoryFactory;
   var masterRepository;
-  var subscriptionsRepositoryFactory;
+  var subscriptionRepositoryFactory;
   var targetFactory;
   var target;
 
@@ -22,8 +22,8 @@ describe('subscription repository factory', function(){
     inject(function($injector) {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
-      subscriptionsRepositoryFactory = $injector.get('subscriptionsRepositoryFactoryConstants');
-      targetFactory = $injector.get('subscriptionsRepositoryFactory');
+      subscriptionRepositoryFactory = $injector.get('subscriptionRepositoryFactoryConstants');
+      targetFactory = $injector.get('subscriptionRepositoryFactory');
     });
 
     target = targetFactory.forCurrentUser();
@@ -47,7 +47,7 @@ describe('subscription repository factory', function(){
       });
 
       it('should call the master repository', function(){
-        expect(masterRepository.get).toHaveBeenCalledWith(subscriptionsRepositoryFactory.key);
+        expect(masterRepository.get).toHaveBeenCalledWith(subscriptionRepositoryFactory.key);
       });
 
       it('should return the expected data', function(){
@@ -63,7 +63,7 @@ describe('subscription repository factory', function(){
       });
 
       it('should call the master repository', function(){
-        expect(masterRepository.get).toHaveBeenCalledWith(subscriptionsRepositoryFactory.key);
+        expect(masterRepository.get).toHaveBeenCalledWith(subscriptionRepositoryFactory.key);
       });
 
       it('should return the expected data', function(){
@@ -90,7 +90,7 @@ describe('subscription repository factory', function(){
       });
 
       it('should call the master repository', function(){
-        expect(masterRepository.get).toHaveBeenCalledWith(subscriptionsRepositoryFactory.key);
+        expect(masterRepository.get).toHaveBeenCalledWith(subscriptionRepositoryFactory.key);
       });
 
       it('should return the expected data', function(){
