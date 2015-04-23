@@ -14,11 +14,12 @@ angular.module('webApp')
       path = path.replace(/^\./, '');           // strip a leading dot
       return path.split('.');
     };
+
     service.getValue = function(object, path) {
       var pathSegments = _.isArray(path) ? path : service.getAccessorPathSegments(path);
       for (var i = 0; i < pathSegments.length; ++i) {
         var pathSegment = pathSegments[i];
-        if (pathSegment in object) {
+        if (object && pathSegment in object) {
           object = object[pathSegment];
         }
         else {
