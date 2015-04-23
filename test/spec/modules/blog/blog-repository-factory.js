@@ -1,4 +1,4 @@
-describe('account settings repository factory', function(){
+describe('blog repository factory', function(){
   'use strict';
 
 
@@ -30,7 +30,7 @@ describe('account settings repository factory', function(){
     target = targetFactory.forCurrentUser();
   });
 
-  describe('when getting account settings', function() {
+  describe('when calling getBlog', function() {
     it('should get settings from the master repository at the correct location', function() {
       var expected = { name: 'phil' };
       var actual;
@@ -60,7 +60,7 @@ describe('account settings repository factory', function(){
     });
   });
 
-  describe('when setting account settings', function() {
+  describe('when calling setBlog', function() {
     it('should set settings into the master repository at the correct location', function() {
       var settings = { name: 'phil' };
 
