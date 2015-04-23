@@ -41,7 +41,7 @@ describe('account settings repository factory', function(){
       });
       $rootScope.$apply();
 
-      expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
+      expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.key);
       expect(expected).toBe(actual);
     });
 
@@ -54,7 +54,7 @@ describe('account settings repository factory', function(){
       });
       $rootScope.$apply();
 
-      expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
+      expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.key);
       expect(error instanceof DisplayableError).toBe(true);
       expect(error.message).toBe('You do not have a blog.');
     });
@@ -66,7 +66,7 @@ describe('account settings repository factory', function(){
 
       target.setBlog(settings);
 
-      expect(masterRepository.set).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey, settings);
+      expect(masterRepository.set).toHaveBeenCalledWith(blogRepositoryFactoryConstants.key, settings);
     });
   });
 });

@@ -1,6 +1,6 @@
 angular.module('webApp')
   .constant('blogRepositoryFactoryConstants', {
-    blogKey: 'blog'
+    key: 'blog'
   })
   .factory('blogRepositoryFactory',
   function($q, masterRepositoryFactory, blogRepositoryFactoryConstants) {
@@ -9,7 +9,7 @@ angular.module('webApp')
     return {
       forCurrentUser: function() {
 
-        var blogKey = blogRepositoryFactoryConstants.blogKey;
+        var blogKey = blogRepositoryFactoryConstants.key;
         var masterRepository = masterRepositoryFactory.forCurrentUser();
 
         var service = {};
