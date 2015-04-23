@@ -42,13 +42,13 @@ angular.module('webApp')
           ];
 
           aggregateUserState.setDelta(blogUserId, 'creatorStatus', {blogId: blogId});
-          aggregateUserState.setDelta(blogUserId, 'createdChannelsAndCollections', {channels: channels});
 
           var localBlog = _.cloneDeep(blogData);
           localBlog.blogId = blogId;
           delete localBlog.basePrice;
           localBlog.introduction = blogServiceConstants.defaultBlogIntroduction;
           localBlog.creationDate = new Date();
+          localBlog.channels = channels;
           return blogRepository.setBlog(localBlog);
       });
     };
