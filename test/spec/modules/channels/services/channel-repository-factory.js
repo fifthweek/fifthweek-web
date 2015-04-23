@@ -40,7 +40,7 @@ describe('channel repository factory', function(){
       });
       $rootScope.$apply();
 
-      expect(masterRepository.get).toHaveBeenCalledWith('createdChannelsAndCollections.channels');
+      expect(masterRepository.get).toHaveBeenCalledWith('blog.channels');
       expect(expectedChannels).toBe(actualChannels);
     });
 
@@ -114,7 +114,7 @@ describe('channel repository factory', function(){
       target.updateChannels(applyChanges);
 
       expect(applyChanges).toHaveBeenCalledWith(channels);
-      expect(masterRepository.update).toHaveBeenCalledWith('createdChannelsAndCollections.channels', jasmine.any(Function));
+      expect(masterRepository.update).toHaveBeenCalledWith('blog.channels', jasmine.any(Function));
     });
   });
 

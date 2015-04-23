@@ -6,7 +6,7 @@ angular.module('webApp')
     return {
       forCurrentUser: function() {
 
-        var channelsKey = 'createdChannelsAndCollections.channels';
+        var channelsKey = 'blog.channels';
         var masterRepository = masterRepositoryFactory.forCurrentUser();
 
         var service = {};
