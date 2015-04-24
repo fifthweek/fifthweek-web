@@ -85,6 +85,8 @@ angular.module('webApp').factory('postUtilities',
       });
     };
 
+    service.internal = {};
+
     service.populateCurrentCreatorInformation = function(posts, accountSettingsRepository, channelRepository) {
       if(!posts || posts.length === 0){
         return $q.when();
@@ -110,6 +112,59 @@ angular.module('webApp').factory('postUtilities',
             post.creator = {
               username: accountSettings.username,
               profileImage: accountSettings.profileImage
+            };
+          });
+        });
+    };
+
+    service.internal.populateUnknownCreatorInformation = function(posts){
+      _.forEach(posts, function (post) {
+
+        post.channel = {
+          channelId: post.channelId,
+          name: 'Unknown Channel'
+        };
+
+        if (post.collectionId) {
+          post.collection = {
+            collectionId: post.collectionId,
+            name: 'Unknown Collection'
+          }
+        }
+      });
+    };
+
+    service.populateCreatorInformation = function(posts, subscriptionRepository) {
+      if(!posts || posts.length === 0){
+        return $q.when();
+      }
+
+      var subscriptionMap;
+      return subscriptionRepository.getBlogMap()
+        .then(function (result) {
+          subscriptionMap = result;
+
+          service.internal.populateUnknownCreatorInformation(posts);
+
+          _.forEach(posts, function (post) {
+
+            var blog = subscriptionMap[post.blogId];
+
+            var channel = blog.channels[post.channelId];
+            if(channel){
+              post.channel = channel;
+
+              if (post.collectionId) {
+                var collection = channel.collections[post.collectionId];
+                if(collection) {
+                  post.collection = collection;
+                }
+              }
+            }
+
+            post.creator = {
+              username: blog.username,
+              profileImage: blog.profileImage
             };
           });
         });

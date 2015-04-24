@@ -9,6 +9,7 @@ describe('post-utilities', function(){
   var accessSignatures;
   var accountSettingsRepository;
   var channelRepository;
+  var subscriptionRepository;
 
   var states;
   var fifthweekConstants;
@@ -18,6 +19,7 @@ describe('post-utilities', function(){
     accessSignatures = jasmine.createSpyObj('accessSignatures', ['getContainerAccessMap']);
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
     channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelMap']);
+    subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['getBlogMap']);
 
     module('webApp');
 
@@ -249,6 +251,334 @@ describe('post-utilities', function(){
             channelId: 'channelId2',
             channel: {
               channelId: 'channelId2'
+            },
+            creator: {
+              username: 'username',
+              profileImage: {
+                fileId: 'fileId',
+                containerName: 'containerName'
+              }
+            }
+          }
+        ]);
+      });
+    });
+  });
+
+  describe('when populating post creator information', function(){
+
+    beforeEach(function(){
+      spyOn(target.internal, 'populateUnknownCreatorInformation').and.callThrough();
+    });
+
+    describe('when posts is undefined', function(){
+      var error;
+      var posts;
+      beforeEach(function(){
+        error = undefined;
+        posts = undefined;
+
+        target.populateCreatorInformation(posts, subscriptionRepository)
+          .catch(function(e){ error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should not get the blog map', function(){
+        expect(subscriptionRepository.getBlogMap).not.toHaveBeenCalled();
+      });
+
+      it('should not populate unknown creator information', function(){
+        expect(target.internal.populateUnknownCreatorInformation).not.toHaveBeenCalled();
+      });
+
+      it('should not error', function(){
+        expect(error).toBeUndefined();
+      });
+
+      it('should not have modified posts', function(){
+        expect(posts).toBeUndefined();
+      });
+    });
+
+    describe('when posts is empty', function(){
+      var error;
+      var posts;
+      beforeEach(function(){
+        error = undefined;
+        posts = [];
+
+        target.populateCreatorInformation(posts, subscriptionRepository)
+          .catch(function(e){ error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should not get the blog map', function(){
+        expect(subscriptionRepository.getBlogMap).not.toHaveBeenCalled();
+      });
+
+      it('should not populate unknown creator information', function(){
+        expect(target.internal.populateUnknownCreatorInformation).not.toHaveBeenCalled();
+      });
+
+      it('should not error', function(){
+        expect(error).toBeUndefined();
+      });
+
+      it('should not have modified posts', function(){
+        expect(posts).toEqual([]);
+      });
+    });
+
+    describe('when getBlogMap fails', function(){
+      var error;
+      var posts;
+      var postsCopy;
+      beforeEach(function(){
+
+        posts = [
+          {
+            channelId: 'channelId1',
+            collectionId: 'collectionId1'
+          },
+          {
+            channelId: 'channelId2'
+          }
+        ];
+
+        postsCopy = _.cloneDeep(posts);
+
+        subscriptionRepository.getBlogMap.and.returnValue($q.reject('error'));
+
+        target.populateCreatorInformation(posts, subscriptionRepository)
+          .catch(function(e){ error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should not populate unknown creator information', function(){
+        expect(target.internal.populateUnknownCreatorInformation).not.toHaveBeenCalled();
+      });
+
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
+      });
+
+      it('should not have modified posts', function(){
+        expect(posts).toEqual(postsCopy);
+      });
+    });
+
+    describe('when successful', function(){
+      var posts;
+      beforeEach(function(){
+
+        posts = [
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId1',
+            collectionId: 'collectionId1'
+          },
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId2'
+          }
+        ];
+
+        subscriptionRepository.getBlogMap.and.returnValue($q.when(
+          {
+            blogId1: {
+              blogId: 'blogId1',
+              username: 'username',
+              profileImage: {
+                fileId: 'fileId',
+                containerName: 'containerName'
+              },
+              channels: {
+                channelId1: {
+                  channelId: 'channelId1',
+                  collections: {
+                    collectionId1: {
+                      collectionId: 'collectionId1'
+                    }
+                  }
+                },
+                channelId2: {
+                  channelId: 'channelId2'
+                }
+              }
+            }
+          }));
+
+        target.populateCreatorInformation(posts, subscriptionRepository);
+        $rootScope.$apply();
+      });
+
+      it('should get the blog map', function(){
+        expect(subscriptionRepository.getBlogMap).toHaveBeenCalledWith();
+      });
+
+      it('should populate unknown creator information', function(){
+        expect(target.internal.populateUnknownCreatorInformation).toHaveBeenCalled();
+      });
+
+      it('should update the posts collection', function(){
+        expect(posts).toEqual([
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId1',
+            collectionId: 'collectionId1',
+            channel: {
+              channelId: 'channelId1',
+              collections: {
+                collectionId1: {
+                  collectionId: 'collectionId1'
+                }
+              }
+            },
+            collection: {
+              collectionId: 'collectionId1'
+            },
+            creator: {
+              username: 'username',
+              profileImage: {
+                fileId: 'fileId',
+                containerName: 'containerName'
+              }
+            }
+          },
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId2',
+            channel: {
+              channelId: 'channelId2'
+            },
+            creator: {
+              username: 'username',
+              profileImage: {
+                fileId: 'fileId',
+                containerName: 'containerName'
+              }
+            }
+          }
+        ]);
+      });
+    });
+
+    describe('when items not found', function(){
+      var posts;
+      beforeEach(function(){
+
+        posts = [
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId1',
+            collectionId: 'collectionId1'
+          },
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId1',
+            collectionId: 'collectionId2'
+          },
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId2',
+            collectionId: 'collectionId2'
+          }
+        ];
+
+        subscriptionRepository.getBlogMap.and.returnValue($q.when(
+          {
+            blogId1: {
+              blogId: 'blogId1',
+              username: 'username',
+              profileImage: {
+                fileId: 'fileId',
+                containerName: 'containerName'
+              },
+              channels: {
+                channelId1: {
+                  channelId: 'channelId1',
+                  collections: {
+                    collectionId1: {
+                      collectionId: 'collectionId1'
+                    }
+                  }
+                }
+              }
+            }
+          }));
+
+        target.populateCreatorInformation(posts, subscriptionRepository);
+        $rootScope.$apply();
+      });
+
+      it('should get the blog map', function(){
+        expect(subscriptionRepository.getBlogMap).toHaveBeenCalledWith();
+      });
+
+      it('should populate unknown creator information', function(){
+        expect(target.internal.populateUnknownCreatorInformation).toHaveBeenCalled();
+      });
+
+      it('should update the posts collection', function(){
+        expect(posts).toEqual([
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId1',
+            collectionId: 'collectionId1',
+            channel: {
+              channelId: 'channelId1',
+              collections: {
+                collectionId1: {
+                  collectionId: 'collectionId1'
+                }
+              }
+            },
+            collection: {
+              collectionId: 'collectionId1'
+            },
+            creator: {
+              username: 'username',
+              profileImage: {
+                fileId: 'fileId',
+                containerName: 'containerName'
+              }
+            }
+          },
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId1',
+            collectionId: 'collectionId2',
+            channel: {
+              channelId: 'channelId1',
+              collections: {
+                collectionId1: {
+                  collectionId: 'collectionId1'
+                }
+              }
+            },
+            collection: {
+              collectionId: 'collectionId2',
+              name: 'Unknown Collection'
+            },
+            creator: {
+              username: 'username',
+              profileImage: {
+                fileId: 'fileId',
+                containerName: 'containerName'
+              }
+            }
+          },
+          {
+            blogId: 'blogId1',
+            channelId: 'channelId2',
+            collectionId: 'collectionId2',
+            channel: {
+              channelId: 'channelId2',
+              name: 'Unknown Channel'
+            },
+            collection: {
+              collectionId: 'collectionId2',
+              name: 'Unknown Collection'
             },
             creator: {
               username: 'username',
