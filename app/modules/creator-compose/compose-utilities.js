@@ -1,6 +1,6 @@
 angular.module('webApp')
   .factory('composeUtilities',
-  function($q, $modal, channelRepositoryFactory, utilities, logService, collectionStub, collectionService, channelNameFormatter) {
+  function($q, $modal, blogRepositoryFactory, utilities, logService, collectionStub, collectionService, channelNameFormatter) {
     'use strict';
 
     var service = {};
@@ -56,24 +56,24 @@ angular.module('webApp')
     };
 
     service.getChannelsForSelection = function(){
-      var channelRepository = channelRepositoryFactory.forCurrentUser();
-      return channelRepository.getChannelsSorted()
+      var blogRepository = blogRepositoryFactory.forCurrentUser();
+      return blogRepository.getChannelsSorted()
         .then(function(channels){
           return $q.when(getChannelsForSelectionInner(channels));
         });
     };
 
     service.getCollectionsForSelection = function(){
-      var channelRepository = channelRepositoryFactory.forCurrentUser();
-      return channelRepository.getChannelsSorted()
+      var blogRepository = blogRepositoryFactory.forCurrentUser();
+      return blogRepository.getChannelsSorted()
         .then(function(channels){
           return $q.when(getCollectionsForSelectionInner(channels));
         });
     };
 
     service.getChannelsAndCollectionsForSelection = function(){
-      var channelRepository = channelRepositoryFactory.forCurrentUser();
-      return channelRepository.getChannelsSorted()
+      var blogRepository = blogRepositoryFactory.forCurrentUser();
+      return blogRepository.getChannelsSorted()
         .then(function(channels){
           return $q.when({
             channels: getChannelsForSelectionInner(channels),

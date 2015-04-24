@@ -15,15 +15,15 @@ describe('edit channel controller', function () {
   var $controller;
   var target;
 
-  var channelRepositoryFactory;
-  var channelRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var channelStub;
   var errorFacade;
 
   beforeEach(function() {
     channelStub = jasmine.createSpyObj('channelStub', ['putChannel', 'deleteChannel']);
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannel', 'updateChannel', 'deleteChannel']);
-    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannel', 'updateChannel', 'deleteChannel']);
+    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
     $state = jasmine.createSpyObj('$state', ['go']);
     $state.params = { id: currentChannelId };
     currentChannel = {
@@ -38,7 +38,7 @@ describe('edit channel controller', function () {
     module('webApp', 'errorFacadeMock');
     module(function($provide) {
       $provide.value('channelStub', channelStub);
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
       $provide.value('$state', $state);
     });
 
@@ -52,8 +52,8 @@ describe('edit channel controller', function () {
 
     channelStub.putChannel.and.returnValue($q.defer().promise);
     channelStub.deleteChannel.and.returnValue($q.defer().promise);
-    channelRepository.updateChannel.and.returnValue($q.defer().promise);
-    channelRepository.deleteChannel.and.returnValue($q.defer().promise);
+    blogRepository.updateChannel.and.returnValue($q.defer().promise);
+    blogRepository.deleteChannel.and.returnValue($q.defer().promise);
   });
 
   var initializeTarget = function() {
@@ -62,12 +62,12 @@ describe('edit channel controller', function () {
 
   describe('when initializing', function() {
     it('should expose the specified channel', function () {
-      channelRepository.getChannel.and.returnValue($q.when(currentChannel));
+      blogRepository.getChannel.and.returnValue($q.when(currentChannel));
 
       initializeTarget();
       $scope.$apply();
 
-      expect(channelRepository.getChannel).toHaveBeenCalledWith(currentChannelId);
+      expect(blogRepository.getChannel).toHaveBeenCalledWith(currentChannelId);
       expect($scope.model.channel).toEqual(
         {
           channelId: currentChannel.channelId,
@@ -80,7 +80,7 @@ describe('edit channel controller', function () {
     });
 
     it('should expose the channel\'s original name', function () {
-      channelRepository.getChannel.and.returnValue($q.when(currentChannel));
+      blogRepository.getChannel.and.returnValue($q.when(currentChannel));
 
       initializeTarget();
       $scope.$apply();
@@ -89,7 +89,7 @@ describe('edit channel controller', function () {
     });
 
     it('should display any error messages when getting the current channel', function () {
-      channelRepository.getChannel.and.returnValue($q.reject('error'));
+      blogRepository.getChannel.and.returnValue($q.reject('error'));
 
       initializeTarget();
       $scope.$apply();
@@ -100,7 +100,7 @@ describe('edit channel controller', function () {
 
   describe('once initialized', function() {
     beforeEach(function() {
-      channelRepository.getChannel.and.returnValue($q.when(currentChannel));
+      blogRepository.getChannel.and.returnValue($q.when(currentChannel));
       initializeTarget();
       $scope.$apply();
     });
@@ -129,7 +129,7 @@ describe('edit channel controller', function () {
 
       it('should save the updated channel to the client-side repository', function() {
         var channelDelta = {};
-        channelRepository.updateChannel.and.callFake(function(channelId, update) {
+        blogRepository.updateChannel.and.callFake(function(channelId, update) {
           update(channelDelta);
           return $q.defer().promise;
         });
@@ -143,7 +143,7 @@ describe('edit channel controller', function () {
         $scope.save();
         $scope.$apply();
 
-        expect(channelRepository.updateChannel).toHaveBeenCalledWith(currentChannelId, jasmine.any(Function));
+        expect(blogRepository.updateChannel).toHaveBeenCalledWith(currentChannelId, jasmine.any(Function));
         expect(channelDelta).toEqual({
           name: 'name',
           description: 'description',
@@ -154,7 +154,7 @@ describe('edit channel controller', function () {
 
       it('should return to the previous state on save', function() {
         channelStub.putChannel.and.returnValue($q.when());
-        channelRepository.updateChannel.and.returnValue($q.when());
+        blogRepository.updateChannel.and.returnValue($q.when());
 
         $scope.save();
         $scope.$apply();
@@ -177,12 +177,12 @@ describe('edit channel controller', function () {
         $scope.delete();
         $scope.$apply();
 
-        expect(channelRepository.deleteChannel).toHaveBeenCalledWith(currentChannelId);
+        expect(blogRepository.deleteChannel).toHaveBeenCalledWith(currentChannelId);
       });
 
       it('should return to the previous state on delete', function() {
         channelStub.deleteChannel.and.returnValue($q.when());
-        channelRepository.deleteChannel.and.returnValue($q.when());
+        blogRepository.deleteChannel.and.returnValue($q.when());
 
         $scope.delete();
         $scope.$apply();

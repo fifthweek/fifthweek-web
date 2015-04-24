@@ -7,14 +7,14 @@ describe('collection list controller', function () {
   var target;
 
   var releaseTimeFormatter;
-  var channelRepositoryFactory;
-  var channelRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var errorFacade;
 
   beforeEach(function() {
     releaseTimeFormatter = jasmine.createSpyObj('releaseTimeFormatter', ['getDayAndTimesOfWeek']);
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
-    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannels']);
+    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
 
     releaseTimeFormatter.getDayAndTimesOfWeek.and.callFake(function(inputs) {
       return _.map(inputs, function(input) { return 'day ' + input; });
@@ -23,7 +23,7 @@ describe('collection list controller', function () {
     module('webApp', 'errorFacadeMock');
     module(function($provide) {
       $provide.value('releaseTimeFormatter', releaseTimeFormatter);
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
     });
 
     inject(function ($injector) {
@@ -40,7 +40,7 @@ describe('collection list controller', function () {
 
   it('should expose collections from user state', function() {
 
-    channelRepository.getChannels.and.returnValue($q.when([
+    blogRepository.getChannels.and.returnValue($q.when([
       {
         name: 'channel A',
         isDefault: true,
@@ -106,7 +106,7 @@ describe('collection list controller', function () {
   });
 
   it('should display any error messages', function() {
-    channelRepository.getChannels.and.returnValue($q.reject('error'));
+    blogRepository.getChannels.and.returnValue($q.reject('error'));
 
     initializeTarget();
     $scope.$apply();

@@ -21,20 +21,20 @@ describe('new collection controller', function () {
 
   var channelNameFormatter;
   var collectionService;
-  var channelRepositoryFactory;
-  var channelRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var errorFacade;
 
   beforeEach(function() {
     collectionService = jasmine.createSpyObj('collectionService', ['createCollectionFromName']);
     $state = jasmine.createSpyObj('$state', ['go']);
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelsSorted']);
-    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannelsSorted']);
+    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
 
     module('webApp', 'errorFacadeMock', 'channelNameFormatterMock');
     module(function($provide) {
       $provide.value('$state', $state);
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
       $provide.value('collectionService', collectionService);
     });
 
@@ -47,7 +47,7 @@ describe('new collection controller', function () {
       channelNameFormatter = $injector.get('channelNameFormatter');
     });
 
-    channelRepository.getChannelsSorted.and.returnValue($q.when(channels));
+    blogRepository.getChannelsSorted.and.returnValue($q.when(channels));
     collectionService.createCollectionFromName.and.returnValue($q.when());
   });
 
@@ -106,7 +106,7 @@ describe('new collection controller', function () {
   });
 
   it('should display any error messages in getting these channels', function() {
-    channelRepository.getChannelsSorted.and.returnValue($q.reject('error'));
+    blogRepository.getChannelsSorted.and.returnValue($q.reject('error'));
 
     initializeTarget();
 

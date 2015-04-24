@@ -1,19 +1,43 @@
 angular.module('webApp')
-  .factory('channelRepositoryFactory',
-  function($q, masterRepositoryFactory) {
+  .constant('blogRepositoryFactoryConstants', {
+    blogKey: 'blog',
+    channelsKey: 'blog.channels'
+  })
+  .factory('blogRepositoryFactory',
+  function($q, masterRepositoryFactory, blogRepositoryFactoryConstants) {
     'use strict';
 
     return {
       forCurrentUser: function() {
 
-        var channelsKey = 'blog.channels';
+        var blogKey = blogRepositoryFactoryConstants.blogKey;
+        var channelsKey = blogRepositoryFactoryConstants.channelsKey;
         var masterRepository = masterRepositoryFactory.forCurrentUser();
 
         var service = {};
 
+        service.getUserId = function(){
+          return masterRepository.getUserId();
+        };
+
+        service.getBlog = function(){
+          return masterRepository.get(blogKey)
+            .then(function(data){
+              if(data){
+                return $q.when(data);
+              }
+
+              return $q.reject(new DisplayableError('You do not have a blog.'));
+            });
+        };
+
+        service.setBlog = function(newBlog){
+          return masterRepository.set(blogKey, newBlog);
+        };
+
         service.getChannels = function() {
           return masterRepository.get(channelsKey).then(function(channels) {
-            if (channels.length === 0) {
+            if (!channels || channels.length === 0) {
               return $q.reject(new DisplayableError('You must create a blog.'));
             }
 
@@ -28,12 +52,12 @@ angular.module('webApp')
         };
 
         service.getChannelMap = function() {
-          return masterRepository.get(channelsKey).then(function(channels) {
-            if (channels.length === 0) {
+          return masterRepository.get(blogKey).then(function(blog) {
+            if (!blog) {
               return $q.reject(new DisplayableError('You must create a blog.'));
             }
 
-            var channelMap = _.reduce(channels, function(channelResult, channel){
+            blog.channels = _.reduce(blog.channels, function(channelResult, channel){
 
               channel.collections = _.reduce(channel.collections, function(collectionResult, collection){
                 collectionResult[collection.collectionId] = collection;
@@ -44,7 +68,7 @@ angular.module('webApp')
               return channelResult;
             }, {});
 
-            return $q.when(channelMap);
+            return $q.when(blog);
           });
         };
 

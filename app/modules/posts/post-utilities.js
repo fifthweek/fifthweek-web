@@ -87,27 +87,29 @@ angular.module('webApp').factory('postUtilities',
 
     service.internal = {};
 
-    service.populateCurrentCreatorInformation = function(posts, accountSettingsRepository, channelRepository) {
+    service.populateCurrentCreatorInformation = function(posts, accountSettingsRepository, blogRepository) {
       if(!posts || posts.length === 0){
         return $q.when();
       }
 
-      var channelMap;
+      var blog;
       var accountSettings;
-      return channelRepository.getChannelMap()
+      return blogRepository.getChannelMap()
         .then(function (result) {
-          channelMap = result;
+          blog = result;
           return accountSettingsRepository.getAccountSettings();
         })
         .then(function(result){
           accountSettings = result;
 
           _.forEach(posts, function (post) {
-            post.channel = channelMap[post.channelId];
+            post.channel = blog.channels[post.channelId];
 
             if (post.collectionId) {
               post.collection = post.channel.collections[post.collectionId];
             }
+
+            post.blogName = blog.name;
 
             post.creator = {
               username: accountSettings.username,
@@ -131,6 +133,13 @@ angular.module('webApp').factory('postUtilities',
             name: 'Unknown Collection'
           }
         }
+
+        post.blogName = 'Unknown Blog';
+
+        post.creator = {
+          username: 'Unknown Creator',
+          profileImage: undefined
+        };
       });
     };
 
@@ -150,22 +159,26 @@ angular.module('webApp').factory('postUtilities',
 
             var blog = subscriptionMap[post.blogId];
 
-            var channel = blog.channels[post.channelId];
-            if(channel){
-              post.channel = channel;
+            if(blog){
+              var channel = blog.channels[post.channelId];
+              if(channel){
+                post.channel = channel;
 
-              if (post.collectionId) {
-                var collection = channel.collections[post.collectionId];
-                if(collection) {
-                  post.collection = collection;
+                if (post.collectionId) {
+                  var collection = channel.collections[post.collectionId];
+                  if(collection) {
+                    post.collection = collection;
+                  }
                 }
               }
-            }
 
-            post.creator = {
-              username: blog.username,
-              profileImage: blog.profileImage
-            };
+              post.blogName = blog.name;
+
+              post.creator = {
+                username: blog.username,
+                profileImage: blog.profileImage
+              };
+            }
           });
         });
     };

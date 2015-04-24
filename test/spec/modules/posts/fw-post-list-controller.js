@@ -7,8 +7,8 @@ describe('fw-post-list-controller', function(){
 
   var postInteractions;
   var authenticationService;
-  var channelRepositoryFactory;
-  var channelRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var subscriptionRepositoryFactory;
   var subscriptionRepository;
   var accountSettingsRepositoryFactory;
@@ -23,9 +23,9 @@ describe('fw-post-list-controller', function(){
 
     postInteractions = jasmine.createSpyObj('postInteractions', ['viewImage', 'openFile', 'editPost', 'deletePost']);
     authenticationService = { currentUser: { userId: 'currentUserId' }};
-    channelRepositoryFactory = jasmine.createSpyObj('channelRepositoryFactory', ['forCurrentUser']);
-    channelRepository = 'channelRepository';
-    channelRepositoryFactory.forCurrentUser.and.returnValue(channelRepository);
+    blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
+    blogRepository = 'blogRepository';
+    blogRepositoryFactory.forCurrentUser.and.returnValue(blogRepository);
     subscriptionRepositoryFactory = jasmine.createSpyObj('subscriptionRepositoryFactory', ['forCurrentUser']);
     subscriptionRepository = 'subscriptionRepository';
     subscriptionRepositoryFactory.forCurrentUser.and.returnValue(subscriptionRepository);
@@ -41,7 +41,7 @@ describe('fw-post-list-controller', function(){
     module(function($provide) {
       $provide.value('postInteractions', postInteractions);
       $provide.value('authenticationService', authenticationService);
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
       $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
       $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
       $provide.value('fetchAggregateUserState', fetchAggregateUserState);
@@ -87,7 +87,7 @@ describe('fw-post-list-controller', function(){
     });
 
     it('should get a channel repository', function(){
-      expect(channelRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+      expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
     });
 
     describe('when API fails', function(){
@@ -124,7 +124,7 @@ describe('fw-post-list-controller', function(){
 
       it('should call populateCurrentCreatorInformation if user is creator', function(){
         if(testData.timelineUserId === 'currentUserId') {
-          expect(postUtilities.populateCurrentCreatorInformation).toHaveBeenCalledWith(posts, accountSettingsRepository, channelRepository);
+          expect(postUtilities.populateCurrentCreatorInformation).toHaveBeenCalledWith(posts, accountSettingsRepository, blogRepository);
         }
         else{
           expect(postUtilities.populateCurrentCreatorInformation).not.toHaveBeenCalled();

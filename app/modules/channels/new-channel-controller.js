@@ -1,7 +1,7 @@
-angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $state, states, channelRepositoryFactory, channelStub, blogService) {
+angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $state, states, blogRepositoryFactory, channelStub, blogService) {
   'use strict';
 
-  var channelRepository = channelRepositoryFactory.forCurrentUser();
+  var blogRepository = blogRepositoryFactory.forCurrentUser();
   $scope.model = {
     channel: {
       name: '',
@@ -32,7 +32,7 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
         delete channelData.price;
         delete channelData.blogId;
 
-        return channelRepository.createChannel(channelData).then(function() {
+        return blogRepository.createChannel(channelData).then(function() {
           $state.go($scope.previousState);
         });
       });

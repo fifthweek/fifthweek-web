@@ -1,5 +1,5 @@
 angular.module('webApp').controller('fwPostListCtrl',
-  function($scope, $q, fwPostListConstants, postInteractions, authenticationService, channelRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade, postUtilities) {
+  function($scope, $q, fwPostListConstants, postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade, postUtilities) {
     'use strict';
 
     var model = {
@@ -11,7 +11,7 @@ angular.module('webApp').controller('fwPostListCtrl',
     var loadNext = function(){ return $q.reject(new DisplayableError('Unknown fw-post-list source.')); };
 
     var accountSettingsRepository;
-    var channelRepository;
+    var blogRepository;
     var subscriptionRepository;
     var timelineUserId;
     var currentUserId;
@@ -27,7 +27,7 @@ angular.module('webApp').controller('fwPostListCtrl',
         .then(function(nextPosts) {
           posts = nextPosts;
           if(currentUserId === timelineUserId){
-            return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, channelRepository);
+            return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository);
           }
           else{
             return postUtilities.populateCreatorInformation(posts, subscriptionRepository);
@@ -80,7 +80,7 @@ angular.module('webApp').controller('fwPostListCtrl',
 
     this.initialize = function(){
       accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
-      channelRepository = channelRepositoryFactory.forCurrentUser();
+      blogRepository = blogRepositoryFactory.forCurrentUser();
       subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
       currentUserId = authenticationService.currentUser.userId;

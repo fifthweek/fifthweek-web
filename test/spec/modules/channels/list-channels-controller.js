@@ -6,17 +6,17 @@ describe('channel list controller', function () {
   var $controller;
   var target;
 
-  var channelRepositoryFactory;
-  var channelRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var errorFacade;
 
   beforeEach(function() {
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelsSorted']);
-    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannelsSorted']);
+    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
 
     module('webApp', 'errorFacadeMock');
     module(function($provide) {
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
     });
 
     inject(function ($injector) {
@@ -32,7 +32,7 @@ describe('channel list controller', function () {
   };
 
   it('should expose channels from user state', function() {
-    channelRepository.getChannelsSorted.and.returnValue($q.when([
+    blogRepository.getChannelsSorted.and.returnValue($q.when([
       {
         channelId: 'A',
         name: 'channel A',
@@ -71,7 +71,7 @@ describe('channel list controller', function () {
   });
 
   it('should display any error messages', function() {
-    channelRepository.getChannelsSorted.and.returnValue($q.reject('error'));
+    blogRepository.getChannelsSorted.and.returnValue($q.reject('error'));
 
     initializeTarget();
     $scope.$apply();

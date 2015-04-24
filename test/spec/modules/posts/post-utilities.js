@@ -8,7 +8,7 @@ describe('post-utilities', function(){
   var $state;
   var accessSignatures;
   var accountSettingsRepository;
-  var channelRepository;
+  var blogRepository;
   var subscriptionRepository;
 
   var states;
@@ -18,7 +18,7 @@ describe('post-utilities', function(){
     $state = jasmine.createSpyObj('$state', ['go']);
     accessSignatures = jasmine.createSpyObj('accessSignatures', ['getContainerAccessMap']);
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelMap']);
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannelMap']);
     subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['getBlogMap']);
 
     module('webApp');
@@ -47,13 +47,13 @@ describe('post-utilities', function(){
         error = undefined;
         posts = undefined;
 
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, channelRepository)
+        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
           .catch(function(e){ error = e; });
         $rootScope.$apply();
       });
 
       it('should not get the channel map', function(){
-        expect(channelRepository.getChannelMap).not.toHaveBeenCalled();
+        expect(blogRepository.getChannelMap).not.toHaveBeenCalled();
       });
 
       it('should not get the account settings', function(){
@@ -76,13 +76,13 @@ describe('post-utilities', function(){
         error = undefined;
         posts = [];
 
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, channelRepository)
+        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
           .catch(function(e){ error = e; });
         $rootScope.$apply();
       });
 
       it('should not get the channel map', function(){
-        expect(channelRepository.getChannelMap).not.toHaveBeenCalled();
+        expect(blogRepository.getChannelMap).not.toHaveBeenCalled();
       });
 
       it('should not get the account settings', function(){
@@ -116,9 +116,9 @@ describe('post-utilities', function(){
 
         postsCopy = _.cloneDeep(posts);
 
-        channelRepository.getChannelMap.and.returnValue($q.reject('error'));
+        blogRepository.getChannelMap.and.returnValue($q.reject('error'));
 
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, channelRepository)
+        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
           .catch(function(e){ error = e; });
         $rootScope.$apply();
       });
@@ -154,16 +154,16 @@ describe('post-utilities', function(){
 
         postsCopy = _.cloneDeep(posts);
 
-        channelRepository.getChannelMap.and.returnValue($q.when());
+        blogRepository.getChannelMap.and.returnValue($q.when());
         accountSettingsRepository.getAccountSettings.and.returnValue($q.reject('error'));
 
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, channelRepository)
+        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
           .catch(function(e){ error = e; });
         $rootScope.$apply();
       });
 
       it('should get the channel map', function(){
-        expect(channelRepository.getChannelMap).toHaveBeenCalledWith();
+        expect(blogRepository.getChannelMap).toHaveBeenCalledWith();
       });
 
       it('should propagate the error', function(){
@@ -189,17 +189,20 @@ describe('post-utilities', function(){
           }
         ];
 
-        channelRepository.getChannelMap.and.returnValue($q.when({
-          channelId1: {
-            channelId: 'channelId1',
-            collections: {
-              collectionId1: {
-                collectionId: 'collectionId1'
+        blogRepository.getChannelMap.and.returnValue($q.when({
+          name: 'blog',
+          channels: {
+            channelId1: {
+              channelId: 'channelId1',
+              collections: {
+                collectionId1: {
+                  collectionId: 'collectionId1'
+                }
               }
+            },
+            channelId2: {
+              channelId: 'channelId2'
             }
-          },
-          channelId2: {
-            channelId: 'channelId2'
           }
         }));
 
@@ -211,12 +214,12 @@ describe('post-utilities', function(){
           }
         }));
 
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, channelRepository);
+        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository);
         $rootScope.$apply();
       });
 
       it('should get the channel map', function(){
-        expect(channelRepository.getChannelMap).toHaveBeenCalledWith();
+        expect(blogRepository.getChannelMap).toHaveBeenCalledWith();
       });
 
       it('should get the account settings', function(){
@@ -226,6 +229,7 @@ describe('post-utilities', function(){
       it('should update the posts collection', function(){
         expect(posts).toEqual([
           {
+            blogName: 'blog',
             channelId: 'channelId1',
             collectionId: 'collectionId1',
             channel: {
@@ -248,6 +252,7 @@ describe('post-utilities', function(){
             }
           },
           {
+            blogName: 'blog',
             channelId: 'channelId2',
             channel: {
               channelId: 'channelId2'
@@ -388,6 +393,7 @@ describe('post-utilities', function(){
             blogId1: {
               blogId: 'blogId1',
               username: 'username',
+              name: 'blog',
               profileImage: {
                 fileId: 'fileId',
                 containerName: 'containerName'
@@ -424,6 +430,7 @@ describe('post-utilities', function(){
         expect(posts).toEqual([
           {
             blogId: 'blogId1',
+            blogName: 'blog',
             channelId: 'channelId1',
             collectionId: 'collectionId1',
             channel: {
@@ -447,6 +454,7 @@ describe('post-utilities', function(){
           },
           {
             blogId: 'blogId1',
+            blogName: 'blog',
             channelId: 'channelId2',
             channel: {
               channelId: 'channelId2'
@@ -482,6 +490,11 @@ describe('post-utilities', function(){
             blogId: 'blogId1',
             channelId: 'channelId2',
             collectionId: 'collectionId2'
+          },
+          {
+            blogId: 'blogId2',
+            channelId: 'channelId2',
+            collectionId: 'collectionId2'
           }
         ];
 
@@ -489,6 +502,7 @@ describe('post-utilities', function(){
           {
             blogId1: {
               blogId: 'blogId1',
+              name: 'blog',
               username: 'username',
               profileImage: {
                 fileId: 'fileId',
@@ -536,6 +550,7 @@ describe('post-utilities', function(){
             collection: {
               collectionId: 'collectionId1'
             },
+            blogName: 'blog',
             creator: {
               username: 'username',
               profileImage: {
@@ -560,6 +575,7 @@ describe('post-utilities', function(){
               collectionId: 'collectionId2',
               name: 'Unknown Collection'
             },
+            blogName: 'blog',
             creator: {
               username: 'username',
               profileImage: {
@@ -580,12 +596,31 @@ describe('post-utilities', function(){
               collectionId: 'collectionId2',
               name: 'Unknown Collection'
             },
+            blogName: 'blog',
             creator: {
               username: 'username',
               profileImage: {
                 fileId: 'fileId',
                 containerName: 'containerName'
               }
+            }
+          },
+          {
+            blogId: 'blogId2',
+            channelId: 'channelId2',
+            collectionId: 'collectionId2',
+            channel: {
+              channelId: 'channelId2',
+              name: 'Unknown Channel'
+            },
+            collection: {
+              collectionId: 'collectionId2',
+              name: 'Unknown Collection'
+            },
+            blogName: 'Unknown Blog',
+            creator: {
+              username: 'Unknown Creator',
+              profileImage: undefined
             }
           }
         ]);
