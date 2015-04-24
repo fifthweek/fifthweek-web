@@ -20,7 +20,7 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
   fullDescriptionTabLink: { get: function() { return element(by.css('.nav-tabs li:nth-child(3) a')); }},
 
   vanityUrl: { get: function() { return element(by.css('#vanity-url a')); }},
-  blogNameTextBoxId: { value: 'model-settings-blogName' },
+  nameTextBoxId: { value: 'model-settings-name' },
   taglineTextBoxId: { value: 'model-settings-tagline' },
   introductionTextBoxId: { value: 'introduction' },
 

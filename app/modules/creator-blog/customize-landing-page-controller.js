@@ -52,7 +52,7 @@ angular.module('webApp').controller(
         fileId = model.settings.headerImage.fileId;
       }
       var blogData = {
-        blogName: model.settings.blogName,
+        name: model.settings.name,
         tagline: model.settings.tagline,
         introduction: model.settings.introduction,
         headerImageFileId: fileId,

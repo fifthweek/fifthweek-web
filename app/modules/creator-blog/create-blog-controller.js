@@ -3,7 +3,7 @@ angular.module('webApp').controller('createBlogCtrl',
     'use strict';
 
     $scope.newBlogData = {
-       blogName: '',
+       name: '',
        tagline: '',
        basePrice: '1.00'
     };

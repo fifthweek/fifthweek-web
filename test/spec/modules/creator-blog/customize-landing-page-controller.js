@@ -100,7 +100,7 @@ describe('customize landing page controller', function () {
 
       beforeEach(function(){
         blogRepository.getBlog.and.returnValue($q.when({
-          blogName: 'name',
+          name: 'name',
           headerImage: undefined
         }));
 
@@ -114,7 +114,7 @@ describe('customize landing page controller', function () {
 
       it('should set the settings', function(){
         expect($scope.model.settings).toBeDefined();
-        expect($scope.model.settings.blogName).toBe('name');
+        expect($scope.model.settings.name).toBe('name');
         expect($scope.model.settings.headerImage).toBeUndefined();
       });
 
@@ -131,7 +131,7 @@ describe('customize landing page controller', function () {
 
       beforeEach(function(){
         blogRepository.getBlog.and.returnValue($q.when({
-          blogName: 'name',
+          name: 'name',
           headerImage: {
             containerName: 'containerName',
             fileId: 'fileId'
@@ -148,7 +148,7 @@ describe('customize landing page controller', function () {
 
       it('should set the settings', function(){
         expect($scope.model.settings).toBeDefined();
-        expect($scope.model.settings.blogName).toBe('name');
+        expect($scope.model.settings.name).toBe('name');
         expect($scope.model.settings.headerImage.fileId).toBe('fileId');
         expect($scope.model.settings.headerImage.containerName).toBe('containerName');
       });
@@ -189,7 +189,7 @@ describe('customize landing page controller', function () {
     beforeEach(function(){
       blogRepository.getBlog.and.returnValue($q.when({
         blogId: 'blogId',
-        blogName: 'name',
+        name: 'name',
         tagline: 'tagline',
         introduction: 'introduction',
         video: 'video',
@@ -244,7 +244,7 @@ describe('customize landing page controller', function () {
           expect(blogStub.putBlog).toHaveBeenCalledWith(
             'blogId',
             {
-              blogName: 'name',
+              name: 'name',
               tagline: 'tagline',
               introduction: 'introduction',
               headerImageFileId: undefined,
@@ -258,7 +258,7 @@ describe('customize landing page controller', function () {
           expect(blogRepository.setBlog).toHaveBeenCalledWith(
             {
               blogId: 'blogId',
-              blogName: 'name',
+              name: 'name',
               tagline: 'tagline',
               introduction: 'introduction',
               video: 'video',
@@ -286,7 +286,7 @@ describe('customize landing page controller', function () {
           expect(blogStub.putBlog).toHaveBeenCalledWith(
             'blogId',
             {
-              blogName: 'name',
+              name: 'name',
               tagline: 'tagline',
               introduction: 'introduction',
               headerImageFileId: 'fileId',
@@ -300,7 +300,7 @@ describe('customize landing page controller', function () {
           expect(blogRepository.setBlog).toHaveBeenCalledWith(
             {
               blogId: 'blogId',
-              blogName: 'name',
+              name: 'name',
               tagline: 'tagline',
               introduction: 'introduction',
               video: 'video',
