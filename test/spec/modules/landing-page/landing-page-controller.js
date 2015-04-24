@@ -832,7 +832,7 @@ describe('landing page controller', function () {
         });
 
         it('should set the price to the first channel price', function(){
-          expect($scope.model.totalPrice).toBe((channelPrice0 / 100).toFixed(2))
+          expect($scope.model.totalPrice).toBe((channelPrice0 / 100).toFixed(2));
         });
       });
 
@@ -843,7 +843,7 @@ describe('landing page controller', function () {
         });
 
         it('should set the price to the sum of the first and second channel prices', function(){
-          expect($scope.model.totalPrice).toBe(((channelPrice0 + channelPrice1) / 100).toFixed(2))
+          expect($scope.model.totalPrice).toBe(((channelPrice0 + channelPrice1) / 100).toFixed(2));
         });
       });
 
@@ -854,7 +854,7 @@ describe('landing page controller', function () {
         });
 
         it('should set the price to the sum of the first and third channel prices', function(){
-          expect($scope.model.totalPrice).toBe(((channelPrice0 + channelPrice2) / 100).toFixed(2))
+          expect($scope.model.totalPrice).toBe(((channelPrice0 + channelPrice2) / 100).toFixed(2));
         });
       });
 
@@ -866,7 +866,7 @@ describe('landing page controller', function () {
         });
 
         it('should set the price to the sum of all channel prices', function(){
-          expect($scope.model.totalPrice).toBe(((channelPrice0 + channelPrice1 + channelPrice2) / 100).toFixed(2))
+          expect($scope.model.totalPrice).toBe(((channelPrice0 + channelPrice1 + channelPrice2) / 100).toFixed(2));
         });
       });
     });

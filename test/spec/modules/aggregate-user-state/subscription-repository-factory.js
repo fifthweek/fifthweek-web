@@ -197,7 +197,7 @@ describe('subscription repository factory', function(){
 
       it('should return the expected result', function(){
         expect(actual).toEqual(expected);
-      })
+      });
     });
 
     describe('when the user has no blog subscriptions', function(){
@@ -215,7 +215,7 @@ describe('subscription repository factory', function(){
 
       it('should return the expected result', function(){
         expect(actual).toEqual(expected);
-      })
+      });
     });
 
     describe('when the user is signed out', function(){
@@ -233,7 +233,7 @@ describe('subscription repository factory', function(){
 
       it('should return the expected result', function(){
         expect(actual).toEqual(expected);
-      })
+      });
     });
   });
 });
