@@ -14,7 +14,7 @@ angular.module('webApp')
 
         var service = {};
 
-        service.tryGetSubscriptions = function(){
+        service.tryGetBlogs = function(){
           if(!masterRepository.getUserId())
           {
             return $q.when();
@@ -23,8 +23,36 @@ angular.module('webApp')
           return masterRepository.get(key);
         };
 
-        service.getSubscriptions = function(){
+        service.getBlogs = function(){
           return masterRepository.get(key);
+        };
+
+        service.getBlogMap = function() {
+          return service.tryGetBlogs().then(function(blogs) {
+
+            if(!blogs || !blogs.length){
+              return $q.when({});
+            }
+
+            var blogMap = _.reduce(blogs, function(blogResult, blog){
+
+              blog.channels = _.reduce(blog.channels, function(channelResult, channel){
+
+                channel.collections = _.reduce(channel.collections, function(collectionResult, collection){
+                  collectionResult[collection.collectionId] = collection;
+                  return collectionResult;
+                }, {});
+
+                channelResult[channel.channelId] = channel;
+                return channelResult;
+              }, {});
+
+              blogResult[blog.blogId] = blog;
+              return blogResult;
+            }, {});
+
+            return $q.when(blogMap);
+          });
         };
 
         return service;
