@@ -1,10 +1,10 @@
 angular.module('webApp').controller('landingPageCtrl',
-  function($scope, $q, $sce, blogStub, accountSettingsRepositoryFactory, blogRepositoryFactory, channelRepositoryFactory, initializer, $stateParams, $state, states, errorFacade) {
+  function($scope, $q, $sce, blogStub, subscriptionStub, accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory, initializer, $stateParams, $state, states, errorFacade) {
     'use strict';
 
     var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
     var blogRepository = blogRepositoryFactory.forCurrentUser();
-    var channelRepository = channelRepositoryFactory.forCurrentUser();
+    var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
     $scope.model = {
       // These need to appear in a JS file, as the Grunt task for swapping file names that appear within JS will only
@@ -15,19 +15,40 @@ angular.module('webApp').controller('landingPageCtrl',
         title: 'Subscribed',
         category: 'Timeline'
       },
-      subscribed: false,
-      isLoaded: false
+      isSubscribed: false,
+      isLoaded: false,
+      isOwner: false,
+      hasFreeAccess: false
     };
 
     var internal = this.internal = {};
 
+    internal.checkSubscriptions = function(username){
+      return subscriptionRepository.tryGetBlogs()
+        .then(function(blogs){
+          var isSubscribed = false;
+          var hasFreeAccess = false;
+          if(blogs){
+            var blog = _.find(blogs, { username: username });
+            if(blog){
+              hasFreeAccess = blog.freeAccess;
+              isSubscribed = blog.channels && blog.channels.length;
+            }
+          }
+          $scope.model.hasFreeAccess = !!hasFreeAccess;
+          $scope.model.isSubscribed = !!isSubscribed;
+        });
+    };
+
     internal.loadFromApi = function(username){
+      $scope.model.isOwner = false;
       return blogStub.getLandingPage(username)
         .then(function(response){
           _.merge($scope.model, response.data);
+          return internal.checkSubscriptions(username);
         })
         .catch(function(error){
-          if(error instanceof ApiError && error.response.status === 404){
+          if(error instanceof ApiError && error.response && error.response.status === 404){
             $state.go(states.notFound.name);
             return $q.when(true);
           }
@@ -38,15 +59,12 @@ angular.module('webApp').controller('landingPageCtrl',
     };
 
     internal.loadFromLocal = function(){
+      $scope.model.isOwner = true;
+      $scope.model.hasFreeAccess = false;
+      $scope.model.isSubscribed = false;
       return blogRepository.getBlog()
         .then(function(blog) {
           $scope.model.blog = blog;
-        })
-        .then(function() {
-          return channelRepository.getChannels();
-        })
-        .then(function(channels) {
-          $scope.model.channels = channels;
         });
     };
 
@@ -55,11 +73,11 @@ angular.module('webApp').controller('landingPageCtrl',
         $scope.model.videoUrl = $sce.trustAsResourceUrl($scope.model.blog.video.replace('http://', '//').replace('https://', '//'));
       }
 
-      $scope.model.channels = _.chain($scope.model.channels)
+      $scope.model.channels = _.chain($scope.model.blog.channels)
         .filter({isVisibleToNonSubscribers: true})
         .map(function(channel) {
           return {
-            id: channel.channelId,
+            channelId: channel.channelId,
             name: channel.name,
             price: (channel.priceInUsCentsPerWeek / 100).toFixed(2),
             description: channel.description.split('\n'),
@@ -120,11 +138,35 @@ angular.module('webApp').controller('landingPageCtrl',
     initializer.initialize(internal.loadLandingPage);
 
     $scope.subscribe = function() {
-      $scope.model.subscribed = true;
+      if($scope.model.isOwner){
+        $scope.model.isSubscribed = true;
+      }
+      else if($scope.model.hasFreeAccess){
+        var subscriptions = _($scope.model.channels)
+          .filter({checked: true})
+          .map(function(v){ return { channelId: v.channelId, acceptedPrice: 0 }; })
+          .value();
+
+        return subscriptionStub.putBlogSubscriptions($scope.model.blog.blogId, { subscriptions: subscriptions })
+          .then(function(){
+            $scope.model.isSubscribed = true;
+          });
+      }
+      else{
+        return $q.reject(new DisplayableError('Currently only users on the guest list can subscribe.'));
+      }
     };
 
     $scope.unsubscribe = function() {
-      $scope.model.subscribed = false;
+      if($scope.model.isOwner){
+        $scope.model.isSubscribed = false;
+      }
+      else{
+        return subscriptionStub.putBlogSubscriptions($scope.model.blog.blogId, { subscriptions: [] })
+          .then(function(){
+            $scope.model.isSubscribed = false;
+          });
+      }
     };
   }
 );

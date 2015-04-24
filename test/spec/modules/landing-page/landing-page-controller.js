@@ -12,12 +12,13 @@ describe('landing page controller', function () {
 
   var $sce;
   var blogStub;
+  var subscriptionStub;
   var accountSettingsRepositoryFactory;
   var accountSettingsRepository;
-  var channelRepositoryFactory;
-  var channelRepository;
   var blogRepositoryFactory;
   var blogRepository;
+  var subscriptionRepositoryFactory;
+  var subscriptionRepository;
   var initializer;
   var $stateParams;
   var $state;
@@ -27,12 +28,13 @@ describe('landing page controller', function () {
   beforeEach(function() {
     $sce = jasmine.createSpyObj('$sce', ['trustAsResourceUrl']);
     blogStub = jasmine.createSpyObj('blogStub', ['getLandingPage']);
+    subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['putBlogSubscriptions']);
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
     accountSettingsRepositoryFactory = { forCurrentUser: function() { return accountSettingsRepository; }};
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels']);
-    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
     blogRepository = jasmine.createSpyObj('blogRepository', ['getBlog']);
     blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
+    subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['tryGetBlogs']);
+    subscriptionRepositoryFactory = { forCurrentUser: function() { return subscriptionRepository; }};
     initializer = jasmine.createSpyObj('initializer', ['initialize']);
     $state = jasmine.createSpyObj('$state', ['go']);
     $stateParams = {};
@@ -44,9 +46,10 @@ describe('landing page controller', function () {
     module(function($provide) {
       $provide.value('$sce', $sce);
       $provide.value('blogStub', blogStub);
+      $provide.value('subscriptionStub', subscriptionStub);
       $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
       $provide.value('blogRepositoryFactory', blogRepositoryFactory);
+      $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
       $provide.value('initializer', initializer);
       $provide.value('$stateParams', $stateParams);
       $provide.value('$state', $state);
@@ -77,11 +80,19 @@ describe('landing page controller', function () {
     });
 
     it('should expose a default blog state of "unsubscribed"', function() {
-      expect($scope.model.subscribed).toBe(false);
+      expect($scope.model.isSubscribed).toBe(false);
     });
 
     it('should set isLoaded to false', function(){
       expect($scope.model.isLoaded).toBe(false);
+    });
+
+    it('should set isOwner to false', function(){
+      expect($scope.model.isOwner).toBe(false);
+    });
+
+    it('should set hasFreeAccess to false', function(){
+      expect($scope.model.hasFreeAccess).toBe(false);
     });
 
     it('should initialize with the loadLandingPage function', function(){
@@ -95,28 +106,185 @@ describe('landing page controller', function () {
     });
 
     describe('when subscribe is called', function(){
-      beforeEach(function(){
-        $scope.model.subscribed = false;
-        $scope.subscribe();
+      describe('when user is the blog owner', function(){
+        beforeEach(function(){
+          $scope.model.isOwner = true;
+          $scope.model.isSubscribed = false;
+          $scope.subscribe();
+          $scope.$apply();
+        });
+
+        it('should set subscribed to true', function(){
+          expect($scope.model.isSubscribed).toBe(true);
+        });
       });
 
-      it('should set subscribed to true', function(){
-        expect($scope.model.subscribed).toBe(true);
+      describe('when user is on the guest list', function(){
+        beforeEach(function(){
+          $scope.model.isOwner = false;
+          $scope.model.hasFreeAccess = true;
+          $scope.model.isSubscribed = false;
+
+          $scope.model.blog = {
+            blogId: 'blogId'
+          };
+
+          $scope.model.channels = [
+            {
+              checked: true,
+              channelId: 'channelId1'
+            },
+            {
+              checked: false,
+              channelId: 'channelId2'
+            },
+            {
+              checked: true,
+              channelId: 'channelId3'
+            }
+          ];
+        });
+
+        describe('when putBlogSubscriptions succeeds', function(){
+          beforeEach(function(){
+            subscriptionStub.putBlogSubscriptions.and.returnValue($q.when());
+
+            $scope.subscribe();
+            $scope.$apply();
+          });
+
+          it('should call putBlogSubscriptions with selected channels', function(){
+            expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith('blogId', {
+              subscriptions: [
+                { channelId: 'channelId1', acceptedPrice: 0 },
+                { channelId: 'channelId3', acceptedPrice: 0 }
+              ]
+            });
+          });
+
+          it('should set subscribed to true', function(){
+            expect($scope.model.isSubscribed).toBe(true);
+          });
+        });
+
+        describe('when putBlogSubscriptions fails', function(){
+          var error;
+          beforeEach(function(){
+            subscriptionStub.putBlogSubscriptions.and.returnValue($q.reject('error'));
+
+            $scope.subscribe().catch(function(e){ error = e; });
+            $scope.$apply();
+          });
+
+          it('should call putBlogSubscriptions with selected channels', function(){
+            expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith('blogId', {
+              subscriptions: [
+                { channelId: 'channelId1', acceptedPrice: 0 },
+                { channelId: 'channelId3', acceptedPrice: 0 }
+              ]
+            });
+          });
+
+          it('should not set subscribed to true', function(){
+            expect($scope.model.isSubscribed).toBe(false);
+          });
+
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
+          });
+        });
+      });
+
+      describe('when user is not owner or on guest list', function(){
+        var error;
+        beforeEach(function(){
+          $scope.model.isOwner = false;
+          $scope.model.hasFreeAccess = false;
+          $scope.model.isSubscribed = false;
+          $scope.subscribe().catch(function(e){ error = e; });
+          $scope.$apply();
+        });
+
+        it('should return a displayable error', function(){
+          expect(error instanceof DisplayableError).toBe(true);
+        });
       });
     });
 
     describe('when unsubscribe is called', function(){
-      beforeEach(function(){
-        $scope.model.subscribed = true;
-        $scope.unsubscribe();
+
+      describe('if user is the blog owner', function(){
+        beforeEach(function(){
+          $scope.model.isOwner = true;
+          $scope.model.isSubscribed = true;
+          $scope.unsubscribe();
+        });
+
+        it('should set subscribed to true', function(){
+          expect($scope.model.isSubscribed).toBe(false);
+        });
       });
 
-      it('should set subscribed to true', function(){
-        expect($scope.model.subscribed).toBe(false);
+      describe('if user is not the blog owner', function(){
+        beforeEach(function(){
+          $scope.model.isOwner = false;
+          $scope.model.isSubscribed = true;
+
+          $scope.model.blog = {
+            blogId: 'blogId'
+          };
+        });
+
+        describe('when putBlogSubscriptions succeeds', function(){
+          beforeEach(function(){
+            subscriptionStub.putBlogSubscriptions.and.returnValue($q.when());
+
+            $scope.unsubscribe();
+            $scope.$apply();
+          });
+
+          it('should call putBlogSubscriptions with selected channels', function(){
+            expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith('blogId', {
+              subscriptions: []
+            });
+          });
+
+          it('should set subscribed to false', function(){
+            expect($scope.model.isSubscribed).toBe(false);
+          });
+        });
+
+        describe('when putBlogSubscriptions fails', function(){
+          var error;
+          beforeEach(function(){
+            subscriptionStub.putBlogSubscriptions.and.returnValue($q.reject('error'));
+
+            $scope.unsubscribe().catch(function(e){ error = e; });
+            $scope.$apply();
+          });
+
+          it('should call putBlogSubscriptions with selected channels', function(){
+            expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith('blogId', {
+              subscriptions: []
+            });
+          });
+
+          it('should not set subscribed to false', function(){
+            expect($scope.model.isSubscribed).toBe(true);
+          });
+
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
+          });
+        });
       });
     });
 
     describe('when loadFromApi is called', function(){
+
+      beforeEach(function(){
+        $scope.model.isOwner = true;
+      });
 
       describe('when getLandingPage succeeds', function(){
         beforeEach(function(){
@@ -132,18 +300,58 @@ describe('landing page controller', function () {
             },
             e: 'e'
           }}));
-          target.internal.loadFromApi();
-          $scope.$apply();
         });
 
-        it('should merge the landing page data with the model', function(){
-          expect($scope.model).toEqual({
-            a: 'a',
-            b: {
-              c: 'c',
-              d: 'd'
-            },
-            e: 'e'
+        describe('when checkSubscriptions succeeds', function(){
+          beforeEach(function(){
+            spyOn(target.internal, 'checkSubscriptions').and.returnValue($q.when());
+            target.internal.loadFromApi('username');
+            $scope.$apply();
+          });
+
+          it('should merge the landing page data with the model', function(){
+            expect($scope.model).toEqual({
+              isOwner: false,
+              a: 'a',
+              b: {
+                c: 'c',
+                d: 'd'
+              },
+              e: 'e'
+            });
+          });
+
+          it('should call checkSubscriptions', function(){
+            expect(target.internal.checkSubscriptions).toHaveBeenCalledWith('username');
+          });
+        });
+
+        describe('when checkSubscriptions fails', function(){
+          var error;
+          beforeEach(function(){
+            spyOn(target.internal, 'checkSubscriptions').and.returnValue($q.reject('error'));
+            target.internal.loadFromApi('username').catch(function(e){ error = e; });
+            $scope.$apply();
+          });
+
+          it('should merge the landing page data with the model', function(){
+            expect($scope.model).toEqual({
+              isOwner: false,
+              a: 'a',
+              b: {
+                c: 'c',
+                d: 'd'
+              },
+              e: 'e'
+            });
+          });
+
+          it('should call checkSubscriptions', function(){
+            expect(target.internal.checkSubscriptions).toHaveBeenCalledWith('username');
+          });
+
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
           });
         });
       });
@@ -155,7 +363,7 @@ describe('landing page controller', function () {
           error = undefined;
           result = undefined;
           blogStub.getLandingPage.and.returnValue($q.reject(new ApiError('Error', { status: 404 })));
-          target.internal.loadFromApi().then(function(r){ result = r; }).catch(function(e){ error = e; });
+          target.internal.loadFromApi('username').then(function(r){ result = r; }).catch(function(e){ error = e; });
           $scope.$apply();
         });
 
@@ -170,6 +378,10 @@ describe('landing page controller', function () {
         it('should return a result indicating to stop processing', function(){
           expect(result).toBe(true);
         });
+
+        it('should set isOwner to false', function(){
+          expect($scope.model.isOwner).toBe(false);
+        });
       });
 
       describe('when getLandingPage fails', function(){
@@ -179,7 +391,7 @@ describe('landing page controller', function () {
           error = undefined;
           result = undefined;
           blogStub.getLandingPage.and.returnValue($q.reject(new ApiError('Error', { status: 400 })));
-          target.internal.loadFromApi().then(function(r){ result = r; }).catch(function(e){ error = e; });
+          target.internal.loadFromApi('username').then(function(r){ result = r; }).catch(function(e){ error = e; });
           $scope.$apply();
         });
 
@@ -195,13 +407,105 @@ describe('landing page controller', function () {
         it('should return a result indicating to continue processing', function(){
           expect(result).toBeFalsy();
         });
+
+        it('should set isOwner to false', function(){
+          expect($scope.model.isOwner).toBe(false);
+        });
+      });
+    });
+
+    describe('when checkSubscriptions is called', function(){
+      var deferred;
+      beforeEach(function(){
+        deferred = $q.defer();
+        subscriptionRepository.tryGetBlogs.and.returnValue(deferred.promise);
+      });
+
+      describe('when tryGetBlogs succeeds', function(){
+
+        describe('when user is not subscribed', function(){
+          beforeEach(function(){
+            $scope.model.hasFreeAccess = undefined;
+            $scope.model.isSubscribed = undefined;
+            target.internal.checkSubscriptions('username');
+            deferred.resolve(undefined);
+            $scope.$apply();
+          });
+
+          it('should set hasFreeAccess to false', function(){
+            expect($scope.model.hasFreeAccess).toBe(false);
+          });
+
+          it('should set isSubscribed to false', function(){
+            expect($scope.model.isSubscribed).toBe(false);
+          });
+        });
+
+        describe('when user is subscribed', function(){
+          beforeEach(function(){
+            $scope.model.hasFreeAccess = undefined;
+            $scope.model.isSubscribed = undefined;
+            target.internal.checkSubscriptions('username');
+            deferred.resolve([{
+              username: 'username',
+              freeAccess: false,
+              channels: [{}]
+            }]);
+            $scope.$apply();
+          });
+
+          it('should set hasFreeAccess to false', function(){
+            expect($scope.model.hasFreeAccess).toBe(false);
+          });
+
+          it('should set isSubscribed to false', function(){
+            expect($scope.model.isSubscribed).toBe(true);
+          });
+        });
+
+        describe('when user has free access', function(){
+          beforeEach(function(){
+            $scope.model.hasFreeAccess = undefined;
+            $scope.model.isSubscribed = undefined;
+            target.internal.checkSubscriptions('username');
+            deferred.resolve([{
+              username: 'username',
+              freeAccess: true,
+              channels: []
+            }]);
+            $scope.$apply();
+          });
+
+          it('should set hasFreeAccess to false', function(){
+            expect($scope.model.hasFreeAccess).toBe(true);
+          });
+
+          it('should set isSubscribed to false', function(){
+            expect($scope.model.isSubscribed).toBe(false);
+          });
+        });
+      });
+
+      describe('when tryGetBlogs fails', function() {
+        var error;
+        beforeEach(function(){
+          target.internal.checkSubscriptions('username').catch(function(e){ error = e; });
+          deferred.reject('error');
+          $scope.$apply();
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
       });
     });
 
     describe('when loadFromLocal is called', function(){
       beforeEach(function(){
+        $scope.model.isOwner = false;
+        $scope.model.hasFreeAccess = true;
+        $scope.model.isSubscribed = true;
         blogRepository.getBlog.and.returnValue($q.when('blog'));
-        channelRepository.getChannels.and.returnValue($q.when('channels'));
         target.internal.loadFromLocal();
         $scope.$apply();
       });
@@ -210,8 +514,16 @@ describe('landing page controller', function () {
         expect($scope.model.blog).toBe('blog');
       });
 
-      it('should assign the channels result to the model', function(){
-        expect($scope.model.channels).toBe('channels');
+      it('should set isOwner to true', function(){
+        expect($scope.model.isOwner).toBe(true);
+      });
+
+      it('should set hasFreeAccess to false', function(){
+        expect($scope.model.hasFreeAccess).toBe(false);
+      });
+
+      it('should set isSubscribed to false', function(){
+        expect($scope.model.isSubscribed).toBe(false);
       });
     });
 
@@ -252,15 +564,14 @@ describe('landing page controller', function () {
           }
         ];
         $scope.model = {};
-        $scope.model.blog = {};
-        $scope.model.channels = channels;
+        $scope.model.blog = { channels: channels };
       });
 
       var testChannels = function(){
         it('should expose all visible channels', function(){
           expect($scope.model.channels).toEqual([
             {
-              id: 'B',
+              channelId: 'B',
               name: 'channel B',
               price: '0.69',
               description: ['ooh', 'yeah', 'baby'],
@@ -268,7 +579,7 @@ describe('landing page controller', function () {
               checked: true
             },
             {
-              id: 'A',
+              channelId: 'A',
               name: 'channel A',
               price: '0.45',
               description: ['hello'],
@@ -276,7 +587,7 @@ describe('landing page controller', function () {
               checked: false
             },
             {
-              id: 'C',
+              channelId: 'C',
               name: 'channel C',
               price: '0.99',
               description: ['foo', 'bar'],

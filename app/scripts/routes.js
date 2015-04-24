@@ -506,8 +506,7 @@ angular.module('webApp')
         redirectTo: states.creator.subscribers.guestList.name,
         data : {
           access: {
-            requireAuthenticated: true,
-            roles: [authenticationServiceConstants.roles.preRelease]
+            requireAuthenticated: true
           }
         }
       })

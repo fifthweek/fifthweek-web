@@ -11,7 +11,7 @@
         <h1 class="fifthweek-logo-sm">
           <a ui-sref="creator">fw</a>
         </h1>
-        <a id="edit-page-link" class="btn btn-transparent btn-transparent-emphasized" ui-sref="creator.landingPage.edit">
+        <a ng-if="model.isOwner" id="edit-page-link" class="btn btn-transparent btn-transparent-emphasized" ui-sref="creator.landingPage.edit">
           edit page
         </a>
       </div>
@@ -23,7 +23,7 @@
           <div class="col-s-4">
             <div class="creator">
               <fw-image id="profile-image" src="{{model.profileImage.fileId ? model.profileImageUrl : model.defaultProfileImageUrl}}"></fw-image>
-              <div ng-if="model.subscribed" class="subscribed">
+              <div ng-if="model.isSubscribed" class="subscribed">
                 <div class="subscribe-button-wrapper">
                   <button id="subscribed-button"
                           class="btn btn-block"
@@ -32,11 +32,12 @@
                           data-event-category="{{model.tracking.category}}"
                           data-loading-text="Unsubscribing..."
                           can-submit="true"
-                          fw-form-submit="unsubscribe()">Subscribed</button>
+                          fw-form-submit="unsubscribe()"
+                          error-message="model.errorMessage">Subscribed</button>
                 </div>
                 <p class="button-footer">1 Subscriber</p>
               </div>
-              <div ng-if="!model.subscribed" class="subscribe">
+              <div ng-if="!model.isSubscribed" class="subscribe">
                 <div class="subscribe-button-wrapper">
                   <button id="subscribe-button"
                           class="btn btn-block"
@@ -45,7 +46,11 @@
                           data-event-category="{{model.tracking.category}}"
                           data-loading-text="Subscribing..."
                           can-submit="true"
-                          fw-form-submit="subscribe()">Subscribe <span>&#36;{{model.totalPrice}}/week</span></button>
+                          fw-form-submit="subscribe()"
+                          error-message="model.errorMessage">
+                            Subscribe
+                            <span ng-if="!model.hasFreeAccess">&#36;{{model.totalPrice}}/week</span>
+                            <span ng-if="model.hasFreeAccess"><i class="fa fa-street-view"></i> FREE</span></button>
                 </div>
                 <p class="button-footer">No commitments. Cancel anytime.</p>
               </div>
@@ -61,7 +66,8 @@
         </div>
         <div class="row">
           <div class="col-lg-8 col-lg-offset-4">
-            <div class="posts landing-page" ng-if="!model.subscribed">
+            <div class="posts landing-page" ng-if="!model.isSubscribed">
+              <fw-error-message value="model.errorMessage"></fw-error-message>
               <h5><span>What You'll Get</span></h5>
               <div class="post non-image-post channels">
                 <div class="text">
@@ -72,7 +78,7 @@
                       </div>
                       <div class="col-xs-5 channel-price-column">
                       <span class="channel-price" id="channel-price-{{$index}}" ng-click="channel.checked = !channel.checked || channel.isDefault"
-                            ng-class="{'unchecked':!channel.checked, 'checked':channel.checked, 'non-default':!channel.isDefault, 'default':channel.isDefault}">
+                            ng-class="{'unchecked':!channel.checked, 'checked':channel.checked, 'non-default':!channel.isDefault, 'default':channel.isDefault, 'guest-list-price':model.hasFreeAccess}">
                         &#36;{{channel.price}}/week
                       </span>
                       </div>
@@ -83,8 +89,11 @@
                       </div>
                     </div>
                   </div>
-                  <p class="subscribe-now-total">
+                  <p class="subscribe-now-total" ng-if="!model.hasFreeAccess">
                     <span>Total:</span> &#36;{{model.totalPrice}}/week
+                  </p>
+                  <p class="subscribe-now-total" ng-if="model.hasFreeAccess">
+                    <span>Guest List Price:</span> $0/week
                   </p>
                   <hr />
                   <div class="subscribe-now">
@@ -95,13 +104,15 @@
                          data-event-category="{{model.tracking.category}}"
                          data-loading-text="Subscribing..."
                          can-submit="true"
-                         fw-form-submit="subscribe()">
+                         fw-form-submit="subscribe()"
+                         error-message="model.errorMessage">
                         Subscribe Now
                       </a>
                     </p>
                   </div>
                 </div>
               </div>
+              <fw-error-message value="model.errorMessage"></fw-error-message>
 
               <div id="more-info" ng-if="model.videoUrl || model.blog.description">
                 <h5><span>More Info</span></h5>
@@ -128,7 +139,7 @@
 
             </div>
 
-            <fw-post-list source="creator-timeline" user-id="{{model.userId}}" ng-if="model.subscribed"></fw-post-list>
+            <fw-post-list source="timeline" user-id="{{model.userId}}" ng-if="model.isSubscribed"></fw-post-list>
           </div>
         </div>
       </div>
