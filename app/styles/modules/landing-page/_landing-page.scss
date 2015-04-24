@@ -41,6 +41,10 @@ $header-height:108px;
     float:right;
   }
 
+  .guest-list-price{
+    text-decoration: line-through;
+  }
+
   .header-image-control-overlay {
     position: absolute;
     top: $main-cont-padding-small;
