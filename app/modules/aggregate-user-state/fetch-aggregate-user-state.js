@@ -12,6 +12,11 @@ angular.module('webApp')
       if(userId === cache.lastUserId){
         $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, response.data);
       }
+
+      return $q.when({
+        userId: userId,
+        userState: response.data
+      });
     };
 
     var cache = {};

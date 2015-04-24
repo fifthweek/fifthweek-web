@@ -33,14 +33,15 @@ describe('fetch aggregate user state', function(){
   describe('when updating from the server with a user id', function() {
 
     it('should broadcast updated user state', function() {
-
       spyOn($rootScope, '$broadcast');
       userStateStub.getUserState.and.returnValue($q.when(successfulResponse));
 
-      target.updateFromServer(userId);
+      var result;
+      target.updateFromServer(userId).then(function(r){ result = r; });
       $rootScope.$apply();
 
       expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
+      expect(result).toEqual({ userId: userId, userState: newUserState});
     });
 
     it('should propagate errors', function() {
