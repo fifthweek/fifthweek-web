@@ -1,6 +1,7 @@
 angular.module('webApp')
   .constant('fetchAggregateUserStateConstants', {
-    fetchedEvent: 'aggregateUserStateFetched'
+    fetchedEvent: 'aggregateUserStateFetched',
+    refreshIfStaleMilliseconds: 30 * 60 * 1000
   })
   .factory('fetchAggregateUserState',
   function($q, $rootScope, fetchAggregateUserStateConstants, userStateStub) {
@@ -19,8 +20,18 @@ angular.module('webApp')
       });
     };
 
+    var isStale = function(){
+      var now = new Date();
+      return !cache.lastUpdate ||
+        (now.getTime() - cache.lastUpdate) >= fetchAggregateUserStateConstants.refreshIfStaleMilliseconds;
+    };
+
     var cache = {};
-    var service = {};
+    var service = {
+      internal: {
+        cache: cache
+      }
+    };
 
     service.updateFromServer = function(userId) {
 
@@ -31,6 +42,8 @@ angular.module('webApp')
       }
 
       // Keep track of the most recent requested user ID.
+      var now = new Date();
+      cache.lastUpdate = now.getTime();
       cache.lastUserId = userId;
       cache.currentRequest = undefined;
 
@@ -49,6 +62,27 @@ angular.module('webApp')
       });
 
       return promise;
+    };
+
+    service.updateIfStale = function(userId){
+      return service.waitForExistingUpdate()
+        .then(function(){
+          if(isStale() || cache.lastUserId !== userId) {
+            return service.updateFromServer(userId);
+          }
+
+          return $q.when();
+        });
+    };
+
+    service.waitForExistingUpdate = function(){
+      if(cache.currentRequest){
+        return cache.currentRequest.then(function(){
+          return $q.when(true);
+        });
+      }
+
+      return $q.when(false);
     };
 
     service.updateInParallel = function(userId, delegate){

@@ -136,7 +136,7 @@ angular.module('webApp')
       name: 'comingSoon'
     }
   })
-  .config(function($stateProvider, $urlRouterProvider, $locationProvider, states, authenticationServiceConstants) {
+  .config(function($stateProvider, $urlRouterProvider, $locationProvider, states/*, authenticationServiceConstants*/) {
 
     $locationProvider.html5Mode(true);
 

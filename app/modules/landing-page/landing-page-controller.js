@@ -1,10 +1,11 @@
 angular.module('webApp').controller('landingPageCtrl',
-  function($scope, $q, $sce, blogStub, subscriptionStub, accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory, initializer, $stateParams, $state, states, errorFacade) {
+  function($scope, $q, $sce, blogStub, subscriptionStub, accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, initializer, $stateParams, $state, states, errorFacade) {
     'use strict';
 
     var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
     var blogRepository = blogRepositoryFactory.forCurrentUser();
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+    var userId = blogRepository.getUserId();
 
     $scope.model = {
       // These need to appear in a JS file, as the Grunt task for swapping file names that appear within JS will only
@@ -24,7 +25,10 @@ angular.module('webApp').controller('landingPageCtrl',
     var internal = this.internal = {};
 
     internal.checkSubscriptions = function(username){
-      return subscriptionRepository.tryGetBlogs()
+      return fetchAggregateUserState.updateIfStale(userId)
+        .then(function(){
+          return subscriptionRepository.tryGetBlogs();
+        })
         .then(function(blogs){
           var isSubscribed = false;
           var hasFreeAccess = false;
@@ -163,6 +167,9 @@ angular.module('webApp').controller('landingPageCtrl',
       }
       else{
         return subscriptionStub.putBlogSubscriptions($scope.model.blog.blogId, { subscriptions: [] })
+          .then(function() {
+            return fetchAggregateUserState.updateFromServer(userId);
+          })
           .then(function(){
             $scope.model.isSubscribed = false;
           });

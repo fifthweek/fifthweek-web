@@ -19,6 +19,7 @@ describe('landing page controller', function () {
   var blogRepository;
   var subscriptionRepositoryFactory;
   var subscriptionRepository;
+  var fetchAggregateUserState;
   var initializer;
   var $stateParams;
   var $state;
@@ -31,10 +32,11 @@ describe('landing page controller', function () {
     subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['putBlogSubscriptions']);
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
     accountSettingsRepositoryFactory = { forCurrentUser: function() { return accountSettingsRepository; }};
-    blogRepository = jasmine.createSpyObj('blogRepository', ['getBlog']);
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getBlog', 'getUserId']);
     blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
     subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['tryGetBlogs']);
     subscriptionRepositoryFactory = { forCurrentUser: function() { return subscriptionRepository; }};
+    fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateIfStale', 'updateFromServer']);
     initializer = jasmine.createSpyObj('initializer', ['initialize']);
     $state = jasmine.createSpyObj('$state', ['go']);
     $stateParams = {};
@@ -50,6 +52,7 @@ describe('landing page controller', function () {
       $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
       $provide.value('blogRepositoryFactory', blogRepositoryFactory);
       $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
+      $provide.value('fetchAggregateUserState', fetchAggregateUserState);
       $provide.value('initializer', initializer);
       $provide.value('$stateParams', $stateParams);
       $provide.value('$state', $state);
@@ -93,6 +96,10 @@ describe('landing page controller', function () {
 
     it('should set hasFreeAccess to false', function(){
       expect($scope.model.hasFreeAccess).toBe(false);
+    });
+
+    it('should get the current user id', function(){
+      expect(blogRepository.getUserId).toHaveBeenCalled();
     });
 
     it('should initialize with the loadLandingPage function', function(){
@@ -238,19 +245,43 @@ describe('landing page controller', function () {
         describe('when putBlogSubscriptions succeeds', function(){
           beforeEach(function(){
             subscriptionStub.putBlogSubscriptions.and.returnValue($q.when());
-
-            $scope.unsubscribe();
-            $scope.$apply();
           });
 
-          it('should call putBlogSubscriptions with selected channels', function(){
-            expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith('blogId', {
-              subscriptions: []
+          describe('when updating user state succeeds', function(){
+            beforeEach(function(){
+              fetchAggregateUserState.updateFromServer.and.returnValue($q.when());
+
+              $scope.unsubscribe();
+              $scope.$apply();
+            });
+
+            it('should call putBlogSubscriptions with selected channels', function(){
+              expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith('blogId', {
+                subscriptions: []
+              });
+            });
+
+            it('should set subscribed to false', function(){
+              expect($scope.model.isSubscribed).toBe(false);
             });
           });
 
-          it('should set subscribed to false', function(){
-            expect($scope.model.isSubscribed).toBe(false);
+          describe('when updating user state fails', function(){
+            var error;
+            beforeEach(function(){
+              fetchAggregateUserState.updateFromServer.and.returnValue($q.reject('error'));
+
+              $scope.unsubscribe().catch(function(e){ error = e; });
+              $scope.$apply();
+            });
+
+            it('should not set subscribed to false', function(){
+              expect($scope.model.isSubscribed).toBe(true);
+            });
+
+            it('should propagate the error', function(){
+              expect(error).toBe('error');
+            });
           });
         });
 
@@ -261,12 +292,6 @@ describe('landing page controller', function () {
 
             $scope.unsubscribe().catch(function(e){ error = e; });
             $scope.$apply();
-          });
-
-          it('should call putBlogSubscriptions with selected channels', function(){
-            expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith('blogId', {
-              subscriptions: []
-            });
           });
 
           it('should not set subscribed to false', function(){
@@ -415,20 +440,27 @@ describe('landing page controller', function () {
     });
 
     describe('when checkSubscriptions is called', function(){
-      var deferred;
+      var deferredSubscription;
+      var deferredUserState;
       beforeEach(function(){
-        deferred = $q.defer();
-        subscriptionRepository.tryGetBlogs.and.returnValue(deferred.promise);
+        deferredSubscription = $q.defer();
+        deferredUserState = $q.defer();
+        fetchAggregateUserState.updateIfStale.and.returnValue(deferredUserState.promise);
+        subscriptionRepository.tryGetBlogs.and.returnValue(deferredSubscription.promise);
       });
 
-      describe('when tryGetBlogs succeeds', function(){
+      describe('when calls succeed', function(){
+
+        beforeEach(function(){
+          deferredUserState.resolve($q.when());
+        });
 
         describe('when user is not subscribed', function(){
           beforeEach(function(){
             $scope.model.hasFreeAccess = undefined;
             $scope.model.isSubscribed = undefined;
             target.internal.checkSubscriptions('username');
-            deferred.resolve(undefined);
+            deferredSubscription.resolve(undefined);
             $scope.$apply();
           });
 
@@ -446,7 +478,7 @@ describe('landing page controller', function () {
             $scope.model.hasFreeAccess = undefined;
             $scope.model.isSubscribed = undefined;
             target.internal.checkSubscriptions('username');
-            deferred.resolve([{
+            deferredSubscription.resolve([{
               username: 'username',
               freeAccess: false,
               channels: [{}]
@@ -468,7 +500,7 @@ describe('landing page controller', function () {
             $scope.model.hasFreeAccess = undefined;
             $scope.model.isSubscribed = undefined;
             target.internal.checkSubscriptions('username');
-            deferred.resolve([{
+            deferredSubscription.resolve([{
               username: 'username',
               freeAccess: true,
               channels: []
@@ -486,11 +518,25 @@ describe('landing page controller', function () {
         });
       });
 
+      describe('when updateIfStale fails', function() {
+        var error;
+        beforeEach(function(){
+          target.internal.checkSubscriptions('username').catch(function(e){ error = e; });
+          deferredUserState.reject('error');
+          $scope.$apply();
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
+      });
+
       describe('when tryGetBlogs fails', function() {
         var error;
         beforeEach(function(){
           target.internal.checkSubscriptions('username').catch(function(e){ error = e; });
-          deferred.reject('error');
+          deferredUserState.resolve($q.when());
+          deferredSubscription.reject('error');
           $scope.$apply();
         });
 
