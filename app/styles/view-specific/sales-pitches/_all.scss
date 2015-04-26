@@ -1,0 +1,100 @@
+@import '_base';
+
+$html-name-space:'.pitch';
+
+#{$html-name-space} {
+  $bottom-margin: 60px;
+
+  text-align: center;
+
+  .main-container, .main-container-inner {
+    padding: 0;
+  }
+
+  .pitch-button {
+    display:inline-block;
+    margin: 20px auto 0 auto;
+    padding:18px 22px;
+    border-radius: $border-radius;
+    background: $green-light-1;
+    color:#fff;
+    font-weight: bold;
+    font-size: 18px;
+    &:hover {
+      text-decoration: none;
+      background-color: darken($green-light-1, 10%);
+    }
+  }
+
+  img {
+    &.image-bottom {
+      display: block;
+      margin:35px auto (-1 * $bottom-margin) auto;
+    }
+  }
+
+  .pitch-box {
+    padding-top: 60px;
+    padding-bottom: $bottom-margin;
+    h1, h2 {
+      color: #293f54;
+    }
+    h1 {
+      font-weight: 900;
+      font-size: 44px;
+      margin-bottom: 15px;
+    }
+    h2 {
+      font-weight: 900;
+      font-size: 28px;
+    }
+    h2.sub-heading {
+      font-weight: normal;
+      font-size: 20px;
+      margin-top: 0;
+      padding-top: 0;
+      margin-bottom: 40px;
+    }
+    p {
+      line-height: 28px;
+      font-size: 18px;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .row {
+      max-width: 960px;
+      margin:0 auto;
+    }
+  }
+
+  img {
+    background: #ccc;
+    width:300px;
+    height:200px;
+  }
+
+  .pitch-box-light {
+    background: #ebeff4;
+  }
+
+  .pitch-box-dark, .pitch-box-dark-2, .pitch-box-dark-3 {
+    color:#fff;
+    h2 {
+      color:#fff;
+    }
+  }
+
+  .pitch-box-dark-3 {
+    background: #4d394b;
+  }
+
+  .pitch-box-dark-2 {
+    background: #439fe0;
+  }
+
+  .pitch-box-dark {
+    background: #36a64f;
+  }
+}
+
