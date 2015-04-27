@@ -1,4 +1,4 @@
-angular.module('webApp').controller('HomeCtrl',
+angular.module('webApp').controller('RegisterCtrl',
   function($scope, $state, calculatedStates, $modal, authenticationService) {
   'use strict';
 
@@ -25,12 +25,5 @@ angular.module('webApp').controller('HomeCtrl',
           $state.go(calculatedStates.getDefaultState());
         });
       });
-  };
-
-  $scope.openModal = function(){
-    $modal.open({
-      templateUrl: 'views/home-modal.html',
-      size: 'lg'
-    });
   };
 });

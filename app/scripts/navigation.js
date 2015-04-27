@@ -5,9 +5,18 @@ angular.module('webApp')
     return [
       {
         name: 'Register',
-        state: states.home.name,
+        state: states.register.name,
         icon: 'fa fa-ticket',
-        color: 'pink'
+        color: 'pink',
+        secondary:
+        [
+          {
+            name: 'Register',
+            state: states.register.name,
+            icon: 'fa fa-ticket',
+            color: 'pink'
+          }
+        ]
       },
       {
         name: 'Sign In',

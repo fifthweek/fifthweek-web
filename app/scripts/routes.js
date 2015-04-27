@@ -9,6 +9,9 @@ angular.module('webApp')
     home: {
       name: 'home'
     },
+    register: {
+      name: 'register'
+    },
     signIn: {
       name: 'signIn',
       signIn: {
@@ -148,6 +151,18 @@ angular.module('webApp')
           pageTitle: 'Home',
           navigationHidden: true,
           bodyClass: 'info-page info-page-home',
+          access: {
+            requireUnauthenticated: true
+          }
+        }
+      })
+      .state(states.register.name, {
+        url: 'register',
+        templateUrl: 'modules/register/register.html',
+        controller: 'RegisterCtrl',
+        data : {
+          pageTitle: 'Register',
+          headTitle: ': ' + 'Register',
           access: {
             requireUnauthenticated: true
           }

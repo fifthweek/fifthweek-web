@@ -1,0 +1,57 @@
+﻿<fw-panel12>
+  <form novalidate
+        autocomplete="off"
+        role="form"
+        name="form"
+        id="registrationForm">
+
+    <div ng-show="!registrationSucceeded">
+      <div class="input-wrap">
+        <fw-form-group>
+          <div class="row">
+            <div class="col-md-6">
+              <div fw-form-input-glyphs>
+                <input
+                  id="registrationData-email"
+                  ng-model="registrationData.email"
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  placeholder="Email"
+                  required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <p fw-form-input-invalid-p>A valid email address is required.</p>
+            </div>
+          </div>
+        </fw-form-group>
+
+        <fw-form-input-username ng-model="registrationData.username" breakpoint="md" required></fw-form-input-username>
+
+        <fw-form-input-password ng-model="registrationData.password" placeholder="Password" breakpoint="md" required></fw-form-input-password>
+      </div>
+
+      <div class="row row-btn">
+        <div class="col-md-6">
+          <button
+            class="btn btn-success btn-block"
+            type="submit"
+            id="register-button"
+            data-loading-text="Registering..."
+            data-event-title="Registered"
+            data-event-category="Registration"
+            fw-form-submit="register()">Create my account</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div id="messageBox" class="sub-form-alert" ng-show="form.message" ng-class="registrationSucceeded ? 'alert alert-success' : 'alert alert-danger'">
+          <p>{{form.message}}</p>
+        </div>
+      </div>
+    </div>
+  </form>
+</fw-panel12>

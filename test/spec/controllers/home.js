@@ -30,7 +30,7 @@ describe('home controller', function() {
       scope = $injector.get('$rootScope').$new();
       scope.form = {};
       $state = $injector.get('$state');
-      target = $controller('HomeCtrl', { $scope: scope });
+      target = $controller('RegisterCtrl', { $scope: scope });
     });
 
     // Satisfy the 'construction precondition' by default. There only needs to be
