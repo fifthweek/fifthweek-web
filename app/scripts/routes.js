@@ -143,11 +143,11 @@ angular.module('webApp')
     $stateProvider
       .state(states.home.name, {
         url: '/',
-        templateUrl: 'modules/sales-pitches/home.html',
+        templateUrl: 'modules/information/home.html',
         data: {
           pageTitle: 'Home',
           navigationHidden: true,
-          bodyClass: 'pitch pitch-home',
+          bodyClass: 'info-page info-page-home',
           access: {
             requireUnauthenticated: true
           }

@@ -1,0 +1,157 @@
+@import '_base';
+
+$html-name-space:'.info-page';
+
+#{$html-name-space} {
+  $bottom-margin: 60px;
+  $color-footer: #241c22;
+
+  text-align: center;
+
+  .navbar-fixed-top {
+    overflow: visible;
+    display: block;
+    left: 0;
+  }
+
+  .navbar-brand {
+    font:{
+      family: 'Merriweather', serif;
+      size:24px;
+      weight:900;
+    }
+    letter-spacing: -1.2px;
+    padding-top: 18px;
+
+    color: $grey-dark;
+    &:active {
+      color: $grey-dark;
+    }
+    &:hover {
+      color: darken($grey-dark, 10%);
+    }
+  }
+
+  .main-container, .main-container-inner {
+    padding: 0;
+  }
+
+  .info-page-button {
+    display:inline-block;
+    margin: 20px auto 0 auto;
+    padding:18px 22px;
+    border-radius: $border-radius;
+    background: $green-light-1;
+    color:#fff;
+    font-weight: bold;
+    font-size: 18px;
+    &:hover {
+      text-decoration: none;
+      background-color: darken($green-light-1, 10%);
+    }
+  }
+
+  img {
+    &.image-bottom {
+      display: block;
+      margin:35px auto (-1 * $bottom-margin) auto;
+    }
+  }
+
+  .info-page-box {
+    padding-top: 60px;
+    padding-bottom: $bottom-margin;
+    h1, h2 {
+      color: #293f54;
+    }
+    h1 {
+      font-weight: 900;
+      font-size: 44px;
+      margin-bottom: 15px;
+      padding-top: 30px;
+    }
+    h2 {
+      font-weight: 900;
+      font-size: 28px;
+    }
+    h2.sub-heading {
+      font-weight: normal;
+      font-size: 20px;
+      margin-top: 0;
+      padding-top: 0;
+      margin-bottom: 40px;
+    }
+    p {
+      line-height: 28px;
+      font-size: 18px;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  img {
+    background: #ccc;
+    width:300px;
+    height:200px;
+  }
+
+  .info-page-box-light {
+    background: #ebeff4;
+  }
+
+  .info-page-box-dark, .info-page-box-dark-2, .info-page-box-dark-3, .info-page-box-footer {
+    color:#fff;
+    h2, h3, a {
+      color:#fff;
+    }
+  }
+
+  .info-page-box-dark-3 {
+    background: #4d394b;
+  }
+
+  .info-page-box-dark-2 {
+    background: #439fe0;
+  }
+
+  .info-page-box-dark {
+    background: #36a64f;
+  }
+
+  .info-page-box-footer {
+    background: $color-footer;
+    padding:0 0 50px 0;
+    text-align: left;
+    h3 {
+      font-size: 16px;
+      font-weight: 900;
+      padding-bottom: 12px;
+      margin: 40px 0 14px 0;
+      border-bottom: 1px solid lighten($color-footer, 40%);
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        margin: 0 0 8px 0;
+        a {
+          display: block;
+          font-size: 14px;
+          background: darken($color-footer, 8%);
+          color: lighten($color-footer, 70%);
+          font-weight: 900;
+          border-radius: $border-radius;
+          padding: 12px;
+          &:hover {
+            text-decoration: none;
+            cursor: pointer;
+            background: darken($color-footer, 6%);
+            color: lighten($color-footer, 95%);
+          }
+        }
+      }
+    }
+  }
+}
+
