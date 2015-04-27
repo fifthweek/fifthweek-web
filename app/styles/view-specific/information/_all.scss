@@ -14,6 +14,10 @@ $html-name-space:'.info-page';
     left: 0;
   }
 
+  .navbar-nav > li > a {
+    padding-top: 17px;
+  }
+
   .navbar-brand {
     font:{
       family: 'Merriweather', serif;
