@@ -1,46 +1,4 @@
-﻿<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" ui-sref="home">fifthweek.</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Features <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">All Features</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Patreon Comparison</a></li>
-            <li><a href="#">TinyPass Comparison</a></li>
-          </ul>
-        </li>
-        <li><a href="#about">Getting Started</a></li>
-        <li><a href="#contact">Pricing</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">About Fifthweek</a></li>
-            <li><a href="#">Meet the Team</a></li>
-            <li><a href="#">Blog</a></li>
-            <li class="divider"></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a ui-sref="signIn">Sign in</a></li>
-        <li><a ui-sref="register">Create free account</a></li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</nav>
+﻿<div ng-include="'modules/information/header.html'"></div>
 
 <div class="info-page-box info-page-box-light">
   <div class="container">
@@ -155,53 +113,5 @@
     </div>
   </div>
 </div>
-<div class="info-page-box-footer">
-  <div class="container">
-    <div class="row info-page-box-footer-columns">
-      <div class="col-ss-6 col-sm-3">
-        <h3>Support</h3>
-        <ul>
-          <li><a>Getting Started</a></li>
-          <li><a ui-sref="help.faq">FAQ</a></li>
-          <li><a ui-sref="help.contact">Contact</a></li>
-        </ul>
-      </div>
-      <div class="col-ss-6 col-sm-3">
-        <h3>Features</h3>
-        <ul>
-          <li><a>All Features</a></li>
-          <li><a>Patreon vs Fifthweek</a></li>
-          <li><a>TinyPass vs Fifthweek</a></li>
-        </ul>
-      </div>
-      <div class="col-ss-6 col-sm-3">
-        <h3>About</h3>
-        <ul>
-          <li><a ui-sref="help.about">About Fifthweek</a></li>
-          <li><a>Meet the Team</a></li>
-          <li><a href="http://blog.fifthweek.com/">Blog</a></li>
-        </ul>
-      </div>
-      <div class="col-ss-6 col-sm-3">
-        <h3>Follow Us</h3>
-        <ul>
-          <li><a class="info-page-footer-twitter-link" href="https://twitter.com/fifthweek">Twitter</a></li>
-          <li><a class="info-page-footer-facebook-link" href="https://www.facebook.com/pages/Fifthweek/355528194616851">Facebook</a></li>
-        </ul>
-      </div>
-    </div>
-    <hr>
-    <div class="row info-page-box-footer-copyright">
-      <div class="col-s-4 col">
-        <p>&copy; Copyright Fifthweek 2015</p>
-      </div>
-      <div class="col-s-8 col">
-        <ul>
-          <li><a ui-sref="help.contact">Contact</a></li>
-          <li><a ui-sref="help.legal.privacyPolicy">Privacy Policy</a></li>
-          <li><a ui-sref="help.legal.termsOfService">Terms and Conditions</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+
+<div ng-include="'modules/information/footer.html'"></div>

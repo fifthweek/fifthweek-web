@@ -16,6 +16,32 @@ $html-name-space:'.info-page';
 
   .navbar-nav > li > a {
     padding-top: 17px;
+
+    &.btn-navbar {
+      border-radius: 2px;
+      padding: 8px 12px;
+      margin-top: 9px;
+      margin-left: 15px;
+      color:#fff;
+      font-weight: bold;
+    }
+
+    &.btn-navbar-register {
+      background-color: $green-light-1;
+    }
+
+    &.btn-navbar-account {
+      background-color: $brand-highlight-2;
+      padding-right: 28px;
+      &:after {
+        content:"\f105";
+        font-family:'FontAwesome';
+        position:absolute;
+        right:12px;
+        top:8px;
+        font-size:21px;
+      }
+    }
   }
 
   .navbar-brand {

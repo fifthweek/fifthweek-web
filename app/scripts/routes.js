@@ -150,10 +150,7 @@ angular.module('webApp')
         data: {
           pageTitle: 'Home',
           navigationHidden: true,
-          bodyClass: 'info-page info-page-home',
-          access: {
-            requireUnauthenticated: true
-          }
+          bodyClass: 'info-page info-page-home'
         }
       })
       .state(states.register.name, {
