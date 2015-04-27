@@ -121,7 +121,6 @@ $html-name-space:'.info-page';
 
   .info-page-box-footer {
     background: $color-footer;
-    padding:0 0 5px 0;
     text-align: left;
     hr {
       margin: 40px 0 20px 0;
@@ -198,11 +197,27 @@ $html-name-space:'.info-page';
   }
 
   .info-page-box-footer-copyright {
+    .col {
+      padding-bottom: 15px;
+    }
     ul {
+      text-align: right;
       list-style: none;
+      margin: 0;
+      padding: 0;
       li {
-        float: right;
+        display:inline-block;
         margin-left: 20px;
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+
+    @media (max-width:$screen-ss-max) {
+      text-align: center;
+      ul {
+        text-align: center;
       }
     }
   }
