@@ -9,13 +9,12 @@
     bottom:0;
   }
   padding:{
-    top:16.5px;
-    bottom:17px;
-    left:15px;
+    top:18px;
+    left:18px;
   }
   background:$white-full;
   border:0 none;
-  font-size:12px;
+  font-size: 14px;
   #{$state-hover-focus} {
     background:$white-full !important;
   }
