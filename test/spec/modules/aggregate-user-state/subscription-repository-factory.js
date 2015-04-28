@@ -29,6 +29,18 @@ describe('subscription repository factory', function(){
     target = targetFactory.forCurrentUser();
   });
 
+  describe('calling getUserId', function(){
+    var result;
+    beforeEach(function(){
+      masterRepository.getUserId.and.returnValue('result');
+      result = target.getUserId();
+    });
+
+    it('should return the result', function(){
+      expect(result).toBe('result');
+    });
+  });
+
   describe('calling getBlogs', function() {
     var expected;
     var actual;
