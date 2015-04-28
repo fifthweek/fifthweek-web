@@ -68,12 +68,6 @@
       max-width:810px;
     }
   }
-  .container {
-    padding-left:0;
-    @media (min-width:$screen-ss-min) {
-      padding-left:15px;
-    }
-  }
   h1 {
     @include inline-block(top);
     font-size:18px;
