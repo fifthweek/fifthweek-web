@@ -6,33 +6,28 @@ angular.module('webApp')
       {
         name: 'Register',
         state: states.home.name,
-        icon: 'fa fa-ticket',
-        color: 'pink'
+        icon: 'fa fa-ticket'
       },
       {
         name: 'Sign In',
         state: states.signIn.name,
-        icon: 'fa fa-sign-in',
-        color: 'green'
+        icon: 'fa fa-sign-in'
       },
       {
         name: 'Home',
         state: states.user.newsFeed.name,
         icon: 'fa fa-home',
-        color: 'pink',
         secondary:
         [
           {
             name: 'News Feed',
             state: states.user.newsFeed.name,
-            icon: 'fa fa-align-left',
-            color: 'orange'
+            icon: 'fa fa-align-left'
           },
           {
             name: 'Notifications',
             state: states.user.notifications.name,
-            icon: 'fa fa-bell-o',
-            color: 'orange'
+            icon: 'fa fa-bell-o'
           }
         ]
       },
@@ -40,20 +35,17 @@ angular.module('webApp')
         name: 'Landing Page',
         state: states.creator.landingPage.preview.name,
         icon: 'fa fa-bookmark-o',
-        color: 'pink',
         secondary:
         [
           {
             name: 'Preview',
             state: states.creator.landingPage.preview.name,
-            icon: 'fa fa-eye',
-            color: 'pink'
+            icon: 'fa fa-eye'
           },
           {
             name: 'Edit Page',
             state: states.creator.landingPage.edit.name,
-            icon: 'fa fa-pencil',
-            color: 'pink'
+            icon: 'fa fa-pencil'
           }
         ]
       },
@@ -64,41 +56,35 @@ angular.module('webApp')
         name: 'Posts',
         state: states.creator.posts.name,
         icon: 'fa fa-file-text-o',
-        color: 'orange',
         secondary:
         [
           {
             name: 'Live Now',
             state: states.creator.posts.live.name,
-            icon: 'fa fa-file-text-o',
-            color: 'pink'
+            icon: 'fa fa-file-text-o'
           },
           {
             name: 'Scheduled',
             state: states.creator.posts.scheduled.list.name,
-            icon: 'fa fa-clock-o',
-            color: 'yellow'
+            icon: 'fa fa-clock-o'
           }
         ]
       },
       {
         name: 'Create Blog',
         state: states.creator.createBlog.name,
-        icon: 'fa fa-asterisk',
-        color: 'yellow'
+        icon: 'fa fa-asterisk'
       },
       {
         name: 'Collections',
         state: states.creator.collections.name,
         icon: 'fa fa-th',
-        color: 'green',
         secondary:
           [
             {
               name: 'Collections',
               state: states.creator.collections.name,
-              icon: 'fa fa-th',
-              color: 'green'
+              icon: 'fa fa-th'
             }
           ]
       },
@@ -106,14 +92,12 @@ angular.module('webApp')
         name: 'Channels',
         state: states.creator.channels.name,
         icon: 'fa fa-check-square-o',
-        color: 'green',
         secondary:
           [
             {
               name: 'Channels',
               state: states.creator.channels.name,
-              icon: 'fa fa-check-square-o',
-              color: 'green'
+              icon: 'fa fa-check-square-o'
             }
           ]
       },
@@ -136,20 +120,17 @@ angular.module('webApp')
         name: aggregateUserStateUtilities.getUsername,
         state: states.user.account.name,
         icon: 'fa fa-user',
-        color: 'blue',
         secondary:
           [
             {
               name: 'Account Settings',
               state: states.user.account.name,
-              icon: 'fa fa-user',
-              color: 'blue'
+              icon: 'fa fa-user'
             },
             {
               name: 'Sign Out',
               state: states.user.signOut.name,
-              icon: 'fa fa-sign-out',
-              color: 'blue'
+              icon: 'fa fa-sign-out'
             }
           ]
       },
@@ -157,32 +138,27 @@ angular.module('webApp')
         name: 'Help',
         state: states.help.name,
         icon: 'fa fa-question-circle',
-        color: 'indigo',
         secondary:
         [
           {
             name: 'About Us',
             state: states.help.about.name,
-            icon: 'fa fa-question-circle',
-            color: 'indigo'
+            icon: 'fa fa-question-circle'
           },
           {
             name: 'FAQ',
             state: states.help.faq.name,
-            icon: 'fa fa-book',
-            color: 'indigo'
+            icon: 'fa fa-book'
           },
           {
             name: 'Contact Us',
             state: states.help.contact.name,
-            icon: 'fa fa-comment-o',
-            color: 'indigo'
+            icon: 'fa fa-comment-o'
           },
           {
             name: 'Legal',
             state: states.help.legal.name,
-            icon: 'fa fa-files-o',
-            color: 'indigo'
+            icon: 'fa fa-files-o'
           }
         ]
       }
