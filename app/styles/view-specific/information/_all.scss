@@ -8,6 +8,14 @@ $html-name-space:'.info-page';
 
   text-align: center;
 
+  .navbar-toggle {
+    left: 18px;
+    top: 18px;
+    position: absolute;
+    padding: 0;
+    font-size: 14px;
+  }
+
   .navbar-fixed-top {
     overflow: visible;
     display: block;
@@ -79,6 +87,12 @@ $html-name-space:'.info-page';
     }
     &:hover {
       color: darken($grey-dark, 10%);
+    }
+
+    @media (max-width:$grid-float-breakpoint) {
+      display: block;
+      margin: 0 auto;
+      float:none;
     }
   }
 
