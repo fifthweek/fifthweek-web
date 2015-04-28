@@ -1,0 +1,79 @@
+
+<form novalidate
+      role="form"
+      name="registerForm"
+      ng-if="model.page === pages.register">
+  <fw-form-modal name="Subscribe">
+    <form-body>
+
+      <p>Please register below, or <span class="btn-alternate-action"><a id="show-sign-in-link" ng-click="showSignIn()">Sign In</a>.</span></p>
+
+      <fw-form-group>
+        <div class="row">
+          <div class="col-md-12">
+            <div fw-form-input-glyphs>
+              <input
+                id="registrationData-email"
+                ng-model="registrationData.email"
+                type="email"
+                class="form-control"
+                name="email"
+                placeholder="Email"
+                required>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <p fw-form-input-invalid-p>A valid email address is required.</p>
+          </div>
+        </div>
+      </fw-form-group>
+
+      <fw-form-input-username ng-model="registrationData.username" input-columns="12" required></fw-form-input-username>
+
+      <fw-form-input-password ng-model="registrationData.password" placeholder="Password" input-columns="12" required></fw-form-input-password>
+
+      <fw-error-message value="registerForm.message"></fw-error-message>
+    </form-body>
+    <form-buttons>
+      <button
+        class="btn btn-success btn-block"
+        type="submit"
+        id="register-button"
+        data-loading-text="Registering..."
+        data-event-title="Registered"
+        data-event-category="Registration"
+        fw-form-submit="register()">Continue</button>
+    </form-buttons>
+  </fw-form-modal>
+</form>
+
+<form novalidate
+      role="form"
+      name="signInForm"
+      ng-if="model.page === pages.signIn">
+  <fw-form-modal name="Subscribe">
+    <form-body>
+      <p>Please sign in below, or <span class="btn-alternate-action"><a id="show-register-link" ng-click="showRegister()">Register</a> to create an account.</span></p>
+      <div class="form-group">
+        <input id="signInData-username" type="text" class="form-control" placeholder="Username" ng-model="signInData.username" focus=true>
+      </div>
+
+      <div class="form-group">
+        <input id="signInData-password" type="password" class="form-control" placeholder="Password" ng-model="signInData.password">
+      </div>
+      <p class="btn-alternate-action"><a id="forgot-details-link" ng-click="forgotDetails()">Forgot your details?</a></p>
+
+      <fw-error-message value="signInForm.message"></fw-error-message>
+    </form-body>
+    <form-buttons>
+      <button
+        id="sign-in-button"
+        class="btn btn-success btn-block"
+        type="submit"
+        data-event-title="Signed in"
+        data-event-category="Sign-in"
+        data-loading-text="Signing In..."
+        fw-form-submit="signIn()">Continue</button>
+    </form-buttons>
+  </fw-form-modal>
+</form>

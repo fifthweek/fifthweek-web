@@ -1,11 +1,10 @@
 angular.module('webApp').controller('landingPageCtrl',
-  function($scope, $q, $sce, blogStub, subscriptionStub, accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, initializer, $stateParams, $state, states, errorFacade) {
+  function($scope, $q, $sce, blogStub, subscribeService, accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, initializer, $stateParams, $state, states, errorFacade) {
     'use strict';
 
     var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
     var blogRepository = blogRepositoryFactory.forCurrentUser();
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
-    var userId = blogRepository.getUserId();
 
     $scope.model = {
       // These need to appear in a JS file, as the Grunt task for swapping file names that appear within JS will only
@@ -24,23 +23,11 @@ angular.module('webApp').controller('landingPageCtrl',
 
     var internal = this.internal = {};
 
-    internal.checkSubscriptions = function(username){
-      return fetchAggregateUserState.updateIfStale(userId)
-        .then(function(){
-          return subscriptionRepository.tryGetBlogs();
-        })
-        .then(function(blogs){
-          var isSubscribed = false;
-          var hasFreeAccess = false;
-          if(blogs){
-            var blog = _.find(blogs, { username: username });
-            if(blog){
-              hasFreeAccess = blog.freeAccess;
-              isSubscribed = blog.channels && blog.channels.length;
-            }
-          }
-          $scope.model.hasFreeAccess = !!hasFreeAccess;
-          $scope.model.isSubscribed = !!isSubscribed;
+    internal.populateSubscriptionStatus = function(blogId){
+      return subscribeService.getSubscriptionStatus(subscriptionRepository, blogId)
+        .then(function(subscriptionStatus){
+          $scope.model.hasFreeAccess = subscriptionStatus.hasFreeAccess;
+          $scope.model.isSubscribed = subscriptionStatus.isSubscribed;
         });
     };
 
@@ -49,7 +36,7 @@ angular.module('webApp').controller('landingPageCtrl',
       return blogStub.getLandingPage(username)
         .then(function(response){
           _.merge($scope.model, response.data);
-          return internal.checkSubscriptions(username);
+          return internal.populateSubscriptionStatus($scope.model.blog.blogId);
         })
         .catch(function(error){
           if(error instanceof ApiError && error.response && error.response.status === 404){
@@ -84,6 +71,7 @@ angular.module('webApp').controller('landingPageCtrl',
             channelId: channel.channelId,
             name: channel.name,
             price: (channel.priceInUsCentsPerWeek / 100).toFixed(2),
+            priceInUsCentsPerWeek: channel.priceInUsCentsPerWeek,
             description: channel.description.split('\n'),
             isDefault: channel.isDefault,
             checked: channel.isDefault
@@ -142,38 +130,31 @@ angular.module('webApp').controller('landingPageCtrl',
     initializer.initialize(internal.loadLandingPage);
 
     $scope.subscribe = function() {
-      if($scope.model.isOwner){
-        $scope.model.isSubscribed = true;
-      }
-      else if($scope.model.hasFreeAccess){
-        var subscriptions = _($scope.model.channels)
-          .filter({checked: true})
-          .map(function(v){ return { channelId: v.channelId, acceptedPrice: 0 }; })
-          .value();
+      var hasFreeAccess = $scope.model.hasFreeAccess;
 
-        return subscriptionStub.putBlogSubscriptions($scope.model.blog.blogId, { subscriptions: subscriptions })
-          .then(function(){
+      var subscriptions = _($scope.model.channels)
+        .filter({checked: true})
+        .map(function(v){
+          return {
+            channelId: v.channelId,
+            acceptedPrice: hasFreeAccess ? 0 : v.priceInUsCentsPerWeek
+          };
+        })
+        .value();
+
+      return subscribeService.subscribe($scope.model.blog.blogId, subscriptions)
+        .then(function(result){
+          if(result){
             $scope.model.isSubscribed = true;
-          });
-      }
-      else{
-        return $q.reject(new DisplayableError('Currently only users on the guest list can subscribe.'));
-      }
+          }
+        });
     };
 
     $scope.unsubscribe = function() {
-      if($scope.model.isOwner){
-        $scope.model.isSubscribed = false;
-      }
-      else{
-        return subscriptionStub.putBlogSubscriptions($scope.model.blog.blogId, { subscriptions: [] })
-          .then(function() {
-            return fetchAggregateUserState.updateFromServer(userId);
-          })
-          .then(function(){
-            $scope.model.isSubscribed = false;
-          });
-      }
+      return subscribeService.unsubscribe($scope.model.blog.blogId)
+        .then(function(){
+          $scope.model.isSubscribed = false;
+        });
     };
   }
 );
