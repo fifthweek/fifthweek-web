@@ -26,10 +26,18 @@ $html-name-space:'.info-page';
       overflow: visible;
       display: block;
       left: 0;
+      @media (max-width:$grid-float-breakpoint) {
+        position: static;
+        margin-bottom: 0;
+      }
     }
 
     .navbar-default .navbar-nav > .open > a {
       color: $black-off-2;
+    }
+
+    .navbar-nav > li {
+      margin-bottom: 0;
     }
 
     .navbar-nav > li > .dropdown-menu {
@@ -136,6 +144,9 @@ $html-name-space:'.info-page';
       font-size: 44px;
       margin-bottom: 15px;
       padding-top: 60px;
+      @media (max-width:$grid-float-breakpoint) {
+        padding-top: 60px - $navbar-height-sm;
+      }
     }
     h2 {
       font-weight: 900;

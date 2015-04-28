@@ -45,9 +45,9 @@
 }
 
 .navbar {
-  height: $navbar-height-sm;
+  min-height: $navbar-height-sm;
   @media (min-width:$navbar-lg-min) {
-    height: $navbar-height-lg;
+    min-height: $navbar-height-lg;
   }
 }
 

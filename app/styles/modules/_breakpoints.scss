@@ -20,3 +20,4 @@ $screen-s-max:($screen-sm - 1);
 $navbar-lg-min:$screen-md;
 
 $grid-float-breakpoint: $screen-md;
+$container-large-desktop: $screen-lg - ($main-cont-padding-small * 2);
