@@ -32,7 +32,7 @@ describe('landing page controller', function () {
     subscribeService = jasmine.createSpyObj('subscribeService', ['subscribe', 'unsubscribe', 'getSubscriptionStatus']);
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
     accountSettingsRepositoryFactory = { forCurrentUser: function() { return accountSettingsRepository; }};
-    blogRepository = jasmine.createSpyObj('blogRepository', ['getBlog']);
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getBlog', 'getUserId']);
     blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
     subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['tryGetBlogs']);
     subscriptionRepositoryFactory = { forCurrentUser: function() { return subscriptionRepository; }};
@@ -468,9 +468,14 @@ describe('landing page controller', function () {
         $scope.model.isOwner = false;
         $scope.model.hasFreeAccess = true;
         $scope.model.isSubscribed = true;
+        blogRepository.getUserId.and.returnValue('userId');
         blogRepository.getBlog.and.returnValue($q.when('blog'));
         target.internal.loadFromLocal();
         $scope.$apply();
+      });
+
+      it('should assign the current user id to the model', function(){
+        expect($scope.model.userId).toBe('userId');
       });
 
       it('should assign the blog result to the model', function(){

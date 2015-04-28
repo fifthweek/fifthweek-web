@@ -50,6 +50,7 @@ angular.module('webApp').controller('landingPageCtrl',
     };
 
     internal.loadFromLocal = function(){
+      $scope.model.userId = blogRepository.getUserId();
       $scope.model.isOwner = true;
       $scope.model.hasFreeAccess = false;
       $scope.model.isSubscribed = false;
