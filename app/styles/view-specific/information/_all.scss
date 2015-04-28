@@ -248,6 +248,12 @@ $html-name-space:'.info-page';
       @media (max-width:$grid-float-breakpoint) {
         padding-top: 60px - $navbar-height-sm;
       }
+      &.long {
+        font-size: 70px;
+        letter-spacing: -1px;
+        font-weight: normal;
+        padding-bottom: 20px;
+      }
     }
     h2 {
       font-weight: 900;
@@ -267,6 +273,10 @@ $html-name-space:'.info-page';
       margin-left: auto;
       margin-right: auto;
     }
+    .text-left p {
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
 
   img {
@@ -275,13 +285,17 @@ $html-name-space:'.info-page';
     height:200px;
   }
 
+  .info-page-box {
+    background: #fff;
+  }
+
   .info-page-box-light {
     background: #ebeff4;
   }
 
   .info-page-box-dark, .info-page-box-dark-2, .info-page-box-dark-3, .info-page-box-footer {
     color:#fff;
-    h2, h3, a {
+    h1, h2, h3, a {
       color:#fff;
     }
   }
