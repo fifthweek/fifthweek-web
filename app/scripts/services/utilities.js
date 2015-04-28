@@ -99,6 +99,7 @@ angular.module('webApp')
         scope.focus = service.parseFlag(attrs, 'focus');
         scope.placeholder = attrs.placeholder;
         scope.breakpoint = attrs.breakpoint || 'sm';
+        scope.inputColumns = attrs.inputColumns || '6';
         scope.label = attrs.label;
 
         var scopeService = service.forScope(scope);

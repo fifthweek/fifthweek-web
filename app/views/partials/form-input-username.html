@@ -1,7 +1,7 @@
 <fw-form-group input-name="username">
   <label ng-if="label" for="{{inputId}}">{{label}}</label>
   <div class="row">
-    <div class="col-{{breakpoint}}-6">
+    <div class="col-{{breakpoint}}-{{inputColumns}}">
       <div fw-form-input-glyphs>
         <input
           id="{{inputId}}"
@@ -20,7 +20,7 @@
           fw-check-username-availability>
       </div>
     </div>
-    <div class="col-{{breakpoint}}-6">
+    <div class="col-{{breakpoint}}-{{inputColumns}}">
       <p fw-form-input-invalid-p="pattern">Letters, numbers and underscores only.</p>
       <p fw-form-input-invalid-p="minlength">Must be at least 2 characters.</p>
       <p fw-form-input-invalid-p="maxlength">Allowed 20 characters at most.</p>
