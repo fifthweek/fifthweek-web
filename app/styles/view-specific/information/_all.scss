@@ -125,6 +125,10 @@ $html-name-space:'.info-page';
         max-height: none;
       }
 
+      .btn-navbar-li {
+        float:right;
+      }
+
       @media (max-width:$grid-float-breakpoint) {
         background: $color-dark-3;
         position: static;
@@ -133,6 +137,10 @@ $html-name-space:'.info-page';
 
         .container {
           width: auto;
+        }
+
+        .btn-navbar-li {
+          float:none;
         }
 
         .dropdown-toggle, .divider {
@@ -163,7 +171,7 @@ $html-name-space:'.info-page';
         .navbar-nav > li > a, .navbar-nav > li > .dropdown-menu > li > a {
           margin: 0;
           padding: $mobile-navbar-link-margin;
-          border-bottom: 1px solid darken($color-dark-3, 5%);
+          border-top: 1px solid darken($color-dark-3, 5%);
         }
 
         .navbar-nav > li > .btn-navbar {
