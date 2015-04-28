@@ -146,7 +146,7 @@ angular.module('webApp')
     $stateProvider
       .state(states.home.name, {
         url: '/',
-        templateUrl: 'modules/information/home.html',
+        templateUrl: 'modules/information/pages/home.html',
         data: {
           pageTitle: 'Home',
           navigationHidden: true,
