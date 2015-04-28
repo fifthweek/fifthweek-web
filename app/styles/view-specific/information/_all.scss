@@ -3,101 +3,104 @@
 $html-name-space:'.info-page';
 
 #{$html-name-space} {
+
   $bottom-margin: 60px;
   $color-footer: #241c22;
 
   text-align: center;
 
-  .navbar-toggle {
-    left: 18px;
-    top: 18px;
-    position: absolute;
-    padding: 0;
-    font-size: 14px;
-  }
-
-  .navbar-fixed-top {
-    overflow: visible;
-    display: block;
-    left: 0;
-  }
-
-  .navbar-default .navbar-nav > .open > a {
-    color: $black-off-2;
-  }
-
-  .navbar-nav > li > .dropdown-menu {
-    padding: 8px 0;
-    & > li {
-      margin: 0;
-      padding: 0;
-
-      &.divider {
-        margin: 8px 0;
-      }
-
-      & > a {
-        padding: 7px 17px;
-      }
-    }
-  }
-
-  .navbar-nav > li > a {
-    padding-top: 17px;
-
-    &.btn-navbar {
-      border-radius: 2px;
-      padding: 8px 12px;
-      margin-top: 9px;
-      margin-left: 5px;
-      color:#fff;
-      font-weight: bold;
-    }
-
-    &.btn-navbar-register {
-      background-color: $green-light-1;
-    }
-
-    &.btn-navbar-account {
-      background-color: $brand-highlight-2;
-      padding-right: 28px;
-      &:after {
-        content:"\f105";
-        font-family:'FontAwesome';
-        position:absolute;
-        right:12px;
-        top:8px;
-        font-size:21px;
-      }
-    }
-  }
-
-  .navbar-brand {
-    font:{
-      family: 'Merriweather', serif;
-      size:24px;
-      weight:900;
-    }
-    letter-spacing: -1.2px;
-    padding-top: 18px;
-
-    color: $grey-dark;
-    &:active {
-      color: $grey-dark;
-    }
-    &:hover {
-      color: darken($grey-dark, 10%);
-    }
-
-    @media (max-width:$grid-float-breakpoint) {
-      display: block;
-      margin: 0 auto;
-      float:none;
-    }
-  }
-
   .main-container, .main-container-inner {
     padding: 0;
+  }
+
+  .info-page-navbar {
+    .navbar-toggle {
+      left: 18px;
+      top: 18px;
+      position: absolute;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .navbar-fixed-top {
+      overflow: visible;
+      display: block;
+      left: 0;
+    }
+
+    .navbar-default .navbar-nav > .open > a {
+      color: $black-off-2;
+    }
+
+    .navbar-nav > li > .dropdown-menu {
+      padding: 8px 0;
+      & > li {
+        margin: 0;
+        padding: 0;
+
+        &.divider {
+          margin: 8px 0;
+        }
+
+        & > a {
+          padding: 7px 17px;
+        }
+      }
+    }
+
+    .navbar-nav > li > a {
+      padding-top: 17px;
+
+      &.btn-navbar {
+        border-radius: 2px;
+        padding: 8px 12px;
+        margin-top: 9px;
+        margin-left: 5px;
+        color:#fff;
+        font-weight: bold;
+      }
+
+      &.btn-navbar-register {
+        background-color: $green-light-1;
+      }
+
+      &.btn-navbar-account {
+        background-color: $brand-highlight-2;
+        padding-right: 28px;
+        &:after {
+          content:"\f105";
+          font-family:'FontAwesome';
+          position:absolute;
+          right:12px;
+          top:8px;
+          font-size:21px;
+        }
+      }
+    }
+
+    .navbar-brand {
+      font:{
+        family: 'Merriweather', serif;
+        size:24px;
+        weight:900;
+      }
+      letter-spacing: -1.2px;
+      padding-top: 18px;
+
+      color: $grey-dark;
+      &:active {
+        color: $grey-dark;
+      }
+      &:hover {
+        color: darken($grey-dark, 10%);
+      }
+
+      @media (max-width:$grid-float-breakpoint) {
+        display: block;
+        margin: 0 auto;
+        float:none;
+      }
+    }
   }
 
   .info-page-button {
