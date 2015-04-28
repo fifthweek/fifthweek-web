@@ -150,7 +150,7 @@ angular.module('webApp')
         data: {
           pageTitle: 'Home',
           navigationHidden: true,
-          bodyClass: 'info-page info-page-home'
+          bodyClass: 'info-page'
         }
       })
       .state(states.register.name, {
@@ -552,11 +552,12 @@ angular.module('webApp')
       })
       .state(states.help.about.name, {
         url: '/about',
-        templateUrl: 'views/help/about.html',
+        templateUrl: 'modules/information/pages/about.html',
         data : {
-          bodyClass: 'page-help-about',
           pageTitle: 'About Us',
-          headTitle: ': ' + 'About Us'
+          headTitle: ': ' + 'About Us',
+          navigationHidden: true,
+          bodyClass: 'info-page'
         }
       })
       .state(states.help.faq.name, {

@@ -43,7 +43,7 @@ $html-name-space:'.info-page';
 
     .navbar-nav > li > .dropdown-menu {
       padding: 8px 0;
-      & > li {
+      > li {
         margin: 0;
         padding: 0;
 
@@ -54,6 +54,12 @@ $html-name-space:'.info-page';
         & > a {
           padding: 7px 17px;
         }
+      }
+
+      > .active > a {
+        font-weight: bold;
+        background: $white-1;
+        color: $grey-dark;
       }
     }
 
@@ -146,6 +152,7 @@ $html-name-space:'.info-page';
         .dropdown-toggle, .divider {
           display: none;
         }
+
         .navbar-nav > li > .dropdown-menu {
           padding: 0;
           margin: 0;
@@ -158,7 +165,7 @@ $html-name-space:'.info-page';
           width: auto;
           a {
             color: lighten($color-dark-3, 50%);
-            &:hover, &:focus {
+            &:focus {
               background: none;
             }
           }
@@ -172,6 +179,15 @@ $html-name-space:'.info-page';
           margin: 0;
           padding: $mobile-navbar-link-margin;
           border-top: 1px solid darken($color-dark-3, 5%);
+        }
+
+        .navbar-nav li.active > a {
+          background: lighten($color-dark-3, 5%);
+        }
+        .navbar-nav li > a {
+          &:hover {
+            background: lighten($color-dark-3, 5%);
+          }
         }
 
         .navbar-nav > li > .btn-navbar {
