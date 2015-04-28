@@ -37,6 +37,11 @@ $header-height:108px;
 
 #{$html-name-space} {
 
+  .anchor-cursor{
+    &:hover {
+      cursor: pointer;
+    }
+  }
   #edit-page-link {
     float:right;
   }

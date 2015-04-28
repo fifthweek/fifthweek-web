@@ -6,7 +6,7 @@
   <fw-form-modal name="Subscribe">
     <form-body>
 
-      <p>Please register below, or <span class="btn-alternate-action"><a id="show-sign-in-link" ng-click="showSignIn()">Sign In</a>.</span></p>
+      <p>Please register below, or <span class="btn-alternate-action"><a id="show-sign-in-link" class="anchor-cursor" ng-click="showSignIn()">Sign In</a>.</span></p>
 
       <fw-form-group>
         <div class="row">
@@ -19,6 +19,7 @@
                 class="form-control"
                 name="email"
                 placeholder="Email"
+                focus=true
                 required>
             </div>
           </div>
@@ -53,7 +54,7 @@
       ng-if="model.page === pages.signIn">
   <fw-form-modal name="Subscribe">
     <form-body>
-      <p>Please sign in below, or <span class="btn-alternate-action"><a id="show-register-link" ng-click="showRegister()">Register</a> to create an account.</span></p>
+      <p>Please sign in below, or <span class="btn-alternate-action"><a id="show-register-link" class="anchor-cursor" ng-click="showRegister()">Register</a> to create an account.</span></p>
       <div class="form-group">
         <input id="signInData-username" type="text" class="form-control" placeholder="Username" ng-model="signInData.username" focus=true>
       </div>
@@ -61,7 +62,7 @@
       <div class="form-group">
         <input id="signInData-password" type="password" class="form-control" placeholder="Password" ng-model="signInData.password">
       </div>
-      <p class="btn-alternate-action"><a id="forgot-details-link" ng-click="forgotDetails()">Forgot your details?</a></p>
+      <p class="btn-alternate-action"><a id="forgot-details-link" class="anchor-cursor" ng-click="forgotDetails()">Forgot your details?</a></p>
 
       <fw-error-message value="signInForm.message"></fw-error-message>
     </form-body>
