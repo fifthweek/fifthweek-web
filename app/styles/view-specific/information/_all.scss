@@ -80,7 +80,8 @@ $html-name-space:'.info-page';
           font-family:'FontAwesome';
           position:absolute;
           right:12px;
-          top:8px;
+          top:50%;
+          margin-top: -10px;
           font-size:21px;
         }
       }
@@ -368,5 +369,4 @@ $html-name-space:'.info-page';
       }
     }
   }
-
 }
