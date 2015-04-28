@@ -90,7 +90,7 @@ angular.module('webApp').controller('fwPostListCtrl',
         loadNext = function() {
           return postsStub.getCreatorBacklog(timelineUserId)
             .then(function(response){
-              return $q.when(response.data)
+              return $q.when(response.data);
             });
         };
       }
@@ -110,7 +110,7 @@ angular.module('webApp').controller('fwPostListCtrl',
               count: count
             })
             .then(function(response){
-              return $q.when(response.data.posts)
+              return $q.when(response.data.posts);
             });
         };
       }

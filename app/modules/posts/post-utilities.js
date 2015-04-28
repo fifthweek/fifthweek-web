@@ -131,7 +131,7 @@ angular.module('webApp').factory('postUtilities',
           post.collection = {
             collectionId: post.collectionId,
             name: 'Unknown Collection'
-          }
+          };
         }
 
         post.blogName = 'Unknown Blog';
