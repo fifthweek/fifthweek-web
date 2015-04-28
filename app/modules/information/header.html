@@ -15,8 +15,8 @@
         <li><a class="btn-navbar btn-navbar-account" ui-sref="user">Back to Account</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li ui-sref-active="active" class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Features <span class="caret"></span></a>
+        <li ng-class="{ active: ('features.*' | includedByState) }" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Features <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li ui-sref-active="active"><a href="#">All Features</a></li>
             <li class="divider"></li>
@@ -26,8 +26,8 @@
         </li>
         <li ui-sref-active="active"><a href="#">Getting Started</a></li>
         <li ui-sref-active="active"><a href="#">Pricing</a></li>
-        <li ui-sref-active="active" class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
+        <li ng-class="{ active: ('help.*' | includedByState) }" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li ui-sref-active="active"><a ui-sref="help.about">About Fifthweek</a></li>
             <li ui-sref-active="active"><a href="#">Meet the Team</a></li>

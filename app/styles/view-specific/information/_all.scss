@@ -39,6 +39,11 @@ $html-name-space:'.info-page';
       margin-bottom: 0;
       text-align: left;
       font-weight: bold;
+
+      &.active > a {
+        color: $grey-dark;
+        background: $white-1;
+      }
     }
 
     .navbar-nav > li > .dropdown-menu {
@@ -64,7 +69,7 @@ $html-name-space:'.info-page';
     }
 
     .navbar-nav > li > a {
-      padding-top: 17px;
+      padding: 17px 15px;
 
       &.btn-navbar {
         border-radius: 2px;
