@@ -20,6 +20,15 @@ angular.module('webApp')
           return masterRepository.getUserId();
         };
 
+        service.tryGetBlog = function(){
+          if(!masterRepository.getUserId())
+          {
+            return $q.when();
+          }
+
+          return masterRepository.get(blogKey);
+        };
+
         service.getBlog = function(){
           return masterRepository.get(blogKey)
             .then(function(data){

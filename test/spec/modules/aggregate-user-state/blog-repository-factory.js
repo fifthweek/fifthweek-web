@@ -14,7 +14,7 @@ describe('blog repository factory', function(){
   beforeEach(function() {
     module('webApp');
 
-    masterRepository = jasmine.createSpyObj('masterRepository', ['get', 'set', 'update']);
+    masterRepository = jasmine.createSpyObj('masterRepository', ['get', 'set', 'update', 'getUserId']);
     masterRepositoryFactory = { forCurrentUser: function() { return masterRepository; } };
 
     module(function($provide) {
@@ -29,6 +29,18 @@ describe('blog repository factory', function(){
     });
 
     target = targetFactory.forCurrentUser();
+  });
+
+  describe('calling getUserId', function(){
+    var result;
+    beforeEach(function(){
+      masterRepository.getUserId.and.returnValue('result');
+      result = target.getUserId();
+    });
+
+    it('should return the result', function(){
+      expect(result).toBe('result');
+    });
   });
 
   describe('when calling getBlog', function() {
@@ -58,6 +70,49 @@ describe('blog repository factory', function(){
       expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
       expect(error instanceof DisplayableError).toBe(true);
       expect(error.message).toBe('You do not have a blog.');
+    });
+  });
+
+  describe('calling tryGetBlog', function() {
+    var expected;
+    var actual;
+    beforeEach(function(){
+      expected = 'data';
+      actual = undefined;
+
+      masterRepository.get.and.returnValue($q.when(expected));
+    });
+
+    describe('when the user is logged in', function(){
+      beforeEach(function(){
+        masterRepository.getUserId.and.returnValue('userId');
+        target.tryGetBlog().then(function(result) { actual = result; });
+        $rootScope.$apply();
+      });
+
+      it('should call the master repository', function(){
+        expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
+      });
+
+      it('should return the expected data', function(){
+        expect(actual).toBe(expected);
+      });
+    });
+
+    describe('when the user is not logged in', function(){
+      beforeEach(function(){
+        masterRepository.getUserId.and.returnValue(undefined);
+        target.tryGetBlog().then(function(result) { actual = result; });
+        $rootScope.$apply();
+      });
+
+      it('should not call the master repository', function(){
+        expect(masterRepository.get).not.toHaveBeenCalled();
+      });
+
+      it('should return the expected data', function(){
+        expect(actual).toBeUndefined();
+      });
     });
   });
 
