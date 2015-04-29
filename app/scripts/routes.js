@@ -105,25 +105,31 @@ angular.module('webApp')
         }
       }
     },
-    help: {
-      name: 'help',
+    about: {
+      name: 'about',
       about: {
-        name: 'help.about'
+        name: 'about.about'
       },
-      faq: {
-        name: 'help.faq'
-      },
-      contact: {
-        name: 'help.contact'
+      team: {
+        name: 'about.team'
       },
       legal: {
-        name: 'help.legal',
+        name: 'about.legal',
         termsOfService: {
-          name: 'help.legal.termsOfService'
+          name: 'about.legal.termsOfService'
         },
         privacyPolicy: {
-          name: 'help.legal.privacyPolicy'
+          name: 'about.legal.privacyPolicy'
         }
+      }
+    },
+    support: {
+      name: 'support',
+      faq: {
+        name: 'support.faq'
+      },
+      contact: {
+        name: 'support.contact'
       }
     },
     notAuthorized: {
@@ -539,54 +545,40 @@ angular.module('webApp')
           }
         }
       })
-      .state(states.help.name, {
-        abstract: false,
-        url: '/help',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.help.about.name,
-        data : {
-          pageTitle: 'Help',
-          headTitle: ': ' + 'Help',
-          bodyClass: 'page-help'
-        }
-      })
-      .state(states.help.about.name, {
+      .state(states.about.name, {
         url: '/about',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.about.about.name
+      })
+      .state(states.about.about.name, {
+        url: '',
         templateUrl: 'modules/information/pages/about.html',
         data : {
-          pageTitle: 'About Us',
-          headTitle: ': ' + 'About Us',
+          headTitle: ': ' + 'About',
           navigationHidden: true,
           bodyClass: 'info-page'
         }
       })
-      .state(states.help.faq.name, {
-        url: '/faq',
-        templateUrl: 'views/help/faq.html',
+      .state(states.about.team.name, {
+        url: '/team',
+        templateUrl: 'modules/information/pages/team.html',
         data : {
-          pageTitle: 'Frequently Asked Questions',
-          headTitle: ': ' + 'FAQ'
+          headTitle: ': ' + 'Meet the Team',
+          navigationHidden: true,
+          bodyClass: 'info-page'
         }
       })
-      .state(states.help.contact.name, {
-        url: '/contact',
-        templateUrl: 'views/help/contact-us.html',
-        data : {
-          pageTitle: 'Contact Us',
-          headTitle: ': ' + 'Contact Us'
-        }
-      })
-      .state(states.help.legal.name, {
+      .state(states.about.legal.name, {
         abstract: false,
         url: '/legal',
         templateUrl: 'views/help/legal/index.html',
-        redirectTo: states.help.legal.termsOfService.name,
+        redirectTo: states.about.legal.termsOfService.name,
         data : {
           pageTitle: 'Legal',
           headTitle: ': ' + 'Legal'
         }
       })
-      .state(states.help.legal.termsOfService.name, {
+      .state(states.about.legal.termsOfService.name, {
         url: '/terms-of-service',
         templateUrl: 'views/help/legal/terms-of-service.html',
         data : {
@@ -594,12 +586,39 @@ angular.module('webApp')
           headTitle: ': ' + 'Terms of Service'
         }
       })
-      .state(states.help.legal.privacyPolicy.name, {
+      .state(states.about.legal.privacyPolicy.name, {
         url: '/privacy-policy',
         templateUrl: 'views/help/legal/privacy-policy.html',
         data : {
           pageTitle: 'Privacy Policy',
           headTitle: ': ' + 'Privacy Policy'
+        }
+      })
+      .state(states.support.name, {
+        abstract: false,
+        url: '/support',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.about.name,
+        data : {
+          pageTitle: 'Help',
+          headTitle: ': ' + 'Help',
+          bodyClass: 'page-help'
+        }
+      })
+      .state(states.support.faq.name, {
+        url: '/faq',
+        templateUrl: 'views/help/faq.html',
+        data : {
+          pageTitle: 'Frequently Asked Questions',
+          headTitle: ': ' + 'FAQ'
+        }
+      })
+      .state(states.support.contact.name, {
+        url: '/contact',
+        templateUrl: 'views/help/contact-us.html',
+        data : {
+          pageTitle: 'Contact Us',
+          headTitle: ': ' + 'Contact Us'
         }
       })
       .state(states.notAuthorized.name, {

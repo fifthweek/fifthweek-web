@@ -26,15 +26,15 @@
         </li>
         <li ui-sref-active="active"><a href="#">Getting Started</a></li>
         <li ui-sref-active="active"><a href="#">Pricing</a></li>
-        <li ng-class="{ active: ('help.*' | includedByState) }" class="dropdown">
+        <li ng-class="{ active: ('about.*' | includedByState) || ('support.*' | includedByState) }" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li ui-sref-active="active"><a ui-sref="help.about">About Fifthweek</a></li>
-            <li ui-sref-active="active"><a href="#">Meet the Team</a></li>
+            <li ui-sref-active="active"><a ui-sref="about.about">About Fifthweek</a></li>
+            <li ui-sref-active="active"><a ui-sref="about.team">Meet the Team</a></li>
             <li ui-sref-active="active"><a href="http://blog.fifthweek.com/">Blog</a></li>
             <li class="divider"></li>
-            <li ui-sref-active="active"><a ui-sref="help.faq">FAQ</a></li>
-            <li ui-sref-active="active"><a ui-sref="help.contact">Contact</a></li>
+            <li ui-sref-active="active"><a ui-sref="support.faq">FAQ</a></li>
+            <li ui-sref-active="active"><a ui-sref="support.contact">Contact</a></li>
           </ul>
         </li>
       </ul>

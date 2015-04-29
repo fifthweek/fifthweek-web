@@ -164,32 +164,32 @@ angular.module('webApp')
       },
       {
         name: 'Help',
-        state: states.help.name,
+        state: states.support.name,
         icon: 'fa fa-question-circle',
         color: 'indigo',
         secondary:
         [
           {
             name: 'About Us',
-            state: states.help.about.name,
+            state: states.about.name,
             icon: 'fa fa-question-circle',
             color: 'indigo'
           },
           {
             name: 'FAQ',
-            state: states.help.faq.name,
+            state: states.support.faq.name,
             icon: 'fa fa-book',
             color: 'indigo'
           },
           {
             name: 'Contact Us',
-            state: states.help.contact.name,
+            state: states.support.contact.name,
             icon: 'fa fa-comment-o',
             color: 'indigo'
           },
           {
             name: 'Legal',
-            state: states.help.legal.name,
+            state: states.about.legal.name,
             icon: 'fa fa-files-o',
             color: 'indigo'
           }
