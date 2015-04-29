@@ -49,11 +49,13 @@ angular.module('webApp').controller('landingPageCtrl',
         });
     };
 
-    internal.loadFromLocal = function(){
+    internal.loadFromLocal = function(accountSettings){
       $scope.model.userId = blogRepository.getUserId();
       $scope.model.isOwner = true;
       $scope.model.hasFreeAccess = false;
       $scope.model.isSubscribed = false;
+      $scope.model.profileImage = accountSettings.profileImage;
+
       return blogRepository.getBlog()
         .then(function(blog) {
           $scope.model.blog = blog;
@@ -87,7 +89,7 @@ angular.module('webApp').controller('landingPageCtrl',
         .then(function(accountSettings) {
           var username = $stateParams.username.toLowerCase();
           return accountSettings && accountSettings.username === username ?
-            internal.loadFromLocal(username) :
+            internal.loadFromLocal(accountSettings) :
             internal.loadFromApi(username);
         })
         .then(function(stopProcessing){

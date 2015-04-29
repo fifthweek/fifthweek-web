@@ -26,6 +26,8 @@ describe('landing page controller', function () {
   var states;
   var errorFacade;
 
+  var accountSettings;
+
   beforeEach(function() {
     $sce = jasmine.createSpyObj('$sce', ['trustAsResourceUrl']);
     blogStub = jasmine.createSpyObj('blogStub', ['getLandingPage']);
@@ -65,6 +67,8 @@ describe('landing page controller', function () {
       $controller = $injector.get('$controller');
       states = $injector.get('states');
     });
+
+    accountSettings = { username: 'username', profileImage: { fileId: 'fileId' } };
   });
 
   var initializeTarget = function() {
@@ -470,7 +474,7 @@ describe('landing page controller', function () {
         $scope.model.isSubscribed = true;
         blogRepository.getUserId.and.returnValue('userId');
         blogRepository.getBlog.and.returnValue($q.when('blog'));
-        target.internal.loadFromLocal();
+        target.internal.loadFromLocal(accountSettings);
         $scope.$apply();
       });
 
@@ -492,6 +496,10 @@ describe('landing page controller', function () {
 
       it('should set isSubscribed to false', function(){
         expect($scope.model.isSubscribed).toBe(false);
+      });
+
+      it('should set the profile image', function(){
+        expect($scope.model.profileImage).toBe(accountSettings.profileImage);
       });
     });
 
@@ -671,12 +679,12 @@ describe('landing page controller', function () {
       describe('when username matches logged in user', function(){
         beforeEach(function(){
           $stateParams.username = 'UsErnAme';
-          getAccountSettings.resolve({ username: 'username' });
+          getAccountSettings.resolve(accountSettings);
           $scope.$apply();
         });
 
         it('should call loadFromLocal', function(){
-          expect(target.internal.loadFromLocal).toHaveBeenCalledWith('username');
+          expect(target.internal.loadFromLocal).toHaveBeenCalledWith(accountSettings);
         });
 
         testProcessing();
