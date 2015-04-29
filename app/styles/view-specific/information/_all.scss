@@ -5,7 +5,7 @@ $html-name-space:'.info-page';
 #{$html-name-space} {
 
   $mobile-navbar-link-margin: 14px;
-  $bottom-margin: 60px;
+  $info-box-padding: 70px;
   $color-footer: #241c22;
   $color-dark: #36a64f;
   $color-dark-2: #439fe0;
@@ -230,32 +230,44 @@ $html-name-space:'.info-page';
   img {
     &.image-bottom {
       display: block;
-      margin:35px auto (-1 * $bottom-margin) auto;
+      margin:35px auto (-1 * $info-box-padding) auto;
+    }
+  }
+
+  .clear-navbar {
+    margin-top: $navbar-height-lg;
+    @media (max-width:$grid-float-breakpoint) {
+      margin-top: 0;
     }
   }
 
   .info-page-box {
-    padding-top: 60px;
-    padding-bottom: $bottom-margin;
+    padding-top: $info-box-padding;
+    padding-bottom: $info-box-padding;
+
     h1, h2 {
       color: #293f54;
     }
     h1 {
       font-weight: 900;
       font-size: 44px;
-      margin-bottom: 15px;
-      padding-top: 60px;
-      @media (max-width:$grid-float-breakpoint) {
-        padding-top: 60px - $navbar-height-sm;
-      }
+      margin:0;
+      padding: 0 0 16px 0; /* Compensate for implicit top padding introduced by line height */
+
       &.long {
+        margin: 7px 0;
         font-size: 70px;
         letter-spacing: -1px;
         font-weight: normal;
-        padding-bottom: 20px;
+      }
+      &.light {
+        font-size: 54px;
+        letter-spacing: -2px;
+        font-weight: normal;
       }
     }
     h2 {
+      margin-top: 0;
       font-weight: 900;
       font-size: 28px;
     }
@@ -389,6 +401,43 @@ $html-name-space:'.info-page';
     }
   }
 
+  .follow-on-twitter {
+    position: relative;
+    display: inline-block;
+    font-size: 14px;
+    background: $white-3;
+    color: $black-off-2;
+    border: 1px solid lighten($grey-light-5, 5%);
+    font-weight: 900;
+    border-radius: $border-radius;
+    padding: 6px 10px 6px 43px;
+    text-decoration: none;
+    &:before {
+      content:"\f099";
+      font-family:'FontAwesome';
+      font-size:24px;
+      position:absolute;
+      left:0;
+      top:0;
+      line-height: 32px;
+      width:36px;
+      height:32px;
+      text-align: center;
+      border-bottom-left-radius: $border-radius - 1px;
+      border-top-left-radius: $border-radius - 1px;
+      color: lighten($color-footer, 95%);
+      background-color: lighten($color-footer, 16%);
+    }
+    &:hover {
+      text-decoration: none;
+      cursor: pointer;
+      color: $brand-highlight-2;
+      &:before {
+        background-color: lighten($color-footer, 30%);
+      }
+    }
+  }
+
   .info-page-box-footer-copyright {
     .col {
       padding-bottom: 15px;
@@ -412,6 +461,28 @@ $html-name-space:'.info-page';
       ul {
         text-align: center;
       }
+    }
+  }
+
+  .personal-photo {
+    width: 130px;
+    height: 130px;
+    border-radius: 65px;
+  }
+
+  .team-profiles {
+    text-align: left;
+    h2 {
+      font-size: 35px;
+      letter-spacing: -1px;
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+    h3 {
+      margin-bottom: 15px;
+    }
+    .personal-photo {
+      float: right;
     }
   }
 }
