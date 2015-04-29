@@ -8,7 +8,7 @@
     uploadType: { value: 'file' },
     headerLink: { value: 'fileLink' },
     uploadIndicator: { get: function(){ return element(by.css('.file-name')); }},
-    pageUrl: { get: function () { return '/creators/post/file'; }}
+    pageUrl: { get: function () { return '/creator/post/file'; }}
   });
 
   module.exports = composeFilePage;

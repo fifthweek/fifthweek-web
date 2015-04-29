@@ -23,7 +23,7 @@
     successMessage: { get: function(){ return element(by.css('.alert-success')); }},
     postAnotherButton: { get: function(){ return element(by.css('button[ng-click="postAnother()"]')); }},
 
-    pageUrl: { get: function () { return '/creators/post/note'; }},
+    pageUrl: { get: function () { return '/creator/post/note'; }},
 
     helpMessages: { get: function () { return element.all(by.css('.help-block')); }},
 
