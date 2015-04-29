@@ -82,11 +82,17 @@ $html-name-space:'.info-page';
 
       &.btn-navbar-register {
         background-color: $green-light-1;
+        &:hover {
+          background-color: darken($green-light-1, 10%) !important;
+        }
       }
 
       &.btn-navbar-account {
-        background-color: $brand-highlight-2;
+        background-color: $brand-highlight;
         padding-right: 28px;
+        &:hover {
+          background-color: darken($brand-highlight, 5%) !important;
+        }
         &:after {
           content:"\f105";
           font-family:'FontAwesome';
@@ -95,6 +101,13 @@ $html-name-space:'.info-page';
           top:50%;
           margin-top: -10px;
           font-size:21px;
+        }
+
+        @media (max-width:$grid-float-breakpoint) {
+          background-color: darken($brand-highlight, 5%);
+          &:hover {
+            background-color: darken($brand-highlight, 10%) !important;
+          }
         }
       }
     }
