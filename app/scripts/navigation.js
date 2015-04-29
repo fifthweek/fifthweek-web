@@ -164,36 +164,9 @@ angular.module('webApp')
       },
       {
         name: 'Help',
-        state: states.support.name,
+        state: states.support.faq.name,
         icon: 'fa fa-question-circle',
-        color: 'indigo',
-        secondary:
-        [
-          {
-            name: 'About Us',
-            state: states.about.name,
-            icon: 'fa fa-question-circle',
-            color: 'indigo'
-          },
-          {
-            name: 'FAQ',
-            state: states.support.faq.name,
-            icon: 'fa fa-book',
-            color: 'indigo'
-          },
-          {
-            name: 'Contact Us',
-            state: states.support.contact.name,
-            icon: 'fa fa-comment-o',
-            color: 'indigo'
-          },
-          {
-            name: 'Legal',
-            state: states.about.legal.name,
-            icon: 'fa fa-files-o',
-            color: 'indigo'
-          }
-        ]
+        color: 'indigo'
       }
     ];
   });

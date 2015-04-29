@@ -517,6 +517,42 @@ $html-name-space:'.info-page';
         margin-bottom: 0;
       }
     }
+  }
 
+  .contact-page-links {
+    list-style: none;
+    padding: 45px 0 0 0;
+    li {
+      margin-bottom: 0;
+      display: inline-block;
+      margin-right: 55px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  .contact-page-email-link, .contact-page-twitter-link, .contact-page-facebook-link {
+    &:before {
+      line-height: 70px;
+      display: inline-block;
+      font-family:'FontAwesome';
+      font-size:60px;
+      color: lighten($color-footer, 16%);
+    }
+    &:hover {
+      &:before {
+        color: lighten($color-footer, 30%);
+      }
+    }
+  }
+  .contact-page-email-link:before {
+    content:"\f003";
+  }
+  .contact-page-twitter-link:before {
+    content:"\f099";
+  }
+  .contact-page-facebook-link:before {
+    content:"\f230";
+    font-size:58px;
   }
 }

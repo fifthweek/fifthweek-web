@@ -598,12 +598,7 @@ angular.module('webApp')
         abstract: false,
         url: '/support',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.about.name,
-        data : {
-          pageTitle: 'Help',
-          headTitle: ': ' + 'Help',
-          bodyClass: 'page-help'
-        }
+        redirectTo: states.support.contact.name
       })
       .state(states.support.faq.name, {
         url: '/faq',
@@ -615,10 +610,11 @@ angular.module('webApp')
       })
       .state(states.support.contact.name, {
         url: '/contact',
-        templateUrl: 'views/help/contact-us.html',
+        templateUrl: 'modules/information/pages/contact.html',
         data : {
-          pageTitle: 'Contact Us',
-          headTitle: ': ' + 'Contact Us'
+          headTitle: ': ' + 'Contact Us',
+          navigationHidden: true,
+          bodyClass: 'info-page'
         }
       })
       .state(states.notAuthorized.name, {
