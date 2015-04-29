@@ -305,8 +305,9 @@ describe('fw-form-dirty-confirmation directive', function(){
 
       describe('when form-dirty method is specified', function(){
 
-        var isDirtyFlag = true;
+        var isDirtyFlag;
         beforeEach(function(){
+          isDirtyFlag = true;
           scope = $rootScope.$new();
           scope.someForm = { name: 'Some Form' };
           scope.isDirtyFunction = function(){
