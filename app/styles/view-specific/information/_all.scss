@@ -281,13 +281,17 @@ $html-name-space:'.info-page';
     p {
       line-height: 28px;
       font-size: 18px;
+    }
+    p, h2 {
       max-width: 640px;
       margin-left: auto;
       margin-right: auto;
     }
-    .text-left p {
-      margin-left: 0;
-      margin-right: 0;
+    .text-left {
+      p, h2 {
+        margin-left: 0;
+        margin-right: 0;
+      }
     }
   }
 
