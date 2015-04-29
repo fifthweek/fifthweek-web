@@ -8,6 +8,7 @@ describe('master repository factory', function(){
   var $rootScope;
   var aggregateUserState;
   var authenticationService;
+  var fetchAggregateUserState;
   var targetFactory;
   var target;
 
@@ -20,10 +21,12 @@ describe('master repository factory', function(){
     authenticationService = { currentUser: { userId: userId } };
     aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['setDelta']);
     aggregateUserState.currentValue = { key: {} };
+    fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateFromServer']);
 
     module(function($provide) {
       $provide.value('aggregateUserState', aggregateUserState);
       $provide.value('authenticationService', authenticationService);
+      $provide.value('fetchAggregateUserState', fetchAggregateUserState);
     });
 
     inject(function($injector) {
@@ -145,14 +148,6 @@ describe('master repository factory', function(){
 
     it('should throw an error when setting state', function() {
       target.set(key, {}).catch(function(error){
-        expect(error instanceof FifthweekError).toBeTruthy();
-        expect(error.message).toBe('No aggregate state found.');
-      });
-      $rootScope.$apply();
-    });
-
-    it('should throw an error when reading state', function() {
-      target.get(key).catch(function(error){
         expect(error instanceof FifthweekError).toBeTruthy();
         expect(error.message).toBe('No aggregate state found.');
       });
@@ -292,10 +287,101 @@ describe('master repository factory', function(){
   });
 
   describe('when getting a value', function(){
+    var deferredUserState;
+    var result;
+    var error;
+    beforeEach(function(){
+      deferredUserState = $q.defer();
+      result = undefined;
+      error = undefined;
 
-    it('should return a clone', function() {
-      target.get(key).value = 'changed';
-      expect(initialState).toEqual(initialStateClone);
+      spyOn(target.internal, 'ensureUserState').and.returnValue(deferredUserState.promise);
+
+      target.get(key).then(function(r){ result = r; }, function(e){ error = e; });
+      $rootScope.$apply();
+    });
+
+    describe('when ensureUserState succeeds', function(){
+      beforeEach(function(){
+        deferredUserState.resolve();
+        $rootScope.$apply();
+      });
+
+      it('should return a value', function(){
+        expect(result).toBeDefined();
+      });
+
+      it('should return a clone', function() {
+        result.value = 'changed';
+        expect(initialState).toEqual(initialStateClone);
+      });
+    });
+
+    describe('when ensureUserState fails', function(){
+      beforeEach(function(){
+        deferredUserState.reject('error');
+        $rootScope.$apply();
+      });
+
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
+      });
+    });
+  });
+
+  describe('when calling ensureUserState', function(){
+    describe('when aggregate user state is set', function(){
+      var complete;
+      beforeEach(function(){
+        aggregateUserState.currentValue = 'value';
+        complete = false;
+        target.internal.ensureUserState().then(function(){ complete = true; });
+        $rootScope.$apply();
+      });
+
+      it('should complete successfully', function(){
+        expect(complete).toBe(true);
+      });
+    });
+
+    describe('when aggregate user state is not', function(){
+      var complete;
+      var error;
+      var deferredUpdateFromServer;
+      beforeEach(function(){
+        deferredUpdateFromServer = $q.defer();
+        fetchAggregateUserState.updateFromServer.and.returnValue(deferredUpdateFromServer.promise);
+        aggregateUserState.currentValue = undefined;
+        complete = false;
+        target.internal.ensureUserState().then(function(){ complete = true; }, function(e){ error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should not have completed', function(){
+        expect(complete).toBe(false);
+      });
+
+      describe('when the update has completed successfully', function(){
+        beforeEach(function(){
+          deferredUpdateFromServer.resolve();
+          $rootScope.$apply();
+        });
+
+        it('should complete successfully', function(){
+          expect(complete).toBe(true);
+        });
+      });
+
+      describe('when the update has failed', function(){
+        beforeEach(function(){
+          deferredUpdateFromServer.reject('error');
+          $rootScope.$apply();
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
+      });
     });
   });
 });
