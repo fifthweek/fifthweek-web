@@ -66,6 +66,11 @@
           logService.error(error);
         });
     })
+    .run(function ($rootScope) {
+      $rootScope.$on('$stateChangeSuccess',function(){
+        window.scrollTo(0, 0);
+      });
+    })
     .run(function ($rootScope, $state, $stateParams, fifthweekConstants) {
       $rootScope.fifthweekConstants = fifthweekConstants;
 
