@@ -242,8 +242,13 @@ $html-name-space:'.info-page';
   }
 
   .info-page-box {
-    padding-top: $info-box-padding;
-    padding-bottom: $info-box-padding;
+    padding-top: $info-box-padding / 2;
+    padding-bottom: $info-box-padding / 2;
+
+    @media (min-width:$screen-s-min) {
+      padding-top: $info-box-padding;
+      padding-bottom: $info-box-padding;
+    }
 
     h1, h2 {
       color: #293f54;
@@ -256,9 +261,12 @@ $html-name-space:'.info-page';
 
       &.long {
         margin: 7px 0;
-        font-size: 70px;
+        font-size: 54px;
         letter-spacing: -1px;
         font-weight: normal;
+        @media (min-width:$screen-ss-min) {
+          font-size: 70px;
+        }
       }
       &.light {
         font-size: 54px;
@@ -291,6 +299,12 @@ $html-name-space:'.info-page';
       p, h2 {
         margin-left: 0;
         margin-right: 0;
+      }
+    }
+    img {
+      margin-bottom: 30px;
+      @media (min-width:$screen-s-min) {
+        margin-bottom: 0;
       }
     }
   }
@@ -469,24 +483,40 @@ $html-name-space:'.info-page';
   }
 
   .personal-photo {
+    text-align: center;
+    @media (min-width:$screen-ss-min) {
+      text-align: right;
+    }
+  }
+  .personal-photo img {
     width: 130px;
     height: 130px;
     border-radius: 65px;
+    margin-bottom: 15px;
   }
 
-  .team-profiles {
-    text-align: left;
+  .team-profile {
+    text-align: center;
+    @media (min-width:$screen-ss-min) {
+      text-align: left;
+    }
     h2 {
       font-size: 35px;
       letter-spacing: -1px;
       font-weight: normal;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     h3 {
-      margin-bottom: 15px;
+      margin-bottom: 18px;
+      font-size: 22px;
     }
-    .personal-photo {
-      float: right;
+
+    @media (max-width:$screen-sm-max) {
+      margin-bottom: 50px;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
+
   }
 }
