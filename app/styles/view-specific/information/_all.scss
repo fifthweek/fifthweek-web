@@ -290,12 +290,18 @@ $html-name-space:'.info-page';
       font-weight: 900;
       font-size: 28px;
     }
-    h2.sub-heading {
+    h2.sub-heading, h2.sub-heading-long {
       font-weight: normal;
-      font-size: 20px;
       margin-top: 0;
       padding-top: 0;
+    }
+    h2.sub-heading {
+      font-size: 20px;
       margin-bottom: 40px;
+    }
+    h2.sub-heading-long {
+      font-size: 24px;
+      margin-bottom: 10px;
     }
     p {
       line-height: 28px;
@@ -491,6 +497,10 @@ $html-name-space:'.info-page';
         text-align: center;
       }
     }
+  }
+
+  .info-page-box-home-inner {
+    padding-bottom: 35px;
   }
 
   .personal-photo {
