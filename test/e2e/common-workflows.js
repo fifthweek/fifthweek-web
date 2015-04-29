@@ -79,6 +79,21 @@
       };
     }},
 
+    register: { value: function() {
+      signOutPage.signOutAndGoHome();
+      return registerPage.registerSuccessfully();
+    }},
+
+    signOut: { value: function(registration) {
+      signOutPage.signOutAndGoHome();
+    }},
+
+    signIn: { value: function(registration) {
+      this.getRoot();
+      homePage.signInLink.click();
+      signInPage.signInSuccessfully(registration.username, registration.password);
+    }},
+
     reSignIn: { value: function(registration) {
       signOutPage.signOutAndGoHome();
       homePage.signInLink.click();
