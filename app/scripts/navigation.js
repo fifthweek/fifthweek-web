@@ -22,7 +22,16 @@ angular.module('webApp')
         name: 'Sign In',
         state: states.signIn.name,
         icon: 'fa fa-sign-in',
-        color: 'green'
+        color: 'green',
+        secondary:
+        [
+          {
+            name: 'Sign In',
+            state: states.signIn.name,
+            icon: 'fa fa-sign-in',
+            color: 'green'
+          }
+        ]
       },
       {
         name: 'Home',
