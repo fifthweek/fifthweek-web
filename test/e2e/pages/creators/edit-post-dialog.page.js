@@ -68,8 +68,8 @@
     it('should edit the post', function() {
       editPost();
       self.saveButton.click();
+      browser.waitForAngular();
       verifyItemEdited();
-      browser.sleep(5000);
       refresh();
       verifyItemEdited();
       refresh();
@@ -250,9 +250,14 @@
 
         if(inputData.postData.filePath){
           setFileInput('../../sample-image-tiny-edited.tif');
+          browser.waitForAngular();
           if(inputData.postData.uploadType === 'image') {
             testKit.waitForElementToDisplay(self.imageUploadIndicator);
           }
+          else{
+            testKit.waitForElementToDisplay(self.uploadButton);
+          }
+          browser.waitForAngular();
         }
       };
 

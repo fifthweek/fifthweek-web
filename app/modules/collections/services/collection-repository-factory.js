@@ -1,12 +1,12 @@
 angular.module('webApp')
   .factory('collectionRepositoryFactory',
-  function($q, channelRepositoryFactory) {
+  function($q, blogRepositoryFactory) {
     'use strict';
 
     return {
       forCurrentUser: function() {
 
-        var channelRepository = channelRepositoryFactory.forCurrentUser();
+        var blogRepository = blogRepositoryFactory.forCurrentUser();
 
         var service = {};
 
@@ -52,7 +52,7 @@ angular.module('webApp')
         };
 
         service.getChannelForCollection = function(collectionId) {
-          return channelRepository.getChannels().then(function(channels) {
+          return blogRepository.getChannels().then(function(channels) {
             try {
               return $q.when(service.findChannelForCollection(channels, collectionId));
             }
@@ -63,7 +63,7 @@ angular.module('webApp')
         };
 
         service.createCollection = function(channelId, collection) {
-          return channelRepository.updateChannels(function(channels) {
+          return blogRepository.updateChannels(function(channels) {
             if (service.tryFindChannelForCollection(channels, collection.collectionId)) {
               return $q.reject(new DisplayableError('Collection already exists.'));
             }
@@ -80,7 +80,7 @@ angular.module('webApp')
         };
 
         service.updateCollection = function(channelId, collection) {
-          return channelRepository.updateChannels(function(channels) {
+          return blogRepository.updateChannels(function(channels) {
             service.removeCollectionFromChannels(channels, collection.collectionId);
 
             try {
@@ -95,7 +95,7 @@ angular.module('webApp')
         };
 
         service.deleteCollection = function(collectionId) {
-          return channelRepository.updateChannels(function(channels) {
+          return blogRepository.updateChannels(function(channels) {
             service.removeCollectionFromChannels(channels, collectionId);
 
             return $q.when();

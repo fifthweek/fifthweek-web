@@ -1,12 +1,12 @@
-angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $state, states, channelRepositoryFactory, channelStub, errorFacade) {
+angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $state, states, blogRepositoryFactory, channelStub, errorFacade) {
   'use strict';
 
-  var channelRepository = channelRepositoryFactory.forCurrentUser();
+  var blogRepository = blogRepositoryFactory.forCurrentUser();
   var channelId = $state.params.id;
   $scope.previousState = states.creator.channels.name;
   $scope.model = {};
 
-  channelRepository.getChannel(channelId)
+  blogRepository.getChannel(channelId)
     .then(function(channel) {
       $scope.model.savedChannelName = channel.name;
       $scope.model.channel = channel;
@@ -34,7 +34,7 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
       isVisibleToNonSubscribers: !channel.hidden
     };
     return channelStub.putChannel(channelId, channelData).then(function() {
-      return channelRepository.updateChannel(channelId, function(channel) {
+      return blogRepository.updateChannel(channelId, function(channel) {
         channel.name = channelData.name;
         channel.description = channelData.description;
         channel.priceInUsCentsPerWeek = channelData.price;
@@ -47,7 +47,7 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
 
   $scope.delete = function() {
     return channelStub.deleteChannel(channelId).then(function() {
-      return channelRepository.deleteChannel(channelId).then(function() {
+      return blogRepository.deleteChannel(channelId).then(function() {
         $state.go($scope.previousState);
       });
     });

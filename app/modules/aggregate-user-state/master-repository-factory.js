@@ -1,4 +1,4 @@
-angular.module('webApp').factory('masterRepositoryFactory', function($q, aggregateUserState, authenticationService, utilities) {
+angular.module('webApp').factory('masterRepositoryFactory', function($q, aggregateUserState, authenticationService, utilities, fetchAggregateUserState) {
   'use strict';
 
   return {
@@ -6,12 +6,22 @@ angular.module('webApp').factory('masterRepositoryFactory', function($q, aggrega
 
       var service = {};
 
+      var internal = service.internal = {};
+
       // The ID must be scoped to the lifetime of this repository, since this repository represents channels for a
       // particular user.
       var currentUserId = authenticationService.currentUser.userId;
 
       var userChanged = function() {
         return !authenticationService.currentUser || authenticationService.currentUser.userId !== currentUserId;
+      };
+
+      internal.ensureUserState = function(){
+        if (!aggregateUserState.currentValue) {
+          return fetchAggregateUserState.updateFromServer();
+        }
+
+        return $q.when();
       };
 
       service.getUserId = function(){
@@ -68,19 +78,18 @@ angular.module('webApp').factory('masterRepositoryFactory', function($q, aggrega
           return $q.reject(new FifthweekError('Repository not valid for current user.'));
         }
 
-        if (!aggregateUserState.currentValue) {
-          return $q.reject(new FifthweekError('No aggregate state found.'));
-        }
+        return internal.ensureUserState()
+          .then(function(){
+            var directValue = utilities.getValue(aggregateUserState.currentValue, key);
 
-        var directValue = utilities.getValue(aggregateUserState.currentValue, key);
+            if (directValue === undefined) {
+              return $q.reject(new FifthweekError('The key "' + key + '" does not match anything within the aggregate user state.'));
+            }
 
-        if (directValue === undefined) {
-          return $q.reject(new FifthweekError('The key "' + key + '" does not match anything within the aggregate user state.'));
-        }
+            var clonedValue = _.cloneDeep(directValue);
 
-        var clonedValue = _.cloneDeep(directValue);
-
-        return $q.when(clonedValue);
+            return $q.when(clonedValue);
+          });
       };
 
       return service;

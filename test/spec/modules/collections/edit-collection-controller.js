@@ -17,8 +17,8 @@ describe('edit collection controller', function () {
 
   var channelNameFormatter;
   var collectionService;
-  var channelRepositoryFactory;
-  var channelRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var collectionRepositoryFactory;
   var collectionRepository;
   var errorFacade;
@@ -48,8 +48,8 @@ describe('edit collection controller', function () {
     releaseTimeFormatter = jasmine.createSpyObj('releaseTimeFormatter', ['getDayAndTimesOfWeek']);
     $state = jasmine.createSpyObj('$state', ['go']);
     $state.params = { id: collectionId };
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannelsSorted']);
-    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannelsSorted']);
+    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
     collectionRepository = jasmine.createSpyObj('collectionRepository', ['getChannelForCollection']);
     collectionRepositoryFactory = { forCurrentUser: function() { return collectionRepository; }};
 
@@ -57,7 +57,7 @@ describe('edit collection controller', function () {
     module(function($provide) {
       $provide.value('$state', $state);
       $provide.value('releaseTimeFormatter', releaseTimeFormatter);
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
       $provide.value('collectionRepositoryFactory', collectionRepositoryFactory);
       $provide.value('collectionService', collectionService);
     });
@@ -71,7 +71,7 @@ describe('edit collection controller', function () {
       channelNameFormatter = $injector.get('channelNameFormatter');
     });
 
-    channelRepository.getChannelsSorted.and.returnValue($q.when(channels));
+    blogRepository.getChannelsSorted.and.returnValue($q.when(channels));
     collectionRepository.getChannelForCollection.and.returnValue($q.when(channel));
     collectionService.updateCollection.and.returnValue($q.when());
     collectionService.deleteCollection.and.returnValue($q.when());
@@ -105,7 +105,7 @@ describe('edit collection controller', function () {
   });
 
   it('should display any error messages in getting these channels', function() {
-    channelRepository.getChannelsSorted.and.returnValue($q.reject('error'));
+    blogRepository.getChannelsSorted.and.returnValue($q.reject('error'));
 
     initializeTarget();
 

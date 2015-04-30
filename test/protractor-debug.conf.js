@@ -7,6 +7,7 @@ exports.config = {
   specs: ['e2e/spec/**/*.spec.js'],
 
   allScriptsTimeout: minute,
+
   jasmineNodeOpts: {
     defaultTimeoutInterval: 2 * minute,
     includeStackTrace: true
@@ -18,6 +19,7 @@ exports.config = {
       'args': ['no-sandbox']
     }
   },
+
   onPrepare: function () {
     require('jasmine-reporters');
     var HtmlReporter = require('protractor-html-screenshot-reporter');

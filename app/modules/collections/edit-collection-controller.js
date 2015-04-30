@@ -4,7 +4,7 @@ angular.module('webApp').controller('editCollectionCtrl', function(
   states,
   collectionService,
   collectionRepositoryFactory,
-  channelRepositoryFactory,
+  blogRepositoryFactory,
   channelNameFormatter,
   releaseTimeFormatter,
   errorFacade) {
@@ -12,7 +12,7 @@ angular.module('webApp').controller('editCollectionCtrl', function(
 
   var collectionId = $state.params.id;
   var collectionRepository = collectionRepositoryFactory.forCurrentUser();
-  var channelRepository = channelRepositoryFactory.forCurrentUser();
+  var blogRepository = blogRepositoryFactory.forCurrentUser();
   var defaultHourOfWeek = 0;
   var sortReleaseTimes = function() {
     $scope.model.schedule = _.sortBy($scope.model.schedule, 'sortKey');
@@ -24,7 +24,7 @@ angular.module('webApp').controller('editCollectionCtrl', function(
     hourOfWeek: defaultHourOfWeek
   };
 
-  channelRepository.getChannelsSorted()
+  blogRepository.getChannelsSorted()
     .then(function(channels) {
       $scope.model.channels = _.map(
         channels,

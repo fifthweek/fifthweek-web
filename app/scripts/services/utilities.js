@@ -14,11 +14,12 @@ angular.module('webApp')
       path = path.replace(/^\./, '');           // strip a leading dot
       return path.split('.');
     };
+
     service.getValue = function(object, path) {
       var pathSegments = _.isArray(path) ? path : service.getAccessorPathSegments(path);
       for (var i = 0; i < pathSegments.length; ++i) {
         var pathSegment = pathSegments[i];
-        if (pathSegment in object) {
+        if (object && pathSegment in object) {
           object = object[pathSegment];
         }
         else {
@@ -98,6 +99,7 @@ angular.module('webApp')
         scope.focus = service.parseFlag(attrs, 'focus');
         scope.placeholder = attrs.placeholder;
         scope.breakpoint = attrs.breakpoint || 'sm';
+        scope.inputColumns = attrs.inputColumns || '6';
         scope.label = attrs.label;
 
         var scopeService = service.forScope(scope);

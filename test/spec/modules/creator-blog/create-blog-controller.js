@@ -34,16 +34,16 @@ describe('creator - create blog controller', function () {
   });
 
   it('should initialize with appropriate default state', function() {
-    expect($scope.newBlogData.blogName).toBe('');
+    expect($scope.newBlogData.name).toBe('');
     expect($scope.newBlogData.tagline).toBe('');
     expect($scope.newBlogData.basePrice).toBe('1.00');
   });
 
   it('should create first blog', function() {
-    var blogName = 'blogName';
+    var name = 'name';
     var tagline = 'tagline';
     var basePrice = '2.59';
-    $scope.newBlogData.blogName = blogName;
+    $scope.newBlogData.name = name;
     $scope.newBlogData.tagline = tagline;
     $scope.newBlogData.basePrice = basePrice;
 
@@ -51,7 +51,7 @@ describe('creator - create blog controller', function () {
     $scope.$apply();
 
     expect(blogService.createFirstBlog).toHaveBeenCalledWith({
-      blogName: blogName,
+      name: name,
       tagline: tagline,
       basePrice: 259
     });

@@ -7,8 +7,10 @@ describe('fw-post-list-controller', function(){
 
   var postInteractions;
   var authenticationService;
-  var channelRepositoryFactory;
-  var channelRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
+  var subscriptionRepositoryFactory;
+  var subscriptionRepository;
   var accountSettingsRepositoryFactory;
   var accountSettingsRepository;
   var fetchAggregateUserState;
@@ -20,23 +22,27 @@ describe('fw-post-list-controller', function(){
   beforeEach(function() {
 
     postInteractions = jasmine.createSpyObj('postInteractions', ['viewImage', 'openFile', 'editPost', 'deletePost']);
-    authenticationService = { currentUser: { userId: 'userId' }};
-    channelRepositoryFactory = jasmine.createSpyObj('channelRepositoryFactory', ['forCurrentUser']);
-    channelRepository = 'channelRepository';
-    channelRepositoryFactory.forCurrentUser.and.returnValue(channelRepository);
+    authenticationService = { currentUser: { userId: 'currentUserId' }};
+    blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
+    blogRepository = 'blogRepository';
+    blogRepositoryFactory.forCurrentUser.and.returnValue(blogRepository);
+    subscriptionRepositoryFactory = jasmine.createSpyObj('subscriptionRepositoryFactory', ['forCurrentUser']);
+    subscriptionRepository = 'subscriptionRepository';
+    subscriptionRepositoryFactory.forCurrentUser.and.returnValue(subscriptionRepository);
     accountSettingsRepositoryFactory = jasmine.createSpyObj('accountSettingsRepositoryFactory', ['forCurrentUser']);
     accountSettingsRepository = 'accountSettingsRepository';
     accountSettingsRepositoryFactory.forCurrentUser.and.returnValue(accountSettingsRepository);
     fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateInParallel']);
-    postsStub = jasmine.createSpyObj('postsStub', ['getCreatorBacklog', 'getCreatorNewsfeed']);
+    postsStub = jasmine.createSpyObj('postsStub', ['getCreatorBacklog', 'getNewsfeed']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
-    postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'processPostsForRendering', 'removePost', 'replacePostAndReorderIfRequired']);
+    postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'populateCreatorInformation', 'processPostsForRendering', 'removePost', 'replacePostAndReorderIfRequired']);
 
     module('webApp');
     module(function($provide) {
       $provide.value('postInteractions', postInteractions);
       $provide.value('authenticationService', authenticationService);
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
+      $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
       $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
       $provide.value('fetchAggregateUserState', fetchAggregateUserState);
       $provide.value('postsStub', postsStub);
@@ -73,7 +79,7 @@ describe('fw-post-list-controller', function(){
     });
 
     it('should call updateInParallel', function(){
-      expect(fetchAggregateUserState.updateInParallel).toHaveBeenCalledWith('userId', jasmine.any(Function));
+      expect(fetchAggregateUserState.updateInParallel).toHaveBeenCalledWith('currentUserId', jasmine.any(Function));
     });
 
     it('should get an account settings repository', function(){
@@ -81,7 +87,7 @@ describe('fw-post-list-controller', function(){
     });
 
     it('should get a channel repository', function(){
-      expect(channelRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+      expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
     });
 
     describe('when API fails', function(){
@@ -108,15 +114,30 @@ describe('fw-post-list-controller', function(){
       beforeEach(function(){
 
         postUtilities.populateCurrentCreatorInformation.and.returnValue($q.when());
+        postUtilities.populateCreatorInformation.and.returnValue($q.when());
         postUtilities.processPostsForRendering.and.returnValue($q.when());
 
         posts = {some: 'value' };
-        testData.updateDeferred.resolve({data: posts});
+        testData.updateDeferred.resolve(posts);
         $scope.$apply();
       });
 
-      it('should call populateCurrentCreatorInformation', function(){
-        expect(postUtilities.populateCurrentCreatorInformation).toHaveBeenCalledWith(posts, accountSettingsRepository, channelRepository);
+      it('should call populateCurrentCreatorInformation if user is creator', function(){
+        if(testData.timelineUserId === 'currentUserId') {
+          expect(postUtilities.populateCurrentCreatorInformation).toHaveBeenCalledWith(posts, accountSettingsRepository, blogRepository);
+        }
+        else{
+          expect(postUtilities.populateCurrentCreatorInformation).not.toHaveBeenCalled();
+        }
+      });
+
+      it('should call populateCreatorInformation if user is not creator', function(){
+        if(testData.timelineUserId !== 'currentUserId') {
+          expect(postUtilities.populateCreatorInformation).toHaveBeenCalledWith(posts, subscriptionRepository);
+        }
+        else{
+          expect(postUtilities.populateCreatorInformation).not.toHaveBeenCalled();
+        }
       });
 
       it('should call processPostsForRendering', function(){
@@ -136,6 +157,7 @@ describe('fw-post-list-controller', function(){
   describe('when created', function(){
     var testData = {};
     beforeEach(function(){
+      $scope.userId = 'targetUserId';
       testData.updateDeferred = undefined;
       fetchAggregateUserState.updateInParallel.and.callFake(function(userId, delegate){
         delegate();
@@ -165,11 +187,13 @@ describe('fw-post-list-controller', function(){
 
       beforeEach(function(){
         $scope.source = fwPostListConstants.sources.creatorBacklog;
+        testData.timelineUserId = 'currentUserId';
+        postsStub.getCreatorBacklog.and.returnValue($q.when({ data: [] }));
         target.initialize();
       });
 
       it('should call getCreatorBacklog', function(){
-        expect(postsStub.getCreatorBacklog).toHaveBeenCalledWith('userId');
+        expect(postsStub.getCreatorBacklog).toHaveBeenCalledWith('currentUserId');
       });
 
       includeInitializationTests(testData);
@@ -179,11 +203,29 @@ describe('fw-post-list-controller', function(){
 
       beforeEach(function(){
         $scope.source = fwPostListConstants.sources.creatorTimeline;
+        testData.timelineUserId = 'currentUserId';
+        postsStub.getNewsfeed.and.returnValue($q.when({ data: { posts: [] } }));
         target.initialize();
       });
 
-      it('should call getCreatorBacklog', function(){
-        expect(postsStub.getCreatorNewsfeed).toHaveBeenCalledWith('userId', 0, 1000);
+      it('should call getNewsfeed with the current user id', function(){
+        expect(postsStub.getNewsfeed).toHaveBeenCalledWith({ creatorId: 'currentUserId', startIndex: 0, count: 1000 });
+      });
+
+      includeInitializationTests(testData);
+    });
+
+    describe('when initialized with timeline source', function(){
+
+      beforeEach(function(){
+        $scope.source = fwPostListConstants.sources.timeline;
+        testData.timelineUserId = 'targetUserId';
+        postsStub.getNewsfeed.and.returnValue($q.when({ data: { posts: [] } }));
+        target.initialize();
+      });
+
+      it('should call getNewsfeed with the scope user id', function(){
+        expect(postsStub.getNewsfeed).toHaveBeenCalledWith({ creatorId: 'targetUserId', startIndex: 0, count: 1000 });
       });
 
       includeInitializationTests(testData);

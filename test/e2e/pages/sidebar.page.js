@@ -13,6 +13,7 @@ SidebarPage.prototype = Object.create({}, {
   postsLink: { get: function () { return element(by.id('sidebar-navigation-posts')); }},
   collectionsLink: { get: function () { return element(by.id('sidebar-navigation-collections')); }},
   channelsLink: { get: function () { return element(by.id('sidebar-navigation-channels')); }},
+  subscribersLink: { get: function () { return element(by.id('sidebar-navigation-subscribers')); }},
   accountLink: { get: function () { return element(by.id('sidebar-navigation-account')); }},
   helpLink: { get: function () { return element(by.id('sidebar-navigation-help')); }},
   includeEstablishedCreatorTests: { value: function(highlightedLink) {
@@ -20,7 +21,7 @@ SidebarPage.prototype = Object.create({}, {
 
     describe('sidebar', function() {
       it('should contain the correct number of links', function () {
-        expect(self.links.count()).toBe(7);
+        expect(self.links.count()).toBe(8);
       });
 
       it('should contain "Home" link', function () {
@@ -41,6 +42,10 @@ SidebarPage.prototype = Object.create({}, {
 
       it('should contain "Channels" link', function () {
         expect(self.channelsLink.isDisplayed()).toBe(true);
+      });
+
+      it('should contain "Subscribers" link', function () {
+        expect(self.subscribersLink.isDisplayed()).toBe(true);
       });
 
       it('should contain "Account" link', function () {

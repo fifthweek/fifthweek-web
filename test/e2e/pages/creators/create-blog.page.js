@@ -6,7 +6,7 @@ var TaglineInputPage = require('../tagline-input.page.js');
 var ChannelPriceInputPage = require('../channel-price-input.page.js');
 
 var testKit = new TestKit();
-var blogNameInputPage = new BlogNameInputPage();
+var nameInputPage = new BlogNameInputPage();
 var taglineInputPage = new TaglineInputPage();
 var channelPriceInputPage = new ChannelPriceInputPage();
 
@@ -14,13 +14,13 @@ var CreateBlogPage = function() {};
 
 CreateBlogPage.prototype = Object.create({}, {
   pageUrl: { get: function () { return '/creator/create-blog'; }},
-  nameTextBoxId: { value: 'newBlogData-blogName' },
+  nameTextBoxId: { value: 'newBlogData-name' },
   taglineTextBoxId: { value: 'newBlogData-tagline' },
   basePriceTextBoxId: { value: 'newBlogData-basePrice' },
   inputs: { value: [
     {
       name: 'nameTextBox',
-      newValue: function() { return blogNameInputPage.newName(); }
+      newValue: function() { return nameInputPage.newName(); }
     },
     {
       name: 'taglineTextBox',

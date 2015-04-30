@@ -1,10 +1,10 @@
-angular.module('webApp').controller('listCollectionsCtrl', function($scope, channelRepositoryFactory, errorFacade, releaseTimeFormatter) {
+angular.module('webApp').controller('listCollectionsCtrl', function($scope, blogRepositoryFactory, errorFacade, releaseTimeFormatter) {
   'use strict';
 
-  var channelRepository = channelRepositoryFactory.forCurrentUser();
+  var blogRepository = blogRepositoryFactory.forCurrentUser();
   $scope.model = {};
 
-  channelRepository.getChannels()
+  blogRepository.getChannels()
     .then(function(channels) {
       $scope.model.collections = _.chain(channels)
         .map(function(channel) {

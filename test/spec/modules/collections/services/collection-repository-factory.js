@@ -11,8 +11,8 @@ describe('collection repository factory', function(){
 
   var $q;
   var $rootScope;
-  var channelRepositoryFactory;
-  var channelRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var targetFactory;
   var target;
 
@@ -24,11 +24,11 @@ describe('collection repository factory', function(){
     channel = { channelId: channelId, collections: [ collection, collection2 ]};
     channels = [channel, { collections: [ { collectionId: 'B' } ]}];
 
-    channelRepository = jasmine.createSpyObj('channelRepository', ['getChannels', 'updateChannel', 'updateChannels']);
-    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; } };
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannels', 'updateChannel', 'updateChannels']);
+    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; } };
 
     module(function($provide) {
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
     });
 
     inject(function($injector) {
@@ -128,7 +128,7 @@ describe('collection repository factory', function(){
 
     it('should find the channel from the channel repository', function() {
       target.findChannelForCollection.and.returnValue(channel);
-      channelRepository.getChannels.and.returnValue($q.when(channels));
+      blogRepository.getChannels.and.returnValue($q.when(channels));
 
       var actualChannel = null;
       target.getChannelForCollection(collectionId).then(function(result) {
@@ -143,7 +143,7 @@ describe('collection repository factory', function(){
 
     it('should throw an error if collection does not exist', function() {
       target.findChannelForCollection.and.throwError(expectedError);
-      channelRepository.getChannels.and.returnValue($q.when(channels));
+      blogRepository.getChannels.and.returnValue($q.when(channels));
 
       target.getChannelForCollection(collectionId)
         .then(function() {
@@ -163,7 +163,7 @@ describe('collection repository factory', function(){
       spyOn(target, 'addCollectionToChannelUnchecked');
       target.tryFindChannelForCollection.and.returnValue(undefined);
 
-      channelRepository.updateChannels.and.callFake(function(applyChange) {
+      blogRepository.updateChannels.and.callFake(function(applyChange) {
         return $q.when(applyChange(channels));
       });
     });
@@ -210,7 +210,7 @@ describe('collection repository factory', function(){
       spyOn(target, 'removeCollectionFromChannels');
       spyOn(target, 'addCollectionToChannelUnchecked');
 
-      channelRepository.updateChannels.and.callFake(function(applyChange) {
+      blogRepository.updateChannels.and.callFake(function(applyChange) {
         return $q.when(applyChange(channels));
       });
     });
@@ -250,7 +250,7 @@ describe('collection repository factory', function(){
 
       spyOn(target, 'removeCollectionFromChannels');
 
-      channelRepository.updateChannels.and.callFake(function(applyChange) {
+      blogRepository.updateChannels.and.callFake(function(applyChange) {
         return $q.when(applyChange(channels));
       });
     });

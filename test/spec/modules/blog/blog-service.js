@@ -109,8 +109,11 @@ describe('blog service', function() {
         expect(aggregateUserState.setDelta).toHaveBeenCalledWith(userId, 'creatorStatus', {blogId: blogId});
       });
 
-      it('should set the default channel to aggregate user state', function(){
-        expect(aggregateUserState.setDelta).toHaveBeenCalledWith(userId, 'createdChannelsAndCollections', {
+      it('should set the blog data to aggregate user state', function(){
+        expect(blogRepository.setBlog).toHaveBeenCalledWith({
+          blogId: blogId,
+          introduction: blogServiceConstants.defaultBlogIntroduction,
+          creationDate: date,
           channels: [
             {
               channelId: blogId,
@@ -122,15 +125,6 @@ describe('blog service', function() {
               collections: []
             }
           ]
-        });
-      });
-
-      it('should set the blog data to aggregate user state', function(){
-        expect(blogRepository.setBlog).toHaveBeenCalledWith({
-          blogId: blogId,
-          creatorId: userId,
-          introduction: blogServiceConstants.defaultBlogIntroduction,
-          creationDate: date
         });
       });
     });
@@ -154,28 +148,23 @@ describe('blog service', function() {
       authenticationService.currentUser.userId = 'changed_user_id';
       $rootScope.$apply();
 
-      expect(aggregateUserState.setDelta.calls.allArgs()).toEqual([
-        [userId, 'creatorStatus', {blogId: blogId}],
-        [userId, 'createdChannelsAndCollections', {
-          channels: [
-            {
-              channelId: blogId,
-              name: blogServiceConstants.defaultChannelName,
-              priceInUsCentsPerWeek: basePrice,
-              description: blogServiceConstants.defaultChannelDescription,
-              isDefault: true,
-              isVisibleToNonSubscribers: true,
-              collections: []
-            }
-          ]
-        }]
-      ]);
+      expect(aggregateUserState.setDelta).toHaveBeenCalledWith(userId, 'creatorStatus', {blogId: blogId});
 
       expect(blogRepository.setBlog).toHaveBeenCalledWith({
         blogId: blogId,
-        creatorId: userId,
         introduction: blogServiceConstants.defaultBlogIntroduction,
-        creationDate: date
+        creationDate: date,
+        channels: [
+          {
+            channelId: blogId,
+            name: blogServiceConstants.defaultChannelName,
+            priceInUsCentsPerWeek: basePrice,
+            description: blogServiceConstants.defaultChannelDescription,
+            isDefault: true,
+            isVisibleToNonSubscribers: true,
+            collections: []
+          }
+        ]
       });
     });
 

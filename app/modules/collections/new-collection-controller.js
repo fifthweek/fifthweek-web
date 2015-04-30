@@ -1,4 +1,4 @@
-angular.module('webApp').controller('newCollectionCtrl', function($scope, $state, states, channelRepositoryFactory, collectionService, channelNameFormatter, errorFacade) {
+angular.module('webApp').controller('newCollectionCtrl', function($scope, $state, states, blogRepositoryFactory, collectionService, channelNameFormatter, errorFacade) {
   'use strict';
 
   $scope.previousState = states.creator.collections.name;
@@ -9,9 +9,9 @@ angular.module('webApp').controller('newCollectionCtrl', function($scope, $state
     }
   };
 
-  var channelRepository = channelRepositoryFactory.forCurrentUser();
+  var blogRepository = blogRepositoryFactory.forCurrentUser();
 
-  channelRepository.getChannelsSorted()
+  blogRepository.getChannelsSorted()
     .then(function(channels) {
       $scope.model.channels = _.map(
         channels,

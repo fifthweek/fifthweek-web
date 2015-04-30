@@ -14,8 +14,8 @@ describe('new channel controller', function () {
   var states;
   var target;
 
-  var channelRepositoryFactory;
-  var channelRepository;
+  var blogRepositoryFactory;
+  var blogRepository;
   var channelStub;
   var blogService;
 
@@ -23,15 +23,15 @@ describe('new channel controller', function () {
     blogService = { blogId: blogId };
     $state = jasmine.createSpyObj('$state', ['go']);
     channelStub = jasmine.createSpyObj('channelStub', ['postChannel']);
-    channelRepository = jasmine.createSpyObj('channelRepository', ['createChannel']);
-    channelRepositoryFactory = { forCurrentUser: function() { return channelRepository; }};
+    blogRepository = jasmine.createSpyObj('blogRepository', ['createChannel']);
+    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
 
     module('webApp');
     module(function($provide) {
       $provide.value('blogService', blogService);
       $provide.value('$state', $state);
       $provide.value('channelStub', channelStub);
-      $provide.value('channelRepositoryFactory', channelRepositoryFactory);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
     });
 
     inject(function ($injector, $controller) {
@@ -42,7 +42,7 @@ describe('new channel controller', function () {
     });
 
     channelStub.postChannel.and.returnValue($q.defer().promise);
-    channelRepository.createChannel.and.returnValue($q.defer().promise);
+    blogRepository.createChannel.and.returnValue($q.defer().promise);
   });
 
   it('should expose the state to return to on completion', function() {
@@ -84,7 +84,7 @@ describe('new channel controller', function () {
     $scope.create();
     $scope.$apply();
 
-    expect(channelRepository.createChannel).toHaveBeenCalledWith({
+    expect(blogRepository.createChannel).toHaveBeenCalledWith({
       channelId: channelId,
       name: 'name',
       description: 'description',
@@ -97,7 +97,7 @@ describe('new channel controller', function () {
 
   it('should return to the previous state on save', function() {
     channelStub.postChannel.and.returnValue($q.when({ data: channelId }));
-    channelRepository.createChannel.and.returnValue($q.when());
+    blogRepository.createChannel.and.returnValue($q.when());
 
     $scope.create();
     $scope.$apply();

@@ -16,6 +16,7 @@
 
     var blog;
     var registration;
+    var userRegistration;
     var visibleChannels = [];
 
     var defaults = new Defaults();
@@ -32,18 +33,63 @@
       sidebar.landingPageLink.click();
     };
 
-    it('should not contain the standard sidebar or header', function() {
+    var runForCreatorAndUserAndLoggedOutUser = function(delegate){
+      delegate();
+      commonWorkflows.signOut();
+      commonWorkflows.getPage('/' + registration.username);
+      delegate();
+      commonWorkflows.signIn(userRegistration);
+      commonWorkflows.getPage('/' + registration.username);
+      delegate();
+      commonWorkflows.reSignIn(registration);
+      navigateToPage();
+    };
+
+    var describeForCreatorAndUserAndLoggedOutUser = function(delegate){
+      describe('when creator', function(){
+        delegate();
+      });
+
+      describe('when user', function(){
+        it('should run once before all', function(){
+          commonWorkflows.signOut();
+          commonWorkflows.getPage('/' + registration.username);
+        });
+        delegate();
+      });
+      describe('when logged out user', function(){
+        it('should run once before all', function(){
+          commonWorkflows.signIn(userRegistration);
+          commonWorkflows.getPage('/' + registration.username);
+        });
+        delegate();
+      });
+
+      it('should run once after all', function(){
+        commonWorkflows.reSignIn(registration);
+        navigateToPage();
+      });
+    };
+
+    it('should run once before all', function() {
+      userRegistration = commonWorkflows.register();
       var context = commonWorkflows.createBlog();
       blog = context.blog;
       registration = context.registration;
+    });
 
+    it('should not contain the standard sidebar or header', function() {
       navigateToPage();
-      expect(sidebar.sidebar.isDisplayed()).toBe(false);
-      expect(headerStandard.navbar.isDisplayed()).toBe(false);
+      runForCreatorAndUserAndLoggedOutUser(function(){
+        expect(sidebar.sidebar.isDisplayed()).toBe(false);
+        expect(headerStandard.navbar.isDisplayed()).toBe(false);
+      });
     });
 
     describe('after creating a blog', function() {
-      headerCreator.includeTests(function() { return blog; }, function() { return defaults.introduction });
+      describeForCreatorAndUserAndLoggedOutUser(function(){
+        headerCreator.includeTests(function() { return blog; }, function() { return defaults.introduction });
+      });
     });
 
     describe('after signing back in', function() {
@@ -61,7 +107,9 @@
       var videoUrlId = '114229222';
 
       it('should be hidden in absence of a full description and video', function() {
-        expect(page.moreInfo.isPresent()).toBe(false);
+        runForCreatorAndUserAndLoggedOutUser(function(){
+          expect(page.moreInfo.isPresent()).toBe(false);
+        });
       });
 
       it('should display full description when provided', function() {
@@ -71,9 +119,11 @@
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
         navigateToPage();
 
-        expect(page.moreInfo.isPresent()).toBe(true);
-        expect(page.video.isPresent()).toBe(false);
-        expect(page.fullDescription.getText()).toBe(fullDescription);
+        runForCreatorAndUserAndLoggedOutUser(function(){
+          expect(page.moreInfo.isPresent()).toBe(true);
+          expect(page.video.isPresent()).toBe(false);
+          expect(page.fullDescription.getText()).toBe(fullDescription);
+        });
       });
 
       it('should display video when provided', function() {
@@ -84,10 +134,12 @@
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
         navigateToPage();
 
-        expect(page.moreInfo.isPresent()).toBe(true);
-        expect(page.video.isPresent()).toBe(true);
-        expect(page.video.getAttribute('src')).toContain(videoUrlDomain);
-        expect(page.video.getAttribute('src')).toContain(videoUrlId);
+        runForCreatorAndUserAndLoggedOutUser(function(){
+          expect(page.moreInfo.isPresent()).toBe(true);
+          expect(page.video.isPresent()).toBe(true);
+          expect(page.video.getAttribute('src')).toContain(videoUrlDomain);
+          expect(page.video.getAttribute('src')).toContain(videoUrlId);
+        });
       });
 
       it('should display full description and video when both are provided', function() {
@@ -97,11 +149,13 @@
         customizeLandingPagePage.fullDescriptionSubmitButton.click();
         navigateToPage();
 
-        expect(page.moreInfo.isPresent()).toBe(true);
-        expect(page.video.isPresent()).toBe(true);
-        expect(page.video.getAttribute('src')).toContain(videoUrlDomain);
-        expect(page.video.getAttribute('src')).toContain(videoUrlId);
-        expect(page.fullDescription.getText()).toBe(fullDescription);
+        runForCreatorAndUserAndLoggedOutUser(function(){
+          expect(page.moreInfo.isPresent()).toBe(true);
+          expect(page.video.isPresent()).toBe(true);
+          expect(page.video.getAttribute('src')).toContain(videoUrlDomain);
+          expect(page.video.getAttribute('src')).toContain(videoUrlId);
+          expect(page.fullDescription.getText()).toBe(fullDescription);
+        });
       });
     });
 
@@ -122,17 +176,19 @@
       });
 
       var expectVisibleChannels = function() {
-        expect(page.channelCount).toBe(visibleChannels.length);
-        for (var i = 0; i < visibleChannels.length; i++) {
-          var channel = page.getChannel(i);
-          var channelName = channel.element(by.css('.channel-name'));
-          var channelDescription = channel.element(by.css('.channel-description'));
-          var channelPrice = channel.element(by.css('.channel-price'));
+        runForCreatorAndUserAndLoggedOutUser(function(){
+          expect(page.channelCount).toBe(visibleChannels.length);
+          for (var i = 0; i < visibleChannels.length; i++) {
+            var channel = page.getChannel(i);
+            var channelName = channel.element(by.css('.channel-name'));
+            var channelDescription = channel.element(by.css('.channel-description'));
+            var channelPrice = channel.element(by.css('.channel-price'));
 
-          expect(channelName.getText()).toContain(visibleChannels[i].name);
-          expect(channelDescription.getText()).toContain(visibleChannels[i].description);
-          expect(channelPrice.getText()).toContain('$' + visibleChannels[i].price);
-        }
+            expect(channelName.getText()).toContain(visibleChannels[i].name);
+            expect(channelDescription.getText()).toContain(visibleChannels[i].description);
+            expect(channelPrice.getText()).toContain('$' + visibleChannels[i].price);
+          }
+        });
       };
 
       var createHiddenAndVisibleChannels = function() {
@@ -144,39 +200,41 @@
       };
     });
 
-    describe('total price', function() {
-      var priceSum;
+    describeForCreatorAndUserAndLoggedOutUser(function(){
+      describe('total price', function() {
+        var priceSum;
 
-      it('should equal the default channel price by default', function() {
-        expectPrice(blog.basePrice);
-      });
+        it('should equal the default channel price by default', function() {
+          expectPrice(blog.basePrice);
+        });
 
-      it('should always include the default channel price (it may not be deselected)', function() {
-        page.getChannelPrice(0).click();
-        expectPrice(blog.basePrice);
-      });
+        it('should always include the default channel price (it may not be deselected)', function() {
+          page.getChannelPrice(0).click();
+          expectPrice(blog.basePrice);
+        });
 
-      it('should sum all selected channels as they are selected', function() {
-        priceSum = blog.basePrice;
-        for (var i = 1; i < visibleChannels.length; i++) {
-          priceSum = (parseFloat(priceSum) + parseFloat(visibleChannels[i].price)).toFixed(2);
-          page.getChannelPrice(i).click();
-          expectPrice(priceSum);
+        it('should sum all selected channels as they are selected', function() {
+          priceSum = blog.basePrice;
+          for (var i = 1; i < visibleChannels.length; i++) {
+            priceSum = (parseFloat(priceSum) + parseFloat(visibleChannels[i].price)).toFixed(2);
+            page.getChannelPrice(i).click();
+            expectPrice(priceSum);
+          }
+        });
+
+        it('should sum all selected channels as they are deselected', function() {
+          for (var i = 1; i < visibleChannels.length; i++) {
+            priceSum = (parseFloat(priceSum) - parseFloat(visibleChannels[i].price)).toFixed(2);
+            page.getChannelPrice(i).click();
+            expectPrice(priceSum);
+          }
+        });
+
+        var expectPrice = function(price) {
+          expect(page.subscribeButton.getText()).toContain('$' + price);
+          expect(page.channelListTotalPrice.getText()).toContain('$' + price);
         }
       });
-
-      it('should sum all selected channels as they are deselected', function() {
-        for (var i = 1; i < visibleChannels.length; i++) {
-          priceSum = (parseFloat(priceSum) - parseFloat(visibleChannels[i].price)).toFixed(2);
-          page.getChannelPrice(i).click();
-          expectPrice(priceSum);
-        }
-      });
-
-      var expectPrice = function(price) {
-        expect(page.subscribeButton.getText()).toContain('$' + price);
-        expect(page.channelListTotalPrice.getText()).toContain('$' + price);
-      }
     });
 
     describe('subscribing', function() {

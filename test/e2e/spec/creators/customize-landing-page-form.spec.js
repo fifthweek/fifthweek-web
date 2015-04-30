@@ -19,7 +19,7 @@ describe('customize landing page form', function() {
   var page = new LandingPagePage();
   var testKit = new TestKit();
   var creatorLandingPagePage = new CreatorLandingPagePage();
-  var blogNameInputPage = new BlogNameInputPage();
+  var nameInputPage = new BlogNameInputPage();
   var taglineInputPage = new TaglineInputPage();
   var videoUrlInputPage = new VideoUrlInputPage();
   var discardChanges = new DiscardChangesPage();
@@ -65,7 +65,7 @@ describe('customize landing page form', function() {
       });
 
       it('should contain the blog name', function(){
-        expect(element(by.id(page.blogNameTextBoxId)).getAttribute('value')).toBe(blog.name);
+        expect(element(by.id(page.nameTextBoxId)).getAttribute('value')).toBe(blog.name);
       });
 
       it('should contain the tagline', function(){
@@ -142,7 +142,7 @@ describe('customize landing page form', function() {
       page.basicsTabLink.click();
       expect(page.basicsSubmitButton.isEnabled()).toBe(false);
 
-      testKit.setValue(page.blogNameTextBoxId, newValues.name);
+      testKit.setValue(page.nameTextBoxId, newValues.name);
       expect(page.basicsSubmitButton.isEnabled()).toBe(true);
 
       testKit.setValue(page.taglineTextBoxId, newValues.tagline);
@@ -217,7 +217,7 @@ describe('customize landing page form', function() {
       });
 
       it('should reset the submit button and success message status on next change', function(){
-        testKit.setValue(page.blogNameTextBoxId, '1');
+        testKit.setValue(page.nameTextBoxId, '1');
         expect(page.basicsSuccessMessage.isDisplayed()).toBe(false);
         expect(page.basicsSubmitButton.isEnabled()).toBe(true);
         commonWorkflows.fastRefresh();
@@ -227,7 +227,7 @@ describe('customize landing page form', function() {
         commonWorkflows.reSignIn(registration);
         navigateToPage();
 
-        expect(element(by.id(page.blogNameTextBoxId)).getAttribute('value')).toBe(formValues.name);
+        expect(element(by.id(page.nameTextBoxId)).getAttribute('value')).toBe(formValues.name);
         expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(formValues.tagline);
         expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).toBe(formValues.introduction);
 
@@ -266,7 +266,7 @@ describe('customize landing page form', function() {
           page.basicsTabLink.click();
         });
 
-        testKit.includeHappyPaths(page, blogNameInputPage, 'blogNameTextBox');
+        testKit.includeHappyPaths(page, nameInputPage, 'nameTextBox');
         testKit.includeHappyPaths(page, taglineInputPage, 'taglineTextBox');
 
         it('should allow symbols in introductions', function(){
@@ -320,7 +320,7 @@ describe('customize landing page form', function() {
           page.basicsTabLink.click();
         });
 
-        testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, blogNameInputPage, 'blogNameTextBox');
+        testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, nameInputPage, 'nameTextBox');
         testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, taglineInputPage, 'taglineTextBox');
 
         it('should not allow an empty introduction', function(){

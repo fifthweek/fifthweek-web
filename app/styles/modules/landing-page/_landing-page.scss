@@ -1,7 +1,7 @@
 @import '_base';
 
 $screen-price-break-point: 370px;
-$html-name-space:'.page-timeline';
+$html-name-space:'.page-landing-page';
 $header-image-height:500px;
 $header-image-height-sm:300px;
 $header-image-height-xs:240px;
@@ -35,11 +35,21 @@ $header-height:108px;
   }
 }
 
-#edit-page-link {
-  float:right;
-}
-
 #{$html-name-space} {
+
+  .anchor-cursor{
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  #edit-page-link {
+    float:right;
+  }
+
+  .guest-list-price{
+    text-decoration: line-through;
+  }
+
   .header-image-control-overlay {
     position: absolute;
     top: $main-cont-padding-small;

@@ -1,4 +1,4 @@
-describe('channel repository factory', function(){
+describe('blog repository factory', function(){
   'use strict';
 
   var channelId = 'channelId';
@@ -7,13 +7,14 @@ describe('channel repository factory', function(){
   var $rootScope;
   var masterRepositoryFactory;
   var masterRepository;
+  var blogRepositoryFactoryConstants;
   var targetFactory;
   var target;
 
   beforeEach(function() {
     module('webApp');
 
-    masterRepository = jasmine.createSpyObj('masterRepository', ['get', 'update']);
+    masterRepository = jasmine.createSpyObj('masterRepository', ['get', 'set', 'update', 'getUserId']);
     masterRepositoryFactory = { forCurrentUser: function() { return masterRepository; } };
 
     module(function($provide) {
@@ -23,11 +24,108 @@ describe('channel repository factory', function(){
     inject(function($injector) {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
-      targetFactory = $injector.get('channelRepositoryFactory');
+      blogRepositoryFactoryConstants = $injector.get('blogRepositoryFactoryConstants');
+      targetFactory = $injector.get('blogRepositoryFactory');
     });
 
     target = targetFactory.forCurrentUser();
   });
+
+  describe('calling getUserId', function(){
+    var result;
+    beforeEach(function(){
+      masterRepository.getUserId.and.returnValue('result');
+      result = target.getUserId();
+    });
+
+    it('should return the result', function(){
+      expect(result).toBe('result');
+    });
+  });
+
+  describe('when calling getBlog', function() {
+    it('should get settings from the master repository at the correct location', function() {
+      var expected = { name: 'phil' };
+      var actual;
+      masterRepository.get.and.returnValue($q.when(expected));
+
+      target.getBlog().then(function(settings) {
+        actual = settings;
+      });
+      $rootScope.$apply();
+
+      expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
+      expect(expected).toBe(actual);
+    });
+
+    it('should fail if there is no blog data', function() {
+      var error;
+      masterRepository.get.and.returnValue($q.when(undefined));
+
+      target.getBlog().catch(function(e) {
+        error = e;
+      });
+      $rootScope.$apply();
+
+      expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
+      expect(error instanceof DisplayableError).toBe(true);
+      expect(error.message).toBe('You do not have a blog.');
+    });
+  });
+
+  describe('calling tryGetBlog', function() {
+    var expected;
+    var actual;
+    beforeEach(function(){
+      expected = 'data';
+      actual = undefined;
+
+      masterRepository.get.and.returnValue($q.when(expected));
+    });
+
+    describe('when the user is logged in', function(){
+      beforeEach(function(){
+        masterRepository.getUserId.and.returnValue('userId');
+        target.tryGetBlog().then(function(result) { actual = result; });
+        $rootScope.$apply();
+      });
+
+      it('should call the master repository', function(){
+        expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
+      });
+
+      it('should return the expected data', function(){
+        expect(actual).toBe(expected);
+      });
+    });
+
+    describe('when the user is not logged in', function(){
+      beforeEach(function(){
+        masterRepository.getUserId.and.returnValue(undefined);
+        target.tryGetBlog().then(function(result) { actual = result; });
+        $rootScope.$apply();
+      });
+
+      it('should not call the master repository', function(){
+        expect(masterRepository.get).not.toHaveBeenCalled();
+      });
+
+      it('should return the expected data', function(){
+        expect(actual).toBeUndefined();
+      });
+    });
+  });
+
+  describe('when calling setBlog', function() {
+    it('should set settings into the master repository at the correct location', function() {
+      var settings = { name: 'phil' };
+
+      target.setBlog(settings);
+
+      expect(masterRepository.set).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey, settings);
+    });
+  });
+
 
   describe('when getting channels', function() {
     it('should get channels from the master repository at the correct location', function() {
@@ -40,7 +138,7 @@ describe('channel repository factory', function(){
       });
       $rootScope.$apply();
 
-      expect(masterRepository.get).toHaveBeenCalledWith('createdChannelsAndCollections.channels');
+      expect(masterRepository.get).toHaveBeenCalledWith('blog.channels');
       expect(expectedChannels).toBe(actualChannels);
     });
 
@@ -114,7 +212,7 @@ describe('channel repository factory', function(){
       target.updateChannels(applyChanges);
 
       expect(applyChanges).toHaveBeenCalledWith(channels);
-      expect(masterRepository.update).toHaveBeenCalledWith('createdChannelsAndCollections.channels', jasmine.any(Function));
+      expect(masterRepository.update).toHaveBeenCalledWith('blog.channels', jasmine.any(Function));
     });
   });
 
@@ -249,7 +347,7 @@ describe('channel repository factory', function(){
 
       var error;
       beforeEach(function(){
-        masterRepository.get.and.returnValue($q.when([]));
+        masterRepository.get.and.returnValue($q.when());
         target.getChannelMap().catch(function(e){error = e;});
         $rootScope.$apply();
       });
@@ -264,7 +362,7 @@ describe('channel repository factory', function(){
 
       var result;
       beforeEach(function(){
-        masterRepository.get.and.returnValue($q.when([
+        masterRepository.get.and.returnValue($q.when({ channels: [
           {
             channelId: 'a',
             collections: [
@@ -279,7 +377,7 @@ describe('channel repository factory', function(){
               { collectionId: 'yy' }
             ]
           }
-        ]));
+        ]}));
 
         target.getChannelMap().then(function(r){result = r;});
         $rootScope.$apply();
@@ -287,18 +385,20 @@ describe('channel repository factory', function(){
 
       it('should return a map of channels and collections', function(){
         expect(result).toEqual({
-          a: {
-            channelId: 'a',
-            collections: {
-              x: { collectionId: 'x' },
-              y: { collectionId: 'y' }
-            }
-          },
-          b: {
-            channelId: 'b',
-            collections: {
-              xx: { collectionId: 'xx' },
-              yy: { collectionId: 'yy' }
+          channels: {
+            a: {
+              channelId: 'a',
+              collections: {
+                x: { collectionId: 'x' },
+                y: { collectionId: 'y' }
+              }
+            },
+            b: {
+              channelId: 'b',
+              collections: {
+                xx: { collectionId: 'xx' },
+                yy: { collectionId: 'yy' }
+              }
             }
           }
         });

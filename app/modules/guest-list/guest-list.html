@@ -19,20 +19,20 @@
           </p>
         </div>
         <p>
-          <button class="btn btn-default btn-block"
+          <button class="btn btn-default btn-block" id="create-guest-list-button"
                   ng-click="editList()">Create Guest List</button>
         </p>
       </div>
       <div ng-if="model.freeAccessUsers && model.freeAccessUsers.length">
 
         <p>
-          You have <strong>{{model.freeAccessUsers.length}}</strong> {{model.freeAccessUsers.length === 1 ? 'person' : 'people'}} in your guest list,
-          of which <strong>{{model.registeredCount}}</strong> {{model.registeredCount === 1 ? 'has' : 'have'}} registered on Fifthweek
-          and <strong>{{model.subscribedCount}}</strong> {{model.subscribedCount === 1 ? 'has' : 'have'}} subscribed to your blog.
+          You have <strong id="guest-list-count">{{model.freeAccessUsers.length}}</strong> {{model.freeAccessUsers.length === 1 ? 'person' : 'people'}} in your guest list,
+          of which <strong id="guest-list-registered-count">{{model.registeredCount}}</strong> {{model.registeredCount === 1 ? 'has' : 'have'}} registered on Fifthweek
+          and <strong id="guest-list-subscribed-count">{{model.subscribedCount}}</strong> {{model.subscribedCount === 1 ? 'has' : 'have'}} subscribed to your blog.
         </p>
 
         <p>
-          <button class="btn btn-default btn-block"
+          <button class="btn btn-default btn-block" id="edit-guest-list-button"
                   ng-click="editList()">Edit Guest List</button>
         </p>
 
@@ -47,7 +47,7 @@
           </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in model.freeAccessUsers">
+            <tr ng-repeat="item in model.freeAccessUsers" class="guest-list-row" id="guest-list-row-{{$index}}">
               <td><p>{{ item.email }}</p></td>
               <td><p>{{ item.username }}</p></td>
               <td><p ng-if="item.isSubscribed"><i class="fa fa-check"></i></p></td>
@@ -60,6 +60,7 @@
       <form novalidate name="editForm" id="edit-form">
         <div class="row-btn-top">
           <button type="submit"
+                  id="save-guest-list-button"
                   class="btn btn-block btn-success"
                   data-loading-text="Saving..."
                   data-event-title="Guest list saved"
@@ -69,6 +70,7 @@
                   error-message="model.errorMessage">Save Guest List</button>
 
           <button class="btn btn-default btn-block"
+                  id="cancel-edit-guest-list-button"
                   ng-disabled="editForm.isSubmitting"
                   ng-click="viewList()">Cancel</button>
         </div>

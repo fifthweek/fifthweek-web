@@ -1,5 +1,5 @@
 angular.module('webApp').controller('fwPostListCtrl',
-  function($scope, $q, fwPostListConstants, postInteractions, authenticationService, channelRepositoryFactory, accountSettingsRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade, postUtilities) {
+  function($scope, $q, fwPostListConstants, postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade, postUtilities) {
     'use strict';
 
     var model = {
@@ -11,8 +11,10 @@ angular.module('webApp').controller('fwPostListCtrl',
     var loadNext = function(){ return $q.reject(new DisplayableError('Unknown fw-post-list source.')); };
 
     var accountSettingsRepository;
-    var channelRepository;
-    var userId;
+    var blogRepository;
+    var subscriptionRepository;
+    var timelineUserId;
+    var currentUserId;
 
     var loadPosts = function(){
       model.errorMessage = undefined;
@@ -21,10 +23,15 @@ angular.module('webApp').controller('fwPostListCtrl',
       var getNextPosts = function() { return loadNext(0, 1000); };
 
       var posts;
-      fetchAggregateUserState.updateInParallel(userId, getNextPosts)
-        .then(function(result) {
-          posts = result.data;
-          return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, channelRepository);
+      fetchAggregateUserState.updateInParallel(currentUserId, getNextPosts)
+        .then(function(nextPosts) {
+          posts = nextPosts;
+          if(currentUserId === timelineUserId){
+            return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository);
+          }
+          else{
+            return postUtilities.populateCreatorInformation(posts, subscriptionRepository);
+          }
         })
         .then(function(){
           return postUtilities.processPostsForRendering(posts);
@@ -72,17 +79,40 @@ angular.module('webApp').controller('fwPostListCtrl',
     };
 
     this.initialize = function(){
-
       accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
-      channelRepository = channelRepositoryFactory.forCurrentUser();
+      blogRepository = blogRepositoryFactory.forCurrentUser();
+      subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
-      userId = authenticationService.currentUser.userId;
+      currentUserId = authenticationService.currentUser.userId;
 
       if($scope.source === fwPostListConstants.sources.creatorBacklog){
-        loadNext = function() { return postsStub.getCreatorBacklog(userId); };
+        timelineUserId = currentUserId;
+        loadNext = function() {
+          return postsStub.getCreatorBacklog(timelineUserId)
+            .then(function(response){
+              return $q.when(response.data);
+            });
+        };
       }
-      else if($scope.source === fwPostListConstants.sources.creatorTimeline || $scope.source === fwPostListConstants.sources.creatorPosts) {
-        loadNext = function(startIndex, count) { return postsStub.getCreatorNewsfeed(userId, startIndex, count); };
+      else{
+        if($scope.source === fwPostListConstants.sources.creatorTimeline) {
+          timelineUserId = currentUserId;
+        }
+        else{
+          timelineUserId = $scope.userId;
+        }
+
+        loadNext = function(startIndex, count) {
+          return postsStub
+            .getNewsfeed({
+              creatorId: timelineUserId,
+              startIndex: startIndex,
+              count: count
+            })
+            .then(function(response){
+              return $q.when(response.data.posts);
+            });
+        };
       }
 
       loadPosts();

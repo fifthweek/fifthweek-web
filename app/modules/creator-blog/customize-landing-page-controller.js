@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'customizeLandingPageCtrl',
-  function($scope, $q, blogRepositoryFactory, aggregateUserStateUtilities, blogStub, errorFacade, blobImageControlFactory) {
+  function($scope, $q, $state, states, blogRepositoryFactory, aggregateUserStateUtilities, blogStub, errorFacade, blobImageControlFactory) {
     'use strict';
 
     var model = {
@@ -17,7 +17,8 @@ angular.module('webApp').controller(
         .then(function(data){
           model.settings = data;
 
-          model.landingPageUrl = 'https://www.fifthweek.com/' + aggregateUserStateUtilities.getUsername();
+          model.username = aggregateUserStateUtilities.getUsername();
+          model.landingPageUrl = 'https://www.fifthweek.com/' + model.username;
 
           if(data.headerImage){
             $scope.blobImage.update(data.headerImage.containerName, data.headerImage.fileId, true);
@@ -51,7 +52,7 @@ angular.module('webApp').controller(
         fileId = model.settings.headerImage.fileId;
       }
       var blogData = {
-        blogName: model.settings.blogName,
+        name: model.settings.name,
         tagline: model.settings.tagline,
         introduction: model.settings.introduction,
         headerImageFileId: fileId,
@@ -67,5 +68,4 @@ angular.module('webApp').controller(
           $scope.form.$setPristine();
         });
     };
-
 });

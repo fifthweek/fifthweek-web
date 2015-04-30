@@ -12,6 +12,35 @@ describe('utilities', function() {
     utilities = $injector.get('utilities');
   }));
 
+  describe('getValue', function(){
+    it('should return the expected parts of an object', function(){
+      var input = {
+        a: {
+          b: {
+            c: 'c'
+          }
+        }
+      };
+
+      var result;
+
+      result = utilities.getValue(input, 'a');
+      expect(result).toBe(input.a);
+
+      result = utilities.getValue(input, 'a.b');
+      expect(result).toBe(input.a.b);
+
+      result = utilities.getValue(input, 'a.b.c');
+      expect(result).toBe(input.a.b.c);
+
+      result = utilities.getValue(input, 'a.x.c');
+      expect(result).toBeUndefined();
+
+      result = utilities.getValue(input, 'z');
+      expect(result).toBeUndefined();
+    });
+  });
+
   describe('when getting an HTTP error', function(){
 
     it('should return a connection error if the status code is zero', function(){
