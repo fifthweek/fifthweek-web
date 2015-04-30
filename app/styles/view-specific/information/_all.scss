@@ -587,29 +587,29 @@ $html-name-space:'.info-page';
     font-size:58px;
   }
 
-  .faq-page-list {
+  .info-page-box-long-form {
     text-align: left;
-    max-width: 800px;
+    .container {
+      max-width: 800px;
+    }
     p, h2, ol {
       max-width: none;
     }
     h2 {
       font-weight: normal;
+      padding-top: $info-box-padding;
       padding-bottom: 15px;
       margin-bottom: 30px;
       border-bottom: 1px solid $grey-light-1;
+      &:first-child {
+        padding-top: 0;
+      }
     }
     h3 {
       font-size: 21px;
       font-weight: bold;
       padding-top: 15px;
       margin-bottom: 20px;
-    }
-    .question-answer {
-      padding-bottom: $info-box-padding;
-      &:last-child {
-        padding-bottom: 5px;
-      }
     }
   }
 }

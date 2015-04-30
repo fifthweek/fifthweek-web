@@ -116,14 +116,11 @@ angular.module('webApp')
       team: {
         name: 'about.team'
       },
-      legal: {
-        name: 'about.legal',
-        termsOfService: {
-          name: 'about.legal.termsOfService'
-        },
-        privacyPolicy: {
-          name: 'about.legal.privacyPolicy'
-        }
+      termsOfService: {
+        name: 'about.termsOfService'
+      },
+      privacyPolicy: {
+        name: 'about.privacyPolicy'
       }
     },
     support: {
@@ -564,30 +561,22 @@ angular.module('webApp')
           bodyClass: 'info-page'
         }
       })
-      .state(states.about.legal.name, {
-        abstract: false,
-        url: '/legal',
-        templateUrl: 'views/help/legal/index.html',
-        redirectTo: states.about.legal.termsOfService.name,
+      .state(states.about.termsOfService.name, {
+        url: '/terms',
+        templateUrl: 'modules/information/pages/terms-and-conditions.html',
         data : {
-          pageTitle: 'Legal',
-          headTitle: ': ' + 'Legal'
+          headTitle: ': ' + 'Terms and Conditions',
+          navigationHidden: true,
+          bodyClass: 'info-page'
         }
       })
-      .state(states.about.legal.termsOfService.name, {
-        url: '/terms-of-service',
-        templateUrl: 'views/help/legal/terms-of-service.html',
+      .state(states.about.privacyPolicy.name, {
+        url: '/privacy',
+        templateUrl: 'modules/information/pages/privacy-policy.html',
         data : {
-          pageTitle: 'Terms of Service',
-          headTitle: ': ' + 'Terms of Service'
-        }
-      })
-      .state(states.about.legal.privacyPolicy.name, {
-        url: '/privacy-policy',
-        templateUrl: 'views/help/legal/privacy-policy.html',
-        data : {
-          pageTitle: 'Privacy Policy',
-          headTitle: ': ' + 'Privacy Policy'
+          headTitle: ': ' + 'Privacy Policy',
+          navigationHidden: true,
+          bodyClass: 'info-page'
         }
       })
       .state(states.support.name, {
