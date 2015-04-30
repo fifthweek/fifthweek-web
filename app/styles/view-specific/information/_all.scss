@@ -285,7 +285,7 @@ $html-name-space:'.info-page';
         font-weight: normal;
       }
     }
-    p, h2 {
+    p, h2, ol {
       max-width: 640px;
       margin-left: auto;
       margin-right: auto;
@@ -309,12 +309,20 @@ $html-name-space:'.info-page';
       margin-bottom: 10px;
       max-width: none;
     }
-    p {
+    p, ol li {
       line-height: 28px;
       font-size: 18px;
     }
+    ol {
+      padding-left: 23px;
+      margin-bottom: 15px;
+    }
+    ol li {
+      padding-left: 25px;
+    }
+
     .text-left {
-      p, h2 {
+      p, h2, ol {
         margin-left: 0;
         margin-right: 0;
       }
@@ -577,5 +585,31 @@ $html-name-space:'.info-page';
   .contact-page-facebook-link:before {
     content:"\f230";
     font-size:58px;
+  }
+
+  .faq-page-list {
+    text-align: left;
+    max-width: 800px;
+    p, h2, ol {
+      max-width: none;
+    }
+    h2 {
+      font-weight: normal;
+      padding-bottom: 15px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid $grey-light-1;
+    }
+    h3 {
+      font-size: 21px;
+      font-weight: bold;
+      padding-top: 15px;
+      margin-bottom: 20px;
+    }
+    .question-answer {
+      padding-bottom: $info-box-padding;
+      &:last-child {
+        padding-bottom: 5px;
+      }
+    }
   }
 }

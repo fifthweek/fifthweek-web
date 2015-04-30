@@ -602,10 +602,11 @@ angular.module('webApp')
       })
       .state(states.support.faq.name, {
         url: '/faq',
-        templateUrl: 'views/help/faq.html',
+        templateUrl: 'modules/information/pages/faq.html',
         data : {
-          pageTitle: 'Frequently Asked Questions',
-          headTitle: ': ' + 'FAQ'
+          headTitle: ': ' + 'FAQ',
+          navigationHidden: true,
+          bodyClass: 'info-page'
         }
       })
       .state(states.support.contact.name, {
