@@ -400,7 +400,7 @@ $html-name-space:'.info-page';
           color: lighten($color-footer, 70%);
           font-weight: 900;
           border-radius: $border-radius;
-          padding: 10px 12px;
+          padding: 9px 12px;
           text-decoration: none;
           &:hover {
             text-decoration: none;
@@ -410,15 +410,15 @@ $html-name-space:'.info-page';
           }
 
           &.info-page-footer-twitter-link, &.info-page-footer-facebook-link {
-            padding-left:52px;
+            padding-left:50px;
             &:before {
               font-family:'FontAwesome';
               font-size:28px;
               position:absolute;
               left:0;
               top:0;
-              width:40px;
-              height:40px;
+              width:38px;
+              height:38px;
               text-align: center;
               border-bottom-left-radius: $border-radius;
               border-top-left-radius: $border-radius;

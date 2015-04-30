@@ -18,15 +18,18 @@
         <li ng-class="{ active: ('features.*' | includedByState) }" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Features <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li ui-sref-active="active"><a href="#">All Features</a></li>
+            <li ui-sref-active="active"><a ui-sref="features.all">All Features</a></li>
+            <li ui-sref-active="active"><a ui-sref="features.forCreators">For Creators</a></li>
+            <li ui-sref-active="active"><a ui-sref="features.forSubscribers">For Subscribers</a></li>
             <li class="divider"></li>
-            <li ui-sref-active="active"><a href="#">Patreon Comparison</a></li>
-            <li ui-sref-active="active"><a href="#">TinyPass Comparison</a></li>
+            <li ui-sref-active="active"><a ui-sref="features.vsPatreon">Patreon Comparison</a></li>
+            <li ui-sref-active="active"><a ui-sref="features.vsTapastic">Tapastic Comparison</a></li>
+            <li ui-sref-active="active"><a ui-sref="features.vsTinyPass">TinyPass Comparison</a></li>
           </ul>
         </li>
-        <li ui-sref-active="active"><a href="#">Getting Started</a></li>
-        <li ui-sref-active="active"><a href="#">Pricing</a></li>
-        <li ng-class="{ active: ('about.*' | includedByState) || ('support.*' | includedByState) }" class="dropdown">
+        <li ui-sref-active="active"><a ui-sref="support.gettingStarted">Getting Started</a></li>
+        <li ui-sref-active="active"><a ui-sref="pricing">Pricing</a></li>
+        <li ng-class="{ active: ('about.*' | includedByState) || ('support.faq' | includedByState) || ('support.contact' | includedByState) }" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li ui-sref-active="active"><a ui-sref="about.about">About Fifthweek</a></li>

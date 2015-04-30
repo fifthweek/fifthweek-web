@@ -108,6 +108,27 @@ angular.module('webApp')
         }
       }
     },
+    features: {
+      name: 'features',
+      all: {
+        name: 'features.all'
+      },
+      forCreators: {
+        name: 'features.forCreators'
+      },
+      forSubscribers: {
+        name: 'features.forSubscribers'
+      },
+      vsPatreon: {
+        name: 'features.vsPatreon'
+      },
+      vsTapastic: {
+        name: 'features.vsTapastic'
+      },
+      vsTinyPass: {
+        name: 'features.vsTinyPass'
+      }
+    },
     about: {
       name: 'about',
       about: {
@@ -115,16 +136,22 @@ angular.module('webApp')
       },
       team: {
         name: 'about.team'
-      },
-      termsOfService: {
-        name: 'about.termsOfService'
-      },
-      privacyPolicy: {
-        name: 'about.privacyPolicy'
       }
+    },
+    pricing: {
+      name: 'pricing'
+    },
+    termsOfService: {
+      name: 'termsOfService'
+    },
+    privacyPolicy: {
+      name: 'privacyPolicy'
     },
     support: {
       name: 'support',
+      gettingStarted: {
+        name: 'support.gettingStarted'
+      },
       faq: {
         name: 'support.faq'
       },
@@ -538,6 +565,65 @@ angular.module('webApp')
           }
         }
       })
+      .state(states.features.name, {
+        url: '/features',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.features.all.name
+      })
+      .state(states.features.all.name, {
+        url: '',
+        templateUrl: 'modules/information/pages/all-features.html',
+        data : {
+          headTitle: ': ' + 'Features',
+          navigationHidden: true,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.features.forCreators.name, {
+        url: '/for-creators',
+        templateUrl: 'modules/information/pages/for-creators.html',
+        data : {
+          headTitle: ': ' + 'For Creators',
+          navigationHidden: true,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.features.forSubscribers.name, {
+        url: '/for-subscribers',
+        templateUrl: 'modules/information/pages/for-subscribers.html',
+        data : {
+          headTitle: ': ' + 'For Subscribers',
+          navigationHidden: true,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.features.vsPatreon.name, {
+        url: '/patreon-comparison',
+        templateUrl: 'modules/information/pages/vs-patreon.html',
+        data : {
+          headTitle: ': ' + 'Patreon Comparison',
+          navigationHidden: true,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.features.vsTapastic.name, {
+        url: '/tapastic-comparison',
+        templateUrl: 'modules/information/pages/vs-tapastic.html',
+        data : {
+          headTitle: ': ' + 'Tapastic Comparison',
+          navigationHidden: true,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.features.vsTinyPass.name, {
+        url: '/tinypass-comparison',
+        templateUrl: 'modules/information/pages/vs-tinypass.html',
+        data : {
+          headTitle: ': ' + 'TinyPass Comparison',
+          navigationHidden: true,
+          bodyClass: 'info-page'
+        }
+      })
       .state(states.about.name, {
         url: '/about',
         templateUrl: 'modules/common/ui-view.html',
@@ -561,7 +647,16 @@ angular.module('webApp')
           bodyClass: 'info-page'
         }
       })
-      .state(states.about.termsOfService.name, {
+      .state(states.pricing.name, {
+        url: '/pricing',
+        templateUrl: 'modules/information/pages/pricing.html',
+        data : {
+          headTitle: ': ' + 'Pricing',
+          navigationHidden: true,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.termsOfService.name, {
         url: '/terms',
         templateUrl: 'modules/information/pages/terms-and-conditions.html',
         data : {
@@ -570,7 +665,7 @@ angular.module('webApp')
           bodyClass: 'info-page'
         }
       })
-      .state(states.about.privacyPolicy.name, {
+      .state(states.privacyPolicy.name, {
         url: '/privacy',
         templateUrl: 'modules/information/pages/privacy-policy.html',
         data : {
@@ -584,6 +679,15 @@ angular.module('webApp')
         url: '/support',
         templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.support.contact.name
+      })
+      .state(states.support.gettingStarted.name, {
+        url: '/getting-started',
+        templateUrl: 'modules/information/pages/getting-started.html',
+        data : {
+          headTitle: ': ' + 'Getting Started',
+          navigationHidden: true,
+          bodyClass: 'info-page'
+        }
       })
       .state(states.support.faq.name, {
         url: '/faq',
