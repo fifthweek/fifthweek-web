@@ -8,13 +8,25 @@ describe('account settings page', function() {
   var commonWorkflows = new CommonWorkflows();
   var header = new HeaderSettingsPage();
   var sidebar = new SidebarPage();
+  describe('when an established creator', function(){
+    it('should run once before all', function() {
+      commonWorkflows.createBlog();
+      sidebar.accountLink.click();
+    });
 
-  it('should run once before all', function() {
-    commonWorkflows.createBlog();
-    sidebar.accountLink.click();
+    header.includeBasicTests(header.accountSettingsLink);
+
+    sidebar.includeEstablishedCreatorTests(sidebar.accountLink);
   });
 
-  header.includeBasicTests(header.accountSettingsLink);
+  describe('when a consumer', function(){
+    it('should run once before all', function() {
+      commonWorkflows.register();
+      sidebar.accountLink.click();
+    });
 
-  sidebar.includeEstablishedCreatorTests(sidebar.accountLink);
+    header.includeBasicTests(header.accountSettingsLink);
+
+    sidebar.includeConsumerTests(sidebar.accountLink);
+  });
 });

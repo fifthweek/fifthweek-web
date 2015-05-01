@@ -14,25 +14,23 @@ angular.module('webApp')
         icon: 'fa fa-sign-in'
       },
       {
-        name: 'Home',
+        name: 'Read Now',
         state: states.user.newsFeed.name,
-        icon: 'fa fa-home',
+        icon: 'fa fa-align-left',
         secondary:
         [
           {
-            name: 'News Feed',
+            name: 'Latest Posts',
             state: states.user.newsFeed.name,
             icon: 'fa fa-align-left'
-          },
-          {
-            name: 'Notifications',
-            state: states.user.notifications.name,
-            icon: 'fa fa-bell-o'
           }
         ]
       },
       {
-        name: 'Landing Page',
+        separator: true
+      },
+      {
+        name: 'Preview Blog',
         state: states.creator.landingPage.preview.name,
         icon: 'fa fa-bookmark-o',
         secondary:
@@ -48,9 +46,6 @@ angular.module('webApp')
             icon: 'fa fa-pencil'
           }
         ]
-      },
-      {
-        separator: true
       },
       {
         name: 'Posts',

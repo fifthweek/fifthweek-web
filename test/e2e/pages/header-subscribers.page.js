@@ -1,9 +1,9 @@
 'use strict';
 
 var HeaderPage = require('./header.page.js');
-var HeaderCollectionsPage = function() {};
+var HeaderSubscribersPage = function() {};
 
-HeaderCollectionsPage.prototype = Object.create(HeaderPage.prototype, {
+HeaderSubscribersPage.prototype = Object.create(HeaderPage.prototype, {
   guestListLink: { get: function () { return element(by.id('header-navigation-guest-list')); }},
   includeBasicTests: { value: function(highlightedLink) {
     this.includeBasicTestsBase(highlightedLink, [
@@ -15,4 +15,4 @@ HeaderCollectionsPage.prototype = Object.create(HeaderPage.prototype, {
   }}
 });
 
-module.exports = HeaderCollectionsPage;
+module.exports = HeaderSubscribersPage;
