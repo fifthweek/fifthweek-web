@@ -33,6 +33,8 @@
 
     guestListOnlyDismissButton: { get: function(){ return element(by.id('guest-list-only-dismiss-button')); }},
 
+    helpMessages: { get: function () { return element.all(by.css('.modal-content .help-block')); }},
+
     expectRegisterDisplayed: { value: function(){
       expect(this.registerButton.isDisplayed()).toBe(true);
     }},
