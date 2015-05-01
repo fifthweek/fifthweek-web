@@ -271,7 +271,7 @@ $html-name-space:'.info-page';
       padding: 0 0 16px 0; /* Compensate for implicit top padding introduced by line height */
 
       &.long {
-        margin: 7px 0;
+        margin: 0 0 7px 0;
         font-size: 54px;
         letter-spacing: -1px;
         font-weight: normal;
@@ -308,6 +308,15 @@ $html-name-space:'.info-page';
       font-size: 24px;
       margin-bottom: 10px;
       max-width: none;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    h2.long {
+      font-size: 40px;
+      letter-spacing: -2px;
+      font-weight: normal;
+      margin-bottom: 15px;
     }
     p, ol li {
       line-height: 28px;
@@ -347,6 +356,10 @@ $html-name-space:'.info-page';
 
   .info-page-box-light {
     background: #ebeff4;
+  }
+
+  .info-page-box-lighter {
+    background: $white-1;
   }
 
   .info-page-box-dark, .info-page-box-dark-2, .info-page-box-dark-3, .info-page-box-footer {
@@ -509,7 +522,8 @@ $html-name-space:'.info-page';
     }
   }
 
-  .info-page-box-home-inner {
+  .info-page-box-extra-padding {
+    padding-top: 10px;
     padding-bottom: 35px;
   }
 
@@ -610,6 +624,36 @@ $html-name-space:'.info-page';
       font-weight: bold;
       padding-top: 15px;
       margin-bottom: 20px;
+    }
+  }
+
+  .info-page-box-long-form-double-col {
+    $row-bottom-padding: 50px;
+    $row-bottom-padding-sm: 30px;
+    h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    p {
+      font-size: 16px;
+    }
+    .row {
+      margin: 0 -30px;
+      > div {
+        padding: 0 30px $row-bottom-padding 30px;
+      }
+    }
+    .container {
+      margin-bottom: -1 * $row-bottom-padding;
+    }
+
+    @media (max-width:$screen-sm-max) {
+      .row > div {
+        padding-bottom: $row-bottom-padding-sm;
+      }
+      .container {
+        margin-bottom: -1 * $row-bottom-padding-sm;
+      }
     }
   }
 }
