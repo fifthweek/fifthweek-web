@@ -130,8 +130,10 @@
                   </div>
                   <div class="text">
                     <div id="full-description" class="content">
-                      <fw-markdown replace="true" ng-model="model.blog.description" ng-if="model.blog.description"></fw-markdown>
-                      <p ng-if="!model.blog.description">More of your favourites each and every week -- for less than a coffee!</p>
+                      <span fw-markdown ng-model="model.blog.description" ng-if="model.blog.description"></span>
+                      <span ng-if="!model.blog.description">
+                        <p>More of your favourites each and every week -- for less than a coffee!</p>
+                      </span>
                     </div>
                   </div>
                 </div>
