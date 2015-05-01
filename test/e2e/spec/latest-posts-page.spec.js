@@ -14,25 +14,25 @@
     describe('when an established creator', function(){
       it('should run once before all', function() {
         commonWorkflows.createBlog();
-        sidebar.dashboardLink.click();
+        sidebar.readNowLink.click();
         header.latestPostsLink.click();
       });
 
       header.includeBasicTests(header.latestPostsLink);
 
-      sidebar.includeEstablishedCreatorTests(sidebar.dashboardLink);
+      sidebar.includeEstablishedCreatorTests(sidebar.readNowLink);
     });
 
     describe('when a consumer', function(){
       it('should run once before all', function() {
         commonWorkflows.register();
-        sidebar.dashboardLink.click();
+        sidebar.readNowLink.click();
         header.latestPostsLink.click();
       });
 
       header.includeBasicTests(header.latestPostsLink);
 
-      sidebar.includeConsumerTests(sidebar.dashboardLink);
+      sidebar.includeConsumerTests(sidebar.readNowLink);
     });
   });
 })();

@@ -8,7 +8,7 @@ SidebarPage.prototype = Object.create({}, {
   signInLink: { get: function () { return element(by.id('sidebar-navigation-sign-in')); }},
   registerLink: { get: function () { return element(by.id('sidebar-navigation-register')); }},
   createBlogLink: { get: function () { return element(by.id('sidebar-navigation-create-blog')); }},
-  dashboardLink: { get: function () { return element(by.id('sidebar-navigation-read-now')); }},
+  readNowLink: { get: function () { return element(by.id('sidebar-navigation-read-now')); }},
   landingPageLink: { get: function () { return element(by.id('sidebar-navigation-preview-blog')); }},
   postsLink: { get: function () { return element(by.id('sidebar-navigation-posts')); }},
   collectionsLink: { get: function () { return element(by.id('sidebar-navigation-collections')); }},
@@ -26,7 +26,7 @@ SidebarPage.prototype = Object.create({}, {
       });
 
       it('should contain "Read Now" link', function () {
-        expect(self.dashboardLink.isDisplayed()).toBe(true);
+        expect(self.readNowLink.isDisplayed()).toBe(true);
       });
 
       it('should contain "Preview Blog" link', function () {
@@ -74,7 +74,7 @@ SidebarPage.prototype = Object.create({}, {
       });
 
       it('should contain "Read Now" link', function () {
-        expect(self.dashboardLink.isDisplayed()).toBe(true);
+        expect(self.readNowLink.isDisplayed()).toBe(true);
       });
 
       it('should contain "Create Blog" link', function () {
