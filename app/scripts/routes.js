@@ -147,11 +147,11 @@ angular.module('webApp')
     privacyPolicy: {
       name: 'privacyPolicy'
     },
+    gettingStarted: {
+      name: 'gettingStarted'
+    },
     support: {
       name: 'support',
-      gettingStarted: {
-        name: 'support.gettingStarted'
-      },
       faq: {
         name: 'support.faq'
       },
@@ -674,13 +674,7 @@ angular.module('webApp')
           bodyClass: 'info-page'
         }
       })
-      .state(states.support.name, {
-        abstract: false,
-        url: '/support',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.support.contact.name
-      })
-      .state(states.support.gettingStarted.name, {
+      .state(states.gettingStarted.name, {
         url: '/getting-started',
         templateUrl: 'modules/information/pages/getting-started.html',
         data : {
@@ -688,6 +682,12 @@ angular.module('webApp')
           navigationHidden: true,
           bodyClass: 'info-page'
         }
+      })
+      .state(states.support.name, {
+        abstract: false,
+        url: '/support',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.support.contact.name
       })
       .state(states.support.faq.name, {
         url: '/faq',

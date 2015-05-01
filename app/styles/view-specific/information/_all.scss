@@ -294,6 +294,9 @@ $html-name-space:'.info-page';
       margin-top: 0;
       font-weight: 900;
       font-size: 28px;
+      .heading-number {
+        margin-right: 10px;
+      }
     }
     h2.sub-heading, h2.sub-heading-long {
       font-weight: normal;
