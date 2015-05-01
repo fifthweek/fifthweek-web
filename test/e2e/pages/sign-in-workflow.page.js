@@ -34,6 +34,14 @@
     guestListOnlyDismissButton: { get: function(){ return element(by.id('guest-list-only-dismiss-button')); }},
 
     helpMessages: { get: function () { return element.all(by.css('.modal-content .help-block')); }},
+    signInFormMessage: { get: function () { return element(by.id('sign-in-message')); }},
+    registerFormMessage: { get: function () { return element(by.id('register-message')); }},
+
+    expectNotDisplayed: { value: function(){
+      expect(element.all(by.id('sign-in-button')).count()).toBe(0);
+      expect(element.all(by.id('register-button')).count()).toBe(0);
+      expect(element.all(by.id('guest-list-only-dismiss-button')).count()).toBe(0);
+    }},
 
     expectRegisterDisplayed: { value: function(){
       expect(this.registerButton.isDisplayed()).toBe(true);
