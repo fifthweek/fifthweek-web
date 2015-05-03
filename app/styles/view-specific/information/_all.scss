@@ -301,6 +301,10 @@ $html-name-space:'.info-page';
       .heading-number {
         margin-right: 10px;
       }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
     h2.sub-heading, h2.sub-heading-long {
       font-weight: normal;
