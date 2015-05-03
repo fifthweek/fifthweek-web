@@ -228,13 +228,13 @@ $html-name-space:'.info-page';
     margin: 20px auto 0 auto;
     padding:18px 22px;
     border-radius: $border-radius;
-    background: $green-light-1;
-    color:#fff;
     font-weight: bold;
     font-size: 18px;
+    background: $green-light-1;
+    color:#fff;
     &:hover {
-      text-decoration: none;
       background-color: darken($green-light-1, 10%);
+      text-decoration: none;
     }
   }
 
@@ -283,6 +283,9 @@ $html-name-space:'.info-page';
         font-size: 54px;
         letter-spacing: -2px;
         font-weight: normal;
+      }
+      &.hug-subheading {
+        margin-bottom: 0;
       }
     }
     p, h2, ol {
