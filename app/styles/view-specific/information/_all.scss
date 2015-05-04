@@ -286,7 +286,10 @@ $html-name-space:'.info-page';
       padding: 0 0 16px 0; /* Compensate for implicit top padding introduced by line height */
 
       &.large {
-        font-size: 54px;
+        font-size: 56px;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        letter-spacing: -2px;
       }
       &.long {
         margin: 0 0 7px 0;
@@ -305,11 +308,28 @@ $html-name-space:'.info-page';
       &.hug-subheading {
         margin-bottom: 0;
       }
+      .fw-logo {
+        font:{
+          family: 'Merriweather', serif;
+          size:55px;
+          weight:900;
+        }
+        letter-spacing: -3px;
+        background: rgba(255,255,255, 0.05);
+        box-shadow: 0 0 24px 1px rgba(0,0,0,0.6);
+        border-radius: 6px;
+        padding: 14px 9px 6px 8px;
+        display: inline-block;
+        margin-right: 5px;
+      }
     }
     p, h2, ol {
       max-width: 640px;
       margin-left: auto;
       margin-right: auto;
+      &.full-width {
+        max-width: none;
+      }
     }
     h2 {
       margin-top: 0;
@@ -336,6 +356,7 @@ $html-name-space:'.info-page';
     h2.sub-heading-long {
       font-size: 24px;
       margin-bottom: 10px;
+      margin-top: 10px;
       max-width: none;
       &:last-child {
         margin-bottom: 0;
@@ -561,7 +582,10 @@ $html-name-space:'.info-page';
 
   .info-page-box-extra-padding-2 {
     padding-top: 60px;
-    padding-bottom: 85px;
+    padding-bottom: 65px;
+    .info-page-button {
+      margin-top: 20px;
+    }
   }
 
   .personal-photo {
@@ -705,5 +729,10 @@ $html-name-space:'.info-page';
         background: $blue-light-6;
       }
     }
+  }
+
+  .algebra {
+    margin: 0 3px;
+    opacity: 0.4;
   }
 }
