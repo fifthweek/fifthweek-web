@@ -290,6 +290,7 @@ $html-name-space:'.info-page';
         font-family: 'Open Sans', sans-serif;
         font-weight: 700;
         letter-spacing: -2px;
+        padding-bottom: 20px;
       }
       &.long {
         margin: 0 0 7px 0;
@@ -307,20 +308,6 @@ $html-name-space:'.info-page';
       }
       &.hug-subheading {
         margin-bottom: 0;
-      }
-      .fw-logo {
-        font:{
-          family: 'Merriweather', serif;
-          size:55px;
-          weight:900;
-        }
-        letter-spacing: -3px;
-        background: rgba(255,255,255, 0.05);
-        box-shadow: 0 0 24px 1px rgba(0,0,0,0.6);
-        border-radius: 6px;
-        padding: 14px 9px 6px 8px;
-        display: inline-block;
-        margin-right: 5px;
       }
     }
     p, h2, ol {
@@ -582,7 +569,7 @@ $html-name-space:'.info-page';
 
   .info-page-box-extra-padding-2 {
     padding-top: 60px;
-    padding-bottom: 65px;
+    padding-bottom: 95px;
     .info-page-button {
       margin-top: 20px;
     }
@@ -732,7 +719,6 @@ $html-name-space:'.info-page';
   }
 
   .algebra {
-    margin: 0 3px;
     opacity: 0.4;
   }
 }
