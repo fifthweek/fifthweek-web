@@ -125,8 +125,8 @@ angular.module('webApp')
       vsTapastic: {
         name: 'features.vsTapastic'
       },
-      vsTinyPass: {
-        name: 'features.vsTinyPass'
+      vsWordPress: {
+        name: 'features.vsWordPress'
       }
     },
     about: {
@@ -615,11 +615,11 @@ angular.module('webApp')
           bodyClass: 'info-page'
         }
       })
-      .state(states.features.vsTinyPass.name, {
-        url: '/tinypass-comparison',
-        templateUrl: 'modules/information/pages/vs-tinypass.html',
+      .state(states.features.vsWordPress.name, {
+        url: '/wordpress-comparison',
+        templateUrl: 'modules/information/pages/vs-wordpress.html',
         data : {
-          headTitle: ': ' + 'TinyPass Comparison',
+          headTitle: ': ' + 'WordPress Comparison',
           navigationHidden: true,
           bodyClass: 'info-page'
         }
