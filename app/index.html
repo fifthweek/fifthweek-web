@@ -5,7 +5,7 @@
     <base href="/">
     <!-- NEW_RELIC -->
     <title ng-bind="'Fifthweek' + $state.current.data.headTitle"></title>
-    <meta name="description" content="">
+    <meta ng-if="$state.current.data.headDescription" name="description" content="{{$state.current.data.headDescription}}">
     <meta name="viewport" content="height=device-height,width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) static/styles/vendor.css -->

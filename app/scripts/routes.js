@@ -182,6 +182,7 @@ angular.module('webApp')
         templateUrl: 'modules/information/pages/home.html',
         data: {
           pageTitle: 'Home',
+          headDescription: 'Fifthweek lets you effortlessly share anything with paying subscribers, so you can make a living doing what you love.',
           navigationHidden: true,
           bodyClass: 'info-page'
         }
