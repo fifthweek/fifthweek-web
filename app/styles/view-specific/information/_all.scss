@@ -286,7 +286,7 @@ $html-name-space:'.info-page';
       padding: 0 0 16px 0; /* Compensate for implicit top padding introduced by line height */
 
       &.large {
-        font-size: 56px;
+        font-size: 52px;
         font-family: 'Open Sans', sans-serif;
         font-weight: 700;
         letter-spacing: -2px;
@@ -332,16 +332,16 @@ $html-name-space:'.info-page';
       }
     }
     h2.sub-heading, h2.sub-heading-long {
+      font-size: 24px;
       font-weight: normal;
       margin-top: 0;
       padding-top: 0;
     }
     h2.sub-heading {
-      font-size: 20px;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
+      margin-top: 0px;
     }
     h2.sub-heading-long {
-      font-size: 24px;
       margin-bottom: 10px;
       margin-top: 10px;
       max-width: none;
