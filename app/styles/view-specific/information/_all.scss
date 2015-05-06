@@ -81,7 +81,7 @@ $html-name-space:'.info-page';
       &.btn-navbar-register {
         background-color: $green-light-1;
         &:hover {
-          background-color: darken($green-light-1, 10%) !important;
+          background-color: lighten($green-light-1, 4%) !important;
         }
       }
 
@@ -240,7 +240,7 @@ $html-name-space:'.info-page';
     background: $green-light-1;
     color:#fff;
     &:hover {
-      background-color: darken($green-light-1, 10%);
+      background-color: lighten($green-light-1, 4%);
     }
   }
 
@@ -269,6 +269,10 @@ $html-name-space:'.info-page';
         border: 1px solid rgba(41,63,84,0.2);
         padding:17px 0;
         color: rgba(41,63,84,0.9);
+        &:hover {
+          background: #fff;
+          color: rgba(41,63,84,1);
+        }
       }
     }
   }
