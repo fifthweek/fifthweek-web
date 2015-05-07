@@ -284,6 +284,11 @@ $html-name-space:'.info-page';
     }
   }
 
+  .image-type-1 {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
   .clear-navbar {
     margin-top: $navbar-height-lg;
     @media (max-width:$grid-float-breakpoint) {
@@ -294,10 +299,16 @@ $html-name-space:'.info-page';
   .info-page-box {
     padding-top: $info-box-padding / 2;
     padding-bottom: $info-box-padding / 2;
-
     @media (min-width:$screen-s-min) {
       padding-top: $info-box-padding;
       padding-bottom: $info-box-padding;
+    }
+
+    .row.vcenter {
+      @media (max-width:$screen-ss-max) {
+        display: block;
+        align-items: inherit;
+      }
     }
 
     h1, h2 {
@@ -399,6 +410,7 @@ $html-name-space:'.info-page';
       p, h2, ol {
         margin-left: 0;
         margin-right: 0;
+        max-width: 570px;
       }
     }
     img {
@@ -407,12 +419,6 @@ $html-name-space:'.info-page';
         margin-bottom: 0;
       }
     }
-  }
-
-  img {
-    background: #ccc;
-    width:300px;
-    height:200px;
   }
 
   .info-page-box {
@@ -597,6 +603,13 @@ $html-name-space:'.info-page';
     padding-bottom: 95px;
     .info-page-button {
       margin-top: 10px;
+    }
+  }
+
+  .info-page-box-reduced-padding {
+    @media (min-width:$screen-s-min) {
+      padding-top: 20px;
+      padding-bottom: 20px;
     }
   }
 
