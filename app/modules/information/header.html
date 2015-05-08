@@ -15,14 +15,7 @@
         <li><a class="btn-navbar btn-navbar-account" ui-sref="user">Back to Account</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li ng-class="{ active: ('features.*' | includedByState) }" class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Features <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li ui-sref-active="active"><a ui-sref="features.all">All Features</a></li>
-            <li class="divider"></li>
-            <li ui-sref-active="active"><a ui-sref="features.vsWordPress">WordPress Comparison</a></li>
-          </ul>
-        </li>
+        <li ui-sref-active="active"><a ui-sref="features.all">Features</a></li>
         <li ui-sref-active="active"><a ui-sref="gettingStarted">Getting Started</a></li>
         <li ui-sref-active="active"><a ui-sref="pricing">Pricing</a></li>
         <li ng-class="{ active: ('about.*' | includedByState) || ('support.*' | includedByState) }" class="dropdown">
