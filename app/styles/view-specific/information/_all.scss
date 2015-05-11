@@ -443,7 +443,7 @@ $html-name-space:'.info-page';
 
   .info-page-box-dark-3 {
     background: $color-dark-3;
-    box-shadow: inset 0 0 100px 34px rgba(0,0,0,0.15);
+    box-shadow: inset 0 0 100px 34px rgba(0,0,0,0.15), 0 2px 3px 0 rgba(0,0,0,0.23);
   }
 
   .info-page-box-dark-2 {
@@ -594,6 +594,10 @@ $html-name-space:'.info-page';
     }
   }
 
+  .info-page-box-bottom-border {
+    border-bottom: 2px solid #e4e4e4;
+  }
+
   .info-page-box-extra-padding {
     padding-top: 10px;
     padding-bottom: 35px;
@@ -617,6 +621,25 @@ $html-name-space:'.info-page';
     @media (min-width:$screen-s-min) {
       padding-top: 40px;
       padding-bottom: 40px;
+    }
+  }
+
+  .info-page-box-reduced-padding-3, .info-page-box-reduced-padding-4 {
+    padding-bottom: 0;
+    img {
+      margin-bottom: 0;
+    }
+  }
+
+  .info-page-box-reduced-padding-3 {
+    @media (min-width:$screen-s-min) {
+      padding-top: 10px;
+    }
+  }
+
+  .info-page-box-reduced-padding-4 {
+    @media (min-width:$screen-s-min) {
+      padding-top: 30px;
     }
   }
 
@@ -750,7 +773,7 @@ $html-name-space:'.info-page';
     }
   }
 
-  .algebra {
-    opacity: 0.4;
+  .info-page-box-image-overflow {
+    padding-bottom: 1px;
   }
 }
