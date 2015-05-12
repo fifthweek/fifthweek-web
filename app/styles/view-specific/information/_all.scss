@@ -289,6 +289,11 @@ $html-name-space:'.info-page';
     margin: 0 auto;
   }
 
+  .image-size-2 {
+    max-width: 750px;
+    margin: 0 auto;
+  }
+
   .clear-navbar {
     margin-top: $navbar-height-lg;
     @media (max-width:$grid-float-breakpoint) {
