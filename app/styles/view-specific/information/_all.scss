@@ -350,6 +350,9 @@ $html-name-space:'.info-page';
       &.hug-subheading {
         margin-bottom: 0;
       }
+      &.combined-with-section {
+        margin-bottom: 24px;
+      }
     }
     p, h2, ol {
       max-width: 640px;
@@ -366,6 +369,9 @@ $html-name-space:'.info-page';
       font-size: 28px;
       .heading-number {
         margin-right: 10px;
+      }
+      .heading-number-in-margin {
+        margin-left: -10px;
       }
 
       &:last-child {
