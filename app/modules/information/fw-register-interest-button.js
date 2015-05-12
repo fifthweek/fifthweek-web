@@ -1,5 +1,11 @@
-angular.module('webApp').directive('fwRegisterInterestButton',
-  function ($modal) {
+angular.module('webApp')
+  .constant('fwRegisterInterestButtonConstants',{
+    defaultTitle: 'Getting Started',
+    defaultMessage: 'Please enter your details below:',
+    defaultCallToAction: 'Get started for FREE'
+  })
+  .directive('fwRegisterInterestButton',
+  function ($modal, fwRegisterInterestButtonConstants) {
     'use strict';
 
     return {
@@ -9,13 +15,12 @@ angular.module('webApp').directive('fwRegisterInterestButton',
         message: '@?',
         callToAction: '@?'
       },
-      replace: true,
       templateUrl: 'modules/information/fw-register-interest-button.html',
       link: function(scope) {
 
-        scope.message = scope.message || 'Please enter your details below:';
-        scope.title = scope.title || 'Getting Started';
-        scope.callToAction = scope.callToAction || 'Get started for FREE';
+        scope.title = scope.title || fwRegisterInterestButtonConstants.defaultTitle;
+        scope.message = scope.message || fwRegisterInterestButtonConstants.defaultMessage;
+        scope.callToAction = scope.callToAction || fwRegisterInterestButtonConstants.defaultCallToAction;
 
         scope.click = function(){
           return $modal
@@ -23,7 +28,6 @@ angular.module('webApp').directive('fwRegisterInterestButton',
               controller: 'registerInterestDialogCtrl',
               templateUrl: 'modules/information/register-interest-dialog.html',
               size: 'sm',
-              scope: scope,
               resolve: {
                 title: function(){ return scope.title; },
                 message: function(){ return scope.message; }
