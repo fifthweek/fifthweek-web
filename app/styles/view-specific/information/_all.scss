@@ -635,7 +635,7 @@ $html-name-space:'.info-page';
     }
   }
 
-  .no-bottom-padding, .info-page-box-reduced-padding-3, .info-page-box-reduced-padding-4 {
+  .no-bottom-padding, .info-page-box-reduced-padding-3, .info-page-box-reduced-padding-4, .info-page-box-reduced-padding-6 {
     padding-bottom: 0;
     img {
       margin-bottom: 0;
@@ -658,6 +658,12 @@ $html-name-space:'.info-page';
     @media (min-width:$screen-s-min) {
       padding-top: 0;
       padding-bottom: 0;
+    }
+  }
+
+  .info-page-box-reduced-padding-6 {
+    @media (min-width:$screen-s-min) {
+      padding-top: 50px;
     }
   }
 
