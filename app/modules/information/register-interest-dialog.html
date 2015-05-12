@@ -1,0 +1,85 @@
+
+<form novalidate
+      role="form"
+      name="registerInterestForm"
+      ng-if="model.page === pages.form">
+  <fw-form-modal name="{{model.title}}">
+    <form-body>
+
+      <p>{{model.message}}</p>
+
+      <fw-form-group>
+        <div class="row">
+          <div class="col-md-12">
+            <div fw-form-input-glyphs>
+              <input
+                id="input-name"
+                ng-model="model.input.name"
+                type="text"
+                class="form-control"
+                name="name"
+                placeholder="Name"
+                focus=true
+                ng-maxlength="100"
+                maxlength="100"
+                required>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <p fw-form-input-invalid-p="maxlength">Allowed 100 characters at most.</p>
+            <p fw-form-input-invalid-p="required">Your name is required.</p>
+          </div>
+        </div>
+      </fw-form-group>
+
+      <fw-form-group>
+        <div class="row">
+          <div class="col-md-12">
+            <div fw-form-input-glyphs>
+              <input
+                id="input-email"
+                ng-model="model.input.email"
+                type="email"
+                class="form-control"
+                name="email"
+                placeholder="Email"
+                required>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <p fw-form-input-invalid-p>A valid email address is required.</p>
+          </div>
+        </div>
+      </fw-form-group>
+
+      <fw-error-message value="registerInterestForm.message"></fw-error-message>
+    </form-body>
+    <form-buttons>
+      <button
+        class="btn btn-success btn-block"
+        type="submit"
+        id="register-button"
+        data-loading-text="Registering..."
+        data-event-title="Registered Interest"
+        data-event-category="Interest Registration"
+        fw-form-submit="registerInterest()">Continue</button>
+    </form-buttons>
+  </fw-form-modal>
+</form>
+
+<form novalidate
+      role="form"
+      name="form"
+      ng-if="model.page === pages.done">
+  <fw-form-modal-title name="{{model.title}}"></fw-form-modal-title>
+  <div class="modal-body">
+    <p>Thank you! Someone from our team will be in touch.</p>
+  </div>
+  <div class="row-btn">
+    <button
+      id="error-dismiss-button"
+      class="btn btn-success btn-block"
+      type="submit"
+      ng-click="$close()">Okay</button>
+  </div>
+</form>

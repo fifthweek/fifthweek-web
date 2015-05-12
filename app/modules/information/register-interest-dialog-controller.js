@@ -1,0 +1,28 @@
+angular.module('webApp').controller(
+  'registerInterestDialogCtrl',
+  function($q, $scope, membershipStub, title, message) {
+    'use strict';
+
+    var pages = $scope.pages = {
+      form: 0,
+      done: 1
+    };
+
+    $scope.model = {
+      page: pages.form,
+      message: message,
+      title: title,
+      input: {
+        name: '',
+        email: ''
+      }
+    };
+
+    $scope.registerInterest = function() {
+      return membershipStub.postRegisteredInterest($scope.model.input)
+        .then(function() {
+          $scope.model.page = pages.done;
+        });
+    };
+  }
+);
