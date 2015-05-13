@@ -801,4 +801,15 @@ $html-name-space:'.info-page';
     padding-bottom: 1px;
     margin: 0 auto;
   }
+
+  .info-page-box-3-step {
+    img {
+      max-width: 200px;
+      margin-bottom: 40px;
+    }
+    h2 {
+      font-size: 26px;
+      margin-bottom: 15px;
+    }
+  }
 }
