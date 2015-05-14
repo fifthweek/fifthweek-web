@@ -1,4 +1,4 @@
-angular.module('webApp').run(function($analytics) {
+angular.module('webApp').run(function($analytics, $rootScope, identifiedUserNotifierConstants) {
   'use strict';
 
   function getParameterByName(name) {
@@ -18,6 +18,8 @@ angular.module('webApp').run(function($analytics) {
     $analytics.setUserProperties({
       'last opened email from': emailAddress
     });
+
+    $rootScope.$emit(identifiedUserNotifierConstants.eventName, { email: emailAddress });
   }
 
   var utmCampaign = getParameterByName('utm_campaign');
