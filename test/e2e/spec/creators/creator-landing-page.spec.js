@@ -11,11 +11,14 @@
   var CustomizeLandingPagePage = require('../../pages/creators/customize-landing-page.page.js');
   var CreatorTimelinePage = require('../../pages/creators/creator-timeline.page.js');
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
+  var SignInWorkflowPage = require('../../pages/sign-in-workflow.page.js');
+  var GuestListPage = require('../../pages/creators/guest-list.page.js');
+  var SubscribersHeaderPage = require('../../pages/header-subscribers.page.js');
 
   describe('creator landing page', function() {
 
     var blog;
-    var registration;
+    var creatorRegistration;
     var userRegistration;
     var visibleChannels = [];
 
@@ -28,6 +31,9 @@
     var customizeLandingPagePage = new CustomizeLandingPagePage();
     var creatorTimelinePage = new CreatorTimelinePage();
     var page = new CreatorLandingPagePage();
+    var signInWorkflow = new SignInWorkflowPage();
+    var guestListPage = new GuestListPage();
+    var subscribersHeader = new SubscribersHeaderPage();
 
     var navigateToPage = function() {
       sidebar.landingPageLink.click();
@@ -36,12 +42,12 @@
     var runForCreatorAndUserAndLoggedOutUser = function(delegate){
       delegate();
       commonWorkflows.signOut();
-      commonWorkflows.getPage('/' + registration.username);
+      commonWorkflows.getPage('/' + creatorRegistration.username);
       delegate();
       commonWorkflows.signIn(userRegistration);
-      commonWorkflows.getPage('/' + registration.username);
+      commonWorkflows.getPage('/' + creatorRegistration.username);
       delegate();
-      commonWorkflows.reSignIn(registration);
+      commonWorkflows.reSignIn(creatorRegistration);
       navigateToPage();
     };
 
@@ -53,20 +59,21 @@
       describe('when user', function(){
         it('should run once before all', function(){
           commonWorkflows.signOut();
-          commonWorkflows.getPage('/' + registration.username);
+          commonWorkflows.getPage('/' + creatorRegistration.username);
         });
         delegate();
       });
+
       describe('when logged out user', function(){
         it('should run once before all', function(){
           commonWorkflows.signIn(userRegistration);
-          commonWorkflows.getPage('/' + registration.username);
+          commonWorkflows.getPage('/' + creatorRegistration.username);
         });
         delegate();
       });
 
       it('should run once after all', function(){
-        commonWorkflows.reSignIn(registration);
+        commonWorkflows.reSignIn(creatorRegistration);
         navigateToPage();
       });
     };
@@ -75,7 +82,7 @@
       userRegistration = commonWorkflows.register();
       var context = commonWorkflows.createBlog();
       blog = context.blog;
-      registration = context.registration;
+      creatorRegistration = context.registration;
     });
 
     it('should not contain the standard sidebar or header', function() {
@@ -94,7 +101,7 @@
 
     describe('after signing back in', function() {
       it('should run once before all', function() {
-        commonWorkflows.reSignIn(registration);
+        commonWorkflows.reSignIn(creatorRegistration);
         navigateToPage();
       });
 
@@ -238,20 +245,163 @@
     });
 
     describe('subscribing', function() {
-      afterEach(function() {
-        // The timeline is tested as part of another spec. We just want to ensure that all routes to subscribe
-        // take the user to the timeline.
-        expect(creatorTimelinePage.subscribedButton.isPresent()).toBe(true);
-        page.fifthweekLink.click();
-        navigateToPage();
+
+       describe('subscribing when creator', function(){
+        afterEach(function() {
+          // The timeline is tested as part of another spec. We just want to ensure that all routes to subscribe
+          // take the user to the timeline.
+          expect(creatorTimelinePage.subscribedButton.isPresent()).toBe(true);
+          page.fifthweekLink.click();
+          navigateToPage();
+        });
+
+        it('should be possible via the "subscribe" button', function() {
+          page.subscribeButton.click();
+        });
+
+        it('should be possible via the "subscribe now" link', function() {
+          page.channelListSubscribeLink.click();
+        });
+      });
+      describe('when not on guest list', function(){
+        afterEach(function() {
+          signInWorkflow.expectGuestListOnlyDisplayed();
+          signInWorkflow.guestListOnlyDismissButton.click();
+        });
+
+        describe('subscribing as signed-in user not on guest-list', function(){
+          it('should be possible via the "subscribe" button', function(){
+            commonWorkflows.reSignIn(userRegistration);
+            commonWorkflows.getPage('/' + creatorRegistration.username);
+            page.subscribeButton.click();
+          });
+
+          it('should be possible via the "subscribe now" link', function() {
+            page.channelListSubscribeLink.click();
+          });
+        });
+
+        describe('subscribing as signed-out user not on guest-list', function(){
+          beforeEach(function(){
+            commonWorkflows.signOut();
+            commonWorkflows.getPage('/' + creatorRegistration.username);
+          });
+
+          afterEach(function(){
+            signInWorkflow.expectRegisterDisplayed();
+            signInWorkflow.signInSuccessfully(userRegistration);
+          });
+
+          it('should be possible via the "subscribe" button', function(){
+            page.subscribeButton.click();
+          });
+
+          it('should be possible via the "subscribe now" link', function() {
+            page.channelListSubscribeLink.click();
+          });
+        });
+
+        describe('subscribing as new user not on guest-list', function(){
+          beforeEach(function(){
+            commonWorkflows.signOut();
+            commonWorkflows.getPage('/' + creatorRegistration.username);
+          });
+
+          afterEach(function(){
+            signInWorkflow.expectRegisterDisplayed();
+            signInWorkflow.registerSuccessfully();
+          });
+
+          it('should be possible via the "subscribe" button', function(){
+            page.subscribeButton.click();
+          });
+
+          it('should be possible via the "subscribe now" link', function() {
+            page.channelListSubscribeLink.click();
+          });
+        });
       });
 
-      it('should be possible via the "subscribe" button', function() {
-        page.subscribeButton.click();
-      });
+      describe('when on guest list', function(){
+        var userRegistration2;
+        var userRegistration3;
+        it('should run once before all', function(){
+          userRegistration2 = signInWorkflow.newRegistrationData();
+          browser.sleep(100); // Username is based on current time, so make sure we get a unique one.
+          userRegistration3 = signInWorkflow.newRegistrationData();
 
-      it('should be possible via the "subscribe now" link', function() {
-        page.channelListSubscribeLink.click();
+          commonWorkflows.reSignIn(creatorRegistration);
+          sidebar.subscribersLink.click();
+          subscribersHeader.guestListLink.click();
+          guestListPage.setNewGuestList([userRegistration.email, userRegistration2.email, userRegistration3.email]);
+        });
+
+        describe('when subscribing on guest list', function(){
+          afterEach(function() {
+            expect(creatorTimelinePage.subscribedButton.isPresent()).toBe(true);
+            page.unsubscribeButton.click();
+          });
+
+          describe('subscribing as signed-in user on guest-list', function(){
+            beforeEach(function(){
+              commonWorkflows.reSignIn(userRegistration);
+              commonWorkflows.getPage('/' + creatorRegistration.username);
+            });
+
+            afterEach(function(){
+            });
+
+            it('should be possible via the "subscribe" button', function(){
+              page.subscribeButton.click();
+            });
+
+            it('should be possible via the "subscribe now" link', function() {
+              page.channelListSubscribeLink.click();
+            });
+          });
+
+          describe('subscribing as signed-out user on guest-list', function(){
+            beforeEach(function(){
+              commonWorkflows.signOut();
+              commonWorkflows.getPage('/' + creatorRegistration.username);
+            });
+
+            afterEach(function(){
+              signInWorkflow.expectRegisterDisplayed();
+              signInWorkflow.signInSuccessfully(userRegistration);
+            });
+
+            it('should be possible via the "subscribe" button', function(){
+              page.subscribeButton.click();
+            });
+
+            it('should be possible via the "subscribe now" link', function() {
+              page.channelListSubscribeLink.click();
+            });
+          });
+
+          describe('subscribing as new user on guest-list', function(){
+            beforeEach(function(){
+              commonWorkflows.signOut();
+              commonWorkflows.getPage('/' + creatorRegistration.username);
+            });
+
+            afterEach(function(){
+            });
+
+            it('should be possible via the "subscribe" button', function(){
+              page.subscribeButton.click();
+              signInWorkflow.expectRegisterDisplayed();
+              signInWorkflow.registerSuccessfullyWithData(userRegistration2);
+            });
+
+            it('should be possible via the "subscribe now" link', function() {
+              page.channelListSubscribeLink.click();
+              signInWorkflow.expectRegisterDisplayed();
+              signInWorkflow.registerSuccessfullyWithData(userRegistration3);
+            });
+          });
+        });
       });
     });
   });

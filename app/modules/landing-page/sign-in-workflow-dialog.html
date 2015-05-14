@@ -33,7 +33,7 @@
 
       <fw-form-input-password ng-model="registrationData.password" placeholder="Password" input-columns="12" required></fw-form-input-password>
 
-      <fw-error-message value="registerForm.message"></fw-error-message>
+      <fw-error-message value="registerForm.message" id="register-message"></fw-error-message>
     </form-body>
     <form-buttons>
       <button
@@ -64,7 +64,7 @@
       </div>
       <p class="btn-alternate-action"><a id="forgot-details-link" class="anchor-cursor" ng-click="forgotDetails()">Forgot your details?</a></p>
 
-      <fw-error-message value="signInForm.message"></fw-error-message>
+      <fw-error-message value="signInForm.message" id="sign-in-message"></fw-error-message>
     </form-body>
     <form-buttons>
       <button

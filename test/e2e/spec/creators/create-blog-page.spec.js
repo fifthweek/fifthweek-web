@@ -25,26 +25,5 @@ describe('create blog page', function() {
     });
   });
 
-  describe('sidebar', function() {
-
-    it('should contain 4 links', function () {
-      expect(sidebar.links.count()).toBe(4);
-    });
-
-    it('should contain "Home" link', function () {
-      expect(sidebar.dashboardLink.isDisplayed()).toBe(true);
-    });
-
-    it('should contain highlighted link for current page', function () {
-      expect(sidebar.createBlogLink.getAttribute('class')).toContain('active');
-    });
-
-    it('should contain "Settings" link', function () {
-      expect(sidebar.accountLink.isDisplayed()).toBe(true);
-    });
-
-    it('should contain "Help" link', function () {
-      expect(sidebar.helpLink.isDisplayed()).toBe(true);
-    });
-  });
+  sidebar.includeConsumerTests(sidebar.createBlogLink);
 });

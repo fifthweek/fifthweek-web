@@ -24,7 +24,14 @@
     invalidEmails: { get: function () { return element.all(by.css('.invalid-email')); }},
 
     emailsTextBoxId: { get: function(){ return 'emails-text'; }},
-    emailsTextBox: { get: function(){ return element(by.id(this.emailsTextBoxId)); }}
+    emailsTextBox: { get: function(){ return element(by.id(this.emailsTextBoxId)); }},
+
+    setNewGuestList: { value: function(emails) {
+      this.createGuestListButton.click();
+      testKit.setValue(this.emailsTextBoxId, emails.join('\n'));
+      this.saveGuestListButton.click();
+    }}
+
   });
 
   module.exports = guestListPage;

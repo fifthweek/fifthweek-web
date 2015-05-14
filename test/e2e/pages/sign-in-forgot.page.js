@@ -3,6 +3,7 @@
 var SignInForgotPage = function() {};
 
 SignInForgotPage.prototype = Object.create({}, {
+  pageUrl: { get: function () { return '/sign-in/forgot'; }},
   usernameTextBoxId: { value: 'passwordResetRequestData-username'},
   emailTextBoxId: { value: 'passwordResetRequestData-email' },
   resetPasswordButton: { get: function () { return element(by.id('password-reset-request-button')); }},
