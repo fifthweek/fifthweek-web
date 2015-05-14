@@ -235,8 +235,19 @@ angular.module('webApp').factory('membershipStub',
     //   name: '',
     //   email: ''
     // }
-      service.postRegisteredInterest = function(registerInterestData) {
+    service.postRegisteredInterest = function(registerInterestData) {
       return $http.post(apiBaseUri + 'membership/registeredInterest', registerInterestData).catch(function(response) {
+        return $q.reject(utilities.getHttpError(response));
+      });
+    };
+
+    // identifiedUserData = {
+    //   name: '',
+    //   username: '',
+    //   email: ''
+    // }
+    service.postIdentifiedUser = function(identifiedUserData) {
+      return $http.post(apiBaseUri + 'membership/identifiedUsers', identifiedUserData).catch(function(response) {
         return $q.reject(utilities.getHttpError(response));
       });
     };
