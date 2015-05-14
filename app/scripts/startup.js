@@ -15,6 +15,11 @@
         };
       });
     })
+    .run(function(identifiedUserNotifier){
+      // This should run before anything that updates it, such as fetching
+      // aggregate user state or checking analytics query string information.
+      identifiedUserNotifier.initialize();
+    })
     .run(function() {
       marked.setOptions({
         breaks: true,
