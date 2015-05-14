@@ -6,6 +6,7 @@ describe('register-interest-dialog-controller', function () {
   var $scope;
   var target;
 
+  var identifiedUserNotifierConstants;
   var membershipStub;
   var title;
   var message;
@@ -26,6 +27,7 @@ describe('register-interest-dialog-controller', function () {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
       $controller = $injector.get('$controller');
+      identifiedUserNotifierConstants = $injector.get('identifiedUserNotifierConstants');
     });
 
     $scope.$close = function(){};
@@ -87,8 +89,13 @@ describe('register-interest-dialog-controller', function () {
 
       describe('when postRegisteredInterest succeeds', function(){
         beforeEach(function(){
+          spyOn($scope, '$emit');
           deferredPostRegisteredInterest.resolve();
           $scope.$apply();
+        });
+
+        it('should emit the identified user event', function(){
+          expect($scope.$emit).toHaveBeenCalledWith(identifiedUserNotifierConstants.eventName, 'input');
         });
 
         it('should set the page to done', function(){

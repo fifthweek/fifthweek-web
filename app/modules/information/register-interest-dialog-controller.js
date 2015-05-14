@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'registerInterestDialogCtrl',
-  function($q, $scope, membershipStub, title, message) {
+  function($q, $scope, membershipStub, identifiedUserNotifierConstants, title, message) {
     'use strict';
 
     var pages = $scope.pages = {
@@ -21,6 +21,7 @@ angular.module('webApp').controller(
     $scope.registerInterest = function() {
       return membershipStub.postRegisteredInterest($scope.model.input)
         .then(function() {
+          $scope.$emit(identifiedUserNotifierConstants.eventName, $scope.model.input);
           $scope.model.page = pages.done;
         });
     };
