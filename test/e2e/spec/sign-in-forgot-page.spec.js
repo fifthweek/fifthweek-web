@@ -23,7 +23,7 @@ describe('sign-in - forgot details page', function() {
   describe('sidebar', function() {
 
     it('should contain 2 links', function () {
-      expect(sidebar.links.count()).toBe(3);
+      expect(sidebar.links.count()).toBe(2);
     });
 
     it('should contain highlighted link for current page', function () {
