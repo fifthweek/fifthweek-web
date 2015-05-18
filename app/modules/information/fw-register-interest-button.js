@@ -15,6 +15,7 @@ angular.module('webApp')
         message: '@?',
         callToAction: '@?'
       },
+      replace: true,
       templateUrl: 'modules/information/fw-register-interest-button.html',
       link: function(scope) {
 

@@ -79,6 +79,7 @@ $html-name-space:'.info-page';
       }
 
       &.btn-navbar-register {
+        cursor: pointer;
         background-color: $green-light-1;
         &:hover {
           background-color: lighten($green-light-1, 4%) !important;
@@ -237,6 +238,7 @@ $html-name-space:'.info-page';
   }
 
   .info-page-button {
+    cursor: pointer;
     background: $green-light-1;
     color:#fff;
     &:hover {
