@@ -1,9 +1,9 @@
-﻿<fw-panel12>
-  <form novalidate
-        autocomplete="off"
-        role="form"
-        name="form"
-        id="registrationForm">
+﻿<form novalidate
+      autocomplete="off"
+      role="form"
+      name="form"
+      id="registrationForm">
+  <fw-panel12>
 
     <div ng-show="!registrationSucceeded">
       <div class="input-wrap">
@@ -48,11 +48,12 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
-        <div id="messageBox" class="sub-form-alert" ng-show="form.message" ng-class="registrationSucceeded ? 'alert alert-success' : 'alert alert-danger'">
+      <div class="col-xs-12">
+        <div id="messageBox" ng-show="form.message" ng-class="registrationSucceeded ? 'alert alert-success' : 'alert alert-danger sub-form-alert'">
           <p>{{form.message}}</p>
         </div>
       </div>
     </div>
-  </form>
-</fw-panel12>
+
+  </fw-panel12>
+</form>
