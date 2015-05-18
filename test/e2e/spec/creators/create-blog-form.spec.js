@@ -24,7 +24,7 @@ describe('create blog form', function() {
     beforeEach(function() {
       // New registration required as successfully completing the form means user
       // will no longer be able to access it.
-      signOutPage.signOutAndGoHome();
+      registerPage.signOutAndGoToRegistration();
       registerPage.registerSuccessfully();
     });
 
@@ -52,7 +52,7 @@ describe('create blog form', function() {
   describe('sad path', function () {
 
     it('should run once before all', function() {
-      signOutPage.signOutAndGoHome();
+      registerPage.signOutAndGoToRegistration();
       registerPage.registerSuccessfully();
     });
 

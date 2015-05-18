@@ -41,7 +41,7 @@ describe('sign-in form', function() {
     var password;
 
     it('should run once before all', function() {
-      signOutPage.signOutAndGoHome();
+      registerPage.signOutAndGoToRegistration();
       var signInData = registerPage.registerSuccessfully();
       username = signInData.username;
       password = signInData.password;

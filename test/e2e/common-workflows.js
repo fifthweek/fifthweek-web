@@ -69,7 +69,7 @@
     }},
 
     createBlog: { value: function() {
-      signOutPage.signOutAndGoHome();
+      registerPage.signOutAndGoToRegistration();
       var registration = registerPage.registerSuccessfully();
       var blog = createBlogPage.submitSuccessfully();
 
@@ -80,11 +80,11 @@
     }},
 
     register: { value: function() {
-      signOutPage.signOutAndGoHome();
+      registerPage.signOutAndGoToRegistration();
       return registerPage.registerSuccessfully();
     }},
 
-    signOut: { value: function(registration) {
+    signOut: { value: function() {
       signOutPage.signOutAndGoHome();
     }},
 

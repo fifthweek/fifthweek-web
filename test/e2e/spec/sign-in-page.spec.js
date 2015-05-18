@@ -7,7 +7,6 @@ var SidebarPage = require('../pages/sidebar.page.js');
 describe('sign-in page', function() {
   'use strict';
 
-  var header = new HeaderPage();
   var sidebar = new SidebarPage();
   var signOutPage = new SignOutPage();
   var homePage = new HomePage();
@@ -18,25 +17,14 @@ describe('sign-in page', function() {
     homePage.signInLink.click();
   });
 
-  describe('header', function() {
-
-    it('should contain title', function() {
-      expect(header.title.getText()).toContain('Sign In'.toUpperCase());
-    });
-  });
-
   describe('sidebar', function() {
 
-    it('should contain 3 links', function () {
-      expect(sidebar.links.count()).toBe(3);
+    it('should contain 2 links', function () {
+      expect(sidebar.links.count()).toBe(2);
     });
 
     it('should contain highlighted link for current page', function () {
       expect(sidebar.signInLink.getAttribute('class')).toContain('active');
-    });
-
-    it('should contain "Register" link', function () {
-      expect(sidebar.registerLink.isDisplayed()).toBe(true);
     });
 
     it('should contain "Help" link', function () {

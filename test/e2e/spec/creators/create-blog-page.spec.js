@@ -11,10 +11,9 @@ describe('create blog page', function() {
   var sidebar = new SidebarPage();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
-  var page = new CreateBlogPage();
 
   it('should run once before all', function() {
-    signOutPage.signOutAndGoHome();
+    registerPage.signOutAndGoToRegistration();
     registerPage.registerSuccessfully();
   });
 

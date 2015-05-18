@@ -30,7 +30,7 @@ describe('sign-in - reset password form', function() {
   var page = new SignInResetPage();
 
   var register = function() {
-    signOutPage.signOutAndGoHome();
+    registerPage.signOutAndGoToRegistration();
     var signInData = registerPage.registerSuccessfully();
     username = signInData.username;
     email = signInData.email;

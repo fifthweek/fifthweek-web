@@ -327,7 +327,6 @@
         var userRegistration3;
         it('should run once before all', function(){
           userRegistration2 = signInWorkflow.newRegistrationData();
-          browser.sleep(100); // Username is based on current time, so make sure we get a unique one.
           userRegistration3 = signInWorkflow.newRegistrationData();
 
           commonWorkflows.reSignIn(creatorRegistration);

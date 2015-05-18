@@ -62,7 +62,7 @@ describe('sign-in - forgot details form', function() {
     var mailboxUrl;
 
     it('should run once before all', function() {
-      signOutPage.signOutAndGoHome();
+      registerPage.signOutAndGoToRegistration();
       var signInData = registerPage.registerSuccessfully();
       username = signInData.username;
       email = signInData.email;

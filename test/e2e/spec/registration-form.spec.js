@@ -10,7 +10,6 @@ describe("registration form", function() {
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
-  var signOutPage = new SignOutPage();
   var usernameInputPage = new UsernameInputPage();
   var passwordInputPage = new PasswordInputPage();
   var page = new RegisterPage();
@@ -18,7 +17,7 @@ describe("registration form", function() {
   var email;
 
   var navigateToPage = function() {
-    signOutPage.signOutAndGoHome();
+    page.signOutAndGoToRegistration();
     username = usernameInputPage.newUsername();
     email = page.newEmail(username);
   };

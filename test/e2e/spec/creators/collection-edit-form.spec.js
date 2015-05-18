@@ -83,7 +83,7 @@ describe('edit collection form', function() {
       sidebar.collectionsLink.click();
       navigateToPage();
     },
-    function(){ sidebar.helpLink.click(); },
+    function(){ sidebar.channelsLink.click(); },
     function(){
       var newValues = testKit.setFormValues(page, inputs);
       page.expandReleaseTimesButton.click();

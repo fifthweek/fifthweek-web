@@ -8,7 +8,7 @@ var UsernameInputPage = function() {};
 UsernameInputPage.prototype = Object.create({},
 {
   newUsername: { value: function() {
-    return 'wd_' + Date.now().toString().split('').reverse().join('');
+    return 'wd_' + Math.round((1 + Math.random()) * 1000000000000);
   }},
   // All happy paths in a suite typically share the same post-condition, which can be extracted into a afterEach.
   // This is why button clicks and expectations are not set here.

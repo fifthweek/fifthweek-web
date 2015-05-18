@@ -19,6 +19,16 @@ RegisterPage.prototype = Object.create({},
   newEmail: { value: function(username) {
     return username + '@testing.fifthweek.com';
   }},
+  signOutAndGoToRegistration: { value: function() {
+    browser.controlFlow().execute(function() {
+      var script =
+        'angular.element(document.body).injector().get(\'$state\').go(\'user.signOut\'); ' +
+        'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ' +
+        'angular.element(document.body).injector().get(\'$state\').go(\'register\'); ' +
+        'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
+      browser.executeScript(script);
+    });
+  }},
   registerSuccessfully: { value: function() {
     var username = new UsernameInputPage().newUsername();
     var email = this.newEmail(username);

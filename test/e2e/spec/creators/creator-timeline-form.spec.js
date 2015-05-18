@@ -140,7 +140,7 @@
 
             // Check not deleted from API.
             navigateToSite();
-            sidebar.helpLink.click();
+            sidebar.channelsLink.click();
             navigateToPage();
             expect(post.allPosts.count()).toBe(1);
           },
@@ -150,7 +150,7 @@
 
             // Check deleted from API.
             navigateToSite();
-            sidebar.helpLink.click();
+            sidebar.channelsLink.click();
             navigateToPage();
             expect(post.allPosts.count()).toBe(0);
           }

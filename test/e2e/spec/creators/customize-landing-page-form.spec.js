@@ -192,7 +192,7 @@ describe('customize landing page form', function() {
 
     discardChanges.describeDiscardingChanges(
       navigateToPage,
-      function(){ sidebar.helpLink.click(); },
+      function(){ sidebar.channelsLink.click(); },
       function(){ testKit.setValue(page.taglineTextBoxId, 'New Tagline');},
       function(){ expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe('New Tagline'); },
       function(){ expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(blog.tagline); }

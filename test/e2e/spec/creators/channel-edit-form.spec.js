@@ -100,7 +100,7 @@ describe('edit channel form', function() {
           sidebar.channelsLink.click();
           navigateToPage();
         },
-        function(){ sidebar.helpLink.click(); },
+        function(){ sidebar.collectionsLink.click(); },
         function(){ return testKit.setFormValues(page, inputs); },
         function(newValues){ testKit.expectFormValues(page, newValues); },
         function(){ testKit.expectFormValues(page, savedValues); }
