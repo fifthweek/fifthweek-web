@@ -189,7 +189,7 @@ angular.module('webApp')
       })
       .state(states.register.name, {
         url: 'register',
-        templateUrl: 'modules/register/register.html',
+        templateUrl: 'modules/registration/register.html',
         controller: 'RegisterCtrl',
         data : {
           pageTitle: 'Register',

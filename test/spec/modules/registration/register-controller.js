@@ -1,6 +1,6 @@
 'use strict';
 
-describe('home controller', function() {
+describe('registration controller', function() {
   var nextState = 'nextState';
 
   var $q;
@@ -47,10 +47,6 @@ describe('home controller', function() {
   // Split out since we have logic running in the constructor.
   function initializeTarget() {
   }
-
-  it('should contain an openModal function', function(){
-    expect(scope.openModal).toBeDefined();
-  });
 
   it('should contain empty registration data on creation', function() {
     expect(scope.registrationData.email).toBe('');
