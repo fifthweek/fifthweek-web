@@ -848,6 +848,15 @@ $html-name-space:'.info-page';
       font-size: 26px;
       margin-bottom: 15px;
     }
+    p {
+      font-size: 17px;
+    }
+    .row {
+      margin: 0 -30px;
+      > div {
+        padding: 0 30px;
+      }
+    }
   }
 
   .image-max-width {
