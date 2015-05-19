@@ -825,6 +825,9 @@ $html-name-space:'.info-page';
     p {
       font-size: 16px;
     }
+    .container {
+      padding: 0 30px;
+    }
     .row {
       margin: 0 -30px;
       > div {
@@ -835,7 +838,12 @@ $html-name-space:'.info-page';
       margin-bottom: -1 * $row-bottom-padding;
     }
 
+    @media (min-width:$screen-ss-min) {
+      text-align: left;
+    }
+
     @media (max-width:$screen-sm-max) {
+
       .row > div {
         padding-bottom: $row-bottom-padding-sm;
       }
@@ -863,6 +871,9 @@ $html-name-space:'.info-page';
       @media (min-width:$screen-sm-min) {
         font-size: 17px;
       }
+    }
+    .container {
+      padding: 0 30px;
     }
     .row {
       margin: 0 -30px;
