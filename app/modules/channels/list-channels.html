@@ -3,7 +3,7 @@
   <fw-managed-list id="channels" ng-if="!model.errorMessage" item-name="channel" items="model.channels" new-item-state="creator.channels.new" manage-item-state="creator.channels.edit">
     <h5><a class="channel-name" href>{{item.name}}</a> <span ng-if="item.isDefault" class="tail">Everyone</span></h5>
     <ul class="channel-description">
-      <li ng-repeat="description in item.description">{{description}}</li>
+      <li ng-repeat="description in item.description track by $index">{{description}}</li>
     </ul>
   </fw-managed-list>
 

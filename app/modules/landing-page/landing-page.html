@@ -84,7 +84,7 @@
                       </div>
                       <div class="col-xs-8">
                         <ul class="channel-description">
-                          <li ng-repeat="descriptionLine in channel.description">{{descriptionLine}}</li>
+                          <li ng-repeat="descriptionLine in channel.description track by $index">{{descriptionLine}}</li>
                         </ul>
                       </div>
                     </div>
