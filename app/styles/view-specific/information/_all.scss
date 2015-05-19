@@ -14,8 +14,11 @@ $html-name-space:'.info-page';
 
   text-align: center;
 
-  .main-container, .main-container-inner {
+  .main-container {
     padding: 0;
+    > div {
+      padding: 0;
+    }
   }
 
   .info-page-navbar {
