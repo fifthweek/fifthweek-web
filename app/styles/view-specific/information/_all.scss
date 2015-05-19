@@ -849,12 +849,21 @@ $html-name-space:'.info-page';
       margin-bottom: 15px;
     }
     p {
-      font-size: 17px;
+      @media (min-width:$screen-sm-min) {
+        font-size: 17px;
+      }
     }
     .row {
       margin: 0 -30px;
       > div {
         padding: 0 30px;
+
+        @media (max-width:$screen-s-max) {
+          padding-bottom: 60px;
+          &:last-child {
+            padding-bottom: 0;
+          }
+        }
       }
     }
   }
