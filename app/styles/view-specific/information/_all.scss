@@ -192,9 +192,14 @@ $html-name-space:'.info-page';
           }
         }
         .navbar-nav > li > a, .dropdown-menu > li:first-child > a {
+          font-weight: normal;
+          color: lighten($color-dark-3, 50%);
+          /*
+          Disabled until we have sub-pages worth distinguishing between.
           font-size: 16px;
           font-weight: 900;
           color: #fff;
+           */
         }
         .navbar-nav > li > a, .navbar-nav > li > .dropdown-menu > li > a {
           margin: 0;
