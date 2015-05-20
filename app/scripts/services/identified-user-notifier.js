@@ -68,7 +68,7 @@ angular.module('webApp')
 
     service.internal.handleAggregateUserStateEvent = function(event, data){
       if(data && data.accountSettings){
-        service.internal.saveUserInformation(data.accountSettings.email, undefined, data.accountSettings.username);
+        service.internal.saveUserInformation(data.accountSettings.email, data.accountSettings.name, data.accountSettings.username);
       }
       else if(!service.internal.hasNotified) {
         service.internal.notify();

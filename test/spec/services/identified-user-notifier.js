@@ -63,11 +63,11 @@ describe('identified-user-notifier', function(){
 
     describe('when account settings exist', function(){
       beforeEach(function(){
-        target.internal.handleAggregateUserStateEvent('event', { accountSettings: { email: 'email', username: 'username' }});
+        target.internal.handleAggregateUserStateEvent('event', { accountSettings: { email: 'email', name: 'name', username: 'username' }});
       });
 
       it('should call saveUserInformation', function(){
-        expect(target.internal.saveUserInformation).toHaveBeenCalledWith('email', undefined, 'username');
+        expect(target.internal.saveUserInformation).toHaveBeenCalledWith('email', 'name', 'username');
       });
 
       it('should not call notify', function(){
