@@ -24,5 +24,5 @@ describe('create blog page', function() {
     });
   });
 
-  sidebar.includeConsumerTests(sidebar.createBlogLink);
+  sidebar.includeNewCreatorTests(sidebar.createBlogLink);
 });

@@ -23,9 +23,21 @@
       sidebar.includeEstablishedCreatorTests(sidebar.readNowLink);
     });
 
-    describe('when a consumer', function(){
+    describe('when a new creator', function(){
       it('should run once before all', function() {
         commonWorkflows.register();
+        sidebar.readNowLink.click();
+        header.latestPostsLink.click();
+      });
+
+      header.includeBasicTests(header.latestPostsLink);
+
+      sidebar.includeNewCreatorTests(sidebar.readNowLink);
+    });
+
+    describe('when a consumer', function(){
+      it('should run once before all', function() {
+        commonWorkflows.registerAsConsumer();
         sidebar.readNowLink.click();
         header.latestPostsLink.click();
       });

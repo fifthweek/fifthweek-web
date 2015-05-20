@@ -6,6 +6,7 @@
   var SignInPage = require('./pages/sign-in.page.js');
   var CreateBlogPage = require('./pages/creators/create-blog.page.js');
   var RegisterPage = require('./pages/register.page.js');
+  var SignInWorkflowPage = require('./pages/sign-in-workflow.page.js');
   var SignOutPage = require('./pages/sign-out.page.js');
   var SidebarPage = require('./pages/sidebar.page.js');
   var ComposeOptionsPage = require('./pages/creators/compose/compose-options.page.js');
@@ -16,12 +17,14 @@
   var ComposeNotePage = require('./pages/creators/compose/compose-note.page.js');
   var ComposeFilePage = require('./pages/creators/compose/compose-file.page.js');
   var ComposeImagePage = require('./pages/creators/compose/compose-image.page.js');
+  var CreatorLandingPagePage = require('./pages/creators/creator-landing-page.page.js');
 
   var defaults = new Defaults();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
   var createBlogPage = new CreateBlogPage();
   var homePage = new HomePage();
+  var signInWorkflowPage = new SignInWorkflowPage();
   var signInPage = new SignInPage();
   var sidebar = new SidebarPage();
   var composeOptionsPage = new ComposeOptionsPage();
@@ -32,6 +35,7 @@
   var composeNotePage = new ComposeNotePage();
   var composeFilePage = new ComposeFilePage();
   var composeImagePage = new ComposeImagePage();
+  var creatorLandingPage = new CreatorLandingPagePage();
 
   var CommonWorkflows = function() {};
 
@@ -82,6 +86,21 @@
     register: { value: function() {
       registerPage.signOutAndGoToRegistration();
       return registerPage.registerSuccessfully();
+    }},
+
+    registerAsConsumer: { value: function() {
+      var context = this.createBlog();
+      var creatorRegistration = context.registration;
+
+      this.signOut();
+      this.getPage('/' + creatorRegistration.username);
+
+      creatorLandingPage.subscribeButton.click();
+      var registration = signInWorkflowPage.registerSuccessfully();
+
+      this.getPage('/user');
+
+      return registration;
     }},
 
     signOut: { value: function() {

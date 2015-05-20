@@ -65,7 +65,7 @@ SidebarPage.prototype = Object.create({}, {
     });
   }},
 
-  includeConsumerTests: { value: function(highlightedLink) {
+  includeNewCreatorTests: { value: function(highlightedLink) {
     var self = this;
 
     describe('consumer sidebar', function() {
@@ -79,6 +79,34 @@ SidebarPage.prototype = Object.create({}, {
 
       it('should contain "Create Blog" link', function () {
         expect(self.createBlogLink.isDisplayed()).toBe(true);
+      });
+
+      it('should contain "Account" link', function () {
+        expect(self.accountLink.isDisplayed()).toBe(true);
+      });
+
+      it('should contain "Help" link', function () {
+        expect(self.helpLink.isDisplayed()).toBe(true);
+      });
+
+      if(highlightedLink){
+        it('should highlight the current area', function () {
+          expect(highlightedLink.getAttribute('class')).toContain('active');
+        });
+      }
+    });
+  }},
+
+  includeConsumerTests: { value: function(highlightedLink) {
+    var self = this;
+
+    describe('consumer sidebar', function() {
+      it('should contain the correct number of links', function () {
+        expect(self.links.count()).toBe(3);
+      });
+
+      it('should contain "Read Now" link', function () {
+        expect(self.readNowLink.isDisplayed()).toBe(true);
       });
 
       it('should contain "Account" link', function () {

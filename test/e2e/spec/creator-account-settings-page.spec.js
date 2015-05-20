@@ -13,9 +13,10 @@ describe('account settings page', function() {
     it('should run once before all', function() {
       commonWorkflows.createBlog();
       sidebar.accountLink.click();
+      header.creatorAccountSettingsLink.click();
     });
 
-    header.includeBasicTests(header.accountSettingsLink);
+    header.includeBasicTests(header.creatorAccountSettingsLink);
 
     sidebar.includeEstablishedCreatorTests(sidebar.accountLink);
   });
@@ -24,9 +25,10 @@ describe('account settings page', function() {
     it('should run once before all', function() {
       commonWorkflows.register();
       sidebar.accountLink.click();
+      header.creatorAccountSettingsLink.click();
     });
 
-    header.includeBasicTests(header.accountSettingsLink);
+    header.includeBasicTests(header.creatorAccountSettingsLink);
 
     sidebar.includeNewCreatorTests(sidebar.accountLink);
   });
@@ -35,9 +37,10 @@ describe('account settings page', function() {
     it('should run once before all', function() {
       commonWorkflows.registerAsConsumer();
       sidebar.accountLink.click();
+      header.creatorAccountSettingsLink.click();
     });
 
-    header.includeBasicTests(header.accountSettingsLink);
+    header.includeBasicTests(header.creatorAccountSettingsLink);
 
     sidebar.includeConsumerTests(sidebar.accountLink);
   });
