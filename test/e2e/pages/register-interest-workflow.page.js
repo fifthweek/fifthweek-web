@@ -19,7 +19,7 @@
     nameTextBox: { get: function(){ return element(by.id('input-username')); }},
     registerButton: { get: function(){ return element(by.id('register-button')); }},
 
-    cancelButton: { get: function(){ return element(by.id('modal-cancel-button')); }},
+    cancelButton: { get: function(){ return element(by.id('modal-cross-button')); }},
 
     dismissButton: { get: function(){ return element(by.id('dismiss-button')); }},
 
