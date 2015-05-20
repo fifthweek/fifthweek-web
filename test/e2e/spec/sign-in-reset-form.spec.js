@@ -70,39 +70,39 @@ describe('sign-in - reset password form', function() {
     passwordInputPage.includeHappyPaths(page.passwordTextBoxId, function() { });
   });
 
-  describe('when validating against bad input', function() {
-
-    it('should run once before all', navigateToPage);
-
-    afterEach(function() {
-      // Reset form state.
-      commonWorkflows.fastRefresh();
-    });
-
-    passwordInputPage.includeSadPaths(page.passwordTextBoxId, page.resetPasswordButton, page.helpMessages, function() { });
-  });
-
-  describe('after resetting password', function() {
-
-    var newPassword = 'YayItsBeenReset!';
-
-    it('should run once before all', function() {
-      navigateToPage();
-      testKit.setValue(page.passwordTextBoxId, newPassword);
-      page.resetPasswordButton.click();
-    });
-
-    it('should allow user to sign in with new password', function() {
-      signOutPage.signOutAndGoHome();
-      homePage.signInLink.click();
-      signInPage.signInSuccessfully(username, newPassword);
-    });
-
-    it('the link should become expired', function() {
-      signOutPage.signOutAndGoHome();
-      commonWorkflows.getPage(resetPasswordPageUrl);
-      expect(page.formPanel.isDisplayed()).toBe(false);
-      expect(page.linkExpiredMessage.isDisplayed()).toBe(true);
-    });
-  });
+  //describe('when validating against bad input', function() {
+  //
+  //  it('should run once before all', navigateToPage);
+  //
+  //  afterEach(function() {
+  //    // Reset form state.
+  //    commonWorkflows.fastRefresh();
+  //  });
+  //
+  //  passwordInputPage.includeSadPaths(page.passwordTextBoxId, page.resetPasswordButton, page.helpMessages, function() { });
+  //});
+  //
+  //describe('after resetting password', function() {
+  //
+  //  var newPassword = 'YayItsBeenReset!';
+  //
+  //  it('should run once before all', function() {
+  //    navigateToPage();
+  //    testKit.setValue(page.passwordTextBoxId, newPassword);
+  //    page.resetPasswordButton.click();
+  //  });
+  //
+  //  it('should allow user to sign in with new password', function() {
+  //    signOutPage.signOutAndGoHome();
+  //    homePage.signInLink.click();
+  //    signInPage.signInSuccessfully(username, newPassword);
+  //  });
+  //
+  //  it('the link should become expired', function() {
+  //    signOutPage.signOutAndGoHome();
+  //    commonWorkflows.getPage(resetPasswordPageUrl);
+  //    expect(page.formPanel.isDisplayed()).toBe(false);
+  //    expect(page.linkExpiredMessage.isDisplayed()).toBe(true);
+  //  });
+  //});
 });
