@@ -6,7 +6,7 @@
   <fw-form-modal name="{{model.title}}">
     <form-body>
 
-      <p>{{model.message}}</p>
+      <p ng-if="model.message">{{model.message}}</p>
 
       <fw-form-group>
         <div class="row">
@@ -18,7 +18,7 @@
                 type="text"
                 class="form-control"
                 name="name"
-                placeholder="Name"
+                placeholder="Your name"
                 focus=true
                 ng-maxlength="100"
                 maxlength="100"
@@ -42,7 +42,7 @@
                 type="email"
                 class="form-control"
                 name="email"
-                placeholder="Email"
+                placeholder="Email address"
                 required>
             </div>
           </div>
@@ -56,10 +56,9 @@
     </form-body>
     <form-buttons>
       <button
-        class="btn btn-success btn-block"
+        class="btn btn-success btn-block btn-continue"
         type="submit"
         id="register-button"
-        data-loading-text="Registering..."
         data-event-title="Registered Interest"
         data-event-category="Interest Registration"
         fw-form-submit="registerInterest()">Continue</button>

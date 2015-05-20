@@ -13,6 +13,31 @@ $html-name-space:'.info-page';
   $color-dark-3: #4d394b;
 
   text-align: center;
+  .modal-dialog {
+    text-align: left;
+    .btn-default {
+      display: none;
+    }
+    .btn-continue {
+      position: relative;
+      padding: 8px 26px 8px 14px;
+      height: auto;
+      border:none;
+      background-color: $brand-highlight-3;
+      &:hover {
+        background-color: lighten($brand-highlight-3, 4%) !important;
+      }
+      &:after {
+        position: absolute;
+        content:"\f105";
+        font-family:'FontAwesome';
+        right: 11px;
+        top:50%;
+        margin-top:-12px;
+        font-size:17px;
+      }
+    }
+  }
 
   .main-container {
     padding: 0;
@@ -316,19 +341,15 @@ $html-name-space:'.info-page';
 
   /* TODO: Write mixin to deduplicate here */
   .image-text-sm {
-    img {
-      margin-bottom: 35px;
-    }
-
     .col-image:first-child {
       margin-bottom: 40px;
-      @media (min-width:$screen-s-min) {
+      @media (min-width:$screen-sm-min) {
         margin-bottom: 0;
       }
     }
     .col-image:last-child {
       margin-top: 40px;
-      @media (min-width:$screen-s-min) {
+      @media (min-width:$screen-sm-min) {
         margin-top: 0;
       }
     }
@@ -348,10 +369,6 @@ $html-name-space:'.info-page';
 
   /* TODO: Write mixin to deduplicate here */
   .image-text-s {
-    img {
-      margin-bottom: 35px;
-    }
-
     .col-image:first-child {
       margin-bottom: 40px;
       @media (min-width:$screen-s-min) {
@@ -969,5 +986,8 @@ $html-name-space:'.info-page';
     @media (min-width:$screen-lg-min) {
       padding-right: 40px;
     }
+  }
+  .image-on-top {
+    margin-bottom: 60px;
   }
 }
