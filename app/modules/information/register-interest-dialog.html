@@ -8,29 +8,7 @@
 
       <p ng-if="model.message">{{model.message}}</p>
 
-      <fw-form-group>
-        <div class="row">
-          <div class="col-md-12">
-            <div fw-form-input-glyphs>
-              <input
-                id="input-name"
-                ng-model="model.input.name"
-                type="text"
-                class="form-control"
-                name="name"
-                placeholder="Your name"
-                focus=true
-                ng-maxlength="100"
-                maxlength="100"
-                required>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <p fw-form-input-invalid-p="maxlength">Allowed 100 characters at most.</p>
-            <p fw-form-input-invalid-p="required">Your name is required.</p>
-          </div>
-        </div>
-      </fw-form-group>
+      <fw-form-input-creator-name id="input-name" ng-model="model.input.name" input-columns="12" required></fw-form-input-creator-name>
 
       <fw-form-group>
         <div class="row">
