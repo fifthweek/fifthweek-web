@@ -51,6 +51,8 @@ describe('sign-in - reset password form', function() {
     commonWorkflows.rebaseLinkAndClick(signInResetEmailPage.resetPasswordLink).then(function(url) {
       resetPasswordPageUrl = url;
     });
+
+    commonWorkflows.waitForElementToDisplay(page.resetPasswordButton);
   };
 
   it('should run once before all', register);
