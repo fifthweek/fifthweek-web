@@ -10,6 +10,7 @@ var RegisterPage = function() {};
 
 RegisterPage.prototype = Object.create({},
 {
+  creatorNameTextBoxId: { get: function () { return 'registrationData-creatorName'; }},
   emailTextBoxId: { get: function () { return 'registrationData-email'; }},
   usernameTextBoxId: { get: function () { return 'registrationData-username'; }},
   passwordTextBoxId: { get: function () { return 'registrationData-password'; }},
@@ -33,7 +34,9 @@ RegisterPage.prototype = Object.create({},
     var username = new UsernameInputPage().newUsername();
     var email = this.newEmail(username);
     var password = 'password1';
+    var name = 'A Name';
 
+    testKit.setValue(this.creatorNameTextBoxId, name);
     testKit.setValue(this.emailTextBoxId, email);
     testKit.setValue(this.usernameTextBoxId, username);
     testKit.setValue(this.passwordTextBoxId, password);
@@ -43,7 +46,8 @@ RegisterPage.prototype = Object.create({},
     return {
       username: username,
       email: email,
-      password: password
+      password: password,
+      creatorName: name
     };
   }}
 });

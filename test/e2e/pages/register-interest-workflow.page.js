@@ -3,10 +3,12 @@
 
   var TestKit = require('../test-kit.js');
   var CommonWorkflows = require('../common-workflows.js');
+  var CreatorNameInputPage = require('./creator-name-input.page');
   var UsernameInputPage = require('./username-input.page');
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
+  var creatorNameInputPage = new CreatorNameInputPage();
   var usernameInputPage = new UsernameInputPage();
 
   var signInWorkflowPage = function() {};
@@ -14,7 +16,7 @@
   signInWorkflowPage.prototype = Object.create({}, {
 
     emailTextBoxId: { get: function () { return 'input-email'; }},
-    nameTextBoxId: { get: function () { return 'input-name'; }},
+    nameTextBoxId: { get: function () { return 'model-input-name'; }},
     emailTextBox: { get: function(){ return element(by.id('input-email')); }},
     nameTextBox: { get: function(){ return element(by.id('input-username')); }},
     registerButton: { get: function(){ return element(by.id('register-button')); }},
@@ -96,6 +98,10 @@
           testKit.setValue(page.nameTextBoxId, name);
           testKit.setValue(page.emailTextBoxId, email);
         });
+
+        creatorNameInputPage.includeHappyPaths(page.nameTextBoxId, function() {
+          testKit.setValue(page.emailTextBoxId, email);
+        });
       });
 
       describe('when validating against bad input', function() {
@@ -118,12 +124,8 @@
             'A valid email address is required.');
         });
 
-        it('requires a name', function(){
+        creatorNameInputPage.includeSadPaths(page.nameTextBoxId, page.registerButton, page.helpMessages, function() {
           testKit.setValue(page.emailTextBoxId, email);
-          page.registerButton.click();
-
-          testKit.assertSingleValidationMessage(page.helpMessages,
-            'Your name is required.');
         });
       });
     }}
