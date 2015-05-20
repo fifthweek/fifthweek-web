@@ -1,6 +1,6 @@
-'use strict';
-
 describe('registration controller', function() {
+  'use strict';
+
   var nextState = 'nextState';
 
   var $q;
@@ -52,6 +52,7 @@ describe('registration controller', function() {
     expect(scope.registrationData.email).toBe('');
     expect(scope.registrationData.username).toBe('');
     expect(scope.registrationData.password).toBe('');
+    expect(scope.registrationData.creatorName).toBe('');
   });
 
   describe('and submits the form', function() {
@@ -60,7 +61,8 @@ describe('registration controller', function() {
       scope.registrationData = {
         email: 'lawrence@fifthweek.com',
         username: 'lawrence',
-        password: 'password'
+        password: 'password',
+        creatorName: 'creatorName'
       };
     });
 
@@ -73,6 +75,13 @@ describe('registration controller', function() {
 
       scope.register();
       scope.$apply();
+
+      expect(authenticationService.registerUser).toHaveBeenCalledWith({
+        email: 'lawrence@fifthweek.com',
+        username: 'lawrence',
+        password: 'password',
+        creatorName: 'creatorName'
+      });
 
       expect(scope.form.message).toContain('Signing in...');
       expect(scope.registrationSucceeded).toBe(true);
@@ -87,6 +96,19 @@ describe('registration controller', function() {
 
       scope.register();
       scope.$apply();
+    });
+
+    it('should set registrationSucceeded to false and propagate error on failure', function() {
+      calculatedStates.getDefaultState.and.returnValue(nextState);
+      authenticationService.registerUser.and.returnValue($q.when());
+      authenticationService.signIn.and.returnValue($q.reject('error'));
+
+      var error;
+      scope.register().catch(function(e){ error = e; });
+      scope.$apply();
+
+      expect(error).toBe('error');
+      expect(scope.registrationSucceeded).toBe(false);
     });
   });
 });

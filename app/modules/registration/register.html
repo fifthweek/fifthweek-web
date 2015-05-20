@@ -7,6 +7,9 @@
 
     <div ng-show="!registrationSucceeded">
       <div class="input-wrap">
+
+        <fw-form-input-creator-name ng-model="registrationData.creatorName" breakpoint="md" focus="true" required></fw-form-input-creator-name>
+
         <fw-form-group>
           <div class="row">
             <div class="col-md-6">
@@ -18,7 +21,6 @@
                   class="form-control"
                   name="email"
                   placeholder="Email"
-                  focus="true"
                   required>
               </div>
             </div>
