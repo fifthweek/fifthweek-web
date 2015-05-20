@@ -35,6 +35,9 @@ angular.module('webApp')
       account: {
         name: 'user.account'
       },
+      creatorAccount: {
+        name: 'user.creatorAccount'
+      },
       newsFeed: {
         name: 'user.newsFeed'
       },
@@ -169,7 +172,7 @@ angular.module('webApp')
       name: 'comingSoon'
     }
   })
-  .config(function($stateProvider, $urlRouterProvider, $locationProvider, states/*, authenticationServiceConstants*/) {
+  .config(function($stateProvider, $urlRouterProvider, $locationProvider, states, authenticationServiceConstants) {
 
     $locationProvider.html5Mode(true);
 
@@ -192,8 +195,8 @@ angular.module('webApp')
         templateUrl: 'modules/registration/register.html',
         controller: 'RegisterCtrl',
         data : {
-          pageTitle: 'Register',
-          headTitle: ': ' + 'Register',
+          pageTitle: 'Creator Registration',
+          headTitle: ': ' + 'Creator Registration',
           access: {
             requireUnauthenticated: true
           }
@@ -260,9 +263,22 @@ angular.module('webApp')
         templateUrl: 'modules/account/account.html',
         controller: 'AccountCtrl',
         data : {
-          pageTitle: 'My Account',
-          headTitle: ': ' + 'My Account',
+          pageTitle: 'Account Settings',
+          headTitle: ': ' + 'Account Settings',
           bodyClass: 'page-account-settings',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.user.creatorAccount.name, {
+        url: '/creator-account',
+        templateUrl: 'modules/account/creator-account-settings.html',
+        controller: 'creatorAccountSettingsCtrl',
+        data : {
+          pageTitle: 'Creator Account Settings',
+          headTitle: ': ' + 'Creator Account Settings',
+          bodyClass: 'page-creator-account-settings',
           access: {
             requireAuthenticated: true
           }
@@ -310,7 +326,8 @@ angular.module('webApp')
         redirectTo: states.creator.posts.name,
         data : {
           access: {
-            requireAuthenticated: true
+            requireAuthenticated: true,
+            roles: [authenticationServiceConstants.roles.creator]
           }
         }
       })
@@ -321,10 +338,7 @@ angular.module('webApp')
         requireBlog: false,
         data : {
           pageTitle: 'About Your Blog',
-          headTitle: ': ' + 'Create Blog',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Create Blog'
         }
       })
       .state(states.creator.landingPage.name, {
@@ -334,9 +348,6 @@ angular.module('webApp')
         redirectTo: states.creator.landingPage.edit.name,
         requireBlog: true,
         data : {
-          access: {
-            requireAuthenticated: true
-          }
         }
       })
       .state(states.creator.landingPage.preview.name, {
@@ -344,9 +355,6 @@ angular.module('webApp')
         controller: 'landingPageRedirectCtrl',
         requireBlog: true,
         data : {
-          access: {
-            requireAuthenticated: true
-          }
         }
       })
       .state(states.creator.landingPage.edit.name, {
@@ -367,9 +375,6 @@ angular.module('webApp')
         requireBlog: true,
         redirectTo: states.creator.posts.live.name,
         data : {
-          access: {
-            requireAuthenticated: true
-          }
         }
       })
       .state(states.creator.posts.live.name, {
@@ -378,10 +383,7 @@ angular.module('webApp')
         requireBlog: true,
         data : {
           pageTitle: 'Live Posts',
-          headTitle: ': ' + 'Live Posts',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Live Posts'
         }
       })
       .state(states.creator.posts.scheduled.name, {
@@ -390,9 +392,6 @@ angular.module('webApp')
         redirectTo: states.creator.posts.scheduled.list.name,
         requireBlog: true,
         data : {
-          access: {
-            requireAuthenticated: true
-          }
         }
       })
       .state(states.creator.posts.scheduled.list.name, {
@@ -403,10 +402,7 @@ angular.module('webApp')
         data : {
           pageTitle: 'Scheduled Posts',
           headTitle: ': ' + 'Scheduled Posts',
-          bodyClass: 'page-creator-backlog-post-list',
-          access: {
-            requireAuthenticated: true
-          }
+          bodyClass: 'page-creator-backlog-post-list'
         }
       })
       .state(states.creator.posts.scheduled.queues.name, {
@@ -415,9 +411,6 @@ angular.module('webApp')
         redirectTo: states.creator.posts.scheduled.queues.list.name,
         requireBlog: true,
         data : {
-          access: {
-            requireAuthenticated: true
-          }
         }
       })
       .state(states.creator.posts.scheduled.queues.list.name, {
@@ -426,10 +419,7 @@ angular.module('webApp')
         requireBlog: true,
         data : {
           pageTitle: 'Queues',
-          headTitle: ': ' + 'Queues',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Queues'
         }
       })
       .state(states.creator.posts.scheduled.queues.reorder.name, {
@@ -439,10 +429,7 @@ angular.module('webApp')
         requireBlog: true,
         data : {
           pageTitle: 'Reorder Queue',
-          headTitle: ': ' + 'Reorder Queues',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Reorder Queues'
         }
       })
       .state(states.creator.collections.name, {
@@ -451,9 +438,6 @@ angular.module('webApp')
         requireBlog: true,
         redirectTo: states.creator.collections.list.name,
         data : {
-          access: {
-            requireAuthenticated: true
-          }
         }
       })
       .state(states.creator.collections.new.name, {
@@ -462,10 +446,7 @@ angular.module('webApp')
         controller: 'newCollectionCtrl',
         requireBlog: true,
         data : {
-          headTitle: ': ' + 'Create Collection',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Create Collection'
         }
       })
       .state(states.creator.collections.edit.name, {
@@ -474,10 +455,7 @@ angular.module('webApp')
         controller: 'editCollectionCtrl',
         requireBlog: true,
         data : {
-          headTitle: ': ' + 'Edit Collection',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Edit Collection'
         }
       })
       .state(states.creator.collections.list.name, {
@@ -487,10 +465,7 @@ angular.module('webApp')
         requireBlog: true,
         data : {
           pageTitle: 'Collections',
-          headTitle: ': ' + 'Collections',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Collections'
         }
       })
       .state(states.creator.channels.name, {
@@ -499,9 +474,6 @@ angular.module('webApp')
         requireBlog: true,
         redirectTo: states.creator.channels.list.name,
         data : {
-          access: {
-            requireAuthenticated: true
-          }
         }
       })
       .state(states.creator.channels.new.name, {
@@ -510,10 +482,7 @@ angular.module('webApp')
         controller: 'newChannelCtrl',
         requireBlog: true,
         data : {
-          headTitle: ': ' + 'Create Channel',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Create Channel'
         }
       })
       .state(states.creator.channels.edit.name, {
@@ -522,10 +491,7 @@ angular.module('webApp')
         controller: 'editChannelCtrl',
         requireBlog: true,
         data : {
-          headTitle: ': ' + 'Edit Channel',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Edit Channel'
         }
       })
       .state(states.creator.channels.list.name, {
@@ -535,10 +501,7 @@ angular.module('webApp')
         requireBlog: true,
         data : {
           pageTitle: 'Blogs',
-          headTitle: ': ' + 'Blogs',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Blogs'
         }
       })
       .state(states.creator.subscribers.name, {
@@ -547,9 +510,6 @@ angular.module('webApp')
         requireBlog: true,
         redirectTo: states.creator.subscribers.guestList.name,
         data : {
-          access: {
-            requireAuthenticated: true
-          }
         }
       })
       .state(states.creator.subscribers.guestList.name, {
@@ -560,10 +520,7 @@ angular.module('webApp')
         data : {
           bodyClass: 'page-guest-list',
           pageTitle: 'Guest List',
-          headTitle: ': ' + 'Guest List',
-          access: {
-            requireAuthenticated: true
-          }
+          headTitle: ': ' + 'Guest List'
         }
       })
       .state(states.features.name, {

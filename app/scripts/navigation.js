@@ -128,6 +128,11 @@ angular.module('webApp')
               icon: 'fa fa-user'
             },
             {
+              name: 'Creator Settings',
+              state: states.user.creatorAccount.name,
+              icon: 'fa fa-pencil'
+            },
+            {
               name: 'Sign Out',
               state: states.user.signOut.name,
               icon: 'fa fa-sign-out'
