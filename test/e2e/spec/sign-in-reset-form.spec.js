@@ -52,7 +52,7 @@ describe('sign-in - reset password form', function() {
       resetPasswordPageUrl = url;
     });
 
-    testKit.waitForElementToDisplay(page.resetPasswordButton);
+    browser.sleep(2000);
   };
 
   it('should run once before all', register);
