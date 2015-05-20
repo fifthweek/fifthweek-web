@@ -388,12 +388,13 @@ module.exports = function (grunt) {
     cdn: {
       options: {
         cdn: '//az743635.vo.msecnd.net/',
-        flatten: true
+        flatten: true,
+        supportedTypes: { 'js': 'html' }
       },
       dist: {
         cwd: '<%= yeoman.dist %>',
         dest: '<%= yeoman.dist %>',
-        src: ['index.html', 'static/styles/*.css']
+        src: ['index.html', 'static/styles/*.css', 'static/scripts/scripts.*.js']
       }
     },
 
@@ -725,7 +726,7 @@ module.exports = function (grunt) {
     'filerev:css',
     'filerev:scripts',
     'usemin',
-    'htmlmin:nonViews',
+    'htmlmin:nonViews'
   ]);
 
   grunt.registerTask('serve', '', function (targetApi, targetBase) {
