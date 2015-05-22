@@ -84,6 +84,10 @@ angular.module('webApp').factory('subscribeService',
         });
     };
 
+    internal.isGuestListOnly = function(){
+      return false;
+    };
+
     service.getSubscriptionStatus = function(subscriptionRepository, blogId){
       var userId = subscriptionRepository.getUserId();
       return fetchAggregateUserState.updateIfStale(userId)
@@ -93,18 +97,32 @@ angular.module('webApp').factory('subscribeService',
         .then(function(blogs){
           var isSubscribed = false;
           var hasFreeAccess = false;
+          var subscribedChannels = {};
           if(blogs){
             var blog = _.find(blogs, { blogId: blogId });
             if(blog){
               hasFreeAccess = blog.freeAccess;
               isSubscribed = blog.channels && blog.channels.length;
+
+              _.forEach(blog.channels, function(channel){
+                var currentPrice = blog.freeAccess ? 0 : channel.priceInUsCentsPerWeek;
+                var channelInfo = {
+                  currentPrice: currentPrice,
+                  isIncrease: channel.acceptedPrice < currentPrice,
+                  isDecrease: channel.acceptedPrice > currentPrice,
+                  channel: channel
+                };
+
+                subscribedChannels[channel.channelId] = channelInfo;
+              });
             }
           }
 
           return {
             userId: userId,
             hasFreeAccess: !!hasFreeAccess,
-            isSubscribed: !!isSubscribed
+            isSubscribed: !!isSubscribed,
+            subscribedChannels: subscribedChannels
           };
         });
     };
@@ -121,7 +139,6 @@ angular.module('webApp').factory('subscribeService',
           }
 
           if(userInformation.hasFreeAccess){
-
             channelsAndPrices = _(channelsAndPrices)
               .map(function(v){
                 return {
@@ -130,16 +147,20 @@ angular.module('webApp').factory('subscribeService',
                 };
               })
               .value();
-
-            return subscriptionStub.putBlogSubscriptions(blogId, { subscriptions: channelsAndPrices })
+          }
+          else if(internal.isGuestListOnly()){
+            return internal.showGuestListOnlyDialog()
               .then(function(){
-                return $q.when(true);
+                return $q.when(false);
               });
           }
+          else{
+            // TODO: Payment
+          }
 
-          return internal.showGuestListOnlyDialog()
+          return subscriptionStub.putBlogSubscriptions(blogId, { subscriptions: channelsAndPrices })
             .then(function(){
-              return $q.when(false);
+              return $q.when(true);
             });
         });
     };

@@ -106,6 +106,29 @@ $line-height-compensation: -5px;
   }
 }
 
+.post-list-information {
+  .price{
+    font-weight: bold;
+  }
+
+  .guest-list-information{
+    text-align: center;
+  }
+
+  .price-information{
+    .price-row{
+      margin-top: 20px;
+      margin-bottom: 20px;
+      &:first-of-type{
+        margin-top: 0;
+      }
+      &:last-child{
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
 .posts {
   @import 'actions-drop-down';
   margin: 0 auto;

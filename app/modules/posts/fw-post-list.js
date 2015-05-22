@@ -1,5 +1,6 @@
 angular.module('webApp')
   .constant('fwPostListConstants', {
+    reloadEvent: 'reloadPostList',
     sources: {
       creatorBacklog: 'creator-backlog',
       creatorTimeline: 'creator-timeline',
@@ -13,7 +14,9 @@ angular.module('webApp')
     restrict: 'E',
     scope: {
       source: '@',
-      userId: '@?'
+      userId: '@?',
+      collectionId: '@?',
+      channelId: '@?'
     },
     require: ['fwPostList'],
     templateUrl: 'modules/posts/fw-post-list.html',

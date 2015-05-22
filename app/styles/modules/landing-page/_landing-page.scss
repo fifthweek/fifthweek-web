@@ -214,24 +214,19 @@ $header-height:108px;
           font-size: $p-font-size + 1;
         }
 
-        span {
+        >span {
           @include dark-button;
           margin-left:12px;
           background: $landing-page-highlight-2;
         }
       }
-      #subscribed-button {
+      #cancel-changes-button, #manage-subscription-button {
         margin-top:-20px;
         text-transform: uppercase;
         font-weight: 200;
         letter-spacing: 1px;
         background-color: $brand-highlight;
-        padding-right: 15px;
-        &:after {
-          content:"\f00c";
-          font-family:'FontAwesome';
-          margin-left: 8px;
-        }
+        font-size: $p-font-size - 1;
       }
       .subscribe-button-wrapper {
         position: absolute;
@@ -267,6 +262,9 @@ $header-height:108px;
       .subscribe-now {
         text-align: right;
         font-weight: bold;
+        #unsubscribe-button{
+          color: red;
+        }
         a {
           color: $landing-page-highlight;
           font-size: $post-font-size + 1;
@@ -301,7 +299,7 @@ $header-height:108px;
         .channel-price-column {
           text-align: right;
           line-height: $p-line-height-hug + 1;
-          span {
+          >span {
             @include dark-button;
             background: $landing-page-highlight-3;
             display: inline-block;

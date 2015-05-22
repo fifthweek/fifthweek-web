@@ -38,18 +38,16 @@
         </a>
         <ul>
           <li>
-            <a ui-sref="user.account" class="poster-name">
-              {{post.creator.username}}
-            </a>
+            <a ui-sref="landingPage({username: post.creator.username, action: null, key: null})" class="poster-name">{{post.creator.username}}</a>
             <span ng-if="post.collection">
               in
-              <a ui-sref="creator.collections.edit({id: post.collectionId})" class="container-name">
+              <a ui-sref="landingPage({username: post.creator.username, action: 'collection', key: post.collectionId })" class="container-name">
                 {{post.collection.name}}
               </a>
             </span>
             <span ng-if="!post.collection">
               to
-               <a ui-sref="creator.channels.edit({id: post.channelId})" class="container-name">
+               <a ui-sref="landingPage({username: post.creator.username, action: 'channel', key: post.channelId })" class="container-name">
                  {{post.channel.isDefault ? 'Everyone' : post.channel.name}}
                </a>
             </span>

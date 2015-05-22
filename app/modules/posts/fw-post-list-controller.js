@@ -1,4 +1,5 @@
-angular.module('webApp').controller('fwPostListCtrl',
+angular.module('webApp')
+  .controller('fwPostListCtrl',
   function($scope, $q, fwPostListConstants, postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade, postUtilities) {
     'use strict';
 
@@ -8,6 +9,8 @@ angular.module('webApp').controller('fwPostListCtrl',
       errorMessage: undefined
     };
 
+    var internal = this.internal = {};
+
     var loadNext = function(){ return $q.reject(new DisplayableError('Unknown fw-post-list source.')); };
 
     var accountSettingsRepository;
@@ -16,7 +19,7 @@ angular.module('webApp').controller('fwPostListCtrl',
     var timelineUserId;
     var currentUserId;
 
-    var loadPosts = function(){
+    internal.loadPosts = function(){
       model.errorMessage = undefined;
       model.isLoading = true;
 
@@ -78,6 +81,10 @@ angular.module('webApp').controller('fwPostListCtrl',
         });
     };
 
+    internal.attachToReloadEvent = function(){
+      $scope.$on(fwPostListConstants.reloadEvent, internal.loadPosts);
+    };
+
     this.initialize = function(){
       accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
       blogRepository = blogRepositoryFactory.forCurrentUser();
@@ -102,11 +109,16 @@ angular.module('webApp').controller('fwPostListCtrl',
           timelineUserId = $scope.userId;
         }
 
+        var collectionId = $scope.collectionId;
+        var channelId = $scope.channelId;
+
         loadNext = function(startIndex, count) {
           return postsStub
             .getNewsfeed({
               creatorId: timelineUserId,
               startIndex: startIndex,
+              collectionId: collectionId,
+              channelId: channelId,
               count: count
             })
             .then(function(response){
@@ -115,7 +127,8 @@ angular.module('webApp').controller('fwPostListCtrl',
         };
       }
 
-      loadPosts();
+      internal.attachToReloadEvent();
+      internal.loadPosts();
     };
   }
 );

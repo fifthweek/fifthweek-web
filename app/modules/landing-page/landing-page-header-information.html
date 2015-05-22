@@ -1,0 +1,58 @@
+<div class="row header">
+  <div class="col-s-4">
+    <div class="creator">
+      <fw-image id="profile-image" src="{{model.profileImage.fileId ? model.profileImageUrl : model.defaultProfileImageUrl}}"></fw-image>
+
+      <div ng-if="model.isSubscribed" class="subscribed">
+        <div class="subscribe-button-wrapper">
+          <button ng-if="model.currentView === views.manage"
+                  id="cancel-changes-button"
+                  class="btn btn-block"
+                  type="submit"
+                  can-submit="true"
+                  fw-form-submit="cancelManageSubscription()"
+                  error-message="model.errorMessage">Cancel Changes</button>
+
+          <button ng-if="model.currentView !== views.manage"
+                  id="manage-subscription-button"
+                  class="btn btn-block"
+                  type="submit"
+                  can-submit="true"
+                  fw-form-submit="manageSubscription()"
+                  error-message="model.errorMessage">Manage Subscription</button>
+        </div>
+      </div>
+
+      <div ng-if="!model.isSubscribed" class="subscribe">
+        <div class="subscribe-button-wrapper">
+          <button id="subscribe-button"
+                  class="btn btn-block"
+                  type="submit"
+                  data-event-title="{{model.tracking.subscribedTitle}}"
+                  data-event-category="{{model.tracking.category}}"
+                  data-loading-text="Subscribing..."
+                  can-submit="true"
+                  fw-form-submit="subscribe()"
+                  error-message="model.errorMessage">
+            Subscribe
+            <span ng-if="!model.hasFreeAccess"><fw-price value="model.totalPrice"></fw-price></span>
+            <span ng-if="model.hasFreeAccess"><i class="fa fa-street-view"></i> FREE</span></button>
+        </div>
+      </div>
+
+      <p ng-if="model.currentView === views.manage" class="button-footer">No commitments. Cancel anytime.</p>
+      <p ng-if="model.currentView !== views.manage" class="button-footer">
+        {{model.subscribedChannelCount}} Channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
+        - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
+      </p>
+
+    </div>
+  </div>
+  <div class="col-s-8">
+    <div class="header-text">
+      <h2 id="blog-name">{{model.blog.name}}</h2>
+      <h3 id="blog-tagline">{{model.blog.tagline}}</h3>
+      <h4 id="blog-introduction">{{model.blog.introduction}}</h4>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 <div class="posts" ng-class="{ 'tagged-posts': source ===  sources.creatorBacklog }">
 
+  <fw-post-list-information source="{{source}}" user-id="{{userId}}"></fw-post-list-information>
+
   <div ng-if="model.isLoading && !model.errorMessage" class="updating-area">
     <i class="fa fa-refresh fa-spin"></i>
   </div>

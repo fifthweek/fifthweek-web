@@ -690,7 +690,17 @@ angular.module('webApp')
         }
       })
       .state(states.landingPage.name, {
-        url: '/{username:[a-zA-Z0-9_]{2,20}}',
+        url: '/{username:[a-zA-Z0-9_]{2,20}}/:action/:key',
+        params: {
+          action: {
+            value: null,
+            squash: true
+          },
+          key: {
+            value: null,
+            squash: true
+          }
+        },
         templateUrl: 'modules/landing-page/landing-page.html',
         controller: 'landingPageCtrl',
         data : {
