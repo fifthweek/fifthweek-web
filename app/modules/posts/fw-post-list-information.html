@@ -1,0 +1,61 @@
+<div class="post-list-information">
+  <fw-panel12 ng-if="model.hasFreeAccess" class="guest-list-information">
+    <div class="row" ng-if="model.hasFreeAccess">
+      <div class="col-xs-12">
+        <p>This blog is currently free as you are on the guest list.</p>
+      </div>
+    </div>
+  </fw-panel12>
+
+  <fw-panel12 ng-if="model.updatedPrices.length" class="price-information">
+    <fw-error-message value="model.errorMessage"></fw-error-message>
+    <div class="price-row" ng-repeat="updatedPrice in model.updatedPrices" id="updated-price-{{$index}}">
+      <div class="row">
+        <div class="col-xs-12 col-ss-7">
+          <div ng-if="updatedPrice.isIncrease && updatedPrice.channel.isDefault">
+            <p>The base price of <strong>{{updatedPrice.blog.name}}</strong> has increased
+              from <fw-price value="updatedPrice.channel.acceptedPrice"></fw-price>
+              to <fw-price value="updatedPrice.currentPrice"></fw-price>
+              <span ng-if="!updatedPrice.channel.acceptedPrice"> because you are no longer on the guest list</span>.
+              Please accept the new price to continue
+              receiving this content.
+            </p>
+          </div>
+          <div ng-if="!updatedPrice.isIncrease && updatedPrice.channel.isDefault">
+            <p>The base price of <strong>{{updatedPrice.blog.name}}</strong> has been reduced
+              from <fw-price value="updatedPrice.channel.acceptedPrice"></fw-price>
+              to <fw-price value="updatedPrice.currentPrice"></fw-price>
+              <span ng-if="!updatedPrice.currentPrice"> because you are on the guest list</span>.
+            </p>
+          </div>
+          <div ng-if="updatedPrice.isIncrease && !updatedPrice.channel.isDefault">
+            <p>The channel price of <strong>{{updatedPrice.channel.name}}</strong> in <strong>{{updatedPrice.blog.name}}</strong> has increased
+              from <fw-price value="updatedPrice.channel.acceptedPrice"></fw-price>
+              to <fw-price value="updatedPrice.currentPrice"></fw-price>
+              <span ng-if="!updatedPrice.channel.acceptedPrice"> because you are no longer on the guest list</span>.
+              Please accept the new price to continue
+              receiving this content.
+            </p>
+          </div>
+          <div ng-if="!updatedPrice.isIncrease && !updatedPrice.channel.isDefault">
+            <p>The channel price of <strong>{{updatedPrice.channel.name}}</strong> in <strong>{{updatedPrice.blog.name}}</strong> has been reduced
+              from <fw-price value="updatedPrice.channel.acceptedPrice"></fw-price>
+              to <fw-price value="updatedPrice.currentPrice"></fw-price>
+              <span ng-if="!updatedPrice.currentPrice"> because you are on the guest list</span>.
+            </p>
+          </div>
+        </div>
+        <div class="col-xs-12 col-ss-5 text-right">
+          <div ng-if="updatedPrice.isIncrease">
+            <button class="btn btn-success btn-block" ng-click="acceptPrice(updatedPrice)">Accept</button>
+            <button class="btn btn-default btn-block" ng-click="manageSubscription(updatedPrice)">Manage</button>
+          </div>
+          <div ng-if="!updatedPrice.isIncrease">
+            <button class="btn btn-success btn-block" ng-click="acceptPrice(updatedPrice)">Okay</button>
+            <button class="btn btn-default btn-block" ng-click="manageSubscription(updatedPrice)">Manage</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fw-panel12>
+</div>
