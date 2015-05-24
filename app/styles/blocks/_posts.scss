@@ -129,6 +129,13 @@ $line-height-compensation: -5px;
   }
 }
 
+.posts-header{
+  h3 {
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+}
+
 .posts {
   @import 'actions-drop-down';
   margin: 0 auto;

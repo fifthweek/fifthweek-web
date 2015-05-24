@@ -56,8 +56,6 @@ angular.module('webApp').controller('fwPostListInformationCtrl',
     };
 
     internal.loadForCreator = function(creatorId){
-      $scope.$on(aggregateUserStateConstants.updatedEvent, internal.reloadFromUserState);
-
       return subscriptionRepository.tryGetBlogs()
         .then(function(blogs){
           internal.loadSubscribedBlogInformation(creatorId, blogs);
