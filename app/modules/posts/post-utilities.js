@@ -103,6 +103,8 @@ angular.module('webApp').factory('postUtilities',
           accountSettings = result;
 
           _.forEach(posts, function (post) {
+            post.isOwner = true;
+
             post.channel = blog.channels[post.channelId];
 
             if (post.collectionId) {
@@ -156,6 +158,7 @@ angular.module('webApp').factory('postUtilities',
           service.internal.populateUnknownCreatorInformation(posts);
 
           _.forEach(posts, function (post) {
+            post.isOwner = false;
 
             var blog = subscriptionMap[post.blogId];
 
