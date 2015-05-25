@@ -98,6 +98,7 @@ angular.module('webApp').factory('subscribeService',
           var isSubscribed = false;
           var hasFreeAccess = false;
           var subscribedChannels = {};
+          var hiddenChannels = [];
           if(blogs){
             var blog = _.find(blogs, { blogId: blogId });
             if(blog){
@@ -107,6 +108,7 @@ angular.module('webApp').factory('subscribeService',
               _.forEach(blog.channels, function(channel){
                 var currentPrice = blog.freeAccess ? 0 : channel.priceInUsCentsPerWeek;
                 var channelInfo = {
+                  acceptedPrice: channel.acceptedPrice,
                   currentPrice: currentPrice,
                   isIncrease: channel.acceptedPrice < currentPrice,
                   isDecrease: channel.acceptedPrice > currentPrice,
@@ -114,6 +116,10 @@ angular.module('webApp').factory('subscribeService',
                 };
 
                 subscribedChannels[channel.channelId] = channelInfo;
+
+                if(!channel.isVisibleToNonSubscribers){
+                  hiddenChannels.push(channel);
+                }
               });
             }
           }
@@ -122,7 +128,8 @@ angular.module('webApp').factory('subscribeService',
             userId: userId,
             hasFreeAccess: !!hasFreeAccess,
             isSubscribed: !!isSubscribed,
-            subscribedChannels: subscribedChannels
+            subscribedChannels: subscribedChannels,
+            hiddenChannels: hiddenChannels
           };
         });
     };

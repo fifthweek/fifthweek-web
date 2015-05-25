@@ -52,6 +52,7 @@ angular.module('webApp')
           $scope.model.hasFreeAccess = subscriptionStatus.hasFreeAccess;
           $scope.model.isSubscribed = subscriptionStatus.isSubscribed;
           $scope.model.subscribedChannels = subscriptionStatus.subscribedChannels;
+          $scope.model.hiddenChannels = subscriptionStatus.hiddenChannels;
         });
     };
 
@@ -78,11 +79,11 @@ angular.module('webApp')
     };
 
     internal.recalculateChannels = function(){
-      $scope.model.channels = _.chain($scope.model.blog.channels)
-        .filter({isVisibleToNonSubscribers: true})
+      var returnedChannels = _.chain($scope.model.blog.channels)
         .map(function(channel) {
           var subscriptionInformation = $scope.model.subscribedChannels[channel.channelId];
           return {
+            isVisibleToNonSubscribers: channel.isVisibleToNonSubscribers,
             channelId: channel.channelId,
             name: channel.name,
             priceInUsCentsPerWeek: channel.priceInUsCentsPerWeek,
@@ -91,6 +92,29 @@ angular.module('webApp')
             isDefault: channel.isDefault,
             checked: channel.isDefault || !!subscriptionInformation
           };
+        });
+
+      var hiddenChannels = _.chain($scope.model.hiddenChannels)
+        .map(function(channel){
+          var subscriptionInformation = $scope.model.subscribedChannels[channel.channelId];
+          return {
+            isVisibleToNonSubscribers: channel.isVisibleToNonSubscribers,
+            channelId: channel.channelId,
+            name: channel.name,
+            priceInUsCentsPerWeek: channel.priceInUsCentsPerWeek,
+            description: ['This channel is only visible to subscribers.'],
+            subscriptionInformation: subscriptionInformation,
+            isDefault: channel.isDefault,
+            checked: true
+          };
+        });
+
+      var allChannels = returnedChannels.concat(hiddenChannels.value());
+
+      $scope.model.channels = allChannels
+        .filter(function(channel){
+          // Return channels that are not visible to non-subscribers if user is a subscriber.
+          return channel.isVisibleToNonSubscribers || channel.checked;
         })
         .sortByOrder(['isDefault', 'name'], [false, true])
         .value();
