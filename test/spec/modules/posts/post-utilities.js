@@ -229,6 +229,7 @@ describe('post-utilities', function(){
       it('should update the posts collection', function(){
         expect(posts).toEqual([
           {
+            isOwner: true,
             blogName: 'blog',
             channelId: 'channelId1',
             collectionId: 'collectionId1',
@@ -252,6 +253,7 @@ describe('post-utilities', function(){
             }
           },
           {
+            isOwner: true,
             blogName: 'blog',
             channelId: 'channelId2',
             channel: {
@@ -429,6 +431,7 @@ describe('post-utilities', function(){
       it('should update the posts collection', function(){
         expect(posts).toEqual([
           {
+            isOwner: false,
             blogId: 'blogId1',
             blogName: 'blog',
             channelId: 'channelId1',
@@ -453,6 +456,7 @@ describe('post-utilities', function(){
             }
           },
           {
+            isOwner: false,
             blogId: 'blogId1',
             blogName: 'blog',
             channelId: 'channelId2',
@@ -536,6 +540,7 @@ describe('post-utilities', function(){
       it('should update the posts collection', function(){
         expect(posts).toEqual([
           {
+            isOwner: false,
             blogId: 'blogId1',
             channelId: 'channelId1',
             collectionId: 'collectionId1',
@@ -560,6 +565,7 @@ describe('post-utilities', function(){
             }
           },
           {
+            isOwner: false,
             blogId: 'blogId1',
             channelId: 'channelId1',
             collectionId: 'collectionId2',
@@ -585,6 +591,7 @@ describe('post-utilities', function(){
             }
           },
           {
+            isOwner: false,
             blogId: 'blogId1',
             channelId: 'channelId2',
             collectionId: 'collectionId2',
@@ -606,6 +613,7 @@ describe('post-utilities', function(){
             }
           },
           {
+            isOwner: false,
             blogId: 'blogId2',
             channelId: 'channelId2',
             collectionId: 'collectionId2',
