@@ -24,7 +24,6 @@ angular.module('webApp')
     link: function(scope, element, attrs, ctrls) {
 
       scope.fifthweekConstants = fifthweekConstants;
-      scope.sourceName = _.startCase(scope.source);
       scope.sources = fwPostListConstants.sources;
 
       var controller = ctrls[0];

@@ -5,6 +5,7 @@ describe('fw-post-list', function(){
   var $compile;
 
   var fwPostListConstants;
+  var fifthweekConstants;
   var fwPostListCtrl;
 
   beforeEach(function() {
@@ -12,12 +13,15 @@ describe('fw-post-list', function(){
 
     module(function($controllerProvider){
       $controllerProvider.register('fwPostListCtrl', function() { fwPostListCtrl = this; this.initialize = jasmine.createSpy('initialize'); });
+      $controllerProvider.register('fwPostListHeaderCtrl', function() { this.initialize = jasmine.createSpy('initialize'); });
+      $controllerProvider.register('fwPostListInformationCtrl', function() { this.initialize = jasmine.createSpy('initialize'); });
     });
 
     inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       fwPostListConstants = $injector.get('fwPostListConstants');
+      fifthweekConstants = $injector.get('fifthweekConstants');
     });
   });
 
@@ -29,13 +33,16 @@ describe('fw-post-list', function(){
     beforeEach(function(){
       scope = $rootScope.$new();
       element = angular.element('<fw-post-list source="value"/>');
-      scope.value = 'success';
       $compile(element)(scope);
       scope.$digest();
     });
 
     it('should set sources to the isolate scope', function(){
-      expect(element.isolateScope().sources).toEqual(fwPostListConstants.sources);
+      expect(element.isolateScope().sources).toBe(fwPostListConstants.sources);
+    });
+
+    it('should set fifthweekConstants to the isolate scope', function(){
+      expect(element.isolateScope().fifthweekConstants).toBe(fifthweekConstants);
     });
 
     it('should set specified source to the isolate scope', function(){
