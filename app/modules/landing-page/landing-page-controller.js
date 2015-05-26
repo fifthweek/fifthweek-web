@@ -98,13 +98,13 @@ angular.module('webApp')
         .map(function(channel){
           var subscriptionInformation = $scope.model.subscribedChannels[channel.channelId];
           return {
-            isVisibleToNonSubscribers: channel.isVisibleToNonSubscribers,
+            isVisibleToNonSubscribers: false,
             channelId: channel.channelId,
             name: channel.name,
             priceInUsCentsPerWeek: channel.priceInUsCentsPerWeek,
             description: ['This channel is only visible to subscribers.'],
             subscriptionInformation: subscriptionInformation,
-            isDefault: channel.isDefault,
+            isDefault: false,
             checked: true
           };
         });
@@ -206,14 +206,13 @@ angular.module('webApp')
     };
 
     internal.loadLandingPage = function(){
-      $scope.views = landingPageConstants.views;
-
-      $scope.$on(aggregateUserStateConstants.updatedEvent, internal.reloadFromUserState);
-
       if(!internal.loadParameters()){
         $state.go(states.notFound.name);
-        return;
+        return $q.when();
       }
+
+      $scope.views = landingPageConstants.views;
+      $scope.$on(aggregateUserStateConstants.updatedEvent, internal.reloadFromUserState);
 
       return internal.populateLandingPageData()
         .then(function(){
