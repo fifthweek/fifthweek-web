@@ -1,5 +1,5 @@
 angular.module('webApp').controller('fwPostListInformationCtrl',
-  function($scope, $q, fwPostListConstants, subscriptionRepositoryFactory, fetchAggregateUserState, aggregateUserStateConstants, subscriptionStub, $state, states, errorFacade) {
+  function($scope, $q, fwPostListConstants, subscriptionRepositoryFactory, aggregateUserStateConstants, subscriptionStub, $state, states, errorFacade, landingPageConstants) {
     'use strict';
 
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
@@ -33,16 +33,11 @@ angular.module('webApp').controller('fwPostListInformationCtrl',
         _.forEach(blog.channels, function(channel){
           var currentPrice = blog.freeAccess ? 0 : channel.priceInUsCentsPerWeek;
           if(channel.acceptedPrice !== currentPrice){
-            var extraChannels = [];
-            if(channel.isDefault){
-              extraChannels = _.find(blog.channels, function(c){ return c.channelId !== channel.channelId; });
-            }
             model.updatedPrices.push({
               currentPrice: currentPrice,
               isIncrease: channel.acceptedPrice < currentPrice,
               blog: blog,
-              channel: channel,
-              extraChannels: extraChannels
+              channel: channel
             });
           }
         });
@@ -51,14 +46,22 @@ angular.module('webApp').controller('fwPostListInformationCtrl',
 
     internal.load = function(){
       if($scope.source === fwPostListConstants.sources.timeline) {
-        internal.loadForCreator($scope.userId);
+        return internal.loadForCreator($scope.userId)
+          .catch(function(error){
+            return errorFacade.handleError(error, function(message) {
+              model.errorMessage = message;
+            });
+          });
       }
+
+      return $q.when();
     };
 
     internal.loadForCreator = function(creatorId){
       return subscriptionRepository.tryGetBlogs()
         .then(function(blogs){
           internal.loadSubscribedBlogInformation(creatorId, blogs);
+          return $q.when();
         });
     };
 
@@ -84,7 +87,7 @@ angular.module('webApp').controller('fwPostListInformationCtrl',
 
     $scope.manageSubscription = function(updatedPrice){
       var returnState = $state.current.name === states.landingPage.name ? undefined : $state.current.name;
-      $state.go(states.landingPage.name, { username: updatedPrice.blog.username, action: 'manage', key: returnState });
+      $state.go(states.landingPage.name, { username: updatedPrice.blog.username, action: landingPageConstants.actions.manage, key: returnState });
     };
 
     this.initialize = function(){
