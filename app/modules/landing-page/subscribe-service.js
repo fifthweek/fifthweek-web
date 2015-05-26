@@ -88,6 +88,36 @@ angular.module('webApp').factory('subscribeService',
       return false;
     };
 
+    internal.getSubscribedChannels = function(blog){
+      var subscribedChannels = {};
+
+      _.forEach(blog.channels, function(channel){
+        var currentPrice = blog.freeAccess ? 0 : channel.priceInUsCentsPerWeek;
+        var channelInfo = {
+          acceptedPrice: channel.acceptedPrice,
+          currentPrice: currentPrice,
+          isIncrease: channel.acceptedPrice < currentPrice,
+          isDecrease: channel.acceptedPrice > currentPrice
+        };
+
+        subscribedChannels[channel.channelId] = channelInfo;
+      });
+
+      return subscribedChannels;
+    };
+
+    internal.getHiddenChannels = function(blog){
+      var hiddenChannels = [];
+
+      _.forEach(blog.channels, function(channel){
+        if(!channel.isVisibleToNonSubscribers){
+          hiddenChannels.push(channel);
+        }
+      });
+
+      return hiddenChannels;
+    };
+
     service.getSubscriptionStatus = function(subscriptionRepository, blogId){
       var userId = subscriptionRepository.getUserId();
       return fetchAggregateUserState.updateIfStale(userId)
@@ -105,22 +135,8 @@ angular.module('webApp').factory('subscribeService',
               hasFreeAccess = blog.freeAccess;
               isSubscribed = blog.channels && blog.channels.length;
 
-              _.forEach(blog.channels, function(channel){
-                var currentPrice = blog.freeAccess ? 0 : channel.priceInUsCentsPerWeek;
-                var channelInfo = {
-                  acceptedPrice: channel.acceptedPrice,
-                  currentPrice: currentPrice,
-                  isIncrease: channel.acceptedPrice < currentPrice,
-                  isDecrease: channel.acceptedPrice > currentPrice,
-                  channel: channel
-                };
-
-                subscribedChannels[channel.channelId] = channelInfo;
-
-                if(!channel.isVisibleToNonSubscribers){
-                  hiddenChannels.push(channel);
-                }
-              });
+              subscribedChannels = internal.getSubscribedChannels();
+              hiddenChannels = internal.getHiddenChannels();
             }
           }
 
