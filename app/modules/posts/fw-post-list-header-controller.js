@@ -1,5 +1,5 @@
 angular.module('webApp').controller('fwPostListHeaderCtrl',
-  function($scope, $q, fwPostListConstants, subscriptionRepositoryFactory, aggregateUserStateConstants) {
+  function($scope, $q, fwPostListConstants, subscriptionRepositoryFactory, aggregateUserStateConstants, errorFacade) {
     'use strict';
 
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
@@ -13,9 +13,6 @@ angular.module('webApp').controller('fwPostListHeaderCtrl',
     };
 
     internal.loadFromBlogs = function(creatorId, channelId, collectionId, blogs){
-      model.channelName = undefined;
-      model.collectionName = undefined;
-
       if(!creatorId){
         return;
       }
@@ -28,19 +25,21 @@ angular.module('webApp').controller('fwPostListHeaderCtrl',
 
       var channel;
       var collection;
-      if(channelId){
+      if(channelId && blog.channels){
         channel = _.find(blog.channels, { channelId: channelId });
 
-        if(collectionId){
+        if(collectionId && channel && channel.collections){
           collection = _.find(channel.collections, { collectionId: collectionId });
         }
       }
-      else{
+      else if(blog.channels){
         _.forEach(blog.channels, function(ch){
-          collection = _.find(ch.collections, { collectionId: collectionId });
-          if(collection){
-            channel = ch;
-            return false;
+          if(ch.collections){
+            collection = _.find(ch.collections, { collectionId: collectionId });
+            if(collection){
+              channel = ch;
+              return false;
+            }
           }
         });
       }
@@ -54,9 +53,19 @@ angular.module('webApp').controller('fwPostListHeaderCtrl',
     };
 
     internal.load = function(){
+      model.errorMessage = undefined;
+      model.channelName = undefined;
+      model.collectionName = undefined;
+
       return subscriptionRepository.tryGetBlogs()
         .then(function(blogs){
           internal.loadFromBlogs($scope.userId, $scope.channelId, $scope.collectionId, blogs);
+          return $q.when();
+        }).
+        catch(function(error){
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
         });
     };
 
