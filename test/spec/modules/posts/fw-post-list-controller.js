@@ -68,102 +68,8 @@ describe('fw-post-list-controller', function(){
     });
   };
 
-  var includeInitializationTests = function(testData){
-
-    it('should start loading posts', function(){
-      expect($scope.model.isLoading).toBe(true);
-    });
-
-    it('should not have an error message', function(){
-      expect($scope.model.errorMessage).toBeUndefined();
-    });
-
-    it('should call updateInParallel', function(){
-      expect(fetchAggregateUserState.updateInParallel).toHaveBeenCalledWith('currentUserId', jasmine.any(Function));
-    });
-
-    it('should get an account settings repository', function(){
-      expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
-    });
-
-    it('should get a channel repository', function(){
-      expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
-    });
-
-    describe('when API fails', function(){
-      beforeEach(function(){
-        testData.updateDeferred.reject('error');
-        $scope.$apply();
-      });
-
-      it('should log the error', function(){
-        expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
-      });
-
-      it('should update the error message', function(){
-        expect($scope.model.errorMessage).toBe('friendlyError');
-      });
-
-      it('should set isLoading to false', function(){
-        expect($scope.model.isLoading).toBe(false);
-      });
-    });
-
-    describe('when API returns', function(){
-      var posts;
-      beforeEach(function(){
-
-        postUtilities.populateCurrentCreatorInformation.and.returnValue($q.when());
-        postUtilities.populateCreatorInformation.and.returnValue($q.when());
-        postUtilities.processPostsForRendering.and.returnValue($q.when());
-
-        posts = {some: 'value' };
-        testData.updateDeferred.resolve(posts);
-        $scope.$apply();
-      });
-
-      it('should call populateCurrentCreatorInformation if user is creator', function(){
-        if(testData.timelineUserId === 'currentUserId') {
-          expect(postUtilities.populateCurrentCreatorInformation).toHaveBeenCalledWith(posts, accountSettingsRepository, blogRepository);
-        }
-        else{
-          expect(postUtilities.populateCurrentCreatorInformation).not.toHaveBeenCalled();
-        }
-      });
-
-      it('should call populateCreatorInformation if user is not creator', function(){
-        if(testData.timelineUserId !== 'currentUserId') {
-          expect(postUtilities.populateCreatorInformation).toHaveBeenCalledWith(posts, subscriptionRepository);
-        }
-        else{
-          expect(postUtilities.populateCreatorInformation).not.toHaveBeenCalled();
-        }
-      });
-
-      it('should call processPostsForRendering', function(){
-        expect(postUtilities.processPostsForRendering).toHaveBeenCalledWith(posts);
-      });
-
-      it('should save posts to the model', function(){
-        expect($scope.model.posts).toBe(posts);
-      });
-
-      it('should set isLoading to false', function(){
-        expect($scope.model.isLoading).toBe(false);
-      });
-    });
-  };
-
-  describe('when created', function(){
-    var testData = {};
+  describe('when creating', function(){
     beforeEach(function(){
-      $scope.userId = 'targetUserId';
-      testData.updateDeferred = undefined;
-      fetchAggregateUserState.updateInParallel.and.callFake(function(userId, delegate){
-        delegate();
-        testData.updateDeferred = $q.defer();
-        return testData.updateDeferred.promise;
-      });
       createController();
     });
 
@@ -183,69 +89,326 @@ describe('fw-post-list-controller', function(){
       expect($scope.model.errorMessage).toBeUndefined();
     });
 
-    describe('when initialized with creator-backlog source', function(){
-
-      beforeEach(function(){
-        $scope.source = fwPostListConstants.sources.creatorBacklog;
-        testData.timelineUserId = 'currentUserId';
-        postsStub.getCreatorBacklog.and.returnValue($q.when({ data: [] }));
-        target.initialize();
-      });
-
-      it('should call getCreatorBacklog', function(){
-        expect(postsStub.getCreatorBacklog).toHaveBeenCalledWith('currentUserId');
-      });
-
-      includeInitializationTests(testData);
+    it('should assign the current user id', function(){
+      expect(target.internal.currentUserId).toBe('currentUserId');
     });
 
-    describe('when initialized with creator-timeline source', function(){
-
-      beforeEach(function(){
-        $scope.source = fwPostListConstants.sources.creatorTimeline;
-        testData.timelineUserId = 'currentUserId';
-        postsStub.getNewsfeed.and.returnValue($q.when({ data: { posts: [] } }));
-        target.initialize();
-      });
-
-      it('should call getNewsfeed with the current user id', function(){
-        expect(postsStub.getNewsfeed).toHaveBeenCalledWith({ creatorId: 'currentUserId', startIndex: 0, count: 1000 });
-      });
-
-      includeInitializationTests(testData);
+    it('should get an account settings repository', function(){
+      expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
     });
 
-    describe('when initialized with timeline source', function(){
+    it('should get a blog repository', function(){
+      expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+    });
 
-      beforeEach(function(){
-        $scope.source = fwPostListConstants.sources.timeline;
-        testData.timelineUserId = 'targetUserId';
-        postsStub.getNewsfeed.and.returnValue($q.when({ data: { posts: [] } }));
-        target.initialize();
-      });
-
-      it('should call getNewsfeed with the scope user id', function(){
-        expect(postsStub.getNewsfeed).toHaveBeenCalledWith({ creatorId: 'targetUserId', startIndex: 0, count: 1000 });
-      });
-
-      includeInitializationTests(testData);
+    it('should get a subscription repository', function(){
+      expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
     });
   });
 
-  describe('when calling scope methods', function(){
+  describe('when created', function(){
     beforeEach(function(){
       fetchAggregateUserState.updateInParallel.and.returnValue($q.when());
       createController();
     });
 
-    it('should forward the viewImage function to postInteractions', function(){
-      $scope.viewImage('a', 'b');
-      expect(postInteractions.viewImage).toHaveBeenCalledWith('a', 'b');
+    describe('when populateCreatorInformation is called', function(){
+
     });
 
-    it('should forward the openFile function to postInteractions', function(){
-      $scope.openFile('a');
-      expect(postInteractions.openFile).toHaveBeenCalledWith('a');
+    describe('when loadPosts is called', function(){
+      var success;
+      var error;
+      var deferredPopulateCreatorInformation;
+      var deferredProcessPostsForRendering;
+      var deferredUpdateInParallel;
+      beforeEach(function(){
+        success = undefined;
+        error = undefined;
+
+        deferredPopulateCreatorInformation = $q.defer();
+        spyOn(target.internal, 'populateCreatorInformation').and.returnValue(deferredPopulateCreatorInformation.promise);
+
+        deferredProcessPostsForRendering = $q.defer();
+        postUtilities.processPostsForRendering.and.returnValue(deferredProcessPostsForRendering.promise);
+
+        deferredUpdateInParallel = $q.defer();
+        fetchAggregateUserState.updateInParallel.and.callFake(function(userId, delegate){
+          delegate();
+          return deferredUpdateInParallel.promise;
+        });
+
+        spyOn(target.internal, 'loadNext');
+
+        $scope.model.isLoading = false;
+        $scope.model.errorMessage = 'old-error';
+        target.internal.loadPosts().then(function(){ success = true; }, function(e) { error = e; });
+      });
+
+      var testFailure = function(){
+        it('should log the error', function(){
+          expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
+        });
+
+        it('should update the error message', function(){
+          expect($scope.model.errorMessage).toBe('friendlyError');
+        });
+
+        it('should set isLoading to false', function(){
+          expect($scope.model.isLoading).toBe(false);
+        });
+      };
+
+      it('should set isLoading to true', function(){
+        expect($scope.model.isLoading).toBe(true);
+      });
+
+      it('should clear the error message', function(){
+        expect($scope.model.errorMessage).toBeUndefined();
+      });
+
+      it('should call updateInParallel', function(){
+        expect(fetchAggregateUserState.updateInParallel).toHaveBeenCalledWith('currentUserId', jasmine.any(Function));
+      });
+
+      it('should call loadNext', function(){
+        expect(target.internal.loadNext).toHaveBeenCalledWith(0, 1000);
+      });
+
+      describe('when updateInParallel succeeds', function(){
+        beforeEach(function(){
+          deferredUpdateInParallel.resolve('posts');
+          $scope.$apply();
+        });
+
+        it('should call populateCreatorInformation', function(){
+          expect(target.internal.populateCreatorInformation).toHaveBeenCalledWith('posts');
+        });
+
+        describe('when populateCreatorInformation succeeds', function(){
+          beforeEach(function(){
+            deferredPopulateCreatorInformation.resolve();
+            $scope.$apply();
+          });
+
+          it('should call processPostsForRendering', function(){
+            expect(postUtilities.processPostsForRendering).toHaveBeenCalledWith('posts');
+          });
+
+          describe('when processPostsForRendering succeeds', function(){
+            beforeEach(function(){
+              deferredProcessPostsForRendering.resolve();
+              $scope.$apply();
+            });
+
+            it('should assign posts to the model', function(){
+              expect($scope.model.posts).toBe('posts');
+            });
+
+            it('should complete successfully', function(){
+              expect(success).toBe(true);
+            });
+
+            it('should set isLoading to false', function(){
+              expect($scope.model.isLoading).toBe(false);
+            });
+          });
+
+          describe('when processPostsForRendering fails', function(){
+            beforeEach(function(){
+              deferredProcessPostsForRendering.reject('error');
+              $scope.$apply();
+            });
+
+            testFailure();
+          });
+        });
+
+        describe('when populateCreatorInformation fails', function(){
+          beforeEach(function(){
+            deferredPopulateCreatorInformation.reject('error');
+            $scope.$apply();
+          });
+
+          testFailure();
+        });
+      });
+
+      describe('when updateInParallel fails', function(){
+        beforeEach(function(){
+          deferredUpdateInParallel.reject('error');
+          $scope.$apply();
+        });
+
+        testFailure();
+      });
+    });
+
+    describe('when attachToReloadEvent is called', function(){
+      beforeEach(function(){
+        spyOn($scope, '$on');
+        target.internal.attachToReloadEvent();
+      });
+
+      it('should attach to the reload event', function(){
+        expect($scope.$on).toHaveBeenCalledWith(fwPostListConstants.reloadEvent, target.internal.loadPosts);
+      });
+    });
+
+    describe('when calling initialize', function(){
+
+      beforeEach(function(){
+        spyOn(target.internal, 'attachToReloadEvent');
+        spyOn(target.internal, 'loadPosts');
+      });
+
+      describe('when initialized with creator-backlog source', function(){
+
+        beforeEach(function(){
+          $scope.source = fwPostListConstants.sources.creatorBacklog;
+          target.initialize();
+          $scope.$apply();
+        });
+
+        it('should assign the current user id to the timeline user id', function(){
+          expect(target.internal.timelineUserId).toBe('currentUserId');
+        });
+
+        it('should call attachToReloadEvent', function(){
+          expect(target.internal.attachToReloadEvent).toHaveBeenCalledWith();
+        });
+
+        it('should call loadPosts', function(){
+          expect(target.internal.loadPosts).toHaveBeenCalledWith();
+        });
+
+        describe('when loadNext is called', function(){
+          var result;
+          beforeEach(function(){
+            result = undefined;
+            postsStub.getCreatorBacklog.and.returnValue($q.when({ data: 'data' }));
+            target.internal.loadNext().then(function(r){ result = r; });
+            $scope.$apply();
+          });
+
+          it('should call getCreatorBacklog', function(){
+            expect(postsStub.getCreatorBacklog).toHaveBeenCalledWith('currentUserId');
+          });
+
+          it('should return the result', function(){
+            expect(result).toBe('data');
+          });
+        });
+      });
+
+      describe('when initialized with creator-timeline source', function(){
+
+        beforeEach(function(){
+          $scope.source = fwPostListConstants.sources.creatorTimeline;
+          $scope.collectionId = 'collectionId';
+          $scope.channelId = 'channelId';
+          target.initialize();
+          $scope.$apply();
+        });
+
+        it('should assign the current user id to the timeline user id', function(){
+          expect(target.internal.timelineUserId).toBe('currentUserId');
+        });
+
+        it('should call attachToReloadEvent', function(){
+          expect(target.internal.attachToReloadEvent).toHaveBeenCalledWith();
+        });
+
+        it('should call loadPosts', function(){
+          expect(target.internal.loadPosts).toHaveBeenCalledWith();
+        });
+
+        describe('when loadNext is called', function(){
+          var result;
+          beforeEach(function(){
+            result = undefined;
+            postsStub.getNewsfeed.and.returnValue($q.when({ data: { posts: ['post1', 'post2'] } }));
+            target.internal.loadNext(10, 20).then(function(r){ result = r; });
+            $scope.$apply();
+          });
+
+          it('should call getNewsfeed', function(){
+            expect(postsStub.getNewsfeed).toHaveBeenCalledWith({
+              creatorId: 'currentUserId',
+              startIndex: 10,
+              collectionId: 'collectionId',
+              channelId: 'channelId',
+              count: 20
+            });
+          });
+
+          it('should return the result', function(){
+            expect(result).toEqual(['post1', 'post2']);
+          });
+        });
+      });
+
+      describe('when initialized with timeline source', function(){
+
+        beforeEach(function(){
+          $scope.source = fwPostListConstants.sources.timeline;
+          $scope.userId = 'anotherUserId';
+          $scope.collectionId = 'collectionId';
+          $scope.channelId = 'channelId';
+          target.initialize();
+          $scope.$apply();
+        });
+
+        it('should assign the scope user id to the timeline user id', function(){
+          expect(target.internal.timelineUserId).toBe('anotherUserId');
+        });
+
+        it('should call attachToReloadEvent', function(){
+          expect(target.internal.attachToReloadEvent).toHaveBeenCalledWith();
+        });
+
+        it('should call loadPosts', function(){
+          expect(target.internal.loadPosts).toHaveBeenCalledWith();
+        });
+
+        describe('when loadNext is called', function(){
+          var result;
+          beforeEach(function(){
+            result = undefined;
+            postsStub.getNewsfeed.and.returnValue($q.when({ data: { posts: ['post1', 'post2'] } }));
+            target.internal.loadNext(10, 20).then(function(r){ result = r; });
+            $scope.$apply();
+          });
+
+          it('should call getNewsfeed', function(){
+            expect(postsStub.getNewsfeed).toHaveBeenCalledWith({
+              creatorId: 'anotherUserId',
+              startIndex: 10,
+              collectionId: 'collectionId',
+              channelId: 'channelId',
+              count: 20
+            });
+          });
+
+          it('should return the result', function(){
+            expect(result).toEqual(['post1', 'post2']);
+          });
+        });
+      });
+    });
+
+    describe('when calling viewImage', function(){
+      it('should forward the viewImage function to postInteractions', function(){
+        $scope.viewImage('a', 'b');
+        expect(postInteractions.viewImage).toHaveBeenCalledWith('a', 'b');
+      });
+    });
+
+    describe('when calling openFile', function(){
+      it('should forward the openFile function to postInteractions', function(){
+        $scope.openFile('a');
+        expect(postInteractions.openFile).toHaveBeenCalledWith('a');
+      });
     });
 
     describe('when calling editPost', function(){
