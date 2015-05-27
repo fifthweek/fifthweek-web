@@ -44,7 +44,7 @@ describe('landing page controller', function () {
     subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['tryGetBlogs']);
     subscriptionRepositoryFactory = { forCurrentUser: function() { return subscriptionRepository; }};
     initializer = jasmine.createSpyObj('initializer', ['initialize']);
-    $state = jasmine.createSpyObj('$state', ['go']);
+    $state = jasmine.createSpyObj('$state', ['go', 'reload']);
     $stateParams = {};
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
 
@@ -260,50 +260,71 @@ describe('landing page controller', function () {
     });
 
     describe('when unsubscribe is called', function(){
-      var deferredResult;
-      var error;
-      beforeEach(function(){
-        deferredResult = $q.defer();
-        subscribeService.unsubscribe.and.returnValue(deferredResult.promise);
 
-        $scope.model.blog = {
-          blogId: 'blogId'
-        };
-
-        $scope.model.isSubscribed = true;
-
-        $scope.unsubscribe().catch(function(e){ error = e; });
-        $scope.$apply();
-      });
-
-      it('should call subscribeService', function(){
-        expect(subscribeService.unsubscribe).toHaveBeenCalledWith('blogId');
-      });
-
-      describe('when subscribeService succeeds', function(){
+      describe('when user is owner of blog', function(){
         beforeEach(function(){
-          spyOn(target.internal, 'redirectIfRequired');
-          deferredResult.resolve();
+          $scope.model.isOwner = true;
+          $scope.unsubscribe();
           $scope.$apply();
         });
 
-        it('should set call redirectIfRequired', function(){
-          expect(target.internal.redirectIfRequired).toHaveBeenCalledWith();
+        it('should reload the state', function(){
+          expect($state.reload).toHaveBeenCalledWith();
+        });
+
+        it('should not call subscribeService', function(){
+          expect(subscribeService.unsubscribe).not.toHaveBeenCalled();
         });
       });
 
-      describe('when subscribeService fails', function(){
+      describe('when user is not owner of blog', function(){
+        var deferredResult;
+        var error;
         beforeEach(function(){
-          deferredResult.reject('error');
+          $scope.model.isOwner = false;
+
+          deferredResult = $q.defer();
+          subscribeService.unsubscribe.and.returnValue(deferredResult.promise);
+
+          $scope.model.blog = {
+            blogId: 'blogId'
+          };
+
+          $scope.model.isSubscribed = true;
+
+          $scope.unsubscribe().catch(function(e){ error = e; });
           $scope.$apply();
         });
 
-        it('should not set isSubscribed to false', function(){
-          expect($scope.model.isSubscribed).toBe(true);
+        it('should call subscribeService', function(){
+          expect(subscribeService.unsubscribe).toHaveBeenCalledWith('blogId');
         });
 
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
+        describe('when subscribeService succeeds', function(){
+          beforeEach(function(){
+            spyOn(target.internal, 'redirectIfRequired');
+            deferredResult.resolve();
+            $scope.$apply();
+          });
+
+          it('should set call redirectIfRequired', function(){
+            expect(target.internal.redirectIfRequired).toHaveBeenCalledWith();
+          });
+        });
+
+        describe('when subscribeService fails', function(){
+          beforeEach(function(){
+            deferredResult.reject('error');
+            $scope.$apply();
+          });
+
+          it('should not set isSubscribed to false', function(){
+            expect($scope.model.isSubscribed).toBe(true);
+          });
+
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
+          });
         });
       });
     });

@@ -302,6 +302,11 @@ angular.module('webApp')
     };
 
     $scope.unsubscribe = function() {
+      if($scope.model.isOwner){
+        $state.reload();
+        return;
+      }
+
       return subscribeService.unsubscribe($scope.model.blog.blogId)
         .then(function(){
           internal.redirectIfRequired();
