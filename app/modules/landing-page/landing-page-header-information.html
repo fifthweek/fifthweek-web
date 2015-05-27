@@ -11,7 +11,10 @@
                   type="submit"
                   can-submit="true"
                   fw-form-submit="cancelManageSubscription()"
-                  error-message="model.errorMessage">Cancel Changes</button>
+                  error-message="model.errorMessage">
+              <span ng-if="model.isOwner">Preview Blog</span>
+              <span ng-if="!model.isOwner">Cancel Changes</span>
+            </button>
 
           <button ng-if="model.currentView !== views.manage"
                   id="manage-subscription-button"
@@ -40,12 +43,16 @@
         </div>
       </div>
 
-      <p ng-if="model.currentView === views.manage" class="button-footer">No commitments. Cancel anytime.</p>
-      <p ng-if="model.currentView !== views.manage" class="button-footer">
-        {{model.subscribedChannelCount}} Channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
-        - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
-      </p>
-
+      <span ng-if="model.currentView === views.manage">
+        <p class="button-footer">No commitments. Cancel anytime.</p>
+      </span>
+      <span ng-if="model.currentView !== views.manage">
+        <p ng-if="!model.isOwner" class="button-footer">
+          {{model.subscribedChannelCount}} Channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
+          - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
+        </p>
+        <p ng-if="model.isOwner" class="button-footer">Previewing all channels.</p>
+      </span>
     </div>
   </div>
   <div class="col-s-8">
