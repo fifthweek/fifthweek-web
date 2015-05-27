@@ -12,7 +12,7 @@ angular.module('webApp')
     }
   })
   .controller('landingPageCtrl',
-  function($scope, $q, $sce, landingPageConstants, blogStub, subscribeService, accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory, aggregateUserStateConstants, initializer, $stateParams, $state, states, errorFacade) {
+  function($scope, $q, $sce, landingPageConstants, authenticationServiceConstants, fetchAggregateUserState, blogStub, subscribeService, accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory, aggregateUserStateConstants, initializer, $stateParams, $state, states, errorFacade) {
     'use strict';
 
     var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
@@ -45,6 +45,18 @@ angular.module('webApp')
     };
 
     var internal = this.internal = {};
+
+    internal.currentUserUpdated = function(event, user){
+      var isOwner = user.userId === $scope.model.userId;
+      if(isOwner !== $scope.model.isOwner) {
+        $state.reload();
+      }
+      else{
+        accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
+        blogRepository = blogRepositoryFactory.forCurrentUser();
+        subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+      }
+    };
 
     internal.populateSubscriptionFromUserState = function(blogId){
       return subscribeService.getSubscriptionStatus(subscriptionRepository, blogId)
@@ -205,6 +217,22 @@ angular.module('webApp')
       return true;
     };
 
+    internal.initialize = function(){
+      return fetchAggregateUserState.waitForExistingUpdate()
+        .then(function(){
+          return internal.loadLandingPage();
+        })
+        .catch(function(error){
+          return errorFacade.handleError(error, function(message) {
+            $scope.model.errorMessage = message;
+          });
+        })
+        .finally(function(){
+          $scope.model.isLoaded = true;
+        });
+
+    };
+
     internal.loadLandingPage = function(){
       if(!internal.loadParameters()){
         $state.go(states.notFound.name);
@@ -213,6 +241,7 @@ angular.module('webApp')
 
       $scope.views = landingPageConstants.views;
       $scope.$on(aggregateUserStateConstants.updatedEvent, internal.reloadFromUserState);
+      $scope.$on(authenticationServiceConstants.currentUserChangedEvent, internal.currentUserUpdated);
 
       return internal.populateLandingPageData()
         .then(function(){
@@ -224,12 +253,7 @@ angular.module('webApp')
             return $q.when();
           }
 
-          return errorFacade.handleError(error, function(message) {
-            $scope.model.errorMessage = message;
-          });
-        })
-        .finally(function(){
-          $scope.model.isLoaded = true;
+          return $q.reject(error);
         });
     };
 
@@ -261,7 +285,7 @@ angular.module('webApp')
       return false;
     };
 
-    initializer.initialize(internal.loadLandingPage);
+    initializer.initialize(internal.initialize);
 
     $scope.manageSubscription = function(){
       $scope.model.currentView = landingPageConstants.views.manage;

@@ -201,7 +201,7 @@ describe('fw-post-list-information-controller', function() {
               username: 'username',
               action: landingPageConstants.actions.manage,
               key: undefined
-            })
+            });
         });
       });
 
@@ -218,7 +218,7 @@ describe('fw-post-list-information-controller', function() {
               username: 'username',
               action: landingPageConstants.actions.manage,
               key: 'some-state'
-            })
+            });
         });
       });
     });

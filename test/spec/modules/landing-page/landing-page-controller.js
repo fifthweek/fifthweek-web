@@ -30,6 +30,8 @@ describe('landing page controller', function () {
   var $state;
   var states;
   var errorFacade;
+  var authenticationServiceConstants;
+  var fetchAggregateUserState;
 
   var accountSettings;
 
@@ -38,14 +40,18 @@ describe('landing page controller', function () {
     blogStub = jasmine.createSpyObj('blogStub', ['getLandingPage']);
     subscribeService = jasmine.createSpyObj('subscribeService', ['subscribe', 'unsubscribe', 'getSubscriptionStatus']);
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
-    accountSettingsRepositoryFactory = { forCurrentUser: function() { return accountSettingsRepository; }};
+    accountSettingsRepositoryFactory = jasmine.createSpyObj('accountSettingsRepositoryFactory', ['forCurrentUser']);
+    accountSettingsRepositoryFactory.forCurrentUser.and.returnValue(accountSettingsRepository);
     blogRepository = jasmine.createSpyObj('blogRepository', ['getBlog', 'getUserId']);
-    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
+    blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
+    blogRepositoryFactory.forCurrentUser.and.returnValue(blogRepository);
     subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['tryGetBlogs']);
-    subscriptionRepositoryFactory = { forCurrentUser: function() { return subscriptionRepository; }};
+    subscriptionRepositoryFactory = jasmine.createSpyObj('subscriptionRepositoryFactory', ['forCurrentUser']);
+    subscriptionRepositoryFactory.forCurrentUser.and.returnValue(subscriptionRepository);
     initializer = jasmine.createSpyObj('initializer', ['initialize']);
     $state = jasmine.createSpyObj('$state', ['go', 'reload']);
     $stateParams = {};
+    fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['waitForExistingUpdate']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
 
     errorFacade.handleError.and.callFake(function(error, delegate){ delegate('friendlyError'); });
@@ -61,6 +67,7 @@ describe('landing page controller', function () {
       $provide.value('initializer', initializer);
       $provide.value('$stateParams', $stateParams);
       $provide.value('$state', $state);
+      $provide.value('fetchAggregateUserState', fetchAggregateUserState);
       $provide.value('errorFacade', errorFacade);
     });
 
@@ -71,6 +78,7 @@ describe('landing page controller', function () {
       states = $injector.get('states');
       landingPageConstants = $injector.get('landingPageConstants');
       aggregateUserStateConstants = $injector.get('aggregateUserStateConstants');
+      authenticationServiceConstants = $injector.get('authenticationServiceConstants');
     });
 
     accountSettings = { username: 'username', profileImage: { fileId: 'fileId' } };
@@ -113,8 +121,20 @@ describe('landing page controller', function () {
       expect($scope.model.subscribedChannels).toEqual({});
     });
 
+    it('should get an account settings repository', function(){
+      expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+    });
+
+    it('should get a blog repository', function(){
+      expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+    });
+
+    it('should get a subscription repository', function(){
+      expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+    });
+
     it('should initialize with the loadLandingPage function', function(){
-      expect(initializer.initialize).toHaveBeenCalledWith(target.internal.loadLandingPage);
+      expect(initializer.initialize).toHaveBeenCalledWith(target.internal.initialize);
     });
   });
 
@@ -362,6 +382,46 @@ describe('landing page controller', function () {
 
         it('should update the view', function(){
           expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
+        });
+      });
+    });
+
+    describe('when currentUserUpdated is called', function(){
+      describe('when isOwner changes', function(){
+        beforeEach(function(){
+          $scope.model.isOwner = false;
+          $scope.model.userId = 'A';
+
+          target.internal.currentUserUpdated({}, { userId: 'A' });
+        });
+
+        it('should reload the current state', function(){
+          expect($state.reload).toHaveBeenCalledWith();
+        });
+      });
+
+      describe('when isOwner does not change', function(){
+        beforeEach(function(){
+          $scope.model.isOwner = false;
+          $scope.model.userId = 'A';
+
+          target.internal.currentUserUpdated({}, { userId: 'B' });
+        });
+
+        it('should not reload the current state', function(){
+          expect($state.reload).not.toHaveBeenCalled();
+        });
+
+        it('should get an account settings repository', function(){
+          expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+        });
+
+        it('should get a blog repository', function(){
+          expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+        });
+
+        it('should get a subscription repository', function(){
+          expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
         });
       });
     });
@@ -1095,6 +1155,107 @@ describe('landing page controller', function () {
       });
     });
 
+    describe('when initialize is called', function(){
+      var success;
+      var error;
+      var deferredWaitForExistingUpdate;
+      var deferredLoadLandingPage;
+      beforeEach(function(){
+        success = undefined;
+        error = undefined;
+        deferredWaitForExistingUpdate = $q.defer();
+        fetchAggregateUserState.waitForExistingUpdate.and.returnValue(deferredWaitForExistingUpdate.promise);
+
+        deferredLoadLandingPage = $q.defer();
+        spyOn(target.internal, 'loadLandingPage').and.returnValue(deferredLoadLandingPage.promise);
+
+        $scope.model.isLoaded = false;
+
+        target.internal.initialize().then(function(){ success = true; }, function(e){ error = e; });
+        $scope.$apply();
+      });
+
+      it('should call waitForExistingUpdate', function(){
+        expect(fetchAggregateUserState.waitForExistingUpdate).toHaveBeenCalledWith();
+      });
+
+      describe('when waitForExistingUpdate succeeds', function(){
+        beforeEach(function(){
+          deferredWaitForExistingUpdate.resolve();
+          $scope.$apply();
+        });
+
+        it('should call loadLandingPage', function(){
+          expect(target.internal.loadLandingPage).toHaveBeenCalledWith();
+        });
+
+        describe('when loadLandingPage succeeds', function(){
+          beforeEach(function(){
+            deferredLoadLandingPage.resolve();
+            $scope.$apply();
+          });
+
+          it('should set isLoaded to true', function(){
+            expect($scope.model.isLoaded).toBe(true);
+          });
+
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
+          });
+        });
+
+        describe('when loadLandingPage fails', function(){
+          beforeEach(function(){
+            deferredLoadLandingPage.reject('error');
+            $scope.$apply();
+          });
+
+          it('should log the error', function(){
+            expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
+          });
+
+          it('should set the errorMessage to a friendly message', function(){
+            expect($scope.model.errorMessage).toBe('friendlyError');
+          });
+
+          it('should set isLoaded to true', function(){
+            expect($scope.model.isLoaded).toBe(true);
+          });
+
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
+          });
+        });
+      });
+
+      describe('when waitForExistingUpdate fails', function(){
+        beforeEach(function(){
+          deferredWaitForExistingUpdate.reject('error');
+          $scope.$apply();
+        });
+
+        it('should not call loadLandingPage', function(){
+          expect(target.internal.loadLandingPage).not.toHaveBeenCalled();
+        });
+
+        it('should log the error', function(){
+          expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
+        });
+
+        it('should set the errorMessage to a friendly message', function(){
+          expect($scope.model.errorMessage).toBe('friendlyError');
+        });
+
+        it('should set isLoaded to true', function(){
+          expect($scope.model.isLoaded).toBe(true);
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
+        });
+      });
+    });
+
     describe('when loadLandingPage is called', function(){
       var success;
       var error;
@@ -1104,7 +1265,6 @@ describe('landing page controller', function () {
         error = undefined;
         deferredPopulateLandingPageData = $q.defer();
 
-        $scope.model.isLoaded = false;
         spyOn(target.internal, 'populateLandingPageData').and.returnValue(deferredPopulateLandingPageData.promise);
       });
 
@@ -1151,6 +1311,10 @@ describe('landing page controller', function () {
           expect($scope.$on).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, target.internal.reloadFromUserState);
         });
 
+        it('should attach to the current user changed event', function(){
+          expect($scope.$on).toHaveBeenCalledWith(authenticationServiceConstants.currentUserChangedEvent, target.internal.currentUserUpdated);
+        });
+
         it('should call populateLandingPageData', function(){
           expect(target.internal.populateLandingPageData).toHaveBeenCalledWith();
         });
@@ -1164,10 +1328,6 @@ describe('landing page controller', function () {
 
           it('should call setCurrentViewIfRequired', function(){
             expect(target.internal.setCurrentViewIfRequired).toHaveBeenCalledWith();
-          });
-
-          it('should set isLoaded to true', function(){
-            expect($scope.model.isLoaded).toBe(true);
           });
 
           it('should complete successfully', function(){
@@ -1204,16 +1364,8 @@ describe('landing page controller', function () {
             expect($state.go).not.toHaveBeenCalled();
           });
 
-          it('should log the error', function(){
-            expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
-          });
-
-          it('should set the errorMessage to a friendly message', function(){
-            expect($scope.model.errorMessage).toBe('friendlyError');
-          });
-
-          it('should set isLoaded to true', function(){
-            expect($scope.model.isLoaded).toBe(true);
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
           });
         });
       });
