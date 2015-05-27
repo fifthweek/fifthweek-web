@@ -81,7 +81,7 @@ angular.module('webApp')
       $scope.model.userId = blogRepository.getUserId();
       $scope.model.isOwner = true;
       $scope.model.hasFreeAccess = false;
-      $scope.model.isSubscribed = false;
+      $scope.model.isSubscribed = $scope.model.currentView === landingPageConstants.views.blog;
       $scope.model.profileImage = accountSettings.profileImage;
 
       return blogRepository.getBlog()
@@ -165,11 +165,15 @@ angular.module('webApp')
         });
     };
 
-    internal.setCurrentViewIfRequired = function(){
+    internal.updateCurrentViewIfRequired = function(){
       if(!$scope.model.currentView){
         $scope.model.currentView = $scope.model.isSubscribed ?
           landingPageConstants.views.blog :
           landingPageConstants.views.manage;
+      }
+
+      if(!$scope.model.isSubscribed && $scope.model.currentView === landingPageConstants.views.blog){
+        $state.go($state.current.name, { username: $scope.model.username, action: null, key: null });
       }
     };
 
@@ -245,7 +249,7 @@ angular.module('webApp')
 
       return internal.populateLandingPageData()
         .then(function(){
-          internal.setCurrentViewIfRequired();
+          internal.updateCurrentViewIfRequired();
         })
         .catch(function(error){
           if(error instanceof ApiError && error.response && error.response.status === 404) {
@@ -285,6 +289,16 @@ angular.module('webApp')
       return false;
     };
 
+    internal.redirectToUnfilteredViewIfRequired = function(){
+      if($stateParams.action === landingPageConstants.actions.channel ||
+         $stateParams.action === landingPageConstants.actions.collection){
+        $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.blog, key: null });
+        return true;
+      }
+
+      return false;
+    };
+
     initializer.initialize(internal.initialize);
 
     $scope.manageSubscription = function(){
@@ -313,7 +327,7 @@ angular.module('webApp')
       return subscribeService.subscribe($scope.model.blog.blogId, subscriptions)
         .then(function(result){
           if(result){
-            if(!internal.redirectIfRequired()){
+            if(!internal.redirectIfRequired() && !internal.redirectToUnfilteredViewIfRequired()){
               // Loading the blog will update user state, and then we
               // reload from user state when the user clicks 'manage'.
               $scope.model.isSubscribed = true;

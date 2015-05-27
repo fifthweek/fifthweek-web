@@ -181,6 +181,7 @@ describe('landing page controller', function () {
           describe('when redirectIfRequired returns true', function(){
             beforeEach(function(){
               spyOn(target.internal, 'redirectIfRequired').and.returnValue(true);
+              spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(false);
               deferredResult.resolve(true);
               $scope.$apply();
             });
@@ -190,9 +191,23 @@ describe('landing page controller', function () {
             });
           });
 
-          describe('when redirectIfRequired returns false', function(){
+          describe('when redirectToUnfilteredViewIfRequired returns true', function(){
             beforeEach(function(){
               spyOn(target.internal, 'redirectIfRequired').and.returnValue(false);
+              spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(true);
+              deferredResult.resolve(true);
+              $scope.$apply();
+            });
+
+            it('should not set isSubscribed to true', function(){
+              expect($scope.model.isSubscribed).toBe(false);
+            });
+          });
+
+          describe('when redirectIfRequired and redirectToUnfilteredViewIfRequired returns false', function(){
+            beforeEach(function(){
+              spyOn(target.internal, 'redirectIfRequired').and.returnValue(false);
+              spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(false);
               deferredResult.resolve(true);
               $scope.$apply();
             });
@@ -629,38 +644,66 @@ describe('landing page controller', function () {
     });
 
     describe('when loadFromLocal is called', function(){
-      beforeEach(function(){
-        $scope.model.isOwner = false;
-        $scope.model.hasFreeAccess = true;
-        $scope.model.isSubscribed = true;
-        blogRepository.getUserId.and.returnValue('userId');
-        blogRepository.getBlog.and.returnValue($q.when('blog'));
-        target.internal.loadFromLocal(accountSettings);
-        $scope.$apply();
+
+      var loadFromLocalTests = function(){
+
+        it('should assign the current user id to the model', function(){
+          expect($scope.model.userId).toBe('userId');
+        });
+
+        it('should assign the blog result to the model', function(){
+          expect($scope.model.blog).toBe('blog');
+        });
+
+        it('should set isOwner to true', function(){
+          expect($scope.model.isOwner).toBe(true);
+        });
+
+        it('should set hasFreeAccess to false', function(){
+          expect($scope.model.hasFreeAccess).toBe(false);
+        });
+
+        it('should set the profile image', function(){
+          expect($scope.model.profileImage).toBe(accountSettings.profileImage);
+        });
+      };
+
+      describe('when current view is blog', function(){
+        beforeEach(function(){
+          $scope.model.currentView = landingPageConstants.views.blog;
+          $scope.model.isOwner = false;
+          $scope.model.hasFreeAccess = true;
+          $scope.model.isSubscribed = true;
+          blogRepository.getUserId.and.returnValue('userId');
+          blogRepository.getBlog.and.returnValue($q.when('blog'));
+          target.internal.loadFromLocal(accountSettings);
+          $scope.$apply();
+        });
+
+        loadFromLocalTests();
+
+        it('should set isSubscribed to true', function(){
+          expect($scope.model.isSubscribed).toBe(true);
+        });
       });
 
-      it('should assign the current user id to the model', function(){
-        expect($scope.model.userId).toBe('userId');
-      });
+      describe('when current view is manage', function(){
+        beforeEach(function(){
+          $scope.model.currentView = landingPageConstants.views.manage;
+          $scope.model.isOwner = false;
+          $scope.model.hasFreeAccess = true;
+          $scope.model.isSubscribed = true;
+          blogRepository.getUserId.and.returnValue('userId');
+          blogRepository.getBlog.and.returnValue($q.when('blog'));
+          target.internal.loadFromLocal(accountSettings);
+          $scope.$apply();
+        });
 
-      it('should assign the blog result to the model', function(){
-        expect($scope.model.blog).toBe('blog');
-      });
+        loadFromLocalTests();
 
-      it('should set isOwner to true', function(){
-        expect($scope.model.isOwner).toBe(true);
-      });
-
-      it('should set hasFreeAccess to false', function(){
-        expect($scope.model.hasFreeAccess).toBe(false);
-      });
-
-      it('should set isSubscribed to false', function(){
-        expect($scope.model.isSubscribed).toBe(false);
-      });
-
-      it('should set the profile image', function(){
-        expect($scope.model.profileImage).toBe(accountSettings.profileImage);
+        it('should set isSubscribed to false', function(){
+          expect($scope.model.isSubscribed).toBe(false);
+        });
       });
     });
 
@@ -1011,7 +1054,7 @@ describe('landing page controller', function () {
       });
     });
 
-    describe('when setCurrentViewIfRequired is called', function(){
+    describe('when updateCurrentViewIfRequired is called', function(){
       describe('when subscribed', function(){
         beforeEach(function(){
           $scope.model.isSubscribed = true;
@@ -1020,7 +1063,7 @@ describe('landing page controller', function () {
         describe('when currentView is already set', function(){
           beforeEach(function(){
             $scope.model.currentView = 'something';
-            target.internal.setCurrentViewIfRequired();
+            target.internal.updateCurrentViewIfRequired();
           });
 
           it('should not change the current view', function(){
@@ -1031,7 +1074,7 @@ describe('landing page controller', function () {
         describe('when currentView is not already set', function(){
           beforeEach(function(){
             $scope.model.currentView = undefined;
-            target.internal.setCurrentViewIfRequired();
+            target.internal.updateCurrentViewIfRequired();
           });
 
           it('should set the current view to blog', function(){
@@ -1046,20 +1089,40 @@ describe('landing page controller', function () {
         });
 
         describe('when currentView is already set', function(){
-          beforeEach(function(){
-            $scope.model.currentView = 'something';
-            target.internal.setCurrentViewIfRequired();
+          describe('when currentView is set to blog', function(){
+            beforeEach(function(){
+              $state.current = { name: 'currentState' };
+              $scope.model.username = 'currentUsername';
+
+              $scope.model.currentView = landingPageConstants.views.blog;
+              target.internal.updateCurrentViewIfRequired();
+            });
+
+            it('should redirect to the root landing page', function(){
+              expect($state.go).toHaveBeenCalledWith('currentState', { username: 'currentUsername', action: null, key: null });
+            });
           });
 
-          it('should not change the current view', function(){
-            expect($scope.model.currentView).toBe('something');
+          describe('when currentView is set to manage', function(){
+            beforeEach(function(){
+              $scope.model.currentView = landingPageConstants.views.manage;
+              target.internal.updateCurrentViewIfRequired();
+            });
+
+            it('should not change the current view', function(){
+              expect($scope.model.currentView).toBe(landingPageConstants.views.manage);
+            });
+
+            it('should not redirect to the root landing page', function(){
+              expect($state.go).not.toHaveBeenCalled();
+            });
           });
         });
 
         describe('when currentView is not already set', function(){
           beforeEach(function(){
             $scope.model.currentView = undefined;
-            target.internal.setCurrentViewIfRequired();
+            target.internal.updateCurrentViewIfRequired();
           });
 
           it('should set the current view to manage', function(){
@@ -1321,13 +1384,13 @@ describe('landing page controller', function () {
 
         describe('when populateLandingPageData succeeds', function(){
           beforeEach(function(){
-            spyOn(target.internal, 'setCurrentViewIfRequired');
+            spyOn(target.internal, 'updateCurrentViewIfRequired');
             deferredPopulateLandingPageData.resolve();
             $scope.$apply();
           });
 
-          it('should call setCurrentViewIfRequired', function(){
-            expect(target.internal.setCurrentViewIfRequired).toHaveBeenCalledWith();
+          it('should call updateCurrentViewIfRequired', function(){
+            expect(target.internal.updateCurrentViewIfRequired).toHaveBeenCalledWith();
           });
 
           it('should complete successfully', function(){
@@ -1485,6 +1548,67 @@ describe('landing page controller', function () {
         });
 
         it('should return true', function(){
+          expect(result).toBe(false);
+        });
+
+        it('should not redirect', function(){
+          expect($state.go).not.toHaveBeenCalled();
+        });
+      });
+    });
+
+    describe('when redirectToUnfilteredViewIfRequired is called', function(){
+      describe('when the action is set to channel', function(){
+        var result;
+        beforeEach(function(){
+          $scope.model.returnState = undefined;
+          $stateParams.action = landingPageConstants.actions.channel;
+
+          $state.current = { name: 'current-state' };
+          $scope.model.username = 'username';
+
+          result = target.internal.redirectToUnfilteredViewIfRequired();
+        });
+
+        it('should return true', function(){
+          expect(result).toBe(true);
+        });
+
+        it('should redirect to the landing page blog', function(){
+          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.blog, key: null });
+        });
+      });
+
+      describe('when the action is set to collection', function(){
+        var result;
+        beforeEach(function(){
+          $scope.model.returnState = undefined;
+          $stateParams.action = landingPageConstants.actions.collection;
+
+          $state.current = { name: 'current-state' };
+          $scope.model.username = 'username';
+
+          result = target.internal.redirectToUnfilteredViewIfRequired();
+        });
+
+        it('should return true', function(){
+          expect(result).toBe(true);
+        });
+
+        it('should redirect to the landing page blog', function(){
+          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.blog, key: null });
+        });
+      });
+
+      describe('when the action is set to blog', function(){
+        var result;
+        beforeEach(function(){
+          $scope.model.returnState = undefined;
+          $stateParams.action = landingPageConstants.actions.blog;
+          result = target.internal.redirectIfRequired();
+        });
+
+        it('should return false', function(){
           expect(result).toBe(false);
         });
 
