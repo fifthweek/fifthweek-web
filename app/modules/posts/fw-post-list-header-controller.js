@@ -1,8 +1,9 @@
 angular.module('webApp').controller('fwPostListHeaderCtrl',
-  function($scope, $q, fwPostListConstants, subscriptionRepositoryFactory, aggregateUserStateConstants, errorFacade) {
+  function($scope, $q, fwPostListConstants, subscriptionRepositoryFactory, blogRepositoryFactory, aggregateUserStateConstants, errorFacade) {
     'use strict';
 
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+    var blogRepository = blogRepositoryFactory.forCurrentUser();
 
     var internal = this.internal = {};
 
@@ -52,17 +53,46 @@ angular.module('webApp').controller('fwPostListHeaderCtrl',
       }
     };
 
+    internal.getSubscribedBlogs = function(){
+      return subscriptionRepository.tryGetBlogs()
+        .then(function(blogs){
+          if(blogs){
+            return blogs;
+          }
+          return [];
+        });
+    };
+
+    internal.getCreatorBlog = function(){
+      return blogRepository.tryGetBlog()
+        .then(function(blog){
+          if(blog){
+            blog.creatorId = $scope.userId;
+            return [blog];
+          }
+          return [];
+        });
+    };
+
     internal.load = function(){
       model.errorMessage = undefined;
       model.channelName = undefined;
       model.collectionName = undefined;
 
-      return subscriptionRepository.tryGetBlogs()
+      var getBlogsPromise;
+      if($scope.userId === subscriptionRepository.getUserId()) {
+        getBlogsPromise = internal.getCreatorBlog();
+      }
+      else {
+        getBlogsPromise = internal.getSubscribedBlogs();
+      }
+
+      return getBlogsPromise
         .then(function(blogs){
           internal.loadFromBlogs($scope.userId, $scope.channelId, $scope.collectionId, blogs);
           return $q.when();
-        }).
-        catch(function(error){
+        })
+        .catch(function(error){
           return errorFacade.handleError(error, function(message) {
             model.errorMessage = message;
           });
