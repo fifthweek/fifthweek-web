@@ -135,8 +135,8 @@ angular.module('webApp').factory('subscribeService',
               hasFreeAccess = blog.freeAccess;
               isSubscribed = blog.channels && blog.channels.length;
 
-              subscribedChannels = internal.getSubscribedChannels();
-              hiddenChannels = internal.getHiddenChannels();
+              subscribedChannels = internal.getSubscribedChannels(blog);
+              hiddenChannels = internal.getHiddenChannels(blog);
             }
           }
 

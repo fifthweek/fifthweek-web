@@ -436,8 +436,16 @@ describe('subscribe-service', function(){
           expect(result.userId).toBe('userId');
         });
 
+        it('should not call getSubscribedChannels', function(){
+          expect(target.internal.getSubscribedChannels).not.toHaveBeenCalled();
+        });
+
         it('should populate subscribed channels with empty object', function(){
           expect(result.subscribedChannels).toEqual({});
+        });
+
+        it('should not call getHiddenChannels', function(){
+          expect(target.internal.getHiddenChannels).not.toHaveBeenCalled();
         });
 
         it('should populate hidden channels with empty list', function(){
@@ -446,12 +454,14 @@ describe('subscribe-service', function(){
       });
 
       describe('when user is subscribed', function(){
+        var blog;
         beforeEach(function(){
-          deferredSubscription.resolve([{
+          blog = {
             blogId: 'blogId',
             freeAccess: false,
             channels: [{ channelId: 'channelId' }]
-          }]);
+          };
+          deferredSubscription.resolve([blog]);
           $rootScope.$apply();
         });
 
@@ -467,8 +477,16 @@ describe('subscribe-service', function(){
           expect(result.userId).toBe('userId');
         });
 
+        it('should call getSubscribedChannels', function(){
+          expect(target.internal.getSubscribedChannels).toHaveBeenCalledWith(blog);
+        });
+
         it('should populate subscribed channels', function(){
           expect(result.subscribedChannels).toBe('subscribedChannels');
+        });
+
+        it('should call getHiddenChannels', function(){
+          expect(target.internal.getHiddenChannels).toHaveBeenCalledWith(blog);
         });
 
         it('should populate hidden channels', function(){
@@ -477,12 +495,14 @@ describe('subscribe-service', function(){
       });
 
       describe('when user has free access', function(){
+        var blog;
         beforeEach(function(){
-          deferredSubscription.resolve([{
+          blog = {
             blogId: 'blogId',
             freeAccess: true,
             channels: []
-          }]);
+          };
+          deferredSubscription.resolve([blog]);
           $rootScope.$apply();
         });
 
@@ -498,8 +518,16 @@ describe('subscribe-service', function(){
           expect(result.userId).toBe('userId');
         });
 
+        it('should call getSubscribedChannels', function(){
+          expect(target.internal.getSubscribedChannels).toHaveBeenCalledWith(blog);
+        });
+
         it('should populate subscribed channels', function(){
           expect(result.subscribedChannels).toBe('subscribedChannels');
+        });
+
+        it('should call getHiddenChannels', function(){
+          expect(target.internal.getHiddenChannels).toHaveBeenCalledWith(blog);
         });
 
         it('should populate hidden channels', function(){
