@@ -9,7 +9,6 @@
   var HeaderPage = require('../../pages/header.page.js');
   var HeaderCreatorPage = require('../../pages/header-creator.page.js');
   var CustomizeLandingPagePage = require('../../pages/creators/customize-landing-page.page.js');
-  var CreatorTimelinePage = require('../../pages/creators/creator-timeline.page.js');
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
   var SignInWorkflowPage = require('../../pages/sign-in-workflow.page.js');
   var GuestListPage = require('../../pages/creators/guest-list.page.js');
@@ -29,7 +28,6 @@
     var headerStandard = new HeaderPage();
     var headerCreator = new HeaderCreatorPage();
     var customizeLandingPagePage = new CustomizeLandingPagePage();
-    var creatorTimelinePage = new CreatorTimelinePage();
     var page = new CreatorLandingPagePage();
     var signInWorkflow = new SignInWorkflowPage();
     var guestListPage = new GuestListPage();
@@ -244,29 +242,66 @@
       });
     });
 
-    describe('subscribing', function() {
+    describe('subscription management', function() {
 
-       describe('subscribing when creator', function(){
-        afterEach(function() {
-          // The timeline is tested as part of another spec. We just want to ensure that all routes to subscribe
-          // take the user to the timeline.
-          expect(creatorTimelinePage.subscribedButton.isPresent()).toBe(true);
+      describe('when creator', function(){
+        afterEach(function(){
           page.fifthweekLink.click();
           navigateToPage();
         });
 
-        it('should be possible via the "subscribe" button', function() {
-          page.subscribeButton.click();
+        describe('subscribing', function(){
+          afterEach(function() {
+            // The timeline is tested as part of another spec. We just want to ensure that all routes to subscribe
+            // take the user to the timeline.
+            expect(page.manageSubscriptionButton.isPresent()).toBe(true);
+          });
+
+          it('should be possible via the "subscribe" button', function() {
+            page.subscribeButton.click();
+          });
+
+          it('should be possible via the "subscribe now" link', function() {
+            page.channelListSubscribeButton.click();
+          });
         });
 
-        it('should be possible via the "subscribe now" link', function() {
-          page.channelListSubscribeLink.click();
+        describe('unsubscribing', function(){
+          it('should be possible to unsubscribe', function(){
+            page.subscribeButton.click();
+            page.manageSubscriptionButton.click();
+            expect(page.cancelChangesButton.isPresent()).toBe(true);
+            page.unsubscribeButton.click();
+            expect(page.subscribeButton.isPresent()).toBe(true);
+          });
+        });
+
+        describe('canceling changes', function(){
+          it('should be possible to cancel changes', function(){
+            page.subscribeButton.click();
+            page.manageSubscriptionButton.click();
+            page.cancelChangesButton.click();
+            expect(page.manageSubscriptionButton.isPresent()).toBe(true);
+          });
+        });
+
+        describe('accepting changes', function(){
+          it('should be possible to accept changes', function(){
+            page.subscribeButton.click();
+            page.manageSubscriptionButton.click();
+            page.updateSubscriptionButton.click();
+            expect(page.manageSubscriptionButton.isPresent()).toBe(true);
+          });
         });
       });
+
       describe('when not on guest list', function(){
         afterEach(function() {
-          signInWorkflow.expectGuestListOnlyDisplayed();
-          signInWorkflow.guestListOnlyDismissButton.click();
+          expect(page.manageSubscriptionButton.isPresent()).toBe(true);
+          page.manageSubscriptionButton.click();
+          page.unsubscribeButton.click();
+          //signInWorkflow.expectGuestListOnlyDisplayed();
+          //signInWorkflow.guestListOnlyDismissButton.click();
         });
 
         describe('subscribing as signed-in user not on guest-list', function(){
@@ -277,7 +312,7 @@
           });
 
           it('should be possible via the "subscribe now" link', function() {
-            page.channelListSubscribeLink.click();
+            page.channelListSubscribeButton.click();
           });
         });
 
@@ -297,7 +332,7 @@
           });
 
           it('should be possible via the "subscribe now" link', function() {
-            page.channelListSubscribeLink.click();
+            page.channelListSubscribeButton.click();
           });
         });
 
@@ -317,7 +352,7 @@
           });
 
           it('should be possible via the "subscribe now" link', function() {
-            page.channelListSubscribeLink.click();
+            page.channelListSubscribeButton.click();
           });
         });
       });
@@ -337,7 +372,8 @@
 
         describe('when subscribing on guest list', function(){
           afterEach(function() {
-            expect(creatorTimelinePage.subscribedButton.isPresent()).toBe(true);
+            expect(page.manageSubscriptionButton.isPresent()).toBe(true);
+            page.manageSubscriptionButton.click();
             page.unsubscribeButton.click();
           });
 
@@ -355,7 +391,7 @@
             });
 
             it('should be possible via the "subscribe now" link', function() {
-              page.channelListSubscribeLink.click();
+              page.channelListSubscribeButton.click();
             });
           });
 
@@ -375,7 +411,7 @@
             });
 
             it('should be possible via the "subscribe now" link', function() {
-              page.channelListSubscribeLink.click();
+              page.channelListSubscribeButton.click();
             });
           });
 
@@ -395,7 +431,7 @@
             });
 
             it('should be possible via the "subscribe now" link', function() {
-              page.channelListSubscribeLink.click();
+              page.channelListSubscribeButton.click();
               signInWorkflow.expectRegisterDisplayed();
               signInWorkflow.registerSuccessfullyWithData(userRegistration3);
             });

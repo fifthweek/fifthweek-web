@@ -9,7 +9,6 @@
   var PostPage = require('../pages/post.page.js');
   var SubscribersHeaderPage = require('../pages/header-subscribers.page.js');
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
-  var CreatorTimelinePage = require('../pages/creators/creator-timeline.page.js');
 
   describe('latest-posts form', function() {
 
@@ -21,7 +20,6 @@
     var post = new PostPage();
     var subscribersHeader = new SubscribersHeaderPage();
     var landingPage = new CreatorLandingPagePage();
-    var creatorTimelinePage = new CreatorTimelinePage();
 
     var navigateToLatestPosts = function () {
       sidebar.readNowLink.click();
@@ -41,7 +39,7 @@
     };
 
     var expectLandingPagePostCount = function(count){
-      expect(creatorTimelinePage.subscribedButton.isPresent()).toBe(true);
+      expect(landingPage.manageSubscriptionButton.isPresent()).toBe(true);
       expect(post.allPosts.count()).toBe(count);
     };
 
