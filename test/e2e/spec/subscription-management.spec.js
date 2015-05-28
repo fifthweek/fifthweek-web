@@ -23,6 +23,20 @@
   var signInWorkflow = new SignInWorkflowPage();
 
   describe('subscription management', function() {
+
+    var navigateToLatestPosts = function () {
+      sidebar.readNowLink.click();
+    };
+
+    var navigateToCreatorLandingPage = function (creator) {
+      commonWorkflows.getPage('/' + creator.username);
+    };
+
+    var navigateFromCreatorLandingPage = function () {
+      testKit.scrollIntoView(landingPage.fifthweekLink);
+      landingPage.fifthweekLink.click();
+    };
+
     describe('when testing subscription buttons', function(){
 
       var blog;
@@ -238,24 +252,104 @@
       });
     });
 
+    describe('when testing posts', function(){
+      var blog;
+      var creatorRegistration1;
+      var userRegistration;
+
+      var notePost;
+      var filePost;
+      var imagePost;
+      var nonViewableImagePost;
+
+      var collectionName = 'Cats';
+      var filePath = '../../../sample-image-tiny.jpg';
+      var filePathTiff = '../../../sample-image-tiny.tif';
+
+      it('should register as a user', function() {
+        userRegistration = commonWorkflows.register();
+      });
+
+      it('should register as a creator', function() {
+        var context = commonWorkflows.createBlog();
+        blog = context.blog;
+        creatorRegistration1 = context.registration;
+      });
+
+      it('should create a collection', function(){
+        commonWorkflows.createNamedCollection(undefined, collectionName);
+      });
+
+      it('should post each type of post', function(){
+        sidebar.postsLink.click();
+        nonViewableImagePost = commonWorkflows.postImageNow(filePathTiff, collectionName);
+        imagePost = commonWorkflows.postImageNow(filePath, collectionName);
+        filePost = commonWorkflows.postFileNow(filePath, collectionName);
+        notePost = commonWorkflows.postNoteNow();
+      });
+
+      describe('when testing posts as creator', function(){
+        var navigateToLandingPagePosts = function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          landingPage.subscribeButton.click();
+        };
+
+        it('should display posts on landing page', function(){
+          navigateToLandingPagePosts();
+          post.postIndex = 0;
+          post.expectNotePost(notePost, creatorRegistration1, navigateToLandingPagePosts, false, false);
+          post.postIndex = 1;
+          post.expectFilePost(filePost, creatorRegistration1, navigateToLandingPagePosts, true, false);
+          post.postIndex = 2;
+          post.expectImagePost(imagePost, creatorRegistration1, navigateToLandingPagePosts, true, false);
+          post.postIndex = 3;
+          post.expectNonViewableImagePost(nonViewableImagePost, creatorRegistration1, navigateToLandingPagePosts, true, false);
+        });
+      });
+
+      describe('when testing posts as user', function(){
+        var navigateToLandingPagePosts = function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+        };
+
+        it('should sign in as user and register', function(){
+          commonWorkflows.reSignIn(userRegistration);
+          navigateToCreatorLandingPage(creatorRegistration1);
+          landingPage.subscribeButton.click();
+        });
+
+        it('should display posts on landing page', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          post.postIndex = 0;
+          post.expectNotePost(notePost, creatorRegistration1, navigateToLandingPagePosts, false, true);
+          post.postIndex = 1;
+          post.expectFilePost(filePost, creatorRegistration1, navigateToLandingPagePosts, true, true);
+          post.postIndex = 2;
+          post.expectImagePost(imagePost, creatorRegistration1, navigateToLandingPagePosts, true, true);
+          post.postIndex = 3;
+          post.expectNonViewableImagePost(nonViewableImagePost, creatorRegistration1, navigateToLandingPagePosts, true, true);
+        });
+
+        it('should display posts on read now page', function(){
+          navigateFromCreatorLandingPage();
+          navigateToLatestPosts();
+          post.postIndex = 0;
+          post.expectNotePost(notePost, creatorRegistration1, navigateToLatestPosts, false, true);
+          post.postIndex = 1;
+          post.expectFilePost(filePost, creatorRegistration1, navigateToLatestPosts, true, true);
+          post.postIndex = 2;
+          post.expectImagePost(imagePost, creatorRegistration1, navigateToLatestPosts, true, true);
+          post.postIndex = 3;
+          post.expectNonViewableImagePost(nonViewableImagePost, creatorRegistration1, navigateToLatestPosts, true, true);
+        });
+      });
+    });
+
     describe('when testing subscribing', function(){
       var blog;
       var creatorRegistration1;
       var creatorRegistration2;
       var userRegistration;
-
-      var navigateToLatestPosts = function () {
-        sidebar.readNowLink.click();
-      };
-
-      var navigateToCreatorLandingPage = function (creator) {
-        commonWorkflows.getPage('/' + creator.username);
-      };
-
-      var navigateFromCreatorLandingPage = function () {
-        testKit.scrollIntoView(landingPage.fifthweekLink);
-        landingPage.fifthweekLink.click();
-      };
 
       var expectLatestPostCount = function(count){
         expect(header.latestPostsLink.isDisplayed()).toBe(true);

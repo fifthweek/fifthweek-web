@@ -7,6 +7,7 @@ describe('fw-post-list', function(){
   var fwPostListConstants;
   var fifthweekConstants;
   var fwPostListCtrl;
+  var landingPageConstants;
 
   beforeEach(function() {
     module('webApp', 'webApp.views');
@@ -22,6 +23,7 @@ describe('fw-post-list', function(){
       $compile = $injector.get('$compile');
       fwPostListConstants = $injector.get('fwPostListConstants');
       fifthweekConstants = $injector.get('fifthweekConstants');
+      landingPageConstants = $injector.get('landingPageConstants');
     });
   });
 
@@ -43,6 +45,10 @@ describe('fw-post-list', function(){
 
     it('should set fifthweekConstants to the isolate scope', function(){
       expect(element.isolateScope().fifthweekConstants).toBe(fifthweekConstants);
+    });
+
+    it('should set landingPageConstants to the isolate scope', function(){
+      expect(element.isolateScope().landingPageConstants).toBe(landingPageConstants);
     });
 
     it('should set specified source to the isolate scope', function(){

@@ -6,7 +6,7 @@ angular.module('webApp')
     },
     actions: {
       manage: 'manage',
-      blog: 'blog',
+      all: 'all',
       collection: 'collection',
       channel: 'channel'
     }
@@ -193,7 +193,7 @@ angular.module('webApp')
             $scope.model.returnState = key;
             break;
 
-          case landingPageConstants.actions.blog:
+          case landingPageConstants.actions.all:
             $scope.model.currentView = landingPageConstants.views.blog;
             break;
 
@@ -292,7 +292,7 @@ angular.module('webApp')
     internal.redirectToUnfilteredViewIfRequired = function(){
       if($stateParams.action === landingPageConstants.actions.channel ||
          $stateParams.action === landingPageConstants.actions.collection){
-        $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.blog, key: null });
+        $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.all, key: null });
         return true;
       }
 

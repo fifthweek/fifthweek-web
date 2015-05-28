@@ -7,7 +7,7 @@ angular.module('webApp')
       timeline: 'timeline'
     }
   })
-  .directive('fwPostList', function (fwPostListConstants, fifthweekConstants) {
+  .directive('fwPostList', function (fwPostListConstants, fifthweekConstants, landingPageConstants) {
   'use strict';
 
   return {
@@ -25,6 +25,7 @@ angular.module('webApp')
 
       scope.fifthweekConstants = fifthweekConstants;
       scope.sources = fwPostListConstants.sources;
+      scope.landingPageConstants = landingPageConstants;
 
       var controller = ctrls[0];
       controller.initialize();

@@ -1183,7 +1183,7 @@ describe('landing page controller', function () {
         });
 
         it('should return true if action is blog', function(){
-          $stateParams.action = landingPageConstants.actions.blog;
+          $stateParams.action = landingPageConstants.actions.all;
           expectResult(true);
           expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
         });
@@ -1543,7 +1543,7 @@ describe('landing page controller', function () {
         var result;
         beforeEach(function(){
           $scope.model.returnState = undefined;
-          $stateParams.action = landingPageConstants.actions.blog;
+          $stateParams.action = landingPageConstants.actions.all;
           result = target.internal.redirectIfRequired();
         });
 
@@ -1575,7 +1575,7 @@ describe('landing page controller', function () {
         });
 
         it('should redirect to the landing page blog', function(){
-          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.blog, key: null });
+          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.all, key: null });
         });
       });
 
@@ -1596,7 +1596,7 @@ describe('landing page controller', function () {
         });
 
         it('should redirect to the landing page blog', function(){
-          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.blog, key: null });
+          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.all, key: null });
         });
       });
 
@@ -1604,7 +1604,7 @@ describe('landing page controller', function () {
         var result;
         beforeEach(function(){
           $scope.model.returnState = undefined;
-          $stateParams.action = landingPageConstants.actions.blog;
+          $stateParams.action = landingPageConstants.actions.all;
           result = target.internal.redirectIfRequired();
         });
 

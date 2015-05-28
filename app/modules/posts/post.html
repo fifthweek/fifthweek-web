@@ -33,21 +33,21 @@
 
     <div class="row info-actions">
       <div class="col-xs-8 info">
-        <a class="author" ui-sref="landingPage({username: post.creator.username, action: 'blog', key: null})">
+        <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})">
           <img class="author-image" ng-src="{{post.creator.profileImage.resolvedUri}}" />
         </a>
         <ul>
           <li>
-            <a ui-sref="landingPage({username: post.creator.username, action: 'blog', key: null})" class="poster-name">{{post.creator.username}}</a>
+            <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.creator.username}}</a>
             <span ng-if="post.collection">
               in
-              <a ui-sref="landingPage({username: post.creator.username, action: 'collection', key: post.collectionId })" class="container-name">
+              <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.collection, key: post.collectionId })" class="container-name">
                 {{post.collection.name}}
               </a>
             </span>
             <span ng-if="!post.collection">
               to
-               <a ui-sref="landingPage({username: post.creator.username, action: 'channel', key: post.channelId })" class="container-name">
+               <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
                  {{post.channel.isDefault ? 'Everyone' : post.channel.name}}
                </a>
             </span>

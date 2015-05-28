@@ -20,7 +20,11 @@ CreatorLandingPagePage.prototype = Object.create({}, {
   channelListTotalPrice: { get: function() { return element(by.css('.subscribe-now-total')); }},
   guestListInformationPanel: { get: function() { return element(by.css('.guest-list-information')); }},
   guestListInformationPanelCount: { get: function() { return element.all(by.css('.guest-list-information')).count(); }},
-  buttonFooter: { get: function() { return element(by.css('.button-footer')); }}
+  buttonFooter: { get: function() { return element(by.css('.button-footer')); }},
+
+  expectSubscribedSuccessfully: { value: function(){
+    expect(this.manageSubscriptionButton.isDisplayed()).toBe(true);
+  }}
 
 });
 

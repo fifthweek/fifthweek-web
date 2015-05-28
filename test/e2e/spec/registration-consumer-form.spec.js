@@ -39,7 +39,9 @@ describe("registration form", function() {
 
     afterEach(function() {
       page.registerButton.click();
-      page.expectGuestListOnlyDisplayed();
+
+      creatorLandingPage.expectSubscribedSuccessfully();
+      //page.expectGuestListOnlyDisplayed();
     });
 
     it('should allow a new user to register', function(){
