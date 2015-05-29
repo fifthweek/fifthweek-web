@@ -11,6 +11,7 @@
   var SubscribersHeaderPage = require('../pages/header-subscribers.page.js');
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
   var SignInWorkflowPage = require('../pages/sign-in-workflow.page.js');
+  var PostListInformationPage = require('../pages/post-list-information.page.js');
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
@@ -21,6 +22,7 @@
   var subscribersHeader = new SubscribersHeaderPage();
   var landingPage = new CreatorLandingPagePage();
   var signInWorkflow = new SignInWorkflowPage();
+  var postListInformation = new PostListInformationPage();
 
   describe('subscription management', function() {
 
@@ -35,6 +37,26 @@
     var navigateFromCreatorLandingPage = function () {
       testKit.scrollIntoView(landingPage.fifthweekLink);
       landingPage.fifthweekLink.click();
+    };
+
+    var expectLatestPostCount = function(count){
+      expect(header.latestPostsLink.isDisplayed()).toBe(true);
+      expect(post.allPosts.count()).toBe(count);
+    };
+
+    var expectLandingPagePostCount = function(count){
+      expect(landingPage.manageSubscriptionButton.isPresent()).toBe(true);
+      expect(post.allPosts.count()).toBe(count);
+    };
+
+    var expectLandingPageChannelCount = function(hasFreeAccess, count, prices){
+      var totalPrice = '$' +  (hasFreeAccess ? 0 : _.sum(prices)).toFixed(2) + '/week';
+      if(count === 1){
+        expect(landingPage.buttonFooter.getText()).toBe(count + ' Channel - ' + totalPrice);
+      }
+      else{
+        expect(landingPage.buttonFooter.getText()).toBe(count + ' Channels - ' + totalPrice);
+      }
     };
 
     describe('when testing subscription buttons', function(){
@@ -351,26 +373,6 @@
       var creatorRegistration2;
       var userRegistration;
 
-      var expectLatestPostCount = function(count){
-        expect(header.latestPostsLink.isDisplayed()).toBe(true);
-        expect(post.allPosts.count()).toBe(count);
-      };
-
-      var expectLandingPagePostCount = function(count){
-        expect(landingPage.manageSubscriptionButton.isPresent()).toBe(true);
-        expect(post.allPosts.count()).toBe(count);
-      };
-
-      var expectLandingPageChannelCount = function(hasFreeAccess, count, prices){
-        var totalPrice = '$' +  (hasFreeAccess ? 0 : _.sum(prices)).toFixed(2) + '/week';
-        if(count === 1){
-          expect(landingPage.buttonFooter.getText()).toBe(count + ' Channel - ' + totalPrice);
-        }
-        else{
-          expect(landingPage.buttonFooter.getText()).toBe(count + ' Channels - ' + totalPrice);
-        }
-      };
-
       var testSubscribingToChannels = function(hasFreeAccess){
 
         describe('when the creator has not posted', function(){
@@ -679,5 +681,397 @@
       });
     });
 
+    describe('testing price changes', function(){
+      var blog1;
+      var blog2;
+      var creatorRegistration1;
+      var creatorRegistration2;
+      var userRegistration;
+
+      var creator1Channel2;
+
+      it('should register as a user', function() {
+        userRegistration = commonWorkflows.registerAsConsumer();
+      });
+
+      it('should register as a creator 1', function() {
+        var context = commonWorkflows.createBlog();
+        blog1 = context.blog;
+        creatorRegistration1 = context.registration;
+      });
+
+      it('should create a new channel', function(){
+        creator1Channel2 = commonWorkflows.createChannel({ hiddenCheckbox: false });
+      });
+
+      it('should register as a creator 2', function() {
+        var context = commonWorkflows.createBlog();
+        blog2 = context.blog;
+        creatorRegistration2 = context.registration;
+      });
+
+      it('should post a note in each channel', function(){
+        commonWorkflows.postNoteNow();
+        commonWorkflows.reSignIn(creatorRegistration1);
+        commonWorkflows.postNoteNow();
+        commonWorkflows.postNoteNow(creator1Channel2.name);
+      });
+
+      it('should subscribe to all channels', function(){
+        commonWorkflows.reSignIn(userRegistration);
+        navigateToCreatorLandingPage(creatorRegistration1);
+        landingPage.getChannelPrice(1).click();
+        landingPage.subscribeButton.click();
+        expectLandingPagePostCount(2);
+
+        navigateToCreatorLandingPage(creatorRegistration2);
+        landingPage.subscribeButton.click();
+        expectLandingPagePostCount(1);
+        navigateFromCreatorLandingPage();
+
+        navigateToLatestPosts();
+        expectLatestPostCount(3);
+      });
+
+      describe('when price increases', function(){
+        it('should increase the price of the base channel', function(){
+          commonWorkflows.reSignIn(creatorRegistration1);
+          commonWorkflows.setChannelPrice('15.00');
+        });
+
+        it('should not display posts from the base channel to the subscribed user', function(){
+          commonWorkflows.reSignIn(userRegistration);
+          expectLatestPostCount(2);
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expectLandingPagePostCount(1);
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expectLandingPagePostCount(1);
+          navigateFromCreatorLandingPage();
+        });
+
+        it('should display a notification on the read now page', function(){
+          navigateToLatestPosts();
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+          postListInformation.expectBasePriceIncrease(0, blog1.basePrice, 15);
+        });
+
+        it('should display a notification on the landing page posts view', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+          postListInformation.expectBasePriceIncrease(0, blog1.basePrice, 15);
+        });
+
+        it('should not display a notification on creator 2 landing page posts view', function(){
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+
+        it('should display information on the landing page manage view', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          landingPage.manageSubscriptionButton.click();
+          landingPage.expectPriceIncrease(0, blog1.basePrice, 15);
+        });
+
+        it('should display all posts when price is accepted on landing page posts view', function(){
+          landingPage.cancelChangesButton.click();
+          expectLandingPagePostCount(1);
+          postListInformation.getAcceptButton(0).click();
+          expectLandingPagePostCount(2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+
+        it('should display all posts when price is accepted on landing page manage view 1', function(){
+          commonWorkflows.reSignIn(creatorRegistration1);
+          commonWorkflows.setChannelPrice('15.10');
+          commonWorkflows.reSignIn(userRegistration);
+
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expectLandingPagePostCount(1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+          postListInformation.expectBasePriceIncrease(0, 15, 15.1);
+
+          landingPage.manageSubscriptionButton.click();
+          landingPage.expectPriceIncrease(0, 15, 15.1);
+          landingPage.updateSubscriptionButton.click();
+
+          expectLandingPagePostCount(2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+
+        it('should display all posts when price is accepted on landing page manage view from read now view', function(){
+          commonWorkflows.reSignIn(creatorRegistration1);
+          commonWorkflows.setChannelPrice('15.20');
+          commonWorkflows.reSignIn(userRegistration);
+
+          expectLatestPostCount(2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+          postListInformation.expectBasePriceIncrease(0, 15.1, 15.2);
+
+          postListInformation.getManageButton(0).click();
+          landingPage.expectPriceIncrease(0, 15.1, 15.2);
+          landingPage.updateSubscriptionButton.click();
+
+          expectLatestPostCount(3);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+
+        it('should display all posts when price is accepted on read now page', function(){
+          commonWorkflows.reSignIn(creatorRegistration1);
+          commonWorkflows.setChannelPrice('15.30');
+          commonWorkflows.reSignIn(userRegistration);
+
+          expectLatestPostCount(2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+          postListInformation.expectBasePriceIncrease(0, 15.2, 15.3);
+
+          postListInformation.getAcceptButton(0).click();
+
+          expectLatestPostCount(3);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+
+      });
+
+      describe('when price decreases', function(){
+        it('should increase the price of the base channel', function(){
+          commonWorkflows.reSignIn(creatorRegistration1);
+          commonWorkflows.setChannelPrice('15.20');
+        });
+
+        it('should continue to display posts from the base channel to the subscribed user', function(){
+          commonWorkflows.reSignIn(userRegistration);
+          expectLatestPostCount(3);
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expectLandingPagePostCount(2);
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expectLandingPagePostCount(1);
+          navigateFromCreatorLandingPage();
+        });
+
+        it('should display a notification on the read now page', function(){
+          navigateToLatestPosts();
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+          postListInformation.expectBasePriceDecrease(0, 15.3, 15.2);
+        });
+
+        it('should display a notification on the landing page posts view', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+          postListInformation.expectBasePriceDecrease(0, 15.3, 15.2);
+        });
+
+        it('should not display a notification on creator 2 landing page posts view', function(){
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+
+        it('should display information on the landing page manage view', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          landingPage.manageSubscriptionButton.click();
+          landingPage.expectPriceDecrease(0, 15.3, 15.2);
+        });
+
+        it('should continue to display all posts when price is accepted on landing page posts view', function(){
+          landingPage.cancelChangesButton.click();
+          expectLandingPagePostCount(2);
+          postListInformation.getAcceptButton(0).click();
+          expectLandingPagePostCount(2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expectLandingPagePostCount(1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+
+          navigateFromCreatorLandingPage();
+          expectLatestPostCount(3);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+      });
+
+      describe('when added to guest list', function(){
+
+        it('creator 1 should add the user to the guest list', function(){
+          commonWorkflows.reSignIn(creatorRegistration1);
+          sidebar.subscribersLink.click();
+          subscribersHeader.guestListLink.click();
+          guestListPage.setNewGuestList([userRegistration.email]);
+        });
+
+        it('should continue to display posts from the base channel to the subscribed user', function(){
+          commonWorkflows.reSignIn(userRegistration);
+          expectLatestPostCount(3);
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expectLandingPagePostCount(2);
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expectLandingPagePostCount(1);
+          navigateFromCreatorLandingPage();
+        });
+
+        it('should display a notification on the read now page', function(){
+          navigateToLatestPosts();
+          expect(postListInformation.priceChangeIndicatorCount).toBe(2);
+          postListInformation.expectBasePriceDecrease(0, 15.2, 0);
+          postListInformation.expectChannelPriceDecrease(1, creator1Channel2.price, 0);
+        });
+
+        it('should display a notification on the landing page posts view', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(2);
+          postListInformation.expectBasePriceDecrease(0, 15.2, 0);
+          postListInformation.expectChannelPriceDecrease(1, creator1Channel2.price, 0);
+        });
+
+        it('should not display a notification on creator 2 landing page posts view', function(){
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+
+        it('should display information on the landing page manage view', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          landingPage.manageSubscriptionButton.click();
+          landingPage.expectPriceDecrease(0, 15.2, 15.2);  // Same price because old price has strikethrough.
+          landingPage.expectPriceDecrease(1, creator1Channel2.price, creator1Channel2.price);
+        });
+
+        it('should continue to display all posts when prices are accepted on landing page manage view', function(){
+          landingPage.updateSubscriptionButton.click();
+          expectLandingPagePostCount(2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expectLandingPagePostCount(1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+
+          navigateFromCreatorLandingPage();
+          expectLatestPostCount(3);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+
+      });
+
+      describe('when removed from guest list', function(){
+
+        it('creator 1 should add the user to the guest list', function(){
+          commonWorkflows.reSignIn(creatorRegistration1);
+          sidebar.subscribersLink.click();
+          subscribersHeader.guestListLink.click();
+          guestListPage.updateGuestList([]);
+        });
+
+        it('should not display posts from the base channel to the subscribed user', function(){
+          commonWorkflows.reSignIn(userRegistration);
+          expectLatestPostCount(1);
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expectLandingPagePostCount(0);
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expectLandingPagePostCount(1);
+          navigateFromCreatorLandingPage();
+        });
+
+        it('should display a notification on the read now page', function(){
+          navigateToLatestPosts();
+          expect(postListInformation.priceChangeIndicatorCount).toBe(2);
+          postListInformation.expectBasePriceIncrease(0, 0, 15.2);
+          postListInformation.expectChannelPriceIncrease(1, 0, creator1Channel2.price);
+        });
+
+        it('should display a notification on the landing page posts view', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(2);
+          postListInformation.expectBasePriceIncrease(0, 0, 15.2);
+          postListInformation.expectChannelPriceIncrease(1, 0, creator1Channel2.price);
+        });
+
+        it('should not display a notification on creator 2 landing page posts view', function(){
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+
+        it('should display information on the landing page manage view', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          landingPage.manageSubscriptionButton.click();
+          landingPage.expectPriceIncrease(0, 0, 15.2);
+          landingPage.expectPriceIncrease(1, 0, creator1Channel2.price);
+        });
+
+        it('should display all posts when price is accepted on landing page posts view', function(){
+          landingPage.cancelChangesButton.click();
+          expectLandingPagePostCount(0);
+
+          postListInformation.getAcceptButton(0).click();
+          expectLandingPagePostCount(1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+
+          postListInformation.getAcceptButton(0).click();
+          expectLandingPagePostCount(2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expectLandingPagePostCount(1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+
+          navigateFromCreatorLandingPage();
+          expectLatestPostCount(3);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(0);
+        });
+      });
+
+      describe('when price changes on multiple accounts and channels', function(){
+        it('should increase the price of the base channel', function(){
+          commonWorkflows.reSignIn(creatorRegistration1);
+          commonWorkflows.setChannelPrice('13', creator1Channel2.name);
+          commonWorkflows.reSignIn(creatorRegistration2);
+          commonWorkflows.setChannelPrice('14');
+        });
+
+        it('should not display posts from the base channel to the subscribed user', function(){
+          commonWorkflows.reSignIn(userRegistration);
+          expectLatestPostCount(1);
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expectLandingPagePostCount(1);
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expectLandingPagePostCount(0);
+          navigateFromCreatorLandingPage();
+        });
+
+        it('should display a notification on the read now page', function(){
+          navigateToLatestPosts();
+          expect(postListInformation.priceChangeIndicatorCount).toBe(2);
+          postListInformation.expectChannelPriceIncrease(0, creator1Channel2.price, 13);
+          postListInformation.expectBasePriceIncrease(1, blog2.basePrice, 14);
+        });
+
+        it('should display a notification on the landing page posts view for creator 1', function(){
+          navigateToCreatorLandingPage(creatorRegistration1);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+          postListInformation.expectChannelPriceIncrease(0, creator1Channel2.price, 13);
+        });
+
+        it('should display information on the landing page manage view for creator 1', function(){
+          landingPage.manageSubscriptionButton.click();
+          landingPage.expectPriceIncrease(1, creator1Channel2.price, 13);
+        });
+
+        it('should display a notification on the landing page posts view for creator 2', function(){
+          navigateToCreatorLandingPage(creatorRegistration2);
+          expect(postListInformation.priceChangeIndicatorCount).toBe(1);
+          postListInformation.expectBasePriceIncrease(0, blog2.basePrice, 14);
+        });
+
+        it('should display information on the landing page manage view for creator 2', function(){
+          landingPage.manageSubscriptionButton.click();
+          landingPage.expectPriceIncrease(0, blog2.basePrice, 14);
+        });
+
+        it('should display all posts when price is accepted on landing page posts view', function(){
+          navigateFromCreatorLandingPage();
+          expectLatestPostCount(1);
+          postListInformation.getAcceptButton(0).click();
+          expectLatestPostCount(2);
+          postListInformation.getAcceptButton(0).click();
+          expectLatestPostCount(3);
+        });
+      });
+    });
   });
 })();

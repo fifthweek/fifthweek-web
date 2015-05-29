@@ -30,6 +30,12 @@
       this.createGuestListButton.click();
       testKit.setValue(this.emailsTextBoxId, emails.join('\n'));
       this.saveGuestListButton.click();
+    }},
+
+    updateGuestList: { value: function(emails) {
+      this.editGuestListButton.click();
+      testKit.setValue(this.emailsTextBoxId, emails.join('\n'));
+      this.saveGuestListButton.click();
     }}
 
   });

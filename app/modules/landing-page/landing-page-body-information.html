@@ -20,7 +20,7 @@
               <li ng-repeat="descriptionLine in channel.description track by $index">{{descriptionLine}}</li>
             </ul>
           </div>
-          <div class="col-xs-5 channel-previous-price-column">
+          <div class="col-xs-5 channel-previous-price-column" id="channel-previous-price-{{$index}}">
             <p ng-if="channel.subscriptionInformation.isIncrease">
               Increased from <fw-price value="channel.subscriptionInformation.acceptedPrice"></fw-price>
             </p>

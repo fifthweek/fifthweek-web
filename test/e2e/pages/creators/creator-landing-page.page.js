@@ -16,6 +16,7 @@ CreatorLandingPagePage.prototype = Object.create({}, {
   fullDescription: { get: function () { return element(by.id('full-description')); }},
   getChannel: { value: function (index) { return element(by.id('channel-' + index)); }},
   getChannelPrice: { value: function (index) { return element(by.id('channel-price-' + index)); }},
+  getChannelPreviousPrice: { value: function (index) { return element(by.id('channel-previous-price-' + index)); }},
   channelCount: { get: function () { return element.all(by.css('.channels .channel')).count(); }},
   channelListTotalPrice: { get: function() { return element(by.css('.subscribe-now-total')); }},
   guestListInformationPanel: { get: function() { return element(by.css('.guest-list-information')); }},
@@ -24,7 +25,16 @@ CreatorLandingPagePage.prototype = Object.create({}, {
 
   expectSubscribedSuccessfully: { value: function(){
     expect(this.manageSubscriptionButton.isDisplayed()).toBe(true);
-  }}
+  }},
+
+  expectPriceIncrease: { value: function(index, from, to) {
+    expect(this.getChannelPreviousPrice(index).getText()).toBe('Increased from $' + Number(from).toFixed(2) + '/week');
+    expect(this.getChannelPrice(index).getText()).toBe('$' + Number(to).toFixed(2) + '/week');
+  }},
+  expectPriceDecrease: { value: function(index, from, to) {
+    expect(this.getChannelPreviousPrice(index).getText()).toBe('Decreased from $' + Number(from).toFixed(2) + '/week');
+    expect(this.getChannelPrice(index).getText()).toBe('$' + Number(to).toFixed(2) + '/week');
+  }},
 
 });
 

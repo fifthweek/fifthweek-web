@@ -4,10 +4,12 @@
   var TestKit = require('../test-kit.js');
   var CreatorLandingPagePage = require('./creators/creator-landing-page.page.js');
   var Defaults = require('../defaults.js');
+  var PostListInformation = require('./post-list-information.page.js');
 
   var testKit = new TestKit();
   var landingPage = new CreatorLandingPagePage();
   var defaults = new Defaults();
+  var postListInformation = new PostListInformation();
 
   var PostPage = function(isBacklog, postIndex) {
     if(postIndex){
@@ -39,7 +41,6 @@
     }},
 
     postsArea: { get: function() { return element(by.css('.posts')); }},
-    postsHeader: { get: function() { return element(by.css('.posts-header')); }},
     taggedPostsArea: { get: function() { return element(by.css('.tagged-posts')); }},
     allPosts: { get: function () { return element.all(by.css('.posts .post')); }},
 
@@ -99,14 +100,14 @@
       if(isNote){
         this.containerNameLink.click();
         expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/channel/');
-        expect(this.postsHeader.getText()).toBe(channelName);
+        expect(postListInformation.postsHeader.getText()).toBe(channelName);
         landingPage.fifthweekLink.click();
         navigateToPage();
       }
       else{
         this.containerNameLink.click();
         expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/collection/');
-        expect(this.postsHeader.getText()).toBe(channelName + ' / ' + postData.collectionName);
+        expect(postListInformation.postsHeader.getText()).toBe(channelName + ' / ' + postData.collectionName);
         landingPage.fifthweekLink.click();
         navigateToPage();
       }
