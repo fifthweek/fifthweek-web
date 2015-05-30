@@ -7,6 +7,7 @@ angular.module('webApp').directive('fwFileUpload', function () {
         description: '@',
         abbreviateProgress: '@',
         filePurpose: '@',
+        channelId: '@?',
         accept: '@'
       },
       templateUrl:'views/partials/file-upload.html'

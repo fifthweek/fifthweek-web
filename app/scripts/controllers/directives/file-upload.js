@@ -64,6 +64,7 @@ angular.module('webApp')
       return fileUploadStub
         .postUploadRequest({
           filePath: file.name,
+          channelId: $scope.channelId,
           purpose: $scope.filePurpose
         })
         .then(function(response){
@@ -76,7 +77,10 @@ angular.module('webApp')
           });
         })
         .then(function(){
-          return fileUploadStub.postUploadCompleteNotification(fileData.fileId);
+          return fileUploadStub.postUploadCompleteNotification({
+            channelId: $scope.channelId,
+            fileId: fileData.fileId
+          });
         })
         .then(function(){
           return callUploadCompleteCallback({

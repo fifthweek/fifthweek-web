@@ -181,6 +181,7 @@ describe('file upload controller', function(){
 
       beforeEach(function(){
         $scope.filePurpose = 'purpose';
+        $scope.channelId = 'channelId';
         $scope.accept = 'image/jpeg,image/gif,image/tiff';
 
         uploadRequestData = {
@@ -199,7 +200,7 @@ describe('file upload controller', function(){
         $scope.upload([blob]);
         $scope.$apply();
 
-        expect(fileUploadStub.postUploadRequest).toHaveBeenCalledWith({ filePath: fileName, purpose: $scope.filePurpose });
+        expect(fileUploadStub.postUploadRequest).toHaveBeenCalledWith({ filePath: fileName, channelId: $scope.channelId, purpose: $scope.filePurpose });
 
         expect(azureBlobUpload.upload).toHaveBeenCalled();
         var uploadData = azureBlobUpload.upload.calls.first().args[0];
@@ -212,7 +213,7 @@ describe('file upload controller', function(){
           progress: undefined
         });
 
-        expect(fileUploadStub.postUploadCompleteNotification).toHaveBeenCalledWith(uploadRequestData.fileId);
+        expect(fileUploadStub.postUploadCompleteNotification).toHaveBeenCalledWith({ fileId: uploadRequestData.fileId, channelId: $scope.channelId });
 
         expect($scope.model.errorMessage).toBe('');
         expect($scope.model.isSubmitting).toBe(false);
