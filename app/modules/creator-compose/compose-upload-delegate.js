@@ -10,6 +10,7 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
         postToQueue: true,
         queuedLiveDate: undefined,
         createCollection: false,
+        committedCollection: undefined,
         input: {
           fileId: undefined,
           comment: '',
@@ -42,6 +43,13 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
 
       var cancelWatch;
 
+      $scope.commitCollection = function(){
+        return composeUtilities.getCommittedCollection(model)
+          .then(function(data){
+            model.committedCollection = data;
+          });
+      };
+
       $scope.postLater = function() {
         model.postLater = true;
         composeUtilities.updateEstimatedLiveDate(model);
@@ -67,37 +75,31 @@ angular.module('webApp').factory('composeUploadDelegate', function($state, compo
       };
 
       $scope.postNow = function() {
-        return composeUtilities.getCollectionIdAndCreateCollectionIfRequired(model)
-          .then(function(collectionId){
-            var data = {
-              collectionId: collectionId,
-              fileId: model.input.fileId,
-              comment: model.input.comment,
-              isQueued: false
-            };
+        var data = {
+          collectionId: model.committedCollection.collectionId,
+          fileId: model.input.fileId,
+          comment: model.input.comment,
+          isQueued: false
+        };
 
-            return post(data)
-              .then(function(){
-                onSuccessfullyPosted();
-              });
+        return post(data)
+          .then(function(){
+            onSuccessfullyPosted();
           });
       };
 
       $scope.postToBacklog = function() {
-        return composeUtilities.getCollectionIdAndCreateCollectionIfRequired(model)
-          .then(function(collectionId){
-            var data = {
-              collectionId: collectionId,
-              fileId: model.input.fileId,
-              comment: model.input.comment,
-              isQueued: model.postToQueue,
-              scheduledPostTime: model.postToQueue ? undefined : model.input.date
-            };
+        var data = {
+          collectionId: model.committedCollection.collectionId,
+          fileId: model.input.fileId,
+          comment: model.input.comment,
+          isQueued: model.postToQueue,
+          scheduledPostTime: model.postToQueue ? undefined : model.input.date
+        };
 
-            return post(data)
-              .then(function(){
-                onSuccessfullyPosted();
-              });
+        return post(data)
+          .then(function(){
+            onSuccessfullyPosted();
           });
       };
 

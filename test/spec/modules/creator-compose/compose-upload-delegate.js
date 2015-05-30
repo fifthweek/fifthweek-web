@@ -13,7 +13,7 @@ describe('compose upload delegate', function(){
   beforeEach(function() {
 
     $state = jasmine.createSpyObj('$state', ['reload']);
-    composeUtilities = jasmine.createSpyObj('composeUtilities', ['loadChannelsAndCollectionsIntoModel', 'getCollectionIdAndCreateCollectionIfRequired', 'showCreateCollectionDialog', 'updateEstimatedLiveDate']);
+    composeUtilities = jasmine.createSpyObj('composeUtilities', ['loadChannelsAndCollectionsIntoModel', 'getCommittedCollection', 'showCreateCollectionDialog', 'updateEstimatedLiveDate']);
 
     onUploadComplete = jasmine.createSpy('onUploadComplete');
     post = jasmine.createSpy('post');
@@ -56,6 +56,10 @@ describe('compose upload delegate', function(){
 
       it('should set createCollection to false', function(){
         expect($scope.model.createCollection).toBe(false);
+      });
+
+      it('should set committedCollection to undefined', function(){
+        expect($scope.model.committedCollection).toBeUndefined();
       });
 
       it('should set the error message to undefined', function(){
@@ -102,8 +106,6 @@ describe('compose upload delegate', function(){
         $scope.model.input.selectedCollection = $scope.model.collections[0];
       });
 
-      composeUtilities.getCollectionIdAndCreateCollectionIfRequired.and.returnValue($q.when('5'));
-
       initializeTarget();
       $scope.$apply();
 
@@ -113,17 +115,67 @@ describe('compose upload delegate', function(){
       $scope.model.input.date = 'date';
     });
 
+    describe('when calling commitCollection', function(){
+      var error;
+      var success;
+      var deferredGetCommittedCollection;
+      beforeEach(function(){
+        error = undefined;
+        success = undefined;
+        deferredGetCommittedCollection = $q.defer();
+        composeUtilities.getCommittedCollection.and.returnValue(deferredGetCommittedCollection.promise);
+
+        $scope.model.committedCollection = undefined;
+
+        $scope.commitCollection().then(function(){ success = true; }, function(e){ error = e; });
+        $scope.$apply();
+      });
+
+      it('should call getCommittedCollection', function(){
+        expect(composeUtilities.getCommittedCollection).toHaveBeenCalledWith($scope.model);
+      });
+
+      describe('when getCommittedCollection succeeds', function(){
+        beforeEach(function(){
+          deferredGetCommittedCollection.resolve('data');
+          $scope.$apply();
+        });
+
+        it('should assign the data to the model', function(){
+          expect($scope.model.committedCollection).toBe('data');
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
+        });
+      });
+
+      describe('when getCommittedCollection fails', function(){
+        beforeEach(function(){
+          deferredGetCommittedCollection.reject('error');
+          $scope.$apply();
+        });
+
+        it('should not assign the data to the model', function(){
+          expect($scope.model.committedCollection).toBeUndefined();
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
+      });
+    });
+
     describe('when calling postNow', function(){
+      beforeEach(function(){
+        $scope.model.committedCollection = { collectionId: '5' };
+      });
       describe('when postFile succeeds', function(){
         beforeEach(function(){
           post.and.returnValue($q.when());
           $scope.$close = jasmine.createSpy('$close');
           $scope.postNow();
           $scope.$apply();
-        });
-
-        it('should call getCollectionIdAndCreateCollectionIfRequired with the current model', function() {
-          expect(composeUtilities.getCollectionIdAndCreateCollectionIfRequired).toHaveBeenCalledWith($scope.model);
         });
 
         it('should send the data without any date', function(){
@@ -138,19 +190,6 @@ describe('compose upload delegate', function(){
 
         it('should close the dialog', function(){
           expect($scope.$close).toHaveBeenCalled();
-        });
-      });
-
-      describe('when getCollectionIdAndCreateCollectionIfRequired fails', function(){
-        var error;
-        beforeEach(function(){
-          composeUtilities.getCollectionIdAndCreateCollectionIfRequired.and.returnValue($q.reject('error'));
-          $scope.postNow().catch(function(e){ error = e; });
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
         });
       });
 
@@ -169,16 +208,15 @@ describe('compose upload delegate', function(){
     });
 
     describe('when calling postToBacklog', function(){
+      beforeEach(function(){
+        $scope.model.committedCollection = { collectionId: '5' };
+      });
       describe('when postFile succeeds', function(){
         beforeEach(function(){
           post.and.returnValue($q.when());
           $scope.$close = jasmine.createSpy('$close');
           $scope.postToBacklog();
           $scope.$apply();
-        });
-
-        it('should call getCollectionIdAndCreateCollectionIfRequired with the current model', function() {
-          expect(composeUtilities.getCollectionIdAndCreateCollectionIfRequired).toHaveBeenCalledWith($scope.model);
         });
 
         it('should send the data with a no date and isQueued set to true', function(){
@@ -197,19 +235,6 @@ describe('compose upload delegate', function(){
         });
       });
 
-      describe('when getCollectionIdAndCreateCollectionIfRequired fails', function(){
-        var error;
-        beforeEach(function(){
-          composeUtilities.getCollectionIdAndCreateCollectionIfRequired.and.returnValue($q.reject('error'));
-          $scope.postNow().catch(function(e){ error = e; });
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
-        });
-      });
-
       describe('when postFile fails', function(){
         var error;
         beforeEach(function(){
@@ -225,6 +250,9 @@ describe('compose upload delegate', function(){
     });
 
     describe('when calling postToBacklog and postToQueue is false', function() {
+      beforeEach(function(){
+        $scope.model.committedCollection = { collectionId: '5' };
+      });
       beforeEach(function(){
         $scope.model.postToQueue = false;
         post.and.returnValue($q.when());

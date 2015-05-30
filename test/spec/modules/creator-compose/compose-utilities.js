@@ -436,19 +436,33 @@ describe('compose utilities', function(){
         model.input = {
           newCollectionName: 'newCollection',
           selectedCollection: {
-            collectionId: 'existingCollectionId'
+            collectionId: 'existingCollectionId',
+            channelId: 'channelId',
+            channelName: 'channelName',
+            originalName: 'existingCollectionName',
+            isDefaultChannel: 'isDefault'
           },
           selectedChannel: {
-            channelId: 'channelId'
+            channelId: 'channelId2'
           }
         };
 
-        target.getCollectionIdAndCreateCollectionIfRequired(model).then(function(r){ result = r; });
+        target.getCommittedCollection(model).then(function(r){ result = r; });
         $rootScope.$apply();
       });
 
       it('should not create a new collection', function(){
         expect(collectionService.createCollectionFromName).not.toHaveBeenCalled();
+      });
+
+      it('should return the existing collection information', function(){
+        expect(result).toEqual({
+          channelId: 'channelId',
+          collectionId: 'existingCollectionId',
+          channelName: 'channelName',
+          collectionName: 'existingCollectionName',
+          isDefaultChannel: 'isDefault'
+        });
       });
     });
 
@@ -460,11 +474,13 @@ describe('compose utilities', function(){
         model.input = {
           newCollectionName: 'newCollection',
           selectedChannel: {
-            channelId: 'channelId'
+            channelId: 'channelId',
+            originalName: 'channelName',
+            isDefault: 'isDefault'
           }
         };
 
-        target.getCollectionIdAndCreateCollectionIfRequired(model).then(function(r){ result = r; });
+        target.getCommittedCollection(model).then(function(r){ result = r; });
         $rootScope.$apply();
       });
 
@@ -472,8 +488,14 @@ describe('compose utilities', function(){
         expect(collectionService.createCollectionFromName).toHaveBeenCalledWith('channelId', 'newCollection');
       });
 
-      it('should return the new collection id', function(){
-        expect(result).toBe(collectionId);
+      it('should return the new collection information', function(){
+        expect(result).toEqual({
+          channelId: 'channelId',
+          collectionId: collectionId,
+          channelName: 'channelName',
+          collectionName: 'newCollection',
+          isDefaultChannel: 'isDefault'
+        });
       });
     });
 
@@ -487,11 +509,13 @@ describe('compose utilities', function(){
             isNewCollection: true
           },
           selectedChannel: {
-            channelId: 'channelId'
+            channelId: 'channelId',
+            originalName: 'channelName',
+            isDefault: 'isDefault'
           }
         };
 
-        target.getCollectionIdAndCreateCollectionIfRequired(model).then(function(r){ result = r; });
+        target.getCommittedCollection(model).then(function(r){ result = r; });
         $rootScope.$apply();
       });
 
@@ -500,7 +524,13 @@ describe('compose utilities', function(){
       });
 
       it('should return the new collection id', function(){
-        expect(result).toBe(collectionId);
+        expect(result).toEqual({
+          channelId: 'channelId',
+          collectionId: collectionId,
+          channelName: 'channelName',
+          collectionName: 'newCollection',
+          isDefaultChannel: 'isDefault'
+        });
       });
     });
 
@@ -519,7 +549,7 @@ describe('compose utilities', function(){
 
         collectionService.createCollectionFromName.and.returnValue($q.reject('error'));
 
-        target.getCollectionIdAndCreateCollectionIfRequired(model).catch(function(e){ error = e; });
+        target.getCommittedCollection(model).catch(function(e){ error = e; });
         $rootScope.$apply();
       });
 

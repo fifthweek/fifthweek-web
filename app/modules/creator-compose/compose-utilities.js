@@ -44,6 +44,9 @@ angular.module('webApp')
           var collection = channel.collections[collectionIndex];
           collection.originalName = collection.name;
           collection.name = getCollectionNameForSelection(channel, collection);
+          collection.channelId = channel.channelId;
+          collection.channelName = channel.originalName;
+          collection.isDefaultChannel = channel.isDefault;
           collections.push(collection);
         }
       }
@@ -112,14 +115,31 @@ angular.module('webApp')
       return model.input.selectedCollection.isNewCollection;
     };
 
-    service.getCollectionIdAndCreateCollectionIfRequired = function(model){
+    service.getCommittedCollection = function(model){
       if(service.shouldCreateCollection(model)) {
         var channelId = model.input.selectedChannel.channelId;
+        var channelName = model.input.selectedChannel.originalName;
+        var isDefault = model.input.selectedChannel.isDefault;
         var collectionName = model.input.newCollectionName;
-        return collectionService.createCollectionFromName(channelId, collectionName);
+        return collectionService.createCollectionFromName(channelId, collectionName)
+          .then(function(collectionId){
+            return $q.when({
+              channelId: channelId,
+              collectionId: collectionId,
+              channelName: channelName,
+              collectionName: collectionName,
+              isDefaultChannel: isDefault
+            });
+          });
       }
 
-      return $q.when(model.input.selectedCollection.collectionId);
+      return $q.when({
+        channelId: model.input.selectedCollection.channelId,
+        collectionId: model.input.selectedCollection.collectionId,
+        channelName: model.input.selectedCollection.channelName,
+        collectionName: model.input.selectedCollection.originalName,
+        isDefaultChannel: model.input.selectedCollection.isDefaultChannel
+      });
     };
 
     service.showCreateCollectionDialog = function($scope) {
