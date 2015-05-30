@@ -14,8 +14,8 @@ describe('new channel controller', function () {
   var states;
   var target;
 
-  var blogRepositoryFactory;
-  var blogRepository;
+  var fetchAggregateUserState;
+  var authenticationService;
   var channelStub;
   var blogService;
 
@@ -23,15 +23,17 @@ describe('new channel controller', function () {
     blogService = { blogId: blogId };
     $state = jasmine.createSpyObj('$state', ['go']);
     channelStub = jasmine.createSpyObj('channelStub', ['postChannel']);
-    blogRepository = jasmine.createSpyObj('blogRepository', ['createChannel']);
-    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
+    fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateFromServer']);
+
+    authenticationService = { currentUser: { userId: 'userId' }};
 
     module('webApp');
     module(function($provide) {
       $provide.value('blogService', blogService);
       $provide.value('$state', $state);
       $provide.value('channelStub', channelStub);
-      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
+      $provide.value('fetchAggregateUserState', fetchAggregateUserState);
+      $provide.value('authenticationService', authenticationService);
     });
 
     inject(function ($injector, $controller) {
@@ -42,7 +44,7 @@ describe('new channel controller', function () {
     });
 
     channelStub.postChannel.and.returnValue($q.defer().promise);
-    blogRepository.createChannel.and.returnValue($q.defer().promise);
+    fetchAggregateUserState.updateFromServer.and.returnValue($q.defer().promise);
   });
 
   it('should expose the state to return to on completion', function() {
@@ -84,20 +86,12 @@ describe('new channel controller', function () {
     $scope.create();
     $scope.$apply();
 
-    expect(blogRepository.createChannel).toHaveBeenCalledWith({
-      channelId: channelId,
-      name: 'name',
-      description: 'description',
-      priceInUsCentsPerWeek: priceInCents,
-      isVisibleToNonSubscribers: true,
-      isDefault: false,
-      collections: []
-    });
+    expect(fetchAggregateUserState.updateFromServer).toHaveBeenCalledWith('userId');
   });
 
   it('should return to the previous state on save', function() {
     channelStub.postChannel.and.returnValue($q.when({ data: channelId }));
-    blogRepository.createChannel.and.returnValue($q.when());
+    fetchAggregateUserState.updateFromServer.and.returnValue($q.when());
 
     $scope.create();
     $scope.$apply();

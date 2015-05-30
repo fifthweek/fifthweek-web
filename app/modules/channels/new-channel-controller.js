@@ -1,7 +1,6 @@
-angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $state, states, blogRepositoryFactory, channelStub, blogService) {
+angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $state, states, channelStub, blogService, fetchAggregateUserState, authenticationService) {
   'use strict';
 
-  var blogRepository = blogRepositoryFactory.forCurrentUser();
   $scope.model = {
     channel: {
       name: '',
@@ -14,6 +13,7 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
   $scope.previousState = states.creator.channels.name;
 
   $scope.create = function() {
+    var userId = authenticationService.currentUser.userId;
     var channel = $scope.model.channel;
     var channelData = {
       blogId: blogService.blogId,
@@ -23,18 +23,14 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
       isVisibleToNonSubscribers: !channel.hidden
     };
     return channelStub.postChannel(channelData)
-      .then(function(response) {
-        var channelId = response.data;
-        channelData.collections = [];
-        channelData.channelId = channelId;
-        channelData.priceInUsCentsPerWeek = channelData.price;
-        channelData.isDefault = false;
-        delete channelData.price;
-        delete channelData.blogId;
-
-        return blogRepository.createChannel(channelData).then(function() {
-          $state.go($scope.previousState);
-        });
+      .then(function() {
+        // Get access signatures for new channel.
+        // No need to update local state with new channel as
+        // this call will overwrite it.
+        return fetchAggregateUserState.updateFromServer(userId);
+      })
+      .then(function(){
+        $state.go($scope.previousState);
       });
   };
 });
