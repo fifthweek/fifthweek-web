@@ -15,27 +15,6 @@ angular.module('webApp')
         });
     };
 
-    service.getCreatorAccessInformation = function(creatorId){
-      return accessSignaturesCache.getSignatures()
-        .then(function(data){
-          if (!creatorId){
-            return $q.when(data.publicSignature);
-          }
-          else{
-            var privateSignatures = data.privateSignatures;
-            if (privateSignatures){
-              for(var i = 0; i < privateSignatures.length; i++){
-                if(privateSignatures[i].creatorId === creatorId){
-                  return $q.when(privateSignatures[i].information);
-                }
-              }
-            }
-
-            return $q.reject(new FifthweekError('No shared access signatures found for creator: ' + creatorId));
-          }
-        });
-    };
-
     service.getContainerAccessInformation = function(containerName){
       return accessSignaturesCache.getSignatures()
         .then(function(data){

@@ -68,34 +68,6 @@ describe('access signatures', function() {
       });
     });
 
-    describe('when getting access information by creator id', function(){
-      it('should return the correct private access information when creatorId is specified', function(){
-        target.getCreatorAccessInformation('creator1').then(function(result){
-          expect(result).toEqual(response.privateSignatures[0].information);
-        });
-        $rootScope.$apply();
-
-        target.getCreatorAccessInformation('creator2').then(function(result){
-          expect(result).toEqual(response.privateSignatures[1].information);
-        });
-        $rootScope.$apply();
-      });
-
-      it('should return public access information when creatorId is undefined', function(){
-        target.getCreatorAccessInformation(undefined).then(function(result){
-          expect(result).toEqual(response.publicSignature);
-        });
-        $rootScope.$apply();
-      });
-
-      it('should return an error when creatorId is unknown', function(){
-        target.getCreatorAccessInformation('unknownCreator')
-          .then(function(){ fail('This should not occur.'); })
-          .catch(function(error){ expect(error instanceof FifthweekError).toBeTruthy(); });
-        $rootScope.$apply();
-      });
-    });
-
     describe('when getting access information by container name', function(){
       it('should return the correct private access information when containerName is specified', function(){
         target.getContainerAccessInformation('container1').then(function(result){
@@ -161,13 +133,6 @@ describe('access signatures', function() {
 
     it('should return the error when getting public access information', function(){
       target.getPublicAccessInformation()
-        .then(function(){ fail('This should not occur.'); })
-        .catch(function(error){ expect(error).toBe('error'); });
-      $rootScope.$apply();
-    });
-
-    it('should return the error when getting creator access information', function(){
-      target.getCreatorAccessInformation('creator1')
         .then(function(){ fail('This should not occur.'); })
         .catch(function(error){ expect(error).toBe('error'); });
       $rootScope.$apply();
