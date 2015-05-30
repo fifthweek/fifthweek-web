@@ -198,7 +198,8 @@ angular.module('webApp').factory('membershipStub',
     //   exampleWork: '', /* optional */
     //   email: '',
     //   username: '',
-    //   password: ''
+    //   password: '',
+    //   creatorName: '' /* optional */
     // }
     service.postRegistration = function(registrationData) {
       return $http.post(apiBaseUri + 'membership/registrations', registrationData).catch(function(response) {
@@ -389,12 +390,8 @@ angular.module('webApp').factory('postsStub',
 
     // filter = {
     //   creatorId: 'Base64Guid', /* optional */
-    //   channelIds: [ /* optional */
-    //     ''
-    //   ],
-    //   collectionIds: [ /* optional */
-    //     ''
-    //   ],
+    //   channelId: 'Base64Guid', /* optional */
+    //   collectionId: 'Base64Guid', /* optional */
     //   origin: '2015-12-25T14:45:05Z', /* optional */
     //   searchForwards: false,
     //   startIndex: 0,
@@ -442,7 +439,7 @@ angular.module('webApp').factory('postsStub',
     //   ]
     // }
     service.getNewsfeed = function(filter) {
-      return $http.get(apiBaseUri + 'posts/newsfeed?' + (filter.creatorId === undefined ? '' : 'creatorId=' + encodeURIComponent(filter.creatorId) + '&') + (filter.origin === undefined ? '' : 'origin=' + encodeURIComponent(filter.origin) + '&') + (filter.searchForwards === undefined ? '' : 'searchForwards=' + encodeURIComponent(filter.searchForwards) + '&') + (filter.startIndex === undefined ? '' : 'startIndex=' + encodeURIComponent(filter.startIndex) + '&') + (filter.count === undefined ? '' : 'count=' + encodeURIComponent(filter.count) + '&')).catch(function(response) {
+      return $http.get(apiBaseUri + 'posts/newsfeed?' + (filter.creatorId === undefined ? '' : 'creatorId=' + encodeURIComponent(filter.creatorId) + '&') + (filter.channelId === undefined ? '' : 'channelId=' + encodeURIComponent(filter.channelId) + '&') + (filter.collectionId === undefined ? '' : 'collectionId=' + encodeURIComponent(filter.collectionId) + '&') + (filter.origin === undefined ? '' : 'origin=' + encodeURIComponent(filter.origin) + '&') + (filter.searchForwards === undefined ? '' : 'searchForwards=' + encodeURIComponent(filter.searchForwards) + '&') + (filter.startIndex === undefined ? '' : 'startIndex=' + encodeURIComponent(filter.startIndex) + '&') + (filter.count === undefined ? '' : 'count=' + encodeURIComponent(filter.count) + '&')).catch(function(response) {
         return $q.reject(utilities.getHttpError(response));
       });
     };
@@ -739,6 +736,7 @@ angular.module('webApp').factory('fileUploadStub',
     var service = {};
 
     // data = {
+    //   channelId: 'Base64Guid', /* optional */
     //   filePath: '',
     //   purpose: ''
     // }
@@ -758,9 +756,12 @@ angular.module('webApp').factory('fileUploadStub',
       });
     };
 
-    // fileId = 'Base64Guid'
-    service.postUploadCompleteNotification = function(fileId) {
-      return $http.post(apiBaseUri + 'files/uploadCompleteNotifications/' + encodeURIComponent(fileId)).catch(function(response) {
+    // data = {
+    //   channelId: 'Base64Guid', /* optional */
+    //   fileId: 'Base64Guid'
+    // }
+    service.postUploadCompleteNotification = function(data) {
+      return $http.post(apiBaseUri + 'files/uploadCompleteNotifications', data).catch(function(response) {
         return $q.reject(utilities.getHttpError(response));
       });
     };
@@ -787,7 +788,7 @@ angular.module('webApp').factory('userStateStub',
     //     },
     //     privateSignatures: [
     //       {
-    //         creatorId: 'Base64Guid',
+    //         channelId: 'Base64Guid',
     //         information: {
     //           containerName: '',
     //           uri: '',
@@ -885,6 +886,7 @@ angular.module('webApp').factory('userStateStub',
     //             isDefault: false,
     //             priceLastSetDate: '2015-12-25T14:45:05Z',
     //             subscriptionStartDate: '2015-12-25T14:45:05Z',
+    //             isVisibleToNonSubscribers: false,
     //             collections: [
     //               {
     //                 collectionId: 'Base64Guid',
@@ -914,7 +916,7 @@ angular.module('webApp').factory('userStateStub',
     //     },
     //     privateSignatures: [
     //       {
-    //         creatorId: 'Base64Guid',
+    //         channelId: 'Base64Guid',
     //         information: {
     //           containerName: '',
     //           uri: '',
@@ -1012,6 +1014,7 @@ angular.module('webApp').factory('userStateStub',
     //             isDefault: false,
     //             priceLastSetDate: '2015-12-25T14:45:05Z',
     //             subscriptionStartDate: '2015-12-25T14:45:05Z',
+    //             isVisibleToNonSubscribers: false,
     //             collections: [
     //               {
     //                 collectionId: 'Base64Guid',
