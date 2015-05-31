@@ -32,8 +32,8 @@
     };
 
     var navigateToSiteFromLandingPage = function() {
-      testKit.scrollIntoView(creatorLandingPagePage.fifthweekLink);
-      creatorLandingPagePage.fifthweekLink.click();
+      testKit.scrollIntoView(creatorLandingPagePage.editPageLink);
+      creatorLandingPagePage.editPageLink.click();
     };
 
     var navigateToPostsPage = function() {
@@ -41,6 +41,7 @@
     };
 
     var navigateToSiteFromPostsPage = function() {
+      sidebar.channelsLink.click();
     };
 
     var runTests = function(navigateToPage, navigateToSite){
@@ -379,6 +380,7 @@
           expect(post2.scheduleTags.count()).toBe(0);
           expect(post3.scheduleTags.count()).toBe(0);
 
+          refresh();
           displayEditModal(post1);
           editPostDialogPage.editPostDate(-1);
 

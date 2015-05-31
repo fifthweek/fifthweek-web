@@ -33,11 +33,14 @@
     pageUrl: { get: function () { return 'undefined'; }},
 
     // The remainder probably doesn't need to be overridden:
+    nextButton: { get: function() { return element(by.css('button[fw-form-submit="commitCollection()"]')); }},
     postNowButton: { get: function() { return element(by.css('button[fw-form-submit="postNow()"]')); }},
     postLaterButton: { get: function() { return element(by.css('button[fw-form-submit="postLater()"]')); }},
 
     postToBacklogButton: { get: function() { return element(by.css('button[fw-form-submit="postToBacklog()"]')); }},
     cancelButton: { get: function() { return element(by.css('button[ng-click="cancelPostLater()"]')); }},
+
+    postToText: { get: function() { return element(by.id('posting-to-text')); }},
 
     uploadInput: { get: function() { return element(by.id('file-upload-button-input')); }},
     uploadButton: { get: function() { return element(by.css('#file-upload-button-area .btn')); }},
@@ -94,11 +97,6 @@
     }},
 
     populateContent: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection){
-      this.populateUpload(filePath, true);
-
-      var date = new Date();
-      var commentText = 'Comment on ' + date.toISOString();
-      testKit.setValue(this.commentTextBoxId, commentText);
 
       if(collectionName){
         if(!createCollection){
@@ -125,7 +123,16 @@
           }
         }
       }
+      browser.waitForAngular();
 
+      this.nextButton.click();
+      browser.waitForAngular();
+
+      this.populateUpload(filePath, true);
+
+      var date = new Date();
+      var commentText = 'Comment on ' + date.toISOString();
+      testKit.setValue(this.commentTextBoxId, commentText);
       browser.waitForAngular();
 
       return {
@@ -225,7 +232,6 @@
           expectSuccessfulFinalState();
 
           navigateToPage();
-          page.populateUpload(tinyFilePath);
           expect(page.getCollectionOptionCount(collectionName, channelName)).not.toBe(0);
 
           leavePage();
@@ -297,7 +303,6 @@
                 });
 
                 it('should select the existing collection if a duplicate collection is added', function(){
-                  page.populateUpload(tinyFilePath);
                   page.createCollectionLink.click();
 
                   testKit.setValue(page.dialogCreateCollectionNameTextBoxId, firstCollectionName);
@@ -394,6 +399,7 @@
               });
 
               it('should receive an estimated live date from the server', function(){
+                page.nextButton.click();
                 page.populateUpload(tinyFilePath);
                 page.postLaterButton.click();
                 testKit.waitForElementToDisplay(page.postToQueueDate);
@@ -428,13 +434,14 @@
                   registration = context.registration;
                   blog = context.blog;
                   navigateToPage();
-                  page.populateUpload(tinyFilePath);
                   testKit.waitForElementToDisplay(element(by.id(page.createCollectionNameTextBoxId)));
                 });
 
                 afterEach(function(){
-                  page.postNowButton.click();
-                  expectSuccessfulFinalState();
+                  page.nextButton.click();
+                  testKit.waitForElementToDisplay(page.postToText);
+                  expect(page.postToText.isDisplayed()).toBe(true);
+                  leavePage();
                 });
 
                 testKit.includeHappyPaths(page, collectionNameInputPage, 'createCollectionNameTextBox');
@@ -448,9 +455,27 @@
                   createCollection(firstCollectionName, channelNames[0]);
                 });
 
+                describe('when testing collection selection', function(){
+                  beforeEach(function() {
+                    navigateToPage();
+                    page.createCollectionLink.click();
+                  });
+
+                  afterEach(function(){
+                    page.dialogContinueButton.click();
+                    browser.waitForAngular();
+                    page.nextButton.click();
+                    expect(page.postToText.isDisplayed()).toBe(true);
+                    leavePage();
+                  });
+
+                  testKit.includeHappyPaths(page, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
+                });
+
                 describe('when a collection exists', function() {
                   beforeEach(function() {
                     navigateToPage();
+                    page.nextButton.click();
                     page.populateUpload(tinyFilePath);
                   });
 
@@ -466,19 +491,6 @@
                   it('should allow empty comments', function(){
                     // No action.
                   });
-
-                  describe('when creating a collection', function() {
-                    beforeEach(function() {
-                      page.createCollectionLink.click();
-                    });
-
-                    afterEach(function(){
-                      page.dialogContinueButton.click();
-                      browser.waitForAngular();
-                    });
-
-                    testKit.includeHappyPaths(page, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
-                  });
                 });
               });
 
@@ -487,6 +499,7 @@
             describe('when testing date time picker', function(){
               beforeEach(function(){
                 navigateToPage();
+                page.nextButton.click();
                 page.populateUpload(tinyFilePath);
                 page.postLaterButton.click();
                 page.postOnDateRadio.click();
@@ -510,6 +523,7 @@
             describe('when testing date time picker', function(){
 
               it('should run once before all', function() {
+                page.nextButton.click();
                 page.populateUpload(tinyFilePath);
                 page.postLaterButton.click();
                 page.postOnDateRadio.click();
@@ -523,17 +537,37 @@
             });
 
             describe('when a collection exists', function(){
-              it('should run once before all', function() {
-                navigateToPage();
-                page.populateUpload(tinyFilePath);
-                page.createCollectionLink.click();
+              describe('when testing collections', function(){
+                it('should run once before all', function() {
+                  navigateToPage();
+                  page.createCollectionLink.click();
+                });
+
+                testKit.includeSadPaths(page, page.dialogContinueButton, page.helpMessages, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
+
+                it('should run once after all', function(){
+                  page.dialogCreateCollectionCloseButton.click();
+                  leavePage();
+                });
               });
 
-              testKit.includeSadPaths(page, page.dialogContinueButton, page.helpMessages, collectionNameInputPage, 'dialogCreateCollectionNameTextBox');
+              describe('when testing comments', function(){
+                it('should run once before all', function() {
+                  navigateToPage();
+                  page.nextButton.click();
+                  page.populateUpload(tinyFilePath);
+                });
 
-              it('should run once after all', function(){
-                page.dialogCreateCollectionCloseButton.click();
-                leavePage();
+                it('should not allow a comment more than 2000 characters', function(){
+                  var overSizedValue = new Array(2002).join( 'a' );
+                  testKit.setValue(page.commentTextBoxId, overSizedValue, true);
+
+                  testKit.assertMaxLength(page.helpMessages, page.commentTextBoxId, overSizedValue, 2000);
+                });
+
+                it('should run once after all', function(){
+                  leavePage();
+                });
               });
             });
 
@@ -544,10 +578,9 @@
                 blog = context.blog;
               });
 
-              describe('then', function() {
+              describe('then when testing create collection', function() {
                 beforeEach(function(){
                   navigateToPage();
-                  page.populateUpload(tinyFilePath);
                   testKit.waitForElementToDisplay(element(by.id(page.createCollectionNameTextBoxId)));
                 });
 
@@ -555,16 +588,8 @@
                   leavePage();
                 });
 
-                it('should not allow a comment more than 2000 characters', function(){
-                  testKit.setFormValues(page, page.inputs);
-                  var overSizedValue = new Array(2002).join( 'a' );
-                  testKit.setValue(page.commentTextBoxId, overSizedValue, true);
-
-                  testKit.assertMaxLength(page.helpMessages, page.commentTextBoxId, overSizedValue, 2000);
-                });
-
-                testKit.includeSadPaths(page, page.postNowButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
-                testKit.includeSadPaths(page, page.postLaterButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
+                testKit.includeSadPaths(page, page.nextButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
+                testKit.includeSadPaths(page, page.nextButton, page.helpMessages, collectionNameInputPage, 'createCollectionNameTextBox');
               });
             });
           });

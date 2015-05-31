@@ -45,7 +45,7 @@
       <form novalidate name="contentForm" id="content-form">
 
         <div class="modal-body form-modal-body">
-          <p>Posting to <strong>{{model.committedCollection.collectionName}}</strong><span ng-if="!model.committedCollection.isDefaultChannel"> in <strong>{{model.committedCollection.channelName}}</strong></span>.</p>
+          <p id="posting-to-text">Posting to <strong>{{model.committedCollection.collectionName}}</strong><span ng-if="!model.committedCollection.isDefaultChannel"> in <strong>{{model.committedCollection.channelName}}</strong></span>.</p>
 
           <div ng-include="'modules/creator-compose/compose-' + uploadFormFile + '.html'"></div>
 

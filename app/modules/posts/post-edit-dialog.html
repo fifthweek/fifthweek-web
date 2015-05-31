@@ -18,7 +18,7 @@
               </p>
             </div>
             <div class="col-s-6 bottom-buffer">
-              <fw-file-upload class="pull-right" description="Upload File" on-upload-complete="onUploadComplete(data)" file-purpose="post-file"></fw-file-upload>
+              <fw-file-upload class="pull-right" channel-id="{{model.input.selectedChannel.channelId}}" description="Upload File" on-upload-complete="onUploadComplete(data)" file-purpose="post-file"></fw-file-upload>
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@
               <fw-blob-image control="blobImage" file-id="{{model.input.image.fileId}}" container-name="{{model.input.image.containerName}}" thumbnail="preview"></fw-blob-image>
             </div>
             <div class="col-s-5 bottom-buffer">
-              <fw-file-upload description="Upload Image" on-upload-complete="onUploadComplete(data)" file-purpose="post-image" accept="image/tiff,image/jpeg,image/gif,image/png"></fw-file-upload>
+              <fw-file-upload channel-id="{{model.input.selectedChannel.channelId}}" description="Upload Image" on-upload-complete="onUploadComplete(data)" file-purpose="post-image" accept="image/tiff,image/jpeg,image/gif,image/png"></fw-file-upload>
             </div>
           </div>
         </div>
