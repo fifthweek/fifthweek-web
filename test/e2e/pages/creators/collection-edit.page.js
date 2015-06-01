@@ -12,17 +12,12 @@ var CollectionEditPage = function() {};
 CollectionEditPage.prototype = Object.create({}, {
   pageUrl: { get: function () { return '/creator/collections/'; }},
   nameTextBoxId: { value: 'model-name' },
-  channelSelectId: { get: function() { return 'model-selected-channel'; }},
   daySelectId: { get: function() { return 'day-of-week'; }},
   hourSelectId: { get: function() { return 'hour-of-day'; }},
-  inputs: { value: function(channelSelectTexts) { return [
+  inputs: { value: function() { return [
     {
       name: 'nameTextBox',
       newValue: function() { return collectionNameInputPage.newName(); }
-    },
-    {
-      name: 'channelSelect',
-      newValue: function() { return _.sample(channelSelectTexts); }
     }
   ]; }},
   defaultReleaseTime: { get: function() { return { daySelect:'Monday', hourSelect: '00:00' }; } },

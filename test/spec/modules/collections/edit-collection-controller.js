@@ -15,7 +15,6 @@ describe('edit collection controller', function () {
   var $controller;
   var target;
 
-  var channelNameFormatter;
   var collectionService;
   var blogRepositoryFactory;
   var blogRepository;
@@ -53,7 +52,7 @@ describe('edit collection controller', function () {
     collectionRepository = jasmine.createSpyObj('collectionRepository', ['getChannelForCollection']);
     collectionRepositoryFactory = { forCurrentUser: function() { return collectionRepository; }};
 
-    module('webApp', 'errorFacadeMock', 'channelNameFormatterMock');
+    module('webApp', 'errorFacadeMock');
     module(function($provide) {
       $provide.value('$state', $state);
       $provide.value('releaseTimeFormatter', releaseTimeFormatter);
@@ -68,7 +67,6 @@ describe('edit collection controller', function () {
       $controller = $injector.get('$controller');
       errorFacade = $injector.get('errorFacade');
       states = $injector.get('states');
-      channelNameFormatter = $injector.get('channelNameFormatter');
     });
 
     blogRepository.getChannelsSorted.and.returnValue($q.when(channels));
@@ -95,11 +93,11 @@ describe('edit collection controller', function () {
     expect($scope.model.channels).toEqual([
       {
         value: channels[0].channelId,
-        name: channelNameFormatter.shareWithResult(channels[0])
+        name: channels[0].name
       },
       {
         value: channels[1].channelId,
-        name: channelNameFormatter.shareWithResult(channels[1])
+        name: channels[1].name
       }
     ]);
   });
@@ -139,9 +137,8 @@ describe('edit collection controller', function () {
     $scope.save();
     $scope.$apply();
 
-    expect(collectionService.updateCollection).toHaveBeenCalledWith(collectionId, {
+    expect(collectionService.updateCollection).toHaveBeenCalledWith(channels[1].channelId, collectionId, {
       name: 'name',
-      channelId: channels[1].channelId,
       weeklyReleaseSchedule: [10, 20]
     });
   });

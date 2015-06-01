@@ -3,7 +3,6 @@ var Defaults = require('../../defaults.js');
 var TestKit = require('../../test-kit.js');
 var CommonWorkflows = require('../../common-workflows.js');
 var CollectionNameInputPage = require('../../pages/collection-name-input.page.js');
-var ChannelSelectInputPage = require('../../pages/channel-select-input.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
 var DeleteConfirmationPage = require('../../pages/delete-confirmation.page.js');
 var DiscardChangesPage = require('../../pages/discard-changes.page.js');
@@ -23,7 +22,6 @@ describe('edit collection form', function() {
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
   var collectionNameInputPage = new CollectionNameInputPage();
-  var channelSelectInputPage = new ChannelSelectInputPage();
   var sidebar = new SidebarPage();
   var deleteConfirmationPage = new DeleteConfirmationPage();
   var collectionListPage = new CollectionListPage();
@@ -45,14 +43,12 @@ describe('edit collection form', function() {
     channelNames.push(commonWorkflows.createChannel().name);
     channelNames.push(commonWorkflows.createChannel().name);
 
-    var channelSelectTexts = channelSelectInputPage.mapToSelectTexts(channelNames);
-    inputs = page.inputs(channelSelectTexts);
+    inputs = page.inputs();
 
     var collection = commonWorkflows.createCollection(channelNames);
 
     savedValues = {
-      nameTextBox: collection.name,
-      channelSelect: channelSelectInputPage.mapToSelectText(collection.channelName)
+      nameTextBox: collection.name
     };
 
     sidebar.collectionsLink.click();

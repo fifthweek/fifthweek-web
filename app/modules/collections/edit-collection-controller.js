@@ -5,7 +5,6 @@ angular.module('webApp').controller('editCollectionCtrl', function(
   collectionService,
   collectionRepositoryFactory,
   blogRepositoryFactory,
-  channelNameFormatter,
   releaseTimeFormatter,
   errorFacade) {
   'use strict';
@@ -31,7 +30,7 @@ angular.module('webApp').controller('editCollectionCtrl', function(
         function(channel) {
           return {
             value: channel.channelId,
-            name: channelNameFormatter.shareWith(channel)
+            name: channel.name
           };
         }
       );
@@ -87,10 +86,10 @@ angular.module('webApp').controller('editCollectionCtrl', function(
   $scope.save = function() {
     var collectionData = {
       name: $scope.model.name,
-      channelId: $scope.model.selectedChannel.value,
       weeklyReleaseSchedule: _.pluck($scope.model.schedule, 'hourOfWeek')
     };
-    return collectionService.updateCollection(collectionId, collectionData).then(function() {
+    var channelId = $scope.model.selectedChannel.value;
+    return collectionService.updateCollection(channelId, collectionId, collectionData).then(function() {
       $state.go($scope.previousState);
     });
   };

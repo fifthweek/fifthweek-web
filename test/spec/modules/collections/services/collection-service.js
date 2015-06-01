@@ -94,7 +94,6 @@ describe('collection service', function(){
     var collectionData;
     beforeEach(function() {
       collectionData = {
-        channelId: channelId,
         name: collectionName,
         weeklyReleaseSchedule: weeklyReleaseTimes
       };
@@ -103,14 +102,14 @@ describe('collection service', function(){
     itShouldGetRepositoryForCurrentUser('updateCollection', 'putCollection');
 
     it('should update the collection via the API', function() {
-      target.updateCollection(collectionId, collectionData);
+      target.updateCollection(channelId, collectionId, collectionData);
       $rootScope.$apply();
 
       expect(collectionStub.putCollection).toHaveBeenCalledWith(collectionId, collectionData);
     });
 
     it('should update the collection via the client-side repository', function() {
-      target.updateCollection(collectionId, collectionData);
+      target.updateCollection(channelId, collectionId, collectionData);
       $rootScope.$apply();
 
       expect(collectionRepository.updateCollection).toHaveBeenCalledWith(channelId, {

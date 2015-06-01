@@ -9,11 +9,10 @@
 
     <fw-panel12>
 
+      <p>This channel is available in <strong>{{model.selectedChannel.name}}</strong>.</p>
+
       <label>Name</label>
       <fw-form-input-collection-name ng-model="model.name" placeholder="Collection name" required focus></fw-form-input-collection-name>
-
-      <label>Available in</label>
-      <fw-form-input-select input-id="model-selected-channel" selected-item="model.selectedChannel" items="model.channels"></fw-form-input-select>
 
       <div class="form-group" id="manageReleaseTimes">
         <fw-form-subsection name="Weekly release schedule">
