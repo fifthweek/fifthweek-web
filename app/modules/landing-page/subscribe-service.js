@@ -84,6 +84,40 @@ angular.module('webApp').factory('subscribeService',
         });
     };
 
+    internal.isGuestListOnly = function(){
+      return !window.enableSubscribe;
+    };
+
+    internal.getSubscribedChannels = function(blog){
+      var subscribedChannels = {};
+
+      _.forEach(blog.channels, function(channel){
+        var currentPrice = blog.freeAccess ? 0 : channel.priceInUsCentsPerWeek;
+        var channelInfo = {
+          acceptedPrice: channel.acceptedPrice,
+          currentPrice: currentPrice,
+          isIncrease: channel.acceptedPrice < currentPrice,
+          isDecrease: channel.acceptedPrice > currentPrice
+        };
+
+        subscribedChannels[channel.channelId] = channelInfo;
+      });
+
+      return subscribedChannels;
+    };
+
+    internal.getHiddenChannels = function(blog){
+      var hiddenChannels = [];
+
+      _.forEach(blog.channels, function(channel){
+        if(!channel.isVisibleToNonSubscribers){
+          hiddenChannels.push(channel);
+        }
+      });
+
+      return hiddenChannels;
+    };
+
     service.getSubscriptionStatus = function(subscriptionRepository, blogId){
       var userId = subscriptionRepository.getUserId();
       return fetchAggregateUserState.updateIfStale(userId)
@@ -93,18 +127,25 @@ angular.module('webApp').factory('subscribeService',
         .then(function(blogs){
           var isSubscribed = false;
           var hasFreeAccess = false;
+          var subscribedChannels = {};
+          var hiddenChannels = [];
           if(blogs){
             var blog = _.find(blogs, { blogId: blogId });
             if(blog){
               hasFreeAccess = blog.freeAccess;
               isSubscribed = blog.channels && blog.channels.length;
+
+              subscribedChannels = internal.getSubscribedChannels(blog);
+              hiddenChannels = internal.getHiddenChannels(blog);
             }
           }
 
           return {
             userId: userId,
             hasFreeAccess: !!hasFreeAccess,
-            isSubscribed: !!isSubscribed
+            isSubscribed: !!isSubscribed,
+            subscribedChannels: subscribedChannels,
+            hiddenChannels: hiddenChannels
           };
         });
     };
@@ -121,7 +162,6 @@ angular.module('webApp').factory('subscribeService',
           }
 
           if(userInformation.hasFreeAccess){
-
             channelsAndPrices = _(channelsAndPrices)
               .map(function(v){
                 return {
@@ -130,16 +170,20 @@ angular.module('webApp').factory('subscribeService',
                 };
               })
               .value();
-
-            return subscriptionStub.putBlogSubscriptions(blogId, { subscriptions: channelsAndPrices })
+          }
+          else if(internal.isGuestListOnly()){
+            return internal.showGuestListOnlyDialog()
               .then(function(){
-                return $q.when(true);
+                return $q.when(false);
               });
           }
+          else{
+            // TODO: Payment
+          }
 
-          return internal.showGuestListOnlyDialog()
+          return subscriptionStub.putBlogSubscriptions(blogId, { subscriptions: channelsAndPrices })
             .then(function(){
-              return $q.when(false);
+              return $q.when(true);
             });
         });
     };

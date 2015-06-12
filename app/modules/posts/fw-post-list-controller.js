@@ -1,4 +1,5 @@
-angular.module('webApp').controller('fwPostListCtrl',
+angular.module('webApp')
+  .controller('fwPostListCtrl',
   function($scope, $q, fwPostListConstants, postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade, postUtilities) {
     'use strict';
 
@@ -8,30 +9,39 @@ angular.module('webApp').controller('fwPostListCtrl',
       errorMessage: undefined
     };
 
-    var loadNext = function(){ return $q.reject(new DisplayableError('Unknown fw-post-list source.')); };
+    $scope.model = model;
 
-    var accountSettingsRepository;
-    var blogRepository;
-    var subscriptionRepository;
-    var timelineUserId;
-    var currentUserId;
+    var internal = this.internal = {};
 
-    var loadPosts = function(){
+    internal.loadNext = function(){ return $q.reject(new DisplayableError('Unknown fw-post-list source.')); };
+
+    var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
+    var blogRepository = blogRepositoryFactory.forCurrentUser();
+    var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+
+    internal.currentUserId = authenticationService.currentUser.userId;
+    internal.timelineUserId = undefined;
+
+    internal.populateCreatorInformation = function(posts){
+      if(internal.currentUserId === internal.timelineUserId){
+        return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository);
+      }
+      else{
+        return postUtilities.populateCreatorInformation(posts, subscriptionRepository);
+      }
+    };
+
+    internal.loadPosts = function(){
       model.errorMessage = undefined;
       model.isLoading = true;
 
-      var getNextPosts = function() { return loadNext(0, 1000); };
+      var getNextPosts = function() { return internal.loadNext(0, 1000); };
 
       var posts;
-      fetchAggregateUserState.updateInParallel(currentUserId, getNextPosts)
+      return fetchAggregateUserState.updateInParallel(internal.currentUserId, getNextPosts)
         .then(function(nextPosts) {
           posts = nextPosts;
-          if(currentUserId === timelineUserId){
-            return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository);
-          }
-          else{
-            return postUtilities.populateCreatorInformation(posts, subscriptionRepository);
-          }
+          return internal.populateCreatorInformation(posts);
         })
         .then(function(){
           return postUtilities.processPostsForRendering(posts);
@@ -49,8 +59,6 @@ angular.module('webApp').controller('fwPostListCtrl',
           model.isLoading = false;
         });
     };
-
-    $scope.model = model;
 
     $scope.viewImage = function (image, imageSource) {
       postInteractions.viewImage(image, imageSource);
@@ -78,17 +86,15 @@ angular.module('webApp').controller('fwPostListCtrl',
         });
     };
 
+    internal.attachToReloadEvent = function(){
+      $scope.$on(fwPostListConstants.reloadEvent, internal.loadPosts);
+    };
+
     this.initialize = function(){
-      accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
-      blogRepository = blogRepositoryFactory.forCurrentUser();
-      subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
-
-      currentUserId = authenticationService.currentUser.userId;
-
       if($scope.source === fwPostListConstants.sources.creatorBacklog){
-        timelineUserId = currentUserId;
-        loadNext = function() {
-          return postsStub.getCreatorBacklog(timelineUserId)
+        internal.timelineUserId = internal.currentUserId;
+        internal.loadNext = function() {
+          return postsStub.getCreatorBacklog(internal.timelineUserId)
             .then(function(response){
               return $q.when(response.data);
             });
@@ -96,17 +102,22 @@ angular.module('webApp').controller('fwPostListCtrl',
       }
       else{
         if($scope.source === fwPostListConstants.sources.creatorTimeline) {
-          timelineUserId = currentUserId;
+          internal.timelineUserId = internal.currentUserId;
         }
         else{
-          timelineUserId = $scope.userId;
+          internal.timelineUserId = $scope.userId;
         }
 
-        loadNext = function(startIndex, count) {
+        var collectionId = $scope.collectionId;
+        var channelId = $scope.channelId;
+
+        internal.loadNext = function(startIndex, count) {
           return postsStub
             .getNewsfeed({
-              creatorId: timelineUserId,
+              creatorId: internal.timelineUserId,
               startIndex: startIndex,
+              collectionId: collectionId,
+              channelId: channelId,
               count: count
             })
             .then(function(response){
@@ -115,7 +126,8 @@ angular.module('webApp').controller('fwPostListCtrl',
         };
       }
 
-      loadPosts();
+      internal.attachToReloadEvent();
+      internal.loadPosts();
     };
   }
 );

@@ -79,7 +79,9 @@ describe('sign-in form', function() {
       testKit.setValue(page.signInUsernameTextBoxId, username);
       testKit.setValue(page.signInPasswordTextBoxId, password);
       page.signInButton.click();
-      page.expectGuestListOnlyDisplayed();
+
+      creatorLandingPage.expectSubscribedSuccessfully();
+      //page.expectGuestListOnlyDisplayed();
     });
 
     it('should be case insensitive for the username', function(){
@@ -92,7 +94,8 @@ describe('sign-in form', function() {
       testKit.setValue(page.signInPasswordTextBoxId, password);
       page.signInButton.click();
 
-      page.expectGuestListOnlyDisplayed();
+      creatorLandingPage.expectSubscribedSuccessfully();
+      //page.expectGuestListOnlyDisplayed();
     });
 
     it('should require a valid password', function(){

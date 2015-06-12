@@ -1,4 +1,4 @@
-describe('fw-post-list', function(){
+describe('fw-post-list-information', function(){
   'use strict';
 
   var $rootScope;
@@ -6,16 +6,13 @@ describe('fw-post-list', function(){
 
   var fwPostListConstants;
   var fifthweekConstants;
-  var fwPostListCtrl;
-  var landingPageConstants;
+  var fwPostListInformationCtrl;
 
   beforeEach(function() {
     module('webApp', 'webApp.views');
 
     module(function($controllerProvider){
-      $controllerProvider.register('fwPostListCtrl', function() { fwPostListCtrl = this; this.initialize = jasmine.createSpy('initialize'); });
-      $controllerProvider.register('fwPostListHeaderCtrl', function() { this.initialize = jasmine.createSpy('initialize'); });
-      $controllerProvider.register('fwPostListInformationCtrl', function() { this.initialize = jasmine.createSpy('initialize'); });
+      $controllerProvider.register('fwPostListInformationCtrl', function() { fwPostListInformationCtrl = this; this.initialize = jasmine.createSpy('initialize'); });
     });
 
     inject(function($injector) {
@@ -23,7 +20,6 @@ describe('fw-post-list', function(){
       $compile = $injector.get('$compile');
       fwPostListConstants = $injector.get('fwPostListConstants');
       fifthweekConstants = $injector.get('fifthweekConstants');
-      landingPageConstants = $injector.get('landingPageConstants');
     });
   });
 
@@ -34,7 +30,7 @@ describe('fw-post-list', function(){
 
     beforeEach(function(){
       scope = $rootScope.$new();
-      element = angular.element('<fw-post-list source="value"/>');
+      element = angular.element('<fw-post-list-information source="value"/>');
       $compile(element)(scope);
       scope.$digest();
     });
@@ -47,16 +43,12 @@ describe('fw-post-list', function(){
       expect(element.isolateScope().fifthweekConstants).toBe(fifthweekConstants);
     });
 
-    it('should set landingPageConstants to the isolate scope', function(){
-      expect(element.isolateScope().landingPageConstants).toBe(landingPageConstants);
-    });
-
     it('should set specified source to the isolate scope', function(){
       expect(element.isolateScope().source).toBe('value');
     });
 
     it('should initialize the post list controller', function(){
-      expect(fwPostListCtrl.initialize).toHaveBeenCalledWith();
+      expect(fwPostListInformationCtrl.initialize).toHaveBeenCalledWith();
     });
   });
 });

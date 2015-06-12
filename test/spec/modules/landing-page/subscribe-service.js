@@ -117,8 +117,9 @@ describe('subscribe-service', function(){
       });
     });
 
-    describe('when user does not have free access and is not owner', function(){
+    describe('when user does not have free access and blog is guest list only', function(){
       beforeEach(function(){
+        spyOn(target.internal, 'isGuestListOnly').and.returnValue(true);
         spyOn(target.internal, 'showGuestListOnlyDialog').and.returnValue($q.when());
         deferredUserInformation.resolve($q.when({
           isOwner: false,
@@ -137,6 +138,32 @@ describe('subscribe-service', function(){
 
       it('should complete successfully indicating no subscription occurred', function(){
         expect(result).toBe(false);
+      });
+    });
+
+    describe('when user does not have free access', function(){
+      beforeEach(function(){
+        spyOn(target.internal, 'isGuestListOnly').and.returnValue(false);
+        subscriptionStub.putBlogSubscriptions.and.returnValue($q.when());
+        deferredUserInformation.resolve($q.when({
+          isOwner: false,
+          hasFreeAccess: false
+        }));
+        $rootScope.$apply();
+      });
+
+      it('should call putBlogSubscriptions', function(){
+        expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith(
+          'blogId',
+          { subscriptions: [
+            { channelId: 'channelId1', acceptedPrice: 10 },
+            { channelId: 'channelId3', acceptedPrice: 30 }
+          ] }
+        );
+      });
+
+      it('should complete successfully indicating a subscription occurred', function(){
+        expect(result).toBe(true);
       });
     });
 
@@ -241,6 +268,132 @@ describe('subscribe-service', function(){
     });
   });
 
+  describe('when getSubscribedChannels is called', function(){
+    describe('when blog does not have free access', function(){
+      var blog;
+      var result;
+      beforeEach(function(){
+        blog = { channels: [
+          {
+            priceInUsCentsPerWeek: 100,
+            acceptedPrice: 90,
+            channelId: 'A'
+          },
+          {
+            priceInUsCentsPerWeek: 100,
+            acceptedPrice: 110,
+            channelId: 'B'
+          },
+          {
+            priceInUsCentsPerWeek: 100,
+            acceptedPrice: 100,
+            channelId: 'C'
+          }
+        ]};
+
+        result = target.internal.getSubscribedChannels(blog);
+      });
+
+      it('should return the list of subscribed channels', function(){
+        expect(result).toEqual({
+          A: {
+            acceptedPrice: 90,
+            currentPrice: 100,
+            isIncrease: true,
+            isDecrease: false
+          },
+          B: {
+            acceptedPrice: 110,
+            currentPrice: 100,
+            isIncrease: false,
+            isDecrease: true
+          },
+          C: {
+            acceptedPrice: 100,
+            currentPrice: 100,
+            isIncrease: false,
+            isDecrease: false
+          }
+        });
+      });
+    });
+
+    describe('when blog has free access', function(){
+      var blog;
+      var result;
+      beforeEach(function(){
+        blog = {
+          freeAccess: true,
+          channels: [
+          {
+            priceInUsCentsPerWeek: 100,
+            acceptedPrice: 90,
+            channelId: 'A'
+          },
+          {
+            priceInUsCentsPerWeek: 100,
+            acceptedPrice: 110,
+            channelId: 'B'
+          },
+          {
+            priceInUsCentsPerWeek: 100,
+            acceptedPrice: 100,
+            channelId: 'C'
+          }
+        ]};
+
+        result = target.internal.getSubscribedChannels(blog);
+      });
+
+      it('should return the list of subscribed channels', function(){
+        expect(result).toEqual({
+          A: {
+            acceptedPrice: 90,
+            currentPrice: 0,
+            isIncrease: false,
+            isDecrease: true
+          },
+          B: {
+            acceptedPrice: 110,
+            currentPrice: 0,
+            isIncrease: false,
+            isDecrease: true
+          },
+          C: {
+            acceptedPrice: 100,
+            currentPrice: 0,
+            isIncrease: false,
+            isDecrease: true
+          }
+        });
+      });
+    });
+  });
+
+  describe('when getHiddenChannels is called', function(){
+    it('should return the list of hidden channels', function(){
+      var input = { channels: [
+        {
+          isVisibleToNonSubscribers: true,
+          channelId: 'A'
+        },
+        {
+          isVisibleToNonSubscribers: false,
+          channelId: 'B'
+        }
+      ]};
+
+      var result = target.internal.getHiddenChannels(input);
+
+      expect(result).toEqual([
+        {
+          isVisibleToNonSubscribers: false,
+          channelId: 'B'
+        }
+      ]);
+    });
+  });
+
   describe('when getSubscriptionStatus is called', function(){
     var deferredSubscription;
     var deferredUserState;
@@ -260,6 +413,8 @@ describe('subscribe-service', function(){
     describe('when calls succeed', function(){
 
       beforeEach(function(){
+        spyOn(target.internal, 'getSubscribedChannels').and.returnValue('subscribedChannels');
+        spyOn(target.internal, 'getHiddenChannels').and.returnValue('hiddenChannels');
         deferredUserState.resolve($q.when());
       });
 
@@ -280,15 +435,33 @@ describe('subscribe-service', function(){
         it('should set userId', function(){
           expect(result.userId).toBe('userId');
         });
+
+        it('should not call getSubscribedChannels', function(){
+          expect(target.internal.getSubscribedChannels).not.toHaveBeenCalled();
+        });
+
+        it('should populate subscribed channels with empty object', function(){
+          expect(result.subscribedChannels).toEqual({});
+        });
+
+        it('should not call getHiddenChannels', function(){
+          expect(target.internal.getHiddenChannels).not.toHaveBeenCalled();
+        });
+
+        it('should populate hidden channels with empty list', function(){
+          expect(result.hiddenChannels).toEqual([]);
+        });
       });
 
       describe('when user is subscribed', function(){
+        var blog;
         beforeEach(function(){
-          deferredSubscription.resolve([{
+          blog = {
             blogId: 'blogId',
             freeAccess: false,
             channels: [{ channelId: 'channelId' }]
-          }]);
+          };
+          deferredSubscription.resolve([blog]);
           $rootScope.$apply();
         });
 
@@ -296,22 +469,40 @@ describe('subscribe-service', function(){
           expect(result.hasFreeAccess).toBe(false);
         });
 
-        it('should set isSubscribed to false', function(){
+        it('should set isSubscribed to true', function(){
           expect(result.isSubscribed).toBe(true);
         });
 
         it('should set userId', function(){
           expect(result.userId).toBe('userId');
         });
+
+        it('should call getSubscribedChannels', function(){
+          expect(target.internal.getSubscribedChannels).toHaveBeenCalledWith(blog);
+        });
+
+        it('should populate subscribed channels', function(){
+          expect(result.subscribedChannels).toBe('subscribedChannels');
+        });
+
+        it('should call getHiddenChannels', function(){
+          expect(target.internal.getHiddenChannels).toHaveBeenCalledWith(blog);
+        });
+
+        it('should populate hidden channels', function(){
+          expect(result.hiddenChannels).toBe('hiddenChannels');
+        });
       });
 
       describe('when user has free access', function(){
+        var blog;
         beforeEach(function(){
-          deferredSubscription.resolve([{
+          blog = {
             blogId: 'blogId',
             freeAccess: true,
             channels: []
-          }]);
+          };
+          deferredSubscription.resolve([blog]);
           $rootScope.$apply();
         });
 
@@ -325,6 +516,22 @@ describe('subscribe-service', function(){
 
         it('should set userId', function(){
           expect(result.userId).toBe('userId');
+        });
+
+        it('should call getSubscribedChannels', function(){
+          expect(target.internal.getSubscribedChannels).toHaveBeenCalledWith(blog);
+        });
+
+        it('should populate subscribed channels', function(){
+          expect(result.subscribedChannels).toBe('subscribedChannels');
+        });
+
+        it('should call getHiddenChannels', function(){
+          expect(target.internal.getHiddenChannels).toHaveBeenCalledWith(blog);
+        });
+
+        it('should populate hidden channels', function(){
+          expect(result.hiddenChannels).toBe('hiddenChannels');
         });
       });
     });
@@ -817,4 +1024,10 @@ describe('subscribe-service', function(){
       });
     });
   });
+
+  //describe('when isGuestListOnly is called', function(){
+  //  it('should return false', function(){
+  //    expect(target.internal.isGuestListOnly()).toBe(false);
+  //  });
+  //});
 });

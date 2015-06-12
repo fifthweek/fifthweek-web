@@ -1,0 +1,103 @@
+<div class="posts landing-page" ng-if="model.currentView === views.manage">
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <h5><span>What You'll Get</span></h5>
+  <div class="post non-image-post channels">
+    <div class="text">
+      <div class="content">
+        <div id="channel-{{$index}}" class="row channel" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
+          <div class="col-xs-7">
+            <h6 class="channel-name">{{channel.name}}</h6>
+          </div>
+          <div class="col-xs-5 channel-price-column">
+            <span class="channel-price" id="channel-price-{{$index}}" ng-click="channel.checked = !channel.checked || channel.isDefault"
+                  ng-class="{'unchecked':!channel.checked, 'checked':channel.checked, 'non-default':!channel.isDefault, 'default':channel.isDefault, 'guest-list-price':model.hasFreeAccess}">
+              <fw-price value="channel.priceInUsCentsPerWeek"></fw-price>
+            </span>
+          </div>
+          <div class="col-xs-7">
+            <ul class="channel-description">
+              <li ng-repeat="descriptionLine in channel.description track by $index">{{descriptionLine}}</li>
+            </ul>
+          </div>
+          <div class="col-xs-5 channel-previous-price-column" id="channel-previous-price-{{$index}}">
+            <p ng-if="channel.subscriptionInformation.isIncrease">
+              Increased from <fw-price value="channel.subscriptionInformation.acceptedPrice"></fw-price>
+            </p>
+            <p ng-if="channel.subscriptionInformation.isDecrease">
+              Decreased from <fw-price value="channel.subscriptionInformation.acceptedPrice"></fw-price>
+            </p>
+          </div>
+        </div>
+      </div>
+      <p class="subscribe-now-total" ng-if="!model.hasFreeAccess">
+        <span>Total:</span> <fw-price value="model.totalPrice"></fw-price>
+      </p>
+      <p class="subscribe-now-total" ng-if="model.hasFreeAccess">
+        <span>Guest List Price:</span> <fw-price value="0"></fw-price>
+      </p>
+      <hr />
+      <div class="subscribe-now">
+        <p ng-if="model.isSubscribed">
+          <a href class="pull-left"
+             id="unsubscribe-button"
+             data-event-title="{{model.tracking.unsubscribedTitle}}"
+             data-event-category="{{model.tracking.category}}"
+             data-loading-text="Unsubscribing..."
+             can-submit="true"
+             fw-form-submit="unsubscribe()"
+             error-message="model.errorMessage">Unsubscribe</a>
+
+          <a href
+             id="update-subscriptions-button"
+             data-event-title="{{model.tracking.updatedTitle}}"
+             data-event-category="{{model.tracking.category}}"
+             data-loading-text="Saving..."
+             can-submit="true"
+             fw-form-submit="subscribe()"
+             error-message="model.errorMessage">
+            Accept Changes
+          </a>
+        </p>
+        <p ng-if="!model.isSubscribed">
+          <a href
+             id="channel-list-subscribe-button"
+             data-event-title="{{model.tracking.subscribedTitle}}"
+             data-event-category="{{model.tracking.category}}"
+             data-loading-text="Subscribing..."
+             can-submit="true"
+             fw-form-submit="subscribe()"
+             error-message="model.errorMessage">
+            Subscribe Now
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="more-info" ng-if="model.videoUrl || model.blog.description">
+    <h5><span>More Info</span></h5>
+    <div class="post non-image-post" ng-if="!model.videoUrl">
+      <div class="text">
+        <div id="full-description" class="content">
+          <fw-markdown replace="true" ng-model="model.blog.description"></fw-markdown>
+        </div>
+      </div>
+    </div>
+    <div class="post image-post" ng-if="model.videoUrl">
+      <div id="video" class="video">
+        <embed-video data-ng-href="{{model.videoUrl}}" controls=0></embed-video>
+        <div ng-include="'views/partials/video-radius-fix.html'"></div>
+      </div>
+      <div class="text">
+        <div id="full-description" class="content">
+          <fw-markdown replace="true" ng-model="model.blog.description"></fw-markdown>
+          <span ng-if="!model.blog.description">
+            <p>Check out my video for more information!</p>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

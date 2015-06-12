@@ -2,14 +2,14 @@
   'use strict';
 
   var TestKit = require('../test-kit.js');
-  var AccountPage = require('./account-settings.page.js');
-  var EditChannelPage = require('./creators/channel-edit.page.js');
-  var EditCollectionPage = require('./creators/collection-edit.page.js');
+  var CreatorLandingPagePage = require('./creators/creator-landing-page.page.js');
+  var Defaults = require('../defaults.js');
+  var PostListInformation = require('./post-list-information.page.js');
 
   var testKit = new TestKit();
-  var accountPage = new AccountPage();
-  var editChannelPage = new EditChannelPage();
-  var editCollectionPage = new EditCollectionPage();
+  var landingPage = new CreatorLandingPagePage();
+  var defaults = new Defaults();
+  var postListInformation = new PostListInformation();
 
   var PostPage = function(isBacklog, postIndex) {
     if(postIndex){
@@ -58,11 +58,14 @@
     usernameLink: { get: function() { return element(this.byCss('.poster-name')); }},
     containerNameLink: { get: function() { return element(this.byCss('.container-name')); }},
     liveInLink: { get: function() { return element(this.byCss('.live-in-info')); }},
+    liveInInfos: { get: function() { return element.all(this.byCss('.live-in-info')); }},
+    liveInLinks: { get: function() { return element.all(this.byCss('.live-in-link')); }},
     moreActionsButton: { get: function() { return element(this.byCss('.actions-more button')); }},
     editPostLink: { get: function() { return element(this.byCssContainingText('.dropdown-menu a', 'Edit')); }},
+    editPostLinks: { get: function() { return element.all(this.byCssContainingText('.dropdown-menu a', 'Edit')); }},
     deletePostLink: { get: function() { return element(this.byCssContainingText('.dropdown-menu a', 'Delete')); }},
 
-    expectHeader: { value: function(postData, registration){
+    expectHeader: { value: function(postData, registration, postHasNoDayGrouping){
       if(this.isBacklog){
         expect(this.scheduleTag.isDisplayed()).toBe(true);
         expect(this.dayGroupings.count()).toBe(0);
@@ -77,34 +80,52 @@
       }
       else{
         expect(this.scheduleTags.count()).toBe(0);
-        expect(this.dayGrouping.isDisplayed()).toBe(true);
+
+        if(!postHasNoDayGrouping){
+          expect(this.dayGrouping.isDisplayed()).toBe(true);
+        }
       }
     }},
 
-    expectFooter: { value: function(isNote, postData, registration, navigateToPage){
+    expectFooter: { value: function(isNote, postData, registration, navigateToPage, isCustomer){
 
-      testKit.scrollIntoView(this.usernameLink);
+      //testKit.scrollIntoView(this.usernameLink);
 
       this.usernameLink.click();
-      expect(browser.getCurrentUrl()).toContain(accountPage.pageUrl);
+      expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/all');
+      landingPage.fifthweekLink.click();
       navigateToPage();
 
+      var channelName = postData.channelName || defaults.channelName;
       if(isNote){
         this.containerNameLink.click();
-        expect(browser.getCurrentUrl()).toContain(editChannelPage.pageUrl);
-        expect(element(by.id(editChannelPage.nameTextBoxId)).getAttribute('value')).toBe(postData.channelName || 'Basic Subscription');
+        expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/channel/');
+        expect(postListInformation.postsHeader.getText()).toBe(channelName);
+        landingPage.fifthweekLink.click();
         navigateToPage();
       }
       else{
         this.containerNameLink.click();
-        expect(browser.getCurrentUrl()).toContain(editCollectionPage.pageUrl);
-        expect(element(by.id(editCollectionPage.nameTextBoxId)).getAttribute('value')).toBe(postData.collectionName);
+        expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/collection/');
+        expect(postListInformation.postsHeader.getText()).toBe(channelName + ' / ' + postData.collectionName);
+        landingPage.fifthweekLink.click();
         navigateToPage();
+      }
+
+      if(isCustomer){
+        expect(this.liveInInfos.count()).toBe(1);
+        expect(this.liveInLinks.count()).toBe(0);
+        expect(this.editPostLinks.count()).toBe(0);
+      }
+      else{
+        expect(this.liveInInfos.count()).toBe(1);
+        expect(this.liveInLinks.count()).toBe(1);
+        expect(this.editPostLinks.count()).toBe(1);
       }
     }},
 
-    expectNotePost: { value: function(postData, registration, navigateToPage){
-      this.expectHeader(postData, registration);
+    expectNotePost: { value: function(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
+      this.expectHeader(postData, registration, postHasNoDayGrouping);
 
       expect(this.images.count()).toBe(0);
       expect(this.fileDownloadLinks.count()).toBe(0);
@@ -112,11 +133,11 @@
       expect(this.usernameLink.getText()).toBe(registration.username);
       expect(this.containerNameLink.getText()).toBe(postData.channelName || 'Everyone');
 
-      this.expectFooter(true, postData, registration, navigateToPage);
+      this.expectFooter(true, postData, registration, navigateToPage, isCustomer);
     }},
 
-    expectImagePost: { value: function(postData, registration, navigateToPage){
-      this.expectHeader(postData, registration);
+    expectImagePost: { value: function(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
+      this.expectHeader(postData, registration, postHasNoDayGrouping);
 
       expect(this.image.isPresent()).toBe(true);
       expect(this.comment.getText()).toBe(postData.commentText);
@@ -124,11 +145,11 @@
       expect(this.usernameLink.getText()).toBe(registration.username);
       expect(this.containerNameLink.getText()).toBe(postData.collectionName);
 
-      this.expectFooter(false, postData, registration, navigateToPage);
+      this.expectFooter(false, postData, registration, navigateToPage, isCustomer);
     }},
 
-    expectFilePost: { value: function(postData, registration, navigateToPage){
-      this.expectHeader(postData, registration);
+    expectFilePost: { value: function(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
+      this.expectHeader(postData, registration, postHasNoDayGrouping);
 
       expect(this.images.count()).toBe(0);
       expect(this.comment.getText()).toBe(postData.commentText);
@@ -138,14 +159,14 @@
       expect(this.usernameLink.getText()).toBe(registration.username);
       expect(this.containerNameLink.getText()).toBe(postData.collectionName);
 
-      this.expectFooter(false, postData, registration, navigateToPage);
+      this.expectFooter(false, postData, registration, navigateToPage, isCustomer);
     }},
 
-    expectNonViewableImagePost: { value: function(postData, registration, navigateToPage){
+    expectNonViewableImagePost: { value: function(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
       expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
       expect(this.fileSizeText.getText()).toContain('KB');
 
-      this.expectImagePost(postData, registration, navigateToPage);
+      this.expectImagePost(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer);
     }}
 
   });

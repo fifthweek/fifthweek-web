@@ -581,6 +581,18 @@ module.exports = function (grunt) {
           done();
         }
       },
+      enableSubscribe: {
+        'app/scripts/generated/subscribe.js': function(fs, fd, done) {
+          fs.writeSync(fd, 'window.enableSubscribe = true;');
+          done();
+        }
+      },
+      disableSubscribe: {
+        'app/scripts/generated/subscribe.js': function(fs, fd, done) {
+          fs.writeSync(fd, 'window.enableSubscribe = false;');
+          done();
+        }
+      },
       dist:{
         'app/scripts/generated/developer.js': function(fs, fd, done) {
           fs.writeSync(fd, '');
@@ -783,6 +795,10 @@ module.exports = function (grunt) {
       return;
     }
 
+    grunt.task.run([
+      'file-creator:enableSubscribe'
+    ]);
+
     if(isLocal(scenario)){
       grunt.task.run([
         'file-creator:local'
@@ -806,6 +822,7 @@ module.exports = function (grunt) {
     else if(isTravisSuccess(scenario)){
       grunt.task.run([
         'replace:newRelic',
+        'file-creator:disableSubscribe',
         'cdn:dist'
       ]);
     }

@@ -33,35 +33,35 @@
 
     <div class="row info-actions">
       <div class="col-xs-8 info">
-        <a class="author" ui-sref="user.account">
+        <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})">
           <img class="author-image" ng-src="{{post.creator.profileImage.resolvedUri}}" />
         </a>
         <ul>
           <li>
-            <a ui-sref="user.account" class="poster-name">
-              {{post.creator.username}}
-            </a>
+            <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.creator.username}}</a>
             <span ng-if="post.collection">
               in
-              <a ui-sref="creator.collections.edit({id: post.collectionId})" class="container-name">
+              <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.collection, key: post.collectionId })" class="container-name">
                 {{post.collection.name}}
               </a>
             </span>
             <span ng-if="!post.collection">
               to
-               <a ui-sref="creator.channels.edit({id: post.channelId})" class="container-name">
+               <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
                  {{post.channel.isDefault ? 'Everyone' : post.channel.name}}
                </a>
             </span>
           </li>
           <li>
-            <a ng-click="editPost(post)" class="live-in-info">
+            <a ng-if="post.isOwner" ng-click="editPost(post)" class="live-in-info live-in-link">
               <span ng-if="post.isScheduled">live </span>{{post.liveIn}}
             </a>
+
+            <span ng-if="!post.isOwner" class="live-in-info">{{post.liveIn}}</span>
           </li>
         </ul>
       </div>
-      <div class="col-xs-4 actions">
+      <div class="col-xs-4 actions" ng-if="post.isOwner">
         <ul>
           <li class="actions-more">
             <span class="dropdown" dropdown on-toggle="toggled(open)">

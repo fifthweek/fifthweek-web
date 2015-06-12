@@ -12,6 +12,7 @@
   var ComposeOptionsPage = require('./pages/creators/compose/compose-options.page.js');
   var ChannelListPage = require('./pages/creators/channel-list.page.js');
   var ChannelAddPage = require('./pages/creators/channel-add.page.js');
+  var ChannelEditPage = require('./pages/creators/channel-edit.page.js');
   var CollectionListPage = require('./pages/creators/collection-list.page.js');
   var CollectionAddPage = require('./pages/creators/collection-add.page.js');
   var ComposeNotePage = require('./pages/creators/compose/compose-note.page.js');
@@ -30,6 +31,7 @@
   var composeOptionsPage = new ComposeOptionsPage();
   var channelListPage = new ChannelListPage();
   var channelAddPage = new ChannelAddPage();
+  var channelEditPage = new ChannelEditPage();
   var collectionListPage = new CollectionListPage();
   var collectionAddPage = new CollectionAddPage();
   var composeNotePage = new ComposeNotePage();
@@ -81,6 +83,14 @@
         registration: registration,
         blog: blog
       };
+    }},
+
+    setChannelPrice: { value: function(price, channelName){
+      channelName = channelName || defaults.channelName;
+      sidebar.channelsLink.click();
+      channelListPage.getEditChannelButton(channelName).click();
+      channelEditPage.setPrice(price);
+      channelEditPage.saveButton.click();
     }},
 
     register: { value: function() {
