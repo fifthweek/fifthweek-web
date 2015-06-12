@@ -1025,9 +1025,9 @@ describe('subscribe-service', function(){
     });
   });
 
-  describe('when isGuestListOnly is called', function(){
-    it('should return false', function(){
-      expect(target.internal.isGuestListOnly()).toBe(false);
-    });
-  });
+  //describe('when isGuestListOnly is called', function(){
+  //  it('should return false', function(){
+  //    expect(target.internal.isGuestListOnly()).toBe(false);
+  //  });
+  //});
 });
