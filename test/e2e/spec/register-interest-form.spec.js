@@ -3,7 +3,6 @@
 
   var _ = require('lodash');
   var HomePage = require('../pages/home.page.js');
-  var FeaturesPage = require('../pages/features.page.js');
   var PricingPage = require('../pages/pricing.page.js');
   var HeaderInformationPage = require('../pages/header-information.page.js');
   var CurrentPage = require('../pages/register-interest-workflow.page.js');
@@ -12,7 +11,6 @@
     'use strict';
 
     var homePage = new HomePage();
-    var featuresPage = new FeaturesPage();
     var pricingPage = new PricingPage();
     var headerInformationPage = new HeaderInformationPage();
     var page = new CurrentPage();
@@ -30,14 +28,7 @@
       },
       {
         navigate: function () {
-          headerInformationPage.featuresLink.click();
-          featuresPage.getStartedTopLink.click();
-        }
-      },
-      {
-        navigate: function () {
-          headerInformationPage.featuresLink.click();
-          featuresPage.getStartedBottomLink.click();
+          homePage.getStartedBottomLink.click();
         }
       },
       {

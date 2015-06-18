@@ -5,6 +5,7 @@ var HomePage = function() {};
 HomePage.prototype = Object.create({}, {
   signInLink: { get: function () { return element(by.id('sign-in-link')); }},
   getStartedLink: { get: function(){ return element(by.id('get-started'))}},
+  getStartedBottomLink: { get: function(){ return element(by.id('get-started-bottom'))}},
   introHeading: { get: function () { return element(by.id('intro-heading')); }},
   introSubHeading: { get: function () { return element(by.id('intro-sub-heading')); }},
   playVideoLink: { get: function () { return element(by.id('play-video-link')); }},
