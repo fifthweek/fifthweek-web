@@ -23,9 +23,9 @@ $html-name-space:'.info-page';
       padding: 8px 26px 8px 14px;
       height: auto;
       border:none;
-      background-color: $brand-highlight-3;
+      background-color: $green-light-1;
       &:hover {
-        background-color: lighten($brand-highlight-3, 4%) !important;
+        background-color: lighten($green-light-1, 4%) !important;
       }
       &:after {
         position: absolute;
