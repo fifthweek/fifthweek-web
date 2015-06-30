@@ -13,7 +13,7 @@ describe('fw-price directive', function(){
     });
   });
 
-  describe('when price is a scope variable', function(){
+  describe('when showInterval is not defined', function(){
 
     var scope;
     var element;
@@ -55,6 +55,53 @@ describe('fw-price directive', function(){
 
       it('should display the formatted price', function(){
         expect(element.text()).toBe('$1.23/week');
+      });
+    });
+  });
+
+  describe('when showInterval is defined', function(){
+
+    var scope;
+    var element;
+    var isolateScope;
+
+    beforeEach(function(){
+      scope = $rootScope.$new();
+      scope.inputPrice = 10000;
+      scope.showInterval = true;
+      element = angular.element('<fw-price value="inputPrice" show-interval="showInterval" />');
+      $compile(element)(scope);
+      scope.$digest();
+
+      isolateScope = element.isolateScope();
+    });
+
+    it('should store the formatted price', function(){
+      expect(isolateScope.formattedPrice).toBe('100.00');
+    });
+
+    it('should display the price in a span with a price class', function(){
+      var span = $(element.children().first());
+      expect(span.is('span')).toBe(true);
+      expect(span.hasClass('price')).toBe(true);
+    });
+
+    it('should display the formatted price', function(){
+      expect(element.text()).toBe('$100.00/week');
+    });
+
+    describe('when showInterval changes', function(){
+      beforeEach(function(){
+        scope.showInterval = false;
+        scope.$apply();
+      });
+
+      it('should store the formatted price', function(){
+        expect(isolateScope.formattedPrice).toBe('100.00');
+      });
+
+      it('should display the formatted price without the interval', function(){
+        expect(element.text()).toBe('$100.00');
       });
     });
   });

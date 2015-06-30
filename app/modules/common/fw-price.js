@@ -5,14 +5,19 @@ angular.module('webApp')
     return {
       restrict: 'E',
       scope: {
-        value: '='
+        value: '=',
+        showInterval: '=?'
       },
-      template: '<span class="price">${{formattedPrice}}/week</span>',
+      template: '<span class="price">${{formattedPrice}}{{showInterval ? \'/week\' : \'\'}}</span>',
       link: function(scope) {
 
         var updatePrice = function(){
           scope.formattedPrice = (scope.value /100).toFixed(2);
         };
+
+        if(scope.showInterval === undefined){
+          scope.showInterval = true;
+        }
 
         scope.$watch('value', updatePrice);
       }
