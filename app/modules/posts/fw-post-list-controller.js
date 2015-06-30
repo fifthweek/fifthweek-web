@@ -38,9 +38,11 @@ angular.module('webApp')
       var getNextPosts = function() { return internal.loadNext(0, 1000); };
 
       var posts;
+      var accountBalance;
       return fetchAggregateUserState.updateInParallel(internal.currentUserId, getNextPosts)
-        .then(function(nextPosts) {
-          posts = nextPosts;
+        .then(function(result) {
+          posts = result.posts;
+          accountBalance = result.accountBalance;
           return internal.populateCreatorInformation(posts);
         })
         .then(function(){
@@ -48,6 +50,7 @@ angular.module('webApp')
         })
         .then(function(){
           model.posts = posts;
+          model.accountBalance = accountBalance;
         })
         .catch(function(error){
           model.posts = undefined;
@@ -96,7 +99,10 @@ angular.module('webApp')
         internal.loadNext = function() {
           return postsStub.getCreatorBacklog(internal.timelineUserId)
             .then(function(response){
-              return $q.when(response.data);
+              return $q.when({
+                posts: response.data,
+                accountBalance: undefined
+              });
             });
         };
       }
@@ -121,7 +127,7 @@ angular.module('webApp')
               count: count
             })
             .then(function(response){
-              return $q.when(response.data.posts);
+              return $q.when(response.data);
             });
         };
       }

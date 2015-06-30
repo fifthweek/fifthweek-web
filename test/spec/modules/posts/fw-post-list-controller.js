@@ -177,7 +177,10 @@ describe('fw-post-list-controller', function(){
 
       describe('when updateInParallel succeeds', function(){
         beforeEach(function(){
-          deferredUpdateInParallel.resolve('posts');
+          deferredUpdateInParallel.resolve({
+            posts: 'posts',
+            accountBalance: 'accountBalance'
+          });
           $scope.$apply();
         });
 
@@ -203,6 +206,10 @@ describe('fw-post-list-controller', function(){
 
             it('should assign posts to the model', function(){
               expect($scope.model.posts).toBe('posts');
+            });
+
+            it('should assign account balance to the model', function(){
+              expect($scope.model.accountBalance).toBe('accountBalance');
             });
 
             it('should complete successfully', function(){
@@ -296,7 +303,7 @@ describe('fw-post-list-controller', function(){
           });
 
           it('should return the result', function(){
-            expect(result).toBe('data');
+            expect(result).toEqual({posts: 'data', accountBalance: undefined});
           });
         });
       });
@@ -327,7 +334,7 @@ describe('fw-post-list-controller', function(){
           var result;
           beforeEach(function(){
             result = undefined;
-            postsStub.getNewsfeed.and.returnValue($q.when({ data: { posts: ['post1', 'post2'] } }));
+            postsStub.getNewsfeed.and.returnValue($q.when({ data: 'data' }));
             target.internal.loadNext(10, 20).then(function(r){ result = r; });
             $scope.$apply();
           });
@@ -343,7 +350,7 @@ describe('fw-post-list-controller', function(){
           });
 
           it('should return the result', function(){
-            expect(result).toEqual(['post1', 'post2']);
+            expect(result).toEqual('data');
           });
         });
       });
@@ -375,7 +382,7 @@ describe('fw-post-list-controller', function(){
           var result;
           beforeEach(function(){
             result = undefined;
-            postsStub.getNewsfeed.and.returnValue($q.when({ data: { posts: ['post1', 'post2'] } }));
+            postsStub.getNewsfeed.and.returnValue($q.when({ data: 'data' }));
             target.internal.loadNext(10, 20).then(function(r){ result = r; });
             $scope.$apply();
           });
@@ -391,7 +398,7 @@ describe('fw-post-list-controller', function(){
           });
 
           it('should return the result', function(){
-            expect(result).toEqual(['post1', 'post2']);
+            expect(result).toEqual('data');
           });
         });
       });
