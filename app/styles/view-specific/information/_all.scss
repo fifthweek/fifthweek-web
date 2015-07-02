@@ -395,6 +395,11 @@ $html-name-space:'.info-page';
     }
   }
 
+  .info-page-box-oversize {
+    @include vcenter;
+    min-height: 550px;
+  }
+
   .info-page-box {
     padding-top: $info-box-padding;
     padding-bottom: $info-box-padding;
@@ -403,6 +408,16 @@ $html-name-space:'.info-page';
     @media (min-width:$screen-s-min) {
       padding-top: $info-box-padding;
       padding-bottom: $info-box-padding;
+    }
+  }
+
+  .info-page-box-sign-up {
+    padding-top: 56px;
+    padding-bottom: 56px;
+
+    p {
+      opacity: 0.7;
+      margin-top: 26px;
     }
   }
 
@@ -435,7 +450,7 @@ $html-name-space:'.info-page';
         font-size: 46px;
       }
 
-      &.large {
+      &.large, &.large-2 {
         font-size: 45px;
         font-family: 'Open Sans', sans-serif;
         font-weight: 700;
@@ -445,6 +460,9 @@ $html-name-space:'.info-page';
         @media (min-width:$screen-ss-min) {
           font-size: 52px;
         }
+      }
+      &.large-2 {
+        padding-bottom: 6px;
       }
       &.long {
         margin: 0 0 7px 0;
@@ -512,11 +530,20 @@ $html-name-space:'.info-page';
         margin-bottom: 0;
       }
     }
-    h2.long {
+    h2.long, h2.long-2, h2.long-3 {
       font-size: 40px;
       letter-spacing: -2px;
       font-weight: normal;
       margin-bottom: 15px;
+    }
+    h2.long-2 {
+      font-size: 35px;
+      margin-bottom: 40px;
+    }
+    h2.long-3 {
+      letter-spacing: -1px;
+      font-size: 30px;
+      margin-bottom: 12px;
     }
     h2.faded {
       opacity: 0.7;

@@ -2,7 +2,7 @@ angular.module('webApp')
   .constant('fwRegisterInterestButtonConstants',{
     defaultTitle: 'Register for Fifthweek',
     defaultMessage: '',
-    defaultCallToAction: 'Get started for FREE'
+    defaultCallToAction: 'Create free account'
   })
   .directive('fwRegisterInterestButton',
   function ($modal, fwRegisterInterestButtonConstants) {
