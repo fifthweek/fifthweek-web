@@ -84,7 +84,8 @@
 }
 
 .modal.fade .modal-dialog {
-  @include translate(0, -30px); // Lessen default animation.
+  @include translate(0, -10px); // Lessen default animation.
+  transition-duration: 0.2s;
 }
 .modal.in .modal-dialog {
   @include translate(0, 0);

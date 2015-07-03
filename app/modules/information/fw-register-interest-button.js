@@ -32,6 +32,7 @@ angular.module('webApp')
               controller: 'registerInterestDialogCtrl',
               templateUrl: 'modules/information/register-interest-dialog.html',
               size: 'sm',
+              animation: false,
               resolve: {
                 title: function(){ return scope.title; },
                 message: function(){ return scope.message; },
