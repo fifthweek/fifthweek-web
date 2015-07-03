@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'registerInterestDialogCtrl',
-  function($q, $scope, membershipStub, identifiedUserNotifierConstants, title, message) {
+  function($q, $scope, membershipStub, identifiedUserNotifierConstants, title, message, buttonText) {
     'use strict';
 
     var pages = $scope.pages = {
@@ -12,6 +12,7 @@ angular.module('webApp').controller(
       page: pages.form,
       message: message,
       title: title,
+      buttonText: buttonText,
       input: {
         name: '',
         email: ''

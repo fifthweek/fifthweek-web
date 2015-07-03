@@ -10,17 +10,20 @@ describe('register-interest-dialog-controller', function () {
   var membershipStub;
   var title;
   var message;
+  var buttonText;
 
   beforeEach(function() {
     membershipStub = jasmine.createSpyObj('membershipStub', ['postRegisteredInterest']);
     title = 'title1';
     message = 'message1';
+    buttonText = 'buttonText1';
 
     module('webApp');
     module(function($provide) {
       $provide.value('membershipStub', membershipStub);
       $provide.value('title', title);
       $provide.value('message', message);
+      $provide.value('buttonText', buttonText);
     });
 
     inject(function ($injector) {
@@ -53,6 +56,10 @@ describe('register-interest-dialog-controller', function () {
 
     it('should set the message', function() {
       expect($scope.model.message).toBe(message);
+    });
+
+    it('should set the button text', function() {
+      expect($scope.model.buttonText).toBe(buttonText);
     });
 
     it('should set the inputs to blank', function() {

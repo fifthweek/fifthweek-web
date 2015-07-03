@@ -13,8 +13,19 @@ $html-name-space:'.info-page';
   $color-dark-3: #4d394b;
 
   text-align: center;
+
+  .modal-backdrop.in {
+    opacity: 0.6;
+  }
+
   .modal-dialog {
     text-align: left;
+    .modal-content h4 {
+      border:none;
+      background: none;
+      font-size: 25px;
+      color:#4a4a4a;
+    }
     .btn-default {
       display: none;
     }
