@@ -8,11 +8,31 @@ angular.module('webApp').controller(
       done: 1
     };
 
+    var modeOptions;
+
+    if (attributes.mode === 'register') {
+      modeOptions = {
+        twitterConversion: 'l6dxw',
+        analyticsConversion: 'Faux Registered'
+      };
+    }
+    else if (attributes.mode === 'pricing') {
+      modeOptions = {
+        twitterConversion: 'l6dy3',
+        analyticsConversion: 'Pricing Requested'
+      };
+    }
+    else {
+      throw new FifthweekError('Invalid interest mode');
+    }
+
     $scope.model = {
       page: pages.form,
       title: attributes.title,
       buttonText: attributes.buttonText,
-      template: attributes.template,
+      mode: attributes.mode,
+      trackingEvent: modeOptions.analyticsConversion,
+      trackingEventTwitter: modeOptions.twitterConversion,
       input: {
         name: '',
         email: ''
@@ -24,9 +44,6 @@ angular.module('webApp').controller(
         .then(function() {
           $scope.$emit(identifiedUserNotifierConstants.eventName, $scope.model.input);
           $scope.model.page = pages.done;
-
-          // Track 'Registration' goal on Twitter.
-          twttr.conversion.trackPid('l6dxw', { tw_sale_amount: 0, tw_order_quantity: 0 });
         });
     };
   }

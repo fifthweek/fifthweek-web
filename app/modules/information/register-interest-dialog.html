@@ -35,7 +35,8 @@
         class="btn btn-success btn-block btn-continue"
         type="submit"
         id="register-button"
-        data-event-title="Registered Interest"
+        data-event-twitter="{{model.trackingEventTwitter}}"
+        data-event-title="{{model.trackingEvent}}"
         data-event-category="Interest Registration"
         fw-form-submit="registerInterest()">{{model.buttonText}}</button>
     </form-buttons>
@@ -46,8 +47,8 @@
       role="form"
       name="form"
       ng-if="model.page === pages.done">
-  <fw-form-modal-title name="{{model.template === 'register' ? 'Registration pending...' : model.title}}"></fw-form-modal-title>
-  <div class="modal-body" ng-if="model.template === 'register'">
+  <fw-form-modal-title name="{{model.mode === 'register' ? 'Registration pending...' : model.title}}"></fw-form-modal-title>
+  <div class="modal-body" ng-if="model.mode === 'register'">
     <p>
       <strong>We'll contact you shortly</strong> to show you how to get the most out of Fifthweek - at which point your account will become active.
     </p>
@@ -55,7 +56,7 @@
       Please check your email inbox!
     </p>
   </div>
-  <div class="modal-body" ng-if="model.template !== 'register'">
+  <div class="modal-body" ng-if="model.mode !== 'register'">
     <p><strong>Thank you for your interest!</strong> Someone from our team will be in touch shortly.</p>
   </div>
   <div class="row-btn">

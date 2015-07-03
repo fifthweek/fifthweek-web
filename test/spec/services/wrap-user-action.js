@@ -1,6 +1,7 @@
 describe('wrap user action', function() {
   'use strict';
 
+  var eventTwitter = 'event twitter';
   var eventTitle = 'event title';
   var eventCategory = 'event category';
 
@@ -15,9 +16,10 @@ describe('wrap user action', function() {
 
   beforeEach(function() {
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleErrorInBackground']);
-    analytics = jasmine.createSpyObj('analytics', [ 'eventTrack' ]);
+    analytics = jasmine.createSpyObj('analytics', [ 'eventTrack', 'twitterTrack' ]);
     action = jasmine.createSpy('action');
     actionMetadata = {
+      eventTwitter: eventTwitter,
       eventTitle: eventTitle,
       eventCategory: eventCategory
     };
@@ -60,12 +62,16 @@ describe('wrap user action', function() {
     target(action, actionMetadata);
     $rootScope.$apply();
 
+    expect(analytics.twitterTrack).toHaveBeenCalledWith(eventTwitter);
+    analytics.twitterTrack.calls.reset();
+
     expect(analytics.eventTrack).toHaveBeenCalledWith(eventTitle, eventCategory);
     analytics.eventTrack.calls.reset();
 
     target(action);
     $rootScope.$apply();
 
+    expect(analytics.twitterTrack).not.toHaveBeenCalled();
     expect(analytics.eventTrack).not.toHaveBeenCalled();
   });
 
@@ -75,6 +81,7 @@ describe('wrap user action', function() {
     target(action, actionMetadata);
     $rootScope.$apply();
 
+    expect(analytics.twitterTrack).not.toHaveBeenCalled();
     expect(analytics.eventTrack).not.toHaveBeenCalled();
   });
 

@@ -14,7 +14,7 @@ angular.module('webApp')
         title: '@?',
         buttonText: '@?',
         callToAction: '@?',
-        template: '@?'
+        mode: '@?'
       },
       replace: true,
       templateUrl: 'modules/information/fw-register-interest-button.html',
@@ -23,7 +23,7 @@ angular.module('webApp')
         var modalAttributes = {
           title: scope.title || fwRegisterInterestButtonConstants.defaultTitle,
           buttonText: scope.buttonText || fwRegisterInterestButtonConstants.defaultButtonText,
-          template: scope.template
+          mode: scope.mode
         };
 
         scope.callToAction = scope.callToAction || fwRegisterInterestButtonConstants.defaultCallToAction;

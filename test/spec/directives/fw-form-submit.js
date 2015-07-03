@@ -466,7 +466,7 @@ describe('submit form directive', function(){
       deferred = $q.defer();
       wrapUserAction.and.returnValue(deferred.promise);
 
-      element = angular.element(getFormHtml('data-event-title="title" data-event-category="category"'));
+      element = angular.element(getFormHtml('data-event-twitter="twitter" data-event-title="title" data-event-category="category"'));
       $compile(element)(scope);
       element = element.find('button');
       scope.$digest();
@@ -480,6 +480,7 @@ describe('submit form directive', function(){
       $rootScope.$apply();
 
       expect(wrapUserAction).toHaveBeenCalledWith(jasmine.any(Function), {
+        eventTwitter: 'twitter',
         eventTitle: 'title',
         eventCategory: 'category'
       });

@@ -1,4 +1,4 @@
-angular.module('webApp').run(function($analytics, $rootScope, identifiedUserNotifierConstants) {
+angular.module('webApp').run(function(analytics, $rootScope, identifiedUserNotifierConstants) {
   'use strict';
 
   function getParameterByName(name) {
@@ -15,7 +15,7 @@ angular.module('webApp').run(function($analytics, $rootScope, identifiedUserNoti
 
   var emailAddress = getParameterByName('emailed_to');
   if (emailAddress.length > 0) {
-    $analytics.setUserProperties({
+    analytics.setUserProperties({
       'last opened email from': emailAddress
     });
 
@@ -28,12 +28,15 @@ angular.module('webApp').run(function($analytics, $rootScope, identifiedUserNoti
   var utmContent = getParameterByName('utm_content');
 
   if (utmCampaign.length > 0 || utmSource.length > 0 || utmMedium.length > 0 || utmContent.length > 0) {
-    $analytics.eventTrack('Arrived from campaign "' +
+    analytics.eventTrack('Arrived from campaign "' +
       utmCampaign + '/' +
       utmSource + '/' +
       utmMedium + '/' +
       utmContent + '"',
       eventCategory());
   }
+
+  // Track 'Site Visit' goal on Twitter.
+  analytics.twitterTrack('l6dxz');
 });
 

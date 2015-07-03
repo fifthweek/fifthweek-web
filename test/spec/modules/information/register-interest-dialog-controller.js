@@ -13,6 +13,7 @@ describe('register-interest-dialog-controller', function () {
   beforeEach(function() {
     membershipStub = jasmine.createSpyObj('membershipStub', ['postRegisteredInterest']);
     attributes = {
+      mode: 'register',
       title: 'title1',
       buttonText: 'buttonText1'
     };
@@ -37,6 +38,49 @@ describe('register-interest-dialog-controller', function () {
     target = $controller('registerInterestDialogCtrl', { $scope: $scope });
     $scope.$apply();
   };
+
+  describe('when validating modes', function() {
+    it('should not allow no mode to be specified', function() {
+      delete attributes.mode;
+      expect(function() {
+        initializeTarget();
+      }).toThrowError(FifthweekError);
+    });
+
+    it('should not allow invalid modes to be specified', function() {
+      attributes.mode = 'invalid';
+      expect(function() {
+        initializeTarget();
+      }).toThrowError(FifthweekError);
+    });
+
+    it('should allow valid modes to be specified', function() {
+      attributes.mode = 'register';
+      initializeTarget();
+    });
+
+    it('should allow valid modes to be specified', function() {
+      attributes.mode = 'pricing';
+      initializeTarget();
+    });
+  });
+
+  describe('when setting tracking events', function() {
+
+    it('should set registration events', function () {
+      attributes.mode = 'register';
+      initializeTarget();
+      expect($scope.model.trackingEventTwitter).toBe('l6dxw');
+      expect($scope.model.trackingEvent).toBe('Faux Registered');
+    });
+
+    it('should set registration events', function () {
+      attributes.mode = 'pricing';
+      initializeTarget();
+      expect($scope.model.trackingEventTwitter).toBe('l6dy3');
+      expect($scope.model.trackingEvent).toBe('Pricing Requested');
+    });
+  });
 
   describe('when creating', function(){
     beforeEach(function(){
