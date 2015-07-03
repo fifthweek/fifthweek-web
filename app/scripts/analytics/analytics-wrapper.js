@@ -1,5 +1,5 @@
 angular.module('webApp').factory('analytics',
-  function($q, $analytics, logService) {
+  function($q, $analytics, analyticsEventFlatMap, logService) {
     'use strict';
 
     var analytics = {};
@@ -9,16 +9,21 @@ angular.module('webApp').factory('analytics',
     };
 
     analytics.eventTrack = function(eventTitle, eventCategory) {
-      try{
-        return $q.when($analytics.eventTrack(eventTitle, { category: eventCategory }))
-          .catch(function(error){
-            logService.error(error);
-          });
-      }
-      catch(error){
-        logService.error(error);
-        return $q.when();
-      }
+      var expandedEvents = analyticsEventFlatMap(eventTitle, eventCategory);
+      var promises = _.map(expandedEvents, function(eventData) {
+        try{
+          return $q.when($analytics.eventTrack(eventData.eventTitle, { category: eventData.eventCategory }))
+            .catch(function(error){
+              logService.error(error);
+            });
+        }
+        catch(error){
+          logService.error(error);
+          return $q.when();
+        }
+      });
+
+      return $q.all(promises);
     };
 
     analytics.setUsername = function(userId) {
