@@ -24,6 +24,9 @@ angular.module('webApp').controller(
         .then(function() {
           $scope.$emit(identifiedUserNotifierConstants.eventName, $scope.model.input);
           $scope.model.page = pages.done;
+
+          // Track 'Registration' goal on Twitter.
+          twttr.conversion.trackPid('l6dxw', { tw_sale_amount: 0, tw_order_quantity: 0 });
         });
     };
   }

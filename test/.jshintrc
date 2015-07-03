@@ -20,6 +20,7 @@
   "smarttabs": true,
   "globals": {
     "$": false,
+    "twttr": false,
     "_kmq": false,
     "$f": false,
     "after": false,
