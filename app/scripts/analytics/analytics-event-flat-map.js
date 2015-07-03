@@ -11,7 +11,7 @@ angular.module('webApp').factory('analyticsEventFlatMap',
       // Allows us to track all 'interest registrations' as a single aggregate conversion in GA.
       if (eventCategory === 'Interest Registration') {
         events.push({
-          eventTitle: 'All',
+          eventTitle: 'Any',
           eventCategory: 'Interest Registration'
         });
       }
