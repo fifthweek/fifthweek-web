@@ -6,8 +6,6 @@
   <fw-form-modal name="{{model.title}}">
     <form-body>
 
-      <p ng-if="model.message">{{model.message}}</p>
-
       <fw-form-input-creator-name ng-model="model.input.name" input-columns="12" required focus="true"></fw-form-input-creator-name>
 
       <fw-form-group>
@@ -48,9 +46,17 @@
       role="form"
       name="form"
       ng-if="model.page === pages.done">
-  <fw-form-modal-title name="{{model.title}}"></fw-form-modal-title>
-  <div class="modal-body">
-    <p>Thank you! Someone from our team will be in touch.</p>
+  <fw-form-modal-title name="{{model.template === 'register' ? 'Registration pending...' : model.title}}"></fw-form-modal-title>
+  <div class="modal-body" ng-if="model.template === 'register'">
+    <p>
+      <strong>We'll contact you shortly</strong> to show you how to get the most out of Fifthweek - at which point your account will become active.
+    </p>
+    <p>
+      Please check your email inbox!
+    </p>
+  </div>
+  <div class="modal-body" ng-if="model.template !== 'register'">
+    <p><strong>Thank you for your interest!</strong> Someone from our team will be in touch shortly.</p>
   </div>
   <div class="row-btn">
     <button

@@ -2,7 +2,6 @@ angular.module('webApp')
   .constant('fwRegisterInterestButtonConstants',{
     defaultTitle: 'Let\'s get started!',
     defaultButtonText: 'Register',
-    defaultMessage: '',
     defaultCallToAction: 'Create free account'
   })
   .directive('fwRegisterInterestButton',
@@ -13,17 +12,20 @@ angular.module('webApp')
       restrict: 'E',
       scope: {
         title: '@?',
-        message: '@?',
         buttonText: '@?',
-        callToAction: '@?'
+        callToAction: '@?',
+        template: '@?'
       },
       replace: true,
       templateUrl: 'modules/information/fw-register-interest-button.html',
       link: function(scope) {
 
-        scope.title = scope.title || fwRegisterInterestButtonConstants.defaultTitle;
-        scope.message = scope.message || fwRegisterInterestButtonConstants.defaultMessage;
-        scope.buttonText = scope.buttonText || fwRegisterInterestButtonConstants.defaultButtonText;
+        var modalAttributes = {
+          title: scope.title || fwRegisterInterestButtonConstants.defaultTitle,
+          buttonText: scope.buttonText || fwRegisterInterestButtonConstants.defaultButtonText,
+          template: scope.template
+        };
+
         scope.callToAction = scope.callToAction || fwRegisterInterestButtonConstants.defaultCallToAction;
 
         scope.click = function(){
@@ -34,9 +36,7 @@ angular.module('webApp')
               size: 'sm',
               animation: false,
               resolve: {
-                title: function(){ return scope.title; },
-                message: function(){ return scope.message; },
-                buttonText: function(){ return scope.buttonText; }
+                attributes: function() { return modalAttributes; }
               }
             }).result;
         };

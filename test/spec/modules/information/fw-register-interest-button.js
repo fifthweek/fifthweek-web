@@ -63,14 +63,6 @@ describe('fw-register-interest-button directive', function(){
           expect($modal.open.calls.first().args[0].size).toBe('sm');
         });
 
-        it('should resolve the title to the expected title', function(){
-          expect($modal.open.calls.first().args[0].resolve.title()).toBe(expectedTitle);
-        });
-
-        it('should resolve the message to the expected message', function(){
-          expect($modal.open.calls.first().args[0].resolve.message()).toBe(expectedMessage);
-        });
-
         it('should return the result', function(){
           expect(result).toBe('result');
         });
@@ -102,7 +94,7 @@ describe('fw-register-interest-button directive', function(){
 
         scope = $rootScope.$new();
 
-        element = angular.element('<fw-register-interest-button title="a" message="b" call-to-action="c"></fw-register-interest-button>');
+        element = angular.element('<fw-register-interest-button title="a" call-to-action="c"></fw-register-interest-button>');
         $compile(element)(scope);
         scope.$digest();
         isolateScope = element.isolateScope();

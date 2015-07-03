@@ -111,27 +111,6 @@ angular.module('webApp')
         }
       }
     },
-    features: {
-      name: 'features',
-      all: {
-        name: 'features.all'
-      },
-      forCreators: {
-        name: 'features.forCreators'
-      },
-      forSubscribers: {
-        name: 'features.forSubscribers'
-      },
-      vsPatreon: {
-        name: 'features.vsPatreon'
-      },
-      vsTapastic: {
-        name: 'features.vsTapastic'
-      },
-      vsWordPress: {
-        name: 'features.vsWordPress'
-      }
-    },
     about: {
       name: 'about',
       about: {
@@ -521,65 +500,6 @@ angular.module('webApp')
           bodyClass: 'page-guest-list',
           pageTitle: 'Guest List',
           headTitle: ': ' + 'Guest List'
-        }
-      })
-      .state(states.features.name, {
-        url: '/features',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.features.all.name
-      })
-      .state(states.features.all.name, {
-        url: '',
-        templateUrl: 'modules/information/pages/all-features.html',
-        data : {
-          headTitle: ': ' + 'Features',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.features.forCreators.name, {
-        url: '/for-creators',
-        templateUrl: 'modules/information/pages/for-creators.html',
-        data : {
-          headTitle: ': ' + 'For Creators',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.features.forSubscribers.name, {
-        url: '/for-subscribers',
-        templateUrl: 'modules/information/pages/for-subscribers.html',
-        data : {
-          headTitle: ': ' + 'For Subscribers',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.features.vsPatreon.name, {
-        url: '/patreon-comparison',
-        templateUrl: 'modules/information/pages/vs-patreon.html',
-        data : {
-          headTitle: ': ' + 'Patreon Comparison',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.features.vsTapastic.name, {
-        url: '/tapastic-comparison',
-        templateUrl: 'modules/information/pages/vs-tapastic.html',
-        data : {
-          headTitle: ': ' + 'Tapastic Comparison',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.features.vsWordPress.name, {
-        url: '/wordpress-comparison',
-        templateUrl: 'modules/information/pages/vs-wordpress.html',
-        data : {
-          headTitle: ': ' + 'WordPress Comparison',
-          navigationHidden: true,
-          bodyClass: 'info-page'
         }
       })
       .state(states.about.name, {

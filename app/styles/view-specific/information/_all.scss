@@ -20,24 +20,30 @@ $html-name-space:'.info-page';
 
   .modal-dialog {
     text-align: left;
+    p:last-child {
+      margin-bottom: 20px;
+    }
     .modal-content h4 {
       border:none;
       background: none;
       font-size: 25px;
       color:#4a4a4a;
     }
+    .btn {
+      height: auto;
+      border:none;
+      background-color: $green-light-1;
+      padding: 8px 14px;
+      &:hover {
+        background-color: lighten($green-light-1, 4%) !important;
+      }
+    }
     .btn-default {
       display: none;
     }
     .btn-continue {
       position: relative;
-      padding: 8px 26px 8px 14px;
-      height: auto;
-      border:none;
-      background-color: $green-light-1;
-      &:hover {
-        background-color: lighten($green-light-1, 4%) !important;
-      }
+      padding-right: 26px;
       &:after {
         position: absolute;
         content:"\f105";
