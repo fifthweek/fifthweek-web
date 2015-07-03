@@ -448,7 +448,7 @@ $html-name-space:'.info-page';
       }
 
       &.large, &.large-2 {
-        font-size: 45px;
+        font-size: 42px;
         font-family: 'Open Sans', sans-serif;
         font-weight: 700;
         letter-spacing: -2px;
@@ -459,7 +459,10 @@ $html-name-space:'.info-page';
         }
       }
       &.large-2 {
-        padding-bottom: 6px;
+        padding-bottom: 12px;
+        @media (min-width:$screen-ss-min) {
+          padding-bottom: 6px;
+        }
       }
       &.long {
         margin: 0 0 7px 0;
@@ -528,19 +531,32 @@ $html-name-space:'.info-page';
       }
     }
     h2.long, h2.long-2, h2.long-3 {
-      font-size: 40px;
+      font-size: 33px;
       letter-spacing: -2px;
       font-weight: normal;
       margin-bottom: 15px;
+
+      @media (min-width:$screen-ss-min) {
+        font-size: 40px;
+      }
     }
     h2.long-2 {
-      font-size: 35px;
       margin-bottom: 40px;
+
+      @media (min-width:$screen-ss-min) {
+        font-size: 35px;
+      }
     }
     h2.long-3 {
       letter-spacing: -1px;
-      font-size: 30px;
       margin-bottom: 12px;
+
+      font-size: 28px;
+
+      @media (min-width:$screen-ss-min) {
+        font-size: 30px;
+      }
+
     }
     h2.faded {
       opacity: 0.7;
