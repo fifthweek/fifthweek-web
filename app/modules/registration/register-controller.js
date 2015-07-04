@@ -1,8 +1,13 @@
 angular.module('webApp').controller('RegisterCtrl',
-  function($q, $scope, $state, calculatedStates, authenticationService) {
+  function($q, $scope, $state, analyticsEventConstants, calculatedStates, authenticationService) {
   'use strict';
 
     $scope.registrationSucceeded = false;
+
+    $scope.tracking = {
+      eventCategory: analyticsEventConstants.registration.category,
+      eventTitle: analyticsEventConstants.registration.title
+    };
 
     $scope.registrationData = {
       email: '',

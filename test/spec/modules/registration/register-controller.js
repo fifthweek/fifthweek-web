@@ -48,6 +48,11 @@ describe('registration controller', function() {
   function initializeTarget() {
   }
 
+  it('should contain tracking data on creation', function() {
+    expect(scope.tracking.eventCategory).toBe('Registration');
+    expect(scope.tracking.eventTitle).toBe('Registered');
+  });
+
   it('should contain empty registration data on creation', function() {
     expect(scope.registrationData.email).toBe('');
     expect(scope.registrationData.username).toBe('');

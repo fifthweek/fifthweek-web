@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'registerInterestDialogCtrl',
-  function($q, $scope, membershipStub, identifiedUserNotifierConstants, attributes) {
+  function($q, $scope, membershipStub, identifiedUserNotifierConstants, analyticsEventConstants, attributes) {
     'use strict';
 
     var pages = $scope.pages = {
@@ -8,19 +8,13 @@ angular.module('webApp').controller(
       done: 1
     };
 
-    var modeOptions;
+    var trackingEventTitle;
 
     if (attributes.mode === 'register') {
-      modeOptions = {
-        twitterConversion: 'l6dxw',
-        analyticsConversion: 'Faux Registered'
-      };
+      trackingEventTitle = analyticsEventConstants.interestRegistration.titleFauxRegistered;
     }
     else if (attributes.mode === 'pricing') {
-      modeOptions = {
-        twitterConversion: 'l6dy3',
-        analyticsConversion: 'Pricing Requested'
-      };
+      trackingEventTitle = analyticsEventConstants.interestRegistration.titlePricingRequested;
     }
     else {
       throw new FifthweekError('Invalid interest mode');
@@ -31,8 +25,8 @@ angular.module('webApp').controller(
       title: attributes.title,
       buttonText: attributes.buttonText,
       mode: attributes.mode,
-      trackingEvent: modeOptions.analyticsConversion,
-      trackingEventTwitter: modeOptions.twitterConversion,
+      trackingEventTitle: trackingEventTitle,
+      trackingEventCategory: analyticsEventConstants.interestRegistration.category,
       input: {
         name: '',
         email: ''

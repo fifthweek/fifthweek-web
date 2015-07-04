@@ -16,13 +16,8 @@ angular.module('webApp').factory('wrapUserAction', function($q, errorFacade, ana
             return;
           }
 
-          var eventTwitter = actionMetadata.eventTwitter;
           var eventTitle = actionMetadata.eventTitle;
           var eventCategory = actionMetadata.eventCategory;
-
-          if (eventTwitter) {
-            analytics.twitterTrack(eventTwitter);
-          }
 
           if(eventTitle && eventCategory) {
             return analytics.eventTrack(eventTitle,  eventCategory).then(function() {

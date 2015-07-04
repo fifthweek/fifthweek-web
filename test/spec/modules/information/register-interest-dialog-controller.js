@@ -7,6 +7,7 @@ describe('register-interest-dialog-controller', function () {
   var target;
 
   var identifiedUserNotifierConstants;
+  var analyticsEventConstants;
   var membershipStub;
   var attributes;
 
@@ -29,6 +30,7 @@ describe('register-interest-dialog-controller', function () {
       $scope = $injector.get('$rootScope').$new();
       $controller = $injector.get('$controller');
       identifiedUserNotifierConstants = $injector.get('identifiedUserNotifierConstants');
+      analyticsEventConstants = $injector.get('analyticsEventConstants');
     });
 
     $scope.$close = function(){};
@@ -70,15 +72,15 @@ describe('register-interest-dialog-controller', function () {
     it('should set registration events', function () {
       attributes.mode = 'register';
       initializeTarget();
-      expect($scope.model.trackingEventTwitter).toBe('l6dxw');
-      expect($scope.model.trackingEvent).toBe('Faux Registered');
+      expect($scope.model.trackingEventTitle).toBe('Faux Registered');
+      expect($scope.model.trackingEventCategory).toBe('Interest Registration');
     });
 
     it('should set registration events', function () {
       attributes.mode = 'pricing';
       initializeTarget();
-      expect($scope.model.trackingEventTwitter).toBe('l6dy3');
-      expect($scope.model.trackingEvent).toBe('Pricing Requested');
+      expect($scope.model.trackingEventTitle).toBe('Pricing Requested');
+      expect($scope.model.trackingEventCategory).toBe('Interest Registration');
     });
   });
 

@@ -1,4 +1,4 @@
-angular.module('webApp').run(function(analytics, $rootScope, identifiedUserNotifierConstants) {
+angular.module('webApp').run(function(analytics, $rootScope, identifiedUserNotifierConstants, analyticsEventConstants) {
   'use strict';
 
   function getParameterByName(name) {
@@ -36,7 +36,8 @@ angular.module('webApp').run(function(analytics, $rootScope, identifiedUserNotif
       eventCategory());
   }
 
-  // Track 'Site Visit' goal on Twitter.
-  analytics.twitterTrack('l6dxz');
+  analytics.eventTrack(
+    analyticsEventConstants.abstract.titleSiteVisited,
+    analyticsEventConstants.abstract.category);
 });
 

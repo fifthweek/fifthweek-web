@@ -55,7 +55,6 @@ angular.module('webApp').directive('fwFormSubmit',
         }
 
         var submitMetadata = {
-          eventTwitter: element.data('event-twitter'),
           eventTitle: element.data('event-title'),
           eventCategory: element.data('event-category')
         };
