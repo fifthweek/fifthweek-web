@@ -2,6 +2,9 @@
   'use strict';
 
   angular.module('angulartics.afterFirstPageTrack', ['angulartics'])
+    .factory('initialQueryParams', function($q) {
+      return $q.defer();
+    })
     .config(['$analyticsProvider', function ($analyticsProvider) {
 
       var isFirstPageTrack = true;
@@ -18,8 +21,9 @@
           // Possibly a better way to do this...
           var injector = angular.element(document.body).injector();
           var $location = injector.get('$location');
+          var initialQueryParams = injector.get('initialQueryParams');
 
-          var parameters = $location.search();
+          var parameters = _.cloneDeep($location.search());
           var parametersToRemove = [
             'emailed_to',
             'utm_campaign',
@@ -33,6 +37,9 @@
               $location.search(parameterToRemove, null);
             }
           });
+
+          // Ensure other services can see what these parameters were.
+          initialQueryParams.resolve(parameters);
         }
       });
     }]);
