@@ -12,6 +12,7 @@ angular
     'snap',
     'monospaced.elastic',
     'angulartics',
+    'angulartics.afterFirstPageTrack',
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',
     'angulartics.kissmetrics',

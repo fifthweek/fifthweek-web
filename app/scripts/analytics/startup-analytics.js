@@ -19,9 +19,6 @@ angular.module('webApp').run(function(analytics, $rootScope, $location, identifi
       'last opened email from': emailAddress
     });
 
-    // Remove from URL.
-    $location.search('emailed_to', null);
-
     $rootScope.$emit(identifiedUserNotifierConstants.eventName, { email: emailAddress });
   }
 
