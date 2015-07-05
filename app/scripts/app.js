@@ -36,4 +36,9 @@ angular
       disable: 'right',
       touchToDrag: false
     };
+  })
+  .config(function ($analyticsProvider) {
+    // This is true by default, for supporting sites that don't use $state or $route.
+    // However, if left enabled for site that do, then a double event is fired on initial load.
+    $analyticsProvider.firstPageview(false);
   });
