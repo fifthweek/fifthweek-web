@@ -19,7 +19,7 @@ angular.module('webApp').factory('analytics',
 
     var eventTrackTwitter = function(eventData) {
       return safeAsyncExecute(function() {
-        return twttr.conversion.trackPid(eventData.eventTitle, { tw_sale_amount: 0, tw_order_quantity: 0 });
+        return window.twttr.conversion.trackPid(eventData.eventTitle, { tw_sale_amount: 0, tw_order_quantity: 0 });
       });
     };
 
