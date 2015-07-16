@@ -97,8 +97,7 @@ angular.module('webApp')
           return postsStub.getCreatorBacklog(internal.timelineUserId)
             .then(function(response){
               return $q.when({
-                posts: response.data,
-                accountBalance: undefined
+                posts: response.data
               });
             });
         };

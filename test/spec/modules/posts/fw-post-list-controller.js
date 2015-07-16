@@ -178,8 +178,7 @@ describe('fw-post-list-controller', function(){
       describe('when updateInParallel succeeds', function(){
         beforeEach(function(){
           deferredUpdateInParallel.resolve({
-            posts: 'posts',
-            accountBalance: 'accountBalance'
+            posts: 'posts'
           });
           $scope.$apply();
         });
@@ -206,10 +205,6 @@ describe('fw-post-list-controller', function(){
 
             it('should assign posts to the model', function(){
               expect($scope.model.posts).toBe('posts');
-            });
-
-            it('should assign account balance to the model', function(){
-              expect($scope.model.accountBalance).toBe('accountBalance');
             });
 
             it('should complete successfully', function(){
@@ -303,7 +298,7 @@ describe('fw-post-list-controller', function(){
           });
 
           it('should return the result', function(){
-            expect(result).toEqual({posts: 'data', accountBalance: undefined});
+            expect(result).toEqual({posts: 'data'});
           });
         });
       });
