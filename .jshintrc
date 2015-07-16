@@ -38,6 +38,8 @@
     "ConnectionError": false,
     "DisplayableError": false,
     "ActiveXObject": false,
-    "_": false
+    "_": false,
+    "Stripe": false,
+    "Taxamo": false
   }
 }
