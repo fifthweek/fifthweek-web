@@ -26,7 +26,7 @@ angular.module('webApp')
     };
 
     internal.createFailedToDetermineCountryError = function(){
-      new FifthweekError(
+      return new FifthweekError(
         'Failed to determine country with three pieces of evidence: ' +
         internal.paymentOrigin.countryCode + ', ' +
         internal.paymentOrigin.creditCardPrefix + ', ' +
@@ -59,6 +59,8 @@ angular.module('webApp')
           else{
             return $q.reject(internal.createFailedToDetermineCountryError());
           }
+
+          return $q.when();
         });
     };
 
@@ -76,7 +78,7 @@ angular.module('webApp')
     internal.stripeResponseHandler = function(status, response){
       if (response.error){
         model.errorMessage = response.error.message;
-        return;
+        return $q.when();
       }
 
       internal.token = response;
@@ -99,7 +101,6 @@ angular.module('webApp')
     };
 
     $scope.confirmTransaction = function(){
-
       return paymentsStub.putPaymentOrigin(model.userId, internal.paymentOrigin)
         .then(function(){
           var data = {
@@ -136,10 +137,12 @@ angular.module('webApp')
     this.initialize = function() {
       return accountSettingsRepository.getAccountSettings()
         .then(function(accountSettings){
-          model.isLoaded = true;
           model.hasPaymentInformation = accountSettings.hasPaymentInformation;
           model.hasPaymentFailed = accountSettings.paymentStatus === 'Failed';
           model.email = accountSettings.email;
+        })
+        .finally(function(){
+          model.isLoaded = true;
         });
     };
   });
