@@ -113,7 +113,91 @@ describe('fw-post-list-controller', function(){
     });
 
     describe('when populateCreatorInformation is called', function(){
+      describe('when current user is creator', function(){
+        var result;
+        var error;
+        var deferredPopulateCurrentCreatorInformation;
+        beforeEach(function(){
+          target.internal.timelineUserId = target.internal.currentUserId;
 
+          result = undefined;
+          error = undefined;
+          deferredPopulateCurrentCreatorInformation = $q.defer();
+          postUtilities.populateCurrentCreatorInformation.and.returnValue(deferredPopulateCurrentCreatorInformation.promise);
+
+          target.internal.populateCreatorInformation('posts').then(function(r){ result = r; }, function(e) { error = e; });
+          $scope.$apply();
+        });
+
+        it('should call populateCurrentCreatorInformation', function(){
+          expect(postUtilities.populateCurrentCreatorInformation).toHaveBeenCalledWith('posts', accountSettingsRepository, blogRepository);
+        });
+
+        describe('when populateCurrentCreatorInformation succeeds', function(){
+          beforeEach(function(){
+            deferredPopulateCurrentCreatorInformation.resolve('result');
+            $scope.$apply();
+          });
+
+          it('should complete successfully', function(){
+            expect(result).toBe('result');
+          });
+        });
+
+        describe('when populateCurrentCreatorInformation fails', function(){
+          beforeEach(function(){
+            deferredPopulateCurrentCreatorInformation.reject('error');
+            $scope.$apply();
+          });
+
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
+          });
+        });
+      });
+
+      describe('when current user is not creator', function(){
+        var result;
+        var error;
+        var deferredPopulateCreatorInformation;
+        beforeEach(function(){
+          target.internal.timelineUserId = 'anotherUserId';
+
+          result = undefined;
+          error = undefined;
+          deferredPopulateCreatorInformation = $q.defer();
+          postUtilities.populateCreatorInformation.and.returnValue(deferredPopulateCreatorInformation.promise);
+
+          target.internal.populateCreatorInformation('posts').then(function(r){ result = r; }, function(e) { error = e; });
+          $scope.$apply();
+        });
+
+        it('should call populateCreatorInformation', function(){
+          expect(postUtilities.populateCreatorInformation).toHaveBeenCalledWith('posts', subscriptionRepository);
+        });
+
+        describe('when populateCreatorInformation succeeds', function(){
+          beforeEach(function(){
+            deferredPopulateCreatorInformation.resolve('result');
+            $scope.$apply();
+          });
+
+          it('should complete successfully', function(){
+            expect(result).toBe('result');
+          });
+        });
+
+        describe('when populateCreatorInformation fails', function(){
+          beforeEach(function(){
+            deferredPopulateCreatorInformation.reject('error');
+            $scope.$apply();
+          });
+
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
+          });
+        });
+      });
     });
 
     describe('when loadPosts is called', function(){
