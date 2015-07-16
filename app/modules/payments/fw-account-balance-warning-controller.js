@@ -44,7 +44,7 @@ angular.module('webApp')
       $scope.$on(aggregateUserStateConstants.updatedEvent, internal.load);
 
       return internal.load()
-        .then(function(){
+        .finally(function(){
           model.isLoaded = true;
         });
     };

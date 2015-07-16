@@ -1,4 +1,4 @@
-fdescribe('fw-account-balance-warning-controller', function(){
+describe('fw-account-balance-warning-controller', function(){
   'use strict';
 
   var $q;
@@ -458,8 +458,8 @@ fdescribe('fw-account-balance-warning-controller', function(){
           $scope.$apply();
         });
 
-        it('should not set isLoaded to true', function(){
-          expect($scope.model.isLoaded).toBe(false);
+        it('should set isLoaded to true', function(){
+          expect($scope.model.isLoaded).toBe(true);
         });
 
         it('should propagate error', function(){
