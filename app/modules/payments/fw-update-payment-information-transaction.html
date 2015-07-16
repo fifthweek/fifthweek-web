@@ -1,0 +1,34 @@
+<form novalidate
+      id="form"
+      role="form"
+      name="form">
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <p ng-if="model.creditRequestSummary.calculation.amount === model.creditRequestSummary.subscriptionsAmount">
+      We will top up your account with
+      <strong><fw-price value="model.creditRequestSummary.calculation.amount" show-interval="false"></fw-price></strong>
+      to cover your week's subscriptions. Once this has run down, we will automatically top up your account again.
+  </p>
+  <p ng-if="model.creditRequestSummary.calculation.amount !== model.creditRequestSummary.subscriptionsAmount">
+      We will top up your account with
+      <strong><fw-price value="model.creditRequestSummary.calculation.amount" show-interval="false"></fw-price></strong>, which is
+      our minimum charge. Once this has run down, we will automatically top up your account again.
+  </p>
+
+  <p ng-if="model.creditRequestSummary.calculation.amount !== model.creditRequestSummary.calculation.totalAmount">
+      As you are in the {{model.creditRequestSummary.calculation.countryName}}, we are required to charge you
+      VAT of {{model.creditRequestSummary.calculation.taxRate}}%.
+      The total amount charged to your credit card will therefore be
+      <strong><fw-price value="model.creditRequestSummary.calculation.totalAmount" show-interval="false"></fw-price></strong>
+      including VAT.
+  </p>
+
+  <button type="submit"
+          class="btn btn-block btn-success"
+          data-loading-text="Please wait..."
+          data-event-title="Transaction confirmed"
+          data-event-category="Payment information"
+          fw-form-submit="confirmTransaction()"
+          can-submit="true"
+          error-message="model.errorMessage">Confirm</button>
+</form>

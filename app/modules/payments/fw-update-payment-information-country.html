@@ -1,0 +1,26 @@
+<form novalidate
+      id="form"
+      role="form"
+      name="form">
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <p><strong>Country of Residence</strong></p>
+  <div ng-repeat="country in model.creditRequestSummary.calculation.possibleCountries">
+    <button type="submit"
+            class="btn btn-block btn-success country-selection-button"
+            data-loading-text="Verifying..."
+            data-event-title="Country Code saved"
+            data-event-category="Payment information"
+            fw-form-submit="confirmCountry(country.countryCode)"
+            can-submit="true"
+            error-message="model.errorMessage">{{country.name}}</button>
+  </div>
+  <button type="submit"
+          class="btn btn-block btn-default"
+          data-loading-text="Verifying..."
+          data-event-title="Country Code saved"
+          data-event-category="Payment information"
+          fw-form-submit="failConfirmCountry()"
+          can-submit="true"
+          error-message="model.errorMessage">I live in another country</button>
+</form>

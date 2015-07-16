@@ -1,0 +1,9 @@
+<div class="payment-information-form" ng-if="!model.hasPaymentInformation || model.hasPaymentFailed">
+
+  <div ng-if="model.mode === modes.paymentInformation" ng-include="'modules/payments/fw-update-payment-information-form.html'"></div>
+  <div ng-if="model.mode === modes.countryVerification" ng-include="'modules/payments/fw-update-payment-information-country.html'"></div>
+  <div ng-if="model.mode === modes.transactionVerification" ng-include="'modules/payments/fw-update-payment-information-transaction.html'"></div>
+  <div ng-if="model.mode === modes.countryFailure" ng-include="'modules/payments/fw-update-payment-information-country-failure.html'"></div>
+  <div ng-if="model.mode === modes.success" ng-include="'modules/payments/fw-update-payment-information-success.html'"></div>
+
+</div>

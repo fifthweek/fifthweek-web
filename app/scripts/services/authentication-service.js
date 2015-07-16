@@ -6,7 +6,8 @@ angular.module('webApp')
     roles: {
       creator: 'creator',
       administrator: 'administrator',
-      preRelease: 'pre-release'
+      preRelease: 'pre-release',
+      testUser: 'test-user'
     }
   })
   .factory('authenticationService', function(authenticationServiceImpl){

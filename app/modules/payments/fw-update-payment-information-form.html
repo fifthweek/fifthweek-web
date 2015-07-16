@@ -1,0 +1,71 @@
+<form novalidate
+      id="form"
+      role="form"
+      name="form">
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <fw-form-group>
+    <div class="row">
+      <div class="col-sm-6 col-ss-8">
+        <div fw-form-input-glyphs>
+          <input id="cc-number"
+                 type="tel"
+                 class="form-control cc-number"
+                 ng-class="form.creditCardNumber.$card.type"
+                 name="creditCardNumber"
+                 placeholder="Card number"
+                 payments-validate="card"
+                 payments-format="card"
+                 payments-type-model="type"
+                 autocomplete="cc-number"
+                 ng-model="model.input.creditCardNumber"
+                 required>
+        </div>
+      </div>
+    </div>
+  </fw-form-group>
+  <div class="row">
+    <div class="col-sm-3 col-ss-4 col-xs-6">
+      <fw-form-group>
+        <div fw-form-input-glyphs>
+          <input id="cc-exp"
+                 type="tel"
+                 class="form-control cc-exp"
+                 name="expiry"
+                 placeholder="MM / YY"
+                 payments-validate="expiry"
+                 payments-format="expiry"
+                 autocomplete="cc-exp"
+                 ng-model="model.input.expiry"
+                 required>
+        </div>
+      </fw-form-group>
+    </div>
+    <div class="col-sm-3 col-ss-4 col-xs-6">
+      <fw-form-group>
+        <div fw-form-input-glyphs>
+          <input id="cc-cvc"
+                 type="tel"
+                 class="form-control cc-cvc"
+                 name="cvc"
+                 placeholder="CVC"
+                 payments-validate="cvc"
+                 payments-format="cvc"
+                 payments-type-model="type"
+                 autocomplete="off"
+                 ng-model="model.input.cvc"
+                 required>
+        </div>
+      </fw-form-group>
+    </div>
+  </div>
+
+  <button type="submit"
+          id="update-payment-information-button"
+          class="btn btn-block btn-success"
+          data-loading-text="Verifying..."
+          data-event-title="Payment information saved"
+          data-event-category="Payment information"
+          fw-form-submit="submit()"
+          error-message="model.errorMessage">Continue</button>
+</form>

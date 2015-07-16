@@ -118,6 +118,7 @@
     <script src="bower_components/marked/lib/marked.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/ng-videosharing-embed/build/ng-videosharing-embed.min.js"></script>
+    <script src="bower_components/angular-payments/lib/angular-payments.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -125,7 +126,7 @@
     <!--[if !IE | gte IE 10 ]><!-->
     <script src="scripts/generated/api.js"></script>
     <script src="scripts/generated/developer.js"></script>
-    <script src="scripts/generated/subscribe.js"></script>
+    <script src="scripts/generated/stripe-keys.js"></script>
 
     <script src="scripts/errors.js"></script>
     <script src="scripts/app.js"></script>
@@ -221,6 +222,12 @@
     <script src="modules/blog/directives/fw-form-input-blog-name.js"></script>
     <script src="modules/blog/directives/fw-form-input-tagline.js"></script>
 
+    <script src="modules/payments/fw-account-balance-warning.js"></script>
+    <script src="modules/payments/fw-account-balance-warning-controller.js"></script>
+    <script src="modules/payments/fw-update-payment-information.js"></script>
+    <script src="modules/payments/fw-update-payment-information-controller.js"></script>
+    <script src="modules/payments/stripe-service.js"></script>
+
     <script src="scripts/controllers/signin.js"></script>
     <script src="scripts/controllers/signin-forgot.js"></script>
     <script src="scripts/controllers/signin-reset.js"></script>
@@ -305,6 +312,8 @@
     <script src="scripts/analytics/analytics-twitter-constants.js"></script>
     <script src="scripts/analytics/analytics-wrapper.js"></script>
     <script src="scripts/analytics/startup-analytics.js"></script>
+
+    <script src="https://js.stripe.com/v2/"></script>
     <!--<![endif]-->
     <!-- endbuild -->
 

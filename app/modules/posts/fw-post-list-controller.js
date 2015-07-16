@@ -38,11 +38,9 @@ angular.module('webApp')
       var getNextPosts = function() { return internal.loadNext(0, 1000); };
 
       var posts;
-      var accountBalance;
       return fetchAggregateUserState.updateInParallel(internal.currentUserId, getNextPosts)
         .then(function(result) {
           posts = result.posts;
-          accountBalance = result.accountBalance;
           return internal.populateCreatorInformation(posts);
         })
         .then(function(){
@@ -50,7 +48,6 @@ angular.module('webApp')
         })
         .then(function(){
           model.posts = posts;
-          model.accountBalance = accountBalance;
         })
         .catch(function(error){
           model.posts = undefined;

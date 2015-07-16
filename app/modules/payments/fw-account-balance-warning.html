@@ -1,0 +1,23 @@
+
+<fw-panel12 ng-if="model.isLoaded && displayingAccountBalanceWarning">
+  <h4>Update Payment Information</h4>
+
+  <fw-error-message ng-if="model.paymentFailed" value="'Your current payment information could not be used.'">
+  </fw-error-message>
+
+  <fw-update-payment-information></fw-update-payment-information>
+
+  <div class="bs-callout-primary account-balance-warning">
+    <h4 ng-if="!model.hasPaymentInformation">We do not have any payment information for you.</h4>
+    <h4 ng-if="model.hasPaymentInformation">You currently have no credit in your account.</h4>
+
+    <p ng-if="model.hasFreeAccessBlogs">You will still be able to see posts from blogs if you are on their guest list.</p>
+
+  <p>We will use your payment information to top up your account with enough credit
+    for your current Fifthweek subscriptions.  When your credit runs out, we will automatically top you
+    up again.</p>
+  <p>If your subscriptions come to less than
+    our minimum charge of <fw-price value="500" show-interval="false"></fw-price>,
+    then we will top you up with <fw-price value="500" show-interval="false"></fw-price> instead.</p>
+  </div>
+</fw-panel12>

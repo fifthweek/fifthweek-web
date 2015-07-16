@@ -1,0 +1,62 @@
+@import '_base';
+
+.account-balance-warning{
+  margin-top: 40px;
+  margin-bottom: 0;
+}
+
+.payment-information-form {
+  $background-size: auto 50%;
+  $background-repeat: no-repeat;
+  $background-position-x: 84%;
+  $background-position-y: 50%;
+
+  .visa {
+    background-image: url('https://b.stripecdn.com/checkout/v3/images/cards/visa-PN8VNASAyUCxB1J1kpg1fQ.png');
+    background-size: $background-size;
+    background-repeat: $background-repeat;
+    background-position-x: $background-position-x;
+    background-position-y: $background-position-y;
+  }
+  .amex {
+    background-image: url('https://b.stripecdn.com/checkout/v3/images/cards/amex-rCwsUgG9VyC8v8BdohM3Rw.png');
+    background-size: $background-size;
+    background-repeat: $background-repeat;
+    background-position-x: $background-position-x;
+    background-position-y: $background-position-y;
+  }
+  .mastercard {
+    background-image: url('https://b.stripecdn.com/checkout/v3/images/cards/mastercard-HVnFbrioF3RgUWZV0DcA.png');
+    background-size: $background-size;
+    background-repeat: $background-repeat;
+    background-position-x: $background-position-x;
+    background-position-y: $background-position-y;
+  }
+  .discover {
+    background-image: url('https://b.stripecdn.com/checkout/v3/images/cards/discover-GhYYu271VuO3llRQeCQA.png');
+    background-size: $background-size;
+    background-repeat: $background-repeat;
+    background-position-x: $background-position-x;
+    background-position-y: $background-position-y;
+  }
+  .dinersclub {
+    background-image: url('https://b.stripecdn.com/checkout/v3/images/cards/diners-rzdCy07VGt8190Sl9Vt7ag.png');
+    background-size: $background-size;
+    background-repeat: $background-repeat;
+    background-position-x: $background-position-x;
+    background-position-y: $background-position-y;
+  }
+  .jcb {
+    background-image: url('https://b.stripecdn.com/checkout/v3/images/cards/jcb-oXQoEoicpg7Sh8tItANTpg.png');
+    background-size: $background-size;
+    background-repeat: $background-repeat;
+    background-position-x: $background-position-x;
+    background-position-y: $background-position-y;
+  }
+
+
+  .country-selection-button{
+    margin-bottom: 10px;
+  }
+}
+

@@ -85,7 +85,7 @@ angular.module('webApp').factory('subscribeService',
     };
 
     internal.isGuestListOnly = function(){
-      return !window.enableSubscribe;
+      return false;
     };
 
     internal.getSubscribedChannels = function(blog){

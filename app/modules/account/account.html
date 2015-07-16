@@ -8,6 +8,12 @@
     <fw-error-message value="model.errorMessage"></fw-error-message>
 
     <div ng-show="model.accountSettings">
+      <div class="bs-callout-primary">
+        <p>
+          Your account balance is currently <fw-price value="model.accountSettings.accountBalance" show-interval="false"></fw-price>
+        </p>
+      </div>
+
       <div class="form-group form-group-has-buffers">
         <label>Profile Image</label>
         <div class="row">
