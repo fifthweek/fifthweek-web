@@ -52,6 +52,15 @@ angular.module('webApp')
       }
     };
 
+    service.fixUri = function(uri) {
+      // Having a final & on a query string can trip up ASP.NET
+      if(uri.slice(-1) === '&'){
+        return uri.substring(0, uri.length - 1);
+      }
+
+      return uri;
+    };
+
     service.getFriendlyErrorMessage = function(error){
       if(error instanceof DisplayableError){
         // These error messages are fine to display.
