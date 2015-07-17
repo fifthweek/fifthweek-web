@@ -12,6 +12,7 @@
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
   var SignInWorkflowPage = require('../pages/sign-in-workflow.page.js');
   var PostListInformationPage = require('../pages/post-list-information.page.js');
+  var PaymentInformationPage = require('../pages/payment-information.page.js');
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
@@ -23,6 +24,7 @@
   var landingPage = new CreatorLandingPagePage();
   var signInWorkflow = new SignInWorkflowPage();
   var postListInformation = new PostListInformationPage();
+  var paymentInformationPage = new PaymentInformationPage();
 
   describe('subscription management', function() {
 
@@ -59,6 +61,22 @@
       }
     };
 
+    var addCreditToUserAccount = function(userRegistration){
+
+      var context = commonWorkflows.createBlog();
+      var tempCreatorRegistration = context.registration;
+
+      commonWorkflows.reSignIn(userRegistration);
+      navigateToCreatorLandingPage(tempCreatorRegistration);
+      landingPage.subscribeButton.click();
+
+      paymentInformationPage.completeSuccessfully();
+
+      landingPage.manageSubscriptionButton.click();
+      landingPage.unsubscribeButton.click();
+      navigateFromCreatorLandingPage();
+    };
+
     describe('when testing subscription buttons', function(){
 
       var blog;
@@ -67,6 +85,7 @@
 
       it('should register as a user', function() {
         userRegistration = commonWorkflows.register();
+        addCreditToUserAccount(userRegistration);
       });
 
       it('should register as a creator', function() {
@@ -290,6 +309,7 @@
 
       it('should register as a user', function() {
         userRegistration = commonWorkflows.register();
+        addCreditToUserAccount(userRegistration);
       });
 
       it('should register as a creator', function() {
@@ -666,6 +686,7 @@
       describe('when testing subscribing while not on the guest list', function(){
         it('latest posts should not contain any posts when the user is not subscribed to any creators', function() {
           userRegistration = commonWorkflows.register();
+          addCreditToUserAccount(userRegistration);
           navigateToLatestPosts();
           expectLatestPostCount(0);
         });
@@ -692,6 +713,7 @@
 
       it('should register as a user', function() {
         userRegistration = commonWorkflows.registerAsConsumer();
+        addCreditToUserAccount(userRegistration);
       });
 
       it('should register as a creator 1', function() {

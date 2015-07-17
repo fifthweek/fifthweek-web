@@ -7,6 +7,7 @@
   <p><strong>Country of Residence</strong></p>
   <div ng-repeat="country in model.creditRequestSummary.calculation.possibleCountries">
     <button type="submit"
+            id="select-country-{{$index}}"
             class="btn btn-block btn-success country-selection-button"
             data-loading-text="Verifying..."
             data-event-title="Country Code saved"
@@ -16,6 +17,7 @@
             error-message="model.errorMessage">{{country.name}}</button>
   </div>
   <button type="submit"
+          id="select-country-other"
           class="btn btn-block btn-default"
           data-loading-text="Verifying..."
           data-event-title="Country Code saved"
