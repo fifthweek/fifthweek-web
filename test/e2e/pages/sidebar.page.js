@@ -15,6 +15,7 @@ SidebarPage.prototype = Object.create({}, {
   channelsLink: { get: function () { return element(by.id('sidebar-navigation-channels')); }},
   subscribersLink: { get: function () { return element(by.id('sidebar-navigation-subscribers')); }},
   accountLink: { get: function () { return element(by.id('sidebar-navigation-account')); }},
+  subscriptionsLink: { get: function () { return element(by.id('sidebar-navigation-subscriptions')); }},
   helpLink: { get: function () { return element(by.id('sidebar-navigation-help')); }},
 
   includeEstablishedCreatorTests: { value: function(highlightedLink) {
@@ -22,7 +23,7 @@ SidebarPage.prototype = Object.create({}, {
 
     describe('sidebar', function() {
       it('should contain the correct number of links', function () {
-        expect(self.links.count()).toBe(8);
+        expect(self.links.count()).toBe(9);
       });
 
       it('should contain "Read Now" link', function () {
@@ -53,6 +54,10 @@ SidebarPage.prototype = Object.create({}, {
         expect(self.accountLink.isDisplayed()).toBe(true);
       });
 
+      it('should contain "Subscriptions" link', function () {
+        expect(self.subscriptionsLink.isDisplayed()).toBe(true);
+      });
+
       it('should contain "Help" link', function () {
         expect(self.helpLink.isDisplayed()).toBe(true);
       });
@@ -70,7 +75,7 @@ SidebarPage.prototype = Object.create({}, {
 
     describe('consumer sidebar', function() {
       it('should contain the correct number of links', function () {
-        expect(self.links.count()).toBe(4);
+        expect(self.links.count()).toBe(5);
       });
 
       it('should contain "Read Now" link', function () {
@@ -83,6 +88,10 @@ SidebarPage.prototype = Object.create({}, {
 
       it('should contain "Account" link', function () {
         expect(self.accountLink.isDisplayed()).toBe(true);
+      });
+
+      it('should contain "Subscriptions" link', function () {
+        expect(self.subscriptionsLink.isDisplayed()).toBe(true);
       });
 
       it('should contain "Help" link', function () {
@@ -102,7 +111,7 @@ SidebarPage.prototype = Object.create({}, {
 
     describe('consumer sidebar', function() {
       it('should contain the correct number of links', function () {
-        expect(self.links.count()).toBe(3);
+        expect(self.links.count()).toBe(4);
       });
 
       it('should contain "Read Now" link', function () {
@@ -111,6 +120,10 @@ SidebarPage.prototype = Object.create({}, {
 
       it('should contain "Account" link', function () {
         expect(self.accountLink.isDisplayed()).toBe(true);
+      });
+
+      it('should contain "Subscriptions" link', function () {
+        expect(self.subscriptionsLink.isDisplayed()).toBe(true);
       });
 
       it('should contain "Help" link', function () {

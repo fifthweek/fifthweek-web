@@ -606,14 +606,6 @@ describe('fw-update-payment-information-controller', function(){
           $scope.$apply();
         });
 
-        it('should set success to true', function(){
-          expect($scope.model.success).toBe(true);
-        });
-
-        it('should call resetForm', function(){
-          expect(target.internal.resetForm).toHaveBeenCalledWith();
-        });
-
         it('should call updateFromServer', function(){
           expect(fetchAggregateUserState.updateFromServer).toHaveBeenCalledWith('userId');
         });
@@ -622,6 +614,14 @@ describe('fw-update-payment-information-controller', function(){
           beforeEach(function(){
             deferredUpdateFromServer.resolve();
             $scope.$apply();
+          });
+
+          it('should set success to true', function(){
+            expect($scope.model.success).toBe(true);
+          });
+
+          it('should call resetForm', function(){
+            expect(target.internal.resetForm).toHaveBeenCalledWith();
           });
 
           it('should complete successfully', function(){
@@ -675,6 +675,8 @@ describe('fw-update-payment-information-controller', function(){
         fetchAggregateUserState.updateFromServer.and.returnValue(deferredUpdateFromServer.promise);
 
         target.internal.paymentOrigin = 'paymentOrigin';
+        spyOn(target.internal, 'resetForm');
+
         $scope.confirmTransaction().then(function(){ success = true; }, function(e) { error = e; });
         $scope.$apply();
       });
@@ -714,6 +716,14 @@ describe('fw-update-payment-information-controller', function(){
             beforeEach(function(){
               deferredUpdateFromServer.resolve();
               $scope.$apply();
+            });
+
+            it('should set success to true', function(){
+              expect($scope.model.success).toBe(true);
+            });
+
+            it('should call resetForm', function(){
+              expect(target.internal.resetForm).toHaveBeenCalledWith();
             });
 
             it('should complete successfully', function(){

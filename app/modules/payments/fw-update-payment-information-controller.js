@@ -48,9 +48,11 @@ angular.module('webApp')
     internal.updatePaymentInformationWithoutCharge = function(){
       return paymentsStub.putPaymentOrigin(model.userId, internal.paymentOrigin)
         .then(function(){
+          return fetchAggregateUserState.updateFromServer(model.userId);
+        })
+        .then(function(){
           model.success = true;
           internal.resetForm();
-          return fetchAggregateUserState.updateFromServer(model.userId);
         });
     };
 
@@ -138,6 +140,10 @@ angular.module('webApp')
         })
         .then(function(){
           return fetchAggregateUserState.updateFromServer(model.userId);
+        })
+        .then(function(){
+          model.success = true;
+          internal.resetForm();
         })
         .catch(internal.handleError);
     };

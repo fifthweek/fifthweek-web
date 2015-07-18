@@ -22,16 +22,77 @@
   var subscribersHeader = new SubscribersHeaderPage();
   var guestListPage = new GuestListPage();
 
-  describe('payment information form', function() {
+  var navigateToCreatorLandingPage = function (creator) {
+    commonWorkflows.getPage('/' + creator.username);
+  };
 
-    var navigateToCreatorLandingPage = function (creator) {
-      commonWorkflows.getPage('/' + creator.username);
-    };
+  var navigateFromCreatorLandingPage = function () {
+    testKit.scrollIntoView(landingPage.fifthweekLink);
+    landingPage.fifthweekLink.click();
+  };
 
-    var navigateFromCreatorLandingPage = function () {
-      testKit.scrollIntoView(landingPage.fifthweekLink);
-      landingPage.fifthweekLink.click();
-    };
+  describe('update payment information form', function() {
+
+    var blog;
+    var creatorRegistration1;
+    var userRegistration;
+
+    it('should register as a user', function() {
+      userRegistration = commonWorkflows.register();
+    });
+
+    it('should register as a creator', function() {
+      var context = commonWorkflows.createBlog();
+      blog = context.blog;
+      creatorRegistration1 = context.registration;
+    });
+
+    it('should contain zero account balance', function(){
+      commonWorkflows.reSignIn(userRegistration);
+      sidebar.accountLink.click();
+      expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
+    });
+
+    it('should not submit form if invalid', function(){
+      sidebar.subscriptionsLink.click();
+      paymentInformationPage.updatePaymentInformationButton.click();
+      paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
+    });
+
+    it('should not add credit if not enough evidence for country', function(){
+      paymentInformationPage.completeWithInsufficientEvidence();
+      paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
+      sidebar.accountLink.click();
+      expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
+    });
+
+    it('should not add credit if transaction not confirmed', function(){
+      sidebar.subscriptionsLink.click();
+      paymentInformationPage.completeUpToTransactionConfirmation();
+      sidebar.accountLink.click();
+      expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
+    });
+
+    it('should add credit if transaction confirmed', function(){
+      sidebar.subscriptionsLink.click();
+      paymentInformationPage.completeSuccessfully();
+      paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
+      expect(paymentInformationPage.successNotification.isDisplayed()).toBe(true);
+      sidebar.accountLink.click();
+      expect(accountSettings.accountBalanceAmount.getText()).not.toBe('$0.00');
+    });
+
+    it('should update credit card details without prompting for a transaction once the user has credit', function(){
+      sidebar.subscriptionsLink.click();
+      paymentInformationPage.completeUpToTransactionConfirmation();
+      paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
+      expect(paymentInformationPage.successNotification.isDisplayed()).toBe(true);
+      sidebar.accountLink.click();
+      expect(accountSettings.accountBalanceAmount.getText()).not.toBe('$0.00');
+    });
+  });
+
+  describe('timeline payment information form', function() {
 
     var blog;
     var creatorRegistration1;

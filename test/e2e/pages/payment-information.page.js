@@ -28,6 +28,8 @@
 
     creditCardNumberTextBoxCount: { get: function(){ return element.all(by.id('cc-number')).count(); }},
 
+    successNotification: { get: function(){ return element(by.id('payment-information-updated-notification')); }},
+
     completeSuccessfully: { value: function() {
       this.completeUpToTransactionConfirmation();
       testKit.waitForElementToDisplay(this.confirmTransactionButton);
