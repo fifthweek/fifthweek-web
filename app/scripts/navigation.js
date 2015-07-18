@@ -140,6 +140,19 @@ angular.module('webApp')
           ]
       },
       {
+        name: 'Subscriptions',
+        state: states.user.subscriptions.name,
+        icon: 'fa fa-desktop',
+        secondary:
+          [
+            {
+              name: 'Payment Information',
+              state: states.user.subscriptions.paymentInformation.name,
+              icon: 'fa fa-credit-card'
+            }
+          ]
+      },
+      {
         name: 'Help',
         state: states.support.faq.name,
         icon: 'fa fa-question-circle',

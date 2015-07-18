@@ -342,7 +342,6 @@ describe('fw-account-balance-warning-controller', function(){
       });
 
       describe('when getAccountSettings succeeds', function(){
-        var accountSettings;
         beforeEach(function(){
           deferredGetAccountSettings.resolve('accountSettings');
           $scope.$apply();

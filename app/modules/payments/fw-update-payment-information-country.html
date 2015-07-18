@@ -2,7 +2,6 @@
       id="form"
       role="form"
       name="form">
-  <fw-error-message value="model.errorMessage"></fw-error-message>
 
   <p><strong>Country of Residence</strong></p>
   <div ng-repeat="country in model.creditRequestSummary.calculation.possibleCountries">
@@ -14,6 +13,7 @@
             data-event-category="Payment information"
             fw-form-submit="confirmCountry(country.countryCode)"
             can-submit="true"
+            ng-disabled="form.isSubmitting"
             error-message="model.errorMessage">{{country.name}}</button>
   </div>
   <button type="submit"
@@ -24,5 +24,6 @@
           data-event-category="Payment information"
           fw-form-submit="failConfirmCountry()"
           can-submit="true"
+          ng-disabled="form.isSubmitting"
           error-message="model.errorMessage">I live in another country</button>
 </form>

@@ -8,6 +8,7 @@ angular.module('webApp')
     var model = {
       isLoaded: false,
       errorMessage: undefined,
+      success: false,
       userId: accountSettingsRepository.getUserId(),
       mode: fwUpdatePaymentInformationConstants.modes.paymentInformation,
       input: {
@@ -25,6 +26,16 @@ angular.module('webApp')
       paymentOrigin: undefined
     };
 
+    internal.resetForm = function(){
+      model.input.creditCardNumber = '';
+      model.input.expiry = '';
+      model.input.cvc = '';
+      model.creditRequestSummary = undefined;
+      internal.token = undefined;
+      internal.paymentOrigin = undefined;
+      model.mode = fwUpdatePaymentInformationConstants.modes.paymentInformation;
+    };
+
     internal.createFailedToDetermineCountryError = function(){
       return new FifthweekError(
         'Failed to determine country with three pieces of evidence: ' +
@@ -32,6 +43,19 @@ angular.module('webApp')
         internal.paymentOrigin.creditCardPrefix + ', ' +
         internal.paymentOrigin.ipAddress + ', for user ' +
         model.userId);
+    };
+
+    internal.updatePaymentInformationWithoutCharge = function(){
+      return paymentsStub.putPaymentOrigin(model.userId, internal.paymentOrigin)
+        .then(function(){
+          model.success = true;
+          internal.resetForm();
+          return fetchAggregateUserState.updateFromServer(model.userId);
+        });
+    };
+
+    internal.requiresCharge = function() {
+      return !model.hasPaymentInformation || model.hasPaymentFailed || model.accountBalance <= 0;
     };
 
     internal.getCreditRequestSummary = function(selfCertifiedCountryCode){
@@ -43,17 +67,23 @@ angular.module('webApp')
       };
 
       return paymentsStub.getCreditRequestSummary(
-        model.userId,
-        internal.paymentOrigin.countryCode,
-        internal.paymentOrigin.creditCardPrefix,
-        internal.paymentOrigin.ipAddress)
+          model.userId,
+          internal.paymentOrigin.countryCode,
+          internal.paymentOrigin.creditCardPrefix,
+          internal.paymentOrigin.ipAddress)
         .then(function(response){
-          model.creditRequestSummary = response.data;
-
-          if(model.creditRequestSummary.calculation.countryName){
-            model.mode = fwUpdatePaymentInformationConstants.modes.transactionVerification;
+          var creditRequestSummary = response.data;
+          if(creditRequestSummary.calculation.countryName){
+            if(internal.requiresCharge()){
+              model.creditRequestSummary = creditRequestSummary;
+              model.mode = fwUpdatePaymentInformationConstants.modes.transactionVerification;
+            }
+            else{
+              return internal.updatePaymentInformationWithoutCharge();
+            }
           }
           else if(!selfCertifiedCountryCode){
+            model.creditRequestSummary = creditRequestSummary;
             model.mode = fwUpdatePaymentInformationConstants.modes.countryVerification;
           }
           else{
@@ -65,11 +95,7 @@ angular.module('webApp')
     };
 
     internal.handleError = function(error) {
-      model.input.cvc = '';
-      model.creditRequestSummary = undefined;
-      internal.token = undefined;
-      internal.paymentOrigin = undefined;
-      model.mode = fwUpdatePaymentInformationConstants.modes.paymentInformation;
+      internal.resetForm();
       return errorFacade.handleError(error, function(message) {
         model.errorMessage = message;
       });
@@ -121,6 +147,8 @@ angular.module('webApp')
     };
 
     $scope.submit = function() {
+      model.success = false;
+
       var isStandardUser = internal.isStandardUser();
 
       var expiryParts = model.input.expiry.split('/');
@@ -140,6 +168,7 @@ angular.module('webApp')
           model.hasPaymentInformation = accountSettings.hasPaymentInformation;
           model.hasPaymentFailed = accountSettings.paymentStatus === 'Failed';
           model.email = accountSettings.email;
+          model.accountBalance = accountSettings.accountBalance;
         })
         .finally(function(){
           model.isLoaded = true;

@@ -1,4 +1,8 @@
-<div class="payment-information-form" ng-if="!model.hasPaymentInformation || model.hasPaymentFailed">
+<div class="payment-information-form">
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+  <div ng-show="model.success" class="alert alert-success" >
+    <p>Your payment information has been updated.</p>
+  </div>
 
   <div ng-if="model.mode === modes.paymentInformation" ng-include="'modules/payments/fw-update-payment-information-form.html'"></div>
   <div ng-if="model.mode === modes.countryVerification" ng-include="'modules/payments/fw-update-payment-information-country.html'"></div>

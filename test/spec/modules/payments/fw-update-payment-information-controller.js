@@ -75,6 +75,10 @@ describe('fw-update-payment-information-controller', function(){
       expect($scope.model.errorMessage).toBeUndefined();
     });
 
+    it('should set success to be false', function(){
+      expect($scope.model.success).toBe(false);
+    });
+
     it('should get an account settings repository', function(){
       expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
     });
@@ -91,6 +95,42 @@ describe('fw-update-payment-information-controller', function(){
   describe('when created', function(){
     beforeEach(function(){
       createController();
+    });
+
+    describe('when resetForm is called', function(){
+      beforeEach(function(){
+        $scope.model.input.creditCardNumber = 'creditCardNumber';
+        $scope.model.input.expiry = 'expiry';
+        $scope.model.input.cvc = 'cvc';
+        $scope.model.creditRequestSummary = 'creditRequestSummary';
+        target.internal.token = 'token';
+        target.internal.paymentOrigin = 'paymentOrigin';
+        $scope.model.mode = 'mode';
+
+        target.internal.resetForm();
+      });
+
+      it('should reset input data', function(){
+        expect($scope.model.input.creditCardNumber).toBe('');
+        expect($scope.model.input.expiry).toBe('');
+        expect($scope.model.input.cvc).toBe('');
+      });
+
+      it('should reset creditRequestSummary', function(){
+        expect($scope.model.creditRequestSummary).toBeUndefined();
+      });
+
+      it('should reset token', function(){
+        expect(target.internal.token).toBeUndefined();
+      });
+
+      it('should reset paymentOrigin', function(){
+        expect(target.internal.paymentOrigin).toBeUndefined();
+      });
+
+      it('shoudl set the mode to paymentInformation', function(){
+        expect($scope.model.mode).toBe(fwUpdatePaymentInformationConstants.modes.paymentInformation);
+      });
     });
 
     describe('when createFailedToDetermineCountryError is called', function(){
@@ -130,6 +170,7 @@ describe('fw-update-payment-information-controller', function(){
       var success;
       var error;
       var deferredGetCreditRequestSummary;
+      var deferredUpdatePaymentInformationWithoutCharge;
       beforeEach(function(){
         success = undefined;
         error = undefined;
@@ -137,12 +178,85 @@ describe('fw-update-payment-information-controller', function(){
         deferredGetCreditRequestSummary = $q.defer();
         paymentsStub.getCreditRequestSummary.and.returnValue(deferredGetCreditRequestSummary.promise);
 
+        deferredUpdatePaymentInformationWithoutCharge = $q.defer();
+        spyOn(target.internal, 'updatePaymentInformationWithoutCharge').and.returnValue(deferredUpdatePaymentInformationWithoutCharge.promise);
+
         target.internal.token = {
           id: 'tokenId',
           client_ip: 'ipAddress'
         };
         $scope.model.input.creditCardNumber = '1234567890';
       });
+
+      var testWhenGetCeditRequestSummarySucceedsWithCountryName = function(){
+
+        describe('when getCreditRequestSummary succeeds with country name and requires charge', function(){
+          var response;
+          beforeEach(function(){
+            response = { data: { calculation: { countryName: 'countryName' }}};
+
+            spyOn(target.internal, 'requiresCharge').and.returnValue(true);
+
+            deferredGetCreditRequestSummary.resolve(response);
+            $scope.$apply();
+          });
+
+          it('should set the creditRequestSummary', function(){
+            expect($scope.model.creditRequestSummary).toBe(response.data);
+          });
+
+          it('should set the mode to transactionVerification', function(){
+            expect($scope.model.mode).toBe(fwUpdatePaymentInformationConstants.modes.transactionVerification);
+          });
+
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
+          });
+        });
+
+        describe('when getCreditRequestSummary succeeds with country name and does not require charge', function(){
+          var response;
+          beforeEach(function(){
+            response = { data: { calculation: { countryName: 'countryName' }}};
+
+            spyOn(target.internal, 'requiresCharge').and.returnValue(false);
+
+            deferredGetCreditRequestSummary.resolve(response);
+            $scope.$apply();
+          });
+
+          it('should not set the creditRequestSummary', function(){
+            expect($scope.model.creditRequestSummary).toBeUndefined();
+          });
+
+          it('should call updatePaymentInformationWithoutCharge', function(){
+            expect(target.internal.updatePaymentInformationWithoutCharge).toHaveBeenCalledWith();
+          });
+
+          describe('when updatePaymentInformationWithoutCharge succeeds', function(){
+            beforeEach(function(){
+              deferredUpdatePaymentInformationWithoutCharge.resolve();
+              $scope.$apply();
+            });
+
+            it('should complete successfully', function(){
+              expect(success).toBe(true);
+            });
+          });
+
+          describe('when updatePaymentInformationWithoutCharge fails', function(){
+            beforeEach(function(){
+              deferredUpdatePaymentInformationWithoutCharge.reject('error');
+              $scope.$apply();
+            });
+
+            it('should propagate the error', function(){
+              expect(error).toBe('error');
+            });
+          });
+        });
+
+      };
 
       describe('when country code is supplied', function(){
         beforeEach(function(){
@@ -164,26 +278,7 @@ describe('fw-update-payment-information-controller', function(){
             'userId', 'countryCode', '123456', 'ipAddress');
         });
 
-        describe('when getCreditRequestSummary succeeds with country name', function(){
-          var response;
-          beforeEach(function(){
-            response = { data: { calculation: { countryName: 'countryName' }}};
-            deferredGetCreditRequestSummary.resolve(response);
-            $scope.$apply();
-          });
-
-          it('should set the creditRequestSummary', function(){
-            expect($scope.model.creditRequestSummary).toBe(response.data);
-          });
-
-          it('should set the mode to transactionVerification', function(){
-            expect($scope.model.mode).toBe(fwUpdatePaymentInformationConstants.modes.transactionVerification);
-          });
-
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
-          });
-        });
+        testWhenGetCeditRequestSummarySucceedsWithCountryName();
 
         describe('when getCreditRequestSummary succeeds without country name', function(){
           var response;
@@ -195,8 +290,8 @@ describe('fw-update-payment-information-controller', function(){
             $scope.$apply();
           });
 
-          it('should set the creditRequestSummary', function(){
-            expect($scope.model.creditRequestSummary).toBe(response.data);
+          it('should not set the creditRequestSummary', function(){
+            expect($scope.model.creditRequestSummary).toBeUndefined();
           });
 
           it('should call createFailedToDetermineCountryError', function(){
@@ -240,26 +335,7 @@ describe('fw-update-payment-information-controller', function(){
             'userId', undefined, '123456', 'ipAddress');
         });
 
-        describe('when getCreditRequestSummary succeeds with country name', function(){
-          var response;
-          beforeEach(function(){
-            response = { data: { calculation: { countryName: 'countryName' }}};
-            deferredGetCreditRequestSummary.resolve(response);
-            $scope.$apply();
-          });
-
-          it('should set the creditRequestSummary', function(){
-            expect($scope.model.creditRequestSummary).toBe(response.data);
-          });
-
-          it('should set the mode to transactionVerification', function(){
-            expect($scope.model.mode).toBe(fwUpdatePaymentInformationConstants.modes.transactionVerification);
-          });
-
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
-          });
-        });
+        testWhenGetCeditRequestSummarySucceedsWithCountryName();
 
         describe('when getCreditRequestSummary succeeds without country name', function(){
           var response;
@@ -302,35 +378,15 @@ describe('fw-update-payment-information-controller', function(){
         success = undefined;
         error = undefined;
 
-        $scope.model.input.cvc = 'cvc';
-        $scope.model.creditRequestSummary = 'creditRequestSummary';
-        target.internal.token = 'token';
-        target.internal.paymentOrigin = 'paymentOrigin';
-        $scope.model.mode = 'mode';
+        spyOn(target.internal, 'resetForm');
         $scope.model.errorMessage = undefined;
 
         target.internal.handleError('error');
         $scope.$apply();
       });
 
-      it('should clear the cvc field', function(){
-        expect($scope.model.input.cvc).toBe('');
-      });
-
-      it('should clear the creditRequestSummary', function(){
-        expect($scope.model.creditRequestSummary).toBeUndefined();
-      });
-
-      it('should clear the token', function(){
-        expect(target.internal.token).toBeUndefined();
-      });
-
-      it('should clear the paymentOrigin', function(){
-        expect(target.internal.paymentOrigin).toBeUndefined();
-      });
-
-      it('should set the mode to paymentInformation', function(){
-        expect($scope.model.mode).toBe(fwUpdatePaymentInformationConstants.modes.paymentInformation);
+      it('should call resetForm', function(){
+        expect(target.internal.resetForm).toHaveBeenCalledWith();
       });
 
       it('should set the error message', function(){
@@ -510,6 +566,93 @@ describe('fw-update-payment-information-controller', function(){
       });
     });
 
+    describe('when updatePaymentInformationWithoutCharge is called', function(){
+      var success;
+      var error;
+      var deferredPutPaymentOrigin;
+      var deferredUpdateFromServer;
+      beforeEach(function(){
+        success = undefined;
+        error = undefined;
+
+        deferredPutPaymentOrigin = $q.defer();
+        paymentsStub.putPaymentOrigin.and.returnValue(deferredPutPaymentOrigin.promise);
+
+        deferredUpdateFromServer = $q.defer();
+        fetchAggregateUserState.updateFromServer.and.returnValue(deferredUpdateFromServer.promise);
+
+        target.internal.paymentOrigin = 'paymentOrigin';
+        $scope.model.success = false;
+        spyOn(target.internal, 'resetForm');
+
+        target.internal.updatePaymentInformationWithoutCharge().then(function(){ success = true; }, function(e) { error = e; });
+        $scope.$apply();
+      });
+
+      it('should call putPaymentOrigin', function(){
+        expect(paymentsStub.putPaymentOrigin).toHaveBeenCalledWith('userId', 'paymentOrigin');
+      });
+
+      describe('when putPaymentOrigin succeeds', function(){
+        beforeEach(function(){
+          $scope.model.creditRequestSummary = {
+            calculation: {
+              amount: 'amount',
+              totalAmount: 'totalAmount'
+            }
+          };
+
+          deferredPutPaymentOrigin.resolve();
+          $scope.$apply();
+        });
+
+        it('should set success to true', function(){
+          expect($scope.model.success).toBe(true);
+        });
+
+        it('should call resetForm', function(){
+          expect(target.internal.resetForm).toHaveBeenCalledWith();
+        });
+
+        it('should call updateFromServer', function(){
+          expect(fetchAggregateUserState.updateFromServer).toHaveBeenCalledWith('userId');
+        });
+
+        describe('when updateFromServer succeeds', function(){
+          beforeEach(function(){
+            deferredUpdateFromServer.resolve();
+            $scope.$apply();
+          });
+
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
+          });
+        });
+
+        describe('when updateFromServer fails', function(){
+          beforeEach(function(){
+            deferredUpdateFromServer.reject('error');
+            $scope.$apply();
+          });
+
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
+          });
+        });
+      });
+
+      describe('when putPaymentOrigin fails', function(){
+        beforeEach(function(){
+          deferredPutPaymentOrigin.reject('error');
+          $scope.$apply();
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
+      });
+    });
+
     describe('when confirmTransaction is called', function(){
       var success;
       var error;
@@ -651,12 +794,17 @@ describe('fw-update-payment-information-controller', function(){
         spyOn(target.internal, 'isStandardUser').and.returnValue('isStandardUser');
         spyOn(target.internal, 'handleError');
 
+        $scope.model.success = true;
         $scope.model.input.expiry = '12/34';
         $scope.model.input.creditCardNumber = 'ccn';
         $scope.model.input.cvc = 'cvc';
 
         $scope.submit().then(function(){ success = true; }, function(e) { error = e; });
         $scope.$apply();
+      });
+
+      it('should set success to false', function(){
+        expect($scope.model.success).toBe(false);
       });
 
       it('should call isStandardUser', function(){
@@ -725,7 +873,8 @@ describe('fw-update-payment-information-controller', function(){
             deferredGetAccountSettings.resolve({
               hasPaymentInformation: 'hasPaymentInformation',
               paymentStatus: 'Failed',
-              email: 'email'
+              email: 'email',
+              accountBalance: 'accountBalance'
             });
             $scope.$apply();
           });
@@ -740,6 +889,10 @@ describe('fw-update-payment-information-controller', function(){
 
           it('should set hasPaymentFailed to true', function(){
             expect($scope.model.hasPaymentFailed).toBe(true);
+          });
+
+          it('should set accountBalance', function(){
+            expect($scope.model.accountBalance).toBe('accountBalance');
           });
 
           it('should set isLoaded to true', function(){
