@@ -2,3 +2,26 @@
   <h4>Update Payment Information</h4>
   <fw-update-payment-information></fw-update-payment-information>
 </fw-panel12>
+<fw-panel12 ng-if="!model.hasPaymentInformation">
+  <p>
+    We do not currently have any payment information for you.
+  </p>
+</fw-panel12>
+<fw-panel12 ng-if="model.hasPaymentInformation">
+  <h4>Delete Payment Information</h4>
+  <p>
+    Deleting your payment information will mean we can no longer automatically top up your account with credit.
+  </p>
+  <p>
+    Once your existing credit has run out, unless you have provided us with new payment information, you will no longer
+    have access to your subscriptions.
+  </p>
+  <p>
+    <fw-form-input-delete
+      item-type="Payment Information"
+      link-id="delete-channel-link"
+      data-event-title="Payment information deleted"
+      data-event-category="Update payment information"
+      delete="deletePaymentInformation();"></fw-form-input-delete>
+  </p>
+</fw-panel12>
