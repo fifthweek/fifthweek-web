@@ -15,7 +15,6 @@ SidebarPage.prototype = Object.create({}, {
   channelsLink: { get: function () { return element(by.id('sidebar-navigation-channels')); }},
   subscribersLink: { get: function () { return element(by.id('sidebar-navigation-subscribers')); }},
   accountLink: { get: function () { return element(by.id('sidebar-navigation-account')); }},
-  subscriptionsLink: { get: function () { return element(by.id('sidebar-navigation-subscriptions')); }},
   helpLink: { get: function () { return element(by.id('sidebar-navigation-help')); }},
 
   includeEstablishedCreatorTests: { value: function(highlightedLink) {

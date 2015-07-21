@@ -11,6 +11,7 @@
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
   var SubscribersHeaderPage = require('../pages/header-subscribers.page.js');
   var GuestListPage = require('../pages/creators/guest-list.page.js');
+  var DeleteConfirmationPage = require('../pages/delete-confirmation.page.js');
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
@@ -21,6 +22,7 @@
   var landingPage = new CreatorLandingPagePage();
   var subscribersHeader = new SubscribersHeaderPage();
   var guestListPage = new GuestListPage();
+  var deleteConfirmationPage = new DeleteConfirmationPage();
 
   var navigateToCreatorLandingPage = function (creator) {
     commonWorkflows.getPage('/' + creator.username);
@@ -29,6 +31,27 @@
   var navigateFromCreatorLandingPage = function () {
     testKit.scrollIntoView(landingPage.fifthweekLink);
     landingPage.fifthweekLink.click();
+  };
+
+  var navigateToPage = function(){
+    sidebar.subscriptionsLink.click();
+    header.paymentLink.click();
+  };
+
+  var testDeletion = function(){
+    deleteConfirmationPage.describeDeletingWithoutVerification(
+      'Payment Information',
+      function () {
+        navigateToPage();
+        paymentInformationPage.deletePaymentInformationButton.click();
+      },
+      function () {
+        expect(paymentInformationPage.deletePaymentInformationPanel.isDisplayed()).toBe(true);
+      },
+      function () {
+        expect(paymentInformationPage.noPaymentInformationPanel.isDisplayed()).toBe(true);
+      }
+    );
   };
 
   describe('update payment information form', function() {
@@ -53,8 +76,12 @@
       expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
     });
 
+    it('should display no payment information warning', function(){
+      navigateToPage();
+      expect(paymentInformationPage.noPaymentInformationPanel.isDisplayed()).toBe(true);
+    });
+
     it('should not submit form if invalid', function(){
-      sidebar.subscriptionsLink.click();
       paymentInformationPage.updatePaymentInformationButton.click();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
     });
@@ -67,14 +94,14 @@
     });
 
     it('should not add credit if transaction not confirmed', function(){
-      sidebar.subscriptionsLink.click();
+      navigateToPage();
       paymentInformationPage.completeUpToTransactionConfirmation();
       sidebar.accountLink.click();
       expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
     });
 
     it('should add credit if transaction confirmed', function(){
-      sidebar.subscriptionsLink.click();
+      navigateToPage();
       paymentInformationPage.completeSuccessfully();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
       expect(paymentInformationPage.successNotification.isDisplayed()).toBe(true);
@@ -82,14 +109,21 @@
       expect(accountSettings.accountBalanceAmount.getText()).not.toBe('$0.00');
     });
 
+    it('should display delete payment information panel', function(){
+      navigateToPage();
+      expect(paymentInformationPage.deletePaymentInformationPanel.isDisplayed()).toBe(true);
+    });
+
     it('should update credit card details without prompting for a transaction once the user has credit', function(){
-      sidebar.subscriptionsLink.click();
+      navigateToPage();
       paymentInformationPage.completeUpToTransactionConfirmation();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
       expect(paymentInformationPage.successNotification.isDisplayed()).toBe(true);
       sidebar.accountLink.click();
       expect(accountSettings.accountBalanceAmount.getText()).not.toBe('$0.00');
     });
+
+    testDeletion();
   });
 
   describe('timeline payment information form', function() {

@@ -30,6 +30,11 @@
 
     successNotification: { get: function(){ return element(by.id('payment-information-updated-notification')); }},
 
+    deletePaymentInformationPanel: { get: function(){ return element(by.id('delete-payment-information-panel')); }},
+    noPaymentInformationPanel: { get: function(){ return element(by.id('no-payment-information-panel')); }},
+
+    deletePaymentInformationButton: { get: function(){ return element(by.id('delete-payment-information-link')); }},
+
     completeSuccessfully: { value: function() {
       this.completeUpToTransactionConfirmation();
       testKit.waitForElementToDisplay(this.confirmTransactionButton);
