@@ -226,7 +226,7 @@ describe('creator account settings form', function() {
 
       discardChanges.describeDiscardingChanges(
         function(){ sidebar.accountLink.click(); header.creatorAccountSettingsLink.click(); },
-        function(){ sidebar.readNowLink.click(); }, // Cheap arbitrary app link.
+        function(){ sidebar.subscriptionsLink.click(); }, // Cheap arbitrary app link.
         setNewValues,
         verifyNewValues,
         verifyOldValues

@@ -5,7 +5,7 @@
   var TestKit = require('../test-kit.js');
   var CommonWorkflows = require('../common-workflows.js');
   var SidebarPage = require('../pages/sidebar.page.js');
-  var HeaderPage = require('../pages/header-read-now.page.js');
+  var HeaderPage = require('../pages/header-subscriptions.page.js');
   var GuestListPage = require('../pages/creators/guest-list.page.js');
   var PostPage = require('../pages/post.page.js');
   var SubscribersHeaderPage = require('../pages/header-subscribers.page.js');
@@ -29,7 +29,7 @@
   describe('subscription management', function() {
 
     var navigateToLatestPosts = function () {
-      sidebar.readNowLink.click();
+      sidebar.subscriptionsLink.click();
     };
 
     var navigateToCreatorLandingPage = function (creator) {

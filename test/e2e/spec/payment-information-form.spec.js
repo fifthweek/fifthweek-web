@@ -5,7 +5,7 @@
   var TestKit = require('../test-kit.js');
   var CommonWorkflows = require('../common-workflows.js');
   var SidebarPage = require('../pages/sidebar.page.js');
-  var HeaderPage = require('../pages/header-read-now.page.js');
+  var HeaderPage = require('../pages/header-subscriptions.page.js');
   var AccountSettingsPage = require('../pages/account-settings.page.js');
   var PaymentInformationPage = require('../pages/payment-information.page.js');
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
@@ -115,7 +115,7 @@
     });
 
     it('should not display payment information form on read now page when no subscriptions', function(){
-      sidebar.readNowLink.click();
+      sidebar.subscriptionsLink.click();
       paymentInformationPage.expectPaymentInformationFormNotToBeDisplayed();
     });
 
@@ -127,7 +127,7 @@
 
     it('should display payment information form on read now page after subscribing', function(){
       navigateFromCreatorLandingPage();
-      sidebar.readNowLink.click();
+      sidebar.subscriptionsLink.click();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
     });
 
@@ -140,7 +140,7 @@
     });
 
     it('should not display payment information form on read now page when only guest list subscriptions', function(){
-      sidebar.readNowLink.click();
+      sidebar.subscriptionsLink.click();
       paymentInformationPage.expectPaymentInformationFormNotToBeDisplayed();
     });
 
@@ -158,7 +158,7 @@
     });
 
     it('should not submit form if invalid', function(){
-      sidebar.readNowLink.click();
+      sidebar.subscriptionsLink.click();
       paymentInformationPage.updatePaymentInformationButton.click();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
     });
@@ -171,14 +171,14 @@
     });
 
     it('should not add credit if transaction not confirmed', function(){
-      sidebar.readNowLink.click();
+      sidebar.subscriptionsLink.click();
       paymentInformationPage.completeUpToTransactionConfirmation();
       sidebar.accountLink.click();
       expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
     });
 
     it('should add credit if transaction confirmed', function(){
-      sidebar.readNowLink.click();
+      sidebar.subscriptionsLink.click();
       paymentInformationPage.completeSuccessfully();
       paymentInformationPage.expectPaymentInformationFormNotToBeDisplayed();
       sidebar.accountLink.click();
@@ -186,7 +186,7 @@
     });
 
     it('should not display payment information form on read now page when user has credit', function(){
-      sidebar.readNowLink.click();
+      sidebar.subscriptionsLink.click();
       paymentInformationPage.expectPaymentInformationFormNotToBeDisplayed();
     });
 

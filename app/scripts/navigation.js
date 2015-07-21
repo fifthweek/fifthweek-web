@@ -19,7 +19,7 @@ angular.module('webApp')
         ]
       },
       {
-        name: 'Read Now',
+        name: 'Subscriptions',
         state: states.user.newsFeed.name,
         icon: 'fa fa-align-left',
         secondary:
@@ -28,6 +28,11 @@ angular.module('webApp')
             name: 'Latest Posts',
             state: states.user.newsFeed.name,
             icon: 'fa fa-align-left'
+          },
+          {
+            name: 'Payment',
+            state: states.user.paymentInformation.name,
+            icon: 'fa fa-credit-card'
           }
         ]
       },
@@ -136,19 +141,6 @@ angular.module('webApp')
               name: 'Sign Out',
               state: states.user.signOut.name,
               icon: 'fa fa-sign-out'
-            }
-          ]
-      },
-      {
-        name: 'Subscriptions',
-        state: states.user.subscriptions.name,
-        icon: 'fa fa-desktop',
-        secondary:
-          [
-            {
-              name: 'Payment Information',
-              state: states.user.subscriptions.paymentInformation.name,
-              icon: 'fa fa-credit-card'
             }
           ]
       },

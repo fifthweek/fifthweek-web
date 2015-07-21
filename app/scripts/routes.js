@@ -44,11 +44,8 @@ angular.module('webApp')
       notifications: {
         name: 'user.notifications'
       },
-      subscriptions: {
-        name: 'user.subscriptions',
-        paymentInformation: {
-          name: 'user.subscriptions.paymentInformation'
-        }
+      paymentInformation: {
+        name: 'user.paymentInformation'
       }
     },
     creator: {
@@ -243,6 +240,19 @@ angular.module('webApp')
           }
         }
       })
+      .state(states.user.paymentInformation.name, {
+        url: '/payment-information',
+        templateUrl: 'modules/payments/update-payment-information.html',
+        controller: 'updatePaymentInformationCtrl',
+        data : {
+          bodyClass: 'page-update-payment-information',
+          pageTitle: 'Update Payment Information',
+          headTitle: ': ' + 'Update Payment Information',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
       .state(states.user.account.name, {
         url: '/account',
         templateUrl: 'modules/account/account.html',
@@ -299,26 +309,6 @@ angular.module('webApp')
           pageTitle: 'Notifications',
           headTitle: ': ' + 'Notifications',
           bodyClass: 'page-notifications',
-          access: {
-            requireAuthenticated: true
-          }
-        }
-      })
-      .state(states.user.subscriptions.name, {
-        url: '/subscriptions',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.user.subscriptions.paymentInformation.name,
-        data : {
-        }
-      })
-      .state(states.user.subscriptions.paymentInformation.name, {
-        url: '/payment-information',
-        templateUrl: 'modules/payments/update-payment-information.html',
-        controller: 'updatePaymentInformationCtrl',
-        data : {
-          bodyClass: 'page-update-payment-information',
-          pageTitle: 'Update Payment Information',
-          headTitle: ': ' + 'Update Payment Information',
           access: {
             requireAuthenticated: true
           }
