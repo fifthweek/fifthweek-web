@@ -105,7 +105,7 @@ angular.module('webApp')
       directiveUtilities.scaffoldFormInput = function() {
         scope.showHelp = service.parseFlag(attrs, 'showHelp');
         scope.required = service.parseFlag(attrs, 'required');
-        scope.focus = service.parseFlag(attrs, 'focus');
+        scope.focus = service.parseFlag(attrs, 'focus') ? true : undefined;
         scope.placeholder = attrs.placeholder;
         scope.breakpoint = attrs.breakpoint || 'sm';
         scope.inputColumns = attrs.inputColumns || '6';

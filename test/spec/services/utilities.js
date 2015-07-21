@@ -185,7 +185,7 @@ describe('utilities', function() {
     var attrs;
     var directiveUtilities;
 
-    var itShouldSupportFlag = function(flagName, methodName) {
+    var itShouldSupportFlag = function(flagName, methodName, falseBecomesUndefined) {
       it('should set "' + flagName + '" to true if specified without value', function() {
         attrs[flagName] = '';
 
@@ -211,7 +211,12 @@ describe('utilities', function() {
       it('should set "' + flagName + '" to false if not specified', function() {
         directiveUtilities.scaffoldFormInput();
 
-        expect(scope[flagName]).toBe(false);
+        if(falseBecomesUndefined){
+          expect(scope[flagName]).toBeUndefined();
+        }
+        else{
+          expect(scope[flagName]).toBe(false);
+        }
         if (methodName) {
           expect(scope[methodName]()).toBe(false);
         }
@@ -222,7 +227,12 @@ describe('utilities', function() {
 
         directiveUtilities.scaffoldFormInput();
 
-        expect(scope[flagName]).toBe(false);
+        if(falseBecomesUndefined){
+          expect(scope[flagName]).toBeUndefined();
+        }
+        else {
+          expect(scope[flagName]).toBe(false);
+        }
         if (methodName) {
           expect(scope[methodName]()).toBe(false);
         }
@@ -239,7 +249,7 @@ describe('utilities', function() {
     describe('scaffolding form input', function() {
 
       itShouldSupportFlag('showHelp');
-      itShouldSupportFlag('focus');
+      itShouldSupportFlag('focus', undefined, true);
       itShouldSupportFlag('required', 'isRequired');
 
       it('should evaluate isRequired as the value of the scope object if specified', function() {
