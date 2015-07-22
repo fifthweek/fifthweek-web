@@ -1,0 +1,55 @@
+
+<fw-panel12>
+  <p>
+    Your account balance is currently <strong><fw-price value="model.accountBalance" show-interval="false"></fw-price></strong>.
+  </p>
+  <p>
+    Your subscriptions cost <strong><fw-price value="model.totalAcceptedPrice"></fw-price></strong>.
+  </p>
+  <p ng-if="model.totalChangedPrice">
+    You have <strong><fw-price value="model.totalChangedPrice"></fw-price></strong> worth of subscriptions whose prices have increased.
+    You will not be billed for these until you accept the new price.
+  </p>
+</fw-panel12>
+
+<fw-post-list-information source="{{fwPostListConstants.sources.timeline}}"></fw-post-list-information>
+
+<fw-panel12 ng-repeat="blog in model.blogs">
+  <h4 ng-if="blog.channels.length"><a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.all, key: null})">{{blog.name}}</a></h4>
+  <h4 ng-if="!blog.channels.length"><a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.manage, key: $state.current.name})">{{blog.name}}</a></h4>
+  <p ng-if="blog.freeAccess">You are on the guest list.</p>
+  <table class="table" ng-if="blog.channels.length">
+    <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Price</th>
+      <th>Week Starts (UTC)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="channel in blog.channels" class="channel-list-row" id="channel-list-row-{{$index}}">
+      <td>
+        <p>
+          <a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.channel, key: channel.channelId})">{{ channel.name }}</a>
+        </p>
+        <ul>
+          <li ng-repeat="collection in channel.collections">
+            <a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.collection, key: collection.collectionId})">{{ collection.name }}</a>
+          </li>
+        </ul>
+      </td>
+      <td><p ng-if="blog.freeAccess">FREE</p><p ng-if="!blog.freeAccess"><fw-price value="channel.priceInUsCentsPerWeek"></fw-price></p></td>
+      <td><p>{{ channel.subscriptionStartDate | date: 'EEE H:mm:ss' }}</p></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button
+        id="manage-button-{{$index}}"
+        class="btn btn-default btn-block"
+        ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.manage, key: $state.current.name})">Manage Subscription</button>
+    </div>
+  </div>
+</fw-panel12>

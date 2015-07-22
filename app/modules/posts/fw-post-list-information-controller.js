@@ -91,6 +91,8 @@ angular.module('webApp').controller('fwPostListInformationCtrl',
     };
 
     this.initialize = function(){
+      internal.load();
+
       $scope.$on(aggregateUserStateConstants.updatedEvent, internal.load);
     };
   });

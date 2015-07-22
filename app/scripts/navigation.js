@@ -30,6 +30,11 @@ angular.module('webApp')
             icon: 'fa fa-align-left'
           },
           {
+            name: 'Manage',
+            state: states.user.viewSubscriptions.name,
+            icon: 'fa fa-list'
+          },
+          {
             name: 'Payment',
             state: states.user.paymentInformation.name,
             icon: 'fa fa-credit-card'
@@ -146,7 +151,7 @@ angular.module('webApp')
       },
       {
         name: 'Help',
-        state: states.support.faq.name,
+        state: states.support.help.name,
         icon: 'fa fa-question-circle',
         color: 'indigo'
       }

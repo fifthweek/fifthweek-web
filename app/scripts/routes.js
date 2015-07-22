@@ -46,6 +46,9 @@ angular.module('webApp')
       },
       paymentInformation: {
         name: 'user.paymentInformation'
+      },
+      viewSubscriptions: {
+        name: 'user.viewSubscriptions'
       }
     },
     creator: {
@@ -137,8 +140,8 @@ angular.module('webApp')
     },
     support: {
       name: 'support',
-      faq: {
-        name: 'support.faq'
+      help: {
+        name: 'support.help'
       },
       contact: {
         name: 'support.contact'
@@ -248,6 +251,19 @@ angular.module('webApp')
           bodyClass: 'page-update-payment-information',
           pageTitle: 'Update Payment Information',
           headTitle: ': ' + 'Update Payment Information',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.user.viewSubscriptions.name, {
+        url: '/view-subscriptions',
+        templateUrl: 'modules/subscriptions/view-subscriptions.html',
+        controller: 'viewSubscriptionsCtrl',
+        data : {
+          bodyClass: 'page-view-subscriptions',
+          pageTitle: 'View Subscriptions',
+          headTitle: ': ' + 'View Subscriptions',
           access: {
             requireAuthenticated: true
           }
@@ -583,11 +599,11 @@ angular.module('webApp')
         templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.support.contact.name
       })
-      .state(states.support.faq.name, {
-        url: '/faq',
-        templateUrl: 'modules/information/pages/faq.html',
+      .state(states.support.help.name, {
+        url: '/help',
+        templateUrl: '../modules/information/pages/help.html',
         data : {
-          headTitle: ': ' + 'FAQ',
+          headTitle: ': ' + 'Help',
           navigationHidden: true,
           bodyClass: 'info-page'
         }
