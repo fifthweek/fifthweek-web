@@ -4,6 +4,9 @@ $html-name-space:'.page-view-subscriptions';
 
 #{$html-name-space} {
 
+  table{
+    margin-bottom: 0;
+  }
 
   a {
     color:$grey-dark;

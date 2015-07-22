@@ -1,6 +1,6 @@
 angular.module('webApp')
   .controller('viewSubscriptionsCtrl',
-  function($scope, initializer, aggregateUserStateConstants, subscriptionRepositoryFactory, errorFacade, landingPageConstants, fwPostListConstants, fetchAggregateUserState, accountSettingsRepositoryFactory) {
+  function($scope, initializer, aggregateUserStateConstants, subscriptionRepositoryFactory, accountSettingsRepositoryFactory, fetchAggregateUserState, landingPageConstants, fwPostListConstants, errorFacade) {
     'use strict';
 
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
@@ -11,11 +11,32 @@ angular.module('webApp')
 
     var model = $scope.model = {
       errorMessage: undefined,
-      userId: subscriptionRepository.getUserId(),
-      blogs: []
+      userId: accountSettingsRepository.getUserId(),
+      blogs: [],
+      accountBalance: undefined
     };
 
     var internal = this.internal = {};
+
+    internal.processBlogs = function(){
+      var totalAcceptedPrice = 0;
+      var totalChangedPrice = 0;
+      _.forEach(model.blogs, function(blog){
+        if(!blog.freeAccess){
+          _.forEach(blog.channels, function(channel){
+            if(channel.acceptedPrice >= channel.priceInUsCentsPerWeek) {
+              totalAcceptedPrice += channel.priceInUsCentsPerWeek;
+            }
+            else{
+              totalChangedPrice += channel.priceInUsCentsPerWeek;
+            }
+          });
+        }
+      });
+
+      model.totalAcceptedPrice = totalAcceptedPrice;
+      model.totalChangedPrice = totalChangedPrice;
+    };
 
     internal.loadForm = function(){
       return accountSettingsRepository.getAccountSettings()
@@ -25,27 +46,9 @@ angular.module('webApp')
         })
         .then(function(blogs){
           model.blogs = blogs;
-
-          var totalAcceptedPrice = 0;
-          var totalChangedPrice = 0;
-          _.forEach(model.blogs, function(blog){
-            if(!blog.freeAccess){
-              _.forEach(blog.channels, function(channel){
-                if(channel.acceptedPrice >= channel.priceInUsCentsPerWeek) {
-                  totalAcceptedPrice += channel.priceInUsCentsPerWeek;
-                }
-                else{
-                  totalChangedPrice += channel.priceInUsCentsPerWeek;
-                }
-              });
-            }
-          });
-
-          model.totalAcceptedPrice = totalAcceptedPrice;
-          model.totalChangedPrice = totalChangedPrice;
+          internal.processBlogs();
         })
         .catch(function(error){
-          model.blogs = [];
           return errorFacade.handleError(error, function(message) {
             model.errorMessage = message;
           });
@@ -53,7 +56,12 @@ angular.module('webApp')
     };
 
     internal.refreshUserState = function(){
-      return fetchAggregateUserState.updateFromServer(model.userId);
+      return fetchAggregateUserState.updateFromServer(model.userId)
+        .catch(function(error){
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
+        });
     };
 
     internal.initialize = function(){
