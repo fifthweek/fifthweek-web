@@ -17,14 +17,14 @@
       <ul class="nav navbar-nav">
         <li ui-sref-active="active"><a ui-sref="pricing" id="pricing-link">Pricing</a></li>
         <li ui-sref-active="active"><a ui-sref="support.contact" id="contact-link">Contact</a></li>
-        <li ng-class="{ active: ('about.*' | includedByState) || ('support.faq' | includedByState) }" class="dropdown">
+        <li ng-class="{ active: ('about.*' | includedByState) || ('support.help' | includedByState) }" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">More <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li ui-sref-active="active"><a ui-sref="about.about">About Fifthweek</a></li>
             <li ui-sref-active="active"><a ui-sref="about.team">Meet the Team</a></li>
             <li ui-sref-active="active"><a href="http://blog.fifthweek.com/">Blog</a></li>
             <li class="divider"></li>
-            <li><a href="https://fifthweek.zendesk.com/">Help</a></li>
+            <li ui-sref-active="active"><a ui-sref="support.help">Help</a></li>
           </ul>
         </li>
       </ul>
