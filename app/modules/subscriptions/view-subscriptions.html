@@ -2,22 +2,22 @@
 <fw-panel12>
   <fw-error-message value="model.errorMessage"></fw-error-message>
   <p>
-    Your account balance is currently <strong><fw-price value="model.accountBalance" show-interval="false"></fw-price></strong>.
+    Your account balance is currently <strong><fw-price value="model.accountBalance" show-interval="false" id="account-balance"></fw-price></strong>.
   </p>
   <p>
-    Your subscriptions cost <strong><fw-price value="model.totalAcceptedPrice"></fw-price></strong>.
+    Your subscriptions cost <strong><fw-price value="model.totalAcceptedPrice" id="subscriptions-cost"></fw-price></strong>.
   </p>
   <p ng-if="model.totalChangedPrice">
-    You have <strong><fw-price value="model.totalChangedPrice"></fw-price></strong> worth of subscriptions whose prices have increased.
+    You have <strong><fw-price value="model.totalChangedPrice" id="changed-prices-cost"></fw-price></strong> worth of subscriptions whose prices have increased.
     You will not be billed for these until you accept the new price.
   </p>
 </fw-panel12>
 
 <fw-post-list-information source="{{fwPostListConstants.sources.timeline}}"></fw-post-list-information>
 
-<fw-panel12 ng-repeat="blog in model.blogs">
-  <h4 ng-if="blog.channels.length"><a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.all, key: null})">{{blog.name}}</a></h4>
-  <h4 ng-if="!blog.channels.length"><a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.manage, key: $state.current.name})">{{blog.name}}</a></h4>
+<fw-panel12 ng-repeat="blog in model.blogs" class="blog-panel" id="blog-panel-{{$index}}">
+  <h4 ng-if="blog.channels.length"><a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.all, key: null})" class="blog-link">{{blog.name}}</a></h4>
+  <h4 ng-if="!blog.channels.length"><a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.manage, key: $state.current.name})" class="blog-link">{{blog.name}}</a></h4>
   <p ng-if="blog.freeAccess">You are on the guest list.</p>
   <table class="table" ng-if="blog.channels.length">
     <thead>
@@ -31,11 +31,11 @@
     <tr ng-repeat="channel in blog.channels" class="channel-list-row" id="channel-list-row-{{$index}}">
       <td>
         <p>
-          <a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.channel, key: channel.channelId})">{{ channel.name }}</a>
+          <a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.channel, key: channel.channelId})" class="channel-link">{{ channel.name }}</a>
         </p>
         <ul>
-          <li ng-repeat="collection in channel.collections">
-            <a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.collection, key: collection.collectionId})">{{ collection.name }}</a>
+          <li ng-repeat="collection in channel.collections" class="collection-item" id="collection-item-{{$index}}">
+            <a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.collection, key: collection.collectionId})" class="collection-link">{{ collection.name }}</a>
           </li>
         </ul>
       </td>
@@ -48,8 +48,7 @@
   <div class="row">
     <div class="col-xs-12">
       <button
-        id="manage-button-{{$index}}"
-        class="btn btn-default btn-block"
+        class="btn btn-default btn-block manage-button"
         ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.manage, key: $state.current.name})">Manage Subscription</button>
     </div>
   </div>

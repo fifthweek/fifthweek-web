@@ -16,7 +16,6 @@ AccountPage.prototype = Object.create({}, {
   saveChangesButton: { get: function(){ return element(by.id('save-changes-button')); }},
   cancelButton: { get: function(){ return element(by.id('cancel-button')); }},
   savedSuccessfullyMessage: { get: function(){ return element(by.css('.alert-success')); }},
-  accountBalanceAmount: { get: function(){ return element(by.css('.price')); }},
   helpMessages: { get: function () { return element.all(by.css('#accountSettingsForm .help-block')); }},
   setFileInput: { value: function(filePath) {
     this.fileInput.sendKeys(path.resolve(__dirname + '/' + filePath));

@@ -6,7 +6,7 @@
   var CommonWorkflows = require('../common-workflows.js');
   var SidebarPage = require('../pages/sidebar.page.js');
   var HeaderPage = require('../pages/header-subscriptions.page.js');
-  var AccountSettingsPage = require('../pages/account-settings.page.js');
+  var ViewSubscriptionsPage = require('../pages/view-subscriptions.page.js');
   var PaymentInformationPage = require('../pages/payment-information.page.js');
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
   var SubscribersHeaderPage = require('../pages/header-subscribers.page.js');
@@ -17,7 +17,7 @@
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
   var header = new HeaderPage();
-  var accountSettings = new AccountSettingsPage();
+  var viewSubscriptions = new ViewSubscriptionsPage();
   var paymentInformationPage = new PaymentInformationPage();
   var landingPage = new CreatorLandingPagePage();
   var subscribersHeader = new SubscribersHeaderPage();
@@ -36,6 +36,21 @@
   var navigateToPage = function(){
     sidebar.subscriptionsLink.click();
     header.paymentLink.click();
+  };
+
+  var navigateToAccountBalance = function(){
+    sidebar.subscriptionsLink.click();
+    header.manageLink.click();
+  };
+
+  var expectZeroAccountBalance = function(){
+    navigateToAccountBalance();
+    viewSubscriptions.expectZeroAccountBalance();
+  };
+
+  var expectNonZeroAccountBalance = function(){
+    navigateToAccountBalance();
+    viewSubscriptions.expectNonZeroAccountBalance();
   };
 
   var testDeletion = function(){
@@ -72,8 +87,7 @@
 
     it('should contain zero account balance', function(){
       commonWorkflows.reSignIn(userRegistration);
-      sidebar.accountLink.click();
-      expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
+      expectZeroAccountBalance();
     });
 
     it('should display no payment information warning', function(){
@@ -89,15 +103,13 @@
     it('should not add credit if not enough evidence for country', function(){
       paymentInformationPage.completeWithInsufficientEvidence();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
-      sidebar.accountLink.click();
-      expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
+      expectZeroAccountBalance();
     });
 
     it('should not add credit if transaction not confirmed', function(){
       navigateToPage();
       paymentInformationPage.completeUpToTransactionConfirmation();
-      sidebar.accountLink.click();
-      expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
+      expectZeroAccountBalance();
     });
 
     it('should add credit if transaction confirmed', function(){
@@ -105,8 +117,7 @@
       paymentInformationPage.completeSuccessfully();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
       expect(paymentInformationPage.successNotification.isDisplayed()).toBe(true);
-      sidebar.accountLink.click();
-      expect(accountSettings.accountBalanceAmount.getText()).not.toBe('$0.00');
+      expectNonZeroAccountBalance();
     });
 
     it('should display delete payment information panel', function(){
@@ -119,8 +130,7 @@
       paymentInformationPage.completeUpToTransactionConfirmation();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
       expect(paymentInformationPage.successNotification.isDisplayed()).toBe(true);
-      sidebar.accountLink.click();
-      expect(accountSettings.accountBalanceAmount.getText()).not.toBe('$0.00');
+      expectNonZeroAccountBalance();
     });
 
     testDeletion();
@@ -144,8 +154,7 @@
 
     it('should contain zero account balance', function(){
       commonWorkflows.reSignIn(userRegistration);
-      sidebar.accountLink.click();
-      expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
+      expectZeroAccountBalance();
     });
 
     it('should not display payment information form on read now page when no subscriptions', function(){
@@ -200,23 +209,20 @@
     it('should not add credit if not enough evidence for country', function(){
       paymentInformationPage.completeWithInsufficientEvidence();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
-      sidebar.accountLink.click();
-      expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
+      expectZeroAccountBalance();
     });
 
     it('should not add credit if transaction not confirmed', function(){
       sidebar.subscriptionsLink.click();
       paymentInformationPage.completeUpToTransactionConfirmation();
-      sidebar.accountLink.click();
-      expect(accountSettings.accountBalanceAmount.getText()).toBe('$0.00');
+      expectZeroAccountBalance();
     });
 
     it('should add credit if transaction confirmed', function(){
       sidebar.subscriptionsLink.click();
       paymentInformationPage.completeSuccessfully();
       paymentInformationPage.expectPaymentInformationFormNotToBeDisplayed();
-      sidebar.accountLink.click();
-      expect(accountSettings.accountBalanceAmount.getText()).not.toBe('$0.00');
+      expectNonZeroAccountBalance();
     });
 
     it('should not display payment information form on read now page when user has credit', function(){
