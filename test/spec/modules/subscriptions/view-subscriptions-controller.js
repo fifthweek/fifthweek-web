@@ -1,4 +1,4 @@
-fdescribe('view-subscriptions-controller', function(){
+describe('view-subscriptions-controller', function(){
   'use strict';
 
   var $q;

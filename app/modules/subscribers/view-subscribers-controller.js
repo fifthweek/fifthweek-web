@@ -1,12 +1,9 @@
 angular.module('webApp')
   .controller('viewSubscribersCtrl',
-  function($scope, initializer, aggregateUserStateConstants, blogRepositoryFactory, blogStub, fetchAggregateUserState, landingPageConstants, fwPostListConstants, errorFacade) {
+  function($scope, initializer, blogRepositoryFactory, blogStub, errorFacade) {
     'use strict';
 
     var blogRepository = blogRepositoryFactory.forCurrentUser();
-
-    $scope.landingPageConstants = landingPageConstants;
-    $scope.fwPostListConstants = fwPostListConstants;
 
     var model = $scope.model = {
       isLoading: false,
