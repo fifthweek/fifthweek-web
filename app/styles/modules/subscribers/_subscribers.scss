@@ -1,0 +1,18 @@
+@import '_base';
+
+$html-name-space:'.page-view-subscribers';
+
+#{$html-name-space} {
+
+  table{
+    margin-bottom: 0;
+    p{
+      white-space: nowrap;
+    }
+  }
+ 
+  a {
+    color:$grey-dark;
+  }
+}
+

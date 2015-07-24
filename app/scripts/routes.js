@@ -112,6 +112,9 @@ angular.module('webApp')
       },
       subscribers: {
         name: 'creator.subscribers',
+        all: {
+          name: 'creator.subscribers.all'
+        },
         guestList: {
           name: 'creator.subscribers.guestList'
         }
@@ -519,8 +522,19 @@ angular.module('webApp')
         url: '/subscribers',
         templateUrl: 'modules/common/ui-view.html',
         requireBlog: true,
-        redirectTo: states.creator.subscribers.guestList.name,
+        redirectTo: states.creator.subscribers.all.name,
         data : {
+        }
+      })
+      .state(states.creator.subscribers.all.name, {
+        url: '/all',
+        templateUrl: 'modules/subscribers/view-subscribers.html',
+        controller: 'viewSubscribersCtrl',
+        requireBlog: true,
+        data : {
+          bodyClass: 'page-view-subscribers',
+          pageTitle: 'Subscribers',
+          headTitle: ': ' + 'Subscribers'
         }
       })
       .state(states.creator.subscribers.guestList.name, {

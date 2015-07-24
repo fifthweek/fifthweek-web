@@ -118,6 +118,11 @@ angular.module('webApp')
         secondary:
           [
             {
+              name: 'All',
+              state: states.creator.subscribers.all.name,
+              icon: 'fa fa-users'
+            },
+            {
               name: 'Guest List',
               state: states.creator.subscribers.guestList.name,
               icon: 'fa fa-street-view'
