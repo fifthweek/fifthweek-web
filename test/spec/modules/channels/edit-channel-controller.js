@@ -29,7 +29,7 @@ describe('edit channel controller', function () {
     currentChannel = {
       channelId: currentChannelId,
       name: 'channel B',
-      priceInUsCentsPerWeek: 101,
+      price: 101,
       description: 'Foo\nbar',
       isDefault: true,
       isVisibleToNonSubscribers: false
@@ -147,7 +147,7 @@ describe('edit channel controller', function () {
         expect(channelDelta).toEqual({
           name: 'name',
           description: 'description',
-          priceInUsCentsPerWeek: priceInCents,
+          price: priceInCents,
           isVisibleToNonSubscribers: true
         });
       });

@@ -122,11 +122,11 @@ describe('view-subscribers-controller', function(){
           target.internal.blog = {
             channels: {
               id1: {
-                priceInUsCentsPerWeek: 10,
+                price: 10,
                 name: 'name1'
               },
               id2: {
-                priceInUsCentsPerWeek: 20,
+                price: 20,
                 name: 'name2'
               }
             }
@@ -139,11 +139,11 @@ describe('view-subscribers-controller', function(){
                 channels: [
                   {
                     channelId: 'id1',
-                    acceptedPriceInUsCentsPerWeek: 0
+                    acceptedPrice: 0
                   },
                   {
                     channelId: 'id2',
-                    acceptedPriceInUsCentsPerWeek: 0
+                    acceptedPrice: 0
                   }
                 ]
               },
@@ -151,7 +151,7 @@ describe('view-subscribers-controller', function(){
                 channels: [
                   {
                     channelId: 'id1',
-                    acceptedPriceInUsCentsPerWeek: 10
+                    acceptedPrice: 10
                   }
                 ]
               },
@@ -159,11 +159,11 @@ describe('view-subscribers-controller', function(){
                 channels: [
                   {
                     channelId: 'id1',
-                    acceptedPriceInUsCentsPerWeek: 1
+                    acceptedPrice: 1
                   },
                   {
                     channelId: 'id2',
-                    acceptedPriceInUsCentsPerWeek: 50
+                    acceptedPrice: 50
                   }
                 ]
               }

@@ -24,11 +24,11 @@ angular.module('webApp')
       _.forEach(model.blogs, function(blog){
         if(!blog.freeAccess){
           _.forEach(blog.channels, function(channel){
-            if(channel.acceptedPrice >= channel.priceInUsCentsPerWeek) {
-              totalAcceptedPrice += channel.priceInUsCentsPerWeek;
+            if(channel.acceptedPrice >= channel.price) {
+              totalAcceptedPrice += channel.price;
             }
             else{
-              totalChangedPrice += channel.priceInUsCentsPerWeek;
+              totalChangedPrice += channel.price;
             }
           });
         }

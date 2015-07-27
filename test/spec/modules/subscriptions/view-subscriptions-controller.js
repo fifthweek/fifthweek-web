@@ -139,15 +139,15 @@ describe('view-subscriptions-controller', function(){
               channels: [
                 {
                   acceptedPrice: 100,
-                  priceInUsCentsPerWeek: 100
+                  price: 100
                 },
                 {
                   acceptedPrice: 90,
-                  priceInUsCentsPerWeek: 200
+                  price: 200
                 },
                 {
                   acceptedPrice: 105,
-                  priceInUsCentsPerWeek: 100
+                  price: 100
                 }
               ]
             },
@@ -156,7 +156,7 @@ describe('view-subscriptions-controller', function(){
               channels: [
                 {
                   acceptedPrice: 101,
-                  priceInUsCentsPerWeek: 100
+                  price: 100
                 }
               ]
             },
@@ -165,7 +165,7 @@ describe('view-subscriptions-controller', function(){
               channels: [
                 {
                   acceptedPrice: 99,
-                  priceInUsCentsPerWeek: 100
+                  price: 100
                 }
               ]
             },
@@ -174,7 +174,7 @@ describe('view-subscriptions-controller', function(){
               channels: [
                 {
                   acceptedPrice: 0,
-                  priceInUsCentsPerWeek: 100
+                  price: 100
                 }
               ]
             },
@@ -183,7 +183,7 @@ describe('view-subscriptions-controller', function(){
               channels: [
                 {
                   acceptedPrice: 100,
-                  priceInUsCentsPerWeek: 100
+                  price: 100
                 }
               ]
             }

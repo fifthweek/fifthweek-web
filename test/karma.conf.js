@@ -34,7 +34,7 @@ module.exports = function(config) {
       'bower_components/lodash/lodash.js',
       'bower_components/marked/lib/marked.js',
       'bower_components/ng-videosharing-embed/build/ng-videosharing-embed.min.js',
-      'bower_components/angular-payments/lib/angular-payments.min.js',
+      //'bower_components/angular-payments/lib/angular-payments.min.js',
       'bower_components/moment/moment.js',
       'app/scripts/app.js',
       'app/scripts/**/*.js',

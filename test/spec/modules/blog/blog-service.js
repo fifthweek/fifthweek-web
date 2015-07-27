@@ -118,7 +118,7 @@ describe('blog service', function() {
             {
               channelId: blogId,
               name: blogServiceConstants.defaultChannelName,
-              priceInUsCentsPerWeek: basePrice,
+              price: basePrice,
               description: blogServiceConstants.defaultChannelDescription,
               isDefault: true,
               isVisibleToNonSubscribers: true,
@@ -158,7 +158,7 @@ describe('blog service', function() {
           {
             channelId: blogId,
             name: blogServiceConstants.defaultChannelName,
-            priceInUsCentsPerWeek: basePrice,
+            price: basePrice,
             description: blogServiceConstants.defaultChannelDescription,
             isDefault: true,
             isVisibleToNonSubscribers: true,

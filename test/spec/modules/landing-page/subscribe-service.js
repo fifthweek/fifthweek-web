@@ -275,17 +275,17 @@ describe('subscribe-service', function(){
       beforeEach(function(){
         blog = { channels: [
           {
-            priceInUsCentsPerWeek: 100,
+            price: 100,
             acceptedPrice: 90,
             channelId: 'A'
           },
           {
-            priceInUsCentsPerWeek: 100,
+            price: 100,
             acceptedPrice: 110,
             channelId: 'B'
           },
           {
-            priceInUsCentsPerWeek: 100,
+            price: 100,
             acceptedPrice: 100,
             channelId: 'C'
           }
@@ -326,17 +326,17 @@ describe('subscribe-service', function(){
           freeAccess: true,
           channels: [
           {
-            priceInUsCentsPerWeek: 100,
+            price: 100,
             acceptedPrice: 90,
             channelId: 'A'
           },
           {
-            priceInUsCentsPerWeek: 100,
+            price: 100,
             acceptedPrice: 110,
             channelId: 'B'
           },
           {
-            priceInUsCentsPerWeek: 100,
+            price: 100,
             acceptedPrice: 100,
             channelId: 'C'
           }

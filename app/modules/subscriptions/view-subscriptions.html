@@ -39,7 +39,7 @@
           </li>
         </ul>
       </td>
-      <td><p ng-if="blog.freeAccess">FREE</p><p ng-if="!blog.freeAccess"><fw-price value="channel.priceInUsCentsPerWeek"></fw-price></p></td>
+      <td><p ng-if="blog.freeAccess">FREE</p><p ng-if="!blog.freeAccess"><fw-price value="channel.price"></fw-price></p></td>
       <td><p>{{ channel.subscriptionStartDate | date: 'EEE H:mm:ss' }}</p></td>
     </tr>
     </tbody>

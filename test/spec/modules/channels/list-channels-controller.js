@@ -36,14 +36,14 @@ describe('channel list controller', function () {
       {
         channelId: 'A',
         name: 'channel A',
-        priceInUsCentsPerWeek: 50,
+        price: 50,
         description: 'Hello\nWorld',
         isDefault: true
       },
       {
         channelId: 'B',
         name: 'channel B',
-        priceInUsCentsPerWeek: 101,
+        price: 101,
         description: 'Foo',
         isDefault: false
       }

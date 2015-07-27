@@ -361,17 +361,17 @@ describe('fw-post-list-information-controller', function() {
           channels: [
             {
               channelId: 'A1',
-              priceInUsCentsPerWeek: 99,
+              price: 99,
               acceptedPrice: 90
             },
             {
               channelId: 'A2',
-              priceInUsCentsPerWeek: 100,
+              price: 100,
               acceptedPrice: 100
             },
             {
               channelId: 'A3',
-              priceInUsCentsPerWeek: 101,
+              price: 101,
               acceptedPrice: 110
             }
           ]
@@ -383,17 +383,17 @@ describe('fw-post-list-information-controller', function() {
           channels: [
             {
               channelId: 'B1',
-              priceInUsCentsPerWeek: 99,
+              price: 99,
               acceptedPrice: 90
             },
             {
               channelId: 'B2',
-              priceInUsCentsPerWeek: 100,
+              price: 100,
               acceptedPrice: 100
             },
             {
               channelId: 'B3',
-              priceInUsCentsPerWeek: 101,
+              price: 101,
               acceptedPrice: 110
             }
           ]

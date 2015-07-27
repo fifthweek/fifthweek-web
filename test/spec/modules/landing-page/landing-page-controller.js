@@ -158,17 +158,17 @@ describe('landing page controller', function () {
           {
             checked: true,
             channelId: 'channelId1',
-            priceInUsCentsPerWeek: 10
+            price: 10
           },
           {
             checked: false,
             channelId: 'channelId2',
-            priceInUsCentsPerWeek: 20
+            price: 20
           },
           {
             checked: true,
             channelId: 'channelId3',
-            priceInUsCentsPerWeek: 30
+            price: 30
           }
         ];
 
@@ -713,7 +713,7 @@ describe('landing page controller', function () {
           {
             channelId: 'C',
             name: 'channel C',
-            priceInUsCentsPerWeek: channelPrice2,
+            price: channelPrice2,
             description: 'foo\nbar',
             isDefault: false,
             isVisibleToNonSubscribers: true
@@ -721,7 +721,7 @@ describe('landing page controller', function () {
           {
             channelId: 'B',
             name: 'channel B',
-            priceInUsCentsPerWeek: channelPrice0,
+            price: channelPrice0,
             description: 'ooh\nyeah\nbaby',
             isDefault: true,
             isVisibleToNonSubscribers: true
@@ -729,7 +729,7 @@ describe('landing page controller', function () {
           {
             channelId: 'A',
             name: 'channel A',
-            priceInUsCentsPerWeek: channelPrice1,
+            price: channelPrice1,
             description: 'hello',
             isDefault: false,
             isVisibleToNonSubscribers: true
@@ -737,7 +737,7 @@ describe('landing page controller', function () {
           {
             channelId: 'Z',
             name: 'channel Z',
-            priceInUsCentsPerWeek: 15,
+            price: 15,
             description: 'world',
             isDefault: false,
             isVisibleToNonSubscribers: false
@@ -748,7 +748,7 @@ describe('landing page controller', function () {
           {
             channelId: 'BH',
             name: 'channel BH',
-            priceInUsCentsPerWeek: channelPriceHidden,
+            price: channelPriceHidden,
           }
         ];
 
@@ -775,7 +775,7 @@ describe('landing page controller', function () {
               isVisibleToNonSubscribers: true,
               channelId: 'B',
               name: 'channel B',
-              priceInUsCentsPerWeek: channelPrice0,
+              price: channelPrice0,
               description: ['ooh', 'yeah', 'baby'],
               subscriptionInformation: { channelId: 'B' },
               isDefault: true,
@@ -785,7 +785,7 @@ describe('landing page controller', function () {
               isVisibleToNonSubscribers: true,
               channelId: 'A',
               name: 'channel A',
-              priceInUsCentsPerWeek: channelPrice1,
+              price: channelPrice1,
               description: ['hello'],
               subscriptionInformation: undefined,
               isDefault: false,
@@ -795,7 +795,7 @@ describe('landing page controller', function () {
               isVisibleToNonSubscribers: false,
               channelId: 'BH',
               name: 'channel BH',
-              priceInUsCentsPerWeek: channelPriceHidden,
+              price: channelPriceHidden,
               description: ['This channel is only visible to subscribers.'],
               subscriptionInformation: { channelId: 'BH' },
               isDefault: false,
@@ -805,7 +805,7 @@ describe('landing page controller', function () {
               isVisibleToNonSubscribers: true,
               channelId: 'C',
               name: 'channel C',
-              priceInUsCentsPerWeek: channelPrice2,
+              price: channelPrice2,
               description: ['foo', 'bar'],
               subscriptionInformation: { channelId: 'C' },
               isDefault: false,
@@ -1438,15 +1438,15 @@ describe('landing page controller', function () {
       beforeEach(function(){
         $scope.model.channels = [
           {
-            priceInUsCentsPerWeek: '69',
+            price: '69',
             checked: true
           },
           {
-            priceInUsCentsPerWeek: '45',
+            price: '45',
             checked: false
           },
           {
-            priceInUsCentsPerWeek: '99',
+            price: '99',
             checked: false
           }
         ];

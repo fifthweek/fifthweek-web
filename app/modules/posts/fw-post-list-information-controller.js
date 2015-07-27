@@ -31,7 +31,7 @@ angular.module('webApp').controller('fwPostListInformationCtrl',
 
       _.forEach(blogs, function(blog){
         _.forEach(blog.channels, function(channel){
-          var currentPrice = blog.freeAccess ? 0 : channel.priceInUsCentsPerWeek;
+          var currentPrice = blog.freeAccess ? 0 : channel.price;
           if(channel.acceptedPrice !== currentPrice){
             model.updatedPrices.push({
               currentPrice: currentPrice,

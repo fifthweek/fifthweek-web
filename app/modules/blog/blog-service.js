@@ -28,7 +28,7 @@ angular.module('webApp')
           var channels = [
             {
               channelId: blogId,
-              priceInUsCentsPerWeek: blogData.basePrice,
+              price: blogData.basePrice,
               isDefault: true,
               isVisibleToNonSubscribers: true,
               collections: [],

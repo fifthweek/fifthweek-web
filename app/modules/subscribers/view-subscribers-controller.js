@@ -26,8 +26,8 @@ angular.module('webApp')
           var channelInfo = internal.blog.channels[channel.channelId];
           if(channelInfo){
             channel.name = channelInfo.name;
-            if(channel.acceptedPriceInUsCentsPerWeek >= channelInfo.priceInUsCentsPerWeek){
-              estimatedWeeklyRevenue += channelInfo.priceInUsCentsPerWeek;
+            if(channel.acceptedPrice >= channelInfo.price){
+              estimatedWeeklyRevenue += channelInfo.price;
               channel.isPaying = true;
               ++totalSubscriptions;
             }

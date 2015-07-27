@@ -12,8 +12,7 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
       $scope.model.channel = channel;
 
       // Map price.
-      $scope.model.channel.price = ($scope.model.channel.priceInUsCentsPerWeek / 100).toFixed(2);
-      delete $scope.model.channel.priceInUsCentsPerWeek;
+      $scope.model.channel.price = ($scope.model.channel.price / 100).toFixed(2);
 
       // Map visibility.
       $scope.model.channel.hidden = !$scope.model.channel.isVisibleToNonSubscribers;
@@ -37,7 +36,7 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
       return blogRepository.updateChannel(channelId, function(channel) {
         channel.name = channelData.name;
         channel.description = channelData.description;
-        channel.priceInUsCentsPerWeek = channelData.price;
+        channel.price = channelData.price;
         channel.isVisibleToNonSubscribers = channelData.isVisibleToNonSubscribers;
       }).then(function() {
         $state.go($scope.previousState);

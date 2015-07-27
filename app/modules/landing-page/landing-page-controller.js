@@ -98,7 +98,7 @@ angular.module('webApp')
             isVisibleToNonSubscribers: channel.isVisibleToNonSubscribers,
             channelId: channel.channelId,
             name: channel.name,
-            priceInUsCentsPerWeek: channel.priceInUsCentsPerWeek,
+            price: channel.price,
             description: channel.description.split('\n'),
             subscriptionInformation: subscriptionInformation,
             isDefault: channel.isDefault,
@@ -113,7 +113,7 @@ angular.module('webApp')
             isVisibleToNonSubscribers: false,
             channelId: channel.channelId,
             name: channel.name,
-            priceInUsCentsPerWeek: channel.priceInUsCentsPerWeek,
+            price: channel.price,
             description: ['This channel is only visible to subscribers.'],
             subscriptionInformation: subscriptionInformation,
             isDefault: false,
@@ -266,7 +266,7 @@ angular.module('webApp')
         .filter({checked: true})
         .reduce(
         function(sum, channel) {
-          sum.totalPrice = sum.totalPrice + parseFloat(channel.priceInUsCentsPerWeek);
+          sum.totalPrice = sum.totalPrice + parseFloat(channel.price);
           sum.count++;
           return sum;
         },
@@ -319,7 +319,7 @@ angular.module('webApp')
         .map(function(v){
           return {
             channelId: v.channelId,
-            acceptedPrice: hasFreeAccess ? 0 : v.priceInUsCentsPerWeek
+            acceptedPrice: hasFreeAccess ? 0 : v.price
           };
         })
         .value();

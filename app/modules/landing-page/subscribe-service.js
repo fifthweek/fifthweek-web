@@ -92,7 +92,7 @@ angular.module('webApp').factory('subscribeService',
       var subscribedChannels = {};
 
       _.forEach(blog.channels, function(channel){
-        var currentPrice = blog.freeAccess ? 0 : channel.priceInUsCentsPerWeek;
+        var currentPrice = blog.freeAccess ? 0 : channel.price;
         var channelInfo = {
           acceptedPrice: channel.acceptedPrice,
           currentPrice: currentPrice,
