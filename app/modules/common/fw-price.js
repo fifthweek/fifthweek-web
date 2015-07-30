@@ -8,11 +8,12 @@ angular.module('webApp')
         value: '=',
         showInterval: '=?'
       },
-      template: '<span class="price">${{formattedPrice}}{{showInterval ? \'/week\' : \'\'}}</span>',
+      template: '<span ng-class="{\'price-negative\': isNegative}" class="price">${{formattedPrice}}{{showInterval ? \'/week\' : \'\'}}</span>',
       link: function(scope) {
 
         var updatePrice = function(){
           scope.formattedPrice = (scope.value /100).toFixed(2);
+          scope.isNegative = scope.value < 0;
         };
 
         if(scope.showInterval === undefined){

@@ -158,6 +158,12 @@ angular.module('webApp')
     },
     comingSoon: {
       name: 'comingSoon'
+    },
+    admin: {
+      name: 'admin',
+      transactions: {
+        name: 'admin.transactions'
+      }
     }
   })
   .config(function($stateProvider, $urlRouterProvider, $locationProvider, states, authenticationServiceConstants) {
@@ -678,5 +684,27 @@ angular.module('webApp')
             requireAuthenticated: false
           }
         }
-      });
+      })
+      .state(states.admin.name, {
+        url: '/admin',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.admin.transactions.name,
+        data : {
+          access: {
+            requireAuthenticated: true,
+            roles: [authenticationServiceConstants.roles.administrator]
+          }
+        }
+      })
+      .state(states.admin.transactions.name, {
+        url: '/transactions',
+        templateUrl: 'modules/admin/transactions.html',
+        controller: 'transactionsCtrl',
+        data : {
+          bodyClass: 'page-admin-transactions',
+          pageTitle: 'Transactions',
+          headTitle: ': ' + 'Transactions',
+        }
+      })
+    ;
 });

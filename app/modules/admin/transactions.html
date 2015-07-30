@@ -1,0 +1,207 @@
+<fw-error-message value="model.errorMessage"></fw-error-message>
+
+<div ng-if="model.isLoading" class="updating-area">
+  <i class="fa fa-refresh fa-spin"></i>
+</div>
+
+<div ng-if="!model.isLoading">
+
+  <div ng-if="model.record">
+    <h4>Selected Transaction</h4>
+    <table class="table" ng-if="model.records.length">
+      <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Type</th>
+        <th>Owner</th>
+        <th>CP</th>
+        <th>Account</th>
+        <th>Amount</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="record in model.selectedRecords" class="selected-record-row {{record.accountType}}" id="selected-record-row-{{$index}}">
+        <td><p>{{record.timestamp | date: 'dd MMMM yyyy, HH:mm'}}</p></td>
+        <td><p>{{record.transactionType}}</p></td>
+        <td><p>{{record.accountOwnerUsername}}</p></td>
+        <td><p>{{record.counterpartyUsername}}</p></td>
+        <td><p>{{record.accountType}}</p></td>
+        <td><p><fw-price value="record.amount" show-interval="false"></fw-price></p></td>
+        <td><p><button style="color:{{record.color}}" ng-click="showDetail(record);">View</button></p></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <pre class="raw-json">{{model.recordJson}}</pre>
+
+    <div ng-if="model.record.transactionType === 'creditAddition'">
+      <fw-panel12>
+        <form novalidate
+              id="refund-credit-form"
+              role="form"
+              name="refundCreditForm">
+
+          <div class="row">
+            <div class="col-s-6">
+              <div>
+                <input
+                  id="refund-credit-comment"
+                  type="text"
+                  class="form-control"
+                  name="comment"
+                  placeholder="Comment"
+                  ng-model="model.input.comment">
+              </div>
+            </div>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio"
+                     ng-model="model.input.refundReason"
+                     ng-value="refundReasons.requestedByCustomer" />
+              Requested by Customer
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio"
+                     ng-model="model.input.refundReason"
+                     ng-value="refundReasons.duplicate" />
+              Duplicate
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio"
+                     ng-model="model.input.refundReason"
+                     ng-value="refundReasons.fraudulent" />
+              Fraudulent
+            </label>
+          </div>
+          <label>Credit to refund (tax is calculated):</label>
+          <fw-form-input-channel-price ng-model="model.input.refundAmount" required></fw-form-input-channel-price>
+
+          <div class="row-btn">
+            <button
+              id="refund-credit-button"
+              class="btn btn-block btn-success"
+              data-loading-text="Please wait..."
+              data-event-title="Credit refunded"
+              data-event-category="Refund"
+              fw-form-submit="refundCredit()">Refund Credit</button>
+          </div>
+        </form>
+
+      </fw-panel12>
+    </div>
+    <div ng-if="model.record.transactionType === 'subscriptionPayment'">
+      <fw-panel12>
+        <form novalidate
+              id="reverse-transaction-form"
+              role="form"
+              name="reverseTransactionForm">
+          <div class="row">
+            <div class="col-s-6">
+              <div>
+                <input
+                  id="reverse-transaction-comment"
+                  type="text"
+                  class="form-control"
+                  name="comment"
+                  placeholder="Comment"
+                  ng-model="model.input.comment">
+              </div>
+            </div>
+          </div>
+          <div class="row-btn">
+            <button
+              id="reverse-transaction-button"
+              class="btn btn-block btn-success"
+              data-loading-text="Please wait..."
+              data-event-title="Transaction reversed"
+              data-event-category="Refund"
+              can-submit="true"
+              fw-form-submit="reverseTransaction()">Reverse Transaction</button>
+          </div>
+        </form>
+
+      </fw-panel12>
+    </div>
+    <fw-panel12>
+      <p><button ng-click="impersonate(model.record.accountOwnerId);">Impersonate Account Owner</button></p>
+      <p ng-if="model.record.counterpartyId"><button ng-click="impersonate(model.record.counterpartyId);">Impersonate Counterparty</button></p>
+    </fw-panel12>
+  </div>
+
+  <h4>All Matching Records</h4>
+  <table class="table" ng-if="model.records.length">
+    <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Type</th>
+      <th>Owner</th>
+      <th>CP</th>
+      <th>Account</th>
+      <th>Amount</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="record in model.records" class="record-row {{record.accountType}}" id="record-row-{{$index}}">
+      <td><p>{{record.timestamp | date: 'dd MMMM yyyy, HH:mm'}}</p></td>
+      <td><p>{{record.transactionType}}</p></td>
+      <td><p>{{record.accountOwnerUsername}}</p></td>
+      <td><p>{{record.counterpartyUsername}}</p></td>
+      <td><p>{{record.accountType}}</p></td>
+      <td><p><fw-price value="record.amount" show-interval="false"></fw-price></p></td>
+      <td><p><button style="color:{{record.color}}" ng-click="showDetail(record);">Filter</button></p></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<fw-panel12>
+  <form novalidate
+        id="filter-form"
+        role="form"
+        name="filterForm">
+    <div>
+      <label>Start (inclusive):</label>
+      <fw-form-input-date-time-picker ng-model="model.filter.startTimestamp"></fw-form-input-date-time-picker>
+    </div>
+    <div>
+      <label>End (inclusive):</label>
+      <fw-form-input-date-time-picker ng-model="model.filter.endTimestamp"></fw-form-input-date-time-picker>
+    </div>
+    <label for="user-id-filter">User ID</label>
+    <div class="row">
+      <div class="col-s-6">
+        <div>
+          <input
+            id="user-id-filter"
+            type="text"
+            class="form-control"
+            name="userId"
+            placeholder="User ID"
+            ng-model="model.filter.userId">
+        </div>
+      </div>
+    </div>
+    <div class="row-btn">
+      <button
+        id="filter-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Please wait..."
+        can-submit="true"
+        fw-form-submit="filter()">Filter</button>
+      <button
+        id="reset-filter-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Please wait..."
+        can-submit="true"
+        fw-form-submit="resetFilter()">Reset</button>
+    </div>
+
+  </form>
+
+</fw-panel12>

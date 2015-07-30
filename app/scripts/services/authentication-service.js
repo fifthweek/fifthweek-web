@@ -103,6 +103,11 @@ angular.module('webApp')
       }
     };
 
+    service.impersonate = function(userId){
+      setCurrentUserDetails(service.currentUser.accessToken, service.currentUser.refreshToken, userId, service.currentUser.roles);
+      return fetchAggregateUserState.updateFromServer(userId);
+    };
+
     service.registerUser = function(internalRegistrationData) {
 
       if(service.currentUser.authenticated){

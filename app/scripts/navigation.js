@@ -157,8 +157,20 @@ angular.module('webApp')
       {
         name: 'Help',
         state: states.support.help.name,
-        icon: 'fa fa-question-circle',
-        color: 'indigo'
+        icon: 'fa fa-question-circle'
+      },
+      {
+        name: 'Admin',
+        state: states.admin.name,
+        icon: 'fa fa-user-secret',
+        secondary:
+        [
+          {
+            name: 'Transactions',
+            state: states.admin.transactions.name,
+            icon: 'fa fa-money'
+          }
+        ]
       }
     ];
   });

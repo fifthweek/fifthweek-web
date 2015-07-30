@@ -1,0 +1,51 @@
+@import '_base';
+
+#{'.page-admin-transactions'} {
+
+  .right-container {
+   background-color: white;
+  }
+
+  $table-font-size:11px;
+
+  #refund-credit-form{
+    .input-group-addon:last-child{
+      visibility: collapse;
+    }
+  }
+
+  table{
+    p{
+      white-space: nowrap;
+      font-size: $table-font-size;
+    }
+    tr.fifthweekCredit p{
+      font-weight: bold;
+    }
+    tr.fifthweekRevenue p{
+      font-weight: bold;
+    }
+
+    th{
+      font-size: $table-font-size;
+    }
+
+    td{
+      padding-top: 4px !important;
+      padding-bottom: 4px !important;
+    }
+  }
+
+  a {
+    color:$grey-dark;
+  }
+
+  .price-negative {
+    color: #AA7777;
+  }
+
+  .raw-json{
+    font-size: 11px;
+  }
+}
+
