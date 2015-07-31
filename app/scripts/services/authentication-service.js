@@ -25,7 +25,8 @@ angular.module('webApp')
     fetchAggregateUserState,
     fifthweekConstants,
     authenticationServiceConstants,
-    utilities) {
+    utilities,
+    impersonationServiceConstants) {
     'use strict';
 
     var apiBaseUri = fifthweekConstants.apiBaseUri;
@@ -34,6 +35,7 @@ angular.module('webApp')
     var localStorageName = 'currentUser';
 
     service.currentUser = {};
+    service.internal = {};
 
     var broadcastCurrentUserChangedEvent = function(){
       $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, service.currentUser);
@@ -45,6 +47,7 @@ angular.module('webApp')
       service.currentUser.refreshToken = undefined;
       service.currentUser.userId = undefined;
       service.currentUser.roles = undefined;
+      service.currentUser.nonImpersonatedUserId = undefined;
 
       localStorageService.remove(localStorageName);
       broadcastCurrentUserChangedEvent();
@@ -94,6 +97,8 @@ angular.module('webApp')
     };
 
     service.initialize = function() {
+      $rootScope.$on(impersonationServiceConstants.impersonationChangedEvent, service.internal.handleImpersonationChanged);
+
       var storedUser = localStorageService.get(localStorageName);
       if (storedUser) {
         service.currentUser = storedUser;
@@ -103,9 +108,24 @@ angular.module('webApp')
       }
     };
 
-    service.impersonate = function(userId){
-      setCurrentUserDetails(service.currentUser.accessToken, service.currentUser.refreshToken, userId, service.currentUser.roles);
-      return fetchAggregateUserState.updateFromServer(userId);
+    service.internal.handleImpersonationChanged = function(event, userId){
+      if(userId){
+        if(!service.currentUser.nonImpersonatedUserId){
+          service.currentUser.nonImpersonatedUserId = service.currentUser.userId;
+        }
+
+        setCurrentUserDetails(
+          service.currentUser.accessToken, service.currentUser.refreshToken, userId, service.currentUser.roles);
+      }
+      else if(service.currentUser.nonImpersonatedUserId){
+        var originalUserId = service.currentUser.nonImpersonatedUserId;
+        service.currentUser.nonImpersonatedUserId = undefined;
+
+        setCurrentUserDetails(
+          service.currentUser.accessToken, service.currentUser.refreshToken, originalUserId, service.currentUser.roles);
+      }
+
+      return fetchAggregateUserState.updateFromServer(service.currentUser.userId);
     };
 
     service.registerUser = function(internalRegistrationData) {

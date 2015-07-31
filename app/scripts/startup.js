@@ -3,10 +3,10 @@
 
   angular.module('webApp')
     .config(function($httpProvider) {
-        $httpProvider.interceptors.push('authenticationInterceptor');
-        $httpProvider.interceptors.push('developerRequestInterceptor');
-      }
-    )
+      $httpProvider.interceptors.push('authenticationInterceptor');
+      $httpProvider.interceptors.push('developerRequestInterceptor');
+      $httpProvider.interceptors.push('impersonationInterceptor');
+    })
     .config(function($provide){
       $provide.decorator('$exceptionHandler', function($delegate, logService) {
         return function (exception, cause) {

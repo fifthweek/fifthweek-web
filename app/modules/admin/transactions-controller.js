@@ -1,6 +1,6 @@
 angular.module('webApp')
   .controller('transactionsCtrl',
-  function($scope, initializer, paymentsStub, errorFacade, authenticationService) {
+  function($scope, initializer, paymentsStub, errorFacade, impersonationService) {
     'use strict';
 
 
@@ -89,7 +89,7 @@ angular.module('webApp')
     };
 
     $scope.impersonate = function(userId){
-      return authenticationService.impersonate(userId);
+      return impersonationService.impersonate(userId);
     };
 
     $scope.reverseTransaction = function() {

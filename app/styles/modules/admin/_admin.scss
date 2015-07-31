@@ -1,5 +1,9 @@
 @import '_base';
 
+.impersonating-user .right-container {
+  background-color: #FFEEEE !important;
+}
+
 #{'.page-admin-transactions'} {
 
   .right-container {

@@ -1,0 +1,31 @@
+<fw-panel12>
+  <form novalidate
+        id="form"
+        role="form"
+        name="form">
+    <div class="row">
+      <div class="col-s-6">
+        <div>
+          <input
+            id="user-id"
+            type="text"
+            class="form-control"
+            name="userId"
+            placeholder="User ID"
+            ng-model="model.input.userId"
+            required>
+        </div>
+      </div>
+    </div>
+    <div class="row-btn">
+      <button
+        id="submit-button"
+        class="btn btn-block btn-success"
+        fw-form-submit="startImpersonating()">Impersonate</button>
+
+      <button
+        class="btn btn-block btn-default"
+        ng-click="stopImpersonating()">Stop Impersonating</button>
+    </div>
+  </form>
+</fw-panel12>

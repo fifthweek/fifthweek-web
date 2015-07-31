@@ -162,13 +162,23 @@ angular.module('webApp')
       {
         name: 'Admin',
         state: states.admin.name,
-        icon: 'fa fa-user-secret',
+        icon: 'fa fa-user-plus',
         secondary:
         [
+          {
+            name: 'Lookup',
+            state: states.admin.lookup.name,
+            icon: 'fa fa-eye'
+          },
           {
             name: 'Transactions',
             state: states.admin.transactions.name,
             icon: 'fa fa-money'
+          },
+          {
+            name: 'Impersonation',
+            state: states.admin.impersonation.name,
+            icon: 'fa fa-user-secret'
           }
         ]
       }

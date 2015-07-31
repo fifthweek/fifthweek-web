@@ -163,6 +163,12 @@ angular.module('webApp')
       name: 'admin',
       transactions: {
         name: 'admin.transactions'
+      },
+      lookup: {
+        name: 'admin.lookup'
+      },
+      impersonation: {
+        name: 'admin.impersonation'
       }
     }
   })
@@ -688,7 +694,7 @@ angular.module('webApp')
       .state(states.admin.name, {
         url: '/admin',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.admin.transactions.name,
+        redirectTo: states.admin.lookup.name,
         data : {
           access: {
             requireAuthenticated: true,
@@ -703,7 +709,27 @@ angular.module('webApp')
         data : {
           bodyClass: 'page-admin-transactions',
           pageTitle: 'Transactions',
-          headTitle: ': ' + 'Transactions',
+          headTitle: ': ' + 'Transactions'
+        }
+      })
+      .state(states.admin.lookup.name, {
+        url: '/lookup',
+        templateUrl: 'modules/admin/object-lookup.html',
+        controller: 'objectLookupCtrl',
+        data : {
+          bodyClass: 'page-admin-lookup',
+          pageTitle: 'Lookup',
+          headTitle: ': ' + 'Lookup'
+        }
+      })
+      .state(states.admin.impersonation.name, {
+        url: '/impersonation',
+        templateUrl: 'modules/admin/impersonation.html',
+        controller: 'impersonationCtrl',
+        data : {
+          bodyClass: 'page-admin-impersonation',
+          pageTitle: 'Impersonation',
+          headTitle: ': ' + 'Impersonation'
         }
       })
     ;
