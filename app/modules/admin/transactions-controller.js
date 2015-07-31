@@ -1,6 +1,6 @@
 angular.module('webApp')
   .controller('transactionsCtrl',
-  function($scope, initializer, paymentsStub, errorFacade, impersonationService) {
+  function($scope, initializer, paymentsStub, errorFacade, impersonationService, userStateStub) {
     'use strict';
 
 
@@ -77,7 +77,7 @@ angular.module('webApp')
         .then(function(){
           var record = _.find(model.records, { transactionReference: transactionReference });
           if(record){
-            $scope.showDetail(record);
+            return $scope.showDetail(record);
           }
         });
     };
@@ -86,6 +86,11 @@ angular.module('webApp')
       model.record = record;
       model.selectedRecords = _.where(model.records, { transactionReference: record.transactionReference });
       model.recordJson = JSON.stringify(record, undefined, 2);
+      model.accountOwnerData = undefined;
+      return userStateStub.getUserState(model.record.accountOwnerId, true)
+        .then(function(accountOwnerResult){
+          model.accountOwnerData = accountOwnerResult.data;
+        });
     };
 
     $scope.impersonate = function(userId){

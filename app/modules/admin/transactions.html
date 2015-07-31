@@ -129,6 +129,9 @@
       </fw-panel12>
     </div>
     <fw-panel12>
+      <p>Account balance of account owner: <fw-price value="model.accountOwnerData.accountSettings.accountBalance" show-interval="false"></fw-price>.</p>
+    </fw-panel12>
+    <fw-panel12>
       <p><button ng-click="impersonate(model.record.accountOwnerId);">Impersonate Account Owner</button></p>
       <p ng-if="model.record.counterpartyId"><button ng-click="impersonate(model.record.counterpartyId);">Impersonate Counterparty</button></p>
     </fw-panel12>
