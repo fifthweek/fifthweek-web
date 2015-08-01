@@ -1,14 +1,16 @@
 angular.module('webApp').factory('impersonationInterceptor',
-  function(fifthweekConstants, impersonationService) {
+  function($injector) {
     'use strict';
 
     var impersonateUserHeaderKey = 'impersonate-user';
     var factory = {};
+    var authenticationService;
 
     factory.request = function(config) {
-      if(impersonationService.impersonatedUserId){
+      authenticationService = authenticationService || $injector.get('authenticationService');
+      if(authenticationService.currentUser.nonImpersonatedUserId){
         config.headers = config.headers || {};
-        config.headers[impersonateUserHeaderKey] = impersonationService.impersonatedUserId;
+        config.headers[impersonateUserHeaderKey] = authenticationService.currentUser.userId;
       }
 
       return config;

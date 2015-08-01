@@ -174,11 +174,6 @@ angular.module('webApp')
             name: 'Transactions',
             state: states.admin.transactions.name,
             icon: 'fa fa-money'
-          },
-          {
-            name: 'Impersonation',
-            state: states.admin.impersonation.name,
-            icon: 'fa fa-user-secret'
           }
         ]
       }

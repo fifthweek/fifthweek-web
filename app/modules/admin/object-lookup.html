@@ -1,1 +1,45 @@
-<p>Hello Lookup</p>
+<fw-panel12>
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+  <form novalidate
+        id="form"
+        role="form"
+        name="form">
+    <div class="row">
+      <div class="col-s-6">
+        <div>
+          <input
+            id="lookup-value"
+            type="text"
+            class="form-control"
+            name="lookupValue"
+            placeholder="Value"
+            ng-model="model.input.value"
+            required>
+        </div>
+      </div>
+    </div>
+    <div class="row-btn">
+      <button
+        id="lookup-username-button"
+        class="btn btn-block btn-success"
+        fw-form-submit="lookupUsername()">Lookup Username</button>
+      <button
+        id="lookup-user-id-button"
+        class="btn btn-block btn-success"
+        fw-form-submit="lookupUserId()">Lookup User ID</button>
+    </div>
+    <div class="row-btn">
+      <button
+        ng-if="model.userId"
+        id="submit-button"
+        class="btn btn-block btn-success"
+        fw-form-submit="startImpersonating()">Impersonate</button>
+
+      <button
+        ng-if="currentUser.nonImpersonatedUserId"
+        class="btn btn-block btn-default"
+        ng-click="stopImpersonating()">Stop Impersonating</button>
+    </div>
+  </form>
+</fw-panel12>
+<pre class="raw-json">{{model.lookupResult}}</pre>

@@ -90,6 +90,11 @@ angular.module('webApp')
       return userStateStub.getUserState(model.record.accountOwnerId, true)
         .then(function(accountOwnerResult){
           model.accountOwnerData = accountOwnerResult.data;
+        })
+        .catch(function(error){
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
         });
     };
 

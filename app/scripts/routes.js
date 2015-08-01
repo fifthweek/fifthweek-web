@@ -166,9 +166,6 @@ angular.module('webApp')
       },
       lookup: {
         name: 'admin.lookup'
-      },
-      impersonation: {
-        name: 'admin.impersonation'
       }
     }
   })
@@ -720,16 +717,6 @@ angular.module('webApp')
           bodyClass: 'page-admin-lookup',
           pageTitle: 'Lookup',
           headTitle: ': ' + 'Lookup'
-        }
-      })
-      .state(states.admin.impersonation.name, {
-        url: '/impersonation',
-        templateUrl: 'modules/admin/impersonation.html',
-        controller: 'impersonationCtrl',
-        data : {
-          bodyClass: 'page-admin-impersonation',
-          pageTitle: 'Impersonation',
-          headTitle: ': ' + 'Impersonation'
         }
       })
     ;

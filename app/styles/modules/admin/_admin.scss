@@ -4,6 +4,12 @@
   background-color: #FFEEEE !important;
 }
 
+#{'.page-admin-transactions'},#{'.page-admin-lookup'} {
+  .raw-json {
+    font-size: 11px;
+  }
+}
+
 #{'.page-admin-transactions'} {
 
   .right-container {
@@ -46,10 +52,6 @@
 
   .price-negative {
     color: #AA7777;
-  }
-
-  .raw-json{
-    font-size: 11px;
   }
 }
 

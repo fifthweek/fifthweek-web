@@ -6,14 +6,11 @@ angular.module('webApp')
   function($rootScope, impersonationServiceConstants) {
     'use strict';
 
-    var service = {
-      impersonatedUserId: null
-    };
+    var service = {};
 
     service.internal = {};
 
     service.impersonate = function(userId) {
-      service.impersonatedUserId = userId;
       $rootScope.$broadcast(impersonationServiceConstants.impersonationChangedEvent, userId);
     };
 

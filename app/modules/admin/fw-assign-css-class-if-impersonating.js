@@ -1,5 +1,5 @@
 angular.module('webApp').directive('fwAssignCssClassIfImpersonating',
-  function ($state, impersonationService, impersonationServiceConstants) {
+  function ($state, authenticationService, authenticationServiceConstants) {
     'use strict';
 
     return {
@@ -16,12 +16,12 @@ angular.module('webApp').directive('fwAssignCssClassIfImpersonating',
           element.removeClass(cssClass);
         };
 
-        if(impersonationService.impersonatedUserId) {
+        if(authenticationService.currentUser.nonImpersonatedUserId) {
           addClass();
         }
 
-        scope.$on(impersonationServiceConstants.impersonationChangedEvent, function(event, userId) {
-          if(userId){
+        scope.$on(authenticationServiceConstants.currentUserChangedEvent, function(event, currentUser) {
+          if(currentUser.nonImpersonatedUserId){
             addClass();
           }
           else{
