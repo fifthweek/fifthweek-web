@@ -35,6 +35,16 @@
 
     <pre class="raw-json">{{model.recordJson}}</pre>
 
+    <fw-error-message value="model.errorMessage"></fw-error-message>
+
+    <fw-panel12>
+      <p ng-if="model.leaseId && model.leaseTimeRemaining">
+        Lease Time Remaining: {{model.leaseTimeRemaining}}
+        <button ng-click="renewLease();">Renew Lease</button>
+      </p>
+      <p ng-if="!model.leaseId || !model.leaseTimeRemaining"><button ng-click="acquireLease();">Acquire Lease</button></p>
+    </fw-panel12>
+
     <div ng-if="model.record.transactionType === 'creditAddition'">
       <fw-panel12>
         <form novalidate

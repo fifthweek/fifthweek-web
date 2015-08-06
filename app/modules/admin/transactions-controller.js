@@ -1,6 +1,6 @@
 angular.module('webApp')
   .controller('transactionsCtrl',
-  function($scope, initializer, paymentsStub, errorFacade, impersonationService, userStateStub) {
+  function($scope, initializer, paymentsStub, errorFacade, impersonationService, userStateStub, $interval) {
     'use strict';
 
 
@@ -25,7 +25,9 @@ angular.module('webApp')
         comment: undefined,
         refundAmount: 0.00,
         refundReason: $scope.refundReasons.requestedByCustomer
-      }
+      },
+      leaseId: undefined,
+      leaseTimeRemaining: 0
     };
 
     var internal = this.internal = {};
@@ -83,6 +85,7 @@ angular.module('webApp')
     };
 
     $scope.showDetail = function(record){
+      model.errorMessage = undefined;
       model.record = record;
       model.selectedRecords = _.where(model.records, { transactionReference: record.transactionReference });
       model.recordJson = JSON.stringify(record, undefined, 2);
@@ -99,10 +102,12 @@ angular.module('webApp')
     };
 
     $scope.impersonate = function(userId){
+      model.errorMessage = undefined;
       return impersonationService.impersonate(userId);
     };
 
     $scope.reverseTransaction = function() {
+      model.errorMessage = undefined;
       if(window.confirm('Are you sure you want to reverse the transaction?')){
         return paymentsStub.postTransactionRefund(
           model.record.transactionReference,
@@ -121,6 +126,7 @@ angular.module('webApp')
     };
 
     $scope.refundCredit = function() {
+      model.errorMessage = undefined;
       var amountInDollars = model.input.refundAmount;
       var amountInCents = Math.round(amountInDollars * 100);
       if(window.confirm('Are you sure you want to refund $' + amountInDollars.toFixed(2) + '?')){
@@ -143,10 +149,12 @@ angular.module('webApp')
     };
 
     $scope.filter = function(){
+      model.errorMessage = undefined;
       return internal.loadForm();
     };
 
     $scope.resetFilter = function(){
+      model.errorMessage = undefined;
       var start = new Date();
       var end = new Date();
       start.setMonth(start.getMonth() - 1);
@@ -154,6 +162,68 @@ angular.module('webApp')
       model.filter.startTimestamp = start;
       model.filter.endTimestamp = end;
       model.filter.userId = undefined;
+    };
+
+    internal.decrementLeaseTimeRemaining = function(){
+      if(model.leaseTimeRemaining){
+        model.leaseTimeRemaining -= 1;
+        if(model.leaseTimeRemaining < 0){
+          model.leaseTimeRemaining = 0;
+        }
+      }
+    };
+
+    internal.setLeaseTimeRemaining = function(leaseTimeSeconds){
+      if(model.leaseTimePromise){
+        $interval.cancel(model.leaseTimePromise);
+      }
+
+      model.leaseTimeRemaining = leaseTimeSeconds;
+      model.leaseTimePromise = $interval(internal.decrementLeaseTimeRemaining, 1000, model.leaseTimeRemaining);
+    };
+
+    $scope.acquireLease = function(){
+      model.errorMessage = undefined;
+      return paymentsStub.getPaymentProcessingLease(undefined)
+        .then(function(result){
+          if(!result.data){
+            throw new DisplayableError('Lease could not be acquired. Please try again shortly.');
+          }
+
+          model.leaseId = result.data.leaseId;
+          internal.setLeaseTimeRemaining(result.data.leaseLengthSeconds);
+
+          return internal.refreshKeepingRecord();
+        })
+        .catch(function(error){
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
+        });
+    };
+
+    $scope.renewLease = function(){
+      if(!model.leaseId){
+        model.errorMessage = 'No lease acquired.';
+        return;
+      }
+
+      if(!model.leaseTimeRemaining){
+        model.errorMessage = 'Lease has expired';
+        return;
+      }
+
+      model.errorMessage = undefined;
+
+      return paymentsStub.getPaymentProcessingLease(model.leaseId)
+        .then(function(result){
+          internal.setLeaseTimeRemaining(result.data.leaseLengthSeconds);
+        })
+        .catch(function(error){
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
+        });
     };
 
     initializer.initialize(internal.initialize);
