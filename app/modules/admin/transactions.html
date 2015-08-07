@@ -38,105 +38,114 @@
     <fw-error-message value="model.errorMessage"></fw-error-message>
 
     <fw-panel12>
-      <p ng-if="model.leaseId && model.leaseTimeRemaining">
+      <p ng-if="model.leaseTimeRemaining">
         Lease Time Remaining: {{model.leaseTimeRemaining}}
         <button ng-click="renewLease();">Renew Lease</button>
       </p>
-      <p ng-if="!model.leaseId || !model.leaseTimeRemaining"><button ng-click="acquireLease();">Acquire Lease</button></p>
+      <p ng-if="!model.leaseTimeRemaining"><button ng-click="acquireLease();">Acquire Lease</button></p>
     </fw-panel12>
 
-    <div ng-if="model.record.transactionType === 'creditAddition'">
+    <div ng-if="!model.leaseTimeRemaining">
       <fw-panel12>
-        <form novalidate
-              id="refund-credit-form"
-              role="form"
-              name="refundCreditForm">
-
-          <div class="row">
-            <div class="col-s-6">
-              <div>
-                <input
-                  id="refund-credit-comment"
-                  type="text"
-                  class="form-control"
-                  name="comment"
-                  placeholder="Comment"
-                  ng-model="model.input.comment">
-              </div>
-            </div>
-          </div>
-          <div class="radio">
-            <label>
-              <input type="radio"
-                     ng-model="model.input.refundReason"
-                     ng-value="refundReasons.requestedByCustomer" />
-              Requested by Customer
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              <input type="radio"
-                     ng-model="model.input.refundReason"
-                     ng-value="refundReasons.duplicate" />
-              Duplicate
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              <input type="radio"
-                     ng-model="model.input.refundReason"
-                     ng-value="refundReasons.fraudulent" />
-              Fraudulent
-            </label>
-          </div>
-          <label>Credit to refund (tax is calculated):</label>
-          <fw-form-input-channel-price ng-model="model.input.refundAmount" required></fw-form-input-channel-price>
-
-          <div class="row-btn">
-            <button
-              id="refund-credit-button"
-              class="btn btn-block btn-success"
-              data-loading-text="Please wait..."
-              data-event-title="Credit refunded"
-              data-event-category="Refund"
-              fw-form-submit="refundCredit()">Refund Credit</button>
-          </div>
-        </form>
-
+        <p>
+          Obtain a lease to enable refunds.
+        </p>
       </fw-panel12>
     </div>
-    <div ng-if="model.record.transactionType === 'subscriptionPayment'">
-      <fw-panel12>
-        <form novalidate
-              id="reverse-transaction-form"
-              role="form"
-              name="reverseTransactionForm">
-          <div class="row">
-            <div class="col-s-6">
-              <div>
-                <input
-                  id="reverse-transaction-comment"
-                  type="text"
-                  class="form-control"
-                  name="comment"
-                  placeholder="Comment"
-                  ng-model="model.input.comment">
+    <div ng-if="model.leaseTimeRemaining">
+      <div ng-if="model.record.transactionType === 'creditAddition'">
+        <fw-panel12>
+          <form novalidate
+                id="refund-credit-form"
+                role="form"
+                name="refundCreditForm">
+
+            <div class="row">
+              <div class="col-s-6">
+                <div>
+                  <input
+                    id="refund-credit-comment"
+                    type="text"
+                    class="form-control"
+                    name="comment"
+                    placeholder="Comment"
+                    ng-model="model.input.comment">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="row-btn">
-            <button
-              id="reverse-transaction-button"
-              class="btn btn-block btn-success"
-              data-loading-text="Please wait..."
-              data-event-title="Transaction reversed"
-              data-event-category="Refund"
-              can-submit="true"
-              fw-form-submit="reverseTransaction()">Reverse Transaction</button>
-          </div>
-        </form>
+            <div class="radio">
+              <label>
+                <input type="radio"
+                       ng-model="model.input.refundReason"
+                       ng-value="refundReasons.requestedByCustomer" />
+                Requested by Customer
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio"
+                       ng-model="model.input.refundReason"
+                       ng-value="refundReasons.duplicate" />
+                Duplicate
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio"
+                       ng-model="model.input.refundReason"
+                       ng-value="refundReasons.fraudulent" />
+                Fraudulent
+              </label>
+            </div>
+            <label>Credit to refund (tax is calculated):</label>
+            <fw-form-input-channel-price ng-model="model.input.refundAmount" required></fw-form-input-channel-price>
 
-      </fw-panel12>
+            <div class="row-btn">
+              <button
+                id="refund-credit-button"
+                class="btn btn-block btn-success"
+                data-loading-text="Please wait..."
+                data-event-title="Credit refunded"
+                data-event-category="Refund"
+                fw-form-submit="refundCredit()">Refund Credit</button>
+            </div>
+          </form>
+
+        </fw-panel12>
+      </div>
+      <div ng-if="model.record.transactionType === 'subscriptionPayment'">
+        <fw-panel12>
+          <form novalidate
+                id="reverse-transaction-form"
+                role="form"
+                name="reverseTransactionForm">
+            <div class="row">
+              <div class="col-s-6">
+                <div>
+                  <input
+                    id="reverse-transaction-comment"
+                    type="text"
+                    class="form-control"
+                    name="comment"
+                    placeholder="Comment"
+                    ng-model="model.input.comment">
+                </div>
+              </div>
+            </div>
+            <div class="row-btn">
+              <button
+                id="reverse-transaction-button"
+                class="btn btn-block btn-success"
+                data-loading-text="Please wait..."
+                data-event-title="Transaction reversed"
+                data-event-category="Refund"
+                can-submit="true"
+                fw-form-submit="reverseTransaction()">Reverse Transaction</button>
+            </div>
+          </form>
+
+        </fw-panel12>
+      </div>
     </div>
     <fw-panel12>
       <p>Account balance of account owner: <fw-price value="model.accountOwnerData.accountSettings.accountBalance" show-interval="false"></fw-price>.</p>
