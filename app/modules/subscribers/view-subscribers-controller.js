@@ -10,7 +10,9 @@ angular.module('webApp')
       errorMessage: undefined,
       userId: blogRepository.getUserId(),
       subscribers: [],
-      totalRevenue: undefined
+      unreleasedRevenue: undefined,
+      releasedRevenue: undefined,
+      releasableRevenue: undefined
     };
 
     var internal = this.internal = {};
@@ -60,7 +62,9 @@ angular.module('webApp')
         })
         .then(function(subscriberInformation){
           model.subscribers = subscriberInformation.data.subscribers;
-          model.totalRevenue = subscriberInformation.data.totalRevenue;
+          model.unreleasedRevenue = subscriberInformation.data.unreleasedRevenue;
+          model.releasedRevenue = subscriberInformation.data.releasedRevenue;
+          model.releasableRevenue = subscriberInformation.data.releasableRevenue;
           internal.processSubscribers();
         })
         .catch(function(error){

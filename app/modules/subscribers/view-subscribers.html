@@ -6,9 +6,17 @@
 
 <fw-panel12 ng-if="!model.isLoading && !model.errorMessage">
   <p>
-    Your total revenue is
-    <strong><fw-price value="model.totalRevenue" show-interval="false" id="total-revenue"></fw-price></strong>,
-    and your estimated revenue over the next week is
+    Your total revenue to date is
+    <strong><fw-price value="model.releasedRevenue + model.unreleasedRevenue" show-interval="false" id="total-revenue"></fw-price></strong>.
+  </p>
+  <p>
+    <strong><fw-price value="model.releasedRevenue" show-interval="false" id="released-revenue"></fw-price></strong>
+    has already been paid out and
+    <strong><fw-price value="model.releasableRevenue" show-interval="false" id="releasable-revenue"></fw-price></strong>
+    is available.
+  </p>
+  <p>
+    Your estimated revenue over the next week is
     <strong><fw-price value="model.estimatedWeeklyRevenue" show-interval="false" id="estimated-weekly-revenue"></fw-price></strong>.
   </p>
   <p>
