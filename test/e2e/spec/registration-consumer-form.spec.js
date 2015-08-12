@@ -26,6 +26,8 @@ describe("registration form", function() {
     email = userRegistration.email;
     username = userRegistration.username;
     creatorLandingPage.subscribeButton.click();
+    testKit.waitForElementToDisplay(page.registrationUsernameTextBox);
+
   };
 
   it('should run once before all', function() {
