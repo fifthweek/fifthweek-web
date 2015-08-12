@@ -36,6 +36,7 @@ RegisterPage.prototype = Object.create({},
     var password = 'password1';
     var name = 'A Name';
 
+    testKit.waitForElementToDisplay(element(by.id(this.creatorNameTextBoxId)));
     testKit.setValue(this.creatorNameTextBoxId, name);
     testKit.setValue(this.emailTextBoxId, email);
     testKit.setValue(this.usernameTextBoxId, username);

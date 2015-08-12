@@ -18,6 +18,7 @@ describe('sign-in form', function() {
   var navigateToPage = function() {
     signOutPage.signOutAndGoHome();
     homePage.signInLink.click();
+    testKit.waitForElementToDisplay(element(by.id(page.usernameTextBoxId)));
   };
 
   describe('when a user is not registered', function() {
