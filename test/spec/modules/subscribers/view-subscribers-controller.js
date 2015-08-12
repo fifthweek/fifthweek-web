@@ -232,7 +232,13 @@ describe('view-subscribers-controller', function(){
 
         describe('when getSubscriberInformation succeeds', function(){
           beforeEach(function(){
-            deferredGetSubscriberInformation.resolve({ data: { subscribers: 'subscribers', totalRevenue: 'totalRevenue' }});
+            deferredGetSubscriberInformation.resolve({ data:
+            {
+              subscribers: 'subscribers',
+              unreleasedRevenue: 'unreleasedRevenue',
+              releasedRevenue: 'releasedRevenue',
+              releasableRevenue: 'releasableRevenue'
+            }});
             $scope.$apply();
           });
 
@@ -240,8 +246,16 @@ describe('view-subscribers-controller', function(){
             expect($scope.model.subscribers).toBe('subscribers');
           });
 
-          it('should set the totalRevenue', function(){
-            expect($scope.model.totalRevenue).toBe('totalRevenue');
+          it('should set the unreleasedRevenue', function(){
+            expect($scope.model.unreleasedRevenue).toBe('unreleasedRevenue');
+          });
+
+          it('should set the releasedRevenue', function(){
+            expect($scope.model.releasedRevenue).toBe('releasedRevenue');
+          });
+
+          it('should set the releasableRevenue', function(){
+            expect($scope.model.releasableRevenue).toBe('releasableRevenue');
           });
 
           it('should call processSubscribers', function(){
