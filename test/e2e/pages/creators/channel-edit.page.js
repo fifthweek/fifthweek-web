@@ -45,6 +45,7 @@ ChannelEditPage.prototype = Object.create({}, {
   deleteButton: { get: function () { return element(this.deleteButtonSelector); }},
   deleteButtonCount: { get: function () { return element.all(this.deleteButtonSelector).count(); }},
   setPrice: { value: function(price) {
+    testKit.waitForElementToDisplay(element(by.id(this.priceTextBoxId)));
     testKit.setValue(this.priceTextBoxId, price);
   }}
 });
