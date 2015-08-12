@@ -47,7 +47,7 @@
     "load-grunt-tasks": "^0.4.0",
     "lodash": "^3.4.0",
     "path": "^0.4.9",
-    "protractor": "^1.8.0",
+    "protractor": "^2.1.0",
     "protractor-html-screenshot-reporter": "0.0.19",
     "time-grunt": "^0.3.1"
   },

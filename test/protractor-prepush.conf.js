@@ -40,6 +40,6 @@ exports.config = {
 
     var window = browser.manage().window();
     window.setSize(1280, 850);
-    commonWorkflows.getRoot();
+    return commonWorkflows.getRoot();
   }
 };

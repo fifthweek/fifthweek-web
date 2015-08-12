@@ -265,7 +265,7 @@ TestKit.prototype = Object.create({}, {
         }
       });
       return deferred.promise;
-    });
+    }, 60000);
 
     // Fail fast: ensures the above tricky-trick has actually worked.
     expect(element.isDisplayed()).toBe(true);

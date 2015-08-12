@@ -43,12 +43,12 @@
 
   CommonWorkflows.prototype = Object.create({}, {
     getRoot: { value: function() {
-      this.getPage('/');
+      return this.getPage('/');
     }},
     getPage: { value: function(url) {
       browser.get(url);
       browser.waitForAngular();
-      browser.controlFlow().execute(function() {
+      return browser.controlFlow().execute(function() {
         browser.executeScript('angular.element(document.body).addClass("disable-animations")');
       });
     }},
