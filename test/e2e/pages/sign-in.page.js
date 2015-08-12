@@ -15,6 +15,7 @@ SignInPage.prototype = Object.create({}, {
   nextPageUrl: { get: function () { return new CreateBlogPage().pageUrl; }},
   message: { get: function () { return element(by.id('sign-in-message')); }},
   signInSuccessfully: { value: function(username, password) {
+    testKit.waitForElementToDisplay(element(by.id(this.usernameTextBoxId)));
     testKit.setValue(this.usernameTextBoxId, username);
     testKit.setValue(this.passwordTextBoxId, password);
     this.signInButton.click();

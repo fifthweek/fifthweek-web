@@ -73,6 +73,7 @@
       var email = registration.email;
       var password = registration.password;
 
+      testKit.waitForElementToDisplay(this.registrationEmailTextBox);
       testKit.setValue(this.registrationEmailTextBoxId, email);
       testKit.setValue(this.registrationUsernameTextBoxId, username);
       testKit.setValue(this.registrationPasswordTextBoxId, password);
@@ -83,6 +84,7 @@
     }},
     signInSuccessfully: { value: function(registration) {
       this.showSignInLink.click();
+      testKit.waitForElementToDisplay(this.signInUsernameTextBox);
       testKit.setValue(this.signInUsernameTextBoxId, registration.username);
       testKit.setValue(this.signInPasswordTextBoxId, registration.password);
       this.signInButton.click();
