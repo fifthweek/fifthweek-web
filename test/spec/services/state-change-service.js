@@ -34,28 +34,28 @@ describe('state change service', function(){
   describe('when determining access permission', function() {
 
     it('should pass if all composed services pass', function () {
-      stateChangeAuthorizationService.isPermitted.and.returnValue(true);
       stateChangeRedirectionService.isPermitted.and.returnValue(true);
+      stateChangeAuthorizationService.isPermitted.and.returnValue(true);
       stateChangeRequireBlogService.isPermitted.and.returnValue(true);
 
       var result = target.isPermitted(toState);
 
       expect(result).toBe(true);
-      expect(stateChangeAuthorizationService.isPermitted).toHaveBeenCalledWith(toState);
       expect(stateChangeRedirectionService.isPermitted).toHaveBeenCalledWith(toState);
+      expect(stateChangeAuthorizationService.isPermitted).toHaveBeenCalledWith(toState);
       expect(stateChangeRequireBlogService.isPermitted).toHaveBeenCalledWith(toState);
     });
 
     it('should fail if any composed services fail', function () {
-      stateChangeAuthorizationService.isPermitted.and.returnValue(true);
-      stateChangeRedirectionService.isPermitted.and.returnValue(false);
+      stateChangeRedirectionService.isPermitted.and.returnValue(true);
+      stateChangeAuthorizationService.isPermitted.and.returnValue(false);
       stateChangeRequireBlogService.isPermitted.and.returnValue(true);
 
       var result = target.isPermitted(toState);
 
       expect(result).toBe(false);
-      expect(stateChangeAuthorizationService.isPermitted).toHaveBeenCalledWith(toState);
       expect(stateChangeRedirectionService.isPermitted).toHaveBeenCalledWith(toState);
+      expect(stateChangeAuthorizationService.isPermitted).toHaveBeenCalledWith(toState);
       expect(stateChangeRequireBlogService.isPermitted).not.toHaveBeenCalled();
     });
   });
@@ -65,9 +65,18 @@ describe('state change service', function(){
     it('should forward call to all composed services', function () {
       target.redirectAwayIfRequired(event, toState, toParams);
 
-      expect(stateChangeAuthorizationService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
       expect(stateChangeRedirectionService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
+      expect(stateChangeAuthorizationService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
       expect(stateChangeRequireBlogService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
+    });
+
+    it('should stop forwarding if redirection occurs all composed services', function () {
+      target.redirectAwayIfRequired(event, toState, toParams);
+
+      stateChangeAuthorizationService.redirectAwayIfRequired.and.returnValue(true);
+      expect(stateChangeRedirectionService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
+      expect(stateChangeAuthorizationService.redirectAwayIfRequired).toHaveBeenCalledWith(event, toState, toParams);
+      expect(stateChangeRequireBlogService.redirectAwayIfRequired).not.toHaveBeenCalledWith();
     });
   });
 });

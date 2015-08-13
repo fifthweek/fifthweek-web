@@ -75,9 +75,11 @@ describe('state change require blog service', function(){
   describe('when routing', function() {
 
     it('should not do anything if the "requireBlog" field is not present', function () {
-      target.redirectAwayIfRequired(event, toState, toParams);
+      var result = target.redirectAwayIfRequired(event, toState, toParams);
 
       expect(event.preventDefault).not.toHaveBeenCalled();
+
+      expect(result).toBe(false);
     });
 
     it('should redirect to the default state if the flag is true and service returns false', function () {
@@ -87,9 +89,11 @@ describe('state change require blog service', function(){
 
       $state.expectTransitionTo(nextState);
 
-      target.redirectAwayIfRequired(event, toState, toParams);
+      var result = target.redirectAwayIfRequired(event, toState, toParams);
 
       expect(event.preventDefault).toHaveBeenCalled();
+
+      expect(result).toBe(true);
     });
 
     it('should redirect to the default state if the flag is false and service returns true', function () {
@@ -99,9 +103,11 @@ describe('state change require blog service', function(){
 
       $state.expectTransitionTo(nextState);
 
-      target.redirectAwayIfRequired(event, toState, toParams);
+      var result = target.redirectAwayIfRequired(event, toState, toParams);
 
       expect(event.preventDefault).toHaveBeenCalled();
+
+      expect(result).toBe(true);
     });
   });
 });

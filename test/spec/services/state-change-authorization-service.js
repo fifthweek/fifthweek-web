@@ -133,7 +133,9 @@ describe('state change authorization service', function () {
         authenticationService.currentUser.authenticated = false;
         stateData.access.requireUnauthenticated = true;
 
-        target.redirectAwayIfRequired(event, toState);
+        var result = target.redirectAwayIfRequired(event, toState);
+
+        expect(result).toBe(false);
       });
 
       it('should redirect to default state if the user is authenticated', function() {
@@ -143,7 +145,9 @@ describe('state change authorization service', function () {
         stateData.access.requireUnauthenticated = true;
 
         $state.expectTransitionTo(nextState);
-        target.redirectAwayIfRequired(event, toState);
+        var result = target.redirectAwayIfRequired(event, toState);
+
+        expect(result).toBe(true);
       });
     });
 
@@ -155,7 +159,9 @@ describe('state change authorization service', function () {
           return authorizationServiceConstants.authorizationResult.authorized;
         };
 
-        target.redirectAwayIfRequired(event, toState);
+        var result = target.redirectAwayIfRequired(event, toState);
+
+        expect(result).toBe(false);
       });
 
       it('should redirect to the sign in page if login is required and then return to the original page', function(){
@@ -165,12 +171,16 @@ describe('state change authorization service', function () {
         };
 
         $state.expectTransitionTo(states.signIn.signIn.name);
-        target.redirectAwayIfRequired(event, toState);
+        var result = target.redirectAwayIfRequired(event, toState);
+
+        expect(result).toBe(true);
 
         $state.verifyNoOutstandingTransitions();
         $state.expectTransitionTo(toState.name);
 
-        target.redirectAwayIfRequired(event, toState);
+        result = target.redirectAwayIfRequired(event, toState);
+
+        expect(result).toBe(true);
       });
 
       it('should redirect to the not authorized page if the user is not authorized', function(){
@@ -181,7 +191,9 @@ describe('state change authorization service', function () {
         };
 
         $state.expectTransitionTo(states.notAuthorized.name);
-        target.redirectAwayIfRequired(event, toState);
+        var result = target.redirectAwayIfRequired(event, toState);
+
+        expect(result).toBe(true);
       });
 
       it('should not redirect if the user navigates to a non-secure page after initial redirection to sign in page', function(){
@@ -193,13 +205,17 @@ describe('state change authorization service', function () {
 
         $state.expectTransitionTo(states.signIn.signIn.name);
 
-        target.redirectAwayIfRequired(event, toState);
+        var result = target.redirectAwayIfRequired(event, toState);
+
+        expect(result).toBe(true);
 
         $state.verifyNoOutstandingTransitions();
 
         stateData.access.requireAuthenticated = false;
 
-        target.redirectAwayIfRequired(event, toState);
+        var result = target.redirectAwayIfRequired(event, toState);
+
+        expect(result).toBe(false);
       });
     });
   });

@@ -20,7 +20,10 @@ angular.module('webApp').factory('stateChangeRequireBlogService',
       if (!service.isPermitted(toState)) {
         event.preventDefault();
         $state.go(calculatedStates.getDefaultState(), toParams);
+        return true;
       }
+
+      return false;
     };
 
     return service;

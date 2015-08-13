@@ -5,8 +5,8 @@ angular.module('webApp').factory('stateChangeService',
     'use strict';
 
     var stateChangeServices = [
-      stateChangeAuthorizationService,
       stateChangeRedirectionService,
+      stateChangeAuthorizationService,
       stateChangeRequireBlogService
     ];
 
@@ -20,7 +20,9 @@ angular.module('webApp').factory('stateChangeService',
 
     service.redirectAwayIfRequired = function(event, toState, toParams){
       _.forEach(stateChangeServices, function(stateAccessService) {
-        stateAccessService.redirectAwayIfRequired(event, toState, toParams);
+        if(stateAccessService.redirectAwayIfRequired(event, toState, toParams)){
+          return false;
+        }
       });
     };
 

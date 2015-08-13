@@ -14,7 +14,10 @@ angular.module('webApp').factory('stateChangeRedirectionService',
       if(toState.redirectTo){
         event.preventDefault();
         $state.go(toState.redirectTo, toParams);
+        return true;
       }
+
+      return false;
     };
 
     return service;

@@ -36,6 +36,7 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
         if(toState.data !== undefined && toState.data.access !== undefined && toState.data.access.requireAuthenticated === true) {
           event.preventDefault();
           $state.go(cachedToState, cachedToParams, { location: 'replace' });
+          return true;
         }
       }
       else if (toState.data !== undefined && toState.data.access !== undefined) {
@@ -43,6 +44,7 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
           if (authenticationService.currentUser.authenticated === true) {
             event.preventDefault();
             $state.go(calculatedStates.getDefaultState());
+            return true;
           }
         }
         else {
@@ -54,13 +56,17 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
             cachedToParams =  toParams;
             event.preventDefault();
             $state.go(states.signIn.signIn.name);
+            return true;
           }
           else if (authorization === authorizationServiceConstants.authorizationResult.notAuthorized) {
             event.preventDefault();
             $state.go(states.notAuthorized.name);
+            return true;
           }
         }
       }
+
+      return false;
     };
 
     return service;

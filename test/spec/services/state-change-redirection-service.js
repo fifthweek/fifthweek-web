@@ -35,9 +35,11 @@ describe('state change redirection service', function(){
 
     spyOn(event, 'preventDefault');
 
-    target.redirectAwayIfRequired(event, toState,  toParams);
+    var result = target.redirectAwayIfRequired(event, toState,  toParams);
 
     expect(event.preventDefault).not.toHaveBeenCalled();
+
+    expect(result).toBe(false);
   });
 
   it('should redirect if the redirectTo field is present', function(){
@@ -47,8 +49,10 @@ describe('state change redirection service', function(){
 
     $state.expectTransitionTo(toState.redirectTo);
 
-    target.redirectAwayIfRequired(event, toState,  toParams);
+    var result = target.redirectAwayIfRequired(event, toState,  toParams);
 
     expect(event.preventDefault).toHaveBeenCalled();
+
+    expect(result).toBe(true);
   });
 });
