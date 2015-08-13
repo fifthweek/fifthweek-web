@@ -9,8 +9,8 @@ angular.module('webApp')
     'use strict';
 
     var service = Object.create({}, {
-      blogId: { get: function () { return (aggregateUserState.currentValue && aggregateUserState.currentValue.creatorStatus) ? aggregateUserState.currentValue.creatorStatus.blogId : null; }},
-      hasBlog: { get: function () { return service.blogId !== null; }}
+      blogId: { get: function () { return (aggregateUserState.currentValue && aggregateUserState.currentValue.creatorStatus) ? aggregateUserState.currentValue.creatorStatus.blogId : undefined; }},
+      hasBlog: { get: function () { return !!service.blogId; }}
     });
 
     service.createFirstBlog = function(blogData) {

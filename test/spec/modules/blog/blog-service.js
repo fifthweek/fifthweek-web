@@ -60,15 +60,15 @@ describe('blog service', function() {
 
   it('should synchronize on initialization', function() {
     aggregateUserState.currentValue = null;
-    expect(target.blogId).toBe(null);
+    expect(target.blogId).toBeUndefined();
     expect(target.hasBlog).toBe(false);
 
     aggregateUserState.currentValue = { };
-    expect(target.blogId).toBe(null);
+    expect(target.blogId).toBeUndefined();
     expect(target.hasBlog).toBe(false);
 
     aggregateUserState.currentValue = { creatorStatus: null };
-    expect(target.blogId).toBe(null);
+    expect(target.blogId).toBeUndefined();
     expect(target.hasBlog).toBe(false);
 
     aggregateUserState.currentValue = { creatorStatus: { blogId: blogId } };
