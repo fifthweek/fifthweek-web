@@ -42,16 +42,19 @@
     };
 
     var expectLatestPostCount = function(count){
+      browser.waitForAngular();
       expect(header.latestPostsLink.isDisplayed()).toBe(true);
       expect(post.allPosts.count()).toBe(count);
     };
 
     var expectLandingPagePostCount = function(count){
+      browser.waitForAngular();
       expect(landingPage.manageSubscriptionButton.isPresent()).toBe(true);
       expect(post.allPosts.count()).toBe(count);
     };
 
     var expectLandingPageChannelCount = function(hasFreeAccess, count, prices){
+      browser.waitForAngular();
       var totalPrice = '$' +  (hasFreeAccess ? 0 : _.sum(prices)).toFixed(2) + '/week';
       if(count === 1){
         expect(landingPage.buttonFooter.getText()).toBe(count + ' Channel - ' + totalPrice);
