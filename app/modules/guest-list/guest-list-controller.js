@@ -6,6 +6,7 @@ angular.module('webApp').controller('guestListCtrl',
       isLoading: false,
       isEditing: false,
       errorMessage: undefined,
+      blogId: undefined,
       freeAccessUsers: undefined,
       invalidEmails: undefined,
       registeredCount: 0,
@@ -20,7 +21,8 @@ angular.module('webApp').controller('guestListCtrl',
     var internal = this.internal = {};
 
     internal.loadForm = function(){
-      if(!blogService.blogId){
+      model.blogId = blogService.blogId;
+      if(!model.blogId){
         model.errorMessage = 'You must create a blog before managing the guest list.';
       }
       else{
@@ -31,7 +33,7 @@ angular.module('webApp').controller('guestListCtrl',
     internal.refresh = function(){
       model.errorMessage = undefined;
       model.isLoading = true;
-      return blogAccessStub.getFreeAccessList(blogService.blogId)
+      return blogAccessStub.getFreeAccessList(model.blogId)
         .then(function(result) {
           internal.processResult(result.data.freeAccessUsers);
         })
@@ -76,7 +78,7 @@ angular.module('webApp').controller('guestListCtrl',
         emails: model.input.emailsText.split('\n')
       };
 
-      return blogAccessStub.putFreeAccessList(blogService.blogId, data)
+      return blogAccessStub.putFreeAccessList(model.blogId, data)
         .then(function(result){
           if(result.data && result.data.invalidEmailAddresses){
             model.invalidEmails = result.data.invalidEmailAddresses;

@@ -121,6 +121,10 @@ describe('guest-list-controller', function() {
           expect($scope.model.errorMessage).toBeUndefined();
         });
 
+        it('should set the blog id', function(){
+          expect($scope.model.blogId).toBe('blogId');
+        });
+
         it('should call refresh', function(){
           expect(target.internal.refresh).toHaveBeenCalled();
         });
@@ -130,7 +134,7 @@ describe('guest-list-controller', function() {
     describe('when refresh is called', function(){
       var deferred;
       beforeEach(function(){
-        blogService.blogId = 'blogId';
+        $scope.model.blogId = 'blogId';
         $scope.model.errorMessage = 'error';
         $scope.model.isLoading = false;
 
@@ -301,7 +305,7 @@ describe('guest-list-controller', function() {
         deferred = $q.defer();
         spyOn(target.internal, 'refresh');
         blogAccessStub.putFreeAccessList.and.returnValue(deferred.promise);
-        blogService.blogId = 'blogId';
+        $scope.model.blogId = 'blogId';
 
         $scope.model.input.emailsText = 'email1\nemail2\nemail3';
         $scope.model.isEditing = true;
