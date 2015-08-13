@@ -35,6 +35,7 @@ CreateBlogPage.prototype = Object.create({}, {
   helpMessages: { get: function () { return element.all(by.css('#createBlogForm .help-block')); }},
   nextPageUrl: { get: function () { return '/user/news-feed'; }}, // Todo: replace with page object
   submitSuccessfully: { value: function() {
+    testKit.waitForElementToDisplay(element(by.id(this.nameTextBoxId)));
     var formValues = testKit.setFormValues(this, this.inputs);
     this.submitButton.click();
     browser.waitForAngular();
