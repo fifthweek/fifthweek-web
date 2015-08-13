@@ -29,6 +29,7 @@ describe('sign-in - forgot details form', function() {
     signOutPage.signOutAndGoHome();
     homePage.signInLink.click();
     signInPage.forgotDetailsLink.click();
+    testKit.waitForElementToDisplay(element(by.id(page.usernameTextBoxId)));
   };
 
   describe('when a user is not registered', function() {
@@ -37,6 +38,7 @@ describe('sign-in - forgot details form', function() {
 
     it('should display a success message when username is provided', function () {
       var unregisteredUsername = usernameInputPage.newUsername();
+
       testKit.setValue(page.usernameTextBoxId, unregisteredUsername);
 
       page.resetPasswordButton.click();
