@@ -49,7 +49,7 @@
       browser.get(url);
       browser.waitForAngular();
       return browser.controlFlow().execute(function() {
-        browser.executeScript('angular.element(document.body).addClass("disable-animations")');
+        return browser.executeScript('angular.element(document.body).addClass("disable-animations")');
       });
     }},
     fastRefresh: { value: function() {
@@ -57,7 +57,7 @@
         var script =
           'angular.element(document.body).injector().get(\'$state\').reload(); ' +
           'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
-        browser.executeScript(script);
+        return browser.executeScript(script);
       });
     }},
     rebaseLinkAndClick: { value: function(linkElement) {

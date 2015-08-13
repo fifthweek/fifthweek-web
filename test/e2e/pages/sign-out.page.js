@@ -11,7 +11,7 @@ SignOutPage.prototype = Object.create({},
         'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ' +
         'angular.element(document.body).injector().get(\'$state\').go(\'home\'); ' +
         'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
-      browser.executeScript(script);
+      return browser.executeScript(script);
     });
   }}
 });

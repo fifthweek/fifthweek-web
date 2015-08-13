@@ -27,7 +27,7 @@ RegisterPage.prototype = Object.create({},
         'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ' +
         'angular.element(document.body).injector().get(\'$state\').go(\'register\'); ' +
         'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
-      browser.executeScript(script);
+      return browser.executeScript(script);
     });
   }},
   registerSuccessfully: { value: function() {

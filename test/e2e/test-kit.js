@@ -235,7 +235,7 @@ TestKit.prototype = Object.create({}, {
     browser.controlFlow().execute(function() {
       // console.log('SET ' + elementId + ' = ' + value);
       // "Cannot read property '$digest' of undefined" is indicative of the element not existing on the page.
-      browser.executeScript((blur ? changeValue + '.blur()' : changeValue) + '.scope().$digest()');
+      return browser.executeScript((blur ? changeValue + '.blur()' : changeValue) + '.scope().$digest()');
     });
   }},
   scrollIntoView: { value: function(element) {
@@ -243,7 +243,7 @@ TestKit.prototype = Object.create({}, {
       arguments[0].scrollIntoView();
     };
     browser.controlFlow().execute(function() {
-      browser.executeScript(scrollIntoViewInner, element.getWebElement());
+      return browser.executeScript(scrollIntoViewInner, element.getWebElement());
     });
   }},
   waitForElementToDisplay: { value: function(element) {
