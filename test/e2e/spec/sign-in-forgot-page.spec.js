@@ -26,8 +26,8 @@ describe('sign-in - forgot details page', function() {
       expect(sidebar.links.count()).toBe(2);
     });
 
-    it('should contain highlighted link for current page', function () {
-      expect(sidebar.signInLink.getAttribute('class')).toContain('active');
+    it('should not contain highlighted link for sign-in page', function () {
+      expect(sidebar.signInLink.getAttribute('class')).not.toContain('active');
     });
 
     it('should contain "Help" link', function () {
