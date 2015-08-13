@@ -908,6 +908,7 @@
           expect(postListInformation.priceChangeIndicatorCount).toBe(0);
 
           navigateFromCreatorLandingPage();
+          navigateToLatestPosts();
           expectLatestPostCount(3);
           expect(postListInformation.priceChangeIndicatorCount).toBe(0);
         });
@@ -968,6 +969,7 @@
           expect(postListInformation.priceChangeIndicatorCount).toBe(0);
 
           navigateFromCreatorLandingPage();
+          navigateToLatestPosts();
           expectLatestPostCount(3);
           expect(postListInformation.priceChangeIndicatorCount).toBe(0);
         });
@@ -1036,6 +1038,7 @@
           expect(postListInformation.priceChangeIndicatorCount).toBe(0);
 
           navigateFromCreatorLandingPage();
+          navigateToLatestPosts();
           expectLatestPostCount(3);
           expect(postListInformation.priceChangeIndicatorCount).toBe(0);
         });
@@ -1090,6 +1093,7 @@
 
         it('should display all posts when price is accepted on landing page posts view', function(){
           navigateFromCreatorLandingPage();
+          navigateToLatestPosts();
           expectLatestPostCount(1);
           postListInformation.getAcceptButton(0).click();
           expectLatestPostCount(2);
