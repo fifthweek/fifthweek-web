@@ -13,6 +13,7 @@ SignOutPage.prototype = Object.create({},
         'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
       return browser.executeScript(script);
     });
+    browser.waitForAngular();
   }}
 });
 

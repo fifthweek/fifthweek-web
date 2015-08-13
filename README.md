@@ -1,4 +1,4 @@
-[ ![Codeship Status for fifthweek/fifthweek-web](https://codeship.com/projects/fc7a8280-232e-0133-a61b-4232491ff1b0/status?branch=master)](https://codeship.com/projects/96384)
+[ ![Codeship Status for fifthweek/fifthweek-web](https://codeship.com/projects/a0376670-23cb-0133-8fab-3eb60f8459a5/status?branch=master)](https://codeship.com/projects/96544)
 
 # Fifthweek Web
 
