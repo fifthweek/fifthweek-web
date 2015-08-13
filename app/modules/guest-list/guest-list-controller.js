@@ -86,7 +86,7 @@ angular.module('webApp').controller('guestListCtrl',
           }
 
           model.isEditing = false;
-          internal.refresh();
+          return internal.refresh();
         });
     };
 
