@@ -213,7 +213,7 @@ describe('state change authorization service', function () {
 
         stateData.access.requireAuthenticated = false;
 
-        var result = target.redirectAwayIfRequired(event, toState);
+        result = target.redirectAwayIfRequired(event, toState);
 
         expect(result).toBe(false);
       });
