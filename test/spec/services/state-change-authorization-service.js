@@ -164,7 +164,7 @@ describe('state change authorization service', function () {
           return authorizationServiceConstants.authorizationResult.loginRequired;
         };
 
-        $state.expectTransitionTo(states.signIn.name);
+        $state.expectTransitionTo(states.signIn.signIn.name);
         target.redirectAwayIfRequired(event, toState);
 
         $state.verifyNoOutstandingTransitions();
@@ -191,7 +191,7 @@ describe('state change authorization service', function () {
           return authorizationServiceConstants.authorizationResult.loginRequired;
         };
 
-        $state.expectTransitionTo(states.signIn.name);
+        $state.expectTransitionTo(states.signIn.signIn.name);
 
         target.redirectAwayIfRequired(event, toState);
 

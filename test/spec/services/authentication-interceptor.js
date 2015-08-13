@@ -144,7 +144,7 @@ describe('authentication interceptor', function() {
           return $q.reject();
         };
 
-        $state.expectTransitionTo(states.signIn.name);
+        $state.expectTransitionTo(states.signIn.signIn.name);
 
         var result;
         target.responseError(rejection).catch(
@@ -275,7 +275,7 @@ describe('authentication interceptor', function() {
       it('should wait for existing promise and redirect to sign in if fetching a bearer token fails', function() {
 
         // We only expect one transition.
-        $state.expectTransitionTo(states.signIn.name);
+        $state.expectTransitionTo(states.signIn.signIn.name);
 
         var result;
         target.responseError(rejection).catch(
