@@ -12,9 +12,9 @@ angular.module('webApp')
       userId: accountSettingsRepository.getUserId(),
       mode: fwUpdatePaymentInformationConstants.modes.paymentInformation,
       input: {
-        creditCardNumber: '',
-        expiry: '',
-        cvc: ''
+        creditCardNumber: undefined,
+        expiry: undefined, // Note: angular-payments doesn't like this starting as an empty string.
+        cvc: undefined
       },
       creditRequestSummary: undefined
     };
