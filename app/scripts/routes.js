@@ -624,11 +624,42 @@ angular.module('webApp')
       })
       .state(states.support.help.name, {
         url: '/help',
-        templateUrl: '../modules/information/pages/help.html',
+        templateUrl: 'modules/information/pages/help.html',
         data : {
           headTitle: ': ' + 'Help',
           navigationHidden: true,
           bodyClass: 'info-page'
+        }
+      })
+      .state(states.admin.name, {
+        url: '/admin',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.admin.lookup.name,
+        data : {
+          access: {
+            requireAuthenticated: true,
+            roles: [authenticationServiceConstants.roles.administrator]
+          }
+        }
+      })
+      .state(states.admin.transactions.name, {
+        url: '/transactions',
+        templateUrl: 'modules/admin/transactions.html',
+        controller: 'transactionsCtrl',
+        data : {
+          bodyClass: 'page-admin-transactions',
+          pageTitle: 'Transactions',
+          headTitle: ': ' + 'Transactions'
+        }
+      })
+      .state(states.admin.lookup.name, {
+        url: '/lookup',
+        templateUrl: 'modules/admin/object-lookup.html',
+        controller: 'objectLookupCtrl',
+        data : {
+          bodyClass: 'page-admin-lookup',
+          pageTitle: 'Lookup',
+          headTitle: ': ' + 'Lookup'
         }
       })
       .state(states.support.contact.name, {
@@ -686,37 +717,6 @@ angular.module('webApp')
           access: {
             requireAuthenticated: false
           }
-        }
-      })
-      .state(states.admin.name, {
-        url: '/admin',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.admin.lookup.name,
-        data : {
-          access: {
-            requireAuthenticated: true,
-            roles: [authenticationServiceConstants.roles.administrator]
-          }
-        }
-      })
-      .state(states.admin.transactions.name, {
-        url: '/transactions',
-        templateUrl: 'modules/admin/transactions.html',
-        controller: 'transactionsCtrl',
-        data : {
-          bodyClass: 'page-admin-transactions',
-          pageTitle: 'Transactions',
-          headTitle: ': ' + 'Transactions'
-        }
-      })
-      .state(states.admin.lookup.name, {
-        url: '/lookup',
-        templateUrl: 'modules/admin/object-lookup.html',
-        controller: 'objectLookupCtrl',
-        data : {
-          bodyClass: 'page-admin-lookup',
-          pageTitle: 'Lookup',
-          headTitle: ': ' + 'Lookup'
         }
       })
     ;
