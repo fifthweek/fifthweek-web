@@ -30,7 +30,7 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
     };
 
     service.redirectAwayIfRequired = function(event, toState, toParams){
-      if (redirectAfterLogin && toState.name !== states.signIn.name) {
+      if (redirectAfterLogin && toState.name !== states.signIn.name && toState.name !== states.signIn.signIn.name) {
         redirectAfterLogin = false;
 
         if(toState.data !== undefined && toState.data.access !== undefined && toState.data.access.requireAuthenticated === true) {
@@ -53,7 +53,7 @@ angular.module('webApp').factory('stateChangeAuthorizationService',
             cachedToState = toState.name;
             cachedToParams =  toParams;
             event.preventDefault();
-            $state.go(states.signIn.name);
+            $state.go(states.signIn.signIn.name);
           }
           else if (authorization === authorizationServiceConstants.authorizationResult.notAuthorized) {
             event.preventDefault();

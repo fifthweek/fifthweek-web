@@ -23,7 +23,7 @@ angular.module('webApp').factory('authenticationInterceptor',
         service.currentTokenRequest
           .catch(function(){
             $state = $state || $injector.get('$state');
-            $state.go(states.signIn.name);
+            $state.go(states.signIn.signIn.name);
           })
           .finally(function(){
             service.currentTokenRequest = undefined;

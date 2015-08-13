@@ -5,14 +5,14 @@ angular.module('webApp')
     return [
       {
         name: 'Sign In',
-        state: states.signIn.name,
+        state: states.signIn.signIn.name,
         icon: 'fa fa-sign-in',
         color: 'green',
         secondary:
         [
           {
             name: 'Sign In',
-            state: states.signIn.name,
+            state: states.signIn.signIn.name,
             icon: 'fa fa-sign-in',
             color: 'green'
           }

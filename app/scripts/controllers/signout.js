@@ -3,7 +3,9 @@ angular.module('webApp')
   	function($state, states, authenticationService) {
 		'use strict';
 
-			authenticationService.signOut();
-			$state.go(states.signIn.name, {}, { location: 'replace' });
+			return authenticationService.signOut()
+        .then(function(){
+          $state.go(states.signIn.signIn.name, {}, { location: 'replace' });
+        });
   	}
   );
