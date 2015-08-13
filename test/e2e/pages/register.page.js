@@ -24,11 +24,17 @@ RegisterPage.prototype = Object.create({},
     browser.controlFlow().execute(function() {
       var script =
         'angular.element(document.body).injector().get(\'$state\').go(\'user.signOut\'); ' +
-        'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ' +
+        'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
+      return browser.executeScript(script);
+    });
+    browser.waitForAngular();
+    browser.controlFlow().execute(function() {
+      var script =
         'angular.element(document.body).injector().get(\'$state\').go(\'register\'); ' +
         'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
       return browser.executeScript(script);
     });
+    browser.waitForAngular();
   }},
   registerSuccessfully: { value: function() {
     var username = new UsernameInputPage().newUsername();
