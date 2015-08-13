@@ -111,9 +111,9 @@ describe('fw-update-payment-information-controller', function(){
       });
 
       it('should reset input data', function(){
-        expect($scope.model.input.creditCardNumber).toBe('');
-        expect($scope.model.input.expiry).toBe('');
-        expect($scope.model.input.cvc).toBe('');
+        expect($scope.model.input.creditCardNumber).toBeUndefined();
+        expect($scope.model.input.expiry).toBeUndefined();
+        expect($scope.model.input.cvc).toBeUndefined();
       });
 
       it('should reset creditRequestSummary', function(){

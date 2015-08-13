@@ -27,9 +27,9 @@ angular.module('webApp')
     };
 
     internal.resetForm = function(){
-      model.input.creditCardNumber = '';
-      model.input.expiry = '';
-      model.input.cvc = '';
+      model.input.creditCardNumber = undefined;
+      model.input.expiry = undefined;
+      model.input.cvc = undefined;
       model.creditRequestSummary = undefined;
       internal.token = undefined;
       internal.paymentOrigin = undefined;
