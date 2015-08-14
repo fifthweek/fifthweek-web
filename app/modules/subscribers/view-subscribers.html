@@ -38,7 +38,7 @@
     <tr ng-repeat="subscriber in model.subscribers" class="subscriber-row" id="subscriber-row-{{$index}}">
       <td><p>{{subscriber.username}}</p></td>
       <td><p ng-repeat="channel in subscriber.channels">{{channel.name}}</p></td>
-      <td><p ng-repeat="channel in subscriber.channels">{{channel.subscriptionStartDate | date: 'd MMM yy'}}</p></td>
+      <td><p ng-repeat="channel in subscriber.channels">{{channel.subscriptionStartDate | date: 'd MMM yy':'UTC'}}</p></td>
       <td><p ng-repeat="channel in subscriber.channels">
         <i ng-if="!subscriber.freeAccessEmail && channel.isPaying" class="fa fa-check price-accepted-indicator"></i>
         <i ng-if="!subscriber.freeAccessEmail && !channel.isPaying" class="fa fa-times price-not-accepted-indicator"></i>

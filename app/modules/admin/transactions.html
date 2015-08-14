@@ -22,7 +22,7 @@
       </thead>
       <tbody>
       <tr ng-repeat="record in model.selectedRecords" class="selected-record-row {{record.accountType}}" id="selected-record-row-{{$index}}">
-        <td><p>{{record.timestamp | date: 'dd MMMM yyyy, HH:mm'}}</p></td>
+        <td><p>{{record.timestamp | date: 'dd MMMM yyyy, HH:mm':'UTC'}}</p></td>
         <td><p>{{record.transactionType}}</p></td>
         <td><p>{{record.accountOwnerUsername}}</p></td>
         <td><p>{{record.counterpartyUsername}}</p></td>
@@ -171,7 +171,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="record in model.records" class="record-row {{record.accountType}}" id="record-row-{{$index}}">
-      <td><p>{{record.timestamp | date: 'dd MMMM yyyy, HH:mm'}}</p></td>
+      <td><p>{{record.timestamp | date: 'dd MMMM yyyy, HH:mm':'UTC'}}</p></td>
       <td><p>{{record.transactionType}}</p></td>
       <td><p>{{record.accountOwnerUsername}}</p></td>
       <td><p>{{record.counterpartyUsername}}</p></td>
