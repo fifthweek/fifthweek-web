@@ -17,8 +17,8 @@ exports.config = {
     chromeOptions: {
       'args': ['no-sandbox'] // Requirement for Travis.
     },
-    shardTestFiles: false,
-    maxInstances: 1
+    shardTestFiles: true,
+    maxInstances: 3
   },
   onPrepare: function () {
     require('jasmine-reporters');

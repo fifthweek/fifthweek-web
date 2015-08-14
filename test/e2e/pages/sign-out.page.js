@@ -5,6 +5,7 @@ var SignOutPage = function() {};
 SignOutPage.prototype = Object.create({},
 {
   signOutAndGoHome: { value: function() {
+    browser.waitForAngular();
     browser.controlFlow().execute(function() {
       var script =
         'angular.element(document.body).injector().get(\'$state\').go(\'user.signOut\'); ' +

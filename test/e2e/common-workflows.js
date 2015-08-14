@@ -53,12 +53,14 @@
       });
     }},
     fastRefresh: { value: function() {
+      browser.waitForAngular();
       browser.controlFlow().execute(function() {
         var script =
           'angular.element(document.body).injector().get(\'$state\').reload(); ' +
           'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
         return browser.executeScript(script);
       });
+      browser.waitForAngular();
     }},
     rebaseLinkAndClick: { value: function(linkElement) {
       var self = this;
