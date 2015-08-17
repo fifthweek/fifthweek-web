@@ -166,6 +166,9 @@ angular.module('webApp')
       },
       lookup: {
         name: 'admin.lookup'
+      },
+      creatorRevenues: {
+        name: 'admin.creatorRevenues'
       }
     }
   })
@@ -660,6 +663,16 @@ angular.module('webApp')
           bodyClass: 'page-admin-lookup',
           pageTitle: 'Lookup',
           headTitle: ': ' + 'Lookup'
+        }
+      })
+      .state(states.admin.creatorRevenues.name, {
+        url: '/creator-revenues',
+        templateUrl: 'modules/admin/creator-revenues.html',
+        controller: 'creatorRevenuesCtrl',
+        data : {
+          bodyClass: 'page-creator-revenues',
+          pageTitle: 'Creator Revenues',
+          headTitle: ': ' + 'Creator Revenues'
         }
       })
       .state(states.support.contact.name, {

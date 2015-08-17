@@ -4,19 +4,38 @@
   background-color: #FFEEEE !important;
 }
 
+$table-font-size: 11px;
+
 #{'.page-admin-transactions'},#{'.page-admin-lookup'} {
   .raw-json {
     font-size: 11px;
   }
 }
 
-#{'.page-admin-transactions'} {
+#{'.page-admin-transactions'},#{'.page-creator-revenues'} {
 
   .right-container {
-   background-color: white;
+    background-color: white;
   }
 
-  $table-font-size:11px;
+  table {
+    p {
+      white-space: nowrap;
+      font-size: $table-font-size;
+    }
+  }
+
+  th{
+    font-size: $table-font-size;
+  }
+
+  td{
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+}
+
+#{'.page-admin-transactions'} {
 
   #refund-credit-form{
     .input-group-addon:last-child{
@@ -25,24 +44,11 @@
   }
 
   table{
-    p{
-      white-space: nowrap;
-      font-size: $table-font-size;
-    }
     tr.fifthweekCredit p{
       font-weight: bold;
     }
     tr.fifthweekRevenue p{
       font-weight: bold;
-    }
-
-    th{
-      font-size: $table-font-size;
-    }
-
-    td{
-      padding-top: 4px !important;
-      padding-bottom: 4px !important;
     }
   }
 

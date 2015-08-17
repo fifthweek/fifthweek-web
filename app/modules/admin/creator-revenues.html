@@ -1,0 +1,39 @@
+<fw-error-message value="model.errorMessage"></fw-error-message>
+
+<div ng-if="model.isLoading" class="updating-area">
+  <i class="fa fa-refresh fa-spin"></i>
+</div>
+
+<div ng-if="!model.isLoading">
+  <div ng-if="!model.creators || !model.creators.length">
+    <fw-panel12>
+      <p>No creators with revenue found.</p>
+    </fw-panel12>
+  </div>
+  <div ng-if="model.creators && model.creators.length">
+    <table class="table" ng-if="model.records.length">
+      <thead>
+      <tr>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Confirmed</th>
+        <th>Unreleased</th>
+        <th>Releasable</th>
+        <th>Released</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="creator in model.creators" class="record-row" id="record-row-{{$index}}">
+        <td><p>{{record.username}}</p></td>
+        <td><p>{{record.name}}</p></td>
+        <td><p>{{record.email}}</p></td>
+        <td><p>{{record.emailConfirmed}}</p></td>
+        <td><p><fw-price value="record.unreleasedRevenue" show-interval="false"></fw-price></p></td>
+        <td><p><fw-price value="record.releasableRevenue" show-interval="false"></fw-price></p></td>
+        <td><p><fw-price value="record.releasedRevenue" show-interval="false"></fw-price></p></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

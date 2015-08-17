@@ -174,6 +174,11 @@ angular.module('webApp')
             name: 'Transactions',
             state: states.admin.transactions.name,
             icon: 'fa fa-money'
+          },
+          {
+            name: 'Creator Revenues',
+            state: states.admin.creatorRevenues.name,
+            icon: 'fa fa-money'
           }
         ]
       }
