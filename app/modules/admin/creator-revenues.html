@@ -11,27 +11,25 @@
     </fw-panel12>
   </div>
   <div ng-if="model.creators && model.creators.length">
-    <table class="table" ng-if="model.records.length">
+    <table class="table" ng-if="model.creators.length">
       <thead>
       <tr>
         <th>Username</th>
         <th>Name</th>
         <th>Email</th>
-        <th>Confirmed</th>
+        <th>Released</th>
         <th>Unreleased</th>
         <th>Releasable</th>
-        <th>Released</th>
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="creator in model.creators" class="record-row" id="record-row-{{$index}}">
+      <tr ng-repeat="record in model.creators" ng-class="{ 'email-confirmed': record.emailConfirmed }" class="record-row" id="record-row-{{$index}}">
         <td><p>{{record.username}}</p></td>
         <td><p>{{record.name}}</p></td>
         <td><p>{{record.email}}</p></td>
-        <td><p>{{record.emailConfirmed}}</p></td>
-        <td><p><fw-price value="record.unreleasedRevenue" show-interval="false"></fw-price></p></td>
-        <td><p><fw-price value="record.releasableRevenue" show-interval="false"></fw-price></p></td>
         <td><p><fw-price value="record.releasedRevenue" show-interval="false"></fw-price></p></td>
+        <td><p><fw-price value="record.unreleasedRevenue" show-interval="false"></fw-price></p></td>
+        <td><p><strong><fw-price value="record.releasableRevenue" show-interval="false"></fw-price></strong></p></td>
       </tr>
       </tbody>
     </table>

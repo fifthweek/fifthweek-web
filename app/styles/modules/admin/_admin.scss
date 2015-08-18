@@ -61,3 +61,21 @@ $table-font-size: 11px;
   }
 }
 
+
+#{'.page-creator-revenues'} {
+
+  table{
+    tr.email-confirmed p{
+      color: #00AA00;
+    }
+  }
+
+  a {
+    color:$grey-dark;
+  }
+
+  .price-negative {
+    color: #AA7777;
+  }
+}
+
