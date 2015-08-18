@@ -9,6 +9,7 @@
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
   var GuestListPage = require('../../pages/creators/guest-list.page.js');
   var PostListInformationPage = require('../../pages/post-list-information.page.js');
+  var PaymentInformationPage = require('../../pages/payment-information.page.js');
 
   describe('view-subscribers form', function() {
 
@@ -20,6 +21,7 @@
     var landingPage = new CreatorLandingPagePage();
     var guestListPage = new GuestListPage();
     var postListInformationPage = new PostListInformationPage();
+    var paymentInformationPage = new PaymentInformationPage();
 
     var navigateToPage = function () {
       sidebar.subscribersLink.click();
@@ -55,7 +57,6 @@
       userRegistration1 = commonWorkflows.register();
     });
 
-
     it('should register as a user', function() {
       userRegistration2 = commonWorkflows.register();
     });
@@ -74,10 +75,23 @@
       expect(page.subscriberCount).toBe(0);
     });
 
-    it('should display a subscriber when subscribed', function(){
+    it('should not display a subscriber when no payment information', function(){
       commonWorkflows.reSignIn(userRegistration1);
       navigateToCreatorLandingPage(creatorRegistration);
       landingPage.subscribeButton.click();
+      navigateFromCreatorLandingPage();
+
+      commonWorkflows.reSignIn(creatorRegistration);
+      navigateToPage();
+      expect(page.totalRevenue.getText()).toBe('$0.00');
+      expect(page.estimatedWeeklyRevenue.getText()).toBe('$0.00');
+      expect(page.subscriberCount).toBe(0);
+    });
+
+    it('should display a subscriber when subscribed and has credit', function(){
+      commonWorkflows.reSignIn(userRegistration1);
+      navigateToCreatorLandingPage(creatorRegistration);
+      paymentInformationPage.completeSuccessfully();
       navigateFromCreatorLandingPage();
 
       commonWorkflows.reSignIn(creatorRegistration);
@@ -140,11 +154,30 @@
       expect(page.guestListIndicatorCount).toBe(1);
     });
 
-    it('should display subscribers who have not accepted price', function(){
+    it('should not display subscriber removed from guest list if subscriber has no payment information', function(){
       sidebar.subscribersLink.click();
       header.guestListLink.click();
       guestListPage.updateGuestList([]);
 
+      navigateToPage();
+
+      expect(page.totalRevenue.getText()).toBe('$0.00');
+      expect(page.estimatedWeeklyRevenue.getText()).toBe('$' + getPrice(1, 1));
+      expect(page.totalUnacceptablePricesCount).toBe(0);
+      expect(page.subscriberCount).toBe(1);
+
+      expect(page.acceptedIndicatorCount).toBe(2);
+      expect(page.notAcceptedIndicatorCount).toBe(0);
+      expect(page.guestListIndicatorCount).toBe(0);
+    });
+
+    it('should display subscribers who have not accepted price', function(){
+      commonWorkflows.reSignIn(userRegistration2);
+      navigateToCreatorLandingPage(creatorRegistration);
+      paymentInformationPage.completeSuccessfully();
+      navigateFromCreatorLandingPage();
+
+      commonWorkflows.reSignIn(creatorRegistration);
       navigateToPage();
 
       expect(page.totalRevenue.getText()).toBe('$0.00');

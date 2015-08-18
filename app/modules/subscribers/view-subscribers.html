@@ -21,11 +21,17 @@
   </p>
   <p>
     You have <strong id="total-subscriptions">{{model.totalSubscriptions}}</strong> subscriptions
-    from <strong id="total-subscribers">{{model.subscribers.length}}</strong> subscribers.
+    from <strong id="total-subscribers">{{model.billableSubscribers}}</strong> subscribers.
     <span ng-if="model.unacceptablePrices"><strong id="total-unacceptable-prices">{{model.unacceptablePrices}}</strong>
     subscriptions are inactive because the user has not accepted the current price.</span>
   </p>
-  <table class="table" ng-if="model.subscribers.length">
+  <!--p>
+    You have <span ng-if="model.estimatedFailedPayments"><strong id="total-failed-payment-subscriptions">{{model.estimatedFailedPayments}}</strong>
+    subscriptions from <strong id="total-failed-payment-subscribers">{{model.subscribers.length - model.billableSubscribers}}</strong> subscribers
+    which cannot be billed because either we do not have their payment information or the billing has failed.
+    Those subscribers cannot view your channels, and are not included in your total subscriptions figure or the list of subscribers.</span>
+  </p-->
+  <table class="table" ng-if="model.billableSubscribers">
     <thead>
     <tr>
       <th>Username</th>
@@ -35,14 +41,14 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="subscriber in model.subscribers" class="subscriber-row" id="subscriber-row-{{$index}}">
+    <tr ng-repeat="subscriber in model.subscribers | filter: { shouldDisplay: true }" class="subscriber-row" id="subscriber-row-{{$index}}">
       <td><p>{{subscriber.username}}</p></td>
       <td><p ng-repeat="channel in subscriber.channels">{{channel.name}}</p></td>
       <td><p ng-repeat="channel in subscriber.channels">{{channel.subscriptionStartDate | date: 'd MMM yy':'UTC'}}</p></td>
       <td><p ng-repeat="channel in subscriber.channels">
         <i ng-if="!subscriber.freeAccessEmail && channel.isPaying" class="fa fa-check price-accepted-indicator"></i>
         <i ng-if="!subscriber.freeAccessEmail && !channel.isPaying" class="fa fa-times price-not-accepted-indicator"></i>
-        <i ng-if="subscriber.freeAccessEmail"  class="fa fa-street-view guest-list-indicator"></i>
+        <i ng-if="subscriber.freeAccessEmail" class="fa fa-street-view guest-list-indicator"></i>
       </p></td>
     </tr>
     </tbody>

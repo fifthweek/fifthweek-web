@@ -21,25 +21,47 @@ angular.module('webApp')
 
     internal.processSubscribers = function(){
       var estimatedWeeklyRevenue = 0;
+      var estimatedFailedPayments = 0;
       var totalSubscriptions = 0;
       var unacceptablePrices = 0;
+      var billableSubscribers = 0;
       _.forEach(model.subscribers, function(subscriber){
+        subscriber.isBillable = subscriber.hasPaymentInformation && subscriber.paymentStatus !== 'failed';
+
+        if(subscriber.isBillable){
+          ++billableSubscribers;
+        }
+
+        subscriber.shouldDisplay = false;
+
         _.forEach(subscriber.channels, function(channel){
           var channelInfo = internal.blog.channels[channel.channelId];
           if(channelInfo){
             channel.name = channelInfo.name;
             if(channel.acceptedPrice >= channelInfo.price){
-              estimatedWeeklyRevenue += channelInfo.price;
+
+              if(subscriber.isBillable){
+                estimatedWeeklyRevenue += channelInfo.price;
+                ++totalSubscriptions;
+                subscriber.shouldDisplay = true;
+              }
+              else{
+                ++estimatedFailedPayments;
+              }
+
               channel.isPaying = true;
-              ++totalSubscriptions;
             }
             else if(subscriber.freeAccessEmail) {
               channel.isPaying = false;
               ++totalSubscriptions;
+              subscriber.shouldDisplay = true;
             }
             else{
               channel.isPaying = false;
-              ++unacceptablePrices;
+              if(subscriber.isBillable) {
+                ++unacceptablePrices;
+                subscriber.shouldDisplay = true;
+              }
             }
           }
           else{
@@ -49,8 +71,10 @@ angular.module('webApp')
       });
 
       model.estimatedWeeklyRevenue = estimatedWeeklyRevenue;
+      model.estimatedFailedPayments = estimatedFailedPayments;
       model.totalSubscriptions = totalSubscriptions;
       model.unacceptablePrices = unacceptablePrices;
+      model.billableSubscribers = billableSubscribers;
     };
 
     internal.loadForm = function(){

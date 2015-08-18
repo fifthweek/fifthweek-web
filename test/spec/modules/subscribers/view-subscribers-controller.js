@@ -136,6 +136,8 @@ describe('view-subscribers-controller', function(){
             [
               {
                 freeAccessEmail: 'one@test.com',
+                hasPaymentInformation: true,
+                paymentStatus: 'none',
                 channels: [
                   {
                     channelId: 'id1',
@@ -148,6 +150,8 @@ describe('view-subscribers-controller', function(){
                 ]
               },
               {
+                hasPaymentInformation: true,
+                paymentStatus: 'none',
                 channels: [
                   {
                     channelId: 'id1',
@@ -156,6 +160,42 @@ describe('view-subscribers-controller', function(){
                 ]
               },
               {
+                hasPaymentInformation: true,
+                paymentStatus: 'failed',
+                channels: [
+                  {
+                    channelId: 'id1',
+                    acceptedPrice: 10
+                  }
+                ]
+              },
+              {
+                hasPaymentInformation: true,
+                paymentStatus: 'failed',
+                channels: [
+                  {
+                    channelId: 'id1',
+                    acceptedPrice: 5
+                  }
+                ]
+              },
+              {
+                hasPaymentInformation: false,
+                paymentStatus: 'none',
+                channels: [
+                  {
+                    channelId: 'id1',
+                    acceptedPrice: 10
+                  },
+                  {
+                    channelId: 'id2',
+                    acceptedPrice: 50
+                  }
+                ]
+              },
+              {
+                hasPaymentInformation: true,
+                paymentStatus: 'retry1',
                 channels: [
                   {
                     channelId: 'id1',
@@ -182,6 +222,32 @@ describe('view-subscribers-controller', function(){
 
         it('should set unacceptablePrices', function(){
           expect($scope.model.unacceptablePrices).toBe(1);
+        });
+
+        it('should set estimatedFailedPayments', function(){
+          expect($scope.model.estimatedFailedPayments).toBe(3);
+        });
+
+        it('should set billableSubscribers', function(){
+          expect($scope.model.billableSubscribers).toBe(3);
+        });
+
+        it('should update isBillable status', function(){
+          expect($scope.model.subscribers[0].isBillable).toBe(true);
+          expect($scope.model.subscribers[1].isBillable).toBe(true);
+          expect($scope.model.subscribers[2].isBillable).toBe(false);
+          expect($scope.model.subscribers[3].isBillable).toBe(false);
+          expect($scope.model.subscribers[4].isBillable).toBe(false);
+          expect($scope.model.subscribers[5].isBillable).toBe(true);
+        });
+
+        it('should update shouldDisplay status', function(){
+          expect($scope.model.subscribers[0].isBillable).toBe(true);
+          expect($scope.model.subscribers[1].isBillable).toBe(true);
+          expect($scope.model.subscribers[2].isBillable).toBe(false);
+          expect($scope.model.subscribers[3].isBillable).toBe(false);
+          expect($scope.model.subscribers[4].isBillable).toBe(false);
+          expect($scope.model.subscribers[5].isBillable).toBe(true);
         });
       });
     });
