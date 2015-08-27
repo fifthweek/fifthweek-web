@@ -1,9 +1,10 @@
 angular.module('webApp')
   .controller('viewSubscribersCtrl',
-  function($scope, initializer, blogRepositoryFactory, blogStub, errorFacade) {
+  function($scope, initializer, blogRepositoryFactory, accountSettingsRepositoryFactory, blogStub, errorFacade) {
     'use strict';
 
     var blogRepository = blogRepositoryFactory.forCurrentUser();
+    var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
 
     var model = $scope.model = {
       isLoading: false,
@@ -18,6 +19,7 @@ angular.module('webApp')
     var internal = this.internal = {};
 
     internal.blog = undefined;
+    internal.accountSettings = undefined;
 
     internal.processSubscribers = function(){
       var estimatedWeeklyRevenue = 0;
@@ -41,7 +43,7 @@ angular.module('webApp')
             if(channel.acceptedPrice >= channelInfo.price){
 
               if(subscriber.isBillable){
-                estimatedWeeklyRevenue += channelInfo.price;
+                estimatedWeeklyRevenue += channelInfo.price * internal.accountSettings.creatorPercentage;
                 ++totalSubscriptions;
                 subscriber.shouldDisplay = true;
               }
@@ -79,7 +81,11 @@ angular.module('webApp')
 
     internal.loadForm = function(){
       model.isLoading = true;
-      return blogRepository.getChannelMap()
+      return accountSettingsRepository.getAccountSettings()
+        .then(function(accountSettings){
+          internal.accountSettings = accountSettings;
+          return blogRepository.getChannelMap();
+        })
         .then(function(blog){
           internal.blog = blog;
           return blogStub.getSubscriberInformation(internal.blog.blogId);

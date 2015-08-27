@@ -8,6 +8,8 @@ describe('view-subscribers-controller', function(){
   var initializer;
   var blogRepositoryFactory;
   var blogRepository;
+  var accountSettingsRepositoryFactory;
+  var accountSettingsRepository;
   var blogStub;
   var errorFacade;
 
@@ -16,6 +18,9 @@ describe('view-subscribers-controller', function(){
     blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
     blogRepository = jasmine.createSpyObj('blogRepository', ['getChannelMap', 'getUserId']);
     blogRepositoryFactory.forCurrentUser.and.returnValue(blogRepository);
+    accountSettingsRepositoryFactory = jasmine.createSpyObj('accountSettingsRepositoryFactory', ['forCurrentUser']);
+    accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
+    accountSettingsRepositoryFactory.forCurrentUser.and.returnValue(accountSettingsRepository);
     blogStub = jasmine.createSpyObj('blogStub', ['getSubscriberInformation']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
 
@@ -23,6 +28,7 @@ describe('view-subscribers-controller', function(){
     module(function($provide) {
       $provide.value('initializer', initializer);
       $provide.value('blogRepositoryFactory', blogRepositoryFactory);
+      $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
       $provide.value('blogStub', blogStub);
       $provide.value('errorFacade', errorFacade);
     });
@@ -70,8 +76,12 @@ describe('view-subscribers-controller', function(){
       expect($scope.model.totalRevenue).toBeUndefined();
     });
 
-    it('should get an account settings repository', function(){
+    it('should get a blog repository', function(){
       expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+    });
+
+    it('should get an account settings repository', function(){
+      expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
     });
 
     it('should set the userId', function(){
@@ -97,6 +107,7 @@ describe('view-subscribers-controller', function(){
 
           $scope.model.subscribers = [];
 
+          target.internal.accountSettings = { creatorPercentage: 0.9 };
           target.internal.processSubscribers();
         });
 
@@ -118,6 +129,8 @@ describe('view-subscribers-controller', function(){
           $scope.model.estimatedWeeklyRevenue = undefined;
           $scope.model.totalSubscriptions = undefined;
           $scope.model.unacceptablePrices = undefined;
+
+          target.internal.accountSettings = { creatorPercentage: 0.9 };
 
           target.internal.blog = {
             channels: {
@@ -213,7 +226,7 @@ describe('view-subscribers-controller', function(){
         });
 
         it('should set estimatedWeeklyRevenue', function(){
-          expect($scope.model.estimatedWeeklyRevenue).toBe(30);
+          expect($scope.model.estimatedWeeklyRevenue).toBe(30 * 0.9);
         });
 
         it('should set totalSubscriptions', function(){
@@ -256,10 +269,14 @@ describe('view-subscribers-controller', function(){
       var success;
       var error;
       var deferredGetChannelMap;
+      var deferredGetAccountSettings;
       var deferredGetSubscriberInformation;
       beforeEach(function(){
         success = undefined;
         error = undefined;
+
+        deferredGetAccountSettings = $q.defer();
+        accountSettingsRepository.getAccountSettings.and.returnValue(deferredGetAccountSettings.promise);
 
         deferredGetChannelMap = $q.defer();
         blogRepository.getChannelMap.and.returnValue(deferredGetChannelMap.promise);
@@ -274,68 +291,102 @@ describe('view-subscribers-controller', function(){
         $scope.$apply();
       });
 
-      it('should call getChannelMap', function(){
-        expect(blogRepository.getChannelMap).toHaveBeenCalledWith();
-      });
-
       it('should set isLoading to true', function(){
         expect($scope.model.isLoading).toBe(true);
       });
 
-      describe('when getChannelMap succeeds', function(){
+      it('should call getAccountSettings', function(){
+        expect(accountSettingsRepository.getAccountSettings).toHaveBeenCalledWith();
+      });
+
+      describe('when getAccountSettings succeeds', function() {
         beforeEach(function(){
-          deferredGetChannelMap.resolve({ blogId: 'blogId' });
+          deferredGetAccountSettings.resolve({ userId: 'userId' });
           $scope.$apply();
         });
 
-        it('should set blog', function(){
-          expect(target.internal.blog).toEqual({ blogId: 'blogId' });
+        it('should set account settings', function(){
+          expect(target.internal.accountSettings).toEqual({ userId: 'userId' });
         });
 
-        it('should call getSubscriberInformation', function(){
-          expect(blogStub.getSubscriberInformation).toHaveBeenCalledWith('blogId');
+        it('should call getChannelMap', function(){
+          expect(blogRepository.getChannelMap).toHaveBeenCalledWith();
         });
 
-        describe('when getSubscriberInformation succeeds', function(){
+        describe('when getChannelMap succeeds', function(){
           beforeEach(function(){
-            deferredGetSubscriberInformation.resolve({ data:
-            {
-              subscribers: 'subscribers',
-              unreleasedRevenue: 'unreleasedRevenue',
-              releasedRevenue: 'releasedRevenue',
-              releasableRevenue: 'releasableRevenue'
-            }});
+            deferredGetChannelMap.resolve({ blogId: 'blogId' });
             $scope.$apply();
           });
 
-          it('should set the subscribers', function(){
-            expect($scope.model.subscribers).toBe('subscribers');
+          it('should set blog', function(){
+            expect(target.internal.blog).toEqual({ blogId: 'blogId' });
           });
 
-          it('should set the unreleasedRevenue', function(){
-            expect($scope.model.unreleasedRevenue).toBe('unreleasedRevenue');
+          it('should call getSubscriberInformation', function(){
+            expect(blogStub.getSubscriberInformation).toHaveBeenCalledWith('blogId');
           });
 
-          it('should set the releasedRevenue', function(){
-            expect($scope.model.releasedRevenue).toBe('releasedRevenue');
+          describe('when getSubscriberInformation succeeds', function(){
+            beforeEach(function(){
+              deferredGetSubscriberInformation.resolve({ data:
+              {
+                subscribers: 'subscribers',
+                unreleasedRevenue: 'unreleasedRevenue',
+                releasedRevenue: 'releasedRevenue',
+                releasableRevenue: 'releasableRevenue'
+              }});
+              $scope.$apply();
+            });
+
+            it('should set the subscribers', function(){
+              expect($scope.model.subscribers).toBe('subscribers');
+            });
+
+            it('should set the unreleasedRevenue', function(){
+              expect($scope.model.unreleasedRevenue).toBe('unreleasedRevenue');
+            });
+
+            it('should set the releasedRevenue', function(){
+              expect($scope.model.releasedRevenue).toBe('releasedRevenue');
+            });
+
+            it('should set the releasableRevenue', function(){
+              expect($scope.model.releasableRevenue).toBe('releasableRevenue');
+            });
+
+            it('should call processSubscribers', function(){
+              expect(target.internal.processSubscribers).toHaveBeenCalledWith();
+            });
+
+            it('should complete successfully', function(){
+              expect(success).toBe(true);
+            });
           });
 
-          it('should set the releasableRevenue', function(){
-            expect($scope.model.releasableRevenue).toBe('releasableRevenue');
-          });
+          describe('when getSubscriberInformation fails', function(){
+            beforeEach(function(){
+              deferredGetSubscriberInformation.reject('error');
+              $scope.$apply();
+            });
 
-          it('should call processSubscribers', function(){
-            expect(target.internal.processSubscribers).toHaveBeenCalledWith();
-          });
+            it('should not propagate the error', function(){
+              expect(error).toBeUndefined();
+            });
 
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
+            it('should set the error message', function(){
+              expect($scope.model.errorMessage).toBe('friendlyError');
+            });
+
+            it('should set isLoading to false', function(){
+              expect($scope.model.isLoading).toBe(false);
+            });
           });
         });
 
-        describe('when getSubscriberInformation fails', function(){
+        describe('when getChannelMap fails', function(){
           beforeEach(function(){
-            deferredGetSubscriberInformation.reject('error');
+            deferredGetChannelMap.reject('error');
             $scope.$apply();
           });
 
@@ -353,9 +404,9 @@ describe('view-subscribers-controller', function(){
         });
       });
 
-      describe('when getChannelMap fails', function(){
+      describe('when getAccountSettings fails', function(){
         beforeEach(function(){
-          deferredGetChannelMap.reject('error');
+          deferredGetAccountSettings.reject('error');
           $scope.$apply();
         });
 
