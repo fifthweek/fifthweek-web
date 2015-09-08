@@ -40,7 +40,35 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
     };
 
     service.deletePost = function(postId) {
-        return postsStub.deletePost(postId);
+      return postsStub.deletePost(postId);
+    };
+
+    service.likePost = function(postId){
+      return postsStub.postLike(postId);
+    };
+
+    service.unlikePost = function(postId){
+      return postsStub.deleteLike(postId);
+    };
+
+    service.showComments = function(postId, isCommenting, updateCommentsCount){
+      var modalResult = $modal.open({
+          controller: 'commentsDialogCtrl',
+          templateUrl: 'modules/comments/comments-dialog.html',
+          resolve: {
+            postId: function() {
+              return postId;
+            },
+            isCommenting: function() {
+              return isCommenting;
+            },
+            updateCommentsCount: function(){
+              return updateCommentsCount;
+            }
+          }
+        });
+
+      return modalResult.result;
     };
 
     return service;

@@ -10,7 +10,7 @@ describe('post-interactions', function(){
   var accessSignatures;
 
   beforeEach(function() {
-    postsStub = jasmine.createSpyObj('postsStub', ['deletePost']);
+    postsStub = jasmine.createSpyObj('postsStub', ['deletePost', 'postLike', 'deleteLike']);
     accessSignatures = jasmine.createSpyObj('accessSignatures', ['getContainerAccessInformation']);
     $modal = jasmine.createSpyObj('$modal', ['open']);
 
@@ -115,6 +115,99 @@ describe('post-interactions', function(){
       it('should propagate the error', function(){
         expect(error).toBe('error');
       });
+    });
+  });
+
+  describe('when likePost is called', function(){
+    describe('when postLike succeeds', function(){
+      var success;
+      beforeEach(function(){
+        postsStub.postLike.and.returnValue($q.when());
+        target.likePost('postId').then(function() { success = true; });
+        $rootScope.$apply();
+      });
+
+      it('should delete the post on the API', function(){
+        expect(postsStub.postLike).toHaveBeenCalledWith('postId');
+      });
+
+      it('should return a successful promise', function(){
+        expect(success).toBe(true);
+      });
+    });
+
+    describe('when postLike fails', function(){
+      var error;
+      beforeEach(function(){
+        postsStub.postLike.and.returnValue($q.reject('error'));
+        target.likePost('postId').catch(function(e) { error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
+      });
+    });
+  });
+
+  describe('when unlikePost is called', function(){
+    describe('when deleteLike succeeds', function(){
+      var success;
+      beforeEach(function(){
+        postsStub.deleteLike.and.returnValue($q.when());
+        target.unlikePost('postId').then(function() { success = true; });
+        $rootScope.$apply();
+      });
+
+      it('should delete the post on the API', function(){
+        expect(postsStub.deleteLike).toHaveBeenCalledWith('postId');
+      });
+
+      it('should return a successful promise', function(){
+        expect(success).toBe(true);
+      });
+    });
+
+    describe('when deleteLike fails', function(){
+      var error;
+      beforeEach(function(){
+        postsStub.deleteLike.and.returnValue($q.reject('error'));
+        target.unlikePost('postId').catch(function(e) { error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
+      });
+    });
+  });
+
+  describe('when showComments is called', function(){
+    var modalParameter;
+    var result;
+    beforeEach(function(){
+      $modal.open.and.callFake(function(data){
+        modalParameter = data;
+        return {
+          result: 'result'
+        };
+      });
+
+      result = target.showComments('postId', 'isCommenting', 'updateCommentsCount');
+    });
+
+    it('should open a modal dialog', function(){
+      expect($modal.open).toHaveBeenCalled();
+    });
+
+    it('should configure injection of post', function(){
+      expect(modalParameter.resolve.postId()).toBe('postId');
+      expect(modalParameter.resolve.isCommenting()).toBe('isCommenting');
+      expect(modalParameter.resolve.updateCommentsCount()).toBe('updateCommentsCount');
+    });
+
+    it('should return the result', function(){
+      expect(result).toBe('result');
     });
   });
 });

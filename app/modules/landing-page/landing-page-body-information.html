@@ -3,7 +3,7 @@
 
   <h5><span>What You'll Get</span></h5>
   <div class="post non-image-post channels">
-    <div class="text">
+    <div class="text text-standard-border">
       <div class="content">
         <div id="channel-{{$index}}" class="row channel" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
           <div class="col-xs-7">
@@ -78,7 +78,7 @@
   <div id="more-info" ng-if="model.videoUrl || model.blog.description">
     <h5><span>More Info</span></h5>
     <div class="post non-image-post" ng-if="!model.videoUrl">
-      <div class="text">
+      <div class="text text-standard-border">
         <div id="full-description" class="content">
           <fw-markdown replace="true" ng-model="model.blog.description"></fw-markdown>
         </div>
@@ -89,7 +89,7 @@
         <embed-video data-ng-href="{{model.videoUrl}}" controls=0></embed-video>
         <div ng-include="'views/partials/video-radius-fix.html'"></div>
       </div>
-      <div class="text">
+      <div class="text text-standard-border">
         <div id="full-description" class="content">
           <fw-markdown replace="true" ng-model="model.blog.description"></fw-markdown>
           <span ng-if="!model.blog.description">

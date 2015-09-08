@@ -86,6 +86,56 @@ angular.module('webApp')
         });
     };
 
+    internal.likePost = function(post){
+      post.hasLiked = true;
+      post.likesCount += 1;
+      return postInteractions.likePost(post.postId)
+        .catch(function(error){
+          post.hasLiked = false;
+          post.likesCount -= 1;
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
+        });
+    };
+
+    internal.unlikePost = function(post){
+      post.hasLiked = false;
+      post.likesCount -= 1;
+      return postInteractions.unlikePost(post.postId)
+        .catch(function(error){
+          post.hasLiked = true;
+          post.likesCount += 1;
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
+        });
+    };
+
+    $scope.toggleLikePost = function(post){
+      if(post.hasLiked){
+        return internal.unlikePost(post);
+      }
+      else{
+        return internal.likePost(post);
+      }
+    };
+
+    internal.showComments = function(post, isCommenting){
+      var updateCommentsCount = function(totalComments){
+        post.commentsCount = totalComments;
+      };
+      return postInteractions.showComments(post.postId, isCommenting, updateCommentsCount);
+    };
+
+    $scope.commentOnPost = function(post){
+      return internal.showComments(post, true);
+    };
+
+    $scope.showComments = function(post){
+      return internal.showComments(post, false);
+    };
+
     internal.attachToReloadEvent = function(){
       $scope.$on(fwPostListConstants.reloadEvent, internal.loadPosts);
     };

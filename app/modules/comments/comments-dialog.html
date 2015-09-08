@@ -1,0 +1,54 @@
+<form novalidate
+      role="form"
+      name="commentOnPostForm"
+      class="comment-on-post-form">
+  <fw-form-modal-title name="Comments"></fw-form-modal-title>
+
+  <div class="comments-dialog">
+
+    <div class="modal-body" ng-if="model.errorMessage">
+      <fw-error-message value="model.errorMessage"></fw-error-message>
+    </div>
+
+    <div class="updating-area" ng-if="model.isLoading && !model.errorMessage">
+      <p><i class="fa fa-refresh fa-spin"></i></p>
+    </div>
+
+    <div ng-if="!model.isLoading && !model.errorMessage">
+      <div class="modal-body">
+        <fw-form-input-comment
+          ng-model="model.input.comment"
+          placeholder="Add a comment, if you like"
+          focus>
+        </fw-form-input-comment>
+        <button type="submit"
+                id="save-comment-button"
+                class="btn btn-block btn-success"
+                data-loading-text="Saving..."
+                data-event-title="Comment saved"
+                data-event-category="Comment"
+                ng-disabled="form.$pristine || form.isSubmitting"
+                error-message="model.errorMessage"
+                fw-form-submit="saveComment()">
+          Add Comment
+        </button>
+      </div>
+
+      <div ng-repeat="comment in model.comments track by comment.id" class="comment" id="comment-{{$index}}">
+        <hr/>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-1 comment-number">{{comment.number}}</div>
+            <div class="col-xs-11 col-ss-6"><span class="comment-username">{{comment.username}}</span><span class="comment-live-since">{{comment.liveSince}}</span></div>
+          </div>
+          <div class="row">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-11">
+              <span fw-markdown ng-model="comment.content" class="comment-content"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

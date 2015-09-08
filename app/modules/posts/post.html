@@ -14,10 +14,10 @@
     <p class="tag" ng-if="post.scheduledByQueue">Queued, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
   </div>
 
-  <div class="text">
-    <div class="content" ng-if="post.comment || post.fileSource">
+  <div class="text text-standard-border" ng-if="post.comment || post.fileSource">
+    <div class="content">
 
-      <span  fw-markdown id="post-comment" ng-model="post.comment" ng-if="post.comment"></span>
+      <span fw-markdown id="post-comment" ng-model="post.comment" ng-if="post.comment"></span>
 
       <span id="post-link" ng-if="post.fileSource">
         <p>
@@ -28,11 +28,14 @@
         </p>
       </span>
     </div>
+  </div>
 
-    <hr />
+  <hr />
+
+  <div class="text text-narrow-border">
 
     <div class="row info-actions">
-      <div class="col-xs-8 info">
+      <div class="col-xs-10 info">
         <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})">
           <img class="author-image" ng-src="{{post.creator.profileImage.resolvedUri}}" />
         </a>
@@ -61,7 +64,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-xs-4 actions" ng-if="post.isOwner">
+      <div class="col-xs-2 actions" ng-if="post.isOwner">
         <ul>
           <li class="actions-more">
             <span class="dropdown" dropdown on-toggle="toggled(open)">
@@ -88,4 +91,33 @@
     </div>
   </div>
 
+  <hr />
+
+  <div class="text text-narrow-border">
+
+    <div class="row like-comment-actions">
+      <div class="col-xs-7 like-comment-buttons">
+        <span>
+          <a ng-click="toggleLikePost(post)">{{post.hasLiked ? 'Unlike' : 'Like'}}</a>
+        </span>
+        <span>
+          <a ng-click="commentOnPost(post)">Comment</a>
+        </span>
+      </div>
+      <div class="col-xs-5 like-comment-counters">
+        <span>
+          <span class="likes-count" ng-class="{ 'has-liked': post.hasLiked, 'has-not-liked': !post.hasLiked }">
+            <a ng-click="showComments(post)">
+              {{post.likesCount}}
+            </a>
+          </span>
+          <span class="comments-count">
+            <a ng-click="showComments(post)">
+              {{post.commentsCount}}
+            </a>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
 </div>

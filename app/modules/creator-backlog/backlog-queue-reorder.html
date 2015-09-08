@@ -13,7 +13,7 @@
 
         <p class="tag">{{post.dayOfWeek}} {{post.date}}</p>
 
-        <div class="text">
+        <div class="text text-standard-border">
           <div class="content" ng-if="post.comment || post.filePath">
             <fw-markdown replace="true" ng-model="post.comment" ng-if="post.comment"></fw-markdown>
 

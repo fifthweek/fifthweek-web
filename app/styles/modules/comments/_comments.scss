@@ -1,0 +1,58 @@
+@import '_base';
+
+.comments-dialog{
+
+  .updating-area{
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .comment{
+    font-size: $p-font-size;
+
+    > hr {
+      width:auto;
+      display:block;
+      margin-top:3px;
+      margin-bottom:3px;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .comment-number{
+      color: $grey-light-1;
+    }
+    .comment-username {
+      font-weight: bold;
+    }
+    .comment-live-since{
+      margin-left: 10px;
+      color: $grey-light-1;
+    }
+    .comment-content{
+      @include post-text-style;
+
+      hr {
+        margin-left: 0;
+        margin-right: 0;
+        @media (min-width:$post-lg-min) {
+          margin-left: 0;
+          margin-right: 0;
+        }
+      }
+
+      margin-top: 3px;
+    }
+
+    .modal-body{
+      padding:0 $modal-padding;
+    }
+
+    &:last-child{
+      .modal-body{
+        padding:0 $modal-padding $modal-padding $modal-padding;
+      }
+    }
+  }
+}
