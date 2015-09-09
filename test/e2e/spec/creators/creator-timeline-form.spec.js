@@ -32,7 +32,7 @@
     };
 
     var navigateToSiteFromLandingPage = function() {
-      testKit.scrollIntoView(creatorLandingPagePage.editPageLink);
+      //testKit.scrollIntoView(creatorLandingPagePage.editPageLink);
       creatorLandingPagePage.editPageLink.click();
     };
 
@@ -130,9 +130,9 @@
           function () {
             navigateToSite();
             navigateToPage();
-            testKit.scrollIntoView(post.moreActionsButton);
+            //testKit.scrollIntoView(post.moreActionsButton);
             post.moreActionsButton.click();
-            testKit.scrollIntoView(post.deletePostLink);
+            //testKit.scrollIntoView(post.deletePostLink);
             post.deletePostLink.click();
           },
           function () {
@@ -162,9 +162,9 @@
         targetPost = targetPost || post;
         navigateToSite();
         navigateToPage();
-        testKit.scrollIntoView(targetPost.moreActionsButton);
+        //testKit.scrollIntoView(targetPost.moreActionsButton);
         targetPost.moreActionsButton.click();
-        testKit.scrollIntoView(targetPost.editPostLink);
+        //testKit.scrollIntoView(targetPost.editPostLink);
         targetPost.editPostLink.click();
         testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
       };
