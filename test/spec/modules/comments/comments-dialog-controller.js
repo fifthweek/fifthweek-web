@@ -34,6 +34,10 @@ describe('comments-dialog-controller', function(){
       $scope = $injector.get('$rootScope').$new();
     });
 
+    $scope.commentOnPostForm = {
+      $setPristine: jasmine.createSpy('setPristine')
+    };
+
     errorFacade.handleError.and.callFake(function(error, setMessage) {
       setMessage('friendlyError');
       return $q.when();
@@ -73,7 +77,7 @@ describe('comments-dialog-controller', function(){
 
     it('should initialize', function(){
       expect(initializer.initialize).toHaveBeenCalledWith(target.initialize);
-    })
+    });
   });
 
   describe('when created', function(){
@@ -128,6 +132,10 @@ describe('comments-dialog-controller', function(){
 
         it('should clear comment', function(){
           expect($scope.model.input.comment).toBe('');
+        });
+
+        it('should set the form to pristine', function(){
+          expect($scope.commentOnPostForm.$setPristine).toHaveBeenCalled();
         });
 
         it('should call loadForm', function(){
