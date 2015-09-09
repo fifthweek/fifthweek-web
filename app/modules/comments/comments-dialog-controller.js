@@ -56,6 +56,7 @@ angular.module('webApp')
       return postsStub.postComment(postId, { content: model.input.comment })
         .then(function(){
           model.input.comment = '';
+          $scope.commentOnPostForm.$setPristine();
           return internal.loadForm();
         })
         .catch(function(error){

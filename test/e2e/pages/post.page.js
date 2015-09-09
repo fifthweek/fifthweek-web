@@ -65,6 +65,14 @@
     editPostLinks: { get: function() { return element.all(this.byCssContainingText('.dropdown-menu a', 'Edit')); }},
     deletePostLink: { get: function() { return element(this.byCssContainingText('.dropdown-menu a', 'Delete')); }},
 
+    likePostLink: { get: function() { return element(this.byCssContainingText('.like-comment-buttons a', 'Like')); }},
+    unlikePostLink: { get: function() { return element(this.byCssContainingText('.like-comment-buttons a', 'Unlike')); }},
+    commentOnPostLink: { get: function() { return element(this.byCssContainingText('.like-comment-buttons a', 'Comment')); }},
+    likesLink: { get: function() { return element(this.byCss('.likes-count a')); }},
+    commentsLink: { get: function() { return element(this.byCss('.comments-count a')); }},
+
+    hasLikedCount: { get: function() { return element.all(this.byCss('.has-liked')).count(); }},
+
     expectHeader: { value: function(postData, registration, postHasNoDayGrouping){
       if(this.isBacklog){
         expect(this.scheduleTag.isDisplayed()).toBe(true);
