@@ -6,7 +6,7 @@ describe('comments-dialog-controller', function(){
   var target;
 
   var initializer;
-  var postsStub;
+  var postStub;
   var errorFacade;
 
   var postId;
@@ -14,7 +14,7 @@ describe('comments-dialog-controller', function(){
 
   beforeEach(function() {
     initializer = jasmine.createSpyObj('initializer', ['initialize']);
-    postsStub = jasmine.createSpyObj('postsStub', ['postComment', 'getComments']);
+    postStub = jasmine.createSpyObj('postStub', ['postComment', 'getComments']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
 
     postId = 'postId';
@@ -23,7 +23,7 @@ describe('comments-dialog-controller', function(){
     module('webApp');
     module(function($provide) {
       $provide.value('initializer', initializer);
-      $provide.value('postsStub', postsStub);
+      $provide.value('postStub', postStub);
       $provide.value('errorFacade', errorFacade);
       $provide.value('postId', postId);
       $provide.value('updateCommentsCount', updateCommentsCount);
@@ -105,7 +105,7 @@ describe('comments-dialog-controller', function(){
         success = undefined;
         error = undefined;
         deferredPostComment = $q.defer();
-        postsStub.postComment.and.returnValue(deferredPostComment.promise);
+        postStub.postComment.and.returnValue(deferredPostComment.promise);
 
         deferredLoadForm = $q.defer();
         spyOn(target.internal, 'loadForm').and.returnValue(deferredLoadForm.promise);
@@ -121,7 +121,7 @@ describe('comments-dialog-controller', function(){
       });
 
       it('should call postComment', function(){
-        expect(postsStub.postComment).toHaveBeenCalledWith('postId', { content: 'comment' });
+        expect(postStub.postComment).toHaveBeenCalledWith('postId', { content: 'comment' });
       });
 
       describe('when postComment succeeds', function(){
@@ -199,7 +199,7 @@ describe('comments-dialog-controller', function(){
         error = undefined;
 
         deferredGetComments = $q.defer();
-        postsStub.getComments.and.returnValue(deferredGetComments.promise);
+        postStub.getComments.and.returnValue(deferredGetComments.promise);
 
         spyOn(target.internal, 'processComments');
 
@@ -219,7 +219,7 @@ describe('comments-dialog-controller', function(){
       });
 
       it('should call getComments', function(){
-        expect(postsStub.getComments).toHaveBeenCalledWith('postId');
+        expect(postStub.getComments).toHaveBeenCalledWith('postId');
       });
 
       describe('when getComments succeeds', function(){

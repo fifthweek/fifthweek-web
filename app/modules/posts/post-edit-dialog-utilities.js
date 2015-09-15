@@ -1,8 +1,7 @@
 angular.module('webApp').factory('postEditDialogUtilities',
-  function($q, postEditDialogConstants, postsStub, postUtilities) {
+  function($q, postEditDialogConstants, postStub, postUtilities) {
     'use strict';
 
-    var postTypes = postEditDialogConstants.postTypes;
     var scheduleModes = postEditDialogConstants.scheduleModes;
 
     var service = {};
@@ -38,38 +37,23 @@ angular.module('webApp').factory('postEditDialogUtilities',
     };
 
     service.internal.saveContent = function(postId, model){
-      if(model.postType === postTypes.note){
-        return postsStub.putNote(postId, {
-          channelId: model.input.selectedChannel.channelId,
-          note: model.input.comment
-        });
-      }
-      else if(model.postType === postTypes.file){
-        return postsStub.putFile(postId, {
-          fileId: model.input.file.fileId,
-          comment: model.input.comment
-        });
-      }
-      else if(model.postType === postTypes.image){
-        return postsStub.putImage(postId, {
-          imageFileId: model.input.image.fileId,
-          comment: model.input.comment
-        });
-      }
-
-      return $q.when();
+      return postStub.putPost(postId, {
+        imageId: model.input.image ? model.input.image.fileId : undefined,
+        fileId: model.input.file ? model.input.file.fileId : undefined,
+        comment: model.input.comment
+      });
     };
 
     service.internal.saveSchedule = function(postId, model){
       if(hasSchedulingChanged(model)){
         if(model.input.scheduleMode === scheduleModes.now){
-          return postsStub.postToLive(postId);
+          return postStub.postToLive(postId);
         }
         else if(model.input.scheduleMode === scheduleModes.queued){
-          return postsStub.postToQueue(postId);
+          return postStub.putQueue(postId, model.input.selectedQueue.queueId);
         }
         else if(model.input.scheduleMode === scheduleModes.scheduled){
-          return postsStub.putLiveDate(postId, model.input.date);
+          return postStub.putLiveDate(postId, model.input.date);
         }
       }
 
@@ -102,12 +86,6 @@ angular.module('webApp').factory('postEditDialogUtilities',
     };
 
     service.applyChangesToPost = function(post, model){
-      post.channelId = model.input.selectedChannel.channelId;
-
-      if(model.postType !== postTypes.note){
-        post.collectionId = model.input.selectedCollection.collectionId;
-      }
-
       post.comment = model.input.comment;
 
       post.file = model.input.file;
@@ -117,28 +95,28 @@ angular.module('webApp').factory('postEditDialogUtilities',
       post.imageSource = model.input.imageSource;
 
       // When requesting posts from the API, backlog posts
-      // have a scheduledByQueue property where as timeline
+      // have a queueId property where as timeline
       // posts do not.  Therefore the presence of this property
       // is used by postUtilities to determine if a post is scheduled.
       // We replicate that here by removing the property for
       // non-scheduled posts.
       if(hasSchedulingChanged(model)){
         if(model.input.scheduleMode === scheduleModes.now){
-          delete post.scheduledByQueue;
+          delete post.queueId;
           post.liveDate = new Date().toISOString();
         }
         else if(model.input.scheduleMode === scheduleModes.queued){
-          post.scheduledByQueue = true;
+          post.queueId = model.input.selectedQueue.queueId;
           post.liveDate = model.queuedLiveDate.toISOString();
         }
         else if(model.input.scheduleMode === scheduleModes.scheduled){
           var now = moment();
           if(now.isBefore(model.input.date)){
-            post.scheduledByQueue = false;
+            post.queueId = undefined;
           }
           else{
             // The post is live.
-            delete post.scheduledByQueue;
+            delete post.queueId;
           }
           post.liveDate = model.input.date.toISOString();
         }

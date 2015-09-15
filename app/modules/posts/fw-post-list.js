@@ -15,7 +15,6 @@ angular.module('webApp')
     scope: {
       source: '@',
       userId: '@?',
-      collectionId: '@?',
       channelId: '@?'
     },
     require: ['fwPostList'],

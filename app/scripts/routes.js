@@ -86,16 +86,16 @@ angular.module('webApp')
           }
         }
       },
-      collections: {
-        name: 'creator.collections',
+      queues: {
+        name: 'creator.queues',
         new: {
-          name: 'creator.collections.new'
+          name: 'creator.queues.new'
         },
         edit: {
-          name: 'creator.collections.edit'
+          name: 'creator.queues.edit'
         },
         list: {
-          name: 'creator.collections.list'
+          name: 'creator.queues.list'
         }
       },
       channels: {
@@ -431,67 +431,40 @@ angular.module('webApp')
           bodyClass: 'page-creator-backlog-post-list'
         }
       })
-      .state(states.creator.posts.scheduled.queues.name, {
+      .state(states.creator.queues.name, {
         url: '/queues',
         templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.creator.posts.scheduled.queues.list.name,
         requireBlog: true,
+        redirectTo: states.creator.queues.list.name,
         data : {
         }
       })
-      .state(states.creator.posts.scheduled.queues.list.name, {
-        url: '/',
-        templateUrl: 'modules/creator-backlog/backlog-queue-list.html',
+      .state(states.creator.queues.new.name, {
+        url: '/new',
+        templateUrl: 'modules/queues/new-queue.html',
+        controller: 'newQueueCtrl',
+        requireBlog: true,
+        data : {
+          headTitle: ': ' + 'Create Queue'
+        }
+      })
+      .state(states.creator.queues.edit.name, {
+        url: '/{id}',
+        templateUrl: 'modules/queues/edit-queue.html',
+        controller: 'editQueueCtrl',
+        requireBlog: true,
+        data : {
+          headTitle: ': ' + 'Edit Queue'
+        }
+      })
+      .state(states.creator.queues.list.name, {
+        url: '',
+        templateUrl: 'modules/queues/list-queues.html',
+        controller: 'listQueuesCtrl',
         requireBlog: true,
         data : {
           pageTitle: 'Queues',
           headTitle: ': ' + 'Queues'
-        }
-      })
-      .state(states.creator.posts.scheduled.queues.reorder.name, {
-        url: '/{id}',
-        templateUrl: 'modules/creator-backlog/backlog-queue-reorder.html',
-        controller: 'queueReorderCtrl',
-        requireBlog: true,
-        data : {
-          pageTitle: 'Reorder Queue',
-          headTitle: ': ' + 'Reorder Queues'
-        }
-      })
-      .state(states.creator.collections.name, {
-        url: '/collections',
-        templateUrl: 'modules/common/ui-view.html',
-        requireBlog: true,
-        redirectTo: states.creator.collections.list.name,
-        data : {
-        }
-      })
-      .state(states.creator.collections.new.name, {
-        url: '/new',
-        templateUrl: 'modules/collections/new-collection.html',
-        controller: 'newCollectionCtrl',
-        requireBlog: true,
-        data : {
-          headTitle: ': ' + 'Create Collection'
-        }
-      })
-      .state(states.creator.collections.edit.name, {
-        url: '/{id}',
-        templateUrl: 'modules/collections/edit-collection.html',
-        controller: 'editCollectionCtrl',
-        requireBlog: true,
-        data : {
-          headTitle: ': ' + 'Edit Collection'
-        }
-      })
-      .state(states.creator.collections.list.name, {
-        url: '',
-        templateUrl: 'modules/collections/list-collections.html',
-        controller: 'listCollectionsCtrl',
-        requireBlog: true,
-        data : {
-          pageTitle: 'Collections',
-          headTitle: ': ' + 'Collections'
         }
       })
       .state(states.creator.channels.name, {

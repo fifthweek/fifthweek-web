@@ -9,15 +9,15 @@
           type="text"
           class="form-control"
           placeholder="{{placeholder}}"
-          ng-maxlength="25"
-          maxlength="25"
+          ng-maxlength="50"
+          maxlength="50"
           ng-focus="focus"
           ng-required="required">
       </div>
       <small ng-if="showHelp">e.g. your name</small>
     </div>
     <div class="col-{{breakpoint}}-6">
-      <p fw-form-input-invalid-p="maxlength">Allowed 25 characters at most.</p>
+      <p fw-form-input-invalid-p="maxlength">Allowed 50 characters at most.</p>
       <span ng-if="required">
         <p fw-form-input-invalid-p="required">A name is required.</p>
       </span>

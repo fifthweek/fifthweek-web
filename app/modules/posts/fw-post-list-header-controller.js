@@ -9,47 +9,27 @@ angular.module('webApp').controller('fwPostListHeaderCtrl',
 
     var model = $scope.model = {
       channelName: undefined,
-      collectionName: undefined,
       errorMessage: undefined
     };
 
-    internal.loadFromBlogs = function(creatorId, channelId, collectionId, blogs){
+    internal.loadFromBlogs = function(creatorId, channelId, blogs){
       if(!creatorId){
         return;
       }
 
-      if(!channelId && !collectionId){
+      if(!channelId){
         return;
       }
 
       var blog = _.find(blogs, { creatorId: creatorId });
 
       var channel;
-      var collection;
       if(channelId && blog.channels){
         channel = _.find(blog.channels, { channelId: channelId });
-
-        if(collectionId && channel && channel.collections){
-          collection = _.find(channel.collections, { collectionId: collectionId });
-        }
-      }
-      else if(blog.channels){
-        _.forEach(blog.channels, function(ch){
-          if(ch.collections){
-            collection = _.find(ch.collections, { collectionId: collectionId });
-            if(collection){
-              channel = ch;
-              return false;
-            }
-          }
-        });
       }
 
       if(channel){
         model.channelName = channel.name;
-        if(collection){
-          model.collectionName = collection.name;
-        }
       }
     };
 
@@ -77,7 +57,6 @@ angular.module('webApp').controller('fwPostListHeaderCtrl',
     internal.load = function(){
       model.errorMessage = undefined;
       model.channelName = undefined;
-      model.collectionName = undefined;
 
       var getBlogsPromise;
       if($scope.userId === subscriptionRepository.getUserId()) {
@@ -89,7 +68,7 @@ angular.module('webApp').controller('fwPostListHeaderCtrl',
 
       return getBlogsPromise
         .then(function(blogs){
-          internal.loadFromBlogs($scope.userId, $scope.channelId, $scope.collectionId, blogs);
+          internal.loadFromBlogs($scope.userId, $scope.channelId, blogs);
           return $q.when();
         })
         .catch(function(error){

@@ -84,7 +84,7 @@ angular.module('webApp')
       return accountSettingsRepository.getAccountSettings()
         .then(function(accountSettings){
           internal.accountSettings = accountSettings;
-          return blogRepository.getChannelMap();
+          return blogRepository.getBlogMap();
         })
         .then(function(blog){
           internal.blog = blog;

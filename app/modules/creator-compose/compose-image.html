@@ -1,11 +1,11 @@
 <div class="form-group form-group-has-buffers">
   <div class="row">
-    <div class="col-s-7 bottom-buffer">
+    <div class="col-s-7 bottom-buffer" ng-show="model.imageUploaded">
       <fw-blob-image control="blobImage" thumbnail="preview"></fw-blob-image>
       <small class="sub-image-input">We recommend images at least 1200 pixels wide.</small>
     </div>
     <div class="col-s-5 bottom-buffer">
-      <fw-file-upload channel-id="{{model.committedCollection.channelId}}" description="Upload Image" on-upload-complete="onUploadComplete(data)" file-purpose="post-image" accept="image/tiff,image/jpeg,image/gif,image/png"></fw-file-upload>
+      <fw-file-upload channel-id="{{model.committedChannel.channelId}}" description="{{model.imageUploaded ? 'Change Image' : 'Add Image'}}" on-upload-complete="onImageUploadComplete(data)" file-purpose="post-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
     </div>
   </div>
 </div>

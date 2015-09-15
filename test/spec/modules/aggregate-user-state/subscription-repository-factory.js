@@ -138,27 +138,13 @@ describe('subscription repository factory', function(){
             blogId: 'blogId1',
             channels: [
               {
-                channelId: 'channelId1',
-                collections: [
-                  {
-                    collectionId: 'collectionId1'
-                  },
-                  {
-                    collectionId: 'collectionId2'
-                  }
-                ]
+                channelId: 'channelId1'
               },
               {
-                channelId: 'channelId2',
-                collections: [
-                  {
-                    collectionId: 'collectionId3'
-                  }
-                ]
+                channelId: 'channelId2'
               },
               {
-                channelId: 'channelId3',
-                collections: []
+                channelId: 'channelId3'
               }
             ]
           },
@@ -173,27 +159,13 @@ describe('subscription repository factory', function(){
             blogId: 'blogId1',
             channels: {
               channelId1: {
-                channelId: 'channelId1',
-                collections: {
-                  collectionId1: {
-                    collectionId: 'collectionId1'
-                  },
-                  collectionId2: {
-                    collectionId: 'collectionId2'
-                  }
-                }
+                channelId: 'channelId1'
               },
               channelId2: {
-                channelId: 'channelId2',
-                collections: {
-                  collectionId3: {
-                    collectionId: 'collectionId3'
-                  }
-                }
+                channelId: 'channelId2'
               },
               channelId3: {
-                channelId: 'channelId3',
-                collections: {}
+                channelId: 'channelId3'
               }
             }
           },

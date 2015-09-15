@@ -4,7 +4,6 @@ angular.module('webApp').controller('createBlogCtrl',
 
     $scope.newBlogData = {
        name: '',
-       tagline: '',
        basePrice: '1.00'
     };
 

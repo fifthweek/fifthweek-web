@@ -1,7 +1,8 @@
 angular.module('webApp')
   .constant('blogRepositoryFactoryConstants', {
     blogKey: 'blog',
-    channelsKey: 'blog.channels'
+    channelsKey: 'blog.channels',
+    queuesKey: 'blog.queues'
   })
   .factory('blogRepositoryFactory',
   function($q, masterRepositoryFactory, blogRepositoryFactoryConstants) {
@@ -12,6 +13,7 @@ angular.module('webApp')
 
         var blogKey = blogRepositoryFactoryConstants.blogKey;
         var channelsKey = blogRepositoryFactoryConstants.channelsKey;
+        var queuesKey = blogRepositoryFactoryConstants.queuesKey;
         var masterRepository = masterRepositoryFactory.forCurrentUser();
 
         var service = {};
@@ -54,13 +56,25 @@ angular.module('webApp')
           });
         };
 
-        service.getChannelsSorted = function() {
-          return service.getChannels().then(function(channels) {
-            return _.sortByOrder(channels, ['isDefault', 'name'], [false, true]);
+        service.getQueues = function() {
+          return masterRepository.get(queuesKey).then(function(queues) {
+            return $q.when(queues);
           });
         };
 
-        service.getChannelMap = function() {
+        service.getChannelsSorted = function() {
+          return service.getChannels().then(function(channels) {
+            return _.sortByOrder(channels, ['name'], [true]);
+          });
+        };
+
+        service.getQueuesSorted = function() {
+          return service.getQueues().then(function(queues) {
+            return _.sortByOrder(queues, ['name'], [true]);
+          });
+        };
+
+        service.getBlogMap = function() {
           return masterRepository.get(blogKey).then(function(blog) {
             if (!blog) {
               return $q.reject(new DisplayableError('You must create a blog.'));
@@ -68,13 +82,13 @@ angular.module('webApp')
 
             blog.channels = _.reduce(blog.channels, function(channelResult, channel){
 
-              channel.collections = _.reduce(channel.collections, function(collectionResult, collection){
-                collectionResult[collection.collectionId] = collection;
-                return collectionResult;
-              }, {});
-
               channelResult[channel.channelId] = channel;
               return channelResult;
+            }, {});
+
+            blog.queues = _.reduce(blog.queues, function(queueResult, queue){
+              queueResult[queue.queueId] = queue;
+              return queueResult;
             }, {});
 
             return $q.when(blog);
@@ -82,9 +96,11 @@ angular.module('webApp')
         };
 
         service.updateChannels = function(applyChanges) {
-          return masterRepository.update(channelsKey, function(channels) {
-            return $q.when(applyChanges(channels));
-          });
+          return masterRepository.update(channelsKey, applyChanges);
+        };
+
+        service.updateQueues = function(applyChanges) {
+          return masterRepository.update(queuesKey, applyChanges);
         };
 
         service.getChannel = function(channelId) {
@@ -109,6 +125,17 @@ angular.module('webApp')
           });
         };
 
+        service.createQueue = function(newQueue) {
+          return service.updateQueues(function(queues) {
+            if (_.some(queues, { queueId: newQueue.queueId })) {
+              return $q.reject(new DisplayableError('Queue already exists.'));
+            }
+
+            queues.push(newQueue);
+            return $q.when();
+          });
+        };
+
         service.updateChannel = function(channelId, applyChanges) {
           return service.updateChannels(function(channels) {
             var channel = _.find(channels, { channelId: channelId });
@@ -120,9 +147,27 @@ angular.module('webApp')
           });
         };
 
+        service.updateQueue = function(queueId, applyChanges) {
+          return service.updateQueues(function(queues) {
+            var queue = _.find(queues, { queueId: queueId });
+            if (!queue) {
+              return $q.reject(new DisplayableError('Queue not found.'));
+            }
+
+            return $q.when(applyChanges(queue));
+          });
+        };
+
         service.deleteChannel = function(channelId) {
           return service.updateChannels(function(channels) {
             _.remove(channels, { channelId: channelId });
+            return $q.when();
+          });
+        };
+
+        service.deleteQueue = function(queueId) {
+          return service.updateQueues(function(queues) {
+            _.remove(queues, { queueId: queueId });
             return $q.when();
           });
         };

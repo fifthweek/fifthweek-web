@@ -7,7 +7,7 @@ describe('compose image controller', function () {
 
   var composeUploadDelegate;
   var blobImageControlFactory;
-  var postsStub;
+  var postStub;
 
   var control;
 
@@ -15,7 +15,7 @@ describe('compose image controller', function () {
 
     composeUploadDelegate = jasmine.createSpyObj('composeUploadDelegate', ['initialize']);
     blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
-    postsStub = jasmine.createSpyObj('postsStub', ['postFile']);
+    postStub = jasmine.createSpyObj('postStub', ['postFile']);
 
     control = {
       update: jasmine.createSpy('update')
@@ -27,7 +27,7 @@ describe('compose image controller', function () {
     module(function($provide) {
       $provide.value('composeUploadDelegate', composeUploadDelegate);
       $provide.value('blobImageControlFactory', blobImageControlFactory);
-      $provide.value('postsStub', postsStub);
+      $provide.value('postStub', postStub);
     });
 
     inject(function ($injector) {
@@ -61,7 +61,7 @@ describe('compose image controller', function () {
       expect(composeUploadDelegate.initialize).toHaveBeenCalled();
       expect(composeUploadDelegate.initialize.calls.first().args[0]).toBe($scope);
       expect(composeUploadDelegate.initialize.calls.first().args[1]).toBeDefined();
-      expect(composeUploadDelegate.initialize.calls.first().args[2]).toBe(postsStub.postImage);
+      expect(composeUploadDelegate.initialize.calls.first().args[2]).toBe(postStub.postImage);
     });
   });
 

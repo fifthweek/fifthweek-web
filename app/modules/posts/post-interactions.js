@@ -1,4 +1,4 @@
-angular.module('webApp').factory('postInteractions', function($q, $modal, accessSignatures, postsStub) {
+angular.module('webApp').factory('postInteractions', function($q, $modal, accessSignatures, postStub) {
     'use strict';
 
     var service = {};
@@ -40,15 +40,15 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
     };
 
     service.deletePost = function(postId) {
-      return postsStub.deletePost(postId);
+      return postStub.deletePost(postId);
     };
 
     service.likePost = function(postId){
-      return postsStub.postLike(postId);
+      return postStub.postLike(postId);
     };
 
     service.unlikePost = function(postId){
-      return postsStub.deleteLike(postId);
+      return postStub.deleteLike(postId);
     };
 
     service.showComments = function(postId, isCommenting, updateCommentsCount){

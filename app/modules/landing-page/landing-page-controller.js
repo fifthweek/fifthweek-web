@@ -7,7 +7,6 @@ angular.module('webApp')
     actions: {
       manage: 'manage',
       all: 'all',
-      collection: 'collection',
       channel: 'channel'
     }
   })
@@ -40,8 +39,7 @@ angular.module('webApp')
       username: undefined,
       currentView: undefined,
       returnState: undefined,
-      channelId: undefined,
-      collectionId: undefined
+      channelId: undefined
     };
 
     var internal = this.internal = {};
@@ -99,10 +97,8 @@ angular.module('webApp')
             channelId: channel.channelId,
             name: channel.name,
             price: channel.price,
-            description: channel.description.split('\n'),
             subscriptionInformation: subscriptionInformation,
-            isDefault: channel.isDefault,
-            checked: channel.isDefault || !!subscriptionInformation
+            checked: !!subscriptionInformation
           };
         });
 
@@ -114,9 +110,7 @@ angular.module('webApp')
             channelId: channel.channelId,
             name: channel.name,
             price: channel.price,
-            description: ['This channel is only visible to subscribers.'],
             subscriptionInformation: subscriptionInformation,
-            isDefault: false,
             checked: true
           };
         });
@@ -128,7 +122,7 @@ angular.module('webApp')
           // Return channels that are not visible to non-subscribers if user is a subscriber.
           return channel.isVisibleToNonSubscribers || channel.checked;
         })
-        .sortByOrder(['isDefault', 'name'], [false, true])
+        .sortByOrder(['name'], [true])
         .value();
     };
 
@@ -203,14 +197,6 @@ angular.module('webApp')
               return false;
             }
             $scope.model.channelId = key;
-            break;
-
-          case landingPageConstants.actions.collection:
-            $scope.model.currentView = landingPageConstants.views.blog;
-            if(!key){
-              return false;
-            }
-            $scope.model.collectionId = key;
             break;
 
           default:
@@ -290,8 +276,7 @@ angular.module('webApp')
     };
 
     internal.redirectToUnfilteredViewIfRequired = function(){
-      if($stateParams.action === landingPageConstants.actions.channel ||
-         $stateParams.action === landingPageConstants.actions.collection){
+      if($stateParams.action === landingPageConstants.actions.channel){
         $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.all, key: null });
         return true;
       }
@@ -332,7 +317,6 @@ angular.module('webApp')
               // reload from user state when the user clicks 'manage'.
               $scope.model.isSubscribed = true;
               $scope.model.channelId = undefined;
-              $scope.model.collectionId = undefined;
               $scope.model.currentView = landingPageConstants.views.blog;
             }
           }

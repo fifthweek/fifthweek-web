@@ -14,7 +14,7 @@ describe('fw-post-list-controller', function(){
   var accountSettingsRepositoryFactory;
   var accountSettingsRepository;
   var fetchAggregateUserState;
-  var postsStub;
+  var postStub;
   var errorFacade;
   var postUtilities;
   var fwPostListConstants;
@@ -33,7 +33,7 @@ describe('fw-post-list-controller', function(){
     accountSettingsRepository = 'accountSettingsRepository';
     accountSettingsRepositoryFactory.forCurrentUser.and.returnValue(accountSettingsRepository);
     fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateInParallel']);
-    postsStub = jasmine.createSpyObj('postsStub', ['getCreatorBacklog', 'getNewsfeed']);
+    postStub = jasmine.createSpyObj('postStub', ['getCreatorBacklog', 'getNewsfeed']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
     postUtilities = jasmine.createSpyObj('postUtilities', ['populateCurrentCreatorInformation', 'populateCreatorInformation', 'processPostsForRendering', 'removePost', 'replacePostAndReorderIfRequired']);
 
@@ -45,7 +45,7 @@ describe('fw-post-list-controller', function(){
       $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
       $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
       $provide.value('fetchAggregateUserState', fetchAggregateUserState);
-      $provide.value('postsStub', postsStub);
+      $provide.value('postStub', postStub);
       $provide.value('errorFacade', errorFacade);
       $provide.value('postUtilities', postUtilities);
     });
@@ -372,13 +372,13 @@ describe('fw-post-list-controller', function(){
           var result;
           beforeEach(function(){
             result = undefined;
-            postsStub.getCreatorBacklog.and.returnValue($q.when({ data: 'data' }));
+            postStub.getCreatorBacklog.and.returnValue($q.when({ data: 'data' }));
             target.internal.loadNext().then(function(r){ result = r; });
             $scope.$apply();
           });
 
           it('should call getCreatorBacklog', function(){
-            expect(postsStub.getCreatorBacklog).toHaveBeenCalledWith('currentUserId');
+            expect(postStub.getCreatorBacklog).toHaveBeenCalledWith('currentUserId');
           });
 
           it('should return the result', function(){
@@ -391,7 +391,6 @@ describe('fw-post-list-controller', function(){
 
         beforeEach(function(){
           $scope.source = fwPostListConstants.sources.creatorTimeline;
-          $scope.collectionId = 'collectionId';
           $scope.channelId = 'channelId';
           target.initialize();
           $scope.$apply();
@@ -413,16 +412,15 @@ describe('fw-post-list-controller', function(){
           var result;
           beforeEach(function(){
             result = undefined;
-            postsStub.getNewsfeed.and.returnValue($q.when({ data: 'data' }));
+            postStub.getNewsfeed.and.returnValue($q.when({ data: 'data' }));
             target.internal.loadNext(10, 20).then(function(r){ result = r; });
             $scope.$apply();
           });
 
           it('should call getNewsfeed', function(){
-            expect(postsStub.getNewsfeed).toHaveBeenCalledWith({
+            expect(postStub.getNewsfeed).toHaveBeenCalledWith({
               creatorId: 'currentUserId',
               startIndex: 10,
-              collectionId: 'collectionId',
               channelId: 'channelId',
               count: 20
             });
@@ -439,7 +437,6 @@ describe('fw-post-list-controller', function(){
         beforeEach(function(){
           $scope.source = fwPostListConstants.sources.timeline;
           $scope.userId = 'anotherUserId';
-          $scope.collectionId = 'collectionId';
           $scope.channelId = 'channelId';
           target.initialize();
           $scope.$apply();
@@ -461,16 +458,15 @@ describe('fw-post-list-controller', function(){
           var result;
           beforeEach(function(){
             result = undefined;
-            postsStub.getNewsfeed.and.returnValue($q.when({ data: 'data' }));
+            postStub.getNewsfeed.and.returnValue($q.when({ data: 'data' }));
             target.internal.loadNext(10, 20).then(function(r){ result = r; });
             $scope.$apply();
           });
 
           it('should call getNewsfeed', function(){
-            expect(postsStub.getNewsfeed).toHaveBeenCalledWith({
+            expect(postStub.getNewsfeed).toHaveBeenCalledWith({
               creatorId: 'anotherUserId',
               startIndex: 10,
-              collectionId: 'collectionId',
               channelId: 'channelId',
               count: 20
             });

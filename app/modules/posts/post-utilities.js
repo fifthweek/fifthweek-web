@@ -9,10 +9,6 @@ angular.module('webApp').factory('postUtilities',
       return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['bytes', 'KB', 'MB', 'GB', 'TB'][i];
     };
 
-    var isViewable = function(contentType){
-      return contentType === 'image/jpeg' || contentType === 'image/gif' || contentType === 'image/png';
-    };
-
     var getImageUri = function(image, thumbnail, accessMap){
       var blob = image.fileId;
       if (thumbnail) {
@@ -40,23 +36,18 @@ angular.module('webApp').factory('postUtilities',
       delete post.renderSizeRatio;
       if(post.imageSource){
         post.imageSource.readableSize = humanFileSize(post.imageSource.size);
-        post.imageSource.viewable = isViewable(post.imageSource.contentType);
-
-        delete post.fileSource;
-        if(!post.imageSource.viewable){
-          // This gives us a link to the non-viewable image file.
-          post.fileSource = post.imageSource;
-        }
 
         if(post.imageSource.renderSize){
           post.renderSizeRatio = ((post.imageSource.renderSize.height / post.imageSource.renderSize.width)*100) + '%';
         }
       }
-      else if(post.fileSource){
+
+      if(post.fileSource){
         post.fileSource.readableSize = humanFileSize(post.fileSource.size);
       }
 
-      post.isScheduled = _.has(post, 'scheduledByQueue');
+      // Only backlog posts contain a queueId field.
+      post.isScheduled = _.has(post, 'queueId');
       if(post.isScheduled){
         post.reorder = function(){
           $state.go(states.creator.posts.scheduled.queues.reorder.name, {id: post.collectionId});
@@ -94,7 +85,7 @@ angular.module('webApp').factory('postUtilities',
 
       var blog;
       var accountSettings;
-      return blogRepository.getChannelMap()
+      return blogRepository.getBlogMap()
         .then(function (result) {
           blog = result;
           return accountSettingsRepository.getAccountSettings();

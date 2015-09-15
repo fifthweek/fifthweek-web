@@ -86,14 +86,14 @@ angular.module('webApp')
         icon: 'fa fa-asterisk'
       },
       {
-        name: 'Collections',
-        state: states.creator.collections.name,
+        name: 'Queues',
+        state: states.creator.queues.name,
         icon: 'fa fa-th',
         secondary:
           [
             {
-              name: 'Collections',
-              state: states.creator.collections.name,
+              name: 'Queues',
+              state: states.creator.queues.name,
               icon: 'fa fa-th'
             }
           ]

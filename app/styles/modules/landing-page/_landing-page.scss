@@ -330,14 +330,14 @@ $header-height:108px;
               @media (max-width:$screen-price-break-point) {
                 background: $white-3;
               }
-              &:hover {
+              /*&:hover {
                 background:$landing-page-highlight-2;
                 border-color:transparent;
                 color:#fff;
-              }
+              }*/
             }
 
-            &.non-default {
+            &.channel-price {
               &:before {
                 content:"+";
                 font-size:$p-font-size + 1;
@@ -363,12 +363,6 @@ $header-height:108px;
                 @media (max-width:$screen-price-break-point) {
                   margin: 0 2px 0 0;
                 }
-              }
-            }
-
-            &.default {
-              &:before {
-                content:none;
               }
             }
           }

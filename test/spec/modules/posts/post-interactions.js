@@ -6,18 +6,18 @@ describe('post-interactions', function(){
   var target;
 
   var $modal;
-  var postsStub;
+  var postStub;
   var accessSignatures;
 
   beforeEach(function() {
-    postsStub = jasmine.createSpyObj('postsStub', ['deletePost', 'postLike', 'deleteLike']);
+    postStub = jasmine.createSpyObj('postStub', ['deletePost', 'postLike', 'deleteLike']);
     accessSignatures = jasmine.createSpyObj('accessSignatures', ['getContainerAccessInformation']);
     $modal = jasmine.createSpyObj('$modal', ['open']);
 
     module('webApp');
 
     module(function($provide) {
-      $provide.value('postsStub', postsStub);
+      $provide.value('postStub', postStub);
       $provide.value('accessSignatures', accessSignatures);
       $provide.value('$modal', $modal);
     });
@@ -90,13 +90,13 @@ describe('post-interactions', function(){
     describe('when deletePost succeeds', function(){
       var success;
       beforeEach(function(){
-        postsStub.deletePost.and.returnValue($q.when());
+        postStub.deletePost.and.returnValue($q.when());
         target.deletePost('postId').then(function() { success = true; });
         $rootScope.$apply();
       });
 
       it('should delete the post on the API', function(){
-        expect(postsStub.deletePost).toHaveBeenCalledWith('postId');
+        expect(postStub.deletePost).toHaveBeenCalledWith('postId');
       });
 
       it('should return a successful promise', function(){
@@ -107,7 +107,7 @@ describe('post-interactions', function(){
     describe('when deletePost fails', function(){
       var error;
       beforeEach(function(){
-        postsStub.deletePost.and.returnValue($q.reject('error'));
+        postStub.deletePost.and.returnValue($q.reject('error'));
         target.deletePost('postId').catch(function(e) { error = e; });
         $rootScope.$apply();
       });
@@ -122,13 +122,13 @@ describe('post-interactions', function(){
     describe('when postLike succeeds', function(){
       var success;
       beforeEach(function(){
-        postsStub.postLike.and.returnValue($q.when());
+        postStub.postLike.and.returnValue($q.when());
         target.likePost('postId').then(function() { success = true; });
         $rootScope.$apply();
       });
 
       it('should delete the post on the API', function(){
-        expect(postsStub.postLike).toHaveBeenCalledWith('postId');
+        expect(postStub.postLike).toHaveBeenCalledWith('postId');
       });
 
       it('should return a successful promise', function(){
@@ -139,7 +139,7 @@ describe('post-interactions', function(){
     describe('when postLike fails', function(){
       var error;
       beforeEach(function(){
-        postsStub.postLike.and.returnValue($q.reject('error'));
+        postStub.postLike.and.returnValue($q.reject('error'));
         target.likePost('postId').catch(function(e) { error = e; });
         $rootScope.$apply();
       });
@@ -154,13 +154,13 @@ describe('post-interactions', function(){
     describe('when deleteLike succeeds', function(){
       var success;
       beforeEach(function(){
-        postsStub.deleteLike.and.returnValue($q.when());
+        postStub.deleteLike.and.returnValue($q.when());
         target.unlikePost('postId').then(function() { success = true; });
         $rootScope.$apply();
       });
 
       it('should delete the post on the API', function(){
-        expect(postsStub.deleteLike).toHaveBeenCalledWith('postId');
+        expect(postStub.deleteLike).toHaveBeenCalledWith('postId');
       });
 
       it('should return a successful promise', function(){
@@ -171,7 +171,7 @@ describe('post-interactions', function(){
     describe('when deleteLike fails', function(){
       var error;
       beforeEach(function(){
-        postsStub.deleteLike.and.returnValue($q.reject('error'));
+        postStub.deleteLike.and.returnValue($q.reject('error'));
         target.unlikePost('postId').catch(function(e) { error = e; });
         $rootScope.$apply();
       });

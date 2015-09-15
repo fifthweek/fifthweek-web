@@ -6,17 +6,17 @@ describe('compose file controller', function () {
   var target;
 
   var composeUploadDelegate;
-  var postsStub;
+  var postStub;
 
   beforeEach(function() {
 
     composeUploadDelegate = jasmine.createSpyObj('composeUploadDelegate', ['initialize']);
-    postsStub = jasmine.createSpyObj('postsStub', ['postFile']);
+    postStub = jasmine.createSpyObj('postStub', ['postFile']);
 
     module('webApp');
     module(function($provide) {
       $provide.value('composeUploadDelegate', composeUploadDelegate);
-      $provide.value('postsStub', postsStub);
+      $provide.value('postStub', postStub);
     });
 
     inject(function ($injector) {
@@ -44,7 +44,7 @@ describe('compose file controller', function () {
       expect(composeUploadDelegate.initialize).toHaveBeenCalled();
       expect(composeUploadDelegate.initialize.calls.first().args[0]).toBe($scope);
       expect(composeUploadDelegate.initialize.calls.first().args[1]).toBeDefined();
-      expect(composeUploadDelegate.initialize.calls.first().args[2]).toBe(postsStub.postFile);
+      expect(composeUploadDelegate.initialize.calls.first().args[2]).toBe(postStub.postFile);
     });
   });
 

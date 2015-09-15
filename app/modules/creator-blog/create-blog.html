@@ -6,15 +6,11 @@
         id="createBlogForm">
 
     <h4>Create Your Blog</h4>
-    <div class="bs-callout-primary">
-      <p>
-        You can change these settings at any time!
-      </p>
-    </div>
+    <p>
+      Please give us some initial information about your blog. You can change these settings at any time.
+    </p>
 
     <fw-form-input-blog-name ng-model="newBlogData.name" placeholder="Blog title" required focus show-help></fw-form-input-blog-name>
-
-    <fw-form-input-tagline ng-model="newBlogData.tagline" placeholder="Tagline" required show-help></fw-form-input-tagline>
 
     <fw-form-input-channel-price ng-model="newBlogData.basePrice" required show-help></fw-form-input-channel-price>
 
@@ -28,13 +24,7 @@
         fw-form-submit="continue()">Create Blog <i class="fa fa-angle-double-right" style="margin-left: 4px"></i></button>
     </div>
 
-    <div class="row">
-      <div class="col-sm-6">
-        <div ng-show="form.message" class="alert alert-danger sub-form-alert" id="sign-in-message">
-          <p>{{form.message}}</p>
-        </div>
-      </div>
-    </div>
+    <fw-error-message value="form.message"></fw-error-message>
   </form>
 
 </fw-panel12>

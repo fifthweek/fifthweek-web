@@ -1,6 +1,6 @@
 angular.module('webApp')
   .controller('fwPostListCtrl',
-  function($scope, $q, fwPostListConstants, postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postsStub, errorFacade, postUtilities) {
+  function($scope, $q, fwPostListConstants, postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postStub, errorFacade, postUtilities) {
     'use strict';
 
     var model = {
@@ -144,7 +144,7 @@ angular.module('webApp')
       if($scope.source === fwPostListConstants.sources.creatorBacklog){
         internal.timelineUserId = internal.currentUserId;
         internal.loadNext = function() {
-          return postsStub.getCreatorBacklog(internal.timelineUserId)
+          return postStub.getCreatorBacklog(internal.timelineUserId)
             .then(function(response){
               return $q.when({
                 posts: response.data
@@ -160,15 +160,13 @@ angular.module('webApp')
           internal.timelineUserId = $scope.userId;
         }
 
-        var collectionId = $scope.collectionId;
         var channelId = $scope.channelId;
 
         internal.loadNext = function(startIndex, count) {
-          return postsStub
+          return postStub
             .getNewsfeed({
               creatorId: internal.timelineUserId,
               startIndex: startIndex,
-              collectionId: collectionId,
               channelId: channelId,
               count: count
             })

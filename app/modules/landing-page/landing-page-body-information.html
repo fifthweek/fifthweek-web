@@ -7,18 +7,13 @@
       <div class="content">
         <div id="channel-{{$index}}" class="row channel" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
           <div class="col-xs-7">
-            <h6 class="channel-name">{{channel.name}}</h6>
+            <h6 class="channel-name">{{channel.name}} <span ng-if="item.isVisibleToNonSubscribers" class="tail">Hidden</span></h6>
           </div>
           <div class="col-xs-5 channel-price-column">
-            <span class="channel-price" id="channel-price-{{$index}}" ng-click="channel.checked = !channel.checked || channel.isDefault"
-                  ng-class="{'unchecked':!channel.checked, 'checked':channel.checked, 'non-default':!channel.isDefault, 'default':channel.isDefault, 'guest-list-price':model.hasFreeAccess}">
+            <span class="channel-price" id="channel-price-{{$index}}" ng-click="channel.checked = !channel.checked"
+                  ng-class="{'unchecked':!channel.checked, 'checked':channel.checked, 'guest-list-price':model.hasFreeAccess}">
               <fw-price value="channel.price"></fw-price>
             </span>
-          </div>
-          <div class="col-xs-7">
-            <ul class="channel-description">
-              <li ng-repeat="descriptionLine in channel.description track by $index">{{descriptionLine}}</li>
-            </ul>
           </div>
           <div class="col-xs-5 channel-previous-price-column" id="channel-previous-price-{{$index}}">
             <p ng-if="channel.subscriptionInformation.isIncrease">

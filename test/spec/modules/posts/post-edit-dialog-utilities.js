@@ -9,18 +9,18 @@ describe('post-edit-dialog-utilities', function() {
   var postTypes;
   var scheduleModes;
 
-  var postsStub;
+  var postStub;
   var postUtilities;
 
   beforeEach(function () {
     postUtilities = jasmine.createSpyObj('postUtilities', ['processPostForRendering']);
-    postsStub = jasmine.createSpyObj('postsStub', ['putNote', 'putFile', 'putImage', 'postToLive', 'postToQueue', 'putLiveDate']);
+    postStub = jasmine.createSpyObj('postStub', ['putNote', 'putFile', 'putImage', 'postToLive', 'putQueue', 'putLiveDate']);
 
     module('webApp');
 
     module(function ($provide) {
       $provide.value('postUtilities', postUtilities);
-      $provide.value('postsStub', postsStub);
+      $provide.value('postStub', postStub);
     });
 
     inject(function ($injector) {
@@ -116,9 +116,9 @@ describe('post-edit-dialog-utilities', function() {
         }
       };
 
-      postsStub.putNote.and.returnValue('noteResult');
-      postsStub.putFile.and.returnValue('fileResult');
-      postsStub.putImage.and.returnValue('imageResult');
+      postStub.putNote.and.returnValue('noteResult');
+      postStub.putFile.and.returnValue('fileResult');
+      postStub.putImage.and.returnValue('imageResult');
     });
 
     describe('when saving a note', function(){
@@ -129,18 +129,18 @@ describe('post-edit-dialog-utilities', function() {
       });
 
       it('should call putNote', function(){
-        expect(postsStub.putNote).toHaveBeenCalledWith('postId', {
+        expect(postStub.putNote).toHaveBeenCalledWith('postId', {
           channelId: 'channelId',
           note: 'comment'
         });
       });
 
       it('should not call putFile', function(){
-        expect(postsStub.putFile).not.toHaveBeenCalled();
+        expect(postStub.putFile).not.toHaveBeenCalled();
       });
 
       it('should not call putImage', function(){
-        expect(postsStub.putImage).not.toHaveBeenCalled();
+        expect(postStub.putImage).not.toHaveBeenCalled();
       });
 
       it('should return the result', function(){
@@ -156,18 +156,18 @@ describe('post-edit-dialog-utilities', function() {
       });
 
       it('should call putFile', function(){
-        expect(postsStub.putFile).toHaveBeenCalledWith('postId', {
+        expect(postStub.putFile).toHaveBeenCalledWith('postId', {
           fileId: 'fileId',
           comment: 'comment'
         });
       });
 
       it('should not call putNote', function(){
-        expect(postsStub.putNote).not.toHaveBeenCalled();
+        expect(postStub.putNote).not.toHaveBeenCalled();
       });
 
       it('should not call putImage', function(){
-        expect(postsStub.putImage).not.toHaveBeenCalled();
+        expect(postStub.putImage).not.toHaveBeenCalled();
       });
 
       it('should return the result', function(){
@@ -183,18 +183,18 @@ describe('post-edit-dialog-utilities', function() {
       });
 
       it('should call putImage', function(){
-        expect(postsStub.putImage).toHaveBeenCalledWith('postId', {
+        expect(postStub.putImage).toHaveBeenCalledWith('postId', {
           imageFileId: 'imageId',
           comment: 'comment'
         });
       });
 
       it('should not call putNote', function(){
-        expect(postsStub.putNote).not.toHaveBeenCalled();
+        expect(postStub.putNote).not.toHaveBeenCalled();
       });
 
       it('should not call putFile', function(){
-        expect(postsStub.putFile).not.toHaveBeenCalled();
+        expect(postStub.putFile).not.toHaveBeenCalled();
       });
 
       it('should return the result', function(){
@@ -209,15 +209,15 @@ describe('post-edit-dialog-utilities', function() {
       });
 
       it('should not call putImage', function(){
-        expect(postsStub.putImage).not.toHaveBeenCalled();
+        expect(postStub.putImage).not.toHaveBeenCalled();
       });
 
       it('should not call putNote', function(){
-        expect(postsStub.putNote).not.toHaveBeenCalled();
+        expect(postStub.putNote).not.toHaveBeenCalled();
       });
 
       it('should not call putFile', function(){
-        expect(postsStub.putFile).not.toHaveBeenCalled();
+        expect(postStub.putFile).not.toHaveBeenCalled();
       });
 
       it('should return the a resolved promise', function(){
@@ -242,9 +242,9 @@ describe('post-edit-dialog-utilities', function() {
         }
       };
 
-      postsStub.postToLive.and.returnValue('postToLiveResult');
-      postsStub.postToQueue.and.returnValue('postToQueueResult');
-      postsStub.putLiveDate.and.returnValue('putLiveDateResult');
+      postStub.postToLive.and.returnValue('postToLiveResult');
+      postStub.putQueue.and.returnValue('putQueueResult');
+      postStub.putLiveDate.and.returnValue('putLiveDateResult');
     });
 
     describe('when the schedule mode has not changed', function(){
@@ -256,15 +256,15 @@ describe('post-edit-dialog-utilities', function() {
       });
 
       it('should not call postToLive', function(){
-        expect(postsStub.postToLive).not.toHaveBeenCalled();
+        expect(postStub.postToLive).not.toHaveBeenCalled();
       });
 
-      it('should not call postToQueue', function(){
-        expect(postsStub.postToQueue).not.toHaveBeenCalled();
+      it('should not call putQueue', function(){
+        expect(postStub.putQueue).not.toHaveBeenCalled();
       });
 
       it('should not call putLiveDate', function(){
-        expect(postsStub.putLiveDate).not.toHaveBeenCalled();
+        expect(postStub.putLiveDate).not.toHaveBeenCalled();
       });
 
       it('should return the a resolved promise', function(){
@@ -283,15 +283,15 @@ describe('post-edit-dialog-utilities', function() {
       });
 
       it('should not call postToLive', function(){
-        expect(postsStub.postToLive).not.toHaveBeenCalled();
+        expect(postStub.postToLive).not.toHaveBeenCalled();
       });
 
-      it('should not call postToQueue', function(){
-        expect(postsStub.postToQueue).not.toHaveBeenCalled();
+      it('should not call putQueue', function(){
+        expect(postStub.putQueue).not.toHaveBeenCalled();
       });
 
       it('should not call putLiveDate', function(){
-        expect(postsStub.putLiveDate).not.toHaveBeenCalled();
+        expect(postStub.putLiveDate).not.toHaveBeenCalled();
       });
 
       it('should return the a resolved promise', function(){
@@ -310,15 +310,15 @@ describe('post-edit-dialog-utilities', function() {
       });
 
       it('should call postToLive', function(){
-        expect(postsStub.postToLive).toHaveBeenCalledWith('postId');
+        expect(postStub.postToLive).toHaveBeenCalledWith('postId');
       });
 
-      it('should not call postToQueue', function(){
-        expect(postsStub.postToQueue).not.toHaveBeenCalled();
+      it('should not call putQueue', function(){
+        expect(postStub.putQueue).not.toHaveBeenCalled();
       });
 
       it('should not call putLiveDate', function(){
-        expect(postsStub.putLiveDate).not.toHaveBeenCalled();
+        expect(postStub.putLiveDate).not.toHaveBeenCalled();
       });
 
       it('should return the result', function(){
@@ -333,20 +333,20 @@ describe('post-edit-dialog-utilities', function() {
         result = target.internal.saveSchedule(postId, model);
       });
 
-      it('should call postToQueue', function(){
-        expect(postsStub.postToQueue).toHaveBeenCalledWith('postId');
+      it('should call putQueue', function(){
+        expect(postStub.putQueue).toHaveBeenCalledWith('postId');
       });
 
       it('should not call postToLive', function(){
-        expect(postsStub.postToLive).not.toHaveBeenCalled();
+        expect(postStub.postToLive).not.toHaveBeenCalled();
       });
 
       it('should not call putLiveDate', function(){
-        expect(postsStub.putLiveDate).not.toHaveBeenCalled();
+        expect(postStub.putLiveDate).not.toHaveBeenCalled();
       });
 
       it('should return the result', function(){
-        expect(result).toBe('postToQueueResult');
+        expect(result).toBe('putQueueResult');
       });
     });
 
@@ -358,15 +358,15 @@ describe('post-edit-dialog-utilities', function() {
       });
 
       it('should call putLiveDate', function(){
-        expect(postsStub.putLiveDate).toHaveBeenCalledWith('postId', 'date');
+        expect(postStub.putLiveDate).toHaveBeenCalledWith('postId', 'date');
       });
 
       it('should not call postToLive', function(){
-        expect(postsStub.postToLive).not.toHaveBeenCalled();
+        expect(postStub.postToLive).not.toHaveBeenCalled();
       });
 
-      it('should not call postToQueue', function(){
-        expect(postsStub.postToQueue).not.toHaveBeenCalled();
+      it('should not call putQueue', function(){
+        expect(postStub.putQueue).not.toHaveBeenCalled();
       });
 
       it('should return the result', function(){

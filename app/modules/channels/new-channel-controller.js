@@ -18,7 +18,6 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
     var channelData = {
       blogId: blogService.blogId,
       name: channel.name,
-      description: channel.description,
       price: Math.round(channel.price * 100),
       isVisibleToNonSubscribers: !channel.hidden
     };

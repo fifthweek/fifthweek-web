@@ -1,0 +1,32 @@
+<fw-breadcrumb current="New Queue"></fw-breadcrumb>
+
+<fw-panel12>
+
+  <form novalidate
+        role="form"
+        id="createQueueForm"
+        name="form">
+
+    <fw-form-input-queue-name ng-model="model.queue.name" placeholder="New queue name" required focus></fw-form-input-queue-name>
+
+    <div class="row-btn">
+      <button
+        id="create-queue-button"
+        class="btn btn-block btn-success"
+        data-loading-text="Creating..."
+        data-event-title="Queue created"
+        data-event-category="Customization"
+        fw-form-submit="createQueue()">Create Queue</button>
+      <button
+        id="cancel-button"
+        class="btn btn-default btn-block"
+        ui-sref="{{previousState}}">Cancel</button>
+    </div>
+
+    <div ng-show="form.message" class="alert alert-danger sub-form-alert">
+      <p>{{form.message}}</p>
+    </div>
+
+  </form>
+
+</fw-panel12>

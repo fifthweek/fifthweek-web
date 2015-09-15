@@ -1,0 +1,12 @@
+<fw-managed-list id="queues" ng-if="!model.errorMessage" item-name="queue" items="model.queues" new-item-state="creator.queues.new" manage-item-state="creator.queues.edit">
+  <h5>
+    <a class="queue-name" href>{{item.name}}</a>
+  </h5>
+  <p class="release-times">
+    <span ng-repeat="time in item.schedule | orderBy:'sortKey'">{{time.day}}</span>
+  </p>
+</fw-managed-list>
+
+<div ng-if="model.errorMessage" class="alert alert-danger sub-form-alert">
+  <p>{{model.errorMessage}}</p>
+</div>

@@ -5,56 +5,31 @@
 
   <fw-form-modal name="Edit Post">
     <form-body>
-      <div ng-if="model.postType !== postTypes.note">
-
-        <div class="form-group form-group-has-buffers" ng-if="model.postType === postTypes.file">
-          <label>File</label>
-          <div class="row">
-            <div class="col-s-6 bottom-buffer">
-              <p>
-                <a class="btn-file-download file-content" ng-click="openFile(model.input.file)">
-                  {{model.input.fileSource.fileName}}.{{model.input.fileSource.fileExtension}}
-                </a>
-              </p>
-            </div>
-            <div class="col-s-6 bottom-buffer">
-              <fw-file-upload class="pull-right" channel-id="{{model.input.selectedChannel.channelId}}" description="Upload File" on-upload-complete="onUploadComplete(data)" file-purpose="post-file"></fw-file-upload>
-            </div>
+      <div class="form-group form-group-has-buffers">
+        <div class="row">
+          <div class="col-s-7 bottom-buffer" ng-if="model.input.imageSource">
+            <fw-blob-image control="blobImage" file-id="{{model.input.image.fileId}}" container-name="{{model.input.image.containerName}}" thumbnail="preview"></fw-blob-image>
+          </div>
+          <div class="col-s-5 bottom-buffer">
+            <fw-file-upload channel-id="{{model.channelId}}" description="{{model.input.imageSource ? 'Change Image' : 'Add Image'}}" on-upload-complete="onImageUploadComplete(data)" file-purpose="post-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
           </div>
         </div>
+      </div>
 
-        <div class="form-group form-group-has-buffers" ng-if="model.postType === postTypes.image">
-          <label>Image</label>
-          <div class="row">
-            <div class="col-s-7 bottom-buffer">
-              <fw-blob-image control="blobImage" file-id="{{model.input.image.fileId}}" container-name="{{model.input.image.containerName}}" thumbnail="preview"></fw-blob-image>
-            </div>
-            <div class="col-s-5 bottom-buffer">
-              <fw-file-upload channel-id="{{model.input.selectedChannel.channelId}}" description="Upload Image" on-upload-complete="onUploadComplete(data)" file-purpose="post-image" accept="image/tiff,image/jpeg,image/gif,image/png"></fw-file-upload>
-            </div>
+      <div class="form-group form-group-has-buffers">
+        <div class="row">
+          <div class="col-xs-12 bottom-buffer" ng-class="{'btn-file-change': model.input.fileSource}">
+            <p class="file-name" ng-if="model.input.fileSource">{{model.input.fileSource.fileName}}.{{model.input.fileSource.fileExtension}}</p>
+            <fw-file-upload channel-id="{{model.channelId}}" description="{{model.input.fileSource ? 'Change File' : 'Add File'}}" on-upload-complete="onFileUploadComplete(data)" file-purpose="post-file"></fw-file-upload>
           </div>
         </div>
-
-        <label>Comment</label>
-        <fw-form-input-comment
-          ng-model="model.input.comment"
-          placeholder="Add a comment, if you like"
-          focus>
-        </fw-form-input-comment>
-
-        <label>Post to</label>
-        <fw-form-input-select selected-item="model.input.selectedCollection" items="model.collections" ng-disabled="true"></fw-form-input-select>
       </div>
 
-      <div ng-if="model.postType === postTypes.note">
-        <label>Note</label>
-        <fw-form-input-note ng-model="model.input.comment" required focus></fw-form-input-note>
-
-        <label>Share with</label>
-        <div ng-if="model.channels.length > 1">
-          <fw-form-input-select selected-item="model.input.selectedChannel" items="model.channels" ng-disabled="true"></fw-form-input-select>
-        </div>
-      </div>
+      <fw-form-input-comment
+        ng-model="model.input.comment"
+        placeholder="Say something, if you like"
+        focus>
+      </fw-form-input-comment>
 
       <div class="form-group">
         <fw-form-subsection name="Release time">
@@ -65,19 +40,21 @@
           <section>
             <div class="radio">
               <label><input type="radio"
-                            ng-model="model.input.scheduleMode"
-                            ng-value="scheduleModes.now"/> {{model.savedScheduleMode === scheduleModes.now ? 'No change' : 'Post now'}}</label>
+                ng-model="model.input.scheduleMode"
+                ng-value="scheduleModes.now"/> {{model.savedScheduleMode === scheduleModes.now ? 'No change' : 'Post now'}}</label>
             </div>
 
-            <div class="radio" ng-if="model.postType !== postTypes.note">
-              <label>
-                <input
+            <div ng-if="model.queues.length">
+              <div class="radio">
+                <label><input
                   type="radio"
                   ng-model="model.input.scheduleMode"
                   ng-value="scheduleModes.queued" />
                 Schedule with queue
                 <span ng-if="model.savedScheduleMode !== scheduleModes.queued">(will appear <strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
-              </label>
+                :</label>
+              </div>
+              <fw-form-input-select-queue items="model.queues" selected-item="model.input.selectedQueue"></fw-form-input-select-queue>
             </div>
 
             <div class="radio">
@@ -91,7 +68,7 @@
         </fw-form-subsection>
       </div>
 
-      <fw-error-message value="editPostForm.message"></fw-error-message>
+      <fw-error-message value="model.errorMessage"></fw-error-message>
     </form-body>
     <form-buttons>
       <button
@@ -100,7 +77,8 @@
         data-loading-text="Saving..."
         data-event-title="Backlog post edited"
         data-event-category="Edited post"
-        fw-form-submit="save()">
+        fw-form-submit="save()"
+        error-message="model.errorMessage">
         <span ng-if="model.savedScheduleMode === scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Save' : 'Schedule'}}</span>
         <span ng-if="model.savedScheduleMode !== scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Post Now' : 'Save'}}</span>
       </button>

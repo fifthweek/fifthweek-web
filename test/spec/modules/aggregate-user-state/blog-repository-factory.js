@@ -126,7 +126,6 @@ describe('blog repository factory', function(){
     });
   });
 
-
   describe('when getting channels', function() {
     it('should get channels from the master repository at the correct location', function() {
       var expectedChannels = [{}];
@@ -154,23 +153,46 @@ describe('blog repository factory', function(){
     });
   });
 
+  describe('when getting queues', function() {
+    it('should get queues from the master repository at the correct location', function() {
+      var expectedQueues = [{}];
+      var actualQueues;
+      masterRepository.get.and.returnValue($q.when(expectedQueues));
+
+      target.getQueues().then(function(queues) {
+        actualQueues = queues;
+      });
+      $rootScope.$apply();
+
+      expect(masterRepository.get).toHaveBeenCalledWith('blog.queues');
+      expect(expectedQueues).toBe(actualQueues);
+    });
+
+    it('should throw an error if there are no channels', function() {
+      var noChannels = [];
+      masterRepository.get.and.returnValue($q.when(noChannels));
+
+      target.getChannels().catch(function(error) {
+        expect(error instanceof DisplayableError).toBeTruthy();
+        expect(error.message).toBe('You must create a blog.');
+      });
+      $rootScope.$apply();
+    });
+  });
+
   describe('when getting channels sorted', function() {
-    it('should return them sorted by default, then by name', function() {
+    it('should return them sorted by name', function() {
       spyOn(target, 'getChannels').and.returnValue($q.when([
         {
-          isDefault: false,
           name: 'b'
         },
         {
-          isDefault: false,
           name: 'a'
         },
         {
-          isDefault: true,
           name: 'd'
         },
         {
-          isDefault: true,
           name: 'c'
         }
       ]));
@@ -181,20 +203,54 @@ describe('blog repository factory', function(){
 
       expect(continuation).toHaveBeenCalledWith([
         {
-          isDefault: true,
-          name: 'c'
-        },
-        {
-          isDefault: true,
-          name: 'd'
-        },
-        {
-          isDefault: false,
           name: 'a'
         },
         {
-          isDefault: false,
           name: 'b'
+        },
+        {
+          name: 'c'
+        },
+        {
+          name: 'd'
+        }
+      ]);
+    });
+  });
+
+  describe('when getting queues sorted', function() {
+    it('should return them sorted by name', function() {
+      spyOn(target, 'getQueues').and.returnValue($q.when([
+        {
+          name: 'b'
+        },
+        {
+          name: 'a'
+        },
+        {
+          name: 'd'
+        },
+        {
+          name: 'c'
+        }
+      ]));
+
+      var continuation = jasmine.createSpy('continuation');
+      target.getQueuesSorted().then(continuation);
+      $rootScope.$apply();
+
+      expect(continuation).toHaveBeenCalledWith([
+        {
+          name: 'a'
+        },
+        {
+          name: 'b'
+        },
+        {
+          name: 'c'
+        },
+        {
+          name: 'd'
         }
       ]);
     });
@@ -213,6 +269,22 @@ describe('blog repository factory', function(){
 
       expect(applyChanges).toHaveBeenCalledWith(channels);
       expect(masterRepository.update).toHaveBeenCalledWith('blog.channels', jasmine.any(Function));
+    });
+  });
+
+  describe('when updating queues', function() {
+    it('should set changes into the master repository at the correct location', function() {
+      var queues = [];
+      var applyChanges = jasmine.createSpy('applyChanges');
+
+      masterRepository.update.and.callFake(function(key, apply) {
+        apply(queues);
+      });
+
+      target.updateQueues(applyChanges);
+
+      expect(applyChanges).toHaveBeenCalledWith(queues);
+      expect(masterRepository.update).toHaveBeenCalledWith('blog.queues', jasmine.any(Function));
     });
   });
 
@@ -250,6 +322,40 @@ describe('blog repository factory', function(){
     });
   });
 
+  describe('when creating a queue', function() {
+    var queues;
+    var existingQueue = {queueId: 'existingId'};
+
+    // Swap own implementation for spy.
+    beforeEach(function() {
+      queues = [existingQueue];
+      spyOn(target, 'updateQueues').and.callFake(function(applyChanges) {
+        return applyChanges(queues);
+      });
+    });
+
+    it('should throw an error if queue already exists', function() {
+      var newQueue = {queueId: 'existingId'};
+
+      target.createQueue(newQueue).catch(function(error) {
+        expect(error instanceof DisplayableError).toBeTruthy();
+        expect(error.message).toBe('Queue already exists.');
+      });
+      $rootScope.$apply();
+
+      expect(queues).toEqual([existingQueue]);
+    });
+
+    it('should append the new queue onto the queue list', function() {
+      var newQueue = {queueId: 'queueId'};
+
+      target.createQueue(newQueue);
+      $rootScope.$apply();
+
+      expect(queues).toEqual([existingQueue, newQueue]);
+    });
+  });
+
   describe('when updating a channel', function() {
     var channels;
     var existingChannel = {channelId: 'existingId'};
@@ -284,6 +390,40 @@ describe('blog repository factory', function(){
     });
   });
 
+  describe('when updating a queue', function() {
+    var queues;
+    var existingQueue = {queueId: 'existingId'};
+
+    // Swap own implementation for spy.
+    beforeEach(function() {
+      queues = [existingQueue];
+      spyOn(target, 'updateQueues').and.callFake(function(applyChanges) {
+        return applyChanges(queues);
+      });
+    });
+
+    it('should throw an error if queue does not exist', function() {
+      var applyChanges = jasmine.createSpy('applyChanges');
+
+      target.updateQueue('someQueueId', applyChanges).catch(function(error) {
+        expect(error instanceof DisplayableError).toBeTruthy();
+        expect(error.message).toBe('Queue not found.');
+      });
+      $rootScope.$apply();
+
+      expect(applyChanges).not.toHaveBeenCalled();
+    });
+
+    it('should apply the changes if the queue exists', function() {
+      var applyChanges = jasmine.createSpy('applyChanges');
+
+      target.updateQueue('existingId', applyChanges);
+      $rootScope.$apply();
+
+      expect(applyChanges).toHaveBeenCalled();
+    });
+  });
+
   describe('when deleting a channel', function() {
     var channels;
     var existingChannel = {channelId: 'existingId'};
@@ -308,6 +448,33 @@ describe('blog repository factory', function(){
       $rootScope.$apply();
 
       expect(channels).toEqual([existingChannel]);
+    });
+  });
+
+  describe('when deleting a queue', function() {
+    var queues;
+    var existingQueue = {queueId: 'existingId'};
+
+    // Swap own implementation for spy.
+    beforeEach(function() {
+      queues = [existingQueue];
+      spyOn(target, 'updateQueues').and.callFake(function(applyChanges) {
+        return applyChanges(queues);
+      });
+    });
+
+    it('should delete the queue from the queue list', function() {
+      target.deleteQueue('existingId');
+      $rootScope.$apply();
+
+      expect(queues).toEqual([]);
+    });
+
+    it('should have no effect when queue does not exist', function() {
+      target.deleteQueue('already been deleted');
+      $rootScope.$apply();
+
+      expect(queues).toEqual([existingQueue]);
     });
   });
 
@@ -348,7 +515,7 @@ describe('blog repository factory', function(){
       var error;
       beforeEach(function(){
         masterRepository.get.and.returnValue($q.when());
-        target.getChannelMap().catch(function(e){error = e;});
+        target.getBlogMap().catch(function(e){error = e;});
         $rootScope.$apply();
       });
 
@@ -362,44 +529,40 @@ describe('blog repository factory', function(){
 
       var result;
       beforeEach(function(){
-        masterRepository.get.and.returnValue($q.when({ channels: [
-          {
-            channelId: 'a',
-            collections: [
-              { collectionId: 'x' },
-              { collectionId: 'y' }
-            ]
-          },
-          {
-            channelId: 'b',
-            collections: [
-              { collectionId: 'xx' },
-              { collectionId: 'yy' }
-            ]
-          }
-        ]}));
+        masterRepository.get.and.returnValue($q.when(
+        {
+          channels: [
+            {
+              channelId: 'a'
+            },
+            {
+              channelId: 'b'
+            }
+          ],
+          queues: [
+            { queueId: 'x' },
+            { queueId: 'y' }
+          ]
 
-        target.getChannelMap().then(function(r){result = r;});
+        }));
+
+        target.getBlogMap().then(function(r){result = r;});
         $rootScope.$apply();
       });
 
-      it('should return a map of channels and collections', function(){
+      it('should return a map of channels and queues', function(){
         expect(result).toEqual({
           channels: {
             a: {
-              channelId: 'a',
-              collections: {
-                x: { collectionId: 'x' },
-                y: { collectionId: 'y' }
-              }
+              channelId: 'a'
             },
             b: {
-              channelId: 'b',
-              collections: {
-                xx: { collectionId: 'xx' },
-                yy: { collectionId: 'yy' }
-              }
+              channelId: 'b'
             }
+          },
+          queues: {
+            x: { queueId: 'x' },
+            y: { queueId: 'y' }
           }
         });
       });

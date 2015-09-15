@@ -220,10 +220,6 @@ describe('landing page controller', function () {
               expect($scope.model.channelId).toBeUndefined();
             });
 
-            it('should set collectionId to undefined', function(){
-              expect($scope.model.collectionId).toBeUndefined();
-            });
-
             it('should set the current view to the blog', function(){
               expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
             });
@@ -714,32 +710,24 @@ describe('landing page controller', function () {
             channelId: 'C',
             name: 'channel C',
             price: channelPrice2,
-            description: 'foo\nbar',
-            isDefault: false,
             isVisibleToNonSubscribers: true
           },
           {
             channelId: 'B',
             name: 'channel B',
             price: channelPrice0,
-            description: 'ooh\nyeah\nbaby',
-            isDefault: true,
             isVisibleToNonSubscribers: true
           },
           {
             channelId: 'A',
             name: 'channel A',
             price: channelPrice1,
-            description: 'hello',
-            isDefault: false,
             isVisibleToNonSubscribers: true
           },
           {
             channelId: 'Z',
             name: 'channel Z',
             price: 15,
-            description: 'world',
-            isDefault: false,
             isVisibleToNonSubscribers: false
           }
         ];
@@ -773,32 +761,26 @@ describe('landing page controller', function () {
           expect($scope.model.channels).toEqual([
             {
               isVisibleToNonSubscribers: true,
-              channelId: 'B',
-              name: 'channel B',
-              price: channelPrice0,
-              description: ['ooh', 'yeah', 'baby'],
-              subscriptionInformation: { channelId: 'B' },
-              isDefault: true,
-              checked: true
-            },
-            {
-              isVisibleToNonSubscribers: true,
               channelId: 'A',
               name: 'channel A',
               price: channelPrice1,
-              description: ['hello'],
               subscriptionInformation: undefined,
-              isDefault: false,
               checked: false
+            },
+            {
+              isVisibleToNonSubscribers: true,
+              channelId: 'B',
+              name: 'channel B',
+              price: channelPrice0,
+              subscriptionInformation: { channelId: 'B' },
+              checked: true
             },
             {
               isVisibleToNonSubscribers: false,
               channelId: 'BH',
               name: 'channel BH',
               price: channelPriceHidden,
-              description: ['This channel is only visible to subscribers.'],
               subscriptionInformation: { channelId: 'BH' },
-              isDefault: false,
               checked: true
             },
             {
@@ -806,9 +788,7 @@ describe('landing page controller', function () {
               channelId: 'C',
               name: 'channel C',
               price: channelPrice2,
-              description: ['foo', 'bar'],
               subscriptionInformation: { channelId: 'C' },
-              isDefault: false,
               checked: true
             }
           ]);
@@ -1005,7 +985,7 @@ describe('landing page controller', function () {
             expect(target.internal.postProcessResults).toHaveBeenCalled();
           });
 
-          it('should call updateTotalPrice when the channels collection changes', function(){
+          it('should call updateTotalPrice when the channels list changes', function(){
             expect($scope.$watch).toHaveBeenCalledWith('model.channels', target.internal.updateTotalPrice, true);
           });
         });
@@ -1138,7 +1118,6 @@ describe('landing page controller', function () {
         $scope.model.currentView = undefined;
         $scope.model.returnState = undefined;
         $scope.model.channelId = undefined;
-        $scope.model.collectionId = undefined;
       });
 
       var expectResult = function(result){
@@ -1200,20 +1179,6 @@ describe('landing page controller', function () {
           expectResult(true);
           expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
           expect($scope.model.channelId).toBe('key');
-        });
-
-        it('should return false if action is collection and key is undefined', function(){
-          $stateParams.action = landingPageConstants.actions.collection;
-          $stateParams.key = undefined;
-          expectResult(false);
-        });
-
-        it('should return true if action is collection and key is defined', function(){
-          $stateParams.action = landingPageConstants.actions.collection;
-          $stateParams.key = 'key';
-          expectResult(true);
-          expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
-          expect($scope.model.collectionId).toBe('key');
         });
       });
     });
@@ -1563,27 +1528,6 @@ describe('landing page controller', function () {
         beforeEach(function(){
           $scope.model.returnState = undefined;
           $stateParams.action = landingPageConstants.actions.channel;
-
-          $state.current = { name: 'current-state' };
-          $scope.model.username = 'username';
-
-          result = target.internal.redirectToUnfilteredViewIfRequired();
-        });
-
-        it('should return true', function(){
-          expect(result).toBe(true);
-        });
-
-        it('should redirect to the landing page blog', function(){
-          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.all, key: null });
-        });
-      });
-
-      describe('when the action is set to collection', function(){
-        var result;
-        beforeEach(function(){
-          $scope.model.returnState = undefined;
-          $stateParams.action = landingPageConstants.actions.collection;
 
           $state.current = { name: 'current-state' };
           $scope.model.username = 'username';

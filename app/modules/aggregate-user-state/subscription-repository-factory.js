@@ -42,11 +42,6 @@ angular.module('webApp')
 
               blog.channels = _.reduce(blog.channels, function(channelResult, channel){
 
-                channel.collections = _.reduce(channel.collections, function(collectionResult, collection){
-                  collectionResult[collection.collectionId] = collection;
-                  return collectionResult;
-                }, {});
-
                 channelResult[channel.channelId] = channel;
                 return channelResult;
               }, {});

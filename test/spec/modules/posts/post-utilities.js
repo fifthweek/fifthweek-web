@@ -18,7 +18,7 @@ describe('post-utilities', function(){
     $state = jasmine.createSpyObj('$state', ['go']);
     accessSignatures = jasmine.createSpyObj('accessSignatures', ['getContainerAccessMap']);
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
-    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannelMap']);
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getBlogMap']);
     subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['getBlogMap']);
 
     module('webApp');
@@ -53,7 +53,7 @@ describe('post-utilities', function(){
       });
 
       it('should not get the channel map', function(){
-        expect(blogRepository.getChannelMap).not.toHaveBeenCalled();
+        expect(blogRepository.getBlogMap).not.toHaveBeenCalled();
       });
 
       it('should not get the account settings', function(){
@@ -82,7 +82,7 @@ describe('post-utilities', function(){
       });
 
       it('should not get the channel map', function(){
-        expect(blogRepository.getChannelMap).not.toHaveBeenCalled();
+        expect(blogRepository.getBlogMap).not.toHaveBeenCalled();
       });
 
       it('should not get the account settings', function(){
@@ -98,7 +98,7 @@ describe('post-utilities', function(){
       });
     });
 
-    describe('when getChannelMap fails', function(){
+    describe('when getBlogMap fails', function(){
       var error;
       var posts;
       var postsCopy;
@@ -116,7 +116,7 @@ describe('post-utilities', function(){
 
         postsCopy = _.cloneDeep(posts);
 
-        blogRepository.getChannelMap.and.returnValue($q.reject('error'));
+        blogRepository.getBlogMap.and.returnValue($q.reject('error'));
 
         target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
           .catch(function(e){ error = e; });
@@ -154,7 +154,7 @@ describe('post-utilities', function(){
 
         postsCopy = _.cloneDeep(posts);
 
-        blogRepository.getChannelMap.and.returnValue($q.when());
+        blogRepository.getBlogMap.and.returnValue($q.when());
         accountSettingsRepository.getAccountSettings.and.returnValue($q.reject('error'));
 
         target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
@@ -163,7 +163,7 @@ describe('post-utilities', function(){
       });
 
       it('should get the channel map', function(){
-        expect(blogRepository.getChannelMap).toHaveBeenCalledWith();
+        expect(blogRepository.getBlogMap).toHaveBeenCalledWith();
       });
 
       it('should propagate the error', function(){
@@ -189,7 +189,7 @@ describe('post-utilities', function(){
           }
         ];
 
-        blogRepository.getChannelMap.and.returnValue($q.when({
+        blogRepository.getBlogMap.and.returnValue($q.when({
           name: 'blog',
           channels: {
             channelId1: {
@@ -219,7 +219,7 @@ describe('post-utilities', function(){
       });
 
       it('should get the channel map', function(){
-        expect(blogRepository.getChannelMap).toHaveBeenCalledWith();
+        expect(blogRepository.getBlogMap).toHaveBeenCalledWith();
       });
 
       it('should get the account settings', function(){

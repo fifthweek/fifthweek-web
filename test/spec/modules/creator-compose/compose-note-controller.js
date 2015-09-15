@@ -7,7 +7,7 @@ describe('compose note controller', function () {
 
   var $state;
   var composeUtilities;
-  var postsStub;
+  var postStub;
   var logService;
   var utilities;
 
@@ -15,7 +15,7 @@ describe('compose note controller', function () {
 
     $state = jasmine.createSpyObj('$state', ['reload']);
     composeUtilities = jasmine.createSpyObj('composeUtilities', ['getChannelsForSelection']);
-    postsStub = jasmine.createSpyObj('postsStub', ['postNote']);
+    postStub = jasmine.createSpyObj('postStub', ['postNote']);
     logService = jasmine.createSpyObj('logService', ['error']);
     utilities = jasmine.createSpyObj('utilities', ['getFriendlyErrorMessage']);
 
@@ -23,7 +23,7 @@ describe('compose note controller', function () {
     module(function($provide) {
       $provide.value('$state', $state);
       $provide.value('composeUtilities', composeUtilities);
-      $provide.value('postsStub', postsStub);
+      $provide.value('postStub', postStub);
       $provide.value('logService', logService);
       $provide.value('utilities', utilities);
     });
@@ -115,15 +115,15 @@ describe('compose note controller', function () {
     describe('when calling postNow', function(){
       describe('when postNote succeeds', function(){
         beforeEach(function(){
-          postsStub.postNote.and.returnValue($q.when());
+          postStub.postNote.and.returnValue($q.when());
           $scope.$close = jasmine.createSpy('$close');
           $scope.postNow();
           $scope.$apply();
         });
 
         it('should send the data without any date', function(){
-          expect(postsStub.postNote.calls.count()).toBe(1);
-          expect(postsStub.postNote).toHaveBeenCalledWith({
+          expect(postStub.postNote.calls.count()).toBe(1);
+          expect(postStub.postNote).toHaveBeenCalledWith({
             channelId: '1',
             note: 'note'
           });
@@ -137,7 +137,7 @@ describe('compose note controller', function () {
       describe('when postNote fails', function(){
         var error;
         beforeEach(function(){
-          postsStub.postNote.and.returnValue($q.reject('error'));
+          postStub.postNote.and.returnValue($q.reject('error'));
           $scope.postNow().catch(function(e){ error = e; });
           $scope.$apply();
         });
@@ -151,15 +151,15 @@ describe('compose note controller', function () {
     describe('when calling postToBacklog', function(){
       describe('when postNote succeeds', function(){
         beforeEach(function(){
-          postsStub.postNote.and.returnValue($q.when());
+          postStub.postNote.and.returnValue($q.when());
           $scope.$close = jasmine.createSpy('$close');
           $scope.postToBacklog();
           $scope.$apply();
         });
 
         it('should send the data with a date', function(){
-          expect(postsStub.postNote.calls.count()).toBe(1);
-          expect(postsStub.postNote).toHaveBeenCalledWith({
+          expect(postStub.postNote.calls.count()).toBe(1);
+          expect(postStub.postNote).toHaveBeenCalledWith({
             channelId: '1',
             note: 'note',
             scheduledPostTime: 'date'
@@ -174,7 +174,7 @@ describe('compose note controller', function () {
       describe('when postNote fails', function(){
         var error;
         beforeEach(function(){
-          postsStub.postNote.and.returnValue($q.reject('error'));
+          postStub.postNote.and.returnValue($q.reject('error'));
           $scope.postNow().catch(function(e){ error = e; });
           $scope.$apply();
         });

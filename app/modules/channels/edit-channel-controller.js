@@ -28,14 +28,12 @@ angular.module('webApp').controller('editChannelCtrl', function($scope, $q, $sta
     var channel = $scope.model.channel;
     var channelData = {
       name: channel.name,
-      description: channel.description,
       price: Math.round(channel.price * 100),
       isVisibleToNonSubscribers: !channel.hidden
     };
     return channelStub.putChannel(channelId, channelData).then(function() {
       return blogRepository.updateChannel(channelId, function(channel) {
         channel.name = channelData.name;
-        channel.description = channelData.description;
         channel.price = channelData.price;
         channel.isVisibleToNonSubscribers = channelData.isVisibleToNonSubscribers;
       }).then(function() {

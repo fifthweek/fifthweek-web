@@ -16,7 +16,7 @@ describe('view-subscribers-controller', function(){
   beforeEach(function() {
     initializer = jasmine.createSpyObj('initializer', ['initialize']);
     blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
-    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannelMap', 'getUserId']);
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getBlogMap', 'getUserId']);
     blogRepositoryFactory.forCurrentUser.and.returnValue(blogRepository);
     accountSettingsRepositoryFactory = jasmine.createSpyObj('accountSettingsRepositoryFactory', ['forCurrentUser']);
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
@@ -268,7 +268,7 @@ describe('view-subscribers-controller', function(){
     describe('when loadForm is called', function(){
       var success;
       var error;
-      var deferredGetChannelMap;
+      var deferredGetBlogMap;
       var deferredGetAccountSettings;
       var deferredGetSubscriberInformation;
       beforeEach(function(){
@@ -278,8 +278,8 @@ describe('view-subscribers-controller', function(){
         deferredGetAccountSettings = $q.defer();
         accountSettingsRepository.getAccountSettings.and.returnValue(deferredGetAccountSettings.promise);
 
-        deferredGetChannelMap = $q.defer();
-        blogRepository.getChannelMap.and.returnValue(deferredGetChannelMap.promise);
+        deferredGetBlogMap = $q.defer();
+        blogRepository.getBlogMap.and.returnValue(deferredGetBlogMap.promise);
 
         deferredGetSubscriberInformation = $q.defer();
         blogStub.getSubscriberInformation.and.returnValue(deferredGetSubscriberInformation.promise);
@@ -309,13 +309,13 @@ describe('view-subscribers-controller', function(){
           expect(target.internal.accountSettings).toEqual({ userId: 'userId' });
         });
 
-        it('should call getChannelMap', function(){
-          expect(blogRepository.getChannelMap).toHaveBeenCalledWith();
+        it('should call getBlogMap', function(){
+          expect(blogRepository.getBlogMap).toHaveBeenCalledWith();
         });
 
-        describe('when getChannelMap succeeds', function(){
+        describe('when getBlogMap succeeds', function(){
           beforeEach(function(){
-            deferredGetChannelMap.resolve({ blogId: 'blogId' });
+            deferredGetBlogMap.resolve({ blogId: 'blogId' });
             $scope.$apply();
           });
 
@@ -384,9 +384,9 @@ describe('view-subscribers-controller', function(){
           });
         });
 
-        describe('when getChannelMap fails', function(){
+        describe('when getBlogMap fails', function(){
           beforeEach(function(){
-            deferredGetChannelMap.reject('error');
+            deferredGetBlogMap.reject('error');
             $scope.$apply();
           });
 

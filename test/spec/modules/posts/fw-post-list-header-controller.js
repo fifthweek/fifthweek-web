@@ -65,10 +65,6 @@ describe('fw-post-list-header-controller', function() {
       expect($scope.model.channelName).toBeUndefined();
     });
 
-    it('should set the collection name to undefined', function(){
-      expect($scope.model.collectionName).toBeUndefined();
-    });
-
     it('should get a subscription repository', function(){
       expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
     });
@@ -82,7 +78,6 @@ describe('fw-post-list-header-controller', function() {
     beforeEach(function(){
       $scope.userId = userId;
       $scope.channelId = 'channelId';
-      $scope.collectionId = 'collectionId';
       createController();
     });
 
@@ -101,7 +96,6 @@ describe('fw-post-list-header-controller', function() {
       var blogs;
       beforeEach(function(){
         $scope.model.channelName = undefined;
-        $scope.model.collectionName = undefined;
 
         blogs = [
           {
@@ -109,31 +103,11 @@ describe('fw-post-list-header-controller', function() {
             channels: [
               {
                 channelId: '1.1',
-                name: 'N1.1',
-                collections: [
-                  {
-                    collectionId: '1.1.1',
-                    name: 'N1.1.1'
-                  },
-                  {
-                    collectionId: '1.1.2',
-                    name: 'N1.1.2'
-                  }
-                ]
+                name: 'N1.1'
               },
               {
                 channelId: '1.2',
-                name: 'N1.2',
-                collections: [
-                  {
-                    collectionId: '1.2.1',
-                    name: 'N1.2.1'
-                  },
-                  {
-                    collectionId: '1.2.2',
-                    name: 'N1.2.2'
-                  }
-                ]
+                name: 'N1.2'
               }
             ]
           },
@@ -154,141 +128,61 @@ describe('fw-post-list-header-controller', function() {
 
       describe('when creator is undefined', function(){
         beforeEach(function(){
-          target.internal.loadFromBlogs(undefined, '1.1', '1.1.1', blogs);
+          target.internal.loadFromBlogs(undefined, '1.1', blogs);
         });
 
         it('should not set channelName', function(){
           expect($scope.model.channelName).toBeUndefined();
-        });
-
-        it('should not set collectionName', function(){
-          expect($scope.model.collectionName).toBeUndefined();
-        });
-      });
-
-      describe('when channelId and collectionId are undefined', function(){
-        beforeEach(function(){
-          target.internal.loadFromBlogs('1', undefined, undefined, blogs);
-        });
-
-        it('should not set channelName', function(){
-          expect($scope.model.channelName).toBeUndefined();
-        });
-
-        it('should not set collectionName', function(){
-          expect($scope.model.collectionName).toBeUndefined();
         });
       });
 
       describe('when channelId is undefined', function(){
         beforeEach(function(){
-          target.internal.loadFromBlogs('1', undefined, '1.2.2', blogs);
+          target.internal.loadFromBlogs('1', undefined, blogs);
         });
 
         it('should set channelName', function(){
-          expect($scope.model.channelName).toBe('N1.2');
-        });
-
-        it('should set collectionName', function(){
-          expect($scope.model.collectionName).toBe('N1.2.2');
+          expect($scope.model.channelName).toBeUndefined();
         });
       });
 
-      describe('when collectionId is undefined', function(){
+      describe('when channelId is valid', function(){
         beforeEach(function(){
-          target.internal.loadFromBlogs('1', '1.2', undefined, blogs);
-        });
-
-        it('should set channelName', function(){
-          expect($scope.model.channelName).toBe('N1.2');
-        });
-
-        it('should not set collectionName', function(){
-          expect($scope.model.collectionName).toBeUndefined();
-        });
-      });
-
-      describe('when channelId and collectionId are valid', function(){
-        beforeEach(function(){
-          target.internal.loadFromBlogs('1', '1.1', '1.1.1', blogs);
+          target.internal.loadFromBlogs('1', '1.1', blogs);
         });
 
         it('should set channelName', function(){
           expect($scope.model.channelName).toBe('N1.1');
         });
-
-        it('should set collectionName', function(){
-          expect($scope.model.collectionName).toBe('N1.1.1');
-        });
       });
 
-      describe('when channelId and collectionId are valid 2', function(){
+      describe('when channelId is valid 2', function(){
         beforeEach(function(){
-          target.internal.loadFromBlogs('1', '1.2', '1.2.2', blogs);
+          target.internal.loadFromBlogs('1', '1.2', blogs);
         });
 
         it('should set channelName', function(){
           expect($scope.model.channelName).toBe('N1.2');
-        });
-
-        it('should set collectionName', function(){
-          expect($scope.model.collectionName).toBe('N1.2.2');
         });
       });
 
       describe('when creator has no channels', function(){
         beforeEach(function(){
-          target.internal.loadFromBlogs('2', '2.1', '2.1.1', blogs);
+          target.internal.loadFromBlogs('2', '2.1', blogs);
         });
 
         it('should not set channelName', function(){
           expect($scope.model.channelName).toBeUndefined();
-        });
-
-        it('should not set collectionName', function(){
-          expect($scope.model.collectionName).toBeUndefined();
-        });
-      });
-
-      describe('when channel has no collections', function(){
-        beforeEach(function(){
-          target.internal.loadFromBlogs('3', '3.1', '3.1.1', blogs);
-        });
-
-        it('should set channelName', function(){
-          expect($scope.model.channelName).toBe('N3.1');
-        });
-
-        it('should not set collectionName', function(){
-          expect($scope.model.collectionName).toBeUndefined();
         });
       });
 
       describe('when channel is not found', function(){
         beforeEach(function(){
-          target.internal.loadFromBlogs('1', '1.3', '1.3.1', blogs);
+          target.internal.loadFromBlogs('1', '1.3', blogs);
         });
 
         it('should not set channelName', function(){
           expect($scope.model.channelName).toBeUndefined();
-        });
-
-        it('should not set collectionName', function(){
-          expect($scope.model.collectionName).toBeUndefined();
-        });
-      });
-
-      describe('when collection is not found', function(){
-        beforeEach(function(){
-          target.internal.loadFromBlogs('1', '1.1', '1.1.3', blogs);
-        });
-
-        it('should set channelName', function(){
-          expect($scope.model.channelName).toBe('N1.1');
-        });
-
-        it('should not set collectionName', function(){
-          expect($scope.model.collectionName).toBeUndefined();
         });
       });
     });
@@ -308,10 +202,6 @@ describe('fw-post-list-header-controller', function() {
           expect($scope.model.channelName).toBeUndefined();
         });
 
-        it('should set collectionName to undefined', function(){
-          expect($scope.model.collectionName).toBeUndefined();
-        });
-
         describe('when getting blogs succeeds', function(){
           beforeEach(function(){
             deferredGetBlogs.resolve('blogs');
@@ -319,7 +209,7 @@ describe('fw-post-list-header-controller', function() {
           });
 
           it('should call loadFromBlogs', function(){
-            expect(target.internal.loadFromBlogs).toHaveBeenCalledWith(userId, 'channelId', 'collectionId', 'blogs');
+            expect(target.internal.loadFromBlogs).toHaveBeenCalledWith(userId, 'channelId', 'blogs');
           });
 
           it('should complete successfully', function(){
@@ -360,7 +250,6 @@ describe('fw-post-list-header-controller', function() {
 
         $scope.model.errorMessage = 'error';
         $scope.model.channelName = 'channel';
-        $scope.model.collectionName = 'collection';
       };
 
       var execute = function(){

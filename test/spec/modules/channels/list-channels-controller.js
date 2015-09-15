@@ -36,16 +36,12 @@ describe('channel list controller', function () {
       {
         channelId: 'A',
         name: 'channel A',
-        price: 50,
-        description: 'Hello\nWorld',
-        isDefault: true
+        price: 50
       },
       {
         channelId: 'B',
         name: 'channel B',
-        price: 101,
-        description: 'Foo',
-        isDefault: false
+        price: 101
       }
     ]));
 
@@ -56,16 +52,12 @@ describe('channel list controller', function () {
       {
         id: 'A',
         name: 'channel A',
-        price: '0.50',
-        description: ['Hello', 'World'],
-        isDefault: true
+        price: 50
       },
       {
         id: 'B',
         name: 'channel B',
-        price: '1.01',
-        description: ['Foo'],
-        isDefault: false
+        price: 101
       }
     ]);
   });

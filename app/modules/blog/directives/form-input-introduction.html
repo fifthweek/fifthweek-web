@@ -1,0 +1,24 @@
+<fw-form-group input-name="introduction">
+  <div class="row">
+    <div class="col-{{breakpoint}}-6">
+      <div fw-form-input-glyphs>
+   <textarea msd-elastic id="{{inputId}}"
+             class="form-control"
+             name="introduction"
+             ng-model="ngModel[ngModelAccessor]"
+             ng-maxlength="250"
+             maxlength="250"
+             rows="4"
+             placeholder="{{placeholder}}"
+             ng-required="required"></textarea>
+      </div>
+      <small ng-if="showHelp">For example, who are you? And why are you here?</small>
+    </div>
+    <div class="col-{{breakpoint}}-6">
+      <p fw-form-input-invalid-p="maxlength">Allowed 250 characters at most.</p>
+      <span ng-if="required">
+        <p fw-form-input-invalid-p="required">An introduction is required.</p>
+      </span>
+    </div>
+  </div>
+</fw-form-group>

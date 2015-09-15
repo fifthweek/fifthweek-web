@@ -1,8 +1,8 @@
 <div class="form-group">
   <div class="row">
-    <div class="col-xs-12" ng-class="{'btn-file-change': fileName}">
-      <p class="file-name" ng-if="fileName">{{fileName}}</p>
-      <fw-file-upload channel-id="{{model.committedCollection.channelId}}" description="{{fileName ? 'Change' : 'Upload File'}}" on-upload-complete="onUploadComplete(data)" file-purpose="post-file" accept=""></fw-file-upload>
+    <div class="col-xs-12" ng-class="{'btn-file-change': model.fileUploaded}">
+      <p class="file-name" ng-if="model.fileUploaded">{{fileName}}</p>
+      <fw-file-upload channel-id="{{model.committedChannel.channelId}}" description="{{model.fileUploaded ? 'Change File' : 'Add File'}}" on-upload-complete="onFileUploadComplete(data)" file-purpose="post-file" accept=""></fw-file-upload>
     </div>
   </div>
 </div>

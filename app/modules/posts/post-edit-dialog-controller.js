@@ -1,10 +1,5 @@
 angular.module('webApp')
   .constant('postEditDialogConstants', {
-    postTypes: {
-      image: 'image',
-      file: 'file',
-      note: 'note'
-    },
     scheduleModes: {
       now: 0,
       scheduled: 1,
@@ -12,8 +7,10 @@ angular.module('webApp')
     }
   })
   .controller('postEditDialogCtrl',
-  function($scope, $q, post, postEditDialogConstants, composeUtilities, blobImageControlFactory, postEditDialogUtilities) {
+  function($scope, $q, post, postEditDialogConstants, composeUtilities, blobImageControlFactory, postEditDialogUtilities, errorFacade, initializer, blogRepositoryFactory) {
     'use strict';
+
+    var blogRepository = blogRepositoryFactory.forCurrentUser();
 
     var areDatesEqual = function(a, b){
       // http://stackoverflow.com/a/15470800
@@ -24,12 +21,11 @@ angular.module('webApp')
     post = _.cloneDeep(post);
     delete post.moment; // The moment can't be used after cloning, and we don't need it.
 
-    var postTypes = postEditDialogConstants.postTypes;
     var scheduleModes = postEditDialogConstants.scheduleModes;
 
     var scheduleMode = scheduleModes.now;
     if(post.isScheduled){
-      if(post.scheduledByQueue){
+      if(post.queueId){
         scheduleMode = scheduleModes.queued;
       }
       else{
@@ -45,6 +41,7 @@ angular.module('webApp')
       savedScheduleMode: scheduleMode,
       savedDate: liveDate,
       queuedLiveDate: undefined,
+      channelId: post.channelId,
       input: {
         comment: post.comment,
         image: post.image,
@@ -57,31 +54,20 @@ angular.module('webApp')
     };
 
     $scope.model = model;
-    $scope.postTypes = postTypes;
     $scope.scheduleModes = scheduleModes;
     $scope.blobImage = blobImageControlFactory.createControl();
 
-    if(post.image){
-      model.postType = postTypes.image;
-    }
-    else if(post.file){
-      model.postType = postTypes.file;
-    }
-    else{
-      model.postType = postTypes.note;
-    }
-
-    $scope.onUploadComplete = function(data) {
+    $scope.onImageUploadComplete = function(data) {
       var fileInformation = postEditDialogUtilities.getFileInformation(data);
-      if(model.postType === postTypes.file){
-        model.input.file = fileInformation.file;
-        model.input.fileSource = fileInformation.fileSource;
-      }
-      else if(model.postType === postTypes.image){
-        model.input.image = fileInformation.file;
-        model.input.imageSource = fileInformation.fileSource;
-        $scope.blobImage.update(data.containerName, data.fileId);
-      }
+      model.input.image = fileInformation.file;
+      model.input.imageSource = fileInformation.fileSource;
+      $scope.blobImage.update(data.containerName, data.fileId);
+    };
+
+    $scope.onFileUploadComplete = function(data) {
+      var fileInformation = postEditDialogUtilities.getFileInformation(data);
+      model.input.file = fileInformation.file;
+      model.input.fileSource = fileInformation.fileSource;
     };
 
     $scope.$watch('model.input.date', function(newValue, oldValue){
@@ -89,19 +75,6 @@ angular.module('webApp')
         model.input.scheduleMode = scheduleModes.scheduled;
       }
     });
-
-    composeUtilities.loadChannelsAndCollectionsIntoModel(model)
-      .then(function(){
-
-        model.input.selectedChannel = _.find(model.channels, {channelId: post.channel.channelId});
-        if(model.postType !== postTypes.note){
-          model.input.selectedCollection = _.find(model.collections, {collectionId: post.collection.collectionId});
-
-          $scope.$watch('model.input.selectedCollection', function(){
-            return composeUtilities.updateEstimatedLiveDate(model);
-          });
-        }
-      });
 
     $scope.save = function(){
       return postEditDialogUtilities.performSave(post.postId, model)
@@ -112,5 +85,32 @@ angular.module('webApp')
           $scope.$close(post);
         });
     };
+
+    this.initialize = function(){
+      return blogRepository.getQueuesSorted()
+        .then(function(queues){
+          model.queues = queues;
+          if(queues.length > 0){
+            if(post.queueId){
+              model.input.selectedCollection = _.find(model.queues, {queueId: post.queueId});
+            }
+            else{
+              model.input.selectedQueue = queues[0];
+            }
+
+            $scope.$watch('model.input.selectedQueue', function(){
+              return composeUtilities.updateEstimatedLiveDate(model);
+            });
+          }
+        })
+        .catch(function(error){
+          return errorFacade.handleError(error, function(message) {
+            $scope.model.errorMessage = message;
+          });
+        });
+    };
+
+    initializer.initialize(this.initialize);
+
   }
 );

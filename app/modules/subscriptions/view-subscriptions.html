@@ -33,11 +33,6 @@
         <p>
           <a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.channel, key: channel.channelId})" class="channel-link">{{ channel.name }}</a>
         </p>
-        <ul>
-          <li ng-repeat="collection in channel.collections" class="collection-item" id="collection-item-{{$index}}">
-            <a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.collection, key: collection.collectionId})" class="collection-link">{{ collection.name }}</a>
-          </li>
-        </ul>
       </td>
       <td><p ng-if="blog.freeAccess">FREE</p><p ng-if="!blog.freeAccess"><fw-price value="channel.price"></fw-price></p></td>
       <td><p>{{ channel.subscriptionStartDate | date: 'EEE H:mm:ss':'UTC' }}</p></td>

@@ -5,7 +5,7 @@
 
   <div ng-if="post.image && post.renderSizeRatio" class="full-width-image-container">
     <div ng-style="{'padding-top': post.renderSizeRatio}"></div>
-    <img class="full-width-image" ng-if="post.image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
+    <img class="full-width-image" ng-if="post.image" ng-src="{{post.image.resolvedUri}}" ng-click="viewImage(post.image, post.imageSource)" />
   </div>
   <img ng-if="post.image && !post.renderSizeRatio" class="full-width-image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
 

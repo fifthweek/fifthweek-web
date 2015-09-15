@@ -3,7 +3,10 @@ describe('blog service', function() {
 
   var basePrice = '1.99';
   var blogId = 'blogId';
-  var blogData = { basePrice: basePrice };
+  var channelId = 'channelId';
+  var blogName = 'blogName';
+  var introduction = 'introduction';
+  var blogData = { name: blogName, introduction: introduction, basePrice: basePrice };
   var error = 'error';
   var userId = 'user_id';
 
@@ -13,7 +16,6 @@ describe('blog service', function() {
   var aggregateUserState;
   var aggregateUserStateConstants;
   var authenticationService;
-  var blogServiceConstants;
   var blogRepositoryFactory;
   var blogRepository;
   var target;
@@ -26,7 +28,7 @@ describe('blog service', function() {
     jasmine.clock().mockDate(date);
 
     blogStub = jasmine.createSpyObj('blogStub', ['postBlog', 'putBlog']);
-    aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['setDelta']);
+    aggregateUserState = {};
     blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
     blogRepository = jasmine.createSpyObj('blogRespository', ['setBlog']);
     authenticationService = { currentUser: { userId: userId }};
@@ -46,7 +48,6 @@ describe('blog service', function() {
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
       aggregateUserStateConstants = $injector.get('aggregateUserStateConstants');
-      blogServiceConstants = $injector.get('blogServiceConstants');
       target = $injector.get('blogService');
     });
 
@@ -67,11 +68,11 @@ describe('blog service', function() {
     expect(target.blogId).toBeUndefined();
     expect(target.hasBlog).toBe(false);
 
-    aggregateUserState.currentValue = { creatorStatus: null };
+    aggregateUserState.currentValue = { blog: null };
     expect(target.blogId).toBeUndefined();
     expect(target.hasBlog).toBe(false);
 
-    aggregateUserState.currentValue = { creatorStatus: { blogId: blogId } };
+    aggregateUserState.currentValue = { blog: { blogId: blogId } };
     expect(target.blogId).toBe(blogId);
     expect(target.hasBlog).toBe(true);
   });
@@ -79,7 +80,7 @@ describe('blog service', function() {
   describe('when creating first blog', function() {
 
     it('should require user to not have a blog', function() {
-      aggregateUserState.currentValue = { creatorStatus: { blogId: blogId } };
+      aggregateUserState.currentValue = { blog: { blogId: blogId } };
 
       var result = null;
       target.createFirstBlog(blogData).catch(function(error) {
@@ -95,7 +96,7 @@ describe('blog service', function() {
       beforeEach(function(){
         aggregateUserState.currentValue = { };
 
-        blogStub.postBlog.and.returnValue($q.when({ data: blogId }));
+        blogStub.postBlog.and.returnValue($q.when({ data: { blogId: blogId, channelId: channelId } }));
 
         target.createFirstBlog(blogData);
         $rootScope.$apply();
@@ -105,26 +106,21 @@ describe('blog service', function() {
         expect(blogStub.postBlog).toHaveBeenCalledWith(blogData);
       });
 
-      it('should set the creator status to aggregate user state', function(){
-        expect(aggregateUserState.setDelta).toHaveBeenCalledWith(userId, 'creatorStatus', {blogId: blogId});
-      });
-
       it('should set the blog data to aggregate user state', function(){
         expect(blogRepository.setBlog).toHaveBeenCalledWith({
           blogId: blogId,
-          introduction: blogServiceConstants.defaultBlogIntroduction,
+          introduction: introduction,
+          name: blogName,
           creationDate: date,
           channels: [
             {
-              channelId: blogId,
-              name: blogServiceConstants.defaultChannelName,
+              channelId: channelId,
+              name: blogName,
               price: basePrice,
-              description: blogServiceConstants.defaultChannelDescription,
-              isDefault: true,
-              isVisibleToNonSubscribers: true,
-              collections: []
+              isVisibleToNonSubscribers: true
             }
-          ]
+          ],
+          queues: []
         });
       });
     });
@@ -132,40 +128,11 @@ describe('blog service', function() {
     it('should request a blog repository before calling the API', function() {
       aggregateUserState.currentValue = { };
 
-      blogStub.postBlog.and.returnValue($q.when({ data: blogId }));
+      blogStub.postBlog.and.returnValue($q.when({ data: { blogId: blogId, channelId: channelId } }));
 
       target.createFirstBlog(blogData);
 
       expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalled();
-    });
-
-    it('should retain read the current user ID before calling the API', function() {
-      aggregateUserState.currentValue = { };
-
-      blogStub.postBlog.and.returnValue($q.when({ data: blogId }));
-
-      target.createFirstBlog(blogData);
-      authenticationService.currentUser.userId = 'changed_user_id';
-      $rootScope.$apply();
-
-      expect(aggregateUserState.setDelta).toHaveBeenCalledWith(userId, 'creatorStatus', {blogId: blogId});
-
-      expect(blogRepository.setBlog).toHaveBeenCalledWith({
-        blogId: blogId,
-        introduction: blogServiceConstants.defaultBlogIntroduction,
-        creationDate: date,
-        channels: [
-          {
-            channelId: blogId,
-            name: blogServiceConstants.defaultChannelName,
-            price: basePrice,
-            description: blogServiceConstants.defaultChannelDescription,
-            isDefault: true,
-            isVisibleToNonSubscribers: true,
-            collections: []
-          }
-        ]
-      });
     });
 
     it('should propagate errors', function() {
@@ -181,7 +148,6 @@ describe('blog service', function() {
 
       expect(result).toBe(error);
       expect(blogStub.postBlog).toHaveBeenCalledWith(blogData);
-      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
     });
   });
 });

@@ -79,7 +79,6 @@ describe('fw-post-list-information-controller', function() {
     beforeEach(function () {
       $scope.userId = 'userId';
       $scope.channelId = 'channelId';
-      $scope.collectionId = 'collectionId';
       createController();
     });
 
