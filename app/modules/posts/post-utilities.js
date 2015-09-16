@@ -48,9 +48,9 @@ angular.module('webApp').factory('postUtilities',
 
       // Only backlog posts contain a queueId field.
       post.isScheduled = _.has(post, 'queueId');
-      if(post.isScheduled){
+      if(post.isScheduled && post.queueId){
         post.reorder = function(){
-          $state.go(states.creator.posts.scheduled.queues.reorder.name, {id: post.collectionId});
+          $state.go(states.creator.posts.scheduled.queues.reorder.name, {id: post.queueId});
         };
       }
 
@@ -98,8 +98,8 @@ angular.module('webApp').factory('postUtilities',
 
             post.channel = blog.channels[post.channelId];
 
-            if (post.collectionId) {
-              post.collection = post.channel.collections[post.collectionId];
+            if (post.queueId) {
+              post.queue = blog.queues[post.queueId];
             }
 
             post.blogName = blog.name;
@@ -120,10 +120,10 @@ angular.module('webApp').factory('postUtilities',
           name: 'Unknown Channel'
         };
 
-        if (post.collectionId) {
-          post.collection = {
-            collectionId: post.collectionId,
-            name: 'Unknown Collection'
+        if (post.queueId) {
+          post.queue = {
+            queueId: post.queueId,
+            name: 'Unknown Queue'
           };
         }
 
@@ -158,10 +158,10 @@ angular.module('webApp').factory('postUtilities',
               if(channel){
                 post.channel = channel;
 
-                if (post.collectionId) {
-                  var collection = channel.collections[post.collectionId];
-                  if(collection) {
-                    post.collection = collection;
+                if (post.queueId) {
+                  var queue = blog.queues[post.queueId];
+                  if(queue) {
+                    post.queue = queue;
                   }
                 }
               }

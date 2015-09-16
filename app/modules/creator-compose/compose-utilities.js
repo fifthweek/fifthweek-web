@@ -1,6 +1,6 @@
 angular.module('webApp')
   .factory('composeUtilities',
-  function($q, $modal, blogRepositoryFactory, utilities, errorFacade, queueStub) {
+  function(errorFacade, queueStub) {
     'use strict';
 
     var service = {};
@@ -13,7 +13,6 @@ angular.module('webApp')
             model.queuedLiveDate = new Date(result.data);
           })
           .catch(function(error){
-            model.queuedLiveDate = undefined;
             return errorFacade.handleError(error, function(message) {
               model.errorMessage = message;
             });

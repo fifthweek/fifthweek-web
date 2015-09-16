@@ -14,7 +14,7 @@ describe('new queue controller', function () {
     queueService = jasmine.createSpyObj('queueService', ['createQueueFromName']);
     $state = jasmine.createSpyObj('$state', ['go']);
 
-    module('webApp', 'errorFacadeMock', 'channelNameFormatterMock');
+    module('webApp', 'errorFacadeMock');
     module(function($provide) {
       $provide.value('$state', $state);
       $provide.value('queueService', queueService);

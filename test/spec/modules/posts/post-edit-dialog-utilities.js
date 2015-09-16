@@ -6,7 +6,6 @@ describe('post-edit-dialog-utilities', function() {
   var target;
 
   var postEditDialogConstants;
-  var postTypes;
   var scheduleModes;
 
   var postStub;
@@ -14,7 +13,7 @@ describe('post-edit-dialog-utilities', function() {
 
   beforeEach(function () {
     postUtilities = jasmine.createSpyObj('postUtilities', ['processPostForRendering']);
-    postStub = jasmine.createSpyObj('postStub', ['putNote', 'putFile', 'putImage', 'postToLive', 'putQueue', 'putLiveDate']);
+    postStub = jasmine.createSpyObj('postStub', ['putPost', 'postToLive', 'putQueue', 'putLiveDate']);
 
     module('webApp');
 
@@ -29,7 +28,6 @@ describe('post-edit-dialog-utilities', function() {
       target = $injector.get('postEditDialogUtilities');
 
       postEditDialogConstants = $injector.get('postEditDialogConstants');
-      postTypes = postEditDialogConstants.postTypes;
       scheduleModes = postEditDialogConstants.scheduleModes;
     });
   });
@@ -101,7 +99,6 @@ describe('post-edit-dialog-utilities', function() {
     beforeEach(function(){
       postId = 'postId';
       model = {
-        postType: 'unknown',
         input: {
           selectedChannel: {
             channelId: 'channelId'
@@ -116,115 +113,88 @@ describe('post-edit-dialog-utilities', function() {
         }
       };
 
-      postStub.putNote.and.returnValue('noteResult');
-      postStub.putFile.and.returnValue('fileResult');
-      postStub.putImage.and.returnValue('imageResult');
+      postStub.putPost.and.returnValue('postResult');
     });
 
-    describe('when saving a note', function(){
+    describe('when saving a comment', function(){
       var result;
       beforeEach(function(){
-        model.postType = postTypes.note;
+        model.input.file = undefined;
+        model.input.image = undefined;
         result = target.internal.saveContent(postId, model);
       });
 
-      it('should call putNote', function(){
-        expect(postStub.putNote).toHaveBeenCalledWith('postId', {
-          channelId: 'channelId',
-          note: 'comment'
+      it('should call putPost', function(){
+        expect(postStub.putPost).toHaveBeenCalledWith('postId', {
+          imageId: undefined,
+          fileId: undefined,
+          comment: 'comment'
         });
       });
 
-      it('should not call putFile', function(){
-        expect(postStub.putFile).not.toHaveBeenCalled();
-      });
-
-      it('should not call putImage', function(){
-        expect(postStub.putImage).not.toHaveBeenCalled();
-      });
-
       it('should return the result', function(){
-        expect(result).toBe('noteResult');
+        expect(result).toBe('postResult');
       });
     });
 
     describe('when saving a file', function(){
       var result;
       beforeEach(function(){
-        model.postType = postTypes.file;
+        model.input.comment = undefined;
+        model.input.image = undefined;
         result = target.internal.saveContent(postId, model);
       });
 
-      it('should call putFile', function(){
-        expect(postStub.putFile).toHaveBeenCalledWith('postId', {
+      it('should call putPost', function(){
+        expect(postStub.putPost).toHaveBeenCalledWith('postId', {
+          imageId: undefined,
+          fileId: 'fileId',
+          comment: undefined
+        });
+      });
+
+      it('should return the result', function(){
+        expect(result).toBe('postResult');
+      });
+    });
+
+    describe('when saving a file', function(){
+      var result;
+      beforeEach(function(){
+        model.input.comment = undefined;
+        model.input.file = undefined;
+        result = target.internal.saveContent(postId, model);
+      });
+
+      it('should call putPost', function(){
+        expect(postStub.putPost).toHaveBeenCalledWith('postId', {
+          imageId: 'imageId',
+          fileId: undefined,
+          comment: undefined
+        });
+      });
+
+      it('should return the result', function(){
+        expect(result).toBe('postResult');
+      });
+    });
+
+    describe('when saving a complete post', function(){
+      var result;
+      beforeEach(function(){
+        result = target.internal.saveContent(postId, model);
+      });
+
+      it('should call putPost', function(){
+        expect(postStub.putPost).toHaveBeenCalledWith('postId', {
+          imageId: 'imageId',
           fileId: 'fileId',
           comment: 'comment'
         });
       });
 
-      it('should not call putNote', function(){
-        expect(postStub.putNote).not.toHaveBeenCalled();
-      });
-
-      it('should not call putImage', function(){
-        expect(postStub.putImage).not.toHaveBeenCalled();
-      });
-
       it('should return the result', function(){
-        expect(result).toBe('fileResult');
-      });
-    });
-
-    describe('when saving an image', function(){
-      var result;
-      beforeEach(function(){
-        model.postType = postTypes.image;
-        result = target.internal.saveContent(postId, model);
-      });
-
-      it('should call putImage', function(){
-        expect(postStub.putImage).toHaveBeenCalledWith('postId', {
-          imageFileId: 'imageId',
-          comment: 'comment'
-        });
-      });
-
-      it('should not call putNote', function(){
-        expect(postStub.putNote).not.toHaveBeenCalled();
-      });
-
-      it('should not call putFile', function(){
-        expect(postStub.putFile).not.toHaveBeenCalled();
-      });
-
-      it('should return the result', function(){
-        expect(result).toBe('imageResult');
-      });
-    });
-
-    describe('when saving an unknown type', function(){
-      var result;
-      beforeEach(function(){
-        result = target.internal.saveContent(postId, model);
-      });
-
-      it('should not call putImage', function(){
-        expect(postStub.putImage).not.toHaveBeenCalled();
-      });
-
-      it('should not call putNote', function(){
-        expect(postStub.putNote).not.toHaveBeenCalled();
-      });
-
-      it('should not call putFile', function(){
-        expect(postStub.putFile).not.toHaveBeenCalled();
-      });
-
-      it('should return the a resolved promise', function(){
-        var isComplete = false;
-        result.then(function(){ isComplete = true; });
-        $rootScope.$apply();
-        expect(isComplete).toBe(true);
+        expect(result).toBe('postResult');
       });
     });
   });
@@ -238,7 +208,10 @@ describe('post-edit-dialog-utilities', function() {
         savedScheduleMode: 'unknown',
         input: {
           scheduleMode: 'unknown',
-          date: 'date'
+          date: 'date',
+          selectedQueue: {
+            queueId: 'queueId'
+          }
         }
       };
 
@@ -334,7 +307,7 @@ describe('post-edit-dialog-utilities', function() {
       });
 
       it('should call putQueue', function(){
-        expect(postStub.putQueue).toHaveBeenCalledWith('postId');
+        expect(postStub.putQueue).toHaveBeenCalledWith('postId', 'queueId');
       });
 
       it('should not call postToLive', function(){
@@ -470,15 +443,12 @@ describe('post-edit-dialog-utilities', function() {
       jasmine.clock().mockDate(nowDate);
 
       post = {
-        scheduleByQueue: 'scheduleByQueue'
+        channelId: 'channelId'
       };
       model = {
         input: {
-          selectedChannel: {
-            channelId: 'channelId'
-          },
-          selectedCollection: {
-            collectionId: 'collectionId'
+          selectedQueue: {
+            queueId: 'queueId'
           },
           comment: 'comment',
           file: 'file',
@@ -520,21 +490,9 @@ describe('post-edit-dialog-utilities', function() {
       });
     };
 
-    var runNoteExpectations = function(){
-      it('should not have set the collection id', function(){
-        expect(_.has(post, 'collectionId')).toBe(false);
-      });
-    };
-
-    var runFileAndImageExpectations = function(){
-      it('should have set the collection id', function(){
-        expect(post.collectionId).toBe('collectionId');
-      });
-    };
-
     var runScheduleNowExpectations = function(){
-      it('should not have a scheduledByQueue property', function(){
-        expect(_.has(post, 'scheduledByQueue')).toBe(false);
+      it('should not have a queueId property', function(){
+        expect(_.has(post, 'queueId')).toBe(false);
       });
 
       it('should have a live date of now', function(){
@@ -543,8 +501,8 @@ describe('post-edit-dialog-utilities', function() {
     };
 
     var runScheduleQueuedExpectations = function(){
-      it('should set scheduledByQueue to be true', function(){
-        expect(post.scheduledByQueue).toBe(true);
+      it('should set queueId', function(){
+        expect(post.queueId).toBe('queueId');
       });
 
       it('should have a live date of the queue live date', function(){
@@ -553,12 +511,13 @@ describe('post-edit-dialog-utilities', function() {
     };
 
     var runScheduleDateExpectations = function(){
-      it('should set scheduledByQueue to be false', function(){
+      it('should set queueId to be undefined', function(){
         if(model.input.date === pastInputDate){
-          expect(_.has(post, 'scheduledByQueue')).toBe(false);
+          expect(_.has(post, 'queueId')).toBe(false);
         }
         else{
-          expect(post.scheduledByQueue).toBe(false);
+          expect(_.has(post, 'queueId')).toBe(true);
+          expect(post.queueId).toBeUndefined();
         }
       });
 
@@ -572,160 +531,47 @@ describe('post-edit-dialog-utilities', function() {
       });
     };
 
-    describe('when the post is a note', function(){
-      describe('when the scheduleMode is now', function(){
-        beforeEach(function(){
-          model.postType = postTypes.note;
-          model.input.scheduleMode = scheduleModes.now;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runStandardExpectations();
-        runNoteExpectations();
-        runScheduleNowExpectations();
-        runResultExpectations();
+    describe('when the scheduleMode is now', function(){
+      beforeEach(function(){
+        model.input.scheduleMode = scheduleModes.now;
+        result = target.applyChangesToPost(post, model);
       });
 
-      describe('when the scheduleMode is queued', function(){
-        beforeEach(function(){
-          model.postType = postTypes.note;
-          model.input.scheduleMode = scheduleModes.queued;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runStandardExpectations();
-        runNoteExpectations();
-        runScheduleQueuedExpectations();
-        runResultExpectations();
-      });
-
-      describe('when the scheduleMode is scheduled', function(){
-        beforeEach(function(){
-          model.postType = postTypes.note;
-          model.input.scheduleMode = scheduleModes.scheduled;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runStandardExpectations();
-        runNoteExpectations();
-        runScheduleDateExpectations();
-        runResultExpectations();
-      });
-
-      describe('when the scheduleMode is scheduled in the past', function(){
-        beforeEach(function(){
-          model.postType = postTypes.note;
-          model.input.scheduleMode = scheduleModes.scheduled;
-          model.input.date = pastInputDate;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runScheduleDateExpectations();
-      });
+      runStandardExpectations();
+      runScheduleNowExpectations();
+      runResultExpectations();
     });
 
-    describe('when the post is a file', function(){
-      describe('when the scheduleMode is now', function(){
-        beforeEach(function(){
-          model.postType = postTypes.file;
-          model.input.scheduleMode = scheduleModes.now;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runStandardExpectations();
-        runFileAndImageExpectations();
-        runScheduleNowExpectations();
-        runResultExpectations();
+    describe('when the scheduleMode is queued', function(){
+      beforeEach(function(){
+        model.input.scheduleMode = scheduleModes.queued;
+        result = target.applyChangesToPost(post, model);
       });
 
-      describe('when the scheduleMode is queued', function(){
-        beforeEach(function(){
-          model.postType = postTypes.file;
-          model.input.scheduleMode = scheduleModes.queued;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runStandardExpectations();
-        runFileAndImageExpectations();
-        runScheduleQueuedExpectations();
-        runResultExpectations();
-      });
-
-      describe('when the scheduleMode is scheduled', function(){
-        beforeEach(function(){
-          model.postType = postTypes.file;
-          model.input.scheduleMode = scheduleModes.scheduled;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runStandardExpectations();
-        runFileAndImageExpectations();
-        runScheduleDateExpectations();
-        runResultExpectations();
-      });
-
-      describe('when the scheduleMode is scheduled in the past', function(){
-        beforeEach(function(){
-          model.postType = postTypes.file;
-          model.input.scheduleMode = scheduleModes.scheduled;
-          model.input.date = pastInputDate;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runScheduleDateExpectations();
-      });
+      runStandardExpectations();
+      runScheduleQueuedExpectations();
+      runResultExpectations();
     });
 
-    describe('when the post is a image', function(){
-      describe('when the scheduleMode is now', function(){
-        beforeEach(function(){
-          model.postType = postTypes.image;
-          model.input.scheduleMode = scheduleModes.now;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runStandardExpectations();
-        runFileAndImageExpectations();
-        runScheduleNowExpectations();
-        runResultExpectations();
+    describe('when the scheduleMode is scheduled', function(){
+      beforeEach(function(){
+        model.input.scheduleMode = scheduleModes.scheduled;
+        result = target.applyChangesToPost(post, model);
       });
 
-      describe('when the scheduleMode is queued', function(){
-        beforeEach(function(){
-          model.postType = postTypes.image;
-          model.input.scheduleMode = scheduleModes.queued;
-          result = target.applyChangesToPost(post, model);
-        });
+      runStandardExpectations();
+      runScheduleDateExpectations();
+      runResultExpectations();
+    });
 
-        runStandardExpectations();
-        runFileAndImageExpectations();
-        runScheduleQueuedExpectations();
-        runResultExpectations();
+    describe('when the scheduleMode is scheduled in the past', function(){
+      beforeEach(function(){
+        model.input.scheduleMode = scheduleModes.scheduled;
+        model.input.date = pastInputDate;
+        result = target.applyChangesToPost(post, model);
       });
 
-      describe('when the scheduleMode is scheduled', function(){
-        beforeEach(function(){
-          model.postType = postTypes.image;
-          model.input.scheduleMode = scheduleModes.scheduled;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runStandardExpectations();
-        runFileAndImageExpectations();
-        runScheduleDateExpectations();
-        runResultExpectations();
-      });
-
-      describe('when the scheduleMode is scheduled in the past', function(){
-        beforeEach(function(){
-          model.postType = postTypes.image;
-          model.input.scheduleMode = scheduleModes.scheduled;
-          model.input.date = pastInputDate;
-          result = target.applyChangesToPost(post, model);
-        });
-
-        runScheduleDateExpectations();
-      });
+      runScheduleDateExpectations();
     });
   });
 });

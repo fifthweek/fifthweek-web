@@ -19,30 +19,12 @@ describe('compose options controller', function () {
     });
   });
 
-  it('should display the "New Image" modal when requested', function() {
-    $scope.newImage();
+  it('should display the "New Post" modal when requested', function() {
+    $scope.newPost();
 
     expect($modal.open).toHaveBeenCalledWith({
-      controller: 'composeImageCtrl',
-      templateUrl: 'modules/creator-compose/compose-upload.html'
-    });
-  });
-
-  it('should display the "New File" modal when requested', function() {
-    $scope.newFile();
-
-    expect($modal.open).toHaveBeenCalledWith({
-      controller: 'composeFileCtrl',
-      templateUrl: 'modules/creator-compose/compose-upload.html'
-    });
-  });
-
-  it('should display the "New Announcement" modal when requested', function() {
-    $scope.newAnnouncement();
-
-    expect($modal.open).toHaveBeenCalledWith({
-      controller: 'composeNoteCtrl',
-      templateUrl: 'modules/creator-compose/compose-note.html'
+      controller: 'composePostCtrl',
+      templateUrl: 'modules/creator-compose/compose-post.html'
     });
   });
 });

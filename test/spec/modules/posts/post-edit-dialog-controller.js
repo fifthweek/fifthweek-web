@@ -6,13 +6,17 @@ describe('post-edit-dialog-controller', function() {
   var target;
 
   var postEditDialogConstants;
-  var postTypes;
   var scheduleModes;
 
   var post;
   var composeUtilities;
   var blobImageControlFactory;
   var postEditDialogUtilities;
+  var errorFacade;
+  var initializer;
+  var blogRepositoryFactory;
+  var blogRepository;
+
   var liveDateString;
   var roundedDateString;
 
@@ -31,13 +35,18 @@ describe('post-edit-dialog-controller', function() {
       channel: {
         channelId: 'b'
       },
-      collection: {
-        collectionId: 'b'
+      queue: {
+        queueId: 'b'
       }
     };
-    composeUtilities = jasmine.createSpyObj('composeUtilities', ['loadChannelsAndCollectionsIntoModel', 'updateEstimatedLiveDate']);
+    composeUtilities = jasmine.createSpyObj('composeUtilities', ['updateEstimatedLiveDate']);
     blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
     postEditDialogUtilities = jasmine.createSpyObj('postEditDialogUtilities', ['getFileInformation', 'performSave', 'applyChangesToPost']);
+    errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
+    initializer = jasmine.createSpyObj('initializer', ['initialize']);
+    blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getQueuesSorted']);
+    blogRepositoryFactory.forCurrentUser.and.returnValue(blogRepository);
 
     module('webApp');
     module(function ($provide) {
@@ -45,14 +54,21 @@ describe('post-edit-dialog-controller', function() {
       $provide.value('composeUtilities', composeUtilities);
       $provide.value('blobImageControlFactory', blobImageControlFactory);
       $provide.value('postEditDialogUtilities', postEditDialogUtilities);
+      $provide.value('errorFacade', errorFacade);
+      $provide.value('initializer', initializer);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
     });
 
     inject(function ($injector) {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
       postEditDialogConstants = $injector.get('postEditDialogConstants');
-      postTypes = postEditDialogConstants.postTypes;
       scheduleModes = postEditDialogConstants.scheduleModes;
+    });
+
+    errorFacade.handleError.and.callFake(function(error, setMessage) {
+      setMessage('friendlyError');
+      return $q.when();
     });
   });
 
@@ -62,25 +78,15 @@ describe('post-edit-dialog-controller', function() {
     });
   };
 
-
   describe('when creating', function(){
 
-    var expectedPostType;
     var expectedScheduleMode;
-    var loadDeferred;
 
     beforeEach(function(){
       spyOn(_, 'cloneDeep').and.callThrough();
       spyOn($scope, '$watch').and.callThrough();
 
       blobImageControlFactory.createControl.and.returnValue(jasmine.createSpyObj('blobImage', ['update']));
-      postEditDialogUtilities.getFileInformation.and.returnValue({
-        file: 'newFile',
-        fileSource: 'newFileSource'
-      });
-
-      loadDeferred = $q.defer();
-      composeUtilities.loadChannelsAndCollectionsIntoModel.and.returnValue(loadDeferred.promise);
     });
 
     var runCreatingExpectations = function(){
@@ -96,19 +102,18 @@ describe('post-edit-dialog-controller', function() {
           queuedLiveDate: undefined,
           input: {
             comment: 'comment',
-            image: expectedPostType === postTypes.image ? 'image' : undefined,
-            imageSource: expectedPostType === postTypes.image ? 'imageSource' : undefined,
-            file: expectedPostType === postTypes.file ? 'file' : undefined,
-            fileSource: expectedPostType === postTypes.file ? 'fileSource' : undefined,
+            image: 'image',
+            imageSource: 'imageSource',
+            file: 'file',
+            fileSource: 'fileSource',
             date: new Date(roundedDateString),
             scheduleMode: expectedScheduleMode
-          },
-          postType: expectedPostType
+          }
         });
       });
 
-      it('should assign postTypes to scope', function(){
-        expect($scope.postTypes).toEqual(postTypes);
+      it('should get the blob repository', function(){
+        expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
       });
 
       it('should assign scheduleModes to scope', function(){
@@ -120,345 +125,291 @@ describe('post-edit-dialog-controller', function() {
         expect($scope.blobImage).toBeDefined();
       });
 
-      it('should watch for changes on the input date', function(){
-        expect($scope.$watch).toHaveBeenCalledWith('model.input.date', jasmine.any(Function));
+      it('should create an onImageUploadComplete function', function(){
+        expect($scope.onImageUploadComplete).toBeDefined();
       });
 
-      it('should load channels and collections into the model', function(){
-        expect(composeUtilities.loadChannelsAndCollectionsIntoModel).toHaveBeenCalledWith($scope.model);
-      });
-
-      it('should create an onUploadComplete function', function(){
-        expect($scope.onUploadComplete).toBeDefined();
+      it('should create an onFileImageUploadComplete function', function(){
+        expect($scope.onFileUploadComplete).toBeDefined();
       });
 
       it('should create a save function', function(){
         expect($scope.save).toBeDefined();
       });
 
-      describe('when channels and collections are loaded', function(){
+      it('should call initializer with the initialize function', function(){
+        expect(initializer.initialize).toHaveBeenCalledWith(target.initialize);
+      });
+
+      describe('when initialize is called', function(){
+        var deferredGetQueues;
         beforeEach(function(){
-          $scope.model.channels = [{ channelId: 'a' }, { channelId: 'b' }];
-          $scope.model.input.selectedChannel = $scope.model.channels[0];
+          deferredGetQueues = $q.defer();
+          blogRepository.getQueuesSorted.and.returnValue(deferredGetQueues.promise);
 
-          if(expectedPostType !== postTypes.note){
-            $scope.model.collections = [{ collectionId: 'a' }, { collectionId: 'b' }];
-            $scope.model.input.selectedCollection = $scope.model.collections[0];
-          }
-
-          loadDeferred.resolve();
+          target.initialize();
           $scope.$apply();
         });
 
-        it('should set the selected channel', function(){
-          expect($scope.model.input.selectedChannel).toBe($scope.model.channels[1]);
+        it('should watch for changes on the input date', function(){
+          expect($scope.$watch).toHaveBeenCalledWith('model.input.date', jasmine.any(Function));
+          expect($scope.$watch.calls.count()).toBe(1);
         });
 
-        it('should set the selected collection if not a note', function(){
-          if(expectedPostType !== postTypes.note) {
-            expect($scope.model.input.selectedCollection).toBe($scope.model.collections[1]);
-          }
-          else {
-            expect($scope.model.input.selectedCollection).toBeUndefined();
-          }
+        it('should load call getQueuesSorted', function(){
+          expect(blogRepository.getQueuesSorted).toHaveBeenCalledWith();
         });
 
-        it('should watch for changes on the selected collection if not a note', function(){
-          if(expectedPostType !== postTypes.note) {
-            expect($scope.$watch).toHaveBeenCalledWith('model.input.selectedCollection', jasmine.any(Function));
-          }
-          else{
-            expect($scope.$watch).not.toHaveBeenCalledWith('model.input.selectedCollection', jasmine.any(Function));
-          }
-        });
-
-        it('should update the estimated live date', function(){
-          if(expectedPostType !== postTypes.note) {
-            expect(composeUtilities.updateEstimatedLiveDate).toHaveBeenCalledWith($scope.model);
-            expect(composeUtilities.updateEstimatedLiveDate.calls.count()).toBe(1);
-          }
-          else{
-            expect(composeUtilities.updateEstimatedLiveDate).not.toHaveBeenCalled();
-          }
-        });
-
-        describe('when calling onUploadComplete', function(){
-          var data;
+        describe('when getQueuesSorted succeeds with no queues', function(){
           beforeEach(function(){
-            data = {
-              fileId: 'newFileId',
-              containerName: 'newContainerName'
-            };
-            $scope.onUploadComplete(data);
-          });
-
-          it('should call getFileInformation', function(){
-            expect(postEditDialogUtilities.getFileInformation).toHaveBeenCalledWith(data);
-          });
-
-          it('should update the image model if an image', function(){
-            if(expectedPostType === postTypes.image) {
-              expect($scope.model.input.image).toBe('newFile');
-              expect($scope.model.input.imageSource).toBe('newFileSource');
-            }
-            else{
-              expect($scope.model.input.image).toBeUndefined();
-              expect($scope.model.input.imageSource).toBeUndefined();
-            }
-          });
-
-          it('should update the file model if a file', function(){
-            if(expectedPostType === postTypes.file) {
-              expect($scope.model.input.file).toBe('newFile');
-              expect($scope.model.input.fileSource).toBe('newFileSource');
-            }
-            else{
-              expect($scope.model.input.file).toBeUndefined();
-              expect($scope.model.input.fileSource).toBeUndefined();
-            }
-          });
-
-          it('should update the blob image if post is an image', function(){
-            if(expectedPostType === postTypes.image){
-              expect($scope.blobImage.update).toHaveBeenCalledWith('newContainerName', 'newFileId');
-            }
-            else{
-              expect($scope.blobImage.update).not.toHaveBeenCalledWith();
-            }
-          });
-        });
-
-        describe('when the input date is set', function(){
-          describe('when the dates have not changed', function(){
-            var originalScheduleMode;
-            beforeEach(function(){
-              originalScheduleMode = $scope.model.input.scheduleMode;
-              $scope.model.input.date = new Date(roundedDateString);
-              $scope.$apply();
-            });
-
-            it('should not change the schedule mode', function(){
-              expect($scope.model.input.scheduleMode).toBe(originalScheduleMode);
-            });
-          });
-
-          describe('when the dates have changed', function(){
-            var originalScheduleMode;
-            beforeEach(function(){
-              originalScheduleMode = $scope.model.input.scheduleMode;
-              $scope.model.input.date = new Date(liveDateString);
-              $scope.$apply();
-            });
-
-            it('should change the schedule mode to scheduled', function(){
-              expect($scope.model.input.scheduleMode).toBe(scheduleModes.scheduled);
-            });
-          });
-        });
-
-        describe('when the selected collection changes', function(){
-          beforeEach(function(){
-            $scope.model.input.selectedCollection = '2';
+            deferredGetQueues.resolve([]);
             $scope.$apply();
           });
 
-          it('should update the estimated live date if not a note', function(){
-            if(expectedPostType !== postTypes.note){
-              expect(composeUtilities.updateEstimatedLiveDate).toHaveBeenCalledWith($scope.model);
-              expect(composeUtilities.updateEstimatedLiveDate.calls.count()).toBe(2);
-            }
-            else{
-              expect(composeUtilities.updateEstimatedLiveDate).not.toHaveBeenCalled();
-            }
+          it('should not set the selected queue', function(){
+            expect($scope.model.input.selectedQueue).toBeUndefined();
+          });
+
+          it('should not watch for changes on the selected queue', function(){
+            expect($scope.$watch.calls.count()).toBe(1);
+          });
+
+          it('should not update the estimated live date', function(){
+            expect(composeUtilities.updateEstimatedLiveDate).not.toHaveBeenCalled();
           });
         });
 
-        describe('when save is called', function(){
+        describe('when getQueuesSorted succeeds', function(){
           beforeEach(function(){
-            $scope.$close = jasmine.createSpy('$close');
+            deferredGetQueues.resolve([{ queueId: 'a' }, { queueId: 'b' }]);
+            $scope.$apply();
           });
 
-          describe('when successful', function(){
+          it('should set the selected queue', function(){
+            if(post.queueId){
+              expect($scope.model.input.selectedQueue).toBe($scope.model.queues[1]);
+            }
+            else{
+              expect($scope.model.input.selectedQueue).toBe($scope.model.queues[0]);
+            }
+          });
+
+          it('should watch for changes on the selected queue', function(){
+            expect($scope.$watch).toHaveBeenCalledWith('model.input.selectedQueue', jasmine.any(Function));
+            expect($scope.$watch.calls.count()).toBe(2);
+          });
+
+          it('should update the estimated live date', function(){
+            expect(composeUtilities.updateEstimatedLiveDate).toHaveBeenCalledWith($scope.model);
+            expect(composeUtilities.updateEstimatedLiveDate.calls.count()).toBe(1);
+          });
+
+          describe('when calling onImageUploadComplete', function(){
+            var data;
             beforeEach(function(){
-              postEditDialogUtilities.performSave.and.returnValue($q.when());
-              postEditDialogUtilities.applyChangesToPost.and.returnValue($q.when());
-              $scope.save();
+              postEditDialogUtilities.getFileInformation.and.returnValue({
+                file: 'newImage',
+                fileSource: 'newImageSource'
+              });
+
+              data = {
+                fileId: 'newFileId',
+                containerName: 'newContainerName'
+              };
+
+              $scope.onImageUploadComplete(data);
+            });
+
+            it('should call getFileInformation', function(){
+              expect(postEditDialogUtilities.getFileInformation).toHaveBeenCalledWith(data);
+            });
+
+            it('should update the image model', function(){
+              expect($scope.model.input.image).toBe('newImage');
+              expect($scope.model.input.imageSource).toBe('newImageSource');
+            });
+
+            it('should update the blob image', function(){
+              expect($scope.blobImage.update).toHaveBeenCalledWith('newContainerName', 'newFileId');
+            });
+          });
+
+          describe('when calling onFileUploadComplete', function(){
+            var data;
+            beforeEach(function(){
+              postEditDialogUtilities.getFileInformation.and.returnValue({
+                file: 'newFile',
+                fileSource: 'newFileSource'
+              });
+
+              data = {
+                fileId: 'newFileId',
+                containerName: 'newContainerName'
+              };
+
+              $scope.onFileUploadComplete(data);
+            });
+
+            it('should call getFileInformation', function(){
+              expect(postEditDialogUtilities.getFileInformation).toHaveBeenCalledWith(data);
+            });
+
+            it('should update the file model', function(){
+              expect($scope.model.input.file).toBe('newFile');
+              expect($scope.model.input.fileSource).toBe('newFileSource');
+            });
+          });
+
+          describe('when the input date is set', function(){
+            describe('when the dates have not changed', function(){
+              var originalScheduleMode;
+              beforeEach(function(){
+                originalScheduleMode = $scope.model.input.scheduleMode;
+                $scope.model.input.date = new Date(roundedDateString);
+                $scope.$apply();
+              });
+
+              it('should not change the schedule mode', function(){
+                expect($scope.model.input.scheduleMode).toBe(originalScheduleMode);
+              });
+            });
+
+            describe('when the dates have changed', function(){
+              var originalScheduleMode;
+              beforeEach(function(){
+                originalScheduleMode = $scope.model.input.scheduleMode;
+                $scope.model.input.date = new Date(liveDateString);
+                $scope.$apply();
+              });
+
+              it('should change the schedule mode to scheduled', function(){
+                expect($scope.model.input.scheduleMode).toBe(scheduleModes.scheduled);
+              });
+            });
+          });
+
+          describe('when the selected queue changes', function(){
+            beforeEach(function(){
+              $scope.model.input.selectedQueue = '2';
               $scope.$apply();
             });
 
-            it('should call performSave', function(){
-              expect(postEditDialogUtilities.performSave).toHaveBeenCalledWith('postId', $scope.model);
-            });
-
-            it('should call applyChangesToPost', function(){
-              expect(postEditDialogUtilities.applyChangesToPost).toHaveBeenCalledWith(post, $scope.model);
-            });
-
-            it('should close the dialog passing the updated post', function(){
-              expect($scope.$close).toHaveBeenCalled();
-              expect($scope.$close.calls.count()).toBe(1);
-              expect($scope.$close.calls.first().args[0]).toEqual(post);
-              expect($scope.$close.calls.first().args[0]).not.toBe(post);
+            it('should update the estimated live date', function(){
+              expect(composeUtilities.updateEstimatedLiveDate).toHaveBeenCalledWith($scope.model);
+              expect(composeUtilities.updateEstimatedLiveDate.calls.count()).toBe(2);
             });
           });
 
-          describe('when performSave fails', function(){
-            var error;
+          describe('when save is called', function(){
             beforeEach(function(){
-              postEditDialogUtilities.performSave.and.returnValue($q.reject('error'));
-              postEditDialogUtilities.applyChangesToPost.and.returnValue($q.when());
-              $scope.save().catch(function(e) { error = e; });
-              $scope.$apply();
+              $scope.$close = jasmine.createSpy('$close');
             });
 
-            it('should call performSave', function(){
-              expect(postEditDialogUtilities.performSave).toHaveBeenCalledWith('postId', $scope.model);
+            describe('when successful', function(){
+              beforeEach(function(){
+                postEditDialogUtilities.performSave.and.returnValue($q.when());
+                postEditDialogUtilities.applyChangesToPost.and.returnValue($q.when());
+                $scope.save();
+                $scope.$apply();
+              });
+
+              it('should call performSave', function(){
+                expect(postEditDialogUtilities.performSave).toHaveBeenCalledWith('postId', $scope.model);
+              });
+
+              it('should call applyChangesToPost', function(){
+                expect(postEditDialogUtilities.applyChangesToPost).toHaveBeenCalledWith(post, $scope.model);
+              });
+
+              it('should close the dialog passing the updated post', function(){
+                expect($scope.$close).toHaveBeenCalled();
+                expect($scope.$close.calls.count()).toBe(1);
+                expect($scope.$close.calls.first().args[0]).toEqual(post);
+                expect($scope.$close.calls.first().args[0]).not.toBe(post);
+              });
             });
 
-            it('should not call applyChangesToPost', function(){
-              expect(postEditDialogUtilities.applyChangesToPost).not.toHaveBeenCalled();
+            describe('when performSave fails', function(){
+              var error;
+              beforeEach(function(){
+                postEditDialogUtilities.performSave.and.returnValue($q.reject('error'));
+                postEditDialogUtilities.applyChangesToPost.and.returnValue($q.when());
+                $scope.save().catch(function(e) { error = e; });
+                $scope.$apply();
+              });
+
+              it('should call performSave', function(){
+                expect(postEditDialogUtilities.performSave).toHaveBeenCalledWith('postId', $scope.model);
+              });
+
+              it('should not call applyChangesToPost', function(){
+                expect(postEditDialogUtilities.applyChangesToPost).not.toHaveBeenCalled();
+              });
+
+              it('should not close the dialog', function(){
+                expect($scope.$close).not.toHaveBeenCalled();
+              });
+
+              it('should return the error', function(){
+                expect(error).toBe('error');
+              });
             });
 
-            it('should not close the dialog', function(){
-              expect($scope.$close).not.toHaveBeenCalled();
-            });
+            describe('when applyChangesToPost fails', function(){
+              var error;
+              beforeEach(function(){
+                postEditDialogUtilities.performSave.and.returnValue($q.when());
+                postEditDialogUtilities.applyChangesToPost.and.returnValue($q.reject('error'));
+                $scope.save().catch(function(e) { error = e; });
+                $scope.$apply();
+              });
 
-            it('should return the error', function(){
-              expect(error).toBe('error');
-            });
-          });
+              it('should call performSave', function(){
+                expect(postEditDialogUtilities.performSave).toHaveBeenCalledWith('postId', $scope.model);
+              });
 
-          describe('when applyChangesToPost fails', function(){
-            var error;
-            beforeEach(function(){
-              postEditDialogUtilities.performSave.and.returnValue($q.when());
-              postEditDialogUtilities.applyChangesToPost.and.returnValue($q.reject('error'));
-              $scope.save().catch(function(e) { error = e; });
-              $scope.$apply();
-            });
+              it('should call applyChangesToPost', function(){
+                expect(postEditDialogUtilities.applyChangesToPost).toHaveBeenCalledWith(post, $scope.model);
+              });
 
-            it('should call performSave', function(){
-              expect(postEditDialogUtilities.performSave).toHaveBeenCalledWith('postId', $scope.model);
-            });
+              it('should not close the dialog', function(){
+                expect($scope.$close).not.toHaveBeenCalled();
+              });
 
-            it('should call applyChangesToPost', function(){
-              expect(postEditDialogUtilities.applyChangesToPost).toHaveBeenCalledWith(post, $scope.model);
-            });
-
-            it('should not close the dialog', function(){
-              expect($scope.$close).not.toHaveBeenCalled();
-            });
-
-            it('should return the error', function(){
-              expect(error).toBe('error');
+              it('should return the error', function(){
+                expect(error).toBe('error');
+              });
             });
           });
         });
       });
     };
 
-    describe('when post is a note', function(){
+    describe('when scheduled now', function(){
       beforeEach(function(){
-        delete post.image;
-        delete post.imageSource;
-        delete post.file;
-        delete post.fileSource;
-        expectedPostType = postTypes.note;
+        expectedScheduleMode = scheduleModes.now;
+        post.isScheduled = false;
+        createController();
       });
-      describe('when scheduled now', function(){
-        beforeEach(function(){
-          expectedScheduleMode = scheduleModes.now;
-          post.isScheduled = false;
-          createController();
-        });
-        runCreatingExpectations();
-      });
-      describe('when scheduled queue', function(){
-        beforeEach(function(){
-          expectedScheduleMode = scheduleModes.queued;
-          post.isScheduled = true;
-          post.scheduledByQueue = true;
-          createController();
-        });
-        runCreatingExpectations();
-      });
-      describe('when scheduled date', function(){
-        beforeEach(function(){
-          expectedScheduleMode = scheduleModes.scheduled;
-          post.isScheduled = true;
-          post.scheduledByQueue = false;
-          createController();
-        });
-        runCreatingExpectations();
-      });
+      runCreatingExpectations();
     });
-
-    describe('when post is a image', function(){
+    describe('when scheduled queue', function(){
       beforeEach(function(){
-        delete post.file;
-        delete post.fileSource;
-        expectedPostType = postTypes.image;
+        expectedScheduleMode = scheduleModes.queued;
+        post.isScheduled = true;
+        post.queueId = 'b';
+        createController();
       });
-      describe('when scheduled now', function(){
-        beforeEach(function(){
-          expectedScheduleMode = scheduleModes.now;
-          post.isScheduled = false;
-          createController();
-        });
-        runCreatingExpectations();
-      });
-      describe('when scheduled queue', function(){
-        beforeEach(function(){
-          expectedScheduleMode = scheduleModes.queued;
-          post.isScheduled = true;
-          post.scheduledByQueue = true;
-          createController();
-        });
-        runCreatingExpectations();
-      });
-      describe('when scheduled date', function(){
-        beforeEach(function(){
-          expectedScheduleMode = scheduleModes.scheduled;
-          post.isScheduled = true;
-          post.scheduledByQueue = false;
-          createController();
-        });
-        runCreatingExpectations();
-      });
+      runCreatingExpectations();
     });
-
-    describe('when post is a file', function(){
+    describe('when scheduled date', function(){
       beforeEach(function(){
-        delete post.image;
-        delete post.imageSource;
-        expectedPostType = postTypes.file;
+        expectedScheduleMode = scheduleModes.scheduled;
+        post.isScheduled = true;
+        post.queueId = undefined;
+        createController();
       });
-      describe('when scheduled now', function(){
-        beforeEach(function(){
-          expectedScheduleMode = scheduleModes.now;
-          post.isScheduled = false;
-          createController();
-        });
-        runCreatingExpectations();
-      });
-      describe('when scheduled queue', function(){
-        beforeEach(function(){
-          expectedScheduleMode = scheduleModes.queued;
-          post.isScheduled = true;
-          post.scheduledByQueue = true;
-          createController();
-        });
-        runCreatingExpectations();
-      });
-      describe('when scheduled date', function(){
-        beforeEach(function(){
-          expectedScheduleMode = scheduleModes.scheduled;
-          post.isScheduled = true;
-          post.scheduledByQueue = false;
-          createController();
-        });
-        runCreatingExpectations();
-      });
+      runCreatingExpectations();
     });
   });
 });

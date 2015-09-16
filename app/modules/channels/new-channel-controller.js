@@ -4,7 +4,6 @@ angular.module('webApp').controller('newChannelCtrl', function($scope, $q, $stat
   $scope.model = {
     channel: {
       name: '',
-      description: '',
       hidden: false,
       price: '1.00'
     }

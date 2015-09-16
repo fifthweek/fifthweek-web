@@ -107,7 +107,7 @@ describe('post-utilities', function(){
         posts = [
           {
             channelId: 'channelId1',
-            collectionId: 'collectionId1'
+            queueId: 'queueId1'
           },
           {
             channelId: 'channelId2'
@@ -145,7 +145,7 @@ describe('post-utilities', function(){
         posts = [
           {
             channelId: 'channelId1',
-            collectionId: 'collectionId1'
+            queueId: 'queueId1'
           },
           {
             channelId: 'channelId2'
@@ -182,7 +182,7 @@ describe('post-utilities', function(){
         posts = [
           {
             channelId: 'channelId1',
-            collectionId: 'collectionId1'
+            queueId: 'queueId1'
           },
           {
             channelId: 'channelId2'
@@ -194,14 +194,14 @@ describe('post-utilities', function(){
           channels: {
             channelId1: {
               channelId: 'channelId1',
-              collections: {
-                collectionId1: {
-                  collectionId: 'collectionId1'
-                }
-              }
             },
             channelId2: {
               channelId: 'channelId2'
+            }
+          },
+          queues: {
+            queueId1: {
+              queueId: 'queueId1'
             }
           }
         }));
@@ -226,23 +226,18 @@ describe('post-utilities', function(){
         expect(accountSettingsRepository.getAccountSettings).toHaveBeenCalledWith();
       });
 
-      it('should update the posts collection', function(){
+      it('should update the posts queue', function(){
         expect(posts).toEqual([
           {
             isOwner: true,
             blogName: 'blog',
             channelId: 'channelId1',
-            collectionId: 'collectionId1',
+            queueId: 'queueId1',
             channel: {
-              channelId: 'channelId1',
-              collections: {
-                collectionId1: {
-                  collectionId: 'collectionId1'
-                }
-              }
+              channelId: 'channelId1'
             },
-            collection: {
-              collectionId: 'collectionId1'
+            queue: {
+              queueId: 'queueId1'
             },
             creator: {
               username: 'username',
@@ -345,7 +340,7 @@ describe('post-utilities', function(){
         posts = [
           {
             channelId: 'channelId1',
-            collectionId: 'collectionId1'
+            queueId: 'queueId1'
           },
           {
             channelId: 'channelId2'
@@ -382,7 +377,7 @@ describe('post-utilities', function(){
           {
             blogId: 'blogId1',
             channelId: 'channelId1',
-            collectionId: 'collectionId1'
+            queueId: 'queueId1'
           },
           {
             blogId: 'blogId1',
@@ -402,15 +397,15 @@ describe('post-utilities', function(){
               },
               channels: {
                 channelId1: {
-                  channelId: 'channelId1',
-                  collections: {
-                    collectionId1: {
-                      collectionId: 'collectionId1'
-                    }
-                  }
+                  channelId: 'channelId1'
                 },
                 channelId2: {
                   channelId: 'channelId2'
+                }
+              },
+              queues: {
+                queueId1: {
+                  queueId: 'queueId1'
                 }
               }
             }
@@ -428,24 +423,19 @@ describe('post-utilities', function(){
         expect(target.internal.populateUnknownCreatorInformation).toHaveBeenCalled();
       });
 
-      it('should update the posts collection', function(){
+      it('should update the posts queue', function(){
         expect(posts).toEqual([
           {
             isOwner: false,
             blogId: 'blogId1',
             blogName: 'blog',
             channelId: 'channelId1',
-            collectionId: 'collectionId1',
+            queueId: 'queueId1',
             channel: {
-              channelId: 'channelId1',
-              collections: {
-                collectionId1: {
-                  collectionId: 'collectionId1'
-                }
-              }
+              channelId: 'channelId1'
             },
-            collection: {
-              collectionId: 'collectionId1'
+            queue: {
+              queueId: 'queueId1'
             },
             creator: {
               username: 'username',
@@ -483,22 +473,22 @@ describe('post-utilities', function(){
           {
             blogId: 'blogId1',
             channelId: 'channelId1',
-            collectionId: 'collectionId1'
+            queueId: 'queueId1'
           },
           {
             blogId: 'blogId1',
             channelId: 'channelId1',
-            collectionId: 'collectionId2'
+            queueId: 'queueId2'
           },
           {
             blogId: 'blogId1',
             channelId: 'channelId2',
-            collectionId: 'collectionId2'
+            queueId: 'queueId2'
           },
           {
             blogId: 'blogId2',
             channelId: 'channelId2',
-            collectionId: 'collectionId2'
+            queueId: 'queueId2'
           }
         ];
 
@@ -514,12 +504,12 @@ describe('post-utilities', function(){
               },
               channels: {
                 channelId1: {
-                  channelId: 'channelId1',
-                  collections: {
-                    collectionId1: {
-                      collectionId: 'collectionId1'
-                    }
-                  }
+                  channelId: 'channelId1'
+                }
+              },
+              queues: {
+                queueId1: {
+                  queueId: 'queueId1'
                 }
               }
             }
@@ -537,23 +527,18 @@ describe('post-utilities', function(){
         expect(target.internal.populateUnknownCreatorInformation).toHaveBeenCalled();
       });
 
-      it('should update the posts collection', function(){
+      it('should update the posts queue', function(){
         expect(posts).toEqual([
           {
             isOwner: false,
             blogId: 'blogId1',
             channelId: 'channelId1',
-            collectionId: 'collectionId1',
+            queueId: 'queueId1',
             channel: {
-              channelId: 'channelId1',
-              collections: {
-                collectionId1: {
-                  collectionId: 'collectionId1'
-                }
-              }
+              channelId: 'channelId1'
             },
-            collection: {
-              collectionId: 'collectionId1'
+            queue: {
+              queueId: 'queueId1'
             },
             blogName: 'blog',
             creator: {
@@ -568,18 +553,13 @@ describe('post-utilities', function(){
             isOwner: false,
             blogId: 'blogId1',
             channelId: 'channelId1',
-            collectionId: 'collectionId2',
+            queueId: 'queueId2',
             channel: {
-              channelId: 'channelId1',
-              collections: {
-                collectionId1: {
-                  collectionId: 'collectionId1'
-                }
-              }
+              channelId: 'channelId1'
             },
-            collection: {
-              collectionId: 'collectionId2',
-              name: 'Unknown Collection'
+            queue: {
+              queueId: 'queueId2',
+              name: 'Unknown Queue'
             },
             blogName: 'blog',
             creator: {
@@ -594,14 +574,14 @@ describe('post-utilities', function(){
             isOwner: false,
             blogId: 'blogId1',
             channelId: 'channelId2',
-            collectionId: 'collectionId2',
+            queueId: 'queueId2',
             channel: {
               channelId: 'channelId2',
               name: 'Unknown Channel'
             },
-            collection: {
-              collectionId: 'collectionId2',
-              name: 'Unknown Collection'
+            queue: {
+              queueId: 'queueId2',
+              name: 'Unknown Queue'
             },
             blogName: 'blog',
             creator: {
@@ -616,14 +596,14 @@ describe('post-utilities', function(){
             isOwner: false,
             blogId: 'blogId2',
             channelId: 'channelId2',
-            collectionId: 'collectionId2',
+            queueId: 'queueId2',
             channel: {
               channelId: 'channelId2',
               name: 'Unknown Channel'
             },
-            collection: {
-              collectionId: 'collectionId2',
-              name: 'Unknown Collection'
+            queue: {
+              queueId: 'queueId2',
+              name: 'Unknown Queue'
             },
             blogName: 'Unknown Blog',
             creator: {
@@ -698,7 +678,7 @@ describe('post-utilities', function(){
         posts = [
           {
             channelId: 'channelId1',
-            collectionId: 'collectionId1'
+            queueId: 'queueId1'
           },
           {
             channelId: 'channelId2'
@@ -753,28 +733,26 @@ describe('post-utilities', function(){
         posts = [
           {
             liveDate: new Date('2015-03-18T17:00:00Z'),
-            scheduledByQueue: true,
             creator: {
               profileImage: {
                 fileId: 'creator1',
                 containerName: 'containerName1'
               }
             },
-            collectionId: 'collectionId1'
+            queueId: 'queueId1'
           },
           {
             liveDate: new Date('2015-03-19T17:00:00Z'),
             fileSource: {
               size: 1024
             },
-            scheduledByQueue: false,
             creator: {
               profileImage: {
                 fileId: 'creator2',
                 containerName: 'containerName2'
               }
             },
-            collectionId: 'collectionId2'
+            queueId: undefined
           },
           {
             liveDate: new Date('2015-03-19T17:00:00Z'),
@@ -801,11 +779,14 @@ describe('post-utilities', function(){
             liveDate: new Date('2015-03-20T17:00:00Z'),
             imageSource: {
               size: 8,
-              contentType: 'image/tiff'
+              contentType: 'image/png'
             },
             image: {
               fileId: 'fileId2',
               containerName: 'containerName2'
+            },
+            fileSource: {
+              size: 1024
             },
             creator: {
               profileImage: undefined
@@ -841,13 +822,7 @@ describe('post-utilities', function(){
         expect(posts[1].fileSource.readableSize).toBe('1 KB');
         expect(posts[2].imageSource.readableSize).toBe('1 MB');
         expect(posts[3].imageSource.readableSize).toBe('8 bytes');
-        expect(posts[3].fileSource.readableSize).toBe('8 bytes');
-      });
-
-      it('should add viewable data', function(){
-        expect(posts[2].imageSource.viewable).toBe(true);
-        expect(posts[3].imageSource.viewable).toBe(false);
-        expect(posts[3].fileSource.viewable).toBe(false);
+        expect(posts[3].fileSource.readableSize).toBe('1 KB');
       });
 
       it('should add isScheduled data', function(){
@@ -859,7 +834,7 @@ describe('post-utilities', function(){
 
       it('should add a reorder function if the post is scheduled', function(){
         expect(posts[0].reorder).toBeDefined();
-        expect(posts[1].reorder).toBeDefined();
+        expect(posts[1].reorder).toBeUndefined();
         expect(posts[2].reorder).toBeUndefined();
         expect(posts[3].reorder).toBeUndefined();
       });
@@ -867,12 +842,7 @@ describe('post-utilities', function(){
       describe('when calling re-order', function(){
         it('should change state to the queue reorder page when reorder is called on post 1', function(){
           posts[0].reorder();
-          expect($state.go).toHaveBeenCalledWith('creator.posts.scheduled.queues.reorder', { id: 'collectionId1' });
-        });
-
-        it('should change state to the queue reorder page when reorder is called on post 2', function(){
-          posts[1].reorder();
-          expect($state.go).toHaveBeenCalledWith('creator.posts.scheduled.queues.reorder', { id: 'collectionId2' });
+          expect($state.go).toHaveBeenCalledWith('creator.posts.scheduled.queues.reorder', { id: 'queueId1' });
         });
       });
 

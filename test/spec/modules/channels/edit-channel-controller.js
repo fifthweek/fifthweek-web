@@ -30,7 +30,6 @@ describe('edit channel controller', function () {
       channelId: currentChannelId,
       name: 'channel B',
       price: 101,
-      description: 'Foo\nbar',
       isDefault: true,
       isVisibleToNonSubscribers: false
     };
@@ -72,7 +71,6 @@ describe('edit channel controller', function () {
         {
           channelId: currentChannel.channelId,
           name: currentChannel.name,
-          description: currentChannel.description,
           isDefault: currentChannel.isDefault,
           price: '1.01',
           hidden: true
@@ -112,7 +110,6 @@ describe('edit channel controller', function () {
     describe('when saving', function() {
       it('should save the updated channel via the API', function() {
         $scope.model.channel.name = 'name';
-        $scope.model.channel.description = 'description';
         $scope.model.channel.hidden = false;
         $scope.model.channel.price = price;
 
@@ -121,7 +118,6 @@ describe('edit channel controller', function () {
 
         expect(channelStub.putChannel).toHaveBeenCalledWith(currentChannelId, {
           name: 'name',
-          description: 'description',
           price: priceInCents,
           isVisibleToNonSubscribers: true
         });
@@ -135,7 +131,6 @@ describe('edit channel controller', function () {
         });
 
         $scope.model.channel.name = 'name';
-        $scope.model.channel.description = 'description';
         $scope.model.channel.hidden = false;
         $scope.model.channel.price = price;
         channelStub.putChannel.and.returnValue($q.when());
@@ -146,7 +141,6 @@ describe('edit channel controller', function () {
         expect(blogRepository.updateChannel).toHaveBeenCalledWith(currentChannelId, jasmine.any(Function));
         expect(channelDelta).toEqual({
           name: 'name',
-          description: 'description',
           price: priceInCents,
           isVisibleToNonSubscribers: true
         });

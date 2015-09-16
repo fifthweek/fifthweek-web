@@ -53,14 +53,12 @@ describe('new channel controller', function () {
 
   it('should expose a channel with default values', function() {
     expect($scope.model.channel.name).toBe('');
-    expect($scope.model.channel.description).toBe('');
     expect($scope.model.channel.hidden).toBe(false);
     expect($scope.model.channel.price).toBe('1.00');
   });
 
   it('should create the new channel via the API', function() {
     $scope.model.channel.name = 'name';
-    $scope.model.channel.description = 'description';
     $scope.model.channel.hidden = false;
     $scope.model.channel.price = price;
 
@@ -70,7 +68,6 @@ describe('new channel controller', function () {
     expect(channelStub.postChannel).toHaveBeenCalledWith({
       blogId: blogId,
       name: 'name',
-      description: 'description',
       price: priceInCents,
       isVisibleToNonSubscribers: true
     });
@@ -78,7 +75,6 @@ describe('new channel controller', function () {
 
   it('should save the new channel to the client-side repository', function() {
     $scope.model.channel.name = 'name';
-    $scope.model.channel.description = 'description';
     $scope.model.channel.hidden = false;
     $scope.model.channel.price = price;
     channelStub.postChannel.and.returnValue($q.when({ data: channelId }));

@@ -57,7 +57,7 @@ describe('registration controller', function() {
     expect(scope.registrationData.email).toBe('');
     expect(scope.registrationData.username).toBe('');
     expect(scope.registrationData.password).toBe('');
-    expect(scope.registrationData.creatorName).toBe('');
+    expect(scope.registrationData.registerAsCreator).toBe(true);
   });
 
   describe('and submits the form', function() {
@@ -67,7 +67,7 @@ describe('registration controller', function() {
         email: 'lawrence@fifthweek.com',
         username: 'lawrence',
         password: 'password',
-        creatorName: 'creatorName'
+        registerAsCreator: 'registerAsCreator'
       };
     });
 
@@ -85,7 +85,7 @@ describe('registration controller', function() {
         email: 'lawrence@fifthweek.com',
         username: 'lawrence',
         password: 'password',
-        creatorName: 'creatorName'
+        registerAsCreator: 'registerAsCreator'
       });
 
       expect(scope.form.message).toContain('Signing in...');

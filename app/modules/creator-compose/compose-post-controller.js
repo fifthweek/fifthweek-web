@@ -24,7 +24,9 @@ angular.module('webApp').controller('composePostCtrl',
     };
 
     $scope.model = model;
-    var internal = this.internal = {};
+    var internal = this.internal = {
+      cancelWatch: undefined
+    };
 
     $scope.blobImage = blobImageControlFactory.createControl();
 
@@ -39,8 +41,6 @@ angular.module('webApp').controller('composePostCtrl',
       model.input.fileId = data.fileId;
       $scope.fileName = data.file.name;
     };
-
-    var cancelWatch;
 
     $scope.commitChannel = function(channel){
       model.committedChannel = channel;
@@ -60,7 +60,7 @@ angular.module('webApp').controller('composePostCtrl',
           composeUtilities.updateEstimatedLiveDate(model);
         }
       });
-      cancelWatch = function(){
+      internal.cancelWatch = function(){
         cancelWatch1();
         cancelWatch2();
       };
@@ -68,8 +68,8 @@ angular.module('webApp').controller('composePostCtrl',
 
     $scope.cancelPostLater = function() {
       model.postLater = false;
-      cancelWatch();
-      cancelWatch = undefined;
+      internal.cancelWatch();
+      internal.cancelWatch = undefined;
     };
 
     internal.post = function(data){
@@ -106,7 +106,7 @@ angular.module('webApp').controller('composePostCtrl',
       return internal.post(data);
     };
 
-    this.initialize = function(){
+    internal.initialize = function(){
       return blogRepository.getChannelsSorted()
         .then(function(channels){
           model.channels = channels;
@@ -129,7 +129,5 @@ angular.module('webApp').controller('composePostCtrl',
         });
     };
 
-    initializer.initialize(this.initialize);
-
-  }
-);
+    initializer.initialize(internal.initialize);
+  });

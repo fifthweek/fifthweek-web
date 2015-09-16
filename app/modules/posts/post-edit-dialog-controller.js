@@ -41,7 +41,6 @@ angular.module('webApp')
       savedScheduleMode: scheduleMode,
       savedDate: liveDate,
       queuedLiveDate: undefined,
-      channelId: post.channelId,
       input: {
         comment: post.comment,
         image: post.image,
@@ -70,12 +69,6 @@ angular.module('webApp')
       model.input.fileSource = fileInformation.fileSource;
     };
 
-    $scope.$watch('model.input.date', function(newValue, oldValue){
-      if(!areDatesEqual(newValue, oldValue)){
-        model.input.scheduleMode = scheduleModes.scheduled;
-      }
-    });
-
     $scope.save = function(){
       return postEditDialogUtilities.performSave(post.postId, model)
         .then(function() {
@@ -87,12 +80,19 @@ angular.module('webApp')
     };
 
     this.initialize = function(){
+
+      $scope.$watch('model.input.date', function(newValue, oldValue){
+        if(!areDatesEqual(newValue, oldValue)){
+          model.input.scheduleMode = scheduleModes.scheduled;
+        }
+      });
+
       return blogRepository.getQueuesSorted()
         .then(function(queues){
           model.queues = queues;
           if(queues.length > 0){
             if(post.queueId){
-              model.input.selectedCollection = _.find(model.queues, {queueId: post.queueId});
+              model.input.selectedQueue = _.find(model.queues, {queueId: post.queueId});
             }
             else{
               model.input.selectedQueue = queues[0];
@@ -111,6 +111,4 @@ angular.module('webApp')
     };
 
     initializer.initialize(this.initialize);
-
-  }
-);
+  });
