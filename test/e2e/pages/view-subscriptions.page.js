@@ -26,7 +26,6 @@
 
     firstBlogLink: { get: function(){ return element(by.css('#blog-panel-0 .blog-link')); }},
     firstChannelLink: { get: function(){ return element(by.css('#blog-panel-0 #channel-list-row-0 .channel-link')); }},
-    firstCollectionLink: { get: function(){ return element(by.css('#blog-panel-0 #channel-list-row-0 #collection-item-0 .collection-link')); }},
 
     manageButton: { value: function(blogIndex) {
       return element(this.byCss(blogIndex, '.manage-button'));
@@ -34,7 +33,6 @@
 
     blogCount: { get: function(){ return element.all(by.css('.blog-panel')).count(); }},
     channelCount: { get: function(){ return element.all(by.css('.channel-list-row')).count(); }},
-    collectionCount: { get: function(){ return element.all(by.css('.collection-item')).count(); }},
 
     expectZeroAccountBalance: { value: function() {
       expect(this.accountBalanceAmount.getText()).toBe('$0.00');

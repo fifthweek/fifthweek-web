@@ -11,7 +11,7 @@ SidebarPage.prototype = Object.create({}, {
   subscriptionsLink: { get: function () { return element(by.id('sidebar-navigation-subscriptions')); }},
   landingPageLink: { get: function () { return element(by.id('sidebar-navigation-preview-blog')); }},
   postsLink: { get: function () { return element(by.id('sidebar-navigation-posts')); }},
-  collectionsLink: { get: function () { return element(by.id('sidebar-navigation-collections')); }},
+  queuesLink: { get: function () { return element(by.id('sidebar-navigation-queues')); }},
   channelsLink: { get: function () { return element(by.id('sidebar-navigation-channels')); }},
   subscribersLink: { get: function () { return element(by.id('sidebar-navigation-subscribers')); }},
   accountLink: { get: function () { return element(by.id('sidebar-navigation-account')); }},
@@ -37,8 +37,8 @@ SidebarPage.prototype = Object.create({}, {
         expect(self.postsLink.isDisplayed()).toBe(true);
       });
 
-      it('should contain "Collections" link', function () {
-        expect(self.collectionsLink.isDisplayed()).toBe(true);
+      it('should contain "Queues" link', function () {
+        expect(self.queuesLink.isDisplayed()).toBe(true);
       });
 
       it('should contain "Channels" link', function () {

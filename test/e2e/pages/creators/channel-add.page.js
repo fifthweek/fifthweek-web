@@ -14,7 +14,6 @@ var ChannelAddPage = function() {};
 
 ChannelAddPage.prototype = Object.create({}, {
   nameTextBoxId: { value: 'model-channel-name' },
-  descriptionTextBoxId: { value: 'model-channel-description' },
   priceTextBoxId: { value: 'model-channel-price' },
   hiddenCheckboxSelector: { get: function () { return by.id('model-channel-hidden'); }},
   hiddenCheckbox: { get: function () { return element(this.hiddenCheckboxSelector); }},
@@ -23,10 +22,6 @@ ChannelAddPage.prototype = Object.create({}, {
     {
       name: 'nameTextBox',
       newValue: function() { return channelNameInputPage.newName(); }
-    },
-    {
-      name: 'descriptionTextBox',
-      newValue: function() { return channelDescriptionInputPage.newDescription(); }
     },
     {
       name: 'priceTextBox',
@@ -45,7 +40,6 @@ ChannelAddPage.prototype = Object.create({}, {
     this.createButton.click();
     return {
       name: formValues.nameTextBox,
-      description: formValues.descriptionTextBox,
       price: formValues.priceTextBox,
       hidden: formValues.hiddenCheckbox
     };

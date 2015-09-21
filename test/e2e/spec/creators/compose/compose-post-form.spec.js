@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var TargetPage = require('../../../pages/creators/compose/compose-image.page.js');
+  var TargetPage = require('../../../pages/creators/compose/compose-post.page.js');
   var targetPage = new TargetPage();
   targetPage.includeTests(targetPage);
 })();

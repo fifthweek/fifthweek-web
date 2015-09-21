@@ -190,7 +190,6 @@ describe('customize landing page controller', function () {
       blogRepository.getBlog.and.returnValue($q.when({
         blogId: 'blogId',
         name: 'name',
-        tagline: 'tagline',
         introduction: 'introduction',
         video: 'video',
         description: 'description',
@@ -245,7 +244,6 @@ describe('customize landing page controller', function () {
             'blogId',
             {
               name: 'name',
-              tagline: 'tagline',
               introduction: 'introduction',
               headerImageFileId: undefined,
               video: 'video',
@@ -259,7 +257,6 @@ describe('customize landing page controller', function () {
             {
               blogId: 'blogId',
               name: 'name',
-              tagline: 'tagline',
               introduction: 'introduction',
               video: 'video',
               description: 'description',
@@ -287,7 +284,6 @@ describe('customize landing page controller', function () {
             'blogId',
             {
               name: 'name',
-              tagline: 'tagline',
               introduction: 'introduction',
               headerImageFileId: 'fileId',
               video: 'video',
@@ -301,7 +297,6 @@ describe('customize landing page controller', function () {
             {
               blogId: 'blogId',
               name: 'name',
-              tagline: 'tagline',
               introduction: 'introduction',
               video: 'video',
               description: 'description',

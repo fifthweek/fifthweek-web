@@ -3,7 +3,6 @@ var CommonWorkflows = require('../../common-workflows.js');
 var RegisterPage = require('../../pages/register.page.js');
 var SignOutPage = require('../../pages/sign-out.page.js');
 var BlogNameInputPage = require('../../pages/blog-name-input.page.js');
-var TaglineInputPage = require('../../pages/tagline-input.page.js');
 var ChannelPriceInputPage = require('../../pages/channel-price-input.page.js');
 var CreateBlogPage = require('../../pages/creators/create-blog.page.js');
 
@@ -15,7 +14,6 @@ describe('create blog form', function() {
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
   var nameInputPage = new BlogNameInputPage();
-  var taglineInputPage = new TaglineInputPage();
   var channelPriceInputPage = new ChannelPriceInputPage();
   var page = new CreateBlogPage();
 
@@ -35,17 +33,14 @@ describe('create blog form', function() {
 
     it('should allow a new blog to be created', function(){
       testKit.setValue(page.nameTextBoxId, nameInputPage.newName());
-      testKit.setValue(page.taglineTextBoxId, taglineInputPage.newTagline());
       testKit.setValue(page.basePriceTextBoxId, channelPriceInputPage.newPrice());
     });
 
     it('should not require base price to be entered', function(){
       testKit.setValue(page.nameTextBoxId, nameInputPage.newName());
-      testKit.setValue(page.taglineTextBoxId, taglineInputPage.newTagline());
     });
 
     testKit.includeHappyPaths(page, nameInputPage, 'nameTextBox', page.inputs);
-    testKit.includeHappyPaths(page, taglineInputPage, 'taglineTextBox', page.inputs);
     testKit.includeHappyPaths(page, channelPriceInputPage, 'basePriceTextBox', page.inputs);
   });
 
@@ -62,7 +57,6 @@ describe('create blog form', function() {
     });
 
     testKit.includeSadPaths(page, page.submitButton, page.helpMessages, nameInputPage, 'nameTextBox', page.inputs);
-    testKit.includeSadPaths(page, page.submitButton, page.helpMessages, taglineInputPage, 'taglineTextBox', page.inputs);
     testKit.includeSadPaths(page, page.submitButton, page.helpMessages, channelPriceInputPage, 'basePriceTextBox', page.inputs);
   });
 });

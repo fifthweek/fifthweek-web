@@ -12,8 +12,10 @@
     <div class="price-row" ng-repeat="updatedPrice in model.updatedPrices" id="updated-price-{{$index}}">
       <div class="row">
         <div class="col-xs-12 col-ss-7">
-          <div ng-if="updatedPrice.isIncrease && updatedPrice.channel.isDefault" class="base-price-increase">
-            <p>The base price of <strong>{{updatedPrice.blog.name}}</strong> has increased
+          <div ng-if="updatedPrice.isIncrease" class="channel-price-increase">
+            <p>The channel price of <strong>{{updatedPrice.channel.name}}</strong>
+              <span ng-if="updatedPrice.channel.name !== updatedPrice.blog.name"> in <strong>{{updatedPrice.blog.name}}</strong></span>
+              has increased
               from <fw-price value="updatedPrice.channel.acceptedPrice"></fw-price>
               to <fw-price value="updatedPrice.currentPrice"></fw-price>
               <span ng-if="!updatedPrice.channel.acceptedPrice"> because you are no longer on the guest list</span>.
@@ -21,24 +23,10 @@
               receiving this content.
             </p>
           </div>
-          <div ng-if="!updatedPrice.isIncrease && updatedPrice.channel.isDefault" class="base-price-decrease">
-            <p>The base price of <strong>{{updatedPrice.blog.name}}</strong> has been reduced
-              from <fw-price value="updatedPrice.channel.acceptedPrice"></fw-price>
-              to <fw-price value="updatedPrice.currentPrice"></fw-price>
-              <span ng-if="!updatedPrice.currentPrice"> because you are on the guest list</span>.
-            </p>
-          </div>
-          <div ng-if="updatedPrice.isIncrease && !updatedPrice.channel.isDefault" class="channel-price-increase">
-            <p>The channel price of <strong>{{updatedPrice.channel.name}}</strong> in <strong>{{updatedPrice.blog.name}}</strong> has increased
-              from <fw-price value="updatedPrice.channel.acceptedPrice"></fw-price>
-              to <fw-price value="updatedPrice.currentPrice"></fw-price>
-              <span ng-if="!updatedPrice.channel.acceptedPrice"> because you are no longer on the guest list</span>.
-              Please accept the new price to continue
-              receiving this content.
-            </p>
-          </div>
-          <div ng-if="!updatedPrice.isIncrease && !updatedPrice.channel.isDefault" class="channel-price-decrease">
-            <p>The channel price of <strong>{{updatedPrice.channel.name}}</strong> in <strong>{{updatedPrice.blog.name}}</strong> has been reduced
+          <div ng-if="!updatedPrice.isIncrease" class="channel-price-decrease">
+            <p>The channel price of <strong>{{updatedPrice.channel.name}}</strong>
+              <span ng-if="updatedPrice.channel.name !== updatedPrice.blog.name"> in <strong>{{updatedPrice.blog.name}}</strong></span>
+              has been reduced
               from <fw-price value="updatedPrice.channel.acceptedPrice"></fw-price>
               to <fw-price value="updatedPrice.currentPrice"></fw-price>
               <span ng-if="!updatedPrice.currentPrice"> because you are on the guest list</span>.

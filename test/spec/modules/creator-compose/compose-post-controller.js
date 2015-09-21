@@ -20,7 +20,7 @@ describe('compose post controller', function () {
     $state = jasmine.createSpyObj('$state', ['reload']);
     blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
     postStub = jasmine.createSpyObj('postStub', ['postPost']);
-    composeUtilities = jasmine.createSpyObj('composeUtilities', ['loadChannelsAndCollectionsIntoModel', 'getCommittedCollection', 'showCreateCollectionDialog', 'updateEstimatedLiveDate']);
+    composeUtilities = jasmine.createSpyObj('composeUtilities', ['updateEstimatedLiveDate']);
     initializer = jasmine.createSpyObj('initializer', ['initialize']);
     blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
     blogRepository = jasmine.createSpyObj('blogRepository', ['getQueuesSorted']);
@@ -208,24 +208,6 @@ describe('compose post controller', function () {
           expect(error).toBe('error');
         });
       });
-    });
-
-    var channelsAndCollections;
-
-    beforeEach(function(){
-      channelsAndCollections = {
-        channels: [{name: 'a', channelId: '1'}, {name: 'b', channelId: '2'}],
-        collections: [{name: 'x', collectionId: '3'}, {name: 'y', collectionId: '4'}]
-      };
-
-      composeUtilities.loadChannelsAndCollectionsIntoModel.and.callFake(function(){
-        $scope.model.channels = channelsAndCollections.channels;
-        $scope.model.collections = channelsAndCollections.collections;
-        $scope.model.input.selectedChannel = $scope.model.channels[0];
-        $scope.model.input.selectedCollection = $scope.model.collections[0];
-      });
-
-      $scope.model.fileUploaded = true;
     });
 
     describe('when calling commitChannel', function(){

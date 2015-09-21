@@ -5,11 +5,19 @@ angular.module('webApp').directive('fwFileUpload', function () {
       scope: {
         onUploadComplete: '&',
         description: '@',
+        idPrefix: '@?',
         abbreviateProgress: '@',
         filePurpose: '@',
         channelId: '@?',
         accept: '@'
       },
-      templateUrl:'views/partials/file-upload.html'
+      templateUrl:'views/partials/file-upload.html',
+      link: {
+        pre: function (scope) {
+          if(!scope.idPrefix){
+            scope.idPrefix = 'file';
+          }
+        }
+      }
     };
 });

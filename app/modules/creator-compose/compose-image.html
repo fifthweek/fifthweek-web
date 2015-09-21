@@ -5,7 +5,7 @@
       <small class="sub-image-input">We recommend images at least 1200 pixels wide.</small>
     </div>
     <div class="col-s-5 bottom-buffer">
-      <fw-file-upload channel-id="{{model.committedChannel.channelId}}" description="{{model.imageUploaded ? 'Change Image' : 'Add Image'}}" on-upload-complete="onImageUploadComplete(data)" file-purpose="post-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
+      <fw-file-upload id-prefix="image" channel-id="{{model.committedChannel.channelId}}" description="{{model.imageUploaded ? 'Change Image' : 'Add Image'}}" on-upload-complete="onImageUploadComplete(data)" file-purpose="post-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
     </div>
   </div>
 </div>

@@ -82,8 +82,10 @@
     title: { get: function () { return element(by.id('modal-title')); }},
     crossButton: { get: function () { return element(by.id('modal-cross-button')); }},
     cancelButton: { get: function () { return element(by.id('modal-cancel-button')); }},
-    uploadInput: { get: function() { return element(by.id('file-upload-button-input')); }},
-    uploadButton: { get: function() { return element(by.css('#file-upload-button-area .btn')); }},
+    fileUploadInput: { get: function() { return element(by.id('file-upload-button-input')); }},
+    fileUploadButton: { get: function() { return element(by.css('#file-upload-button-area .btn')); }},
+    imageUploadInput: { get: function() { return element(by.id('image-upload-button-input')); }},
+    imageUploadButton: { get: function() { return element(by.css('#image-upload-button-area .btn')); }},
     expandButton: { get: function() { return element(by.cssContainingText('button', 'expand')); }},
     collapseButton: { get: function() { return element(by.cssContainingText('button', 'close')); }},
     postToLiveRadio: { get: function() { return element(by.css('input[type="radio"][value="0"]')); }},
@@ -238,64 +240,47 @@
       var self = this;
       var post = new PostPage(isBacklog);
 
-      var setFileInput = function(filePath) {
+      var setFileInput = function(filePath, uploadInput) {
         filePath = path.resolve(__dirname + '/' + filePath);
         console.log(filePath);
-        self.uploadInput.sendKeys(filePath);
+        uploadInput.sendKeys(filePath);
       };
 
       var editPost = function(){
         testKit.setValue(self.commentTextBoxId, editedText);
         browser.waitForAngular();
 
-        if(inputData.postData.filePath){
-          setFileInput('../../sample-image-tiny-edited.tif');
-          browser.waitForAngular();
-          if(inputData.postData.uploadType === 'image') {
-            testKit.waitForElementToDisplay(self.imageUploadIndicator);
-          }
-          else{
-            testKit.waitForElementToDisplay(self.uploadButton);
-          }
-          browser.waitForAngular();
-        }
+        setFileInput('../../sample-image-tiny-edited.tif', self.fileUploadInput);
+        browser.waitForAngular();
+        testKit.waitForElementToDisplay(self.fileUploadButton);
+
+        setFileInput('../../sample-image-tiny-edited.jpg', self.imageUploadInput);
+        browser.waitForAngular();
+        testKit.waitForElementToDisplay(self.imageUploadIndicator);
+
+        browser.waitForAngular();
       };
 
       var verifyItemNotEdited = function(){
+        var blog = inputData.blog;
         var postData = inputData.postData;
         var registration = inputData.registration;
-        if(postData.uploadType === 'image'){
-          post.expectImagePost(postData, registration, navigateToPage);
-        }
-        else if(postData.uploadType === 'file'){
-          post.expectFilePost(postData, registration, navigateToPage);
-        }
-        else{
-          post.expectNotePost(postData, registration, navigateToPage);
-        }
+        post.expectPost(blog, postData, registration, navigateToPage);
       };
 
       var verifyItemEdited = function(){
+        var blog = inputData.blog;
         var postData = inputData.postData;
         var registration = inputData.registration;
-        var postData = _.cloneDeep(postData);
+        postData = _.cloneDeep(postData);
 
-        if(postData.uploadType === undefined) {
-          postData.noteText = editedText;
-          post.expectNotePost(postData, registration, navigateToPage);
-        }
-        else{
-          postData.commentText = editedText;
-          postData.filePath = 'sample-image-tiny-edited.tif';
-          expect(post.fileSizeText.getText()).toBe('67.81 KB');
+        postData.commentText = editedText;
+        postData.filePath = 'sample-image-tiny-edited.tif';
+        postData.imagePath = 'sample-image-tiny-edited.jpg';
 
-          if(postData.uploadType === 'image'){
-            post.expectNonViewableImagePost(postData, registration, navigateToPage);
-          }
-          else if(postData.uploadType === 'file'){
-            post.expectFilePost(postData, registration, navigateToPage);
-          }
-        }
+        expect(post.fileSizeText.getText()).toBe('67.81 KB');
+
+        post.expectPost(blog, postData, registration, navigateToPage);
       };
 
       describe('the modal for editing post content', function() {

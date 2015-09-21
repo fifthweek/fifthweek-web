@@ -23,7 +23,7 @@
                       error-message="model.errorMessage">{{item.name}}</button>
             </div>
           </div>
-          <fw-error-message value="collectionForm.message"></fw-error-message>
+          <fw-error-message value="model.errorMessages"></fw-error-message>
         </div>
       </form>
     </div>
@@ -80,7 +80,7 @@
               :
             </label>
           </div>
-          <fw-form-input-select-queue items="model.queues" selected-item="model.input.selectedQueue"></fw-form-input-select-queue>
+          <fw-form-input-select-queue id="queue-select" items="model.queues" selected-item="model.input.selectedQueue"></fw-form-input-select-queue>
 
           <div class="radio bottom-buffer">
             <label><input type="radio"
@@ -92,7 +92,6 @@
         </div>
 
         <fw-error-message value="model.errorMessage"></fw-error-message>
-        <fw-error-message value="scheduleForm.message"></fw-error-message>
       </div>
 
       <div class="row-btn">

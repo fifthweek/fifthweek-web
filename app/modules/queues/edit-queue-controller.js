@@ -73,13 +73,13 @@ angular.module('webApp').controller('editQueueCtrl', function(
       weeklyReleaseSchedule: _.pluck($scope.model.schedule, 'hourOfWeek')
     };
 
-    return queueService.updateQueue(queueId, queueData).then(function() {
+    return queueService.updateQueue(queueId, queueData, blogRepository).then(function() {
       $state.go($scope.previousState);
     });
   };
 
   $scope.delete = function() {
-    return queueService.deleteQueue(queueId).then(function() {
+    return queueService.deleteQueue(queueId, blogRepository).then(function() {
       $state.go($scope.previousState);
     });
   };

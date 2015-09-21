@@ -1,12 +1,10 @@
 
 <form novalidate
       role="form"
-      name="registerInterestForm"
+      name="submitFeedbackForm"
       ng-if="model.page === pages.form">
   <fw-form-modal name="{{model.title}}">
     <form-body>
-
-      <fw-form-input-creator-name ng-model="model.input.name" input-columns="12" required focus="true"></fw-form-input-creator-name>
 
       <fw-form-group>
         <div class="row">
@@ -18,17 +16,18 @@
                 type="email"
                 class="form-control"
                 name="email"
-                placeholder="Email address"
-                required>
+                placeholder="Email address (optional)">
             </div>
           </div>
           <div class="col-md-12">
-            <p fw-form-input-invalid-p>A valid email address is required.</p>
+            <p fw-form-input-invalid-p>Email address is not valid.</p>
           </div>
         </div>
       </fw-form-group>
 
-      <fw-error-message value="registerInterestForm.message" id="register-message"></fw-error-message>
+      <fw-form-input-comment ng-model="model.input.message" placeholder="Your message" focus required></fw-form-input-comment>
+
+      <fw-error-message value="submitFeedbackForm.message" id="register-message"></fw-error-message>
     </form-body>
     <form-buttons>
       <button
@@ -37,7 +36,7 @@
         id="register-button"
         data-event-title="{{model.trackingEventTitle}}"
         data-event-category="{{model.trackingEventCategory}}"
-        fw-form-submit="registerInterest()">{{model.buttonText}}</button>
+        fw-form-submit="submitFeedback()">{{model.buttonText}}</button>
     </form-buttons>
   </fw-form-modal>
 </form>
@@ -46,17 +45,9 @@
       role="form"
       name="form"
       ng-if="model.page === pages.done">
-  <fw-form-modal-title name="{{model.mode === 'register' ? 'Registration pending...' : model.title}}"></fw-form-modal-title>
-  <div class="modal-body" ng-if="model.mode === 'register'">
-    <p>
-      <strong>We'll contact you shortly</strong> to show you how to get the most out of Fifthweek - at which point your account will become active.
-    </p>
-    <p>
-      Please check your email inbox!
-    </p>
-  </div>
-  <div class="modal-body" ng-if="model.mode !== 'register'">
-    <p><strong>Thank you for your interest!</strong> Someone from our team will be in touch shortly.</p>
+  <fw-form-modal-title name="{{model.title}}"></fw-form-modal-title>
+  <div class="modal-body">
+    <p><strong>Thank you for your feedback!</strong> Someone from our team will be in touch shortly if a response is required.</p>
   </div>
   <div class="row-btn">
     <button

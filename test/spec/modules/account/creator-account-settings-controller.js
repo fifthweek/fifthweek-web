@@ -302,7 +302,7 @@ describe('creator account settings controller', function () {
       });
 
       it('should call putCreatorInformation', function(){
-        expect(accountSettingsStub.putCreatorInformation).toHaveBeenCalledWith('userId', { name: 'name' });
+        expect(accountSettingsStub.putCreatorInformation).toHaveBeenCalledWith('userId', { /* name: 'name' */ });
       });
 
       describe('when putCreatorInformation succeeds', function(){

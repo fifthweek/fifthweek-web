@@ -18,7 +18,6 @@ describe('add channel form', function() {
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
   var channelNameInputPage = new ChannelNameInputPage();
-  var channelDescriptionInputPage = new ChannelDescriptionInputPage();
   var channelPriceInputPage = new ChannelPriceInputPage();
   var sidebar = new SidebarPage();
   var channelListPage = new ChannelListPage();
@@ -26,7 +25,6 @@ describe('add channel form', function() {
 
   var initialValues = {
     nameTextBox: '',
-    descriptionTextBox: '',
     priceTextBox: '1.00',
     hiddenCheckbox: false
   };
@@ -95,10 +93,6 @@ describe('add channel form', function() {
       newFormValues = generatedFormValues;
     });
 
-    testKit.includeHappyPaths(page, channelDescriptionInputPage, 'descriptionTextBox', page.inputs, function(generatedFormValues) {
-      newFormValues = generatedFormValues;
-    });
-
     testKit.includeHappyPaths(page, channelPriceInputPage, 'priceTextBox', page.inputs, function(generatedFormValues) {
       newFormValues = generatedFormValues;
     });
@@ -110,7 +104,6 @@ describe('add channel form', function() {
     });
 
     testKit.includeSadPaths(page, page.createButton, page.helpMessages, channelNameInputPage, 'nameTextBox', page.inputs);
-    testKit.includeSadPaths(page, page.createButton, page.helpMessages, channelDescriptionInputPage, 'descriptionTextBox', page.inputs);
     testKit.includeSadPaths(page, page.createButton, page.helpMessages, channelPriceInputPage, 'priceTextBox', page.inputs);
   });
 
@@ -120,8 +113,7 @@ describe('add channel form', function() {
 
     channelListPage.expectChannel({
       name: newFormValues.nameTextBox,
-      price: newFormValues.priceTextBox,
-      description: newFormValues.descriptionTextBox
+      price: newFormValues.priceTextBox
     });
 
     channelListPage.addChannelButton.click();

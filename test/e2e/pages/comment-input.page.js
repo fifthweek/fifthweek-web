@@ -43,12 +43,12 @@ CreatorNameInputPage.prototype = Object.create({},
 
         button.click();
 
-        testKit.assertRequired(helpMessages, 'name');
+        testKit.assertSingleValidationMessage(helpMessages, 'Please write some content.');
       });
 
-      it('should not allow names with over than 25 characters', function(){
+      it('should not allow names with over than 2000 characters', function(){
         waitForElementToDisplay(inputId);
-        var maxLength = 25;
+        var maxLength = 2000;
         var overSizedValue = self.newName() + new Array(maxLength).join('x');
 
         populateOtherInputsWithValidData();

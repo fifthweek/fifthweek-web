@@ -1,13 +1,9 @@
 'use strict';
 
 var _ = require('lodash');
-var Defaults = require('../defaults.js');
 var TestKit = require('../test-kit.js');
 
-var defaults = new Defaults();
 var testKit = new TestKit();
-
-var defaultChannelSelectText = 'Share with everyone';
 
 var ChannelSelectInputPage = function() {};
 
@@ -21,7 +17,7 @@ ChannelSelectInputPage.prototype = Object.create({},
     });
   }},
   mapToSelectText: { value: function(channelName) {
-    this.channelNameMap[channelName] = channelName === defaults.channelName ? defaultChannelSelectText : '"' + channelName + '" Only';
+    this.channelNameMap[channelName] = channelName;
     return this.channelNameMap[channelName];
   }},
   mapToChannelName: { value: function(channelSelectText) {
@@ -32,9 +28,6 @@ ChannelSelectInputPage.prototype = Object.create({},
       throw 'No channel associated with selection "' + channelSelectText + '". Available selections are: ' + _.values(this.channelNameMap);
     }
     return channelName;
-  }},
-  isDefaultChannel: { value: function(channelName) {
-    return channelName === defaults.channelName;
   }}
 });
 

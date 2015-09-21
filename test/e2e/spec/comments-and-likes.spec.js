@@ -58,8 +58,6 @@
       var notePost1;
       var notePost2;
 
-      var collectionName = 'Cats';
-
       it('should register as a user', function() {
         userRegistration = commonWorkflows.register();
         addCreditToUserAccount(userRegistration);
@@ -69,10 +67,6 @@
         var context = commonWorkflows.createBlog();
         blog = context.blog;
         creatorRegistration1 = context.registration;
-      });
-
-      it('should create a collection', function(){
-        commonWorkflows.createNamedCollection(undefined, collectionName);
       });
 
       it('should post a note', function(){

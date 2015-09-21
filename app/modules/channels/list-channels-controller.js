@@ -10,7 +10,8 @@ angular.module('webApp').controller('listChannelsCtrl', function($scope, blogRep
         return {
           id: channel.channelId,
           name: channel.name,
-          price: channel.price
+          price: channel.price,
+          isVisibleToNonSubscribers: channel.isVisibleToNonSubscribers
         };
       });
     })

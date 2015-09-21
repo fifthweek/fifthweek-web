@@ -2,22 +2,22 @@
 
 var _ = require('lodash');
 var TestKit = require('../../test-kit.js');
-var CollectionNameInputPage = require('../collection-name-input.page.js');
+var QueueNameInputPage = require('../queue-name-input.page.js');
 
 var testKit = new TestKit();
-var collectionNameInputPage = new CollectionNameInputPage();
+var queueNameInputPage = new QueueNameInputPage();
 
-var CollectionEditPage = function() {};
+var QueueEditPage = function() {};
 
-CollectionEditPage.prototype = Object.create({}, {
-  pageUrl: { get: function () { return '/creator/collections/'; }},
+QueueEditPage.prototype = Object.create({}, {
+  pageUrl: { get: function () { return '/creator/queues/'; }},
   nameTextBoxId: { value: 'model-name' },
   daySelectId: { get: function() { return 'day-of-week'; }},
   hourSelectId: { get: function() { return 'hour-of-day'; }},
   inputs: { value: function() { return [
     {
       name: 'nameTextBox',
-      newValue: function() { return collectionNameInputPage.newName(); }
+      newValue: function() { return queueNameInputPage.newName(); }
     }
   ]; }},
   defaultReleaseTime: { get: function() { return { daySelect:'Monday', hourSelect: '00:00' }; } },
@@ -43,10 +43,10 @@ CollectionEditPage.prototype = Object.create({}, {
       ][Math.round(Math.random() * 23)]; }
     }
   ]; }},
-  helpMessages: { get: function () { return element.all(by.css('#manageCollectionForm .help-block')); }},
+  helpMessages: { get: function () { return element.all(by.css('#manageQueueForm .help-block')); }},
   expandReleaseTimesButton: { get: function () { return element(by.css('#manageReleaseTimes .btn-expand')); }},
   collapseReleaseTimesButton: { get: function () { return element(by.css('#manageReleaseTimes .btn-collapse')); }},
-  releaseTimeSummaries: { get: function () { return element.all(by.css('#manageCollectionForm .release-time')); }},
+  releaseTimeSummaries: { get: function () { return element.all(by.css('#manageQueueForm .release-time')); }},
   releaseTimes: { get: function () { return element.all(by.css('#release-time-list .item')); }},
   getReleaseTime: { value: function(index) { return element(by.css('#release-time-list .item:nth-child(' + (index + 1) + ')')); }},
   newReleaseTimeButton: { get: function () { return element(by.css('#manageReleaseTimes .btn-add')); }},
@@ -57,11 +57,11 @@ CollectionEditPage.prototype = Object.create({}, {
   deleteReleaseTimeButtonCount: { get: function () { return element.all(this.deleteReleaseTimeButtonSelector).count(); }},
   confirmDeleteReleaseTimeButton: { get: function () { return element(by.id('delete-item-unverified-button')); }},
   cancelReleaseTimeButton: { get: function () { return element(by.id('cancel-release-time-button')); }},
-  saveButton: { get: function () { return element(by.id('save-collection-button')); }},
+  saveButton: { get: function () { return element(by.id('save-queue-button')); }},
   cancelButton: { get: function () { return element(by.id('cancel-button')); }},
-  deleteButtonSelector: { get: function () { return by.id('delete-collection-link'); }},
+  deleteButtonSelector: { get: function () { return by.id('delete-queue-link'); }},
   deleteButton: { get: function () { return element(this.deleteButtonSelector); }},
   deleteButtonCount: { get: function () { return element.all(this.deleteButtonSelector).count(); }}
 });
 
-module.exports = CollectionEditPage;
+module.exports = QueueEditPage;

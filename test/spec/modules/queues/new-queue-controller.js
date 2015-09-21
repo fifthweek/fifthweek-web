@@ -9,15 +9,20 @@ describe('new queue controller', function () {
   var target;
 
   var queueService;
+  var blogRepositoryFactory;
+  var blogRepository;
 
   beforeEach(function() {
     queueService = jasmine.createSpyObj('queueService', ['createQueueFromName']);
     $state = jasmine.createSpyObj('$state', ['go']);
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getQueues']);
+    blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
 
     module('webApp', 'errorFacadeMock');
     module(function($provide) {
       $provide.value('$state', $state);
       $provide.value('queueService', queueService);
+      $provide.value('blogRepositoryFactory', blogRepositoryFactory);
     });
 
     inject(function ($injector) {
@@ -55,7 +60,7 @@ describe('new queue controller', function () {
     $scope.createQueue();
     $scope.$apply();
 
-    expect(queueService.createQueueFromName).toHaveBeenCalledWith('name');
+    expect(queueService.createQueueFromName).toHaveBeenCalledWith('name', blogRepository);
   });
 
   it('should return to the previous state on save', function() {

@@ -3,12 +3,10 @@
 
   var TestKit = require('../test-kit.js');
   var CreatorLandingPagePage = require('./creators/creator-landing-page.page.js');
-  var Defaults = require('../defaults.js');
   var PostListInformation = require('./post-list-information.page.js');
 
   var testKit = new TestKit();
   var landingPage = new CreatorLandingPagePage();
-  var defaults = new Defaults();
   var postListInformation = new PostListInformation();
 
   var PostPage = function(isBacklog, postIndex) {
@@ -95,7 +93,7 @@
       }
     }},
 
-    expectFooter: { value: function(isNote, postData, registration, navigateToPage, isCustomer){
+    expectFooter: { value: function(blogData, postData, registration, navigateToPage, isCustomer){
 
       //testKit.scrollIntoView(this.usernameLink);
 
@@ -104,21 +102,11 @@
       landingPage.fifthweekLink.click();
       navigateToPage();
 
-      var channelName = postData.channelName || defaults.channelName;
-      if(isNote){
-        this.containerNameLink.click();
-        expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/channel/');
-        expect(postListInformation.postsHeader.getText()).toBe(channelName);
-        landingPage.fifthweekLink.click();
-        navigateToPage();
-      }
-      else{
-        this.containerNameLink.click();
-        expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/collection/');
-        expect(postListInformation.postsHeader.getText()).toBe(channelName + ' / ' + postData.collectionName);
-        landingPage.fifthweekLink.click();
-        navigateToPage();
-      }
+      this.containerNameLink.click();
+      expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/channel/');
+      expect(postListInformation.postsHeader.getText()).toBe(postData.channelName || blogData.name);
+      landingPage.fifthweekLink.click();
+      navigateToPage();
 
       if(isCustomer){
         expect(this.liveInInfos.count()).toBe(1);
@@ -132,51 +120,33 @@
       }
     }},
 
-    expectNotePost: { value: function(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
+    expectPost: { value: function(blogData, postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
       this.expectHeader(postData, registration, postHasNoDayGrouping);
 
-      expect(this.images.count()).toBe(0);
-      expect(this.fileDownloadLinks.count()).toBe(0);
-      expect(this.comment.getText()).toBe(postData.noteText);
-      expect(this.usernameLink.getText()).toBe(registration.username);
-      expect(this.containerNameLink.getText()).toBe(postData.channelName || 'Everyone');
+      if(postData.imagePath){
+        expect(this.image.isPresent()).toBe(true);
+      }
+      else{
+        expect(this.images.count()).toBe(0);
+      }
 
-      this.expectFooter(true, postData, registration, navigateToPage, isCustomer);
-    }},
+      if(postData.filePath){
+        expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
+        expect(this.fileSizeText.getText()).toContain('KB');
+      }
+      else{
+        expect(this.fileDownloadLinks.count()).toBe(0);
+      }
 
-    expectImagePost: { value: function(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
-      this.expectHeader(postData, registration, postHasNoDayGrouping);
-
-      expect(this.image.isPresent()).toBe(true);
-      expect(this.comment.getText()).toBe(postData.commentText);
-
-      expect(this.usernameLink.getText()).toBe(registration.username);
-      expect(this.containerNameLink.getText()).toBe(postData.collectionName);
-
-      this.expectFooter(false, postData, registration, navigateToPage, isCustomer);
-    }},
-
-    expectFilePost: { value: function(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
-      this.expectHeader(postData, registration, postHasNoDayGrouping);
-
-      expect(this.images.count()).toBe(0);
-      expect(this.comment.getText()).toBe(postData.commentText);
-      expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
-      expect(this.fileSizeText.getText()).toContain('KB');
+      if(postData.commentText){
+        expect(this.comment.getText()).toBe(postData.commentText);
+      }
 
       expect(this.usernameLink.getText()).toBe(registration.username);
-      expect(this.containerNameLink.getText()).toBe(postData.collectionName);
+      expect(this.containerNameLink.getText()).toBe(postData.channelName || blogData.name);
 
-      this.expectFooter(false, postData, registration, navigateToPage, isCustomer);
+      this.expectFooter(blogData, postData, registration, navigateToPage, isCustomer);
     }},
-
-    expectNonViewableImagePost: { value: function(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
-      expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
-      expect(this.fileSizeText.getText()).toContain('KB');
-
-      this.expectImagePost(postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer);
-    }}
-
   });
 
   module.exports = PostPage;

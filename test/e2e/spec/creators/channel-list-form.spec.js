@@ -1,4 +1,3 @@
-var Defaults = require('../../defaults.js');
 var CommonWorkflows = require('../../common-workflows.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
 var ChannelListPage = require('../../pages/creators/channel-list.page.js');
@@ -7,12 +6,11 @@ describe('channel list form', function() {
   'use strict';
 
   // NOTE:
-  // Tests for listing non-default channels are covered by the add/edit collection specs.
+  // Tests for listing non-default channels are covered by the add/edit queue specs.
 
   var registration;
   var blog;
 
-  var defaults = new Defaults();
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
   var page = new ChannelListPage();
@@ -39,7 +37,7 @@ describe('channel list form', function() {
   });
 
   it('should allow default channel to be edited', function () {
-    expect(page.getEditChannelButton(defaults.channelName).isDisplayed()).toBe(true);
+    expect(page.getEditChannelButton(blog.name).isDisplayed()).toBe(true);
   });
 
   var navigateToPage = function() {
@@ -49,9 +47,8 @@ describe('channel list form', function() {
   var expectBaseChannel = function() {
     expect(page.channels.count()).toBe(1);
     page.expectChannel({
-      name: defaults.channelName,
-      price: blog.basePrice,
-      description: defaults.channelDescription
+      name: blog.name,
+      price: blog.basePrice
     });
   };
 });

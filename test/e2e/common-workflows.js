@@ -1,7 +1,6 @@
 (function(){
   'use strict';
 
-  var Defaults = require('./defaults.js');
   var HomePage = require('./pages/home.page.js');
   var SignInPage = require('./pages/sign-in.page.js');
   var CreateBlogPage = require('./pages/creators/create-blog.page.js');
@@ -13,14 +12,11 @@
   var ChannelListPage = require('./pages/creators/channel-list.page.js');
   var ChannelAddPage = require('./pages/creators/channel-add.page.js');
   var ChannelEditPage = require('./pages/creators/channel-edit.page.js');
-  var CollectionListPage = require('./pages/creators/collection-list.page.js');
-  var CollectionAddPage = require('./pages/creators/collection-add.page.js');
-  var ComposeNotePage = require('./pages/creators/compose/compose-note.page.js');
-  var ComposeFilePage = require('./pages/creators/compose/compose-file.page.js');
-  var ComposeImagePage = require('./pages/creators/compose/compose-image.page.js');
+  var QueueListPage = require('./pages/creators/queue-list.page.js');
+  var QueueAddPage = require('./pages/creators/queue-add.page.js');
+  var ComposePostPage = require('./pages/creators/compose/compose-post.page.js');
   var CreatorLandingPagePage = require('./pages/creators/creator-landing-page.page.js');
 
-  var defaults = new Defaults();
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
   var createBlogPage = new CreateBlogPage();
@@ -32,11 +28,9 @@
   var channelListPage = new ChannelListPage();
   var channelAddPage = new ChannelAddPage();
   var channelEditPage = new ChannelEditPage();
-  var collectionListPage = new CollectionListPage();
-  var collectionAddPage = new CollectionAddPage();
-  var composeNotePage = new ComposeNotePage();
-  var composeFilePage = new ComposeFilePage();
-  var composeImagePage = new ComposeImagePage();
+  var queueListPage = new QueueListPage();
+  var queueAddPage = new QueueAddPage();
+  var composePostPage = new ComposePostPage();
   var creatorLandingPage = new CreatorLandingPagePage();
 
   var CommonWorkflows = function() {};
@@ -88,7 +82,6 @@
     }},
 
     setChannelPrice: { value: function(price, channelName){
-      channelName = channelName || defaults.channelName;
       sidebar.channelsLink.click();
       channelListPage.getEditChannelButton(channelName).click();
       channelEditPage.setPrice(price);
@@ -145,82 +138,94 @@
         hidden: []
       };
 
-      result.hidden.push(this.createChannel({hiddenCheckbox: true}));
-      result.hidden.push(this.createChannel({hiddenCheckbox: true}));
-      result.visible.push(this.createChannel({hiddenCheckbox: false}));
-      result.visible.push(this.createChannel({hiddenCheckbox: false}));
+      result.hidden.push(this.createChannel({hiddenCheckbox: true, nameTextBox: 'ZZZ1'}));
+      result.hidden.push(this.createChannel({hiddenCheckbox: true, nameTextBox: 'ZZZ2'}));
+      result.visible.push(this.createChannel({hiddenCheckbox: false, nameTextBox: 'ZZZ3'}));
+      result.visible.push(this.createChannel({hiddenCheckbox: false, nameTextBox: 'ZZZ4'}));
 
       return result;
     }},
 
-    createCollection: { value: function(channelNames) {
-      sidebar.collectionsLink.click();
-      collectionListPage.addCollectionButton.click();
+    createQueue: { value: function() {
+      sidebar.queuesLink.click();
+      queueListPage.addQueueButton.click();
       browser.waitForAngular();
 
-      return collectionAddPage.submitSuccessfully(channelNames || [defaults.channelName]);
+      return queueAddPage.submitSuccessfully();
     }},
 
-    createNamedCollection: { value: function(channelName, newCollectionName) {
-      sidebar.collectionsLink.click();
-      collectionListPage.addCollectionButton.click();
+    createNamedQueue: { value: function(newQueueName) {
+      sidebar.queuesLink.click();
+      queueListPage.addQueueButton.click();
       browser.waitForAngular();
 
-      return collectionAddPage.submitCollectionSuccessfully(channelName || defaults.channelName, newCollectionName);
+      return queueAddPage.submitQueueSuccessfully(newQueueName);
     }},
 
-    postNoteNow: { value: function(channelName) {
+    postNoteNow: { value: function(channelIndex) {
       sidebar.postsLink.click();
-      composeOptionsPage.noteLink.click();
-      return composeNotePage.postNow(channelName);
+      composeOptionsPage.postLink.click();
+      return composePostPage.postNow(true, undefined, undefined, channelIndex);
     }},
 
-    postNoteOnDate: { value: function(channelName) {
+    postNoteOnDate: { value: function(channelIndex) {
       sidebar.postsLink.click();
-      composeOptionsPage.noteLink.click();
-      return composeNotePage.postOnDate(channelName);
+      composeOptionsPage.postLink.click();
+      return composePostPage.postOnDate(true, undefined, undefined, channelIndex);
     }},
 
-    postNoteOnPastDate: { value: function(channelName) {
+    postNoteOnPastDate: { value: function(channelIndex) {
       sidebar.postsLink.click();
-      composeOptionsPage.noteLink.click();
-      return composeNotePage.postOnPastDate(channelName);
+      composeOptionsPage.postLink.click();
+      return composePostPage.postOnPastDate(true, undefined, undefined, channelIndex);
     }},
 
-    postFileNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
+    postFileNow: { value: function(filePath, channelIndex) {
       sidebar.postsLink.click();
-      composeOptionsPage.fileLink.click();
-      return composeFilePage.postNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      composeOptionsPage.postLink.click();
+      return composePostPage.postNow(true, filePath, undefined, channelIndex);
     }},
 
-    postFileOnDate: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
+    postFileOnDate: { value: function(filePath, channelIndex) {
       sidebar.postsLink.click();
-      composeOptionsPage.fileLink.click();
-      return composeFilePage.postOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      composeOptionsPage.postLink.click();
+      return composePostPage.postOnDate(true, filePath, undefined, channelIndex);
     }},
 
-    postFileToQueue: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
+    postFileToQueue: { value: function(filePath, channelIndex, queueIndex) {
       sidebar.postsLink.click();
-      composeOptionsPage.fileLink.click();
-      return composeFilePage.postToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      composeOptionsPage.postLink.click();
+      return composePostPage.postToQueue(true, filePath, undefined, channelIndex, queueIndex);
     }},
 
-    postImageNow: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
+    postImageNow: { value: function(filePath, channelIndex) {
       sidebar.postsLink.click();
-      composeOptionsPage.imageLink.click();
-      return composeImagePage.postNow(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      composeOptionsPage.postLink.click();
+      return composePostPage.postNow(true, undefined, filePath, channelIndex);
     }},
 
-    postImageOnDate: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
+    postImageOnDate: { value: function(filePath, channelIndex) {
       sidebar.postsLink.click();
-      composeOptionsPage.imageLink.click();
-      return composeImagePage.postOnDate(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      composeOptionsPage.postLink.click();
+      return composePostPage.postOnDate(true, undefined, filePath, channelIndex);
     }},
 
-    postImageToQueue: { value: function(filePath, collectionName, channelName, createCollection, isFirstCollection) {
+    postImageToQueue: { value: function(filePath, channelIndex, queueIndex) {
       sidebar.postsLink.click();
-      composeOptionsPage.imageLink.click();
-      return composeImagePage.postToQueue(filePath, collectionName, channelName, createCollection, isFirstCollection);
+      composeOptionsPage.postLink.click();
+      return composePostPage.postToQueue(true, undefined, filePath, channelIndex, queueIndex);
+    }},
+
+    postImageAndFileNow: { value: function(filePath, imagePath, channelIndex) {
+      sidebar.postsLink.click();
+      composeOptionsPage.postLink.click();
+      return composePostPage.postNow(true, filePath, imagePath, channelIndex);
+    }},
+
+    postImageAndFileToQueue: { value: function(filePath, imagePath, channelIndex, queueIndex) {
+      sidebar.postsLink.click();
+      composeOptionsPage.postLink.click();
+      return composePostPage.postToQueue(true, filePath, imagePath, channelIndex, queueIndex);
     }}
   });
 

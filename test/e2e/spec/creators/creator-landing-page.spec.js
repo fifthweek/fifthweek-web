@@ -2,7 +2,6 @@
   'use strict';
 
   var _ = require('lodash');
-  var Defaults = require('../../defaults.js');
   var TestKit = require('../../test-kit.js');
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
@@ -18,7 +17,6 @@
     var userRegistration;
     var visibleChannels = [];
 
-    var defaults = new Defaults();
     var testKit = new TestKit();
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
@@ -87,7 +85,7 @@
 
     describe('after creating a blog', function() {
       describeForCreatorAndUserAndLoggedOutUser(function(){
-        headerCreator.includeTests(function() { return blog; }, function() { return defaults.introduction });
+        headerCreator.includeTests(function() { return blog; }, function() { return ''; });
       });
     });
 
@@ -97,7 +95,7 @@
         navigateToPage();
       });
 
-      headerCreator.includeTests(function() { return blog; }, function() { return defaults.introduction });
+      headerCreator.includeTests(function() { return blog; }, function() { return ''; });
     });
 
     describe('more info', function() {
@@ -161,8 +159,7 @@
     describe('channel list', function() {
       it('should display the default channel', function() {
         visibleChannels.push({
-          name: defaults.channelName,
-            description: defaults.channelDescription,
+          name: blog.name,
           price: blog.basePrice
         });
 
@@ -180,11 +177,9 @@
           for (var i = 0; i < visibleChannels.length; i++) {
             var channel = page.getChannel(i);
             var channelName = channel.element(by.css('.channel-name'));
-            var channelDescription = channel.element(by.css('.channel-description'));
             var channelPrice = channel.element(by.css('.channel-price'));
 
             expect(channelName.getText()).toContain(visibleChannels[i].name);
-            expect(channelDescription.getText()).toContain(visibleChannels[i].description);
             expect(channelPrice.getText()).toContain('$' + visibleChannels[i].price);
           }
         });
@@ -203,27 +198,23 @@
       describe('total price', function() {
         var priceSum;
 
-        it('should equal the default channel price by default', function() {
-          expectPrice(blog.basePrice);
+        it('should equal the sum of all channel prices by default', function() {
+          priceSum = _.sum(visibleChannels, function(v){ return parseFloat(v.price); }).toFixed(2);
+          expectPrice(priceSum);
         });
 
-        it('should always include the default channel price (it may not be deselected)', function() {
-          page.getChannelPrice(0).click();
-          expectPrice(blog.basePrice);
-        });
-
-        it('should sum all selected channels as they are selected', function() {
-          priceSum = blog.basePrice;
-          for (var i = 1; i < visibleChannels.length; i++) {
-            priceSum = (parseFloat(priceSum) + parseFloat(visibleChannels[i].price)).toFixed(2);
+        it('should sum all selected channels as they are deselected', function() {
+          for (var i = 0; i < visibleChannels.length; i++) {
+            priceSum = (parseFloat(priceSum) - parseFloat(visibleChannels[i].price)).toFixed(2);
             page.getChannelPrice(i).click();
             expectPrice(priceSum);
           }
         });
 
-        it('should sum all selected channels as they are deselected', function() {
-          for (var i = 1; i < visibleChannels.length; i++) {
-            priceSum = (parseFloat(priceSum) - parseFloat(visibleChannels[i].price)).toFixed(2);
+        it('should sum all selected channels as they are selected', function() {
+          priceSum = 0;
+          for (var i = 0; i < visibleChannels.length; i++) {
+            priceSum = (parseFloat(priceSum) + parseFloat(visibleChannels[i].price)).toFixed(2);
             page.getChannelPrice(i).click();
             expectPrice(priceSum);
           }

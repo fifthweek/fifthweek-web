@@ -10,8 +10,8 @@
   <img ng-if="post.image && !post.renderSizeRatio" class="full-width-image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
 
   <div ng-if="post.isScheduled">
-    <p class="tag" ng-if="!post.scheduledByQueue">Scheduled, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
-    <p class="tag" ng-if="post.scheduledByQueue">Queued, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
+    <p class="tag" ng-if="!post.queueId">Scheduled, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
+    <p class="tag" ng-if="post.queueId">Queued, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
   </div>
 
   <div class="text text-standard-border" ng-if="post.comment || post.fileSource">
@@ -42,18 +42,10 @@
         <ul>
           <li>
             <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.creator.username}}</a>
-            <span ng-if="post.collection">
-              in
-              <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.collection, key: post.collectionId })" class="container-name">
-                {{post.collection.name}}
-              </a>
-            </span>
-            <span ng-if="!post.collection">
-              to
-               <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
-                 {{post.channel.isDefault ? 'Everyone' : post.channel.name}}
-               </a>
-            </span>
+            to
+             <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
+               {{post.channel.isDefault ? 'Everyone' : post.channel.name}}
+             </a>
           </li>
           <li>
             <a ng-if="post.isOwner" ng-click="editPost(post)" class="live-in-info live-in-link">

@@ -3,12 +3,12 @@
 
   var TestKit = require('../test-kit.js');
   var CommonWorkflows = require('../common-workflows.js');
-  var CreatorNameInputPage = require('./creator-name-input.page');
+  var CommentInputPage = require('./comment-input.page');
   var UsernameInputPage = require('./username-input.page');
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
-  var creatorNameInputPage = new CreatorNameInputPage();
+  var commentInputPage = new CommentInputPage();
   var usernameInputPage = new UsernameInputPage();
 
   var signInWorkflowPage = function() {};
@@ -16,9 +16,8 @@
   signInWorkflowPage.prototype = Object.create({}, {
 
     emailTextBoxId: { get: function () { return 'input-email'; }},
-    nameTextBoxId: { get: function () { return 'model-input-name'; }},
+    messageTextBoxId: { get: function () { return 'model-input-message'; }},
     emailTextBox: { get: function(){ return element(by.id('input-email')); }},
-    nameTextBox: { get: function(){ return element(by.id('input-username')); }},
     registerButton: { get: function(){ return element(by.id('register-button')); }},
 
     cancelButton: { get: function(){ return element(by.id('modal-cross-button')); }},
@@ -48,7 +47,7 @@
       var email = this.newEmail(name);
 
       return {
-        name: name,
+        message: name,
         email: email
       };
     }},
@@ -57,11 +56,11 @@
       return this.registerSuccessfullyWithData(registration);
     }},
     registerSuccessfullyWithData: { value: function(registration) {
-      var name = registration.name;
+      var message = registration.message;
       var email = registration.email;
 
       testKit.setValue(this.emailTextBoxId, email);
-      testKit.setValue(this.nameTextBoxId, name);
+      testKit.setValue(this.messageTextBoxId, message);
       this.registerButton.click();
       browser.waitForAngular();
 
@@ -71,12 +70,12 @@
     runTests: { value: function(navigateToWorkflow){
       var page = this;
       var email;
-      var name;
+      var message;
       var navigateToPage = function() {
         navigateToWorkflow();
         var userRegistration = page.newRegistrationData();
         email = userRegistration.email;
-        name = userRegistration.name;
+        message = userRegistration.message;
       };
 
       it('should run once before all', function(){
@@ -94,12 +93,12 @@
           page.dismissButton.click();
         });
 
-        it('should allow a new user to register', function(){
-          testKit.setValue(page.nameTextBoxId, name);
+        it('should allow feedback to be sent', function(){
+          testKit.setValue(page.messageTextBoxId, message);
           testKit.setValue(page.emailTextBoxId, email);
         });
 
-        creatorNameInputPage.includeHappyPaths(page.nameTextBoxId, function() {
+        commentInputPage.includeHappyPaths(page.messageTextBoxId, function() {
           testKit.setValue(page.emailTextBoxId, email);
         });
       });
@@ -116,15 +115,7 @@
           navigateToPage();
         });
 
-        it('requires email address', function(){
-          testKit.setValue(page.nameTextBoxId, name);
-          page.registerButton.click();
-
-          testKit.assertSingleValidationMessage(page.helpMessages,
-            'A valid email address is required.');
-        });
-
-        creatorNameInputPage.includeSadPaths(page.nameTextBoxId, page.registerButton, page.helpMessages, function() {
+        commentInputPage.includeSadPaths(page.messageTextBoxId, page.registerButton, page.helpMessages, function() {
           testKit.setValue(page.emailTextBoxId, email);
         });
       });

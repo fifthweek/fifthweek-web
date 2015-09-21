@@ -21,8 +21,7 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
 
   vanityUrl: { get: function() { return element(by.css('#vanity-url a')); }},
   nameTextBoxId: { value: 'model-settings-name' },
-  taglineTextBoxId: { value: 'model-settings-tagline' },
-  introductionTextBoxId: { value: 'introduction' },
+  introductionTextBoxId: { value: 'model-settings-introduction' },
 
   headerImage: { get: function(){ return element(by.css('.available-image')); }},
   noHeaderImage: { get: function(){ return element(by.css('.blank-area')); }},

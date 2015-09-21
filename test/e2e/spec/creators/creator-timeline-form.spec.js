@@ -11,7 +11,7 @@
 
   describe('creator-timeline form', function() {
 
-    var collectionName = 'Cats';
+    var queueName = 'Cats';
     var filePath = '../../../sample-image-tiny.jpg';
     var filePathTiff = '../../../sample-image-tiny.tif';
 
@@ -45,6 +45,7 @@
     };
 
     var runTests = function(navigateToPage, navigateToSite){
+
       describe('when posting many posts', function(){
 
         it('should run once before all', function() {
@@ -52,7 +53,7 @@
           registration = context.registration;
           blog = context.blog;
 
-          commonWorkflows.createNamedCollection(undefined, collectionName);
+          commonWorkflows.createNamedQueue(queueName);
           navigateToPage();
         });
 
@@ -83,42 +84,42 @@
 
         it('should show the post after posting a file now', function () {
           navigateToSite();
-          commonWorkflows.postFileNow(filePath, collectionName);
+          commonWorkflows.postFileNow(filePath);
           navigateToPage();
           expect(post.allPosts.count()).toBe(2);
         });
 
         it('should not show the post after posting a file on a date', function () {
           navigateToSite();
-          commonWorkflows.postFileOnDate(filePath, collectionName);
+          commonWorkflows.postFileOnDate(filePath);
           navigateToPage();
           expect(post.allPosts.count()).toBe(2);
         });
 
         it('should not show the post after posting a file to the queue', function () {
           navigateToSite();
-          commonWorkflows.postFileToQueue(filePath, collectionName);
+          commonWorkflows.postFileToQueue(filePath);
           navigateToPage();
           expect(post.allPosts.count()).toBe(2);
         });
 
         it('should show the post after posting a image now', function () {
           navigateToSite();
-          commonWorkflows.postImageNow(filePath, collectionName);
+          commonWorkflows.postImageNow(filePath);
           navigateToPage();
           expect(post.allPosts.count()).toBe(3);
         });
 
         it('should not show the post after posting a image on a date', function () {
           navigateToSite();
-          commonWorkflows.postImageOnDate(filePath, collectionName);
+          commonWorkflows.postImageOnDate(filePath);
           navigateToPage();
           expect(post.allPosts.count()).toBe(3);
         });
 
         it('should not show the post after posting a image to the queue', function () {
           navigateToSite();
-          commonWorkflows.postImageToQueue(filePath, collectionName);
+          commonWorkflows.postImageToQueue(filePath);
           navigateToPage();
           expect(post.allPosts.count()).toBe(3);
         });
@@ -162,9 +163,7 @@
         targetPost = targetPost || post;
         navigateToSite();
         navigateToPage();
-        //testKit.scrollIntoView(targetPost.moreActionsButton);
         targetPost.moreActionsButton.click();
-        //testKit.scrollIntoView(targetPost.editPostLink);
         targetPost.editPostLink.click();
         testKit.waitForElementToDisplay(editPostDialogPage.expandButton);
       };
@@ -182,7 +181,6 @@
           displayEditModal,
           refresh);
       };
-
 
       var testEditToQueue= function(inputData){
         editPostDialogPage.describeEditingPostToQueue(
@@ -210,60 +208,41 @@
           registration = context.registration;
           blog = context.blog;
 
+          inputData.blog = blog;
           inputData.registration = registration;
-          commonWorkflows.createNamedCollection(undefined, collectionName);
+          commonWorkflows.createNamedQueue(queueName);
           navigateToPage();
         });
 
-        it('should show the post after posting a note now', function () {
+        it('should show the post after posting a comment post now', function () {
           navigateToSite();
           var postData = inputData.postData = commonWorkflows.postNoteNow();
           navigateToPage();
-          post.expectNotePost(postData, registration, navigateToPage);
+          post.expectPost(blog, postData, registration, navigateToPage);
         });
 
         testEditingContent(inputData);
         testDeletion();
 
-        it('should show the post after posting a file now', function () {
+        it('should show the post after posting a multimedia post now', function () {
           navigateToSite();
-          var postData = inputData.postData = commonWorkflows.postFileNow(filePath, collectionName);
+          var postData = inputData.postData = commonWorkflows.postImageAndFileNow(filePathTiff, filePath);
           navigateToPage();
-          post.expectFilePost(postData, registration, navigateToPage);
+          post.expectPost(blog, postData, registration, navigateToPage);
         });
 
         testEditingContent(inputData);
-        testDeletion();
-
-        it('should show the post after posting a image now', function () {
-          navigateToSite();
-          var postData = inputData.postData = commonWorkflows.postImageNow(filePath, collectionName);
-          navigateToPage();
-          post.expectImagePost(postData, registration, navigateToPage);
-        });
-
-        testEditingContent(inputData);
-        testDeletion();
-
-        it('should show the post after posting a TIFF image now', function () {
-          navigateToSite();
-          var postData = inputData.postData = commonWorkflows.postImageNow(filePathTiff, collectionName);
-          navigateToPage();
-          post.expectNonViewableImagePost(postData, registration, navigateToPage);
-        });
-
-        testEditingContent(inputData);
-        testEditToQueue();
+        testEditToQueue(inputData);
 
         it('should show the post after posting a note to the past', function () {
           navigateToSite();
           var postData = inputData.postData = commonWorkflows.postNoteOnPastDate();
           navigateToPage();
-          post.expectNotePost(postData, registration, navigateToPage);
+          post.expectPost(blog, postData, registration, navigateToPage);
         });
 
         testEditingContent(inputData);
-        testEditToFutureDate();
+        testEditToFutureDate(inputData);
       });
 
       describe('when reordering posts', function(){
@@ -272,7 +251,7 @@
           registration = context.registration;
           blog = context.blog;
 
-          commonWorkflows.createNamedCollection(undefined, collectionName);
+          commonWorkflows.createNamedQueue(queueName);
 
           var post1 = new PostPage(false, 0);
           var post2 = new PostPage(false, 1);

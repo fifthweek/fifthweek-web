@@ -121,6 +121,9 @@ angular.module('webApp').controller('composePostCtrl',
           if(queues.length > 0){
             model.input.selectedQueue = queues[0];
           }
+          else{
+            model.postToQueue = false;
+          }
         })
         .catch(function(error){
           return errorFacade.handleError(error, function(message) {

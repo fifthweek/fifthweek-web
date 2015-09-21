@@ -27,7 +27,7 @@ ChannelListPage.prototype = Object.create({}, {
     var channelDescription = element.element(by.css('.channel-description'));
 
     expect(channelName.getText()).toBe(channelData.name);
-    expect(channelDescription.getText()).toContain(channelData.description);
+    expect(channelDescription.getText()).toContain('$' + channelData.price + '/week');
   }},
   waitForPage: { value: function() {
     var self = this;

@@ -1,37 +1,31 @@
 var _ = require('lodash');
-var Defaults = require('../../defaults.js');
 var TestKit = require('../../test-kit.js');
 var CommonWorkflows = require('../../common-workflows.js');
-var CollectionNameInputPage = require('../../pages/collection-name-input.page.js');
-var ChannelSelectInputPage = require('../../pages/channel-select-input.page.js');
+var QueueNameInputPage = require('../../pages/queue-name-input.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
-var CollectionListPage = require('../../pages/creators/collection-list.page.js');
-var CollectionAddPage = require('../../pages/creators/collection-add.page.js');
+var QueueListPage = require('../../pages/creators/queue-list.page.js');
+var QueueAddPage = require('../../pages/creators/queue-add.page.js');
 
-describe('add collection form', function() {
+describe('add queue form', function() {
   'use strict';
 
   var registration;
   var blog;
-  var defaultChannelSelectText = 'Share with everyone';
 
-  var collectionCount = 0;
-  var defaults = new Defaults();
+  var queueCount = 0;
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
-  var collectionNameInputPage = new CollectionNameInputPage();
-  var channelSelectInputPage = new ChannelSelectInputPage();
+  var queueNameInputPage = new QueueNameInputPage();
   var sidebar = new SidebarPage();
-  var collectionListPage = new CollectionListPage();
-  var page = new CollectionAddPage();
+  var queueListPage = new QueueListPage();
+  var page = new QueueAddPage();
 
   var inputs;
   var getInputs = function() {
     return inputs;
   };
   var initialValues = {
-    nameTextBox: '',
-    channelSelect: defaultChannelSelectText
+    nameTextBox: ''
   };
 
   it('should run once before all', function() {
@@ -39,15 +33,14 @@ describe('add collection form', function() {
     registration = context.registration;
     blog = context.blog;
 
-    var channelNames = [ defaults.channelName ];
+    var channelNames = [ blog.name ];
     channelNames.push(commonWorkflows.createChannel().name);
     channelNames.push(commonWorkflows.createChannel().name);
 
-    var channelSelectTexts = channelSelectInputPage.mapToSelectTexts(channelNames);
-    inputs = page.inputs(channelSelectTexts);
+    inputs = page.inputs();
 
-    sidebar.collectionsLink.click();
-    collectionListPage.addCollectionButton.click();
+    sidebar.queuesLink.click();
+    queueListPage.addQueueButton.click();
   });
 
   it('should initialise with an empty form', function() {
@@ -59,8 +52,8 @@ describe('add collection form', function() {
 
     page.cancelButton.click();
 
-    expect(collectionListPage.collections.count()).toBe(collectionCount);
-    collectionListPage.addCollectionButton.click();
+    expect(queueListPage.queues.count()).toBe(queueCount);
+    queueListPage.addQueueButton.click();
   });
 
   it('should allow user to cancel when form is invalid', function() {
@@ -68,8 +61,8 @@ describe('add collection form', function() {
 
     page.cancelButton.click();
 
-    expect(collectionListPage.collections.count()).toBe(collectionCount);
-    collectionListPage.addCollectionButton.click();
+    expect(queueListPage.queues.count()).toBe(queueCount);
+    queueListPage.addQueueButton.click();
   });
 
   describe('on successful submission', function() {
@@ -78,7 +71,7 @@ describe('add collection form', function() {
     it('should run once before all', function() {
       newFormValues = testKit.setFormValues(page, inputs);
       page.createButton.click();
-      collectionCount++;
+      queueCount++;
     });
 
     it('should persist the changes', function() {
@@ -87,7 +80,7 @@ describe('add collection form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.collectionsLink.click();
+      sidebar.queuesLink.click();
 
       expectChangesAppliedAndNavigateToPage(newFormValues);
     });
@@ -98,11 +91,11 @@ describe('add collection form', function() {
 
     afterEach(function() {
       page.createButton.click();
-      collectionCount++;
+      queueCount++;
       expectChangesAppliedAndNavigateToPage(newFormValues);
     });
 
-    testKit.includeHappyPaths(page, collectionNameInputPage, 'nameTextBox', getInputs, function(generatedFormValues) {
+    testKit.includeHappyPaths(page, queueNameInputPage, 'nameTextBox', getInputs, function(generatedFormValues) {
       newFormValues = generatedFormValues;
     });
   });
@@ -112,20 +105,19 @@ describe('add collection form', function() {
       commonWorkflows.fastRefresh();
     });
 
-    testKit.includeSadPaths(page, page.createButton, page.helpMessages, collectionNameInputPage, 'nameTextBox', getInputs);
+    testKit.includeSadPaths(page, page.createButton, page.helpMessages, queueNameInputPage, 'nameTextBox', getInputs);
   });
 
   var expectChangesAppliedAndNavigateToPage = function(newFormValues) {
-    collectionListPage.waitForPage();
-    expect(collectionListPage.collections.count()).toBe(collectionCount);
+    queueListPage.waitForPage();
+    expect(queueListPage.queues.count()).toBe(queueCount);
 
-    var collection = {
-      name: newFormValues.nameTextBox,
-      channelName: channelSelectInputPage.mapToChannelName(newFormValues.channelSelect)
+    var queue = {
+      name: newFormValues.nameTextBox
     };
 
-    collectionListPage.expectCollection(collection);
+    queueListPage.expectQueue(queue);
 
-    collectionListPage.addCollectionButton.click();
+    queueListPage.addQueueButton.click();
   };
 });

@@ -1,19 +1,12 @@
 angular.module('webApp')
   .factory('queueService',
-  function(blogRepositoryFactory, queueStub, initializer) {
+  function(queueStub) {
     'use strict';
 
     var service = {};
-    var internal = service.internal = {};
 
-    internal.initialize = function(){
-      internal.blogRepository = blogRepositoryFactory.forCurrentUser();
-    };
-
-    initializer.initialize(internal.initialize);
-
-    service.createQueueFromName = function(queueName) {
-      return internal.blogRepository.getBlog()
+    service.createQueueFromName = function(queueName, blogRepository) {
+      return blogRepository.getBlog()
         .then(function(blog){
           return queueStub
             .postQueue({
@@ -27,7 +20,7 @@ angular.module('webApp')
             name: queueName,
             weeklyReleaseSchedule: [ response.data.defaultWeeklyReleaseTime ]
           };
-          return internal.blogRepository.createQueue(queue)
+          return blogRepository.createQueue(queue)
             .then(function(){
               return queue.queueId;
             }
@@ -36,22 +29,20 @@ angular.module('webApp')
       );
     };
 
-    service.updateQueue = function(queueId, queueData) {
+    service.updateQueue = function(queueId, queueData, blogRepository) {
       return queueStub.putQueue(queueId, queueData)
         .then(function() {
-          var queue = {
-            queueId: queueId,
-            name: queueData.name,
-            weeklyReleaseSchedule: queueData.weeklyReleaseSchedule
-          };
-          return internal.blogRepository.updateQueue(queue);
+          return blogRepository.updateQueue(queueId, function(queue) {
+            queue.name = queueData.name;
+            queue.weeklyReleaseSchedule = queueData.weeklyReleaseSchedule;
+          });
         });
     };
 
-    service.deleteQueue = function(queueId) {
+    service.deleteQueue = function(queueId, blogRepository) {
       return queueStub.deleteQueue(queueId)
         .then(function() {
-          return internal.blogRepository.deleteQueue(queueId);
+          return blogRepository.deleteQueue(queueId);
         });
     };
 

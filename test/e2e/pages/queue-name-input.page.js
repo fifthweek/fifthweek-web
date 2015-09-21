@@ -3,31 +3,31 @@
 var TestKit = require('../test-kit.js');
 var testKit = new TestKit();
 
-var CollectionNameInputPage = function() {};
+var QueueNameInputPage = function() {};
 
-CollectionNameInputPage.prototype = Object.create({},
+QueueNameInputPage.prototype = Object.create({},
   {
     newName: { value: function() {
-      return 'Collection ' + Math.round(Math.random() * 100000);
+      return 'Queue ' + Math.round(Math.random() * 100000);
     }},
     // All happy paths in a suite typically share the same post-condition, which can be extracted into a afterEach.
     // This is why button clicks and expectations are not set here.
     includeHappyPaths: { value: function(applyValue) {
       var self = this;
 
-      it('should allow collection names with 1 characters or more', function(){
+      it('should allow queue names with 1 characters or more', function(){
         applyValue('1');
       });
 
-      it('should allow collection names with punctuation', function(){
+      it('should allow queue names with punctuation', function(){
         applyValue(testKit.punctuation33);
       });
 
-      it('should allow collection names with numbers', function(){
+      it('should allow queue names with numbers', function(){
         applyValue('1234567890');
       });
 
-      it('should allow collection names with trailing and leading whitespace', function(){
+      it('should allow queue names with trailing and leading whitespace', function(){
         var normalizedValue = self.newName();
         applyValue(' ' + normalizedValue + ' ', normalizedValue);
       });
@@ -35,7 +35,7 @@ CollectionNameInputPage.prototype = Object.create({},
     includeSadPaths: { value: function(inputId, button, helpMessages, isOptional) {
 
       if(!isOptional) {
-        it('requires collection name', function () {
+        it('requires queue name', function () {
           testKit.clear(inputId);
 
           button.click();
@@ -44,7 +44,7 @@ CollectionNameInputPage.prototype = Object.create({},
         });
       }
 
-      it('should not allow collection names with over than 50 characters', function(){
+      it('should not allow queue names with over than 50 characters', function(){
         var maxLength = 50;
         var overSizedValue = new Array(maxLength + 2).join('x'); // Produces maxLength+1 chars
 
@@ -57,4 +57,4 @@ CollectionNameInputPage.prototype = Object.create({},
     }}
   });
 
-module.exports = CollectionNameInputPage;
+module.exports = QueueNameInputPage;

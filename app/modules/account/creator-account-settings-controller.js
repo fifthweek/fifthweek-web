@@ -55,7 +55,7 @@ angular.module('webApp')
       var userId = accountSettingsRepository.getUserId();
       return accountSettingsStub
         .putCreatorInformation(userId, {
-          name: model.accountSettings.name
+          //name: model.accountSettings.name
         })
         .then(function() {
           return accountSettingsRepository.setAccountSettings(model.accountSettings);

@@ -5,7 +5,7 @@
   var HomePage = require('../pages/home.page.js');
   var PricingPage = require('../pages/pricing.page.js');
   var HeaderInformationPage = require('../pages/header-information.page.js');
-  var CurrentPage = require('../pages/register-interest-workflow.page.js');
+  var CurrentPage = require('../pages/submit-feedback-workflow.page.js');
 
   describe("register interest form", function () {
     'use strict';

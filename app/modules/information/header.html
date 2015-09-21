@@ -8,7 +8,7 @@
     </div>
     <div id="info-page-navbar" class="navbar-collapse collapse">
       <ul ng-if="!isAuthenticated" class="nav navbar-nav navbar-right">
-        <li class="btn-navbar-li"><fw-register-interest-button class="btn-navbar btn-navbar-register" mode="register" call-to-action="Create free account" id="create-free-account-link"></fw-register-interest-button></li>
+        <li class="btn-navbar-li"><fw-submit-feedback-button class="btn-navbar btn-navbar-register" call-to-action="Create free account" id="create-free-account-link"></fw-submit-feedback-button></li>
         <li><a id="sign-in-link" ui-sref="signIn">Sign in</a></li>
       </ul>
       <ul ng-if="isAuthenticated" class="nav navbar-nav navbar-right">

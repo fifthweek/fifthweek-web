@@ -41,6 +41,7 @@ angular.module('webApp')
       savedScheduleMode: scheduleMode,
       savedDate: liveDate,
       queuedLiveDate: undefined,
+      channelId: post.channelId,
       input: {
         comment: post.comment,
         image: post.image,
@@ -98,9 +99,14 @@ angular.module('webApp')
               model.input.selectedQueue = queues[0];
             }
 
-            $scope.$watch('model.input.selectedQueue', function(){
-              return composeUtilities.updateEstimatedLiveDate(model);
+            $scope.$watch('model.input.selectedQueue', function(newValue, oldValue){
+              if(newValue !== oldValue) {
+                model.input.scheduleMode = scheduleModes.queued;
+                return composeUtilities.updateEstimatedLiveDate(model);
+              }
             });
+
+            return composeUtilities.updateEstimatedLiveDate(model);
           }
         })
         .catch(function(error){

@@ -1,10 +1,6 @@
 (function(){
   'use strict';
 
-  var Defaults = require('../defaults.js');
-
-  var defaults = new Defaults();
-
   var PostListInformationPage = function() {};
 
   PostListInformationPage.prototype = Object.create({}, {
@@ -32,14 +28,6 @@
       var indicator = this.getPriceChangeIndicator(index);
       var count = indicator.all(by.css(type)).count();
       expect(count).toBe(1);
-    }},
-    expectBasePriceIncrease: { value: function(index, from, to) {
-      this.expectPriceChangeType(index, '.base-price-increase');
-      this.expectPriceChange(index, from, to);
-    }},
-    expectBasePriceDecrease: { value: function(index, from, to) {
-      this.expectPriceChangeType(index, '.base-price-decrease');
-      this.expectPriceChange(index, from, to);
     }},
     expectChannelPriceIncrease: { value: function(index, from, to) {
       this.expectPriceChangeType(index, '.channel-price-increase');

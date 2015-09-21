@@ -144,149 +144,214 @@ describe('landing page controller', function () {
     });
 
     describe('when subscribe is called', function(){
-      var deferredResult;
-      var error;
-      beforeEach(function(){
-        deferredResult = $q.defer();
-        subscribeService.subscribe.and.returnValue(deferredResult.promise);
+      describe('when no channels are checked', function() {
+        var success;
+        var error;
+        var deferredResult;
+        beforeEach(function(){
+          deferredResult = $q.defer();
+          spyOn($scope, 'unsubscribe').and.returnValue(deferredResult.promise);
 
-        $scope.model.blog = {
-          blogId: 'blogId'
-        };
+          $scope.model.blog = {
+            blogId: 'blogId'
+          };
 
-        $scope.model.channels = [
-          {
-            checked: true,
-            channelId: 'channelId1',
-            price: 10
-          },
-          {
-            checked: false,
-            channelId: 'channelId2',
-            price: 20
-          },
-          {
-            checked: true,
-            channelId: 'channelId3',
-            price: 30
-          }
-        ];
+          $scope.model.channels = [
+            {
+              checked: false,
+              channelId: 'channelId1',
+              price: 10
+            },
+            {
+              checked: false,
+              channelId: 'channelId2',
+              price: 20
+            },
+            {
+              checked: false,
+              channelId: 'channelId3',
+              price: 30
+            }
+          ];
 
-        $scope.model.isSubscribed = false;
-      });
+          $scope.model.isSubscribed = false;
 
-      var testSubscribe = function(){
-        describe('when subscribeService succeeds indicating user subscribed', function(){
-
-          describe('when redirectIfRequired returns true', function(){
-            beforeEach(function(){
-              spyOn(target.internal, 'redirectIfRequired').and.returnValue(true);
-              spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(false);
-              deferredResult.resolve(true);
-              $scope.$apply();
-            });
-
-            it('should not set isSubscribed to true', function(){
-              expect($scope.model.isSubscribed).toBe(false);
-            });
-          });
-
-          describe('when redirectToUnfilteredViewIfRequired returns true', function(){
-            beforeEach(function(){
-              spyOn(target.internal, 'redirectIfRequired').and.returnValue(false);
-              spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(true);
-              deferredResult.resolve(true);
-              $scope.$apply();
-            });
-
-            it('should not set isSubscribed to true', function(){
-              expect($scope.model.isSubscribed).toBe(false);
-            });
-          });
-
-          describe('when redirectIfRequired and redirectToUnfilteredViewIfRequired returns false', function(){
-            beforeEach(function(){
-              spyOn(target.internal, 'redirectIfRequired').and.returnValue(false);
-              spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(false);
-              deferredResult.resolve(true);
-              $scope.$apply();
-            });
-
-            it('should set isSubscribed to true', function(){
-              expect($scope.model.isSubscribed).toBe(true);
-            });
-
-            it('should set channelId to undefined', function(){
-              expect($scope.model.channelId).toBeUndefined();
-            });
-
-            it('should set the current view to the blog', function(){
-              expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
-            });
-          });
+          $scope.subscribe().then(function(){ success = true; }, function(e){ error = e; });
+          $scope.$apply();
         });
 
-        describe('when subscribeService succeeds indicating user has not subscribed', function(){
+        it('should call unsubscribe', function(){
+          expect($scope.unsubscribe).toHaveBeenCalledWith();
+        });
+
+        describe('when unsubscribe succeeds', function(){
           beforeEach(function(){
-            deferredResult.resolve(false);
+            deferredResult.resolve();
             $scope.$apply();
           });
 
-          it('should not set isSubscribed to true', function(){
-            expect($scope.model.isSubscribed).toBe(false);
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
           });
         });
 
-        describe('when subscribeService fails', function(){
+        describe('when unsubscribe fails', function(){
           beforeEach(function(){
             deferredResult.reject('error');
             $scope.$apply();
-          });
-
-          it('should not set isSubscribed to true', function(){
-            expect($scope.model.isSubscribed).toBe(false);
           });
 
           it('should propagate the error', function(){
             expect(error).toBe('error');
           });
         });
-      };
-
-      describe('when user has free access', function(){
-        beforeEach(function(){
-          $scope.model.hasFreeAccess = true;
-          $scope.subscribe().catch(function(e){ error = e; });
-          $scope.$apply();
-        });
-
-        it('should call subscribeService with zero accepted price', function(){
-          expect(subscribeService.subscribe).toHaveBeenCalledWith('blogId', [
-              { channelId: 'channelId1', acceptedPrice: 0 },
-              { channelId: 'channelId3', acceptedPrice: 0 }
-            ]
-          );
-        });
-
-        testSubscribe();
       });
 
-      describe('when user does not have free access', function(){
+      describe('when channels are checked', function(){
+        var deferredResult;
+        var error;
         beforeEach(function(){
-          $scope.model.hasFreeAccess = false;
-          $scope.subscribe().catch(function(e){ error = e; });
-          $scope.$apply();
+          deferredResult = $q.defer();
+          subscribeService.subscribe.and.returnValue(deferredResult.promise);
+
+          $scope.model.blog = {
+            blogId: 'blogId'
+          };
+
+          $scope.model.channels = [
+            {
+              checked: true,
+              channelId: 'channelId1',
+              price: 10
+            },
+            {
+              checked: false,
+              channelId: 'channelId2',
+              price: 20
+            },
+            {
+              checked: true,
+              channelId: 'channelId3',
+              price: 30
+            }
+          ];
+
+          $scope.model.isSubscribed = false;
         });
 
-        it('should call subscribeService with zero accepted price', function(){
-          expect(subscribeService.subscribe).toHaveBeenCalledWith('blogId', [
-              { channelId: 'channelId1', acceptedPrice: 10 },
-              { channelId: 'channelId3', acceptedPrice: 30 }
-            ]
-          );
+        var testSubscribe = function(){
+          describe('when subscribeService succeeds indicating user subscribed', function(){
+
+            describe('when redirectIfRequired returns true', function(){
+              beforeEach(function(){
+                spyOn(target.internal, 'redirectIfRequired').and.returnValue(true);
+                spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(false);
+                deferredResult.resolve(true);
+                $scope.$apply();
+              });
+
+              it('should not set isSubscribed to true', function(){
+                expect($scope.model.isSubscribed).toBe(false);
+              });
+            });
+
+            describe('when redirectToUnfilteredViewIfRequired returns true', function(){
+              beforeEach(function(){
+                spyOn(target.internal, 'redirectIfRequired').and.returnValue(false);
+                spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(true);
+                deferredResult.resolve(true);
+                $scope.$apply();
+              });
+
+              it('should not set isSubscribed to true', function(){
+                expect($scope.model.isSubscribed).toBe(false);
+              });
+            });
+
+            describe('when redirectIfRequired and redirectToUnfilteredViewIfRequired returns false', function(){
+              beforeEach(function(){
+                spyOn(target.internal, 'redirectIfRequired').and.returnValue(false);
+                spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(false);
+                deferredResult.resolve(true);
+                $scope.$apply();
+              });
+
+              it('should set isSubscribed to true', function(){
+                expect($scope.model.isSubscribed).toBe(true);
+              });
+
+              it('should set channelId to undefined', function(){
+                expect($scope.model.channelId).toBeUndefined();
+              });
+
+              it('should set the current view to the blog', function(){
+                expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
+              });
+            });
+          });
+
+          describe('when subscribeService succeeds indicating user has not subscribed', function(){
+            beforeEach(function(){
+              deferredResult.resolve(false);
+              $scope.$apply();
+            });
+
+            it('should not set isSubscribed to true', function(){
+              expect($scope.model.isSubscribed).toBe(false);
+            });
+          });
+
+          describe('when subscribeService fails', function(){
+            beforeEach(function(){
+              deferredResult.reject('error');
+              $scope.$apply();
+            });
+
+            it('should not set isSubscribed to true', function(){
+              expect($scope.model.isSubscribed).toBe(false);
+            });
+
+            it('should propagate the error', function(){
+              expect(error).toBe('error');
+            });
+          });
+        };
+
+        describe('when user has free access', function(){
+          beforeEach(function(){
+            $scope.model.hasFreeAccess = true;
+            $scope.subscribe().catch(function(e){ error = e; });
+            $scope.$apply();
+          });
+
+          it('should call subscribeService with zero accepted price', function(){
+            expect(subscribeService.subscribe).toHaveBeenCalledWith('blogId', [
+                { channelId: 'channelId1', acceptedPrice: 0 },
+                { channelId: 'channelId3', acceptedPrice: 0 }
+              ]
+            );
+          });
+
+          testSubscribe();
         });
 
-        testSubscribe();
+        describe('when user does not have free access', function(){
+          beforeEach(function(){
+            $scope.model.hasFreeAccess = false;
+            $scope.subscribe().catch(function(e){ error = e; });
+            $scope.$apply();
+          });
+
+          it('should call subscribeService with zero accepted price', function(){
+            expect(subscribeService.subscribe).toHaveBeenCalledWith('blogId', [
+                { channelId: 'channelId1', acceptedPrice: 10 },
+                { channelId: 'channelId3', acceptedPrice: 30 }
+              ]
+            );
+          });
+
+          testSubscribe();
+        });
       });
     });
 
@@ -740,21 +805,55 @@ describe('landing page controller', function () {
           }
         ];
 
-        var subscribedChannels = {
-          'B': { channelId: 'B' },
-          'BH': { channelId: 'BH' },
-          'C': { channelId: 'C' }
-        };
-
         $scope.model = {};
         $scope.model.blog = { channels: channels };
-        $scope.model.subscribedChannels = subscribedChannels;
         $scope.model.hiddenChannels = hiddenChannels;
       });
 
-      describe('when the video url is undefined', function(){
+      describe('when no subscribed channels', function() {
         beforeEach(function(){
-          target.internal.postProcessResults();
+          $scope.model.subscribedChannels = {};
+          target.internal.recalculateChannels();
+        });
+
+        it('should select all visible channels', function(){
+          expect($scope.model.channels).toEqual([
+            {
+              isVisibleToNonSubscribers: true,
+              channelId: 'A',
+              name: 'channel A',
+              price: channelPrice1,
+              subscriptionInformation: undefined,
+              checked: true
+            },
+            {
+              isVisibleToNonSubscribers: true,
+              channelId: 'B',
+              name: 'channel B',
+              price: channelPrice0,
+              subscriptionInformation: undefined,
+              checked: true
+            },
+            {
+              isVisibleToNonSubscribers: true,
+              channelId: 'C',
+              name: 'channel C',
+              price: channelPrice2,
+              subscriptionInformation: undefined,
+              checked: true
+            }
+          ]);
+        });
+      });
+
+      describe('when has subscribed channels', function() {
+        beforeEach(function(){
+          $scope.model.subscribedChannels = {
+            'B': { channelId: 'B' },
+            'BH': { channelId: 'BH' },
+            'C': { channelId: 'C' }
+          };
+          target.internal.recalculateChannels();
         });
 
         it('should expose all visible channels', function(){

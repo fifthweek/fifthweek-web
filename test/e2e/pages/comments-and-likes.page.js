@@ -2,10 +2,8 @@
   'use strict';
 
   var TestKit = require('../test-kit.js');
-  var Defaults = require('../defaults.js');
 
   var testKit = new TestKit();
-  var defaults = new Defaults();
 
   var CommentsAndLikesPage = function(isBacklog, commentIndex) {
     if(commentIndex){

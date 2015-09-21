@@ -89,6 +89,7 @@ angular.module('webApp')
     };
 
     internal.recalculateChannels = function(){
+      var subscribedChannelCount = _.keys($scope.model.subscribedChannels).length;
       var returnedChannels = _.chain($scope.model.blog.channels)
         .map(function(channel) {
           var subscriptionInformation = $scope.model.subscribedChannels[channel.channelId];
@@ -98,7 +99,7 @@ angular.module('webApp')
             name: channel.name,
             price: channel.price,
             subscriptionInformation: subscriptionInformation,
-            checked: !!subscriptionInformation
+            checked: subscribedChannelCount === 0 || !!subscriptionInformation
           };
         });
 
@@ -120,7 +121,7 @@ angular.module('webApp')
       $scope.model.channels = allChannels
         .filter(function(channel){
           // Return channels that are not visible to non-subscribers if user is a subscriber.
-          return channel.isVisibleToNonSubscribers || channel.checked;
+          return channel.isVisibleToNonSubscribers || channel.subscriptionInformation;
         })
         .sortByOrder(['name'], [true])
         .value();
@@ -308,6 +309,10 @@ angular.module('webApp')
           };
         })
         .value();
+
+      if(subscriptions.length === 0){
+        return $scope.unsubscribe();
+      }
 
       return subscribeService.subscribe($scope.model.blog.blogId, subscriptions)
         .then(function(result){

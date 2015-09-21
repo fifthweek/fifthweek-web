@@ -100,10 +100,13 @@ describe('edit queue controller', function () {
     $scope.save();
     $scope.$apply();
 
-    expect(queueService.updateQueue).toHaveBeenCalledWith(queueId, {
-      name: 'name',
-      weeklyReleaseSchedule: [10, 20]
-    });
+    expect(queueService.updateQueue).toHaveBeenCalledWith(
+      queueId,
+      {
+        name: 'name',
+        weeklyReleaseSchedule: [10, 20]
+      },
+      blogRepository);
   });
 
   it('should return to the previous state on save', function() {
@@ -121,7 +124,7 @@ describe('edit queue controller', function () {
     $scope.delete();
     $scope.$apply();
 
-    expect(queueService.deleteQueue).toHaveBeenCalledWith(queueId);
+    expect(queueService.deleteQueue).toHaveBeenCalledWith(queueId, blogRepository);
   });
 
   it('should return to the previous state on delete', function() {

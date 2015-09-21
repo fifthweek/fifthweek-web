@@ -47,8 +47,8 @@ BlogNameInputPage.prototype = Object.create({},
       });
     }
 
-    it('should not allow blog names with over than 25 characters', function(){
-      var maxLength = 25;
+    it('should not allow blog names with over than 50 characters', function(){
+      var maxLength = 50;
       var overSizedValue = new Array(maxLength + 2).join('x'); // Produces maxLength+1 chars
 
       testKit.setValue(inputId, overSizedValue, true);

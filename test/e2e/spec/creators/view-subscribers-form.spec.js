@@ -65,7 +65,7 @@
       var context = commonWorkflows.createBlog();
       creatorRegistration = context.registration;
       blog = context.blog;
-      channel = commonWorkflows.createChannel({ hiddenCheckbox: false });
+      channel = commonWorkflows.createChannel({ hiddenCheckbox: false, nameTextBox: 'ZZZ' });
     });
 
     it('should not contain any subscribers', function(){
@@ -78,6 +78,7 @@
     it('should not display a subscriber when no payment information', function(){
       commonWorkflows.reSignIn(userRegistration1);
       navigateToCreatorLandingPage(creatorRegistration);
+      landingPage.getChannelPrice(1).click(); // Unsubscribe from channel 2
       landingPage.subscribeButton.click();
       navigateFromCreatorLandingPage();
 
@@ -139,6 +140,7 @@
     it('should display subscribed users on guest list', function(){
       commonWorkflows.reSignIn(userRegistration2);
       navigateToCreatorLandingPage(creatorRegistration);
+      landingPage.getChannelPrice(1).click();
       landingPage.subscribeButton.click();
       navigateFromCreatorLandingPage();
 

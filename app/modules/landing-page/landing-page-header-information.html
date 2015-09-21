@@ -35,6 +35,7 @@
                   data-loading-text="Subscribing..."
                   can-submit="true"
                   fw-form-submit="subscribe()"
+                  ng-disabled="model.subscribedChannelCount === 0"
                   error-message="model.errorMessage">
             Subscribe
             <span ng-if="!model.hasFreeAccess"><fw-price value="model.totalPrice"></fw-price></span>

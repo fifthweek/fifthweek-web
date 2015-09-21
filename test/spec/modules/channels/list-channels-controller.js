@@ -36,12 +36,14 @@ describe('channel list controller', function () {
       {
         channelId: 'A',
         name: 'channel A',
-        price: 50
+        price: 50,
+        isVisibleToNonSubscribers: true
       },
       {
         channelId: 'B',
         name: 'channel B',
-        price: 101
+        price: 101,
+        isVisibleToNonSubscribers: false
       }
     ]));
 
@@ -52,12 +54,14 @@ describe('channel list controller', function () {
       {
         id: 'A',
         name: 'channel A',
-        price: 50
+        price: 50,
+        isVisibleToNonSubscribers: true
       },
       {
         id: 'B',
         name: 'channel B',
-        price: 101
+        price: 101,
+        isVisibleToNonSubscribers: false
       }
     ]);
   });

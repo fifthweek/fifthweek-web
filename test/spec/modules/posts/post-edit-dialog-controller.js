@@ -32,6 +32,7 @@ describe('post-edit-dialog-controller', function() {
       imageSource: 'imageSource',
       file: 'file',
       fileSource: 'fileSource',
+      channelId: 'b',
       channel: {
         channelId: 'b'
       },
@@ -100,6 +101,7 @@ describe('post-edit-dialog-controller', function() {
           savedScheduleMode: expectedScheduleMode,
           savedDate: new Date(liveDateString),
           queuedLiveDate: undefined,
+          channelId: 'b',
           input: {
             comment: 'comment',
             image: 'image',
@@ -297,6 +299,10 @@ describe('post-edit-dialog-controller', function() {
             it('should update the estimated live date', function(){
               expect(composeUtilities.updateEstimatedLiveDate).toHaveBeenCalledWith($scope.model);
               expect(composeUtilities.updateEstimatedLiveDate.calls.count()).toBe(2);
+            });
+
+            it('should change the schedule mode to queued', function(){
+              expect($scope.model.input.scheduleMode).toBe(scheduleModes.queued);
             });
           });
 

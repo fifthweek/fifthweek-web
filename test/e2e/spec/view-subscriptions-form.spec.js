@@ -14,7 +14,6 @@
   var DeleteConfirmationPage = require('../pages/delete-confirmation.page.js');
   var ViewSubscriptionsPage = require('../pages/view-subscriptions.page.js');
   var PostListInformationPage = require('../pages/post-list-information.page.js');
-  var Defaults = require('../defaults.js');
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
@@ -28,7 +27,6 @@
   var deleteConfirmationPage = new DeleteConfirmationPage();
   var viewSubscriptionsPage = new ViewSubscriptionsPage();
   var postListInformationPage = new PostListInformationPage();
-  var defaults = new Defaults();
 
   var navigateToCreatorLandingPage = function (creator) {
     commonWorkflows.getPage('/' + creator.username);
@@ -85,19 +83,17 @@
     it('should contain no blogs', function(){
       expect(viewSubscriptionsPage.blogCount).toBe(0);
       expect(viewSubscriptionsPage.channelCount).toBe(0);
-      expect(viewSubscriptionsPage.collectionCount).toBe(0);
     });
 
     it('should display subscribed channels', function(){
       commonWorkflows.reSignIn(creatorRegistration1);
-      commonWorkflows.createNamedCollection(undefined, 'Collection 1');
-      commonWorkflows.createNamedCollection(undefined, 'Collection 2');
-      var newChannel = commonWorkflows.createChannel({ hiddenCheckbox: false });
+      var newChannel = commonWorkflows.createChannel({ hiddenCheckbox: false, nameTextBox: 'ZZZ' });
 
       navigateToPage();
 
       commonWorkflows.reSignIn(userRegistration);
       navigateToCreatorLandingPage(creatorRegistration1);
+      landingPage.getChannelPrice(1).click(); // Unsubscribe from second channel.
       landingPage.subscribeButton.click();
 
       navigateFromCreatorLandingPage();
@@ -108,7 +104,6 @@
 
       expect(viewSubscriptionsPage.blogCount).toBe(1);
       expect(viewSubscriptionsPage.channelCount).toBe(1);
-      expect(viewSubscriptionsPage.collectionCount).toBe(2);
     });
 
     it('should display second subscribed channel', function(){
@@ -121,7 +116,6 @@
 
       expect(viewSubscriptionsPage.blogCount).toBe(1);
       expect(viewSubscriptionsPage.channelCount).toBe(2);
-      expect(viewSubscriptionsPage.collectionCount).toBe(2);
     });
 
     it('should link to blogs', function(){
@@ -134,16 +128,7 @@
     it('should link to channels', function(){
       viewSubscriptionsPage.firstChannelLink.click();
       expect(browser.getCurrentUrl()).toContain('/' + creatorRegistration1.username + '/channel/');
-      expect(postListInformationPage.postsHeader.getText()).toBe(defaults.channelName);
-      landingPage.fifthweekLink.click();
-      navigateToPage();
-
-    });
-
-    it('should link to collections', function(){
-      viewSubscriptionsPage.firstCollectionLink.click();
-      expect(browser.getCurrentUrl()).toContain('/' + creatorRegistration1.username + '/collection/');
-      expect(postListInformationPage.postsHeader.getText()).toBe(defaults.channelName + ' / Collection 1');
+      expect(postListInformationPage.postsHeader.isDisplayed()).toBe(true);
       landingPage.fifthweekLink.click();
       navigateToPage();
     });
@@ -158,7 +143,6 @@
 
       expect(viewSubscriptionsPage.blogCount).toBe(0);
       expect(viewSubscriptionsPage.channelCount).toBe(0);
-      expect(viewSubscriptionsPage.collectionCount).toBe(0);
     });
 
     it('should add user to guest list', function(){
@@ -173,7 +157,6 @@
       navigateToPage();
       expect(viewSubscriptionsPage.blogCount).toBe(1);
       expect(viewSubscriptionsPage.channelCount).toBe(0);
-      expect(viewSubscriptionsPage.collectionCount).toBe(0);
     });
 
     it('should link to blog manage page', function(){
@@ -189,7 +172,6 @@
 
       expect(viewSubscriptionsPage.blogCount).toBe(1);
       expect(viewSubscriptionsPage.channelCount).toBe(1);
-      expect(viewSubscriptionsPage.collectionCount).toBe(0);
 
       viewSubscriptionsPage.expectZeroAccountBalance();
       viewSubscriptionsPage.expectZeroSubscriptionsCost();
@@ -208,7 +190,6 @@
       navigateToPage();
       expect(viewSubscriptionsPage.blogCount).toBe(1);
       expect(viewSubscriptionsPage.channelCount).toBe(1);
-      expect(viewSubscriptionsPage.collectionCount).toBe(0);
 
       viewSubscriptionsPage.expectZeroAccountBalance();
       viewSubscriptionsPage.expectZeroSubscriptionsCost();
@@ -223,7 +204,6 @@
       navigateToPage();
       expect(viewSubscriptionsPage.blogCount).toBe(1);
       expect(viewSubscriptionsPage.channelCount).toBe(1);
-      expect(viewSubscriptionsPage.collectionCount).toBe(0);
 
       viewSubscriptionsPage.expectZeroAccountBalance();
       viewSubscriptionsPage.expectNonZeroSubscriptionsCost();
@@ -238,8 +218,7 @@
       navigateToPage();
 
       expect(viewSubscriptionsPage.blogCount).toBe(2);
-      expect(viewSubscriptionsPage.channelCount).toBe(2);
-      expect(viewSubscriptionsPage.collectionCount).toBe(2);
+      expect(viewSubscriptionsPage.channelCount).toBe(3);
 
       viewSubscriptionsPage.expectZeroAccountBalance();
       viewSubscriptionsPage.expectNonZeroSubscriptionsCost();

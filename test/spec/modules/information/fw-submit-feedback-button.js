@@ -1,4 +1,4 @@
-describe('fw-register-interest-button directive', function(){
+describe('fw-submit-feedback-button directive', function(){
   'use strict';
 
   var $q;
@@ -6,7 +6,7 @@ describe('fw-register-interest-button directive', function(){
   var $compile;
 
   var $modal;
-  var fwRegisterInterestButtonConstants;
+  var fwSubmitFeedbackButtonConstants;
 
   beforeEach(function() {
     module('webApp', 'webApp.views');
@@ -21,7 +21,7 @@ describe('fw-register-interest-button directive', function(){
       $q = $injector.get('$q');
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
-      fwRegisterInterestButtonConstants = $injector.get('fwRegisterInterestButtonConstants');
+      fwSubmitFeedbackButtonConstants = $injector.get('fwSubmitFeedbackButtonConstants');
     });
   });
 
@@ -31,7 +31,6 @@ describe('fw-register-interest-button directive', function(){
     var isolateScope;
 
     var expectedTitle;
-    var expectedMessage;
     var expectedCallToAction;
 
     var runTests = function(){
@@ -52,11 +51,11 @@ describe('fw-register-interest-button directive', function(){
         });
 
         it('should specify the controller', function(){
-          expect($modal.open.calls.first().args[0].controller).toBe('registerInterestDialogCtrl');
+          expect($modal.open.calls.first().args[0].controller).toBe('submitFeedbackDialogCtrl');
         });
 
         it('should specify the template', function(){
-          expect($modal.open.calls.first().args[0].templateUrl).toBe('modules/information/register-interest-dialog.html');
+          expect($modal.open.calls.first().args[0].templateUrl).toBe('modules/information/submit-feedback-dialog.html');
         });
 
         it('should specify the size', function(){
@@ -71,13 +70,12 @@ describe('fw-register-interest-button directive', function(){
 
     describe('when attributes are not specified', function(){
       beforeEach(function(){
-        expectedTitle = fwRegisterInterestButtonConstants.defaultTitle;
-        expectedMessage = fwRegisterInterestButtonConstants.defaultMessage;
-        expectedCallToAction = fwRegisterInterestButtonConstants.defaultCallToAction;
+        expectedTitle = fwSubmitFeedbackButtonConstants.defaultTitle;
+        expectedCallToAction = fwSubmitFeedbackButtonConstants.defaultCallToAction;
 
         scope = $rootScope.$new();
 
-        element = angular.element('<fw-register-interest-button></fw-register-interest-button>');
+        element = angular.element('<fw-submit-feedback-button></fw-submit-feedback-button>');
         $compile(element)(scope);
         scope.$digest();
         isolateScope = element.isolateScope();
@@ -89,12 +87,11 @@ describe('fw-register-interest-button directive', function(){
     describe('when attributes are specified', function(){
       beforeEach(function(){
         expectedTitle = 'a';
-        expectedMessage = 'b';
         expectedCallToAction = 'c';
 
         scope = $rootScope.$new();
 
-        element = angular.element('<fw-register-interest-button title="a" call-to-action="c"></fw-register-interest-button>');
+        element = angular.element('<fw-submit-feedback-button title="a" call-to-action="c"></fw-submit-feedback-button>');
         $compile(element)(scope);
         scope.$digest();
         isolateScope = element.isolateScope();

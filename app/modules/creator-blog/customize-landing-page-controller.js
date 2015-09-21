@@ -53,7 +53,6 @@ angular.module('webApp').controller(
       }
       var blogData = {
         name: model.settings.name,
-        tagline: model.settings.tagline,
         introduction: model.settings.introduction,
         headerImageFileId: fileId,
         video: model.settings.video ? model.settings.video : undefined,

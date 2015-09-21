@@ -4,7 +4,6 @@ var SidebarPage = require('../../pages/sidebar.page.js');
 var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
 var LandingPagePage = require('../../pages/creators/customize-landing-page.page.js');
 var BlogNameInputPage = require('../../pages/blog-name-input.page.js');
-var TaglineInputPage = require('../../pages/tagline-input.page.js');
 var VideoUrlInputPage = require('../../pages/video-url-input.page.js');
 var DiscardChangesPage = require('../../pages/discard-changes.page.js');
 
@@ -20,7 +19,6 @@ describe('customize landing page form', function() {
   var testKit = new TestKit();
   var creatorLandingPagePage = new CreatorLandingPagePage();
   var nameInputPage = new BlogNameInputPage();
-  var taglineInputPage = new TaglineInputPage();
   var videoUrlInputPage = new VideoUrlInputPage();
   var discardChanges = new DiscardChangesPage();
 
@@ -68,12 +66,8 @@ describe('customize landing page form', function() {
         expect(element(by.id(page.nameTextBoxId)).getAttribute('value')).toBe(blog.name);
       });
 
-      it('should contain the tagline', function(){
-        expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(blog.tagline);
-      });
-
       it('should contain the default introduction', function(){
-        expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).not.toBeFalsy();
+        expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).toBe('');
       });
 
       it('should contain the submit button', function(){
@@ -134,7 +128,6 @@ describe('customize landing page form', function() {
   var populateForm = function(){
     var newValues = {
       introduction: 'Introduction ' + Math.round(Math.random() * 100000),
-      tagline: 'Tagline ' + Math.round(Math.random() * 100000),
       name: 'Blog ' + Math.round(Math.random() * 100000)
     };
 
@@ -145,7 +138,6 @@ describe('customize landing page form', function() {
       testKit.setValue(page.nameTextBoxId, newValues.name);
       expect(page.basicsSubmitButton.isEnabled()).toBe(true);
 
-      testKit.setValue(page.taglineTextBoxId, newValues.tagline);
       testKit.setValue(page.introductionTextBoxId, newValues.introduction);
 
       page.headerImageTabLink.click();
@@ -193,9 +185,9 @@ describe('customize landing page form', function() {
     discardChanges.describeDiscardingChanges(
       navigateToPage,
       function(){ sidebar.channelsLink.click(); },
-      function(){ testKit.setValue(page.taglineTextBoxId, 'New Tagline');},
-      function(){ expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe('New Tagline'); },
-      function(){ expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(blog.tagline); }
+      function(){ testKit.setValue(page.nameTextBoxId, 'New Name');},
+      function(){ expect(element(by.id(page.nameTextBoxId)).getAttribute('value')).toBe('New Name'); },
+      function(){ expect(element(by.id(page.nameTextBoxId)).getAttribute('value')).toBe(blog.name); }
     );
 
     describe('when saving changes', function(){
@@ -228,7 +220,6 @@ describe('customize landing page form', function() {
         navigateToPage();
 
         expect(element(by.id(page.nameTextBoxId)).getAttribute('value')).toBe(formValues.name);
-        expect(element(by.id(page.taglineTextBoxId)).getAttribute('value')).toBe(formValues.tagline);
         expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).toBe(formValues.introduction);
 
         page.headerImageTabLink.click();
@@ -267,10 +258,13 @@ describe('customize landing page form', function() {
         });
 
         testKit.includeHappyPaths(page, nameInputPage, 'nameTextBox');
-        testKit.includeHappyPaths(page, taglineInputPage, 'taglineTextBox');
 
         it('should allow symbols in introductions', function(){
           testKit.setValue(page.introductionTextBoxId, testKit.punctuation33);
+        });
+
+        it('should allow an empty introduction', function(){
+          testKit.clear(page.introductionTextBoxId);
         });
       });
 
@@ -321,30 +315,6 @@ describe('customize landing page form', function() {
         });
 
         testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, nameInputPage, 'nameTextBox');
-        testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, taglineInputPage, 'taglineTextBox');
-
-        it('should not allow an empty introduction', function(){
-          testKit.clear(page.introductionTextBoxId);
-
-          page.basicsSubmitButton.click();
-
-          testKit.assertSingleValidationMessage(page.helpMessages,
-            'An introduction is required.');
-
-          verifyInvalidMessage();
-        });
-
-        it('should not allow an introduction less than 15 characters', function(){
-          var underSizedValue = new Array(15).join( 'a' );
-          testKit.setValue(page.introductionTextBoxId, underSizedValue);
-
-          page.basicsSubmitButton.click();
-
-          testKit.assertSingleValidationMessage(page.helpMessages,
-            'Must be at least 15 characters.');
-
-          verifyInvalidMessage();
-        });
 
         it('should not allow an introduction more than 250 characters', function(){
           var overSizedValue = new Array(252).join( 'a' );

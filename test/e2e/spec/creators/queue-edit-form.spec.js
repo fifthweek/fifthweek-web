@@ -1,15 +1,14 @@
 var _ = require('lodash');
-var Defaults = require('../../defaults.js');
 var TestKit = require('../../test-kit.js');
 var CommonWorkflows = require('../../common-workflows.js');
-var CollectionNameInputPage = require('../../pages/collection-name-input.page.js');
+var QueueNameInputPage = require('../../pages/queue-name-input.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
 var DeleteConfirmationPage = require('../../pages/delete-confirmation.page.js');
 var DiscardChangesPage = require('../../pages/discard-changes.page.js');
-var CollectionListPage = require('../../pages/creators/collection-list.page.js');
-var CollectionEditPage = require('../../pages/creators/collection-edit.page.js');
+var QueueListPage = require('../../pages/creators/queue-list.page.js');
+var QueueEditPage = require('../../pages/creators/queue-edit.page.js');
 
-describe('edit collection form', function() {
+describe('edit queue form', function() {
   'use strict';
 
   var registration;
@@ -18,19 +17,18 @@ describe('edit collection form', function() {
   var inputs;
   var releaseTimes = [];
 
-  var defaults = new Defaults();
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
-  var collectionNameInputPage = new CollectionNameInputPage();
+  var queueNameInputPage = new QueueNameInputPage();
   var sidebar = new SidebarPage();
   var deleteConfirmationPage = new DeleteConfirmationPage();
-  var collectionListPage = new CollectionListPage();
-  var page = new CollectionEditPage();
+  var queueListPage = new QueueListPage();
+  var page = new QueueEditPage();
   var discardChanges = new DiscardChangesPage();
 
   var navigateToPage = function() {
-    collectionListPage.waitForPage();
-    var editButton = collectionListPage.getEditCollectionButton(savedValues.nameTextBox);
+    queueListPage.waitForPage();
+    var editButton = queueListPage.getEditQueueButton(savedValues.nameTextBox);
     editButton.click();
   };
 
@@ -39,19 +37,19 @@ describe('edit collection form', function() {
     registration = context.registration;
     blog = context.blog;
 
-    var channelNames = [ defaults.channelName ];
+    var channelNames = [ blog.name ];
     channelNames.push(commonWorkflows.createChannel().name);
     channelNames.push(commonWorkflows.createChannel().name);
 
     inputs = page.inputs();
 
-    var collection = commonWorkflows.createCollection(channelNames);
+    var queue = commonWorkflows.createQueue(channelNames);
 
     savedValues = {
-      nameTextBox: collection.name
+      nameTextBox: queue.name
     };
 
-    sidebar.collectionsLink.click();
+    sidebar.queuesLink.click();
     navigateToPage();
   });
 
@@ -76,7 +74,7 @@ describe('edit collection form', function() {
 
   discardChanges.describeDiscardingChanges(
     function(){
-      sidebar.collectionsLink.click();
+      sidebar.queuesLink.click();
       navigateToPage();
     },
     function(){ sidebar.channelsLink.click(); },
@@ -152,7 +150,7 @@ describe('edit collection form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.collectionsLink.click();
+      sidebar.queuesLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
       expectReleaseTimes();
@@ -166,7 +164,7 @@ describe('edit collection form', function() {
       testKit.expectFormValues(page, savedValues);
     });
 
-    testKit.includeHappyPaths(page, collectionNameInputPage, 'nameTextBox', null, function(generatedFormValues) {
+    testKit.includeHappyPaths(page, queueNameInputPage, 'nameTextBox', null, function(generatedFormValues) {
       savedValues = generatedFormValues;
     });
   });
@@ -174,17 +172,17 @@ describe('edit collection form', function() {
   describe('when validating bad input', function() {
     afterEach(function () {
       commonWorkflows.fastRefresh();
-      sidebar.collectionsLink.click(); // Reset form state.
+      sidebar.queuesLink.click(); // Reset form state.
       navigateToPage();
     });
 
-    testKit.includeSadPaths(page, page.saveButton, page.helpMessages, collectionNameInputPage, 'nameTextBox');
+    testKit.includeSadPaths(page, page.saveButton, page.helpMessages, queueNameInputPage, 'nameTextBox');
   });
 
   describe('submit button', function () {
     afterEach(function () {
       commonWorkflows.fastRefresh();
-      sidebar.collectionsLink.click(); // Reset form state.
+      sidebar.queuesLink.click(); // Reset form state.
       navigateToPage();
     });
 
@@ -224,7 +222,7 @@ describe('edit collection form', function() {
   describe('when deleting release times', function() {
     afterEach(function () {
       commonWorkflows.fastRefresh();
-      sidebar.collectionsLink.click(); // Reset form state.
+      sidebar.queuesLink.click(); // Reset form state.
       navigateToPage();
     });
 
@@ -248,7 +246,7 @@ describe('edit collection form', function() {
   });
 
   deleteConfirmationPage.describeDeletingWithVerification(
-    'Collection',
+    'Queue',
     function () {
       return savedValues.nameTextBox;
     },
@@ -257,28 +255,28 @@ describe('edit collection form', function() {
     },
     function () {
       // Check not deleted from client-side.
-      sidebar.collectionsLink.click();
+      sidebar.queuesLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
 
       // Check not deleted from API.
       commonWorkflows.reSignIn(registration);
-      sidebar.collectionsLink.click();
+      sidebar.queuesLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
     },
     function () {
       // Check deleted from client-side.
-      collectionListPage.waitForPage();
-      expect(collectionListPage.collections.count()).toBe(0);
-      expect(collectionListPage.collections.getText()).not.toContain(savedValues.nameTextBox);
+      queueListPage.waitForPage();
+      expect(queueListPage.queues.count()).toBe(0);
+      expect(queueListPage.queues.getText()).not.toContain(savedValues.nameTextBox);
 
       // Check deleted from API.
       commonWorkflows.reSignIn(registration);
-      sidebar.collectionsLink.click();
-      collectionListPage.waitForPage();
-      expect(collectionListPage.collections.count()).toBe(0);
-      expect(collectionListPage.collections.getText()).not.toContain(savedValues.nameTextBox);
+      sidebar.queuesLink.click();
+      queueListPage.waitForPage();
+      expect(queueListPage.queues.count()).toBe(0);
+      expect(queueListPage.queues.getText()).not.toContain(savedValues.nameTextBox);
     }
   );
 });
