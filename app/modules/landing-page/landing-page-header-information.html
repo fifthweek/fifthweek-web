@@ -1,64 +1,38 @@
-<div class="row header">
-  <div class="col-s-4">
-    <div class="creator">
-      <fw-image id="profile-image" src="{{model.profileImage.fileId ? model.profileImageUrl : model.defaultProfileImageUrl}}"></fw-image>
+<fw-azure-image-loader output-url="model.profileImageUrl" thumbnail="header" file-id="{{model.profileImage.fileId}}" container-name="{{model.profileImage.containerName}}"></fw-azure-image-loader>
+<fw-azure-image-loader output-url="model.headerImageUrl" thumbnail="header" file-id="{{model.blog.headerImage.fileId}}" container-name="{{model.blog.headerImage.containerName}}"></fw-azure-image-loader>
 
-      <div ng-if="model.isSubscribed" class="subscribed">
-        <div class="subscribe-button-wrapper">
-          <button ng-if="model.currentView === views.manage"
-                  id="cancel-changes-button"
-                  class="btn btn-block"
-                  type="submit"
-                  can-submit="true"
-                  fw-form-submit="cancelManageSubscription()"
-                  error-message="model.errorMessage">
-              Cancel Changes
-            </button>
+<div class="header-image" ng-style="{'background-image':'url(' + (model.blog.headerImage.fileId ? model.headerImageUrl : model.defaultHeaderImageUrl) + ')'}" id="header-image">
+</div>
 
-          <button ng-if="model.currentView !== views.manage"
-                  id="manage-subscription-button"
-                  class="btn btn-block"
-                  type="submit"
-                  can-submit="true"
-                  fw-form-submit="manageSubscription()"
-                  error-message="model.errorMessage">Manage Subscription</button>
-        </div>
-      </div>
-
-      <div ng-if="!model.isSubscribed" class="subscribe">
-        <div class="subscribe-button-wrapper">
-          <button id="subscribe-button"
-                  class="btn btn-block"
-                  type="submit"
-                  data-event-title="{{model.tracking.subscribedTitle}}"
-                  data-event-category="{{model.tracking.category}}"
-                  data-loading-text="Subscribing..."
-                  can-submit="true"
-                  fw-form-submit="subscribe()"
-                  ng-disabled="model.subscribedChannelCount === 0"
-                  error-message="model.errorMessage">
-            Subscribe
-            <span ng-if="!model.hasFreeAccess"><fw-price value="model.totalPrice"></fw-price></span>
-            <span ng-if="model.hasFreeAccess"><i class="fa fa-street-view"></i> FREE</span></button>
-        </div>
-      </div>
-
-      <span ng-if="model.currentView === views.manage">
-        <p class="button-footer">Minimum one week. Cancel anytime.</p>
-      </span>
-      <span ng-if="model.currentView !== views.manage">
-        <p ng-if="!model.isOwner" class="button-footer">
-          {{model.subscribedChannelCount}} Channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
-          - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
-        </p>
-        <p ng-if="model.isOwner" class="button-footer">Previewing all channels.</p>
-      </span>
+<div class="header-image-control-overlay">
+  <div class="row">
+    <div class="col-xs-6">
+      <h1 class="fifthweek-logo-sm">
+        <a ui-sref="creator">fw</a>
+      </h1>
+    </div>
+    <div class="col-xs-6">
+      <a ng-if="model.isOwner" id="edit-page-link" class="btn btn-transparent btn-transparent-emphasized" ui-sref="creator.landingPage.edit">
+        edit page
+      </a>
     </div>
   </div>
-  <div class="col-s-8">
-    <div class="header-text">
-      <h2 id="blog-name">{{model.blog.name}}</h2>
-      <h4 id="blog-introduction">{{model.blog.introduction}}</h4>
+</div>
+
+<div class="header-content">
+  <div class="header">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="creator">
+          <fw-image id="profile-image" src="{{model.profileImage.fileId ? model.profileImageUrl : model.defaultProfileImageUrl}}"></fw-image>
+        </div>
+        <div class="header-text">
+          <h2 id="blog-name">{{model.blog.name}}</h2>
+          <ng-include src="'modules/landing-page/landing-page-subscribe-button.html'"></ng-include>
+        </div>
+      </div>
+    </div>
+    <div class="row header-padding-row">
     </div>
   </div>
 </div>

@@ -3,35 +3,19 @@
         name="form"
         role="form">
 
-    <fw-azure-image-loader output-url="model.profileImageUrl" thumbnail="header" file-id="{{model.profileImage.fileId}}" container-name="{{model.profileImage.containerName}}"></fw-azure-image-loader>
-    <fw-azure-image-loader output-url="model.headerImageUrl" thumbnail="header" file-id="{{model.blog.headerImage.fileId}}" container-name="{{model.blog.headerImage.containerName}}"></fw-azure-image-loader>
+    <ng-include src="'modules/landing-page/landing-page-header-information.html'"></ng-include>
 
-    <div class="header-image" ng-style="{'background-image':'url(' + (model.blog.headerImage.fileId ? model.headerImageUrl : model.defaultHeaderImageUrl) + ')'}" id="header-image">
-      <div class="header-image-control-overlay">
-        <h1 class="fifthweek-logo-sm">
-          <a ui-sref="creator">fw</a>
-        </h1>
-        <a ng-if="model.isOwner" id="edit-page-link" class="btn btn-transparent btn-transparent-emphasized" ui-sref="creator.landingPage.edit">
-          edit page
-        </a>
-      </div>
-    </div>
 
     <div class="main-content">
-      <div class="left-margin-offset">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
 
-        <ng-include src="'modules/landing-page/landing-page-header-information.html'"></ng-include>
+          <ng-include src="'modules/landing-page/landing-page-body-information.html'"></ng-include>
 
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-4">
-
-            <ng-include src="'modules/landing-page/landing-page-body-information.html'"></ng-include>
-
-            <fw-post-list source="timeline"
-                          user-id="{{model.userId}}"
-                          channel-id="{{model.channelId}}"
-                          ng-if="model.currentView === views.blog"></fw-post-list>
-          </div>
+          <fw-post-list source="timeline"
+                        user-id="{{model.userId}}"
+                        channel-id="{{model.channelId}}"
+                        ng-if="model.currentView === views.blog"></fw-post-list>
         </div>
       </div>
     </div>
