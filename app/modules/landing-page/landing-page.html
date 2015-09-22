@@ -5,12 +5,12 @@
 
     <ng-include src="'modules/landing-page/landing-page-header-information.html'"></ng-include>
 
+    <ng-include src="'modules/landing-page/landing-page-body-information.html'"></ng-include>
+
 
     <div class="main-content">
       <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-          <ng-include src="'modules/landing-page/landing-page-body-information.html'"></ng-include>
+        <div class="col-xs-12">
 
           <fw-post-list source="timeline"
                         user-id="{{model.userId}}"

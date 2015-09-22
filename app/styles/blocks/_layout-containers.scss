@@ -16,34 +16,35 @@ body {
   }
 }
 
-.left-right-container-wrap {
-  @media (min-width:$screen-md-min) {
-    display:table;
-    width:100%;
-    height:100vh;
+body:not(.navigation-hidden) {
+  .left-right-container-wrap {
+    @media (min-width:$screen-md-min) {
+      display:table;
+      width:100%;
+      height:100vh;
+    }
   }
-}
-
-#{$left-container},
-#{$right-container} {
-  @media (min-width:$screen-md-min) {
-    display:table-cell;
-    vertical-align:top;
+  #{$left-container},
+  #{$right-container} {
+    @media (min-width:$screen-md-min) {
+      display:table-cell;
+      vertical-align:top;
+    }
   }
-}
 
-#{$left-container} {
-  @media (min-width:$screen-md-min) {
-    background:#fff;
-    width:$sidebar-width;
-    min-width:$sidebar-width;
-    border-right:1px solid $grey-light-7;
+  #{$left-container} {
+    @media (min-width:$screen-md-min) {
+      background:#fff;
+      width:$sidebar-width;
+      min-width:$sidebar-width;
+      border-right:1px solid $grey-light-7;
+    }
   }
 }
 
 #{$right-container} {
   padding:0;
-  @media (min-width:$screen-s-min) {
+  @media (min-width:$screen-lg-min) {
     padding:0 60px;
   }
 }
@@ -55,7 +56,7 @@ body {
     margin-top:92px;
   }
 
-  max-width:630px;
+  max-width:$content-max-width;
 
   > div {
     padding-left: $main-cont-padding-small;
@@ -75,3 +76,4 @@ body {
     padding:0;
   }
 }
+

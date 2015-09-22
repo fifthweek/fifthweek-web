@@ -232,7 +232,19 @@ describe('post-edit-dialog-controller', function() {
             });
 
             it('should update the blob image', function(){
-              expect($scope.blobImage.update).toHaveBeenCalledWith('newContainerName', 'newFileId');
+              expect($scope.blobImage.update).toHaveBeenCalledWith('newContainerName', 'newFileId', false, target.internal.onBlobImageUpdateComplete);
+            });
+          });
+
+          describe('when calling internal.onBlobImageUpdateComplete', function(){
+            beforeEach(function(){
+              $scope.model.input.imageSource = {};
+
+              target.internal.onBlobImageUpdateComplete({ renderSize: 'renderSize' });
+            });
+
+            it('should assign the renderSize to the model', function(){
+              expect($scope.model.input.imageSource.renderSize).toBe('renderSize');
             });
           });
 

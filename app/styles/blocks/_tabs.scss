@@ -19,11 +19,11 @@ ul.nav-tabs > li {
 
   &.active {
     > a, > a:hover, > a:focus {
-      box-shadow: $panel-shadow;
-      border-color:transparent;
-
+      border: $panel-border;
+      border-bottom-color: #fff;
+      z-index: 1;
       /* World's hackiest hack? */
-      &:after {
+      /*&:after {
         background-color: #fff;
         height: 10px;
         content: "";
@@ -31,7 +31,7 @@ ul.nav-tabs > li {
         bottom: -10px;
         left: -3px;
         right: -3px;
-      }
+      }*/
     }
 
     &:first-child {

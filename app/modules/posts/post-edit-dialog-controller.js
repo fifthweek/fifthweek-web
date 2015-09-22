@@ -53,15 +53,20 @@ angular.module('webApp')
       }
     };
 
+    var internal = this.internal = {};
     $scope.model = model;
     $scope.scheduleModes = scheduleModes;
     $scope.blobImage = blobImageControlFactory.createControl();
+
+    internal.onBlobImageUpdateComplete = function(data){
+      model.input.imageSource.renderSize = data.renderSize;
+    };
 
     $scope.onImageUploadComplete = function(data) {
       var fileInformation = postEditDialogUtilities.getFileInformation(data);
       model.input.image = fileInformation.file;
       model.input.imageSource = fileInformation.fileSource;
-      $scope.blobImage.update(data.containerName, data.fileId);
+      $scope.blobImage.update(data.containerName, data.fileId, false, internal.onBlobImageUpdateComplete);
     };
 
     $scope.onFileUploadComplete = function(data) {

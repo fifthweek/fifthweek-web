@@ -1,8 +1,8 @@
 @import '_base';
 
 .panel {
-  box-shadow: $panel-shadow;
-  border: none;
+  box-shadow: none;
+  border: $panel-border;
   margin-top:15px;
   border-radius: $panel-border-radius;
   h2:first-child {

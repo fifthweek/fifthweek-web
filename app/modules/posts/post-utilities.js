@@ -34,11 +34,19 @@ angular.module('webApp').factory('postUtilities',
       post.liveIn = post.moment.fromNow();
 
       delete post.renderSizeRatio;
+      delete post.renderSizeMaximumWidth;
       if(post.imageSource){
         post.imageSource.readableSize = humanFileSize(post.imageSource.size);
 
         if(post.imageSource.renderSize){
           post.renderSizeRatio = ((post.imageSource.renderSize.height / post.imageSource.renderSize.width)*100) + '%';
+          var postMaximumWidth = 945;
+          var postMaximumHeight = 720;
+          var calculatedHeight = (postMaximumWidth / post.imageSource.renderSize.width) * post.imageSource.renderSize.height;
+
+          if(calculatedHeight > postMaximumHeight){
+            post.renderSizeMaximumWidth = postMaximumWidth * (postMaximumHeight / calculatedHeight);
+          }
         }
       }
 

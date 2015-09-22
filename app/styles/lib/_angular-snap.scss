@@ -1,13 +1,13 @@
 @import '_base';
 
-@media (max-width:$screen-sm-max) {
+@mixin snap-includes {
   html,
   body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow-x:hidden;
+    overflow-x: hidden;
   }
   snap-content,
   [snap\:content],
@@ -58,7 +58,7 @@
     -moz-overflow-scrolling: touch;
     -o-overflow-scrolling: touch;
     overflow-scrolling: touch;
-    width: 265px;
+    width: $sidebar-width;
   }
   .snap-content {
     z-index: 2;
@@ -88,4 +88,12 @@
   .snapjs-expand-right .snap-drawer-right {
     width: 100%;
   }
+}
+
+@media (max-width:$screen-sm-max) {
+  @include snap-includes;
+}
+
+.navigation-hidden{
+  @include snap-includes;
 }

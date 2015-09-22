@@ -791,6 +791,27 @@ describe('post-utilities', function(){
             creator: {
               profileImage: undefined
             }
+          },
+          {
+            liveDate: new Date('2015-03-20T17:00:00Z'),
+            imageSource: {
+              size: 1048576,
+              contentType: 'image/jpeg',
+              renderSize: {
+                width: 600,
+                height: 1200
+              }
+            },
+            image: {
+              fileId: 'fileId1',
+              containerName: 'containerName1'
+            },
+            creator: {
+              profileImage: {
+                fileId: 'creator1',
+                containerName: 'containerName1'
+              }
+            }
           }
         ];
 
@@ -811,11 +832,13 @@ describe('post-utilities', function(){
         expect(posts[1].liveIn).toBe('fromNow');
         expect(posts[2].liveIn).toBe('fromNow');
         expect(posts[3].liveIn).toBe('fromNow');
+        expect(posts[4].liveIn).toBe('fromNow');
       });
 
       it('should add file information if post is a non-viewable image', function(){
         expect(posts[2].fileSource).toBeUndefined();
         expect(posts[3].fileSource).toBeDefined();
+        expect(posts[4].fileSource).toBeUndefined();
       });
 
       it('should add readableSize data', function(){
@@ -823,6 +846,7 @@ describe('post-utilities', function(){
         expect(posts[2].imageSource.readableSize).toBe('1 MB');
         expect(posts[3].imageSource.readableSize).toBe('8 bytes');
         expect(posts[3].fileSource.readableSize).toBe('1 KB');
+        expect(posts[4].imageSource.readableSize).toBe('1 MB');
       });
 
       it('should add isScheduled data', function(){
@@ -830,6 +854,7 @@ describe('post-utilities', function(){
         expect(posts[1].isScheduled).toBe(true);
         expect(posts[2].isScheduled).toBe(false);
         expect(posts[3].isScheduled).toBe(false);
+        expect(posts[4].isScheduled).toBe(false);
       });
 
       it('should add a reorder function if the post is scheduled', function(){
@@ -837,6 +862,7 @@ describe('post-utilities', function(){
         expect(posts[1].reorder).toBeUndefined();
         expect(posts[2].reorder).toBeUndefined();
         expect(posts[3].reorder).toBeUndefined();
+        expect(posts[4].reorder).toBeUndefined();
       });
 
       describe('when calling re-order', function(){
@@ -851,6 +877,7 @@ describe('post-utilities', function(){
         expect(posts[1].dayGrouping).toBe(true);
         expect(posts[2].dayGrouping).toBe(false);
         expect(posts[3].dayGrouping).toBe(true);
+        expect(posts[4].dayGrouping).toBe(false);
       });
 
       it('should add profile image resolvedUri data', function(){
@@ -858,11 +885,13 @@ describe('post-utilities', function(){
         expect(posts[1].creator.profileImage.resolvedUri).toBe('uri2/creator2/footer?signature2');
         expect(posts[2].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
         expect(posts[3].creator.profileImage).toBeUndefined();
+        expect(posts[4].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
       });
 
       it('should add image resolvedUri data', function(){
         expect(posts[2].image.resolvedUri).toBe('uri1/fileId1/feed?signature1');
         expect(posts[3].image.resolvedUri).toBe('uri2/fileId2/feed?signature2');
+        expect(posts[4].image.resolvedUri).toBe('uri1/fileId1/feed?signature1');
       });
 
       it('should add renderSizeRatio data when required', function(){
@@ -870,6 +899,15 @@ describe('post-utilities', function(){
         expect(posts[1].renderSizeRatio).toBeUndefined();
         expect(posts[2].renderSizeRatio).toBe('75%');
         expect(posts[3].renderSizeRatio).toBeUndefined();
+        expect(posts[4].renderSizeRatio).toBe('200%');
+      });
+
+      it('should add renderSizeMaximumWidth data when required', function(){
+        expect(posts[0].renderSizeMaximumWidth).toBeUndefined();
+        expect(posts[1].renderSizeMaximumWidth).toBeUndefined();
+        expect(posts[2].renderSizeMaximumWidth).toBeUndefined();
+        expect(posts[3].renderSizeMaximumWidth).toBeUndefined();
+        expect(posts[4].renderSizeMaximumWidth).toBe(360);
       });
     });
   });

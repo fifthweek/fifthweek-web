@@ -5,8 +5,10 @@
 }
 
 .modal-content {
-  border-radius: $border-radius;
-  @include modal-box-shadow;
+  //border-radius: $border-radius;
+  //@include modal-box-shadow;
+  border: 0;
+  border-radius: 0;
 
   h4 {
     font-size:15px;
@@ -73,8 +75,11 @@
 }
 
 .modal-dialog {
+  margin:0;
+  width: auto;
   @media (min-width:$screen-sm-min) {
-    margin:9.5% auto;
+    max-width: $screen-sm-min - 10px;
+    margin:10px auto;
   }
 }
 .modal-backdrop.in {

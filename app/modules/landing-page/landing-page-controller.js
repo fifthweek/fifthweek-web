@@ -19,10 +19,6 @@ angular.module('webApp')
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
     $scope.model = {
-      // These need to appear in a JS file, as the Grunt task for swapping file names that appear within JS will only
-      // inspect *.js files.
-      defaultHeaderImageUrl: '/static/images/header-default.jpg',
-      defaultProfileImageUrl: '/static/images/avatar-default.jpg',
       tracking: {
         unsubscribedTitle: 'Unsubscribed',
         updatedTitle: 'Subscription Updated',

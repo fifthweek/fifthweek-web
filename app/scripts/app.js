@@ -31,7 +31,11 @@ angular
     longDateFormat: 'EEEE, MMMM d, yyyy',
     longDateTimeFormat: 'EEEE, MMMM d \'at\' HH:mm \'UTC\'',
     newsfeedDateFormat: 'MMM d',
-    dayGroupingDateFormat: 'EEEE, MMM d'
+    dayGroupingDateFormat: 'EEEE, MMM d',
+    // These need to appear in a JS file, as the Grunt task for swapping file names that appear within JS will only
+    // inspect *.js files.
+    defaultHeaderImageUrl: '/static/images/header-default.png',
+    defaultProfileImageUrl: '/static/images/avatar-default.jpg'
   })
   .config(function(snapRemoteProvider) {
     snapRemoteProvider. globalOptions = {

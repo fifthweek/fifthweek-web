@@ -12,13 +12,13 @@ angular.module('webApp').directive('fwBlobImage',
     templateUrl:'views/partials/blob-image.html',
     link: function(scope/*, element, attrs*/){
 
-      var updateHandler = function(containerName, fileId, availableImmediately) {
+      var updateHandler = function(containerName, fileId, availableImmediately, completeCallback) {
         if(!fileId) {
           scope.$broadcast(blobImageCtrlConstants.updateEvent);
           return;
         }
 
-        scope.$broadcast(blobImageCtrlConstants.updateEvent, containerName, fileId, scope.thumbnail, availableImmediately);
+        scope.$broadcast(blobImageCtrlConstants.updateEvent, containerName, fileId, scope.thumbnail, availableImmediately, completeCallback);
       };
 
       if(scope.control){

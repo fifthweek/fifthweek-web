@@ -8,15 +8,11 @@ $header-height:108px;
 $header-height-sm:70px;
 
 @mixin light-text {
-  -webkit-font-smoothing: subpixel-antialiased;
-  -moz-osx-font-smoothing: auto;
+  //-webkit-font-smoothing: subpixel-antialiased;
+  //-moz-osx-font-smoothing: auto;
   font-weight: 200;
-  text-shadow: 0.5px 0.5px 0 #ddd;
+  //text-shadow: 0.5px 0.5px 0 #ddd;
   color: $grey-dark-4;
-}
-
-@mixin header-shadow {
-  box-shadow: 0 2px 9px $image-overlay;
 }
 
 @mixin dark-button {
@@ -28,16 +24,9 @@ $header-height-sm:70px;
   font-weight: bold;
 }
 
-@mixin h4-bottom-margin {
-  margin-bottom: 10px;
-  @media (min-width:$screen-lg-min) {
-    margin-bottom: -20px;
-  }
-}
-
 @mixin content-container{
   margin:0 auto;
-  max-width:945px; /* Creates a col-8 with width of 600px for posts */
+  max-width:$content-max-width;
   .col-s-4:first-child { /* must make up normal width of 33.3333333333% */
     @media (min-width:$screen-sm-min) {
       margin-left: 3.66666666666%;
@@ -67,48 +56,44 @@ $header-height-sm:70px;
     padding-top: 9px;
     margin:0;
     float:left;
+    color: #fff;
   }
 
   #subscribe-button-area{
-    .header-button{
-      color:#fff;
-      font-size: $p-font-size;
-
-      padding: 2px 12px;
-      height: 34px;
-      @media (min-width:$screen-s-min) {
-        padding: 2px 16px;
-        height: 40px;
-      }
-    }
-    #subscribe-button {
-      background-color: $landing-page-highlight;
-      padding-right: 10px;
-
-      >span {
-        @include dark-button;
-        margin-left:8px;
-        background: $landing-page-highlight-2;
-        padding: 2px 8px;
+    &>.subscribe-button-wrapper{
+      float: left;
+      .header-button{
+        color:#fff;
+        font-size: $p-font-size;
+        background-color: $subscribe-button-primary;
+        padding: 1px 12px;
+        height: 30px;
         @media (min-width:$screen-s-min) {
-          margin-left:12px;
-          padding: 6px 8px;
+          padding: 1px 12px;
+          height: 34px;
         }
       }
-    }
-    #cancel-changes-button, #manage-subscription-button {
-      text-transform: uppercase;
-      font-weight: 200;
-      letter-spacing: 1px;
-      background-color: $brand-highlight;
-    }
-    .subscribed {
-      text-transform: uppercase;
+      #subscribe-button {
+        padding-right: 10px;
+
+        >span {
+          @include dark-button;
+          margin-left:8px;
+          background: $subscribe-button-secondary;
+          padding: 2px 8px;
+          @media (min-width:$screen-s-min) {
+            margin-left:12px;
+            padding: 3px 8px;
+          }
+        }
+      }
+      #cancel-changes-button, #manage-subscription-button {
+      }
     }
   }
 
   .header-image {
-    @include header-shadow;
+    //@include header-shadow;
     position: absolute;
     top:0;
     left:0;
@@ -182,7 +167,7 @@ $header-height-sm:70px;
           background: $body-bg;
           border-radius: 6px;
           .image-area {
-            @include header-shadow;
+            //@include header-shadow;
             border-radius: 6px;
           }
         }
@@ -201,15 +186,15 @@ $header-height-sm:70px;
           color: $grey-dark-4;
           font-size: 18px;
           margin-top:0;
+          margin-bottom: 6px;
           padding-top:8px;
-          margin-bottom: 5px;
           color: #fff;
           text-align:left;
           text-shadow:0 1px 1px #1d1d1b;
           @media (min-width:$screen-s-min) {
             font-size: 28px;
             padding-top:17px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
           }
         }
       }
@@ -226,8 +211,7 @@ $header-height-sm:70px;
       font-size: 20px;
       line-height: 26px;
       padding: 0;
-      margin: 0 0 50px;
-      @include h4-bottom-margin;
+      margin: 10px 0 10px 0;
       @media (min-width:$screen-s-min) {
         text-align: left;
       }

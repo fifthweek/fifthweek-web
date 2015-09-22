@@ -71,15 +71,15 @@ describe('error facade', function() {
       control.initialize(updateHandler);
       $rootScope.$apply();
 
-      control.update('a', 'b', 'c');
+      control.update('a', 'b', 'c', 'd');
       $rootScope.$apply();
 
-      expect(updateHandler).toHaveBeenCalledWith('a', 'b', 'c');
+      expect(updateHandler).toHaveBeenCalledWith('a', 'b', 'c', 'd');
     });
 
     it('should call the update handler immediately if update has already been called before initializing', function(){
 
-      control.update('a', 'b', 'c');
+      control.update('a', 'b', 'c', 'd');
       $rootScope.$apply();
 
       var updateHandler = jasmine.createSpy('updateHandler');
@@ -87,12 +87,12 @@ describe('error facade', function() {
       control.initialize(updateHandler);
       $rootScope.$apply();
 
-      expect(updateHandler).toHaveBeenCalledWith('a', 'b', 'c');
+      expect(updateHandler).toHaveBeenCalledWith('a', 'b', 'c', 'd');
     });
 
     it('should call the update handler every time update is called', function(){
 
-      control.update('a', 'b', 'c');
+      control.update('a', 'b', 'c', 'd');
       $rootScope.$apply();
 
       var updateHandler = jasmine.createSpy('updateHandler');
@@ -100,17 +100,17 @@ describe('error facade', function() {
       control.initialize(updateHandler);
       $rootScope.$apply();
 
-      expect(updateHandler).toHaveBeenCalledWith('a', 'b', 'c');
+      expect(updateHandler).toHaveBeenCalledWith('a', 'b', 'c', 'd');
 
-      control.update('d', 'e', 'f');
+      control.update('d', 'e', 'f', 'g');
       $rootScope.$apply();
 
-      expect(updateHandler).toHaveBeenCalledWith('d', 'e', 'f');
+      expect(updateHandler).toHaveBeenCalledWith('d', 'e', 'f', 'g');
 
-      control.update('g', 'h', 'i');
+      control.update('g', 'h', 'i', 'j');
       $rootScope.$apply();
 
-      expect(updateHandler).toHaveBeenCalledWith('g', 'h', 'i');
+      expect(updateHandler).toHaveBeenCalledWith('g', 'h', 'i', 'j');
     });
   });
 });

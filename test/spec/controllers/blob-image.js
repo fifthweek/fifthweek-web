@@ -58,9 +58,11 @@ describe('blob image controller', function(){
   describe('when created', function(){
 
     var expectedRenderSize;
+    var expectedRenderSizeNumbers;
     beforeEach(function(){
       createController();
       expectedRenderSize = { width: '200px', height: '100px' };
+      expectedRenderSizeNumbers = { width: '400', height: '200' };
       azureUriService.getAvailableImageInformation.and.returnValue($q.when({ uri: 'uri?sig', width: '400', height: '200' }));
     });
 
@@ -118,6 +120,17 @@ describe('blob image controller', function(){
       expect($scope.model.renderSize).toEqual(expectedRenderSize);
     });
 
+    it('should invoke callback with the renderSize if new information is present', function(){
+      $scope.model.renderSize = 'somethingElse';
+      var renderSize;
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', 'thumbnail', false, function(data){ renderSize = data.renderSize; });
+
+      expect(renderSize).toBeUndefined();
+      $scope.$apply();
+      $timeout.flush();
+      expect(renderSize).toEqual(expectedRenderSizeNumbers);
+    });
+
     it('should remove the renderSize if no information is present', function(){
       azureUriService.getAvailableImageInformation.and.returnValue($q.when({ uri: 'uri?sig' }));
       $scope.model.renderSize = expectedRenderSize;
@@ -127,6 +140,18 @@ describe('blob image controller', function(){
       $scope.$apply();
       $timeout.flush();
       expect($scope.model.renderSize).toBeUndefined();
+    });
+
+    it('should invoke callback without the renderSize if no information is present', function(){
+      azureUriService.getAvailableImageInformation.and.returnValue($q.when({ uri: 'uri?sig' }));
+      $scope.model.renderSize = 'somethingElse';
+      var renderSize;
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', 'thumbnail', false, function(data){ renderSize = data.renderSize; });
+
+      expect(renderSize).toBeUndefined();
+      $scope.$apply();
+      $timeout.flush();
+      expect(renderSize).toBeUndefined();
     });
 
     it('should set the error message to undefined while checking availability', function(){

@@ -82,7 +82,7 @@ describe('fw-blob-image directive', function(){
 
         scope.control.update('containerName', 'fileId', true);
 
-        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', undefined, true);
+        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', undefined, true, undefined);
       });
 
       it('should broadcast an event when update is called without the availableImmediately parameter', function(){
@@ -95,7 +95,7 @@ describe('fw-blob-image directive', function(){
 
         scope.control.update('containerName', 'fileId');
 
-        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', undefined, undefined);
+        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', undefined, undefined, undefined);
       });
 
       it('should broadcast an event when update is called without any parameters', function(){
@@ -119,9 +119,9 @@ describe('fw-blob-image directive', function(){
         var isolateScope = element.isolateScope();
         spyOn(isolateScope, '$broadcast');
 
-        scope.control.update('containerName', 'fileId', true);
+        scope.control.update('containerName', 'fileId', true, 'callback');
 
-        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', 'thumb', true);
+        expect(isolateScope.$broadcast).toHaveBeenCalledWith(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', 'thumb', true, 'callback');
       });
     });
 

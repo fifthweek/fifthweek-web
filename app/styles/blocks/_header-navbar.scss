@@ -5,35 +5,6 @@
   top:0;
   left:0;
   z-index:1030;
-  @media (min-width:$navbar-lg-min) {
-    &:after {
-      content: "";
-      position: fixed;
-      left: $sidebar-width - 2px;
-      top: 0;
-      background: #fff;
-      width: 5px;
-      height: $navbar-height-lg;
-      z-index:1040;
-    }
-  }
-}
-
-
-/* Dirty hack to remove unwanted box shadow */
-.header-wrapper {
-  @media (min-width:$navbar-lg-min) {
-    &:after {
-      content: "";
-      position: fixed;
-      left: $sidebar-width - 2px;
-      top: 0;
-      background: #fff;
-      width: 5px;
-      height: $navbar-height-lg;
-      z-index:1040;
-    }
-  }
 }
 
 .navigation-hidden .header-wrapper {
@@ -53,17 +24,17 @@
 
 .navbar-fixed-top {
   background:$navbar-default-bg;
-  border:0 none;
-  box-shadow:0 0 1px rgba(0, 0, 0, 0.15);
+  border: $panel-border;
+  border-width: 0 0 1px 1px;
+  border-left-color: $navbar-default-bg;
+  margin-left: -1px;
   overflow:hidden;
+
   @media (min-width:$screen-md-min) {
     left:$sidebar-width;
   }
   .inner {
-    text-align:center;
-    @media (min-width:$screen-sm-min) {
-      text-align:left;
-    }
+    text-align:left;
     @media(min-width:$screen-lg-min) {
       max-width:810px;
     }

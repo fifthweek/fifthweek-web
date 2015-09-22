@@ -3,7 +3,7 @@
 </h5>
 <div data-live-date="{{post.liveDate}}" class="post timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
-  <div ng-if="post.image && post.renderSizeRatio" class="full-width-image-container">
+  <div ng-if="post.image && post.renderSizeRatio" class="full-width-image-container" ng-style="post.renderSizeMaximumWidth ? { 'max-width': post.renderSizeMaximumWidth + 'px' } : {}">
     <div ng-style="{'padding-top': post.renderSizeRatio}"></div>
     <img class="full-width-image" ng-if="post.image" ng-src="{{post.image.resolvedUri}}" ng-click="viewImage(post.image, post.imageSource)" />
   </div>
@@ -37,7 +37,7 @@
     <div class="row info-actions">
       <div class="col-xs-10 info">
         <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})">
-          <img class="author-image" ng-src="{{post.creator.profileImage.resolvedUri}}" />
+          <img class="author-image" ng-src="{{post.creator.profileImage ? post.creator.profileImage.resolvedUri : fifthweekConstants.defaultProfileImageUrl}}" />
         </a>
         <ul>
           <li>

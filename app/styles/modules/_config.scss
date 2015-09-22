@@ -30,6 +30,8 @@ $main-cont-padding-large:30px;
 $main-cont-margin-bottom:20px;
 $modal-padding:$main-cont-padding-small;
 
+$content-max-width: 945px;
+
 //typography
 $p-font-size:14px;
 $p-line-height:20px;
@@ -41,11 +43,11 @@ $p-margin-bottom: 14px;
 $border-radius:4px;
 $border-radius-base:$border-radius;
 $input-border-radius:$border-radius;
-$panel-border-radius:$border-radius;
-$post-border-radius:$border-radius;
+$panel-border-radius:0;
+$post-border-radius:0;
 
 //shadow
-$panel-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.15);
+$panel-border: solid darken(#f0f0f0, 5%) 1px;
 $post-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.15);
 
 //forms
