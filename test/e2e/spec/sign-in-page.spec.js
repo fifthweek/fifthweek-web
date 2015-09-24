@@ -17,20 +17,7 @@ describe('sign-in page', function() {
     homePage.signInLink.click();
   });
 
-  describe('sidebar', function() {
-
-    it('should contain 2 links', function () {
-      expect(sidebar.links.count()).toBe(2);
-    });
-
-    it('should contain highlighted link for current page', function () {
-      expect(sidebar.signInLink.getAttribute('class')).toContain('active');
-    });
-
-    it('should contain "Help" link', function () {
-      expect(sidebar.helpLink.isDisplayed()).toBe(true);
-    });
-  });
+  sidebar.includeSignedOutTests(sidebar.signInLink);
 
   describe('body', function() {
 

@@ -1,16 +1,16 @@
 'use strict';
 
 var HeaderPage = require('./header.page.js');
-var HeaderBacklogPage = function() {};
+var HeaderScheduledPostsPage = function() {};
 
-HeaderBacklogPage.prototype = Object.create(HeaderPage.prototype, {
-  futurePostsLink: { get: function () { return element(by.id('header-navigation-future-posts')); }},
+HeaderScheduledPostsPage.prototype = Object.create(HeaderPage.prototype, {
+  scheduledPostsLink: { get: function () { return element(by.id('header-navigation-scheduled-posts')); }},
   queuesLink: { get: function () { return element(by.id('header-navigation-queues')); }},
   includeBasicTests: { value: function(highlightedLink) {
     this.includeBasicTestsBase(highlightedLink, [
       {
-        name: 'Future Posts',
-        element: this.futurePostsLink
+        name: 'Scheduled Posts',
+        element: this.scheduledPostsLink
       },
       {
         name: 'Queues',
@@ -20,4 +20,4 @@ HeaderBacklogPage.prototype = Object.create(HeaderPage.prototype, {
   }}
 });
 
-module.exports = HeaderBacklogPage;
+module.exports = HeaderScheduledPostsPage;

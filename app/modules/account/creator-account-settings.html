@@ -5,60 +5,30 @@
 
   <fw-panel12>
 
-    <div ng-show="model.accountSettings">
+    <label>Become a creator</label>
+    <p>
+      By becoming a creator on fifthweek you can effortlessly share anything with paying subscribers.
+    </p>
+    <p></p>
 
-      <div ng-if="!model.isCreator">
-        <label>Become a creator</label>
-        <p>
-          By becoming a creator on fifthweek you can effortlessly share anything with paying subscribers.
-        </p>
-        <p></p>
+    <div class="row-btn">
+      <div ng-show="form.submissionSucceeded && form.$pristine" class="alert alert-success" >
+        <p>Saved successfully</p>
       </div>
+      <fw-error-message value="model.errorMessage"></fw-error-message>
 
-      <div ng-if="model.isCreator">
-        <label>You are a creator</label>
-        <p>
-          Creator specific settings will appear here, but currently there are none.
-        </p>
-        <p></p>
-      </div>
-
-      <div class="row-btn">
-        <div ng-show="form.submissionSucceeded && form.$pristine" class="alert alert-success" >
-          <p>Saved successfully</p>
-        </div>
-        <fw-error-message value="model.errorMessage"></fw-error-message>
-        <button ng-if="model.isCreator"
-                type="submit"
-                id="save-changes-button"
-                class="btn btn-block btn-success"
-                data-loading-text="Saving..."
-                data-event-title="Creator account settings saved"
-                data-event-category="Account"
-                ng-disabled="form.isSubmitting"
-                can-submit="true"
-                error-message="model.errorMessage"
-                fw-form-submit="submitForm()">
-          Save Changes
-        </button>
-
-        <button ng-if="!model.isCreator"
-                type="submit"
-                id="become-creator-button"
-                class="btn btn-block btn-success"
-                data-loading-text="Saving..."
-                data-event-title="Creator account settings created"
-                data-event-category="Account"
-                ng-disabled="form.isSubmitting"
-                can-submit="true"
-                error-message="model.errorMessage"
-                fw-form-submit="submitForm()">
-          Become a Creator
-        </button>
-
-        <fw-form-cancel-button ng-disabled="form.$pristine || form.isSubmitting" id="cancel-button"></fw-form-cancel-button>
-        <fw-form-dirty-confirmation form="form"></fw-form-dirty-confirmation>
-      </div>
+      <button type="submit"
+              id="become-creator-button"
+              class="btn btn-block btn-success"
+              data-loading-text="Saving..."
+              data-event-title="Become a creator actioned"
+              data-event-category="Account"
+              ng-disabled="form.isSubmitting"
+              can-submit="true"
+              error-message="model.errorMessage"
+              fw-form-submit="submitForm()">
+        Become a Creator
+      </button>
     </div>
   </fw-panel12>
 </form>

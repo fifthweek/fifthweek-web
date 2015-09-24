@@ -2,7 +2,7 @@
   'use strict';
 
   var CommonWorkflows = require('../common-workflows.js');
-  var HeaderPage = require('../pages/header-subscriptions.page.js');
+  var HeaderPage = require('../pages/header-latest-posts.page.js');
   var SidebarPage = require('../pages/sidebar.page.js');
 
   describe('latest-posts page', function() {
@@ -14,37 +14,37 @@
     describe('when an established creator', function(){
       it('should run once before all', function() {
         commonWorkflows.createBlog();
-        sidebar.subscriptionsLink.click();
+        sidebar.latestPostsLink.click();
         header.latestPostsLink.click();
       });
 
       header.includeBasicTests(header.latestPostsLink);
 
-      sidebar.includeEstablishedCreatorTests(sidebar.subscriptionsLink);
+      sidebar.includeEstablishedCreatorTests(sidebar.latestPostsLink);
     });
 
     describe('when a new creator', function(){
       it('should run once before all', function() {
         commonWorkflows.register();
-        sidebar.subscriptionsLink.click();
+        sidebar.latestPostsLink.click();
         header.latestPostsLink.click();
       });
 
       header.includeBasicTests(header.latestPostsLink);
 
-      sidebar.includeNewCreatorTests(sidebar.subscriptionsLink);
+      sidebar.includeNewCreatorTests(sidebar.latestPostsLink);
     });
 
     describe('when a consumer', function(){
       it('should run once before all', function() {
         commonWorkflows.registerAsConsumer();
-        sidebar.subscriptionsLink.click();
+        sidebar.latestPostsLink.click();
         header.latestPostsLink.click();
       });
 
       header.includeBasicTests(header.latestPostsLink);
 
-      sidebar.includeConsumerTests(sidebar.subscriptionsLink);
+      sidebar.includeConsumerTests(sidebar.latestPostsLink);
     });
   });
 })();

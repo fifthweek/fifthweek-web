@@ -57,6 +57,7 @@ angular.module('webApp')
         separator: inputItem.separator,
         name: name,
         state: inputItem.state,
+        action: inputItem.action,
         icon: inputItem.icon,
         color: inputItem.color,
         isActive: isActive,

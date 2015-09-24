@@ -1,28 +1,18 @@
 'use strict';
 
 var HeaderPage = require('./header.page.js');
-var HeaderReadNowPage = function() {};
+var HeaderSubscriptionsPage = function() {};
 
-HeaderReadNowPage.prototype = Object.create(HeaderPage.prototype, {
-  latestPostsLink: { get: function () { return element(by.id('header-navigation-latest-posts')); }},
-  manageLink: { get: function () { return element(by.id('header-navigation-manage')); }},
-  paymentLink: { get: function () { return element(by.id('header-navigation-payment')); }},
+HeaderSubscriptionsPage.prototype = Object.create(HeaderPage.prototype, {
+  yourSubscriptionsLink: { get: function () { return element(by.id('header-navigation-your-subscriptions')); }},
   includeBasicTests: { value: function(highlightedLink) {
     this.includeBasicTestsBase(highlightedLink, [
       {
-        name: 'Latest Posts',
-        element: this.latestPostsLink
-      },
-      {
-        name: 'Manage',
-        element: this.manageLink
-      },
-      {
-        name: 'Payment',
-        element: this.paymentLink
+        name: 'Your Subscriptions',
+        element: this.yourSubscriptionsLink
       }
     ]);
   }}
 });
 
-module.exports = HeaderReadNowPage;
+module.exports = HeaderSubscriptionsPage;

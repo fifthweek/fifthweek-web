@@ -8,7 +8,6 @@
   var HeaderPage = require('../pages/header-subscriptions.page.js');
   var GuestListPage = require('../pages/creators/guest-list.page.js');
   var PostPage = require('../pages/post.page.js');
-  var SubscribersHeaderPage = require('../pages/header-subscribers.page.js');
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
   var SignInWorkflowPage = require('../pages/sign-in-workflow.page.js');
   var PostListInformationPage = require('../pages/post-list-information.page.js');
@@ -20,7 +19,6 @@
   var header = new HeaderPage();
   var guestListPage = new GuestListPage();
   var post = new PostPage();
-  var subscribersHeader = new SubscribersHeaderPage();
   var landingPage = new CreatorLandingPagePage();
   var signInWorkflow = new SignInWorkflowPage();
   var postListInformation = new PostListInformationPage();
@@ -29,7 +27,7 @@
   describe('subscription management', function() {
 
     var navigateToLatestPosts = function () {
-      sidebar.subscriptionsLink.click();
+      sidebar.latestPostsLink.click();
     };
 
     var navigateToCreatorLandingPage = function (creator) {
@@ -39,11 +37,12 @@
     var navigateFromCreatorLandingPage = function () {
       testKit.scrollIntoView(landingPage.fifthweekLink);
       landingPage.fifthweekLink.click();
+      sidebar.subscriptionsLink.click();
     };
 
     var expectLatestPostCount = function(count){
       browser.waitForAngular();
-      expect(header.latestPostsLink.isDisplayed()).toBe(true);
+      expect(sidebar.latestPostsLink.isDisplayed()).toBe(true);
       expect(post.allPosts.count()).toBe(count);
     };
 
@@ -95,13 +94,14 @@
         var context = commonWorkflows.createBlog();
         blog = context.blog;
         creatorRegistration1 = context.registration;
-        sidebar.landingPageLink.click();
+        sidebar.viewProfileLink.click();
       });
 
       describe('when creator', function(){
         afterEach(function(){
           landingPage.fifthweekLink.click();
-          sidebar.landingPageLink.click();
+          sidebar.subscriptionsLink.click();
+          sidebar.viewProfileLink.click();
         });
 
         describe('subscribing', function(){
@@ -220,8 +220,7 @@
           userRegistration3 = signInWorkflow.newRegistrationData();
 
           commonWorkflows.reSignIn(creatorRegistration1);
-          sidebar.subscribersLink.click();
-          subscribersHeader.guestListLink.click();
+          sidebar.guestListLink.click();
           guestListPage.setNewGuestList([userRegistration.email, userRegistration2.email, userRegistration3.email]);
         });
 
@@ -321,7 +320,6 @@
       });
 
       it('should post each type of post', function(){
-        sidebar.postsLink.click();
         nonViewableImagePost = commonWorkflows.postImageAndFileNow(filePathTiff, filePath);
         imagePost = commonWorkflows.postImageNow(filePath);
         filePost = commonWorkflows.postFileNow(filePath);
@@ -513,8 +511,7 @@
 
         if(hasFreeAccess){
           it('should add the user to the guest list of creator2', function() {
-            sidebar.subscribersLink.click();
-            subscribersHeader.guestListLink.click();
+            sidebar.guestListLink.click();
             guestListPage.setNewGuestList([userRegistration.email]);
           });
         }
@@ -668,13 +665,12 @@
           var context = commonWorkflows.createBlog();
           blog = context.blog;
           creatorRegistration1 = context.registration;
-          sidebar.landingPageLink.click();
+          sidebar.viewProfileLink.click();
         });
 
         it('should add the user to the guest list', function(){
           commonWorkflows.reSignIn(creatorRegistration1);
-          sidebar.subscribersLink.click();
-          subscribersHeader.guestListLink.click();
+          sidebar.guestListLink.click();
           guestListPage.setNewGuestList([userRegistration.email]);
         });
 
@@ -693,7 +689,7 @@
           var context = commonWorkflows.createBlog();
           blog = context.blog;
           creatorRegistration1 = context.registration;
-          sidebar.landingPageLink.click();
+          sidebar.viewProfileLink.click();
         });
 
         testSubscribingToChannels(false);
@@ -912,8 +908,7 @@
 
         it('creator 1 should add the user to the guest list', function(){
           commonWorkflows.reSignIn(creatorRegistration1);
-          sidebar.subscribersLink.click();
-          subscribersHeader.guestListLink.click();
+          sidebar.guestListLink.click();
           guestListPage.setNewGuestList([userRegistration.email]);
         });
 
@@ -974,8 +969,7 @@
 
         it('creator 1 should add the user to the guest list', function(){
           commonWorkflows.reSignIn(creatorRegistration1);
-          sidebar.subscribersLink.click();
-          subscribersHeader.guestListLink.click();
+          sidebar.guestListLink.click();
           guestListPage.updateGuestList([]);
         });
 

@@ -2,9 +2,9 @@ var _ = require('lodash');
 var TestKit = require('../../test-kit.js');
 var CommonWorkflows = require('../../common-workflows.js');
 var ChannelNameInputPage = require('../../pages/channel-name-input.page.js');
-var ChannelDescriptionInputPage = require('../../pages/channel-description-input.page.js');
 var ChannelPriceInputPage = require('../../pages/channel-price-input.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
+var HeaderPage = require('../../pages/header-edit-profile.page.js');
 var ChannelListPage = require('../../pages/creators/channel-list.page.js');
 var ChannelAddPage = require('../../pages/creators/channel-add.page.js');
 
@@ -20,6 +20,7 @@ describe('add channel form', function() {
   var channelNameInputPage = new ChannelNameInputPage();
   var channelPriceInputPage = new ChannelPriceInputPage();
   var sidebar = new SidebarPage();
+  var header = new HeaderPage();
   var channelListPage = new ChannelListPage();
   var page = new ChannelAddPage();
 
@@ -33,7 +34,8 @@ describe('add channel form', function() {
     var context = commonWorkflows.createBlog();
     registration = context.registration;
     blog = context.blog;
-    sidebar.channelsLink.click();
+    sidebar.editProfileLink.click();
+    header.channelsLink.click();
     channelListPage.addChannelButton.click();
   });
 
@@ -74,7 +76,8 @@ describe('add channel form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.channelsLink.click();
+      sidebar.editProfileLink.click();
+      header.channelsLink.click();
 
       expectChangesAppliedAndNavigateToPage(newFormValues);
     });

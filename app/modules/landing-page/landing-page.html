@@ -5,17 +5,23 @@
 
     <ng-include src="'modules/landing-page/landing-page-header-information.html'"></ng-include>
 
-    <ng-include src="'modules/landing-page/landing-page-body-information.html'"></ng-include>
+    <ng-include src="'modules/landing-page/landing-page-body-information.html'" ng-if="model.currentView === views.manage"></ng-include>
 
 
-    <div class="main-content">
+    <div class="main-content" ng-if="model.currentView === views.blog">
       <div class="row">
         <div class="col-xs-12">
+          <span>
+            <p ng-if="!model.isOwner" class="button-footer">
+              {{model.subscribedChannelCount}} Channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
+              - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
+            </p>
+            <p ng-if="model.isOwner" class="button-footer">Previewing all channels.</p>
+          </span>
 
           <fw-post-list source="timeline"
                         user-id="{{model.userId}}"
-                        channel-id="{{model.channelId}}"
-                        ng-if="model.currentView === views.blog"></fw-post-list>
+                        channel-id="{{model.channelId}}"></fw-post-list>
         </div>
       </div>
     </div>

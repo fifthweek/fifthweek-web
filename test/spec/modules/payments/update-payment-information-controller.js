@@ -97,6 +97,7 @@ describe('update-payment-information-controller', function(){
         accountSettingsRepository.getAccountSettings.and.returnValue(deferredGetAccountSettings.promise);
 
         $scope.model.hasPaymentInformation = 'hasPaymentInformation';
+        $scope.model.accountBalance = 'accountBalance';
 
         target.internal.loadForm().then(function(){ success = true; }, function(e){ error = e; });
         $scope.$apply();
@@ -108,12 +109,16 @@ describe('update-payment-information-controller', function(){
 
       describe('when getAccountSettings succeeds', function(){
         beforeEach(function(){
-          deferredGetAccountSettings.resolve({ hasPaymentInformation: false });
+          deferredGetAccountSettings.resolve({ hasPaymentInformation: false, accountBalance: 1.23 });
           $scope.$apply();
         });
 
         it('should set hasPaymentInformation', function(){
           expect($scope.model.hasPaymentInformation).toBe(false);
+        });
+
+        it('should set accountBalance', function(){
+          expect($scope.model.accountBalance).toBe(1.23);
         });
 
         it('should complete successfully', function(){

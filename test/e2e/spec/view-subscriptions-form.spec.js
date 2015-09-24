@@ -5,26 +5,20 @@
   var TestKit = require('../test-kit.js');
   var CommonWorkflows = require('../common-workflows.js');
   var SidebarPage = require('../pages/sidebar.page.js');
-  var HeaderPage = require('../pages/header-subscriptions.page.js');
-  var AccountSettingsPage = require('../pages/account-settings.page.js');
   var PaymentInformationPage = require('../pages/payment-information.page.js');
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
-  var SubscribersHeaderPage = require('../pages/header-subscribers.page.js');
+  var AccountHeaderPage = require('../pages/header-account.page.js');
   var GuestListPage = require('../pages/creators/guest-list.page.js');
-  var DeleteConfirmationPage = require('../pages/delete-confirmation.page.js');
   var ViewSubscriptionsPage = require('../pages/view-subscriptions.page.js');
   var PostListInformationPage = require('../pages/post-list-information.page.js');
 
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
-  var header = new HeaderPage();
-  var accountSettings = new AccountSettingsPage();
   var paymentInformationPage = new PaymentInformationPage();
   var landingPage = new CreatorLandingPagePage();
-  var subscribersHeader = new SubscribersHeaderPage();
+  var accountHeader = new AccountHeaderPage();
   var guestListPage = new GuestListPage();
-  var deleteConfirmationPage = new DeleteConfirmationPage();
   var viewSubscriptionsPage = new ViewSubscriptionsPage();
   var postListInformationPage = new PostListInformationPage();
 
@@ -35,11 +29,11 @@
   var navigateFromCreatorLandingPage = function () {
     testKit.scrollIntoView(landingPage.fifthweekLink);
     landingPage.fifthweekLink.click();
+    sidebar.subscriptionsLink.click();
   };
 
   var navigateToPage = function(){
     sidebar.subscriptionsLink.click();
-    header.manageLink.click();
   };
 
   describe('view subscriptions form', function(){
@@ -147,8 +141,7 @@
 
     it('should add user to guest list', function(){
       commonWorkflows.reSignIn(creatorRegistration2);
-      sidebar.subscribersLink.click();
-      subscribersHeader.guestListLink.click();
+      sidebar.guestListLink.click();
       guestListPage.setNewGuestList([userRegistration.email]);
       commonWorkflows.reSignIn(userRegistration);
     });
@@ -180,8 +173,7 @@
 
     it('should remove user from guest list', function(){
       commonWorkflows.reSignIn(creatorRegistration2);
-      sidebar.subscribersLink.click();
-      subscribersHeader.guestListLink.click();
+      sidebar.guestListLink.click();
       guestListPage.updateGuestList([]);
       commonWorkflows.reSignIn(userRegistration);
     });
@@ -226,7 +218,8 @@
     });
 
     it('should display account balance', function(){
-      header.paymentLink.click();
+      sidebar.accountLink.click();
+      accountHeader.paymentLink.click();
       paymentInformationPage.completeSuccessfully();
       navigateToPage();
 

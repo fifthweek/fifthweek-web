@@ -7,7 +7,7 @@
         <ul ng-if="navigation.length === 0" id="header-navbar" class="header-navbar-menu">
           <li>
             <a class="active"
-               id="header-title"
+               id="header-{{titleToId($state.current.data.pageTitle)}}"
                snap-close>
               <span>{{$state.current.data.pageTitle}}</span>
             </a>

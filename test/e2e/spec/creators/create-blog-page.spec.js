@@ -1,7 +1,7 @@
 var SignOutPage = require('../../pages/sign-out.page.js');
 var RegisterPage = require('../../pages/register.page.js');
 var CreateBlogPage = require('../../pages/creators/create-blog.page.js');
-var HeaderPage = require('../../pages/header.page.js');
+var HeaderPage = require('../../pages/header-create-channel.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
 
 describe('create blog page', function() {
@@ -17,12 +17,7 @@ describe('create blog page', function() {
     registerPage.registerSuccessfully();
   });
 
-  describe('header', function() {
+  header.includeBasicTests(header.createChannelLink);
 
-    it('should contain title', function() {
-      expect(header.title.getText()).toContain('About Your Blog'.toUpperCase());
-    });
-  });
-
-  sidebar.includeNewCreatorTests(sidebar.createBlogLink);
+  sidebar.includeNewCreatorTests(sidebar.createChannelLink);
 });

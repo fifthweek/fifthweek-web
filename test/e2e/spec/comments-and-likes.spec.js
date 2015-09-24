@@ -4,7 +4,6 @@
   var TestKit = require('../test-kit.js');
   var CommonWorkflows = require('../common-workflows.js');
   var SidebarPage = require('../pages/sidebar.page.js');
-  var HeaderPage = require('../pages/header-subscriptions.page.js');
   var PostPage = require('../pages/post.page.js');
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
   var PaymentInformationPage = require('../pages/payment-information.page.js');
@@ -13,7 +12,6 @@
   var testKit = new TestKit();
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
-  var header = new HeaderPage();
   var post = new PostPage();
   var landingPage = new CreatorLandingPagePage();
   var paymentInformationPage = new PaymentInformationPage();
@@ -22,7 +20,7 @@
   describe('comments and likes', function() {
 
     var navigateToLatestPosts = function () {
-      sidebar.subscriptionsLink.click();
+      sidebar.latestPostsLink.click();
     };
 
     var navigateToCreatorLandingPage = function (creator) {
@@ -32,6 +30,7 @@
     var navigateFromCreatorLandingPage = function () {
       testKit.scrollIntoView(landingPage.fifthweekLink);
       landingPage.fifthweekLink.click();
+      sidebar.subscriptionsLink.click();
     };
 
     var addCreditToUserAccount = function(userRegistration){
@@ -70,7 +69,6 @@
       });
 
       it('should post a note', function(){
-        sidebar.postsLink.click();
         notePost1 = commonWorkflows.postNoteNow();
         notePost2 = commonWorkflows.postNoteNow();
       });

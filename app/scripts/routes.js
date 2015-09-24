@@ -67,6 +67,9 @@ angular.module('webApp')
       },
       posts: {
         name: 'creator.posts',
+        compose: {
+          name: 'creator.posts.compose'
+        },
         live: {
           name: 'creator.posts.live'
         },
@@ -172,7 +175,7 @@ angular.module('webApp')
       }
     }
   })
-  .config(function($stateProvider, $urlRouterProvider, $locationProvider, states, authenticationServiceConstants) {
+  .config(function($stateProvider, $urlRouterProvider, $locationProvider, states, authenticationServiceConstants, authorizationServiceConstants) {
 
     $locationProvider.html5Mode(true);
 
@@ -277,8 +280,8 @@ angular.module('webApp')
         controller: 'viewSubscriptionsCtrl',
         data : {
           bodyClass: 'page-view-subscriptions',
-          pageTitle: 'View Subscriptions',
-          headTitle: ': ' + 'View Subscriptions',
+          pageTitle: 'Your Subscriptions',
+          headTitle: ': ' + 'Your Subscriptions',
           access: {
             requireAuthenticated: true
           }
@@ -302,11 +305,13 @@ angular.module('webApp')
         templateUrl: 'modules/account/creator-account-settings.html',
         controller: 'creatorAccountSettingsCtrl',
         data : {
-          pageTitle: 'Creator Account Settings',
-          headTitle: ': ' + 'Creator Account Settings',
+          pageTitle: 'Publish',
+          headTitle: ': ' + 'Publish',
           bodyClass: 'page-creator-account-settings',
           access: {
-            requireAuthenticated: true
+            requireAuthenticated: true,
+            roles: [authenticationServiceConstants.roles.creator],
+            roleCheckType: authorizationServiceConstants.roleCheckType.none
           }
         }
       })
@@ -326,8 +331,8 @@ angular.module('webApp')
         url: '/news-feed',
         templateUrl: 'modules/newsfeed/newsfeed.html',
         data : {
-          pageTitle: 'News Feed',
-          headTitle: ': ' + 'News Feed',
+          pageTitle: 'Latest Posts',
+          headTitle: ': ' + 'Latest Posts',
           access: {
             requireAuthenticated: true
           }
@@ -363,8 +368,8 @@ angular.module('webApp')
         controller: 'createBlogCtrl',
         requireBlog: false,
         data : {
-          pageTitle: 'About Your Blog',
-          headTitle: ': ' + 'Create Blog'
+          pageTitle: 'Create Channel',
+          headTitle: ': ' + 'Create Channel'
         }
       })
       .state(states.creator.landingPage.name, {
@@ -402,6 +407,11 @@ angular.module('webApp')
         redirectTo: states.creator.posts.live.name,
         data : {
         }
+      })
+      .state(states.creator.posts.compose.name, {
+        url: '',
+        templateUrl: 'modules/common/ui-view.html',
+        requireBlog: true
       })
       .state(states.creator.posts.live.name, {
         url: '/live',

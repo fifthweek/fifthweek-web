@@ -2,12 +2,10 @@
 
 var TestKit = require('../../test-kit.js');
 var ChannelNameInputPage = require('../channel-name-input.page.js');
-var ChannelDescriptionInputPage = require('../channel-description-input.page.js');
 var ChannelPriceInputPage = require('../channel-price-input.page.js');
 
 var testKit = new TestKit();
 var channelNameInputPage = new ChannelNameInputPage();
-var channelDescriptionInputPage = new ChannelDescriptionInputPage();
 var channelPriceInputPage = new ChannelPriceInputPage();
 
 var ChannelAddPage = function() {};

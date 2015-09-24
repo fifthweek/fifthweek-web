@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'SidebarCtrl',
-  function($scope, navigationOrchestrator, navigationOrchestratorConstants) {
+  function($scope, $state, navigationOrchestrator, navigationOrchestratorConstants) {
     'use strict';
 
     $scope.$on(
@@ -10,5 +10,13 @@ angular.module('webApp').controller(
       });
 
     $scope.navigation = navigationOrchestrator.getPrimaryNavigation();
+
+    $scope.navigate = function(state, action){
+      if(action){
+        return action();
+      }
+
+      $state.go(state);
+    };
   }
 );

@@ -10,5 +10,9 @@ angular.module('webApp').controller(
       });
 
     $scope.navigation = navigationOrchestrator.getSecondaryNavigation();
+
+    $scope.titleToId = function(title){
+      return 'navigation-' + _.kebabCase(title);
+    };
   }
 );

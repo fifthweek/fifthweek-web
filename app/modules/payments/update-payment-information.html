@@ -1,3 +1,8 @@
+<fw-panel12 ng-if="model.accountBalance">
+  <p>
+    Your account balance is currently <strong><fw-price value="model.accountBalance" show-interval="false" id="account-balance"></fw-price></strong>.
+  </p>
+</fw-panel12>
 <fw-panel12>
   <h4>Update Payment Information</h4>
   <fw-update-payment-information></fw-update-payment-information>

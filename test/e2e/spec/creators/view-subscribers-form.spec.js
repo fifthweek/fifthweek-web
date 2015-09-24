@@ -4,7 +4,6 @@
   var TestKit = require('../../test-kit.js');
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
-  var HeaderPage = require('../../pages/header-subscribers.page.js');
   var ViewSubscribersPage = require('../../pages/creators/view-subscribers.page.js');
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
   var GuestListPage = require('../../pages/creators/guest-list.page.js');
@@ -16,7 +15,6 @@
     var testKit = new TestKit();
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
-    var header = new HeaderPage();
     var page = new ViewSubscribersPage();
     var landingPage = new CreatorLandingPagePage();
     var guestListPage = new GuestListPage();
@@ -25,7 +23,6 @@
 
     var navigateToPage = function () {
       sidebar.subscribersLink.click();
-      header.allLink.click();
     };
 
     var navigateToCreatorLandingPage = function (creator) {
@@ -35,6 +32,7 @@
     var navigateFromCreatorLandingPage = function () {
       testKit.scrollIntoView(landingPage.fifthweekLink);
       landingPage.fifthweekLink.click();
+      sidebar.subscriptionsLink.click();
     };
 
     var getPrice = function(channelCount0, channelCount1){
@@ -128,8 +126,7 @@
     });
 
     it('should not display unsubscribed users on guest list', function(){
-      sidebar.subscribersLink.click();
-      header.guestListLink.click();
+      sidebar.guestListLink.click();
       guestListPage.setNewGuestList([userRegistration2.email]);
 
       navigateToPage();
@@ -157,8 +154,7 @@
     });
 
     it('should not display subscriber removed from guest list if subscriber has no payment information', function(){
-      sidebar.subscribersLink.click();
-      header.guestListLink.click();
+      sidebar.guestListLink.click();
       guestListPage.updateGuestList([]);
 
       navigateToPage();

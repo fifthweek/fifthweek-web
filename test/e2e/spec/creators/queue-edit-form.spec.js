@@ -3,6 +3,7 @@ var TestKit = require('../../test-kit.js');
 var CommonWorkflows = require('../../common-workflows.js');
 var QueueNameInputPage = require('../../pages/queue-name-input.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
+var HeaderPage = require('../../pages/header-scheduled-posts.page.js');
 var DeleteConfirmationPage = require('../../pages/delete-confirmation.page.js');
 var DiscardChangesPage = require('../../pages/discard-changes.page.js');
 var QueueListPage = require('../../pages/creators/queue-list.page.js');
@@ -21,6 +22,7 @@ describe('edit queue form', function() {
   var commonWorkflows = new CommonWorkflows();
   var queueNameInputPage = new QueueNameInputPage();
   var sidebar = new SidebarPage();
+  var header = new HeaderPage();
   var deleteConfirmationPage = new DeleteConfirmationPage();
   var queueListPage = new QueueListPage();
   var page = new QueueEditPage();
@@ -49,7 +51,8 @@ describe('edit queue form', function() {
       nameTextBox: queue.name
     };
 
-    sidebar.queuesLink.click();
+    sidebar.scheduledPostsLink.click();
+    header.queuesLink.click();
     navigateToPage();
   });
 
@@ -74,10 +77,11 @@ describe('edit queue form', function() {
 
   discardChanges.describeDiscardingChanges(
     function(){
-      sidebar.queuesLink.click();
+      sidebar.scheduledPostsLink.click();
+      header.queuesLink.click();
       navigateToPage();
     },
-    function(){ sidebar.channelsLink.click(); },
+    function(){ sidebar.subscriptionsLink.click(); },
     function(){
       var newValues = testKit.setFormValues(page, inputs);
       page.expandReleaseTimesButton.click();
@@ -150,7 +154,8 @@ describe('edit queue form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.queuesLink.click();
+      sidebar.scheduledPostsLink.click();
+      header.queuesLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
       expectReleaseTimes();
@@ -172,7 +177,8 @@ describe('edit queue form', function() {
   describe('when validating bad input', function() {
     afterEach(function () {
       commonWorkflows.fastRefresh();
-      sidebar.queuesLink.click(); // Reset form state.
+      sidebar.scheduledPostsLink.click();
+      header.queuesLink.click();
       navigateToPage();
     });
 
@@ -182,7 +188,9 @@ describe('edit queue form', function() {
   describe('submit button', function () {
     afterEach(function () {
       commonWorkflows.fastRefresh();
-      sidebar.queuesLink.click(); // Reset form state.
+      // Reset form state.
+      sidebar.scheduledPostsLink.click();
+      header.queuesLink.click();
       navigateToPage();
     });
 
@@ -222,7 +230,9 @@ describe('edit queue form', function() {
   describe('when deleting release times', function() {
     afterEach(function () {
       commonWorkflows.fastRefresh();
-      sidebar.queuesLink.click(); // Reset form state.
+      // Reset form state.
+      sidebar.scheduledPostsLink.click();
+      header.queuesLink.click();
       navigateToPage();
     });
 
@@ -255,13 +265,15 @@ describe('edit queue form', function() {
     },
     function () {
       // Check not deleted from client-side.
-      sidebar.queuesLink.click();
+      sidebar.scheduledPostsLink.click();
+      header.queuesLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
 
       // Check not deleted from API.
       commonWorkflows.reSignIn(registration);
-      sidebar.queuesLink.click();
+      sidebar.scheduledPostsLink.click();
+      header.queuesLink.click();
       navigateToPage();
       testKit.expectFormValues(page, savedValues);
     },
@@ -273,7 +285,8 @@ describe('edit queue form', function() {
 
       // Check deleted from API.
       commonWorkflows.reSignIn(registration);
-      sidebar.queuesLink.click();
+      sidebar.scheduledPostsLink.click();
+      header.queuesLink.click();
       queueListPage.waitForPage();
       expect(queueListPage.queues.count()).toBe(0);
       expect(queueListPage.queues.getText()).not.toContain(savedValues.nameTextBox);

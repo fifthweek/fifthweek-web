@@ -1,5 +1,6 @@
 var CommonWorkflows = require('../../common-workflows.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
+var HeaderPage = require('../../pages/header-scheduled-posts.page.js');
 var QueueListPage = require('../../pages/creators/queue-list.page.js');
 
 describe('queue list form', function() {
@@ -13,6 +14,7 @@ describe('queue list form', function() {
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
+  var header = new HeaderPage();
   var page = new QueueListPage();
 
   it('should run once before all', function() {
@@ -37,6 +39,7 @@ describe('queue list form', function() {
   });
 
   var navigateToPage = function() {
-    sidebar.queuesLink.click();
+    sidebar.scheduledPostsLink.click();
+    header.queuesLink.click();
   };
 });

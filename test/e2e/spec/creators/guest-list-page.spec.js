@@ -2,7 +2,7 @@
   'use strict';
 
   var CommonWorkflows = require('../../common-workflows.js');
-  var HeaderPage = require('../../pages/header-subscribers.page.js');
+  var HeaderPage = require('../../pages/header-guest-list.page.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
 
   describe('guest-list page', function() {
@@ -13,12 +13,12 @@
 
     it('should run once before all', function() {
       commonWorkflows.createBlog();
-      sidebar.subscribersLink.click();
+      sidebar.guestListLink.click();
       header.guestListLink.click();
     });
 
     header.includeBasicTests(header.guestListLink);
 
-    sidebar.includeEstablishedCreatorTests(sidebar.subscribersLink);
+    sidebar.includeEstablishedCreatorTests(sidebar.guestListLink);
   });
 })();

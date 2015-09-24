@@ -2,23 +2,23 @@
   'use strict';
 
   var CommonWorkflows = require('../../common-workflows.js');
-  var HeaderPostsPage = require('../../pages/header-posts.page.js');
+  var HeaderPage = require('../../pages/header-scheduled-posts.page.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
 
   describe('creator-backlog page', function() {
 
     var commonWorkflows = new CommonWorkflows();
-    var header = new HeaderPostsPage();
+    var header = new HeaderPage();
     var sidebar = new SidebarPage();
 
     it('should run once before all', function() {
       commonWorkflows.createBlog();
-      sidebar.postsLink.click();
-      header.scheduledLink.click();
+      sidebar.scheduledPostsLink.click();
+      header.scheduledPostsLink.click();
     });
 
-    header.includeBasicTests(header.scheduledLink);
+    header.includeBasicTests(header.scheduledPostsLink);
 
-    sidebar.includeEstablishedCreatorTests(sidebar.postsLink);
+    sidebar.includeEstablishedCreatorTests(sidebar.scheduledPostsLink);
   });
 })();

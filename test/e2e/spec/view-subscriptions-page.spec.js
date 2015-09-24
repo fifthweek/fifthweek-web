@@ -15,7 +15,7 @@
       it('should run once before all', function() {
         commonWorkflows.createBlog();
         sidebar.subscriptionsLink.click();
-        header.manageLink.click();
+        header.yourSubscriptionsLink.click();
       });
 
       header.includeBasicTests(header.manageLink);
@@ -27,7 +27,7 @@
       it('should run once before all', function() {
         commonWorkflows.register();
         sidebar.subscriptionsLink.click();
-        header.manageLink.click();
+        header.yourSubscriptionsLink.click();
       });
 
       header.includeBasicTests(header.manageLink);
@@ -39,7 +39,7 @@
       it('should run once before all', function() {
         commonWorkflows.registerAsConsumer();
         sidebar.subscriptionsLink.click();
-        header.manageLink.click();
+        header.yourSubscriptionsLink.click();
       });
 
       header.includeBasicTests(header.manageLink);

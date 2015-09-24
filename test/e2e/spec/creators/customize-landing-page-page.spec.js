@@ -1,23 +1,20 @@
 var CommonWorkflows = require('../../common-workflows.js');
-var HeaderLandingPagePage = require('../../pages/header-landing-page.page.js');
+var HeaderPage = require('../../pages/header-edit-profile.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
-var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
 
 describe('customize landing page page', function() {
   'use strict';
 
   var commonWorkflows = new CommonWorkflows();
-  var header = new HeaderLandingPagePage();
+  var header = new HeaderPage();
   var sidebar = new SidebarPage();
-  var creatorLandingPagePage = new CreatorLandingPagePage();
 
   it('should run once before all', function() {
     commonWorkflows.createBlog();
-    sidebar.landingPageLink.click();
-    creatorLandingPagePage.editPageLink.click();
+    sidebar.editProfileLink.click();
   });
 
-  header.includeBasicTests(header.editPageLink);
+  header.includeBasicTests(header.profileInformationLink);
 
-  sidebar.includeEstablishedCreatorTests(sidebar.landingPageLink);
+  sidebar.includeEstablishedCreatorTests(sidebar.editProfileLink);
 });

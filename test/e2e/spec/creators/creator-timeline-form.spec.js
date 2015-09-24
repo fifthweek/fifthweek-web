@@ -27,21 +27,22 @@
     var editPostDialogPage = new EditPostDialogPage();
 
     var navigateToLandingPage = function() {
-      sidebar.landingPageLink.click();
+      sidebar.viewProfileLink.click();
       creatorLandingPagePage.subscribeButton.click();
     };
 
     var navigateToSiteFromLandingPage = function() {
       //testKit.scrollIntoView(creatorLandingPagePage.editPageLink);
-      creatorLandingPagePage.editPageLink.click();
+      creatorLandingPagePage.fifthweekLink.click();
+      sidebar.subscriptionsLink.click();
     };
 
     var navigateToPostsPage = function() {
-      sidebar.postsLink.click();
+      sidebar.livePostsLink.click();
     };
 
     var navigateToSiteFromPostsPage = function() {
-      sidebar.channelsLink.click();
+      sidebar.subscriptionsLink.click();
     };
 
     var runTests = function(navigateToPage, navigateToSite){
@@ -142,7 +143,7 @@
 
             // Check not deleted from API.
             navigateToSite();
-            sidebar.channelsLink.click();
+            sidebar.subscriptionsLink.click();
             navigateToPage();
             expect(post.allPosts.count()).toBe(1);
           },
@@ -152,7 +153,7 @@
 
             // Check deleted from API.
             navigateToSite();
-            sidebar.channelsLink.click();
+            sidebar.subscriptionsLink.click();
             navigateToPage();
             expect(post.allPosts.count()).toBe(0);
           }

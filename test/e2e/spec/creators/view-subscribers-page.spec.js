@@ -14,10 +14,10 @@
     it('should run once before all', function() {
       commonWorkflows.createBlog();
       sidebar.subscribersLink.click();
-      header.allLink.click();
+      header.subscribersLink.click();
     });
 
-    header.includeBasicTests(header.allLink);
+    header.includeBasicTests(header.subscribersLink);
 
     sidebar.includeEstablishedCreatorTests(sidebar.subscribersLink);
   });

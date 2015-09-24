@@ -2,7 +2,7 @@
   'use strict';
 
   var CommonWorkflows = require('../common-workflows.js');
-  var HeaderPage = require('../pages/header-subscriptions.page.js');
+  var HeaderPage = require('../pages/header-account.page.js');
   var SidebarPage = require('../pages/sidebar.page.js');
 
   describe('payment-information page', function() {
@@ -14,37 +14,37 @@
     describe('when an established creator', function(){
       it('should run once before all', function() {
         commonWorkflows.createBlog();
-        sidebar.subscriptionsLink.click();
+        sidebar.accountLink.click();
         header.paymentLink.click();
       });
 
       header.includeBasicTests(header.paymentLink);
 
-      sidebar.includeEstablishedCreatorTests(sidebar.subscriptionsLink);
+      sidebar.includeEstablishedCreatorTests(sidebar.accountLink);
     });
 
     describe('when a new creator', function(){
       it('should run once before all', function() {
         commonWorkflows.register();
-        sidebar.subscriptionsLink.click();
+        sidebar.accountLink.click();
         header.paymentLink.click();
       });
 
       header.includeBasicTests(header.paymentLink);
 
-      sidebar.includeNewCreatorTests(sidebar.subscriptionsLink);
+      sidebar.includeNewCreatorTests(sidebar.accountLink);
     });
 
     describe('when a consumer', function(){
       it('should run once before all', function() {
         commonWorkflows.registerAsConsumer();
-        sidebar.subscriptionsLink.click();
+        sidebar.accountLink.click();
         header.paymentLink.click();
       });
 
       header.includeBasicTests(header.paymentLink);
 
-      sidebar.includeConsumerTests(sidebar.subscriptionsLink);
+      sidebar.includeConsumerTests(sidebar.accountLink);
     });
   });
 })();

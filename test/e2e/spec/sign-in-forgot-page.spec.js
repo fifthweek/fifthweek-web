@@ -20,18 +20,5 @@ describe('sign-in - forgot details page', function() {
     signInPage.forgotDetailsLink.click();
   });
 
-  describe('sidebar', function() {
-
-    it('should contain 2 links', function () {
-      expect(sidebar.links.count()).toBe(2);
-    });
-
-    it('should not contain highlighted link for sign-in page', function () {
-      expect(sidebar.signInLink.getAttribute('class')).not.toContain('active');
-    });
-
-    it('should contain "Help" link', function () {
-      expect(sidebar.helpLink.isDisplayed()).toBe(true);
-    });
-  });
+  sidebar.includeSignedOutTests();
 });

@@ -1,96 +1,63 @@
 angular.module('webApp')
-  .factory('navigationMap', function(aggregateUserStateUtilities, states) {
+  .factory('navigationMap', function(aggregateUserStateUtilities, composeService, states) {
     'use strict';
 
     return [
       {
         name: 'Sign In',
         state: states.signIn.signIn.name,
-        icon: 'fa fa-sign-in',
-        color: 'green',
-        secondary:
-        [
-          {
-            name: 'Sign In',
-            state: states.signIn.signIn.name,
-            icon: 'fa fa-sign-in',
-            color: 'green'
-          }
-        ]
+        icon: 'fa fa-sign-in'
+      },
+      {
+        name: 'Register',
+        state: states.register.name,
+        icon: 'fa fa-asterisk'
+      },
+      {
+        name: 'Latest Posts',
+        state: states.user.newsFeed.name,
+        icon: 'fa fa-align-left'
       },
       {
         name: 'Subscriptions',
-        state: states.user.newsFeed.name,
-        icon: 'fa fa-align-left',
-        secondary:
-        [
-          {
-            name: 'Latest Posts',
-            state: states.user.newsFeed.name,
-            icon: 'fa fa-align-left'
-          },
-          {
-            name: 'Manage',
-            state: states.user.viewSubscriptions.name,
-            icon: 'fa fa-list'
-          },
-          {
-            name: 'Payment',
-            state: states.user.paymentInformation.name,
-            icon: 'fa fa-credit-card'
-          }
-        ]
+        state: states.user.viewSubscriptions.name,
+        icon: 'fa fa-list'
       },
       {
         separator: true
       },
       {
-        name: 'Preview Blog',
-        state: states.creator.landingPage.preview.name,
-        icon: 'fa fa-bookmark-o',
-        secondary:
-        [
-          {
-            name: 'Preview',
-            state: states.creator.landingPage.preview.name,
-            icon: 'fa fa-eye'
-          },
-          {
-            name: 'Edit Page',
-            state: states.creator.landingPage.edit.name,
-            icon: 'fa fa-pencil'
-          }
-        ]
+        name: 'Publish',
+        state: states.user.creatorAccount.name,
+        icon: 'fa fa-asterisk'
       },
       {
-        name: 'Posts',
-        state: states.creator.posts.name,
-        icon: 'fa fa-file-text-o',
-        secondary:
-        [
-          {
-            name: 'Live Now',
-            state: states.creator.posts.live.name,
-            icon: 'fa fa-file-text-o'
-          },
-          {
-            name: 'Scheduled',
-            state: states.creator.posts.scheduled.list.name,
-            icon: 'fa fa-clock-o'
-          }
-        ]
-      },
-      {
-        name: 'Create Blog',
+        name: 'Create Channel',
         state: states.creator.createBlog.name,
         icon: 'fa fa-asterisk'
       },
       {
-        name: 'Queues',
-        state: states.creator.queues.name,
-        icon: 'fa fa-th',
+        name: 'New Post',
+        state: states.creator.posts.compose.name,
+        action: composeService.compose,
+        icon: 'fa fa-asterisk'
+      },
+      {
+        name: 'Live Posts',
+        state: states.creator.posts.live.name,
+        icon: 'fa fa-file-text-o'
+      },
+      {
+        name: 'Scheduled Posts',
+        state: states.creator.posts.scheduled.list.name,
+        icon: 'fa fa-clock-o',
         secondary:
           [
+            {
+              name: 'Scheduled Posts',
+              state: states.creator.posts.scheduled.list.name,
+              icon: 'fa fa-clock-o'
+            },
             {
               name: 'Queues',
               state: states.creator.queues.name,
@@ -99,11 +66,24 @@ angular.module('webApp')
           ]
       },
       {
-        name: 'Channels',
-        state: states.creator.channels.name,
-        icon: 'fa fa-check-square-o',
+        separator: true
+      },
+      {
+        name: 'View Profile',
+        state: states.creator.landingPage.preview.name,
+        icon: 'fa fa-eye'
+      },
+      {
+        name: 'Edit Profile',
+        state: states.creator.landingPage.edit.name,
+        icon: 'fa fa-pencil',
         secondary:
           [
+            {
+              name: 'Profile Information',
+              state: states.creator.landingPage.edit.name,
+              icon: 'fa fa-pencil'
+            },
             {
               name: 'Channels',
               state: states.creator.channels.name,
@@ -113,23 +93,17 @@ angular.module('webApp')
       },
       {
         name: 'Subscribers',
-        state: states.creator.subscribers.name,
-        icon: 'fa fa-users',
-        secondary:
-          [
-            {
-              name: 'All',
-              state: states.creator.subscribers.all.name,
-              icon: 'fa fa-users'
-            },
-            {
-              name: 'Guest List',
-              state: states.creator.subscribers.guestList.name,
-              icon: 'fa fa-street-view'
-            }
-          ]
+        state: states.creator.subscribers.all.name,
+        icon: 'fa fa-users'
       },
-      { separator: true },
+      {
+        name: 'Guest List',
+        state: states.creator.subscribers.guestList.name,
+        icon: 'fa fa-street-view'
+      },
+      {
+        separator: true
+      },
       {
         id: 'account',
         name: aggregateUserStateUtilities.getUsername,
@@ -143,16 +117,16 @@ angular.module('webApp')
               icon: 'fa fa-user'
             },
             {
-              name: 'Creator Settings',
-              state: states.user.creatorAccount.name,
-              icon: 'fa fa-pencil'
-            },
-            {
-              name: 'Sign Out',
-              state: states.user.signOut.name,
-              icon: 'fa fa-sign-out'
+              name: 'Payment',
+              state: states.user.paymentInformation.name,
+              icon: 'fa fa-credit-card'
             }
           ]
+      },
+      {
+        name: 'Sign Out',
+        state: states.user.signOut.name,
+        icon: 'fa fa-sign-out'
       },
       {
         name: 'Help',

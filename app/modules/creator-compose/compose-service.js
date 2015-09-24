@@ -1,13 +1,17 @@
-angular.module('webApp').controller(
-  'composeOptionsCtrl',
-  function($scope, $modal) {
+angular.module('webApp')
+  .factory('composeService',
+  function($modal) {
     'use strict';
 
-    $scope.newPost = function() {
+    var service = {};
+
+    service.compose = function() {
       return $modal.open({
         controller: 'composePostCtrl',
         templateUrl: 'modules/creator-compose/compose-post.html'
       });
     };
+
+    return service;
   }
 );

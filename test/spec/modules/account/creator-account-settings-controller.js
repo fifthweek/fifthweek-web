@@ -8,27 +8,19 @@ describe('creator account settings controller', function () {
   var accountSettingsRepositoryFactory;
   var accountSettingsRepository;
   var accountSettingsStub;
-  var errorFacade;
   var $state;
   var states;
-  var authorizationService;
-  var authorizationServiceConstants;
   var authenticationService;
-  var authenticationServiceConstants;
   var fetchAggregateUserState;
-  var initializer;
 
   beforeEach(function() {
 
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings', 'setAccountSettings', 'getUserId']);
     accountSettingsRepositoryFactory = jasmine.createSpyObj('accountSettingsRepositoryFactory', ['forCurrentUser']);
     accountSettingsStub = jasmine.createSpyObj('accountSettingsStub', ['putCreatorInformation']);
-    errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
     $state = jasmine.createSpyObj('$state', ['go']);
-    authorizationService = jasmine.createSpyObj('authorizationService', ['authorize']);
     authenticationService = jasmine.createSpyObj('authenticationService', ['refreshToken']);
     fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateInParallel']);
-    initializer = jasmine.createSpyObj('initializer', ['initialize']);
 
     accountSettingsRepositoryFactory.forCurrentUser.and.returnValue(accountSettingsRepository);
     accountSettingsRepository.getUserId.and.returnValue('userId');
@@ -37,25 +29,15 @@ describe('creator account settings controller', function () {
     module(function($provide) {
       $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
       $provide.value('accountSettingsStub', accountSettingsStub);
-      $provide.value('errorFacade', errorFacade);
       $provide.value('$state', $state);
-      $provide.value('authorizationService', authorizationService);
       $provide.value('authenticationService', authenticationService);
       $provide.value('fetchAggregateUserState', fetchAggregateUserState);
-      $provide.value('initializer', initializer);
     });
 
     inject(function ($injector) {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
       states = $injector.get('states');
-      authorizationServiceConstants = $injector.get('authorizationServiceConstants');
-      authenticationServiceConstants = $injector.get('authenticationServiceConstants');
-    });
-
-    errorFacade.handleError.and.callFake(function(error, setMessage) {
-      setMessage('friendlyError');
-      return $q.when();
     });
 
     $scope.form = jasmine.createSpyObj('form', ['$setPristine']);
@@ -70,105 +52,8 @@ describe('creator account settings controller', function () {
   describe('when created', function(){
     beforeEach(createController);
 
-    it('should initialize default to not a creator', function(){
-      expect($scope.model.isCreator).toBe(false);
-    });
-
-    it('should set account settings to undefined', function(){
-      expect($scope.model.accountSettings).toBeUndefined();
-    });
-
     it('should set the error message to undefined', function(){
       expect($scope.model.errorMessage).toBeUndefined();
-    });
-
-    it('should initialize by loading the form', function(){
-      expect(initializer.initialize).toHaveBeenCalledWith(target.internal.loadForm);
-    });
-
-    describe('when calling setIsCreator', function(){
-      describe('when user is creator', function(){
-        beforeEach(function(){
-          authorizationService.authorize.and.returnValue(authorizationServiceConstants.authorizationResult.authorized);
-          target.internal.setIsCreator();
-          $scope.$apply();
-        });
-
-        it('should set isCreator to true', function(){
-          expect($scope.model.isCreator).toBe(true);
-        });
-      });
-
-      describe('when user is not a creator', function(){
-        beforeEach(function(){
-          authorizationService.authorize.and.returnValue(authorizationServiceConstants.authorizationResult.notAuthorized);
-          target.internal.setIsCreator();
-          $scope.$apply();
-        });
-
-        it('should set isCreator to false', function(){
-          expect($scope.model.isCreator).toBe(false);
-        });
-      });
-    });
-
-    describe('when loading form', function(){
-
-      var error;
-      var success;
-      var deferredGetAccountSettings;
-      beforeEach(function(){
-        error = undefined;
-        success = undefined;
-        deferredGetAccountSettings = $q.defer();
-        spyOn(target.internal, 'setIsCreator');
-        accountSettingsRepository.getAccountSettings.and.returnValue(deferredGetAccountSettings.promise);
-        target.internal.loadForm().then(function(){ success = true; }, function(e){ error = e; });
-        $scope.$apply();
-      });
-
-      it('should call setIsCreator', function(){
-        expect(target.internal.setIsCreator).toHaveBeenCalledWith();
-      });
-
-      it('should call getAccountSettings', function(){
-        expect(accountSettingsRepository.getAccountSettings).toHaveBeenCalledWith();
-      });
-
-      describe('when getAccountSettings succeeds', function(){
-        beforeEach(function(){
-          deferredGetAccountSettings.resolve('accountSettings');
-          $scope.$apply();
-        });
-
-        it('should assign account settings to the model', function(){
-          expect($scope.model.accountSettings).toBe('accountSettings');
-        });
-      });
-
-      describe('when getAccountSettings fails', function(){
-        beforeEach(function(){
-          $scope.model.accountSettings = 'something';
-          deferredGetAccountSettings.reject('error');
-          $scope.$apply();
-        });
-
-        it('should call handleError', function(){
-          expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
-        });
-
-        it('should set accountSettings to undefined', function(){
-          expect($scope.model.accountSettings).toBeUndefined();
-        });
-
-        it('should assign the friendly error message to the model', function(){
-          expect($scope.model.errorMessage).toBe('friendlyError');
-        });
-
-        it('should not propagate the error', function(){
-          expect(error).toBeUndefined();
-        });
-      });
     });
 
     describe('when calling updateCreatorStatus', function(){

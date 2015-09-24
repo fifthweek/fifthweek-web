@@ -137,7 +137,7 @@ describe('account settings form', function() {
 
     discardChanges.describeDiscardingChanges(
       function(){ sidebar.accountLink.click(); },
-      function(){ sidebar.channelsLink.click(); }, // Cheap arbitrary app link.
+      function(){ sidebar.subscriptionsLink.click(); }, // Cheap arbitrary app link.
       setNewValues,
       verifyNewValues,
       verifyOldValues

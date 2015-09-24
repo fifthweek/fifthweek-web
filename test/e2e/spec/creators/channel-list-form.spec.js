@@ -1,6 +1,7 @@
 var CommonWorkflows = require('../../common-workflows.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
 var ChannelListPage = require('../../pages/creators/channel-list.page.js');
+var HeaderPage = require('../../pages/header-edit-profile.page.js');
 
 describe('channel list form', function() {
   'use strict';
@@ -13,6 +14,7 @@ describe('channel list form', function() {
 
   var commonWorkflows = new CommonWorkflows();
   var sidebar = new SidebarPage();
+  var header = new HeaderPage();
   var page = new ChannelListPage();
 
   it('should run once before all', function() {
@@ -41,7 +43,8 @@ describe('channel list form', function() {
   });
 
   var navigateToPage = function() {
-    sidebar.channelsLink.click();
+    sidebar.editProfileLink.click();
+    header.channelsLink.click();
   };
 
   var expectBaseChannel = function() {

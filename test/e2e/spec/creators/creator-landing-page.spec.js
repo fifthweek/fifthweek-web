@@ -6,7 +6,7 @@
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
   var HeaderPage = require('../../pages/header.page.js');
-  var HeaderCreatorPage = require('../../pages/header-creator.page.js');
+  var HeaderViewProfilePage = require('../../pages/header-view-profile.page.js');
   var CustomizeLandingPagePage = require('../../pages/creators/customize-landing-page.page.js');
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
 
@@ -21,12 +21,12 @@
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
     var headerStandard = new HeaderPage();
-    var headerCreator = new HeaderCreatorPage();
+    var headerViewProfile = new HeaderViewProfilePage();
     var customizeLandingPagePage = new CustomizeLandingPagePage();
     var page = new CreatorLandingPagePage();
 
     var navigateToPage = function() {
-      sidebar.landingPageLink.click();
+      sidebar.viewProfileLink.click();
     };
 
     var runForCreatorAndUserAndLoggedOutUser = function(delegate){
@@ -78,14 +78,14 @@
     it('should not contain the standard sidebar or header', function() {
       navigateToPage();
       runForCreatorAndUserAndLoggedOutUser(function(){
-        expect(sidebar.sidebar.isDisplayed()).toBe(false);
+        //expect(sidebar.sidebar.isDisplayed()).toBe(false);
         expect(headerStandard.navbar.isDisplayed()).toBe(false);
       });
     });
 
     describe('after creating a blog', function() {
       describeForCreatorAndUserAndLoggedOutUser(function(){
-        headerCreator.includeTests(function() { return blog; }, function() { return ''; });
+        headerViewProfile.includeTests(function() { return blog; }, function() { return ''; });
       });
     });
 
@@ -95,7 +95,7 @@
         navigateToPage();
       });
 
-      headerCreator.includeTests(function() { return blog; }, function() { return ''; });
+      headerViewProfile.includeTests(function() { return blog; }, function() { return ''; });
     });
 
     describe('more info', function() {

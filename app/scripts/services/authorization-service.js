@@ -8,7 +8,8 @@ angular.module('webApp').constant('authorizationServiceConstants', {
   },
   roleCheckType: {
     atLeastOne: 'atLeastOne',
-    all: 'all'
+    all: 'all',
+    none: 'none'
   }
 }).factory('authorizationService', ['authenticationService', 'authorizationServiceConstants',
   function(authenticationService, constants) {
@@ -18,7 +19,6 @@ angular.module('webApp').constant('authorizationServiceConstants', {
 
     service.authorize = function(loginRequired, requiredRoles, roleCheckType) {
       var result = constants.authorizationResult.authorized;
-      var hasRole = true;
 
       roleCheckType = roleCheckType || constants.roleCheckType.atLeastOne;
       if (loginRequired === true && authenticationService.currentUser.authenticated === false) {
@@ -36,28 +36,37 @@ angular.module('webApp').constant('authorizationServiceConstants', {
           loweredRoles.push(role.toLowerCase());
         });
 
+        var hasRole = true;
+
         for (var i = 0; i < requiredRoles.length; i += 1) {
           var role = requiredRoles[i].toLowerCase();
 
           if (roleCheckType === constants.roleCheckType.all) {
             hasRole = hasRole && loweredRoles.indexOf(role) > -1;
-            // if all the roles are required and hasRole is false there is no point carrying on
+            // if all of the roles are required and hasRole is false there is no point carrying on
             if (hasRole === false) {
               break;
             }
           }
-          else if (roleCheckType === constants.roleCheckType.atLeastOne) {
+          else if (roleCheckType === constants.roleCheckType.atLeastOne || roleCheckType === constants.roleCheckType.none) {
             hasRole = loweredRoles.indexOf(role) > -1;
-            // if we only need one of the roles and we have it there is no point carrying on
+            // if we only need one of the roles, or we should have any, and we have it there is no point carrying on
             if (hasRole) {
               break;
             }
           }
         }
 
-        result = hasRole ?
-          constants.authorizationResult.authorized :
-          constants.authorizationResult.notAuthorized;
+        if(roleCheckType === constants.roleCheckType.none){
+          result = hasRole ?
+            constants.authorizationResult.notAuthorized :
+            constants.authorizationResult.authorized;
+        }
+        else{
+          result = hasRole ?
+            constants.authorizationResult.authorized :
+            constants.authorizationResult.notAuthorized;
+        }
       }
 
       return result;

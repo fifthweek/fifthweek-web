@@ -7,7 +7,8 @@ angular.module('webApp')
     var model = {
       errorMessage: undefined,
       hasPaymentInformation: true,
-      userId: accountSettingsRepository.getUserId()
+      userId: accountSettingsRepository.getUserId(),
+      accountBalance: undefined
     };
     $scope.model = model;
 
@@ -18,6 +19,7 @@ angular.module('webApp')
       return accountSettingsRepository.getAccountSettings()
         .then(function(data){
           model.hasPaymentInformation = data.hasPaymentInformation;
+          model.accountBalance = data.accountBalance;
         })
         .catch(function(error){
           model.hasPaymentInformation = true;

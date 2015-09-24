@@ -3,6 +3,7 @@ var TestKit = require('../../test-kit.js');
 var CommonWorkflows = require('../../common-workflows.js');
 var QueueNameInputPage = require('../../pages/queue-name-input.page.js');
 var SidebarPage = require('../../pages/sidebar.page.js');
+var HeaderPage = require('../../pages/header-scheduled-posts.page.js');
 var QueueListPage = require('../../pages/creators/queue-list.page.js');
 var QueueAddPage = require('../../pages/creators/queue-add.page.js');
 
@@ -17,6 +18,7 @@ describe('add queue form', function() {
   var commonWorkflows = new CommonWorkflows();
   var queueNameInputPage = new QueueNameInputPage();
   var sidebar = new SidebarPage();
+  var header = new HeaderPage();
   var queueListPage = new QueueListPage();
   var page = new QueueAddPage();
 
@@ -39,7 +41,8 @@ describe('add queue form', function() {
 
     inputs = page.inputs();
 
-    sidebar.queuesLink.click();
+    sidebar.scheduledPostsLink.click();
+    header.queuesLink.click();
     queueListPage.addQueueButton.click();
   });
 
@@ -80,7 +83,8 @@ describe('add queue form', function() {
 
     it('should persist the changes, between sessions', function() {
       commonWorkflows.reSignIn(registration);
-      sidebar.queuesLink.click();
+      sidebar.scheduledPostsLink.click();
+      header.queuesLink.click();
 
       expectChangesAppliedAndNavigateToPage(newFormValues);
     });

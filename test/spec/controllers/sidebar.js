@@ -7,6 +7,7 @@ describe('sidebar controller', function() {
 
   var $controller;
   var scope;
+  var $state;
   var navigationOrchestrator;
   var navigationOrchestratorConstants;
 
@@ -15,6 +16,8 @@ describe('sidebar controller', function() {
     scope = $rootScope.$new();
     navigationOrchestratorConstants = _navigationOrchestratorConstants_;
 
+    $state = jasmine.createSpyObj('$state', ['go']);
+
     navigationOrchestrator = { getPrimaryNavigation: function(){ return undefined; }};
   }));
 
@@ -22,6 +25,7 @@ describe('sidebar controller', function() {
   var createController = function () {
     $controller('SidebarCtrl', {
       $scope: scope,
+      $state: $state,
       navigationOrchestrator: navigationOrchestrator,
       navigationOrchestratorConstants: navigationOrchestratorConstants
     });
@@ -54,6 +58,38 @@ describe('sidebar controller', function() {
       scope.$broadcast(navigationOrchestratorConstants.navigationChangedEvent, 'primary', 'secondary');
 
       expect(scope.navigation).toBe('primary');
+    });
+  });
+
+  describe('when navigate is called', function(){
+    beforeEach(function(){
+      createController();
+    });
+
+    describe('when action defined', function(){
+      var actionCalled;
+      beforeEach(function(){
+        actionCalled = false;
+        scope.navigate('state', function(){ actionCalled = true; });
+      });
+
+      it('should call the action', function(){
+        expect(actionCalled).toBe(true);
+      });
+
+      it('should not transition to state', function(){
+        expect($state.go).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when action not defined', function(){
+      beforeEach(function(){
+        scope.navigate('state', undefined);
+      });
+
+      it('should transition to state', function(){
+        expect($state.go).toHaveBeenCalledWith('state');
+      });
     });
   });
 });

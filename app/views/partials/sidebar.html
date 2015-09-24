@@ -4,10 +4,9 @@
     <li ng-repeat="item in navigation">
       <hr ng-if="item.separator" />
       <a ng-if="!item.separator"
-         class="{{item.color}}"
          ng-class="{active: item.isActive}"
          id="sidebar-{{item.id}}"
-         ui-sref="{{item.state}}"
+         ng-click="navigate(item.state, item.action)"
          snap-close>
         <i ng-class="item.icon"></i>{{item.name}}
       </a>

@@ -4,7 +4,6 @@
   var TestKit = require('../../test-kit.js');
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
-  var HeaderPostsPage = require('../../pages/header-posts.page.js');
   var PostPage = require('../../pages/post.page.js');
   var DeleteConfirmationPage = require('../../pages/delete-confirmation.page.js');
   var EditPostDialogPage = require('../../pages/creators/edit-post-dialog.page.js');
@@ -20,7 +19,6 @@
     var testKit = new TestKit();
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
-    var header = new HeaderPostsPage();
     var post = new PostPage(true);
     var deleteConfirmationPage = new DeleteConfirmationPage();
     var editPostDialogPage = new EditPostDialogPage();
@@ -28,8 +26,7 @@
     var queueName = 'Cats';
 
     var navigateToPage = function() {
-      sidebar.postsLink.click();
-      header.scheduledLink.click();
+      sidebar.scheduledPostsLink.click();
     };
 
     describe('when posting many posts', function(){

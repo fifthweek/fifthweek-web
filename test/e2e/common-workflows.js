@@ -8,10 +8,11 @@
   var SignInWorkflowPage = require('./pages/sign-in-workflow.page.js');
   var SignOutPage = require('./pages/sign-out.page.js');
   var SidebarPage = require('./pages/sidebar.page.js');
-  var ComposeOptionsPage = require('./pages/creators/compose/compose-options.page.js');
   var ChannelListPage = require('./pages/creators/channel-list.page.js');
   var ChannelAddPage = require('./pages/creators/channel-add.page.js');
   var ChannelEditPage = require('./pages/creators/channel-edit.page.js');
+  var ScheduledPostsHeaderPage = require('./pages/header-scheduled-posts.page.js');
+  var EditProfileHeaderPage = require('./pages/header-edit-profile.page.js');
   var QueueListPage = require('./pages/creators/queue-list.page.js');
   var QueueAddPage = require('./pages/creators/queue-add.page.js');
   var ComposePostPage = require('./pages/creators/compose/compose-post.page.js');
@@ -24,10 +25,11 @@
   var signInWorkflowPage = new SignInWorkflowPage();
   var signInPage = new SignInPage();
   var sidebar = new SidebarPage();
-  var composeOptionsPage = new ComposeOptionsPage();
   var channelListPage = new ChannelListPage();
   var channelAddPage = new ChannelAddPage();
   var channelEditPage = new ChannelEditPage();
+  var scheduledPostsHeaderPage = new ScheduledPostsHeaderPage();
+  var editProfileHeaderPage = new EditProfileHeaderPage();
   var queueListPage = new QueueListPage();
   var queueAddPage = new QueueAddPage();
   var composePostPage = new ComposePostPage();
@@ -82,7 +84,8 @@
     }},
 
     setChannelPrice: { value: function(price, channelName){
-      sidebar.channelsLink.click();
+      sidebar.editProfileLink.click();
+      editProfileHeaderPage.channelsLink.click();
       channelListPage.getEditChannelButton(channelName).click();
       channelEditPage.setPrice(price);
       channelEditPage.saveButton.click();
@@ -125,7 +128,8 @@
     }},
 
     createChannel: { value: function(values) {
-      sidebar.channelsLink.click();
+      sidebar.editProfileLink.click();
+      editProfileHeaderPage.channelsLink.click();
       channelListPage.addChannelButton.click();
       browser.waitForAngular();
 
@@ -147,7 +151,8 @@
     }},
 
     createQueue: { value: function() {
-      sidebar.queuesLink.click();
+      sidebar.scheduledPostsLink.click();
+      scheduledPostsHeaderPage.queuesLink.click();
       queueListPage.addQueueButton.click();
       browser.waitForAngular();
 
@@ -155,7 +160,8 @@
     }},
 
     createNamedQueue: { value: function(newQueueName) {
-      sidebar.queuesLink.click();
+      sidebar.scheduledPostsLink.click();
+      scheduledPostsHeaderPage.queuesLink.click();
       queueListPage.addQueueButton.click();
       browser.waitForAngular();
 
@@ -163,68 +169,57 @@
     }},
 
     postNoteNow: { value: function(channelIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postNow(true, undefined, undefined, channelIndex);
     }},
 
     postNoteOnDate: { value: function(channelIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postOnDate(true, undefined, undefined, channelIndex);
     }},
 
     postNoteOnPastDate: { value: function(channelIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postOnPastDate(true, undefined, undefined, channelIndex);
     }},
 
     postFileNow: { value: function(filePath, channelIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postNow(true, filePath, undefined, channelIndex);
     }},
 
     postFileOnDate: { value: function(filePath, channelIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postOnDate(true, filePath, undefined, channelIndex);
     }},
 
     postFileToQueue: { value: function(filePath, channelIndex, queueIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postToQueue(true, filePath, undefined, channelIndex, queueIndex);
     }},
 
     postImageNow: { value: function(filePath, channelIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postNow(true, undefined, filePath, channelIndex);
     }},
 
     postImageOnDate: { value: function(filePath, channelIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postOnDate(true, undefined, filePath, channelIndex);
     }},
 
     postImageToQueue: { value: function(filePath, channelIndex, queueIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postToQueue(true, undefined, filePath, channelIndex, queueIndex);
     }},
 
     postImageAndFileNow: { value: function(filePath, imagePath, channelIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postNow(true, filePath, imagePath, channelIndex);
     }},
 
     postImageAndFileToQueue: { value: function(filePath, imagePath, channelIndex, queueIndex) {
-      sidebar.postsLink.click();
-      composeOptionsPage.postLink.click();
+      sidebar.newPostLink.click();
       return composePostPage.postToQueue(true, filePath, imagePath, channelIndex, queueIndex);
     }}
   });

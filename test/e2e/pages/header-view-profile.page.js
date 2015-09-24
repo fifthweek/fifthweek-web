@@ -1,9 +1,9 @@
 (function(){
   'use strict';
 
-  var HeaderCreatorPage = function() {};
+  var HeaderViewProfilePage = function() {};
 
-  HeaderCreatorPage.prototype = Object.create({}, {
+  HeaderViewProfilePage.prototype = Object.create({}, {
     name: { get: function () { return element(by.id('blog-name')); }},
     introduction: { get: function () { return element(by.id('blog-introduction')); }},
     profileImage: { get: function () { return element(by.id('profile-image')); }},
@@ -18,11 +18,13 @@
         });
 
         it('should display the quick introduction', function() {
-          expect(self.introduction.getText()).toBe(blogIntroduction());
+          if(blogIntroduction){
+            expect(self.introduction.getText()).toBe(blogIntroduction());
+          }
         });
       });
     }}
   });
 
-  module.exports = HeaderCreatorPage;
+  module.exports = HeaderViewProfilePage;
 })();

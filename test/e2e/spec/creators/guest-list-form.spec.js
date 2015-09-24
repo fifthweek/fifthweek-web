@@ -4,7 +4,6 @@
   var TestKit = require('../../test-kit.js');
   var CommonWorkflows = require('../../common-workflows.js');
   var SidebarPage = require('../../pages/sidebar.page.js');
-  var HeaderPage = require('../../pages/header-subscribers.page.js');
   var GuestListPage = require('../../pages/creators/guest-list.page.js');
 
   describe('guest-list form', function() {
@@ -12,12 +11,10 @@
     var testKit = new TestKit();
     var commonWorkflows = new CommonWorkflows();
     var sidebar = new SidebarPage();
-    var header = new HeaderPage();
     var page = new GuestListPage();
 
     var navigateToPage = function () {
-      sidebar.subscribersLink.click();
-      header.guestListLink.click();
+      sidebar.guestListLink.click();
     };
 
     var registration;

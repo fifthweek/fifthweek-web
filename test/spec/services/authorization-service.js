@@ -84,12 +84,27 @@ describe('authorization service', function() {
       result = authorizationService.authorize(false, ['Test2']);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
 
+      result = authorizationService.authorize(true, ['Test2', 'Test3'], authorizationServiceConstants.roleCheckType.none);
+      expect(result).toBe(authorizationServiceConstants.authorizationResult.authorized);
+
+      result = authorizationService.authorize(true, ['Test', 'Test3'], authorizationServiceConstants.roleCheckType.none);
+      expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
+
       authenticationService.currentUser.roles = ['Test', 'Test2'];
 
       result = authorizationService.authorize(true, ['Test', 'Test2'], authorizationServiceConstants.roleCheckType.all);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.authorized);
 
       result = authorizationService.authorize(true, ['Test2']);
+      expect(result).toBe(authorizationServiceConstants.authorizationResult.authorized);
+
+      result = authorizationService.authorize(true, ['Test2', 'Test3'], authorizationServiceConstants.roleCheckType.none);
+      expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
+
+      result = authorizationService.authorize(true, ['Test'], authorizationServiceConstants.roleCheckType.none);
+      expect(result).toBe(authorizationServiceConstants.authorizationResult.notAuthorized);
+
+      result = authorizationService.authorize(true, ['Test3'], authorizationServiceConstants.roleCheckType.none);
       expect(result).toBe(authorizationServiceConstants.authorizationResult.authorized);
     });
   });

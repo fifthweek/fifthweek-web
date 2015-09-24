@@ -240,8 +240,8 @@
         };
 
         var navigateToPage = function() {
-          sidebar.postsLink.click();
-          composeOptions.postLink.click();
+          sidebar.livePostsLink.click();
+          sidebar.newPostLink.click();
           browser.waitForAngular();
         };
 

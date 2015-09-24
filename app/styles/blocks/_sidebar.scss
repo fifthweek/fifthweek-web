@@ -29,6 +29,7 @@ body:not(.navigation-hidden) {
 
 .sidebar {
   a {
+    cursor: pointer;
     &:focus {
       outline:0 none !important;
     }

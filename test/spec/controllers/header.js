@@ -56,4 +56,14 @@ describe('header controller', function() {
       expect(scope.navigation).toBe('secondary');
     });
   });
+
+  describe('when titleToId is called', function(){
+    beforeEach(function(){
+      createController();
+    });
+
+    it('should convert the title to an id', function(){
+      expect(scope.titleToId('This is a Title')).toBe('navigation-this-is-a-title');
+    });
+  });
 });

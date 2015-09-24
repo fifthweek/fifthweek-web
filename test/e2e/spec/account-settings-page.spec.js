@@ -1,5 +1,5 @@
 var CommonWorkflows = require('../common-workflows.js');
-var HeaderSettingsPage = require('../pages/header-settings.page.js');
+var HeaderSettingsPage = require('../pages/header-account.page.js');
 var SidebarPage = require('../pages/sidebar.page.js');
 
 describe('account settings page', function() {

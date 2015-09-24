@@ -1,7 +1,7 @@
 <div class="main-content">
   <div class="row">
     <div class="col-xs-12">
-      <div class="posts landing-page" ng-if="model.currentView === views.manage">
+      <div class="posts landing-page">
         <fw-error-message value="model.errorMessage"></fw-error-message>
         <h4 id="blog-introduction">{{model.blog.introduction}}</h4>
 
@@ -100,15 +100,8 @@
           </div>
         </div>
 
-        <span ng-if="model.currentView === views.manage">
+        <span>
           <p class="button-footer">Minimum one week. Cancel anytime.</p>
-        </span>
-        <span ng-if="model.currentView !== views.manage">
-          <p ng-if="!model.isOwner" class="button-footer">
-            {{model.subscribedChannelCount}} Channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
-            - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
-          </p>
-          <p ng-if="model.isOwner" class="button-footer">Previewing all channels.</p>
         </span>
 
       </div>
