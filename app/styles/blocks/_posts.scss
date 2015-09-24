@@ -15,6 +15,8 @@ $post-bottom-margin-sm: $main-cont-padding-small;
 $post-bottom-margin-lg: 45px;
 $reorder-menu-width: 29px;
 $line-height-compensation: -5px;
+$post-header-margin-top: 31px;
+$post-header-margin-bottom: 16px;
 
 @mixin post-top-bottom-padding {
   // Remains constant.
@@ -220,7 +222,7 @@ $line-height-compensation: -5px;
     font-size: $p-font-size;
     font-weight: normal;
     color:#fff;
-    padding: 31px 0 16px;
+    padding: $post-header-margin-top 0 $post-header-margin-bottom;
     span {
       @include post-left-right-padding;
       padding-top: 3px;

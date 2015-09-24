@@ -12,8 +12,8 @@
       </h1>
     </div>
     <div class="col-xs-6">
-      <a ng-if="model.isOwner" id="edit-page-link" class="btn btn-transparent btn-transparent-emphasized" ui-sref="creator.landingPage.edit">
-        edit page
+      <a ng-if="model.isOwner" id="edit-header-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
+        edit header image
       </a>
     </div>
   </div>
@@ -27,7 +27,15 @@
           <fw-image id="profile-image" src="{{model.profileImage.fileId ? model.profileImageUrl : fifthweekConstants.defaultProfileImageUrl}}"></fw-image>
         </div>
         <div class="header-text">
-          <h2 id="blog-name">{{model.blog.name}}</h2>
+          <h2>
+            <a ng-if="model.isOwner" id="edit-title-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
+              <span class="edit-text">edit title</span>
+            </a>
+            <span id="blog-name">{{model.blog.name}}</span>
+          </h2>
+          <a ng-if="model.isOwner" id="edit-profile-image-link" class="btn btn-edit btn-default" ui-sref="user.account">
+            <span class="edit-text">edit avatar</span>
+          </a>
           <ng-include src="'modules/landing-page/landing-page-subscribe-button.html'"></ng-include>
         </div>
       </div>

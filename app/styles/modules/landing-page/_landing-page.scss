@@ -61,7 +61,7 @@ $header-height-sm:70px;
 
   #subscribe-button-area{
     &>.subscribe-button-wrapper{
-      float: left;
+      //float: left;
       .header-button{
         color:#fff;
         font-size: $p-font-size;
@@ -92,6 +92,89 @@ $header-height-sm:70px;
     }
   }
 
+  @mixin collapse-btn-edit{
+    width: 23px;
+    .edit-text{
+      visibility: collapse;
+    }
+    @media (min-width:$screen-s-min) {
+      width: auto;
+      .edit-text{
+        visibility: visible;
+      }
+    }
+  }
+
+  $btn-edit-height: 21px;
+  .btn-edit {
+    &:before{
+      vertical-align: middle;
+      font-family:'FontAwesome';
+      content:"\f013";
+      font-size:12px;
+      margin-right: 2px;
+    }
+
+    height: $btn-edit-height;
+    font-size: 12px;
+    padding: 1px 5px;
+  }
+
+  #edit-header-link,#edit-title-link,#edit-profile-image-link {
+    //opacity: 0.75;
+  }
+
+  #edit-header-link {
+    float:right;
+  }
+
+  #edit-title-link{
+    //@include collapse-btn-edit;
+    float:right;
+    font-family: $font-family-main;
+    margin-top: 0;
+    @media (min-width:$screen-s-min) {
+      margin-top: 6px;
+    }
+  }
+
+  #edit-profile-image-link{
+    position: absolute;
+    top: $header-height-sm - $btn-edit-height;
+    right: $post-margin-sm;
+    @media (min-width:$screen-s-min) {
+      top: $header-height - $btn-edit-height;
+    }
+  }
+/*
+  #edit-profile-image-link{
+    @include collapse-btn-edit;
+    position: absolute;
+    top: 47px;
+    left: 59px;
+    @media (min-width:$screen-s-min) {
+      top: 85px;
+      left: 73px;
+    }
+  }
+*/
+  #edit-channels-link, #edit-description-link,#edit-introduction-link{
+    float: right;
+  }
+
+  #edit-channels-link {
+    margin-top: $post-header-margin-top;
+  }
+
+  #edit-video-area{
+    text-align: right;
+    #edit-video-link{
+      position: absolute;
+      top: -$btn-edit-height;
+      right: $post-margin-sm;
+    }
+  }
+
   .header-image {
     //@include header-shadow;
     position: absolute;
@@ -108,10 +191,6 @@ $header-height-sm:70px;
     @include content-container;
 
     padding-top: 10px;
-
-    #edit-page-link {
-      float:right;
-    }
   }
 
   .header-content {
@@ -178,7 +257,12 @@ $header-height-sm:70px;
         @media (min-width:$screen-s-min) {
           margin-left: $header-height;
         }
-        @include post-left-right-padding;
+
+        padding-left: $post-margin-sm;
+        padding-right: 0;
+        @media (min-width:$post-lg-min) {
+          padding-left: $post-margin-lg;
+        }
 
         h2 {
           white-space: nowrap;
@@ -190,11 +274,75 @@ $header-height-sm:70px;
           padding-top:8px;
           color: #fff;
           text-align:left;
-          text-shadow:0 1px 1px #1d1d1b;
           @media (min-width:$screen-s-min) {
             font-size: 28px;
             padding-top:17px;
             margin-bottom: 12px;
+          }
+
+          #blog-name{
+            text-shadow:0 1px 1px #1d1d1b;
+          }
+        }
+      }
+    }
+  }
+
+  .video-content{
+    background-color: #000;
+    margin-top: 48px;
+    margin-bottom: 48px;
+    margin-left: -$main-cont-padding-small;
+    margin-right: -$main-cont-padding-small;
+    .main-content {
+      margin-top: 0;
+      #video-area{
+      }
+    }
+
+    &.video-content-empty{
+      background-color: #fff;
+      margin: 0;
+    }
+  }
+
+  .footer-area{
+    $gradient-color: #F5F5F5;
+    background-image: -webkit-linear-gradient(top, $gradient-color, #fff); /* For Chrome 25 and Safari 6, iOS 6.1, Android 4.3 */
+    background-image:    -moz-linear-gradient(top, $gradient-color, #fff); /* For Firefox (3.6 to 15) */
+    background-image:      -o-linear-gradient(top, $gradient-color, #fff); /* For old Opera (11.1 to 12.0) */
+    background-image:         linear-gradient(to bottom, $gradient-color, #fff); /* Standard syntax; must be last */
+    margin-left: -$main-cont-padding-small;
+    margin-right: -$main-cont-padding-small;
+    min-height: 100px;
+
+    .footer-content{
+      text-align: center;
+      padding: 25px $main-cont-padding-small;
+
+      .intro{
+        font-weight: bold;
+      }
+
+      li{
+        margin-bottom: 5px;
+        list-style:none;
+        &:before {
+          content:"\f00c";
+          font-family:'FontAwesome';
+          margin-right: 4px;
+        }
+      }
+
+      .links{
+        a {
+          &:not(:first-child){
+            &:before {
+              content:"·";
+              font-family:'FontAwesome';
+              margin-right: 10px;
+              margin-left: 10px;
+            }
           }
         }
       }
@@ -202,8 +350,18 @@ $header-height-sm:70px;
   }
 
   .main-content {
-    padding-top: $post-margin-sm * 2;
     @include content-container;
+    margin-top: $post-margin-sm * 2;
+
+    &.main-content-introduction-empty{
+      margin-top: $post-margin-sm;
+      margin-bottom: -$post-margin-sm;
+    }
+
+    &.main-content-empty{
+      margin-top: 0;
+      margin-bottom: -$post-margin-sm;
+    }
 
     h4#blog-introduction {
       @include light-text;
@@ -266,7 +424,7 @@ $header-height-sm:70px;
         h6 {
           font-size: $p-font-size + 1;
           font-weight: bold;
-          line-height: $p-line-height-hug + 1;
+          //line-height: $p-line-height-hug + 1;
           margin-bottom: 15px;
         }
         .channel-previous-price-column{
@@ -340,34 +498,11 @@ $header-height-sm:70px;
             }
           }
         }
-        ul {
-          padding: 0 0 30px 0;
-          margin: 0;
-
-          li {
-            position: relative;
-            list-style: none;
-            margin-bottom: 10px;
-            padding-left: 25px;
-            &:last-child {
-              margin-bottom: 0;
-            }
-            &:before {
-              content:"\f105";
-              font-family:'FontAwesome';
-              position:absolute;
-              left:0;
-              font-size:18px;
-              line-height:$p-line-height;
-            }
-          }
-        }
-        &.last {
-          ul {
-            padding-bottom: 0;
-          }
-        }
       }
+    }
+
+    #description-area{
+      margin-bottom: 48px;
     }
   }
 }
