@@ -1,26 +1,23 @@
 describe('creator - create blog controller', function () {
   'use strict';
 
-  var nextState = 'nextState';
   var error = 'error';
 
   var $q;
 
   var $scope;
   var $state;
-  var calculatedStates;
   var blogService;
+  var states;
   var target;
 
   beforeEach(function() {
     $state = jasmine.createSpyObj('$state', ['go']);
-    calculatedStates = jasmine.createSpyObj('calculatedStates', ['getDefaultState']);
     blogService = jasmine.createSpyObj('blogService', ['createFirstBlog']);
 
     module('webApp');
     module(function($provide) {
       $provide.value('$state', $state);
-      $provide.value('calculatedStates', calculatedStates);
       $provide.value('blogService', blogService);
     });
 
@@ -28,6 +25,7 @@ describe('creator - create blog controller', function () {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
       target = $controller('createBlogCtrl', { $scope: $scope });
+      states = $injector.get('states');
     });
 
     blogService.createFirstBlog.and.returnValue($q.when());
@@ -35,7 +33,7 @@ describe('creator - create blog controller', function () {
 
   it('should initialize with appropriate default state', function() {
     expect($scope.newBlogData.name).toBe('');
-    expect($scope.newBlogData.basePrice).toBe('1.00');
+    expect($scope.newBlogData.basePrice).toBe('0.50');
   });
 
   it('should create first blog', function() {
@@ -68,12 +66,10 @@ describe('creator - create blog controller', function () {
   describe('when service call succeeds', function() {
 
     it('should redirect to new initial state', function() {
-      calculatedStates.getDefaultState.and.returnValue(nextState);
-
       $scope.continue();
       $scope.$apply();
 
-      expect($state.go).toHaveBeenCalledWith(nextState);
+      expect($state.go).toHaveBeenCalledWith(states.creator.posts.live.name);
     });
   });
 });

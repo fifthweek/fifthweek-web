@@ -48,7 +48,7 @@ angular.module('webApp')
         .then(function(imageInformation) {
           $scope.model.imageUri = imageInformation.uri;
           $scope.model.renderSize = undefined;
-          if(imageInformation.width && imageInformation.height){
+          if(imageInformation.width && imageInformation.height && !$scope.fixedAspectRatio){
             $scope.model.renderSize = {
               width: (imageInformation.width / 2) + 'px',
               height: (imageInformation.height / 2) + 'px'

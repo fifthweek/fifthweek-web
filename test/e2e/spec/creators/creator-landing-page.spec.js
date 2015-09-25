@@ -9,6 +9,8 @@
   var HeaderViewProfilePage = require('../../pages/header-view-profile.page.js');
   var CustomizeLandingPagePage = require('../../pages/creators/customize-landing-page.page.js');
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
+  var AccountSettingsPage = require('../../pages/account-settings.page.js');
+  var ChannelListPage = require('../../pages/creators/channel-list.page.js');
 
   describe('creator landing page', function() {
 
@@ -22,7 +24,9 @@
     var sidebar = new SidebarPage();
     var headerStandard = new HeaderPage();
     var headerViewProfile = new HeaderViewProfilePage();
-    var customizeLandingPagePage = new CustomizeLandingPagePage();
+    var customizeLandingPage = new CustomizeLandingPagePage();
+    var accountSettings = new AccountSettingsPage();
+    var channelList = new ChannelListPage();
     var page = new CreatorLandingPagePage();
 
     var navigateToPage = function() {
@@ -69,7 +73,7 @@
     };
 
     it('should run once before all', function() {
-      userRegistration = commonWorkflows.register();
+      userRegistration = commonWorkflows.registerAsCreator();
       var context = commonWorkflows.createBlog();
       blog = context.blog;
       creatorRegistration = context.registration;
@@ -98,15 +102,46 @@
       headerViewProfile.includeTests(function() { return blog; }, function() { return ''; });
     });
 
+    it('should contain valid edit links', function() {
+      page.editHeaderImageLink.click();
+      expect(browser.getCurrentUrl()).toContain(customizeLandingPage.pageUrl);
+      navigateToPage();
+
+      page.editTitleLink.click();
+      expect(browser.getCurrentUrl()).toContain(customizeLandingPage.pageUrl);
+      navigateToPage();
+
+      page.editAvatarLink.click();
+      expect(browser.getCurrentUrl()).toContain(accountSettings.pageUrl);
+      navigateToPage();
+
+      page.editIntroductionLink.click();
+      expect(browser.getCurrentUrl()).toContain(customizeLandingPage.pageUrl);
+      navigateToPage();
+
+      page.editChannelsLink.click();
+      expect(browser.getCurrentUrl()).toContain(channelList.pageUrl);
+      navigateToPage();
+
+      page.editVideoLink.click();
+      expect(browser.getCurrentUrl()).toContain(customizeLandingPage.pageUrl);
+      navigateToPage();
+
+      page.editDescriptionLink.click();
+      expect(browser.getCurrentUrl()).toContain(customizeLandingPage.pageUrl);
+      navigateToPage();
+    });
+
     describe('more info', function() {
-      var fullDescription = customizeLandingPagePage.newFullDescription();
+      var fullDescription = customizeLandingPage.newFullDescription();
       var videoUrlDomain = 'vimeo.com';
       var videoUrlId = '114229222';
 
       it('should display full description when provided', function() {
-        page.editPageLink.click();
-        testKit.setValue(customizeLandingPagePage.descriptionTextBoxId, fullDescription);
-        customizeLandingPagePage.submitButton.click();
+        page.editDescriptionLink.click();
+        testKit.waitForElementToDisplay(element(by.id(customizeLandingPage.descriptionTextBoxId)));
+        testKit.setValue(customizeLandingPage.descriptionTextBoxId, fullDescription);
+        customizeLandingPage.submitButton.click();
         navigateToPage();
 
         runForCreatorAndUserAndLoggedOutUser(function(){
@@ -116,10 +151,11 @@
       });
 
       it('should display video when provided', function() {
-        page.editPageLink.click();
-        testKit.clear(customizeLandingPagePage.descriptionTextBoxId);
-        testKit.setValue(customizeLandingPagePage.videoTextBoxId, 'https://' + videoUrlDomain + '/' + videoUrlId);
-        customizeLandingPagePage.submitButton.click();
+        page.editVideoLink.click();
+        testKit.waitForElementToDisplay(element(by.id(customizeLandingPage.descriptionTextBoxId)));
+        testKit.clear(customizeLandingPage.descriptionTextBoxId);
+        testKit.setValue(customizeLandingPage.videoTextBoxId, 'https://' + videoUrlDomain + '/' + videoUrlId);
+        customizeLandingPage.submitButton.click();
         navigateToPage();
 
         runForCreatorAndUserAndLoggedOutUser(function(){
@@ -130,9 +166,10 @@
       });
 
       it('should display full description and video when both are provided', function() {
-        page.editPageLink.click();
-        testKit.setValue(customizeLandingPagePage.descriptionTextBoxId, fullDescription);
-        customizeLandingPagePage.submitButton.click();
+        page.editDescriptionLink.click();
+        testKit.waitForElementToDisplay(element(by.id(customizeLandingPage.descriptionTextBoxId)));
+        testKit.setValue(customizeLandingPage.descriptionTextBoxId, fullDescription);
+        customizeLandingPage.submitButton.click();
         navigateToPage();
 
         runForCreatorAndUserAndLoggedOutUser(function(){

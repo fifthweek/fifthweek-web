@@ -20,10 +20,7 @@ describe('create blog form', function() {
   describe('happy path', function () {
 
     beforeEach(function() {
-      // New registration required as successfully completing the form means user
-      // will no longer be able to access it.
-      registerPage.signOutAndGoToRegistration();
-      registerPage.registerSuccessfully();
+      commonWorkflows.registerAsCreator();
     });
 
     afterEach(function() {

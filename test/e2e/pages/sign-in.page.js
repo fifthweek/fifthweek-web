@@ -12,7 +12,7 @@ SignInPage.prototype = Object.create({}, {
   passwordTextBoxId: { value: 'signInData-password' },
   signInButton: { get: function () { return element(by.id('sign-in-button')); }},
   forgotDetailsLink: { get: function () { return element(by.id('forgot-details-link')); }},
-  nextPageUrl: { get: function () { return new CreateBlogPage().pageUrl; }},
+  nextPageUrl: { get: function () { return '/user/news-feed'; }},
   message: { get: function () { return element(by.id('sign-in-message')); }},
   signInSuccessfully: { value: function(username, password) {
     testKit.waitForElementToDisplay(element(by.id(this.usernameTextBoxId)));

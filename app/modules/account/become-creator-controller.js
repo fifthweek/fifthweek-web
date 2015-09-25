@@ -1,5 +1,5 @@
 angular.module('webApp')
-  .controller('creatorAccountSettingsCtrl',
+  .controller('becomeCreatorCtrl',
   function ($scope, $q, accountSettingsRepositoryFactory, accountSettingsStub, $state, states, authenticationService, fetchAggregateUserState) {
     'use strict';
 

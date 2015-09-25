@@ -67,8 +67,7 @@
     </script>
     <script src="https://platform.twitter.com/oct.js" type="text/javascript"></script>
   </head>
-  <body fw-assign-css-class-from-state
-        fw-set-navigation-visibility-from-state
+  <body fw-set-navigation-visibility-from-state
         fw-assign-css-class-if-impersonating
         class="navigation-hidden">
 
@@ -76,14 +75,16 @@
       <p class="browsehappy">You are using an outdated browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="wrapper">
-      <div class="left-right-container-wrap">
-        <div ng-include="'views/partials/sidebar.html'" class="left-container"></div>
-        <div class="right-container" snap-content snap-options="{'maxPosition': 230}">
-          <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
-          <div class="snap-overlay"></div>
+    <div fw-assign-css-class-from-state>
+      <div class="wrapper">
+        <div class="left-right-container-wrap">
+          <div ng-include="'views/partials/sidebar.html'" class="left-container"></div>
+          <div class="right-container" snap-content snap-options="{'maxPosition': 230}">
+            <div ng-include="'views/partials/header.html'" class="header-wrapper"></div>
+            <div class="snap-overlay"></div>
 
-          <div class="main-container" ui-view>
+            <div class="main-container" ui-view>
+            </div>
           </div>
         </div>
       </div>
@@ -152,7 +153,7 @@
 
     <script src="modules/account/account-controller.js"></script>
     <script src="modules/account/account-settings-repository-factory.js"></script>
-    <script src="modules/account/creator-account-settings-controller.js"></script>
+    <script src="modules/account/become-creator-controller.js"></script>
 
     <script src="modules/creator-backlog/backlog-post-list-controller.js"></script>
 

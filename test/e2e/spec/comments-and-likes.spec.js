@@ -58,7 +58,7 @@
       var notePost2;
 
       it('should register as a user', function() {
-        userRegistration = commonWorkflows.register();
+        userRegistration = commonWorkflows.registerAsCreator();
         addCreditToUserAccount(userRegistration);
       });
 

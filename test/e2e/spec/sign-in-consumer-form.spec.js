@@ -68,7 +68,7 @@ describe('sign-in form', function() {
 
     it('should run once before all', function() {
       commonWorkflows.getRoot();
-      var userRegistration = commonWorkflows.register();
+      var userRegistration = commonWorkflows.registerAsCreator();
       username = userRegistration.username;
       password = userRegistration.password;
     });

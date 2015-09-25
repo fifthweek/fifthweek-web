@@ -120,6 +120,17 @@ describe('blob image controller', function(){
       expect($scope.model.renderSize).toEqual(expectedRenderSize);
     });
 
+    it('should not update the renderSize if fixedAspectRatio is true', function(){
+      $scope.model.renderSize = 'somethingElse';
+      $scope.fixedAspectRatio = true;
+      $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', 'thumbnail');
+
+      expect($scope.model.renderSize).toBe('somethingElse');
+      $scope.$apply();
+      $timeout.flush();
+      expect($scope.model.renderSize).toBeUndefined();
+    });
+
     it('should invoke callback with the renderSize if new information is present', function(){
       $scope.model.renderSize = 'somethingElse';
       var renderSize;

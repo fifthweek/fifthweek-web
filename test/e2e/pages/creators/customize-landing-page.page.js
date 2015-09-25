@@ -8,6 +8,8 @@ var testKit = new TestKit();
 var CustomizeLandingPagePage = function() {};
 
 CustomizeLandingPagePage.prototype = Object.create({}, {
+  pageUrl: { get: function () { return '/profile/edit'; }},
+
   newFullDescription: { value: function() {
     return 'Full Description #' + Math.round(Math.random() * 100000);
   }},
@@ -32,8 +34,6 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
   errorMessage: { get: function () { return element(by.css('.form-message')); }},
 
   helpMessages: { get: function () { return element.all(by.css('#customizeLandingPageForm .help-block')); }},
-
-  pageUrl: { get: function () { return '/creator/blog/landing-page'; }},
 
   setFileInput: { value: function(filePath) {
     this.fileInput.sendKeys(path.resolve(__dirname + '/' + filePath));

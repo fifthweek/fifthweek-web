@@ -5,7 +5,24 @@
  */
 .compose-upload-form {
 
+  .select-channel-text {
+    margin-bottom: $post-margin-sm;
+  }
+
+  .channel-selection-button{
+    margin-bottom: $post-margin-sm;
+  }
+
+  .btn-file{
+    min-width: 100px;
+  }
+  .file-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
   .image-container{
+    max-width: 300px;
     .image-area{
       width: auto;
       height: auto;
@@ -20,7 +37,7 @@
     }
 
     .vertical-aspect-ratio{
-      padding-top: 0px;
+      padding-top: 0;
     }
   }
 }

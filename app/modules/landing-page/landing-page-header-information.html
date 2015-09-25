@@ -13,7 +13,8 @@
     </div>
     <div class="col-xs-6">
       <a ng-if="model.isOwner" id="edit-header-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
-        edit header image
+        <span ng-if="!model.blog.headerImage.fileId">add header image</span>
+        <span ng-if="model.blog.headerImage.fileId">edit header image</span>
       </a>
     </div>
   </div>

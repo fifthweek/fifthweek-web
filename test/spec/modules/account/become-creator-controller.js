@@ -1,4 +1,4 @@
-describe('creator account settings controller', function () {
+describe('become-creator controller', function () {
   'use strict';
 
   var $q;
@@ -45,7 +45,7 @@ describe('creator account settings controller', function () {
 
   var createController = function(){
     inject(function ($controller) {
-      target = $controller('creatorAccountSettingsCtrl', { $scope: $scope });
+      target = $controller('becomeCreatorCtrl', { $scope: $scope });
     });
   };
 

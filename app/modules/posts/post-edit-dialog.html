@@ -7,7 +7,7 @@
     <form-body>
       <div class="form-group form-group-has-buffers">
         <div class="row">
-          <div class="col-s-7 bottom-buffer" ng-if="model.input.imageSource">
+          <div class="col-xs-12 bottom-buffer" ng-if="model.input.imageSource">
             <fw-blob-image control="blobImage" file-id="{{model.input.image.fileId}}" container-name="{{model.input.image.containerName}}" thumbnail="preview"></fw-blob-image>
           </div>
           <div class="col-s-5 bottom-buffer">
@@ -18,8 +18,10 @@
 
       <div class="form-group form-group-has-buffers">
         <div class="row">
-          <div class="col-xs-12 bottom-buffer" ng-class="{'btn-file-change': model.input.fileSource}">
-            <p class="file-name" ng-if="model.input.fileSource">{{model.input.fileSource.fileName}}.{{model.input.fileSource.fileExtension}}</p>
+          <div class="col-xs-12" ng-show="model.input.fileSource">
+            <p class="file-name">{{model.input.fileSource.fileName}}.{{model.input.fileSource.fileExtension}}</p>
+          </div>
+          <div class="col-s-5 bottom-buffer">
             <fw-file-upload id-prefix="file" channel-id="{{model.channelId}}" description="{{model.input.fileSource ? 'Change File' : 'Add File'}}" on-upload-complete="onFileUploadComplete(data)" file-purpose="post-file"></fw-file-upload>
           </div>
         </div>

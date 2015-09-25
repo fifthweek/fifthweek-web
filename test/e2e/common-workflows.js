@@ -17,6 +17,7 @@
   var QueueAddPage = require('./pages/creators/queue-add.page.js');
   var ComposePostPage = require('./pages/creators/compose/compose-post.page.js');
   var CreatorLandingPagePage = require('./pages/creators/creator-landing-page.page.js');
+  var BecomeCreatorPage = require('./pages/become-creator.page.js');
 
   var signOutPage = new SignOutPage();
   var registerPage = new RegisterPage();
@@ -34,6 +35,7 @@
   var queueAddPage = new QueueAddPage();
   var composePostPage = new ComposePostPage();
   var creatorLandingPage = new CreatorLandingPagePage();
+  var becomeCreatorPage = new BecomeCreatorPage();
 
   var CommonWorkflows = function() {};
 
@@ -75,6 +77,8 @@
     createBlog: { value: function() {
       registerPage.signOutAndGoToRegistration();
       var registration = registerPage.registerSuccessfully();
+      sidebar.publishLink.click();
+      becomeCreatorPage.submitSuccessfully();
       var blog = createBlogPage.submitSuccessfully();
 
       return {
@@ -91,9 +95,12 @@
       channelEditPage.saveButton.click();
     }},
 
-    register: { value: function() {
+    registerAsCreator: { value: function() {
       registerPage.signOutAndGoToRegistration();
-      return registerPage.registerSuccessfully();
+      var registration = registerPage.registerSuccessfully();
+      sidebar.publishLink.click();
+      becomeCreatorPage.submitSuccessfully();
+      return registration;
     }},
 
     registerAsConsumer: { value: function() {

@@ -13,7 +13,8 @@ angular.module('webApp').factory('calculatedStates',
             return states.user.name;
           }
           else {
-            return states.creator.createBlog.name;
+            return states.user.name;
+            //return states.creator.createBlog.name;
           }
         }
         else {

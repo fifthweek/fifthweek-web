@@ -11,7 +11,7 @@ var channelPriceInputPage = new ChannelPriceInputPage();
 var CreateBlogPage = function() {};
 
 CreateBlogPage.prototype = Object.create({}, {
-  pageUrl: { get: function () { return '/creator/create-blog'; }},
+  pageUrl: { get: function () { return '/creator/create-channel'; }},
   nameTextBoxId: { value: 'newBlogData-name' },
   basePriceTextBoxId: { value: 'newBlogData-basePrice' },
   inputs: { value: [

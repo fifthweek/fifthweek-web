@@ -1,10 +1,10 @@
 angular.module('webApp').controller('createBlogCtrl',
-  function($scope, $state, calculatedStates, blogService) {
+  function($scope, $state, blogService, states) {
     'use strict';
 
     $scope.newBlogData = {
        name: '',
-       basePrice: '1.00'
+       basePrice: '0.50'
     };
 
     var buildDTO = function() {
@@ -15,7 +15,7 @@ angular.module('webApp').controller('createBlogCtrl',
 
     $scope.continue = function() {
       return blogService.createFirstBlog(buildDTO()).then(function() {
-        $state.go(calculatedStates.getDefaultState());
+        $state.go(states.creator.posts.live.name);
       });
     };
   }

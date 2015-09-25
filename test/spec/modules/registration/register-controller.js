@@ -57,7 +57,7 @@ describe('registration controller', function() {
     expect(scope.registrationData.email).toBe('');
     expect(scope.registrationData.username).toBe('');
     expect(scope.registrationData.password).toBe('');
-    expect(scope.registrationData.registerAsCreator).toBe(true);
+    expect(scope.registrationData.registerAsCreator).toBe(false);
   });
 
   describe('and submits the form', function() {

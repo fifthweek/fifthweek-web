@@ -6,6 +6,7 @@ var ChannelListPage = function() {};
 var testKit = new TestKit();
 
 ChannelListPage.prototype = Object.create({}, {
+  pageUrl: { get: function () { return '/channels'; }},
   addChannelButton: { get: function () { return element(by.id('add-button')); }},
   channels: { get: function () { return element.all(by.css('#channels .channel-name')); }},
   getChannel: { value: function(name) {

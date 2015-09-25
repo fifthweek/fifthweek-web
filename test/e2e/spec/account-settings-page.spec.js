@@ -22,7 +22,7 @@ describe('account settings page', function() {
 
   describe('when a new creator', function(){
     it('should run once before all', function() {
-      commonWorkflows.register();
+      commonWorkflows.registerAsCreator();
       sidebar.accountLink.click();
     });
 

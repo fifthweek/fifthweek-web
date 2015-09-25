@@ -7,7 +7,8 @@ angular.module('webApp').directive('fwBlobImage',
       control: '=',
       thumbnail: '@',
       fileId: '@',
-      containerName: '@'
+      containerName: '@',
+      fixedAspectRatio: '@'
     },
     templateUrl:'views/partials/blob-image.html',
     link: function(scope/*, element, attrs*/){

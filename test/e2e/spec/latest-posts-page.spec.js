@@ -25,7 +25,7 @@
 
     describe('when a new creator', function(){
       it('should run once before all', function() {
-        commonWorkflows.register();
+        commonWorkflows.registerAsCreator();
         sidebar.latestPostsLink.click();
         header.latestPostsLink.click();
       });

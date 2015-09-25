@@ -1,5 +1,5 @@
 var CommonWorkflows = require('../common-workflows.js');
-var CreatorAccountSettingsPage = require('../pages/creator-account-settings.page.js');
+var CreatorAccountSettingsPage = require('../pages/become-creator.page.js');
 var SidebarPage = require('../pages/sidebar.page.js');
 var CreateBlogPage = require('../pages/creators/create-blog.page.js');
 

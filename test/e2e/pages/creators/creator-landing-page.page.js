@@ -4,7 +4,13 @@ var CreatorLandingPagePage = function() {};
 
 CreatorLandingPagePage.prototype = Object.create({}, {
   fifthweekLink: { get: function() { return element(by.css('.fifthweek-logo-sm')); }},
-  editPageLink: { get: function() { return element(by.id('edit-header-link')); }},
+  editHeaderImageLink: { get: function() { return element(by.id('edit-header-link')); }},
+  editTitleLink: { get: function() { return element(by.id('edit-title-link')); }},
+  editAvatarLink: { get: function() { return element(by.id('edit-profile-image-link')); }},
+  editIntroductionLink: { get: function() { return element(by.id('edit-introduction-link')); }},
+  editChannelsLink: { get: function() { return element(by.id('edit-channels-link')); }},
+  editVideoLink: { get: function() { return element(by.id('edit-video-link')); }},
+  editDescriptionLink: { get: function() { return element(by.id('edit-description-link')); }},
   subscribeButton: { get: function() { return element(by.id('subscribe-button')); }},
   channelListSubscribeButton: { get: function() { return element(by.id('channel-list-subscribe-button')); }},
   unsubscribeButton: { get: function() { return element(by.id('unsubscribe-button')); }},
@@ -33,7 +39,7 @@ CreatorLandingPagePage.prototype = Object.create({}, {
   expectPriceDecrease: { value: function(index, from, to) {
     expect(this.getChannelPreviousPrice(index).getText()).toBe('Decreased from $' + Number(from).toFixed(2) + '/week');
     expect(this.getChannelPrice(index).getText()).toBe('$' + Number(to).toFixed(2) + '/week');
-  }},
+  }}
 
 });
 

@@ -198,8 +198,8 @@ angular.module('webApp')
         templateUrl: 'modules/registration/register.html',
         controller: 'RegisterCtrl',
         data : {
-          pageTitle: 'Creator Registration',
-          headTitle: ': ' + 'Creator Registration',
+          pageTitle: 'Register',
+          headTitle: ': ' + 'Register',
           access: {
             requireUnauthenticated: true
           }
@@ -301,13 +301,13 @@ angular.module('webApp')
         }
       })
       .state(states.user.creatorAccount.name, {
-        url: '/creator-account',
-        templateUrl: 'modules/account/creator-account-settings.html',
-        controller: 'creatorAccountSettingsCtrl',
+        url: '/publish',
+        templateUrl: 'modules/account/become-creator.html',
+        controller: 'becomeCreatorCtrl',
         data : {
           pageTitle: 'Publish',
           headTitle: ': ' + 'Publish',
-          bodyClass: 'page-creator-account-settings',
+          bodyClass: 'page-become-creator',
           access: {
             requireAuthenticated: true,
             roles: [authenticationServiceConstants.roles.creator],
@@ -363,7 +363,7 @@ angular.module('webApp')
         }
       })
       .state(states.creator.createBlog.name, {
-        url: '/create-blog',
+        url: '/create-channel',
         templateUrl: 'modules/creator-blog/create-blog.html',
         controller: 'createBlogCtrl',
         requireBlog: false,
@@ -374,7 +374,7 @@ angular.module('webApp')
       })
       .state(states.creator.landingPage.name, {
         abstract: false,
-        url: '/landing-page',
+        url: '/profile',
         templateUrl: 'modules/common/ui-view.html',
         redirectTo: states.creator.landingPage.edit.name,
         requireBlog: true,
@@ -396,7 +396,7 @@ angular.module('webApp')
         data : {
           pageTitle: 'Edit Appearance',
           headTitle: ': ' + 'Edit Appearance',
-          bodyClass: 'page-blog-landing'
+          bodyClass: 'page-customize-landing'
         }
       })
       .state(states.creator.posts.name, {

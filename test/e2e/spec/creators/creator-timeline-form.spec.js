@@ -32,7 +32,6 @@
     };
 
     var navigateToSiteFromLandingPage = function() {
-      //testKit.scrollIntoView(creatorLandingPagePage.editPageLink);
       creatorLandingPagePage.fifthweekLink.click();
       sidebar.subscriptionsLink.click();
     };

@@ -13,7 +13,7 @@ angular.module('webApp').controller('RegisterCtrl',
       email: '',
       username: '',
       password: '',
-      registerAsCreator: true
+      registerAsCreator: false
     };
 
     $scope.register = function() {

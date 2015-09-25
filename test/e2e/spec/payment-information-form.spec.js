@@ -74,7 +74,7 @@
     var userRegistration;
 
     it('should register as a user', function() {
-      userRegistration = commonWorkflows.register();
+      userRegistration = commonWorkflows.registerAsCreator();
     });
 
     it('should register as a creator', function() {
@@ -141,7 +141,7 @@
     var userRegistration;
 
     it('should register as a user', function() {
-      userRegistration = commonWorkflows.register();
+      userRegistration = commonWorkflows.registerAsCreator();
     });
 
     it('should register as a creator', function() {

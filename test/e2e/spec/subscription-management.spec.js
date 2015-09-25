@@ -86,7 +86,7 @@
       var userRegistration;
 
       it('should register as a user', function() {
-        userRegistration = commonWorkflows.register();
+        userRegistration = commonWorkflows.registerAsCreator();
         addCreditToUserAccount(userRegistration);
       });
 
@@ -309,7 +309,7 @@
       var filePathTiff = '../../../sample-image-tiny.tif';
 
       it('should register as a user', function() {
-        userRegistration = commonWorkflows.register();
+        userRegistration = commonWorkflows.registerAsCreator();
         addCreditToUserAccount(userRegistration);
       });
 
@@ -656,7 +656,7 @@
 
       describe('when testing subscribing while on the guest list', function(){
         it('latest posts should not contain any posts when the user is not subscribed to any creators', function() {
-          userRegistration = commonWorkflows.register();
+          userRegistration = commonWorkflows.registerAsCreator();
           navigateToLatestPosts();
           expectLatestPostCount(0);
         });
@@ -679,7 +679,7 @@
 
       describe('when testing subscribing while not on the guest list', function(){
         it('latest posts should not contain any posts when the user is not subscribed to any creators', function() {
-          userRegistration = commonWorkflows.register();
+          userRegistration = commonWorkflows.registerAsCreator();
           addCreditToUserAccount(userRegistration);
           navigateToLatestPosts();
           expectLatestPostCount(0);

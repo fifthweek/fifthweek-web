@@ -22,8 +22,7 @@
     </fw-panel12>
 
     <fw-panel12 ng-if="source === sources.creatorTimeline">
-      <h4>Blog empty</h4>
-      <p>Your blog contains no live posts. Add posts to your blog by clicking 'New Post' in the menu.</p>
+      <div ng-include="'modules/posts/creator-welcome-message.html'"></div>
     </fw-panel12>
 
     <fw-panel12 ng-if="source === sources.timeline && userId && !model.displayingAccountBalanceWarning">

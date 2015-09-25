@@ -16,12 +16,12 @@ angular.module('webApp')
       {
         name: 'Latest Posts',
         state: states.user.newsFeed.name,
-        icon: 'fa fa-align-left'
+        icon: 'fa fa-bolt'
       },
       {
         name: 'Subscriptions',
         state: states.user.viewSubscriptions.name,
-        icon: 'fa fa-list'
+        icon: 'fa fa-check-circle'
       },
       {
         separator: true
@@ -29,7 +29,7 @@ angular.module('webApp')
       {
         name: 'View Profile',
         state: states.creator.landingPage.preview.name,
-        icon: 'fa fa-eye'
+        icon: 'fa fa-user'
       },
       {
         name: 'Edit Profile',
@@ -81,18 +81,18 @@ angular.module('webApp')
       {
         name: 'Live Posts',
         state: states.creator.posts.live.name,
-        icon: 'fa fa-file-text-o'
+        icon: 'fa fa-calendar-check-o'
       },
       {
         name: 'Scheduled Posts',
         state: states.creator.posts.scheduled.list.name,
-        icon: 'fa fa-clock-o',
+        icon: 'fa fa-calendar-o',
         secondary:
           [
             {
               name: 'Scheduled Posts',
               state: states.creator.posts.scheduled.list.name,
-              icon: 'fa fa-clock-o'
+              icon: 'fa fa-calendar-o'
             },
             {
               name: 'Queues',
@@ -108,13 +108,13 @@ angular.module('webApp')
         id: 'account',
         name: aggregateUserStateUtilities.getUsername,
         state: states.user.account.name,
-        icon: 'fa fa-user',
+        icon: 'fa fa-cog',
         secondary:
           [
             {
               name: 'Account Settings',
               state: states.user.account.name,
-              icon: 'fa fa-user'
+              icon: 'fa fa-cog'
             },
             {
               name: 'Payment',

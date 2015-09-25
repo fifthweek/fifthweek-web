@@ -52,11 +52,11 @@
     var channel;
 
     it('should register as a user', function() {
-      userRegistration1 = commonWorkflows.register();
+      userRegistration1 = commonWorkflows.registerAsCreator();
     });
 
     it('should register as a user', function() {
-      userRegistration2 = commonWorkflows.register();
+      userRegistration2 = commonWorkflows.registerAsCreator();
     });
 
     it('should create a blog with two channels', function() {
