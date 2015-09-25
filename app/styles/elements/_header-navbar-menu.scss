@@ -7,6 +7,7 @@ ul.header-navbar-menu {
   margin:0;
   white-space: nowrap;
   font-size:18px;
+  z-index: 10;
 
   @media (min-width:$screen-s-min) {
     float:left;
@@ -26,11 +27,11 @@ ul.header-navbar-menu {
     a {
       color:$grey-light-4;
       text-transform:uppercase;
-      padding-bottom:15px;
+      padding-bottom:14px;
       outline:0 none;
 
       @media (min-width:$navbar-lg-min) {
-        padding-bottom: 18px;
+        padding-bottom: 17px;
       }
 
       &:hover{

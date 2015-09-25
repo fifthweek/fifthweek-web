@@ -1,38 +1,42 @@
 <div id="subscribe-button-area">
-  <div ng-if="model.isSubscribed" class="subscribed subscribe-button-wrapper">
-    <button ng-if="model.currentView === views.manage"
-            id="cancel-changes-button"
-            class="btn header-button"
-            type="submit"
-            can-submit="true"
-            fw-form-submit="cancelManageSubscription()"
-            error-message="model.errorMessage">
-      Cancel Changes
-    </button>
+  <form novalidate
+        name="form"
+        role="form">
+    <div ng-if="model.isSubscribed" class="subscribed subscribe-button-wrapper">
+      <button ng-if="model.currentView === views.manage"
+              id="cancel-changes-button"
+              class="btn header-button"
+              type="submit"
+              can-submit="true"
+              fw-form-submit="cancelManageSubscription()"
+              error-message="model.errorMessage">
+        Cancel Changes
+      </button>
 
-    <button ng-if="model.currentView !== views.manage"
-            id="manage-subscription-button"
-            class="btn header-button"
-            type="submit"
-            can-submit="true"
-            fw-form-submit="manageSubscription()"
-            error-message="model.errorMessage">Manage Subscription</button>
-  </div>
+      <button ng-if="model.currentView !== views.manage"
+              id="manage-subscription-button"
+              class="btn header-button"
+              type="submit"
+              can-submit="true"
+              fw-form-submit="manageSubscription()"
+              error-message="model.errorMessage">Manage Subscription</button>
+    </div>
 
-  <div ng-if="!model.isSubscribed" class="subscribe subscribe-button-wrapper">
-    <button id="subscribe-button"
-            class="btn header-button"
-            type="submit"
-            data-event-title="{{model.tracking.subscribedTitle}}"
-            data-event-category="{{model.tracking.category}}"
-            data-loading-text="Subscribing..."
-            can-submit="true"
-            fw-form-submit="subscribe()"
-            ng-disabled="model.subscribedChannelCount === 0"
-            error-message="model.errorMessage">
-      Subscribe
-      <span ng-if="!model.hasFreeAccess"><fw-price value="model.totalPrice"></fw-price></span>
-      <span ng-if="model.hasFreeAccess"><i class="fa fa-street-view"></i> FREE</span></button>
-  </div>
+    <div ng-if="!model.isSubscribed" class="subscribe subscribe-button-wrapper">
+      <button id="subscribe-button"
+              class="btn header-button"
+              type="submit"
+              data-event-title="{{model.tracking.subscribedTitle}}"
+              data-event-category="{{model.tracking.category}}"
+              data-loading-text="Subscribing..."
+              can-submit="true"
+              fw-form-submit="subscribe()"
+              ng-disabled="model.subscribedChannelCount === 0"
+              error-message="model.errorMessage">
+        Subscribe
+        <span ng-if="!model.hasFreeAccess"><fw-price value="model.totalPrice"></fw-price></span>
+        <span ng-if="model.hasFreeAccess"><i class="fa fa-street-view"></i> FREE</span></button>
+    </div>
+  </form>
 
 </div>
