@@ -1,49 +1,40 @@
-<div class="panel panel-default full-description">
-  <div class="panel-body jumbo-panel">
-
-    <div ng-include="'modules/creator-blog/customize-landing-page-loading-area.html'"></div>
-
-    <div ng-show="model.settings">
-      <fw-form-group>
-        <label for="video">Your Video</label>
-        <div class="row">
-          <div class="col-sm-10">
-            <input type="url" id="video" name="video" class="form-control"
-                   ng-model="model.settings.video"
-                   ng-maxlength="100"
-                   maxlength="100"
-                   ng-pattern="/^https?:\/\/(www\.)?((youtube\.com)|(youtu\.be)|(vimeo\.com))\/.*$/"
-                   placeholder="http://" />
-            <p class="light-grey">
-              <small>Creators with videos have a much higher success rate. <br/>
-              <strong>Paste in the url of your video from Youtube, Vimeo, etc.</strong></small>
-            </p>
-          </div>
-          <div class="col-xs-12">
-            <p fw-form-input-invalid-p="pattern">YouTube and Vimeo videos only. Must start with 'http://' or 'https://'.</p>
-            <p fw-form-input-invalid-p="maxlength">Allowed 100 characters at most.</p>
-          </div>
-        </div>
-      </fw-form-group>
-
-      <fw-form-group>
-        <label for="description">About the blog</label>
-        <div class="row">
-          <div class="col-xs-12">
-            <textarea msd-elastic id="description" name="description" class="form-control"
-                    ng-model="model.settings.description"
-                    ng-maxlength="2000"
-                    maxlength="2000"
-                    placeholder="This is where you can really sell your blog... tell everyone why they need to subscribe."></textarea>
-            <p class="light-grey"><small>Syntax: <strong>&#42;&#42;bold&#42;&#42;</strong> &#124; <i>&#42;italic&#42;</i> &#124; ![alt text](image_url)</small></p>
-          </div>
-          <div class="col-xs-12">
-            <p fw-form-input-invalid-p="maxlength">Allowed 2000 characters at most.</p>
-          </div>
-        </div>
-      </fw-form-group>
-
-      <div ng-include="'modules/creator-blog/customize-landing-page-submission-area.html'"></div>
+<div class="full-description">
+  <fw-form-group>
+    <label for="video">Your Video</label>
+    <div class="row">
+      <div class="col-sm-10">
+        <input type="url" id="video" name="video" class="form-control"
+               ng-model="model.settings.video"
+               ng-maxlength="100"
+               maxlength="100"
+               ng-pattern="/^https?:\/\/(www\.)?((youtube\.com)|(youtu\.be)|(vimeo\.com))\/.*$/"
+               placeholder="http://" />
+        <p class="light-grey">
+          <small>Creators with videos have a much higher success rate. <br/>
+          <strong>Paste in the url of your video from Youtube, Vimeo, etc.</strong></small>
+        </p>
+      </div>
+      <div class="col-xs-12">
+        <p fw-form-input-invalid-p="pattern">YouTube and Vimeo videos only. Must start with 'http://' or 'https://'.</p>
+        <p fw-form-input-invalid-p="maxlength">Allowed 100 characters at most.</p>
+      </div>
     </div>
-  </div>
+  </fw-form-group>
+
+  <fw-form-group>
+    <label for="description">About the blog</label>
+    <div class="row">
+      <div class="col-xs-12">
+        <textarea msd-elastic id="description" name="description" class="form-control"
+                ng-model="model.settings.description"
+                ng-maxlength="2000"
+                maxlength="2000"
+                placeholder="This is where you can really sell your blog... tell everyone why they need to subscribe."></textarea>
+        <p class="light-grey"><small>Syntax: <strong>&#42;&#42;bold&#42;&#42;</strong> &#124; <i>&#42;italic&#42;</i> &#124; ![alt text](image_url)</small></p>
+      </div>
+      <div class="col-xs-12">
+        <p fw-form-input-invalid-p="maxlength">Allowed 2000 characters at most.</p>
+      </div>
+    </div>
+  </fw-form-group>
 </div>

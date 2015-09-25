@@ -1,25 +1,16 @@
-<div class="panel panel-default">
-  <div class="panel-body jumbo-panel">
-
-    <div ng-include="'modules/creator-blog/customize-landing-page-loading-area.html'"></div>
-
-    <div ng-show="model.settings">
-      <div class="form-group" id="vanity-url">
-        <div class="row">
-          <div class="col-xs-12">
-            <h5>URL</h5>
-            <p><a ui-sref="landingPage({username: model.username})">{{model.landingPageUrl}}</a></p>
-          </div>
-        </div>
+<div class="basics">
+  <div class="form-group" id="vanity-url">
+    <div class="row">
+      <div class="col-xs-12">
+        <h5>URL</h5>
+        <p><a ui-sref="landingPage({username: model.username})">{{model.landingPageUrl}}</a></p>
       </div>
-
-      <label>Title</label>
-      <fw-form-input-blog-name ng-model="model.settings.name" placeholder="e.g. Your name or product" required focus></fw-form-input-blog-name>
-
-      <label>Introduction</label>
-      <fw-form-input-introduction id="introduction" ng-model="model.settings.introduction" placeholder="For example, who are you? And why are you here?"></fw-form-input-introduction>
-
-      <div ng-include="'modules/creator-blog/customize-landing-page-submission-area.html'"></div>
     </div>
   </div>
+
+  <label>Title</label>
+  <fw-form-input-blog-name ng-model="model.settings.name" placeholder="e.g. Your name or product" required focus></fw-form-input-blog-name>
+
+  <label>Introduction</label>
+  <fw-form-input-introduction id="introduction" ng-model="model.settings.introduction" placeholder="For example, who are you? And why are you here?"></fw-form-input-introduction>
 </div>

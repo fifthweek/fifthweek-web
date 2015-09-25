@@ -162,6 +162,9 @@ $post-header-margin-bottom: 16px;
   li, p {
     font-size: $post-font-size;
   }
+  li {
+    margin-bottom: 10px;
+  }
   hr {
     width:auto;
     display:block;
@@ -218,6 +221,7 @@ $post-header-margin-bottom: 16px;
   //max-width: $post-max-width;
 
   h5 {
+    white-space: nowrap;
     text-transform: uppercase;
     font-size: $p-font-size;
     font-weight: normal;

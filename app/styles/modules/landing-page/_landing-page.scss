@@ -335,7 +335,7 @@ $header-height-sm:70px;
       }
 
       .links{
-        a {
+        &>span {
           &:not(:first-child){
             &:before {
               content:"·";
@@ -502,6 +502,7 @@ $header-height-sm:70px;
     }
 
     #description-area{
+      @include post-text-style;
       margin-bottom: 48px;
     }
   }

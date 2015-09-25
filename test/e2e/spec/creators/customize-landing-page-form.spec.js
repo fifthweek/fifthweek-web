@@ -37,90 +37,38 @@ describe('customize landing page form', function() {
   });
 
   var testInitialContent = function(){
-    it('should contain a Basics tab', function(){
-      expect(page.basicsTabLink.getText()).toBe('Basics');
+
+    it('should contain a vanity url', function(){
+      expect(page.vanityUrl.getText()).toBe('https://www.fifthweek.com/' + registration.username);
     });
 
-    it('should contain a Header Image tab', function(){
-      expect(page.headerImageTabLink.getText()).toBe('Header Image');
+    it('should contain the blog name', function(){
+      expect(element(by.id(page.nameTextBoxId)).getAttribute('value')).toBe(blog.name);
     });
 
-    it('should contain a Header Image tab', function(){
-      expect(page.fullDescriptionTabLink.getText()).toBe('Full Description');
+    it('should contain the default introduction', function(){
+      expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).toBe('');
     });
 
-    describe('when the Basics tab is selected', function(){
-
-      it('should activate the Basics tab by default', function(){
-        expect(page.basicsTab.getAttribute('class')).toContain('active');
-        expect(page.headerImageTab.getAttribute('class')).not.toContain('active');
-        expect(page.fullDescriptionTab.getAttribute('class')).not.toContain('active');
-      });
-
-      it('should contain a vanity url', function(){
-        expect(page.vanityUrl.getText()).toBe('https://www.fifthweek.com/' + registration.username);
-      });
-
-      it('should contain the blog name', function(){
-        expect(element(by.id(page.nameTextBoxId)).getAttribute('value')).toBe(blog.name);
-      });
-
-      it('should contain the default introduction', function(){
-        expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).toBe('');
-      });
-
-      it('should contain the submit button', function(){
-        expect(page.basicsSubmitButton.isDisplayed()).toBe(true);
-        expect(page.basicsSubmitButton.isEnabled()).toBe(false);
-      });
+    it('should contain a blank header image', function(){
+      expect(page.noHeaderImage.isDisplayed()).toBe(true);
     });
 
-    describe('when the Header Image tab is selected', function(){
-
-      it('should activate the Header Image tab when clicked', function(){
-        page.headerImageTabLink.click();
-        expect(page.basicsTab.getAttribute('class')).not.toContain('active');
-        expect(page.headerImageTab.getAttribute('class')).toContain('active');
-        expect(page.fullDescriptionTab.getAttribute('class')).not.toContain('active');
-      });
-
-      it('should contain a blank header image', function(){
-        expect(page.noHeaderImage.isDisplayed()).toBe(true);
-      });
-
-      it('should contain a file upload button', function(){
-        expect(page.fileUploadButton.isDisplayed()).toBe(true);
-      });
-
-      it('should contain the submit button', function(){
-        expect(page.headerImageSubmitButton.isDisplayed()).toBe(true);
-        expect(page.headerImageSubmitButton.isEnabled()).toBe(false);
-      });
-
+    it('should contain a file upload button', function(){
+      expect(page.fileUploadButton.isDisplayed()).toBe(true);
     });
 
-    describe('when the Full Description tab is selected', function(){
+    it('should contain the video link', function(){
+      expect(element(by.id(page.videoTextBoxId)).getAttribute('value')).toBe('');
+    });
 
-      it('should activate the Full Description tab when clicked', function(){
-        page.fullDescriptionTabLink.click();
-        expect(page.basicsTab.getAttribute('class')).not.toContain('active');
-        expect(page.headerImageTab.getAttribute('class')).not.toContain('active');
-        expect(page.fullDescriptionTab.getAttribute('class')).toContain('active');
-      });
+    it('should contain the description', function(){
+      expect(element(by.id(page.descriptionTextBoxId)).getAttribute('value')).toBe('');
+    });
 
-      it('should contain the video link', function(){
-        expect(element(by.id(page.videoTextBoxId)).getAttribute('value')).toBe('');
-      });
-
-      it('should contain the description', function(){
-        expect(element(by.id(page.descriptionTextBoxId)).getAttribute('value')).toBe('');
-      });
-
-      it('should contain the submit button', function(){
-        expect(page.fullDescriptionSubmitButton.isDisplayed()).toBe(true);
-        expect(page.fullDescriptionSubmitButton.isEnabled()).toBe(false);
-      });
-
+    it('should contain the submit button', function(){
+      expect(page.submitButton.isDisplayed()).toBe(true);
+      expect(page.submitButton.isEnabled()).toBe(false);
     });
   };
 
@@ -131,22 +79,15 @@ describe('customize landing page form', function() {
     };
 
     it('should populate the form with new data', function(){
-      page.basicsTabLink.click();
-      expect(page.basicsSubmitButton.isEnabled()).toBe(false);
+      expect(page.submitButton.isEnabled()).toBe(false);
 
       testKit.setValue(page.nameTextBoxId, newValues.name);
-      expect(page.basicsSubmitButton.isEnabled()).toBe(true);
+      expect(page.submitButton.isEnabled()).toBe(true);
 
       testKit.setValue(page.introductionTextBoxId, newValues.introduction);
 
-      page.headerImageTabLink.click();
-      expect(page.headerImageSubmitButton.isEnabled()).toBe(true);
-
       page.setFileInput('../../sample-image.jpg');
       testKit.waitForElementToDisplay(page.headerImage);
-
-      page.fullDescriptionTabLink.click();
-      expect(page.fullDescriptionSubmitButton.isEnabled()).toBe(true);
 
       testKit.setValue(page.videoTextBoxId, validVideo);
       testKit.setValue(page.descriptionTextBoxId, validDescription);
@@ -175,7 +116,7 @@ describe('customize landing page form', function() {
       populateForm();
 
       it('should cancel the changes', function(){
-        page.fullDescriptionCancelButton.click();
+        page.cancelButton.click();
       });
 
       testInitialContent();
@@ -193,24 +134,16 @@ describe('customize landing page form', function() {
 
       var formValues = populateForm();
 
-      it('should save successfully and display the success message on all tabs', function(){
-        page.fullDescriptionSubmitButton.click();
-        expect(page.fullDescriptionSuccessMessage.isDisplayed()).toBe(true);
-        expect(page.fullDescriptionSubmitButton.isEnabled()).toBe(false);
-
-        page.headerImageTabLink.click();
-        expect(page.headerImageSuccessMessage.isDisplayed()).toBe(true);
-        expect(page.headerImageSubmitButton.isEnabled()).toBe(false);
-
-        page.basicsTabLink.click();
-        expect(page.basicsSuccessMessage.isDisplayed()).toBe(true);
-        expect(page.basicsSubmitButton.isEnabled()).toBe(false);
+      it('should save successfully and display the success message', function(){
+        page.submitButton.click();
+        expect(page.successMessage.isDisplayed()).toBe(true);
+        expect(page.submitButton.isEnabled()).toBe(false);
       });
 
       it('should reset the submit button and success message status on next change', function(){
         testKit.setValue(page.nameTextBoxId, '1');
-        expect(page.basicsSuccessMessage.isDisplayed()).toBe(false);
-        expect(page.basicsSubmitButton.isEnabled()).toBe(true);
+        expect(page.successMessage.isDisplayed()).toBe(false);
+        expect(page.submitButton.isEnabled()).toBe(true);
         commonWorkflows.fastRefresh();
       });
 
@@ -221,10 +154,7 @@ describe('customize landing page form', function() {
         expect(element(by.id(page.nameTextBoxId)).getAttribute('value')).toBe(formValues.name);
         expect(element(by.id(page.introductionTextBoxId)).getAttribute('value')).toBe(formValues.introduction);
 
-        page.headerImageTabLink.click();
         testKit.waitForElementToDisplay(page.headerImage);
-
-        page.fullDescriptionTabLink.click();
 
         expect(element(by.id(page.videoTextBoxId)).getAttribute('value')).toBe(validVideo);
         expect(element(by.id(page.descriptionTextBoxId)).getAttribute('value')).toBe(validDescription);
@@ -243,101 +173,65 @@ describe('customize landing page form', function() {
 
     describe('happy path', function(){
       afterEach(function(){
-        page.basicsTabLink.click();
-        page.basicsSubmitButton.click();
-        expect(page.basicsSuccessMessage.isDisplayed()).toBe(true);
-        expect(page.basicsSubmitButton.isEnabled()).toBe(false);
+        page.submitButton.click();
+        expect(page.successMessage.isDisplayed()).toBe(true);
+        expect(page.submitButton.isEnabled()).toBe(false);
 
         commonWorkflows.fastRefresh();
       });
 
-      describe('for "basics" section', function() {
-        beforeEach(function() {
-          page.basicsTabLink.click();
-        });
+      testKit.includeHappyPaths(page, nameInputPage, 'nameTextBox');
 
-        testKit.includeHappyPaths(page, nameInputPage, 'nameTextBox');
-
-        it('should allow symbols in introductions', function(){
-          testKit.setValue(page.introductionTextBoxId, testKit.punctuation33);
-        });
-
-        it('should allow an empty introduction', function(){
-          testKit.clear(page.introductionTextBoxId);
-        });
+      it('should allow symbols in introductions', function(){
+        testKit.setValue(page.introductionTextBoxId, testKit.punctuation33);
       });
 
-      describe('for "full description" section', function() {
-        beforeEach(function() {
-          page.fullDescriptionTabLink.click();
-        });
+      it('should allow an empty introduction', function(){
+        testKit.clear(page.introductionTextBoxId);
+      });
 
-        testKit.includeHappyPaths(page, videoUrlInputPage, 'videoTextBox');
+      testKit.includeHappyPaths(page, videoUrlInputPage, 'videoTextBox');
 
-        it('should allow symbols in descriptions', function(){
-          testKit.setValue(page.descriptionTextBoxId, testKit.punctuation33);
-        });
+      it('should allow symbols in descriptions', function(){
+        testKit.setValue(page.descriptionTextBoxId, testKit.punctuation33);
+      });
 
-        it('should allow empty descriptions', function(){
-          testKit.clear(page.descriptionTextBoxId);
-        });
+      it('should allow empty descriptions', function(){
+        testKit.clear(page.descriptionTextBoxId);
+      });
 
-        it('should allow empty video urls', function(){
-          testKit.clear(page.videoTextBoxId);
-        });
+      it('should allow empty video urls', function(){
+        testKit.clear(page.videoTextBoxId);
       });
     });
 
     describe('sad path', function() {
 
       var verifyInvalidMessage = function(){
-        page.headerImageTabLink.click();
-        expect(page.headerImageInvalidMessage.isDisplayed()).toBe(true);
-        expect(page.headerImageSubmitButton.isEnabled()).toBe(true);
-
-        page.basicsTabLink.click();
-        expect(page.basicsInvalidMessage.isDisplayed()).toBe(true);
-        expect(page.basicsSubmitButton.isEnabled()).toBe(true);
-
-        page.fullDescriptionTabLink.click();
-        expect(page.fullDescriptionInvalidMessage.isDisplayed()).toBe(true);
-        expect(page.fullDescriptionSubmitButton.isEnabled()).toBe(true);
+        expect(page.invalidMessage.isDisplayed()).toBe(true);
+        expect(page.submitButton.isEnabled()).toBe(true);
       };
 
       afterEach(function(){
         commonWorkflows.fastRefresh();
       });
 
-      describe('for "basics" section', function() {
-        beforeEach(function () {
-          page.basicsTabLink.click();
-        });
+      testKit.includeSadPaths(page, page.submitButton, page.helpMessages, nameInputPage, 'nameTextBox');
 
-        testKit.includeSadPaths(page, page.basicsSubmitButton, page.helpMessages, nameInputPage, 'nameTextBox');
+      it('should not allow an introduction more than 250 characters', function(){
+        var overSizedValue = new Array(252).join( 'a' );
+        testKit.setValue(page.introductionTextBoxId, overSizedValue, true);
 
-        it('should not allow an introduction more than 250 characters', function(){
-          var overSizedValue = new Array(252).join( 'a' );
-          testKit.setValue(page.introductionTextBoxId, overSizedValue, true);
-
-          testKit.assertMaxLength(page.helpMessages, page.introductionTextBoxId, overSizedValue, 250);
-        });
+        testKit.assertMaxLength(page.helpMessages, page.introductionTextBoxId, overSizedValue, 250);
       });
 
-      describe('for "full description" section', function() {
-        beforeEach(function() {
-          page.fullDescriptionTabLink.click();
-        });
+      testKit.includeSadPaths(page, page.submitButton, page.helpMessages, videoUrlInputPage, 'videoTextBox', null, true);
 
-        testKit.includeSadPaths(page, page.fullDescriptionSubmitButton, page.helpMessages, videoUrlInputPage, 'videoTextBox', null, true);
+      it('should not allow descriptions over 2000 characters', function(){
+        var overSizedValue = new Array(2002).join( 'a' );
+        testKit.setValue(page.descriptionTextBoxId, overSizedValue, true);
 
-        it('should not allow descriptions over 2000 characters', function(){
-          page.fullDescriptionTabLink.click();
-
-          var overSizedValue = new Array(2002).join( 'a' );
-          testKit.setValue(page.descriptionTextBoxId, overSizedValue, true);
-
-          testKit.assertMaxLength(page.helpMessages, page.descriptionTextBoxId, overSizedValue, 2000);
-        });
+        testKit.assertMaxLength(page.helpMessages, page.descriptionTextBoxId, overSizedValue, 2000);
       });
     });
   });

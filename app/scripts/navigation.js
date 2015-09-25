@@ -27,6 +27,42 @@ angular.module('webApp')
         separator: true
       },
       {
+        name: 'View Profile',
+        state: states.creator.landingPage.preview.name,
+        icon: 'fa fa-eye'
+      },
+      {
+        name: 'Edit Profile',
+        state: states.creator.landingPage.edit.name,
+        icon: 'fa fa-pencil',
+        secondary:
+          [
+            {
+              name: 'Profile Information',
+              state: states.creator.landingPage.edit.name,
+              icon: 'fa fa-pencil'
+            },
+            {
+              name: 'Channels',
+              state: states.creator.channels.name,
+              icon: 'fa fa-check-square-o'
+            }
+          ]
+      },
+      {
+        name: 'Subscribers',
+        state: states.creator.subscribers.all.name,
+        icon: 'fa fa-users'
+      },
+      {
+        name: 'Guest List',
+        state: states.creator.subscribers.guestList.name,
+        icon: 'fa fa-street-view'
+      },
+      {
+        separator: true
+      },
+      {
         name: 'Publish',
         state: states.user.creatorAccount.name,
         icon: 'fa fa-asterisk'
@@ -64,42 +100,6 @@ angular.module('webApp')
               icon: 'fa fa-th'
             }
           ]
-      },
-      {
-        separator: true
-      },
-      {
-        name: 'View Profile',
-        state: states.creator.landingPage.preview.name,
-        icon: 'fa fa-eye'
-      },
-      {
-        name: 'Edit Profile',
-        state: states.creator.landingPage.edit.name,
-        icon: 'fa fa-pencil',
-        secondary:
-          [
-            {
-              name: 'Profile Information',
-              state: states.creator.landingPage.edit.name,
-              icon: 'fa fa-pencil'
-            },
-            {
-              name: 'Channels',
-              state: states.creator.channels.name,
-              icon: 'fa fa-check-square-o'
-            }
-          ]
-      },
-      {
-        name: 'Subscribers',
-        state: states.creator.subscribers.all.name,
-        icon: 'fa fa-users'
-      },
-      {
-        name: 'Guest List',
-        state: states.creator.subscribers.guestList.name,
-        icon: 'fa fa-street-view'
       },
       {
         separator: true

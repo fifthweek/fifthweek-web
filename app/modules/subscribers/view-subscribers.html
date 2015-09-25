@@ -6,6 +6,12 @@
 
 <fw-panel12 ng-if="!model.isLoading && !model.errorMessage">
   <p>
+    You have <strong id="total-subscriptions">{{model.totalSubscriptions}}</strong> subscriptions
+    from <strong id="total-subscribers">{{model.billableSubscribers}}</strong> subscribers.
+    <span ng-if="model.unacceptablePrices"><strong id="total-unacceptable-prices">{{model.unacceptablePrices}}</strong>
+    subscriptions are inactive because the user has not accepted the current price.</span>
+  </p>
+  <p>
     Your total revenue to date is
     <strong><fw-price value="model.releasedRevenue + model.unreleasedRevenue" show-interval="false" id="total-revenue"></fw-price></strong>.
   </p>
@@ -18,12 +24,6 @@
   <p>
     Your estimated revenue for the next week is
     <strong><fw-price value="model.estimatedWeeklyRevenue" show-interval="false" id="estimated-weekly-revenue"></fw-price></strong>.
-  </p>
-  <p>
-    You have <strong id="total-subscriptions">{{model.totalSubscriptions}}</strong> subscriptions
-    from <strong id="total-subscribers">{{model.billableSubscribers}}</strong> subscribers.
-    <span ng-if="model.unacceptablePrices"><strong id="total-unacceptable-prices">{{model.unacceptablePrices}}</strong>
-    subscriptions are inactive because the user has not accepted the current price.</span>
   </p>
   <!--p>
     You have <span ng-if="model.estimatedFailedPayments"><strong id="total-failed-payment-subscriptions">{{model.estimatedFailedPayments}}</strong>

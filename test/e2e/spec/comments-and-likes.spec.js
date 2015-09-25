@@ -157,7 +157,6 @@
         });
 
         it('should like posts on landing page and read now page', function(){
-          navigateToCreatorLandingPage(creatorRegistration1);
           post.postIndex = 0;
           expect(post.likesLink.getText()).toBe('0');
           expect(post.commentsLink.getText()).toBe('1');
@@ -200,7 +199,6 @@
           expect(post.likesLink.getText()).toBe('2');
           expect(post.commentsLink.getText()).toBe('0');
         });
-
 
         it('should comment on posts', function(){
           post.postIndex = 0;

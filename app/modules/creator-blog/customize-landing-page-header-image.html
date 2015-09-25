@@ -1,24 +1,14 @@
-<div class="panel panel-default header-image">
-  <div class="panel-body jumbo-panel">
-
-    <div ng-include="'modules/creator-blog/customize-landing-page-loading-area.html'"></div>
-
-    <div ng-show="model.settings">
-
-      <div class="form-group form-group-has-buffers">
-        <label>Header Image</label>
-        <div class="row">
-          <div class="col-xs-12 col-s-9 col-sm-10 bottom-buffer">
-            <fw-blob-image control="blobImage" thumbnail="preview"></fw-blob-image>
-            <small class="sub-image-input">We recommend images at least 3000x1000 pixels.</small>
-          </div>
-          <div class="col-xs-12 col-s-3 col-sm-2 bottom-buffer">
-            <fw-file-upload description="Upload" abbreviate-progress="true" on-upload-complete="onUploadComplete(data)" file-purpose="profile-header-image" accept="image/jpeg"></fw-file-upload>
-          </div>
-        </div>
+<div class="header-image">
+  <div class="form-group form-group-has-buffers">
+    <label>Header Image</label>
+    <div class="row">
+      <div class="col-xs-12 col-s-9 col-sm-10 bottom-buffer">
+        <fw-blob-image control="blobImage" thumbnail="preview"></fw-blob-image>
+        <small class="sub-image-input">We recommend images at least 3000x1000 pixels.</small>
       </div>
-
-      <div ng-include="'modules/creator-blog/customize-landing-page-submission-area.html'"></div>
+      <div class="col-xs-12 col-s-3 col-sm-2 bottom-buffer">
+        <fw-file-upload description="Upload" abbreviate-progress="true" on-upload-complete="onUploadComplete(data)" file-purpose="profile-header-image" accept="image/jpeg"></fw-file-upload>
+      </div>
     </div>
   </div>
 </div>

@@ -26,6 +26,10 @@ $html-name-space:'.page-blog-landing';
           }
         }
       }
+      .image-container {
+        max-width: 600px;
+      }
+
       img {
         width:100%;
       }

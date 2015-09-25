@@ -1,21 +1,15 @@
-<div class="row">
-  <div class="col-xs-12">
-    <form novalidate
-          id="customizeLandingPageForm"
-          role="form"
-          name="form">
-      <tabset>
-        <tab heading="Basics">
-          <div ng-include="'modules/creator-blog/customize-landing-page-basics.html'"></div>
-        </tab>
-        <tab heading="Header Image">
-          <div ng-include="'modules/creator-blog/customize-landing-page-header-image.html'"></div>
-        </tab>
-        <tab heading="Full Description">
-          <div ng-include="'modules/creator-blog/customize-landing-page-full-description.html'"></div>
-        </tab>
-      </tabset>
-      <fw-form-dirty-confirmation form="form"></fw-form-dirty-confirmation>
-    </form>
-  </div>
-</div>
+<form novalidate
+      id="customizeLandingPageForm"
+      role="form"
+      name="form">
+  <fw-panel12>
+    <div ng-include="'modules/creator-blog/customize-landing-page-loading-area.html'"></div>
+    <div ng-show="model.settings">
+      <div ng-include="'modules/creator-blog/customize-landing-page-basics.html'"></div>
+      <div ng-include="'modules/creator-blog/customize-landing-page-header-image.html'"></div>
+      <div ng-include="'modules/creator-blog/customize-landing-page-full-description.html'"></div>
+    </div>
+    <div ng-include="'modules/creator-blog/customize-landing-page-submission-area.html'"></div>
+    <fw-form-dirty-confirmation form="form"></fw-form-dirty-confirmation>
+  </fw-panel12>
+</form>

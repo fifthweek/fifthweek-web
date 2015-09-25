@@ -103,21 +103,13 @@
       var videoUrlDomain = 'vimeo.com';
       var videoUrlId = '114229222';
 
-      it('should be hidden in absence of a full description and video', function() {
-        runForCreatorAndUserAndLoggedOutUser(function(){
-          expect(page.moreInfo.isPresent()).toBe(false);
-        });
-      });
-
       it('should display full description when provided', function() {
         page.editPageLink.click();
-        customizeLandingPagePage.fullDescriptionTabLink.click();
         testKit.setValue(customizeLandingPagePage.descriptionTextBoxId, fullDescription);
-        customizeLandingPagePage.fullDescriptionSubmitButton.click();
+        customizeLandingPagePage.submitButton.click();
         navigateToPage();
 
         runForCreatorAndUserAndLoggedOutUser(function(){
-          expect(page.moreInfo.isPresent()).toBe(true);
           expect(page.video.isPresent()).toBe(false);
           expect(page.fullDescription.getText()).toBe(fullDescription);
         });
@@ -125,14 +117,12 @@
 
       it('should display video when provided', function() {
         page.editPageLink.click();
-        customizeLandingPagePage.fullDescriptionTabLink.click();
         testKit.clear(customizeLandingPagePage.descriptionTextBoxId);
         testKit.setValue(customizeLandingPagePage.videoTextBoxId, 'https://' + videoUrlDomain + '/' + videoUrlId);
-        customizeLandingPagePage.fullDescriptionSubmitButton.click();
+        customizeLandingPagePage.submitButton.click();
         navigateToPage();
 
         runForCreatorAndUserAndLoggedOutUser(function(){
-          expect(page.moreInfo.isPresent()).toBe(true);
           expect(page.video.isPresent()).toBe(true);
           expect(page.video.getAttribute('src')).toContain(videoUrlDomain);
           expect(page.video.getAttribute('src')).toContain(videoUrlId);
@@ -141,13 +131,11 @@
 
       it('should display full description and video when both are provided', function() {
         page.editPageLink.click();
-        customizeLandingPagePage.fullDescriptionTabLink.click();
         testKit.setValue(customizeLandingPagePage.descriptionTextBoxId, fullDescription);
-        customizeLandingPagePage.fullDescriptionSubmitButton.click();
+        customizeLandingPagePage.submitButton.click();
         navigateToPage();
 
         runForCreatorAndUserAndLoggedOutUser(function(){
-          expect(page.moreInfo.isPresent()).toBe(true);
           expect(page.video.isPresent()).toBe(true);
           expect(page.video.getAttribute('src')).toContain(videoUrlDomain);
           expect(page.video.getAttribute('src')).toContain(videoUrlId);

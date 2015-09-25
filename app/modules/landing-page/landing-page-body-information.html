@@ -20,12 +20,16 @@
       <div class="posts landing-page">
 
         <a ng-if="model.isOwner" id="edit-channels-link" class="btn btn-edit btn-default" ui-sref="creator.channels.list">
-          edit channels
+          <span ng-if="!model.channels.length">add channels</span>
+          <span ng-if="model.channels.length">edit channels</span>
         </a>
-        <h5>
+        <h5 ng-if="!model.channels.length">
+          <span>No Channels Currently Available</span>
+        </h5>
+        <h5 ng-if="model.channels.length">
           <span>Available Channels</span>
         </h5>
-        <div class="post non-image-post channels">
+        <div class="post non-image-post channels" ng-if="model.channels.length">
           <div class="text text-standard-border">
             <div class="content">
               <div id="channel-{{$index}}" class="row channel" ng-repeat="channel in model.channels" ng-class="{first:$first, last:$last}">
@@ -111,7 +115,7 @@
               </a>
             </div>
             <div id="video" class="video" ng-if="model.videoUrl">
-              <embed-video data-ng-href="{{model.videoUrl}}" controls="0" rel="0" autohide="1" frameborder="0" showinfo="0"></embed-video>
+              <embed-video data-ng-href="{{model.videoUrl}}" rel="0" autohide="1" frameborder="0" showinfo="0"></embed-video>
             </div>
           </div>
         </div>
@@ -146,10 +150,10 @@
       </ul>
       <hr/>
       <p class="links">
-        <a ui-sref="home">Fifthweek</a>
-        <a ui-sref="support.help">Help</a>
-        <a ui-sref="termsOfService">Terms of Use</a>
-        <a ui-sref="privacyPolicy">Privacy Policy</a>
+        <span><a ui-sref="home">Fifthweek</a></span>
+        <span><a ui-sref="support.help">Help</a></span>
+        <span><a ui-sref="termsOfService">Terms of Use</a></span>
+        <span><a ui-sref="privacyPolicy">Privacy Policy</a></span>
       </p>
     </div>
   </div>
