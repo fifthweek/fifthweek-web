@@ -1,4 +1,4 @@
-angular.module('webApp').run(function(analytics, $rootScope, initialQueryParams, identifiedUserNotifierConstants, analyticsEventConstants) {
+angular.module('webApp').run(function(analytics, $rootScope, initialQueryParams, identifiedUserNotifierConstants) {
   'use strict';
 
   // Angulartics mutates input parameters which causes events to bleed into each other, resulting in erroneous tracking.
@@ -30,9 +30,5 @@ angular.module('webApp').run(function(analytics, $rootScope, initialQueryParams,
         eventCategory());
     }
   });
-
-  analytics.eventTrack(
-    analyticsEventConstants.abstract.titleSiteVisited,
-    analyticsEventConstants.abstract.category);
 });
 

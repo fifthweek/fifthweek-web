@@ -15,7 +15,6 @@ angular
     'angulartics.afterFirstPageTrack',
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',
-    'angulartics.kissmetrics',
     'videosharing-embed',
     'angularPayments'
   ])

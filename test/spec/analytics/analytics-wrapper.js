@@ -8,17 +8,14 @@ describe('analytics wrapper', function(){
   var $rootScope;
   var $analytics;
   var logService;
-  var analyticsEventFlatMap;
 
   beforeEach(function() {
     $analytics = jasmine.createSpyObj('$analytics', ['eventTrack', 'setUsername']);
     logService = jasmine.createSpyObj('logService', ['error']);
-    analyticsEventFlatMap = jasmine.createSpy('analyticsEventFlatMap');
 
     module(function($provide) {
       $provide.value('$analytics', $analytics);
       $provide.value('logService', logService);
-      $provide.value('analyticsEventFlatMap', analyticsEventFlatMap);
     });
   });
 
@@ -30,28 +27,13 @@ describe('analytics wrapper', function(){
 
   it('should forward on the eventTrack method', function(){
 
-    analyticsEventFlatMap.and.returnValue([{eventTitle: 'X', eventCategory: 'Y'}]);
-
     target.eventTrack('title', 'eventCategory');
 
-    expect(analyticsEventFlatMap).toHaveBeenCalledWith('title', 'eventCategory');
-    expect($analytics.eventTrack).toHaveBeenCalledWith('X', { category: 'Y' });
-  });
-
-  it('should support multiple expanded events', function(){
-
-    analyticsEventFlatMap.and.returnValue([{eventTitle: 'X', eventCategory: 'Y'}, {eventTitle: 'A', eventCategory: 'B'}]);
-
-    target.eventTrack('title', 'eventCategory');
-
-    expect(analyticsEventFlatMap).toHaveBeenCalledWith('title', 'eventCategory');
-    expect($analytics.eventTrack).toHaveBeenCalledWith('X', { category: 'Y' });
-    expect($analytics.eventTrack).toHaveBeenCalledWith('A', { category: 'B' });
+    expect($analytics.eventTrack).toHaveBeenCalledWith('title', { category: 'eventCategory' });
   });
 
   it('should log and absorb thrown errors from the eventTrack method', function(){
 
-    analyticsEventFlatMap.and.returnValue([{eventTitle: 'X', eventCategory: 'Y'}]);
     $analytics.eventTrack = function() { throw 'error'; };
 
     var catchResult;
@@ -63,7 +45,6 @@ describe('analytics wrapper', function(){
 
   it('should log and absorb rejected promises from the eventTrack method', function(){
 
-    analyticsEventFlatMap.and.returnValue([{eventTitle: 'X', eventCategory: 'Y'}]);
     $analytics.eventTrack = function() { return $q.reject('error'); };
 
     var catchResult;
