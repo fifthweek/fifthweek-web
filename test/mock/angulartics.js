@@ -8,7 +8,6 @@ angular.module('angulartics', []).provider('$analytics', function () {
     firstPageview: function() {}
   };
 });
-angular.module('angulartics.kissmetrics', []);
 angular.module('angulartics.google.analytics', []);
 angular.module('angulartics.google.analytics.userid', []);
 angular.module('angulartics.afterFirstPageTrack', []);

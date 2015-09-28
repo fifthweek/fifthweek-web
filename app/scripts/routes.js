@@ -328,7 +328,7 @@ angular.module('webApp')
         }
       })
       .state(states.user.newsFeed.name, {
-        url: '/news-feed',
+        url: '/latest-posts',
         templateUrl: 'modules/newsfeed/newsfeed.html',
         data : {
           pageTitle: 'Latest Posts',

@@ -44,8 +44,7 @@ describe('create blog form', function() {
   describe('sad path', function () {
 
     it('should run once before all', function() {
-      registerPage.signOutAndGoToRegistration();
-      registerPage.registerSuccessfully();
+      commonWorkflows.registerAsCreator();
     });
 
     afterEach(function() {

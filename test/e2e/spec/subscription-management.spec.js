@@ -357,7 +357,6 @@
         });
 
         it('should display posts on landing page', function(){
-          navigateToCreatorLandingPage(creatorRegistration1);
           post.postIndex = 0;
           post.expectPost(blog, notePost, creatorRegistration1, navigateToLandingPagePosts, false, true);
           post.postIndex = 1;

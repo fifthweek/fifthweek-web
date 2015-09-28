@@ -15,7 +15,7 @@ RegisterPage.prototype = Object.create({},
   passwordTextBoxId: { get: function () { return 'registrationData-password'; }},
   registerButton: { get: function () { return element(by.id('register-button')); }},
   helpMessages: { get: function () { return element.all(by.css('#registrationForm .help-block')); }},
-  nextPageUrl: { get: function () { '/user/news-feed'; }},
+  nextPageUrl: { get: function () { return '/user/latest-posts'; }},
   newEmail: { value: function(username) {
     return username + '@testing.fifthweek.com';
   }},
