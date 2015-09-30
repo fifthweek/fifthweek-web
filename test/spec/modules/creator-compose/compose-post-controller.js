@@ -132,8 +132,23 @@ describe('compose post controller', function () {
         expect($scope.model.input.imageId).toBe('fileId');
       });
 
+      it('should set processingImage to true', function(){
+        expect($scope.model.processingImage).toBe(true);
+      });
+
       it('should update the blob image', function(){
-        expect(control.update).toHaveBeenCalledWith('containerName', 'fileId');
+        expect(control.update).toHaveBeenCalledWith('containerName', 'fileId', false, target.internal.onBlobImageUpdateComplete);
+      });
+    });
+
+    describe('when calling internal.onBlobImageUpdateComplete', function(){
+      beforeEach(function(){
+        $scope.model.processingImage = true;
+        target.internal.onBlobImageUpdateComplete({ renderSize: 'renderSize' });
+      });
+
+      it('should set processingImage to false', function(){
+        expect($scope.model.processingImage).toBe(false);
       });
     });
 

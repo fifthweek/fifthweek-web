@@ -81,9 +81,11 @@
         data-event-title="Backlog post edited"
         data-event-category="Edited post"
         fw-form-submit="save()"
+        ng-disabled="model.processingImage"
         error-message="model.errorMessage">
-        <span ng-if="model.savedScheduleMode === scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Save' : 'Schedule'}}</span>
-        <span ng-if="model.savedScheduleMode !== scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Post Now' : 'Save'}}</span>
+        <span ng-if="model.processingImage">Processing...</span>
+        <span ng-if="!model.processingImage && model.savedScheduleMode === scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Save' : 'Schedule'}}</span>
+        <span ng-if="!model.processingImage && model.savedScheduleMode !== scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Post Now' : 'Save'}}</span>
       </button>
     </form-buttons>
   </fw-form-modal>

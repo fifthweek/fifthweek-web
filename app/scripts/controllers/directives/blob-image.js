@@ -75,6 +75,13 @@ angular.module('webApp')
           return errorFacade.handleError(error, function(message) {
             $scope.model.errorMessage = message;
             $scope.model.updating = false;
+
+            if(completeCallback) {
+              completeCallback(
+              {
+                error: error
+              });
+            }
           });
         });
     };

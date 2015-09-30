@@ -42,6 +42,7 @@ angular.module('webApp')
       savedDate: liveDate,
       queuedLiveDate: undefined,
       channelId: post.channelId,
+      processingImage: false,
       input: {
         comment: post.comment,
         image: post.image,
@@ -59,6 +60,7 @@ angular.module('webApp')
     $scope.blobImage = blobImageControlFactory.createControl();
 
     internal.onBlobImageUpdateComplete = function(data){
+      model.processingImage = false;
       model.input.imageSource.renderSize = data.renderSize;
     };
 
@@ -66,6 +68,7 @@ angular.module('webApp')
       var fileInformation = postEditDialogUtilities.getFileInformation(data);
       model.input.image = fileInformation.file;
       model.input.imageSource = fileInformation.fileSource;
+      model.processingImage = true;
       $scope.blobImage.update(data.containerName, data.fileId, false, internal.onBlobImageUpdateComplete);
     };
 

@@ -13,6 +13,7 @@ angular.module('webApp').controller('composePostCtrl',
       committedChannel: undefined,
       channels: [],
       queues: [],
+      processingImage: false,
       input: {
         fileId: undefined,
         imageId: undefined,
@@ -24,16 +25,22 @@ angular.module('webApp').controller('composePostCtrl',
     };
 
     $scope.model = model;
+
     var internal = this.internal = {
       cancelWatch: undefined
     };
 
     $scope.blobImage = blobImageControlFactory.createControl();
 
+    internal.onBlobImageUpdateComplete = function(data){
+      model.processingImage = false;
+    };
+
     $scope.onImageUploadComplete = function(data) {
       model.imageUploaded = true;
       model.input.imageId = data.fileId;
-      $scope.blobImage.update(data.containerName, data.fileId);
+      model.processingImage = true;
+      $scope.blobImage.update(data.containerName, data.fileId, false, internal.onBlobImageUpdateComplete);
     };
 
     $scope.onFileUploadComplete = function(data) {

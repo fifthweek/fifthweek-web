@@ -298,5 +298,40 @@ describe('blob image controller', function(){
         expect($scope.model.updating).toBe(false);
       });
     });
+
+    describe('when getImageInformation fails with callback', function(){
+      var callbackError;
+      beforeEach(function(){
+        azureUriService.getAvailableImageInformation.and.returnValue($q.reject('error'));
+        errorFacade.handleError.and.callFake(function(error, delegate){
+          delegate('friendlyError');
+        });
+
+        $scope.model.renderSize = 'renderSize';
+        $scope.$broadcast(blobImageCtrlConstants.updateEvent, 'containerName', 'fileId', 'thumbnail', false, function(data){ callbackError = data.error; });
+        $scope.$apply();
+        $timeout.flush();
+      });
+
+      it('should call the errorFacade', function(){
+        expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
+      });
+
+      it('should set the errorMessage to a friendly error message', function(){
+        expect($scope.model.errorMessage).toBe('friendlyError');
+      });
+
+      it('should not reset the renderSize', function(){
+        expect($scope.model.renderSize).toBe('renderSize');
+      });
+
+      it('should set updating to false', function(){
+        expect($scope.model.updating).toBe(false);
+      });
+
+      it('should call the callback', function(){
+        expect(callbackError).toBe('error');
+      });
+    });
   });
 });

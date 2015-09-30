@@ -102,6 +102,7 @@ describe('post-edit-dialog-controller', function() {
           savedDate: new Date(liveDateString),
           queuedLiveDate: undefined,
           channelId: 'b',
+          processingImage: false,
           input: {
             comment: 'comment',
             image: 'image',
@@ -231,6 +232,10 @@ describe('post-edit-dialog-controller', function() {
               expect($scope.model.input.imageSource).toBe('newImageSource');
             });
 
+            it('should set processingImage to true', function(){
+              expect($scope.model.processingImage).toBe(true);
+            });
+
             it('should update the blob image', function(){
               expect($scope.blobImage.update).toHaveBeenCalledWith('newContainerName', 'newFileId', false, target.internal.onBlobImageUpdateComplete);
             });
@@ -238,6 +243,7 @@ describe('post-edit-dialog-controller', function() {
 
           describe('when calling internal.onBlobImageUpdateComplete', function(){
             beforeEach(function(){
+              $scope.model.processingImage = true;
               $scope.model.input.imageSource = {};
 
               target.internal.onBlobImageUpdateComplete({ renderSize: 'renderSize' });
@@ -245,6 +251,10 @@ describe('post-edit-dialog-controller', function() {
 
             it('should assign the renderSize to the model', function(){
               expect($scope.model.input.imageSource.renderSize).toBe('renderSize');
+            });
+
+            it('should set processingImage to false', function(){
+              expect($scope.model.processingImage).toBe(false);
             });
           });
 

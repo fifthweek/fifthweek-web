@@ -81,7 +81,11 @@
                   data-event-category="New post"
                   can-submit="contentForm.$valid"
                   fw-form-submit="postNow()"
-                  error-message="model.errorMessage">Post Now</button>
+                  ng-disabled="model.processingImage"
+                  error-message="model.errorMessage">
+            <span ng-if="model.processingImage">Processing...</span>
+            <span ng-if="!model.processingImage">Post Now</span>
+          </button>
 
           <button class="btn btn-default btn-block"
                   ng-disabled="contentForm.isSubmitting"
@@ -98,7 +102,11 @@
                   data-event-category="New post"
                   can-submit="contentForm.$valid"
                   fw-form-submit="postToBacklog()"
-                  error-message="model.errorMessage">Schedule</button>
+                  ng-disabled="model.processingImage"
+                  error-message="model.errorMessage">
+            <span ng-if="model.processingImage">Processing...</span>
+            <span ng-if="!model.processingImage">Schedule</span>
+          </button>
 
           <!-- Note we do not use fw-form-submit here because we don't care about validity -->
           <button class="btn btn-default btn-block"
