@@ -2,45 +2,65 @@
   'use strict';
 
   var _ = require('lodash');
-  var HomePage = require('../pages/home.page.js');
-  var PricingPage = require('../pages/pricing.page.js');
-  var HeaderInformationPage = require('../pages/header-information.page.js');
+  var TestKit = require('../test-kit.js');
+  var CommonWorkflows = require('../common-workflows.js');
+  var SidebarPage = require('../pages/sidebar.page.js');
+  var CommentInputPage = require('../pages/comment-input.page');
+  var DiscardChangesPage = require('../pages/discard-changes.page.js');
   var CurrentPage = require('../pages/submit-feedback-workflow.page.js');
 
-  describe("register interest form", function () {
-    'use strict';
+  describe("submit feedback form", function () {
 
-    var homePage = new HomePage();
-    var pricingPage = new PricingPage();
-    var headerInformationPage = new HeaderInformationPage();
+    var testKit = new TestKit();
+    var commonWorkflows = new CommonWorkflows();
+    var sidebar = new SidebarPage();
+    var commentInputPage = new CommentInputPage();
+    var discardChanges = new DiscardChangesPage();
     var page = new CurrentPage();
 
-    var instances = [
-      {
-        navigate: function () {
-          headerInformationPage.createFreeAccountLink.click();
-        }
-      },
-      {
-        navigate: function () {
-          homePage.getStartedLink.click();
-        }
-      },
-      {
-        navigate: function () {
-          homePage.getStartedBottomLink.click();
-        }
-      },
-      {
-        navigate: function () {
-          headerInformationPage.pricingLink.click();
-          pricingPage.letUsTalkLink.click();
-        }
-      }
-    ];
+    var navigateToPage = function() {
+      sidebar.sendFeedbackLink.click();
+    };
 
-    _.forEach(instances, function (instance) {
-      page.runTests(instance.navigate);
+    it('should run once before all', function(){
+      commonWorkflows.registerAsConsumer();
+    });
+
+    describe('when validating against good input', function() {
+
+      beforeEach(navigateToPage);
+
+      afterEach(function() {
+        page.registerButton.click();
+        page.expectThankYouMessageDisplayed();
+        page.dismissButton.click();
+      });
+
+      it('should allow feedback to be sent', function(){
+        testKit.setContentEditableValue(page.messageTextBoxId, 'message');
+      });
+
+      commentInputPage.includeHappyPaths(page.messageTextBoxId, function() {});
+    });
+
+    describe('when validating against bad input', function() {
+
+      it('should run once before all', function() {
+        navigateToPage();
+      });
+
+      describe('bad input', function(){
+        afterEach(function() {
+          // Reset form state.
+          testKit.setContentEditableValue(page.messageTextBoxId, 'message'); // Ensure we're dirty.
+          page.cancelButton.click();
+          testKit.waitForElementToDisplay(discardChanges.discardButton);
+          discardChanges.discardButton.click();
+          navigateToPage();
+        });
+
+        commentInputPage.includeSadPaths(page.messageTextBoxId, page.registerButton, page.helpMessages, function() {});
+      });
     });
   });
 })();

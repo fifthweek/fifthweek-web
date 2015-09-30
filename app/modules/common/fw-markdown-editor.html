@@ -1,11 +1,11 @@
-<p ng-model="htmlValue"
+<div ng-model="htmlValue"
    medium-editor
    id="{{editorId}}"
    class="form-control"
    ng-focus="ngFocus"
    ng-disabled="ngDisabled"
    bind-options="bindOptions">
-</p>
+</div>
 <p class="light-grey" ng-if="!maxlength || remaining > 100">Select text for formatting options.</p>
 <p class="light-grey" ng-if="maxlength && remaining >= 0 && remaining <= 100">{{remaining}} character{{remaining === 1 ? '' : 's'}} remaining</p>
 <p class="help-block help-block" ng-if="maxlength && remaining < 0">Too long by {{-remaining}} character{{remaining === 1 ? '' : 's'}}</p>
