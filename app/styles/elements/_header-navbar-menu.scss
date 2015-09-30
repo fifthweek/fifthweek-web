@@ -63,18 +63,14 @@ ul.header-navbar-menu {
 }
 
 //mobile navbar scrolling page specifics
-.page-help {
+.page-customize-landing, .page-creator-channels {
+  @include mobile-nav-scroll(380px);
+}
+
+.page-creator-backlog-post-list, .page-creator-queues {
   @include mobile-nav-scroll(360px);
 }
 
-.page-creators-post,
-.page-creators-post-note,
-.page-creators-post-image,
-.page-creators-post-file {
-  @include mobile-nav-scroll(440px);
-}
-
-.page-blog,
-.page-customize-landing {
-  @include mobile-nav-scroll(490px);
+.page-account-settings, .page-update-payment-information {
+  @include mobile-nav-scroll(360px);
 }

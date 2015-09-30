@@ -455,6 +455,7 @@ angular.module('webApp')
         requireBlog: true,
         redirectTo: states.creator.queues.list.name,
         data : {
+          bodyClass: 'page-creator-queues'
         }
       })
       .state(states.creator.queues.new.name, {
@@ -491,6 +492,7 @@ angular.module('webApp')
         requireBlog: true,
         redirectTo: states.creator.channels.list.name,
         data : {
+          bodyClass: 'page-creator-channels'
         }
       })
       .state(states.creator.channels.new.name, {
