@@ -7,10 +7,12 @@
   var ModalPage = require('../../../pages/modal.page.js');
   var DateTimePickerPage = require('../../../pages/date-time-picker.page.js');
   var ComposeOptionsPage = require('./compose-options.page.js');
+  var DiscardChangesPage = require('../../../pages/discard-changes.page.js');
 
   var testKit = new TestKit();
   var modal = new ModalPage();
   var dateTimePickerPage = new DateTimePickerPage();
+  var discardChanges = new DiscardChangesPage();
 
   var composeUploadPage = function() {};
 
@@ -42,7 +44,7 @@
     postToQueueSelect: { get: function() { return element(by.id('queue-select')); }},
 
     successMessage: { get: function(){ return element(by.css('.alert-success')); }},
-    failureMessages: { get: function(){ return element.all(by.css('.alert-danger')); }},
+    failureMessage: { get: function(){ return element(by.css('.alert-danger')); }},
     postAnotherButton: { get: function(){ return element(by.css('button[ng-click="postAnother()"]')); }},
 
     helpMessages: { get: function () { return element.all(by.css('.help-block')); }},
@@ -89,7 +91,7 @@
       if(hasComment){
         var date = new Date();
         commentText = 'Comment on ' + date.toISOString();
-        testKit.setValue(this.commentTextBoxId, commentText);
+        testKit.setContentEditableValue(this.commentTextBoxId, commentText);
       }
 
       browser.waitForAngular();
@@ -245,7 +247,7 @@
           browser.waitForAngular();
         };
 
-        var leavePage = function() {
+        var leavePage = function(discardChanges) {
           modal.crossButton.click();
         };
 
@@ -366,7 +368,7 @@
             describe('when testing date time picker', function(){
               beforeEach(function(){
                 navigateToPage();
-                testKit.setValue(page.commentTextBoxId, 'Comment');
+                testKit.setContentEditableValue(page.commentTextBoxId, 'Comment');
                 page.postLaterButton.click();
                 //page.postOnDateRadio.click();
               });
@@ -396,6 +398,8 @@
 
               it('should run once after all', function(){
                 leavePage();
+                testKit.waitForElementToDisplay(discardChanges.discardButton);
+                discardChanges.discardButton.click();
               });
             });
 
@@ -407,7 +411,7 @@
               it('should not allow empty posts', function() {
                 page.postNowButton.click();
                 browser.waitForAngular();
-                expect(page.failureMessages.get(0).isDisplayed()).toBe(true);
+                expect(page.failureMessage.isDisplayed()).toBe(true);
               });
 
               it('should run once after all', function(){
@@ -421,8 +425,8 @@
               it('should not allow empty posts to be scheduled', function() {
                 page.postLaterButton.click();
                 page.postToBacklogButton.click();
-                browser.waitForAngular();
-                expect(page.failureMessages.get(1).isDisplayed()).toBe(true);
+                testKit.waitForElementToDisplay(page.failureMessage);
+                expect(page.failureMessage.isDisplayed()).toBe(true);
               });
 
               it('should run once after all', function(){
@@ -435,15 +439,17 @@
                 navigateToPage();
               });
 
-              it('should not allow a comment more than 2000 characters', function(){
-                var overSizedValue = new Array(2002).join( 'a' );
-                testKit.setValue(page.commentTextBoxId, overSizedValue, true);
+              it('should not allow a comment more than 50000 characters', function(){
+                var overSizedValue = new Array(50002).join( 'a' );
+                testKit.setContentEditableValue(page.commentTextBoxId, overSizedValue, true);
 
-                testKit.assertMaxLength(page.helpMessages, page.commentTextBoxId, overSizedValue, 2000);
+                testKit.assertContentEditableMaxLength(page.helpMessages, page.commentTextBoxId, overSizedValue, 50000);
               });
 
               it('should run once after all', function(){
                 leavePage();
+                testKit.waitForElementToDisplay(discardChanges.discardButton);
+                discardChanges.discardButton.click();
               });
             });
           });

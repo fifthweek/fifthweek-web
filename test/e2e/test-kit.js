@@ -28,6 +28,14 @@ TestKit.prototype = Object.create({}, {
       }
     });
   }},
+  assertContentEditableMaxLength: { value: function(helpMessages, textBoxId, overSizedValue, length) {
+    // Some browsers don't honor maxlength attribute with protractor's sendKeys
+    // so we also check the ng-maxlength error as a backup.
+    helpMessages.count().then(function(count){
+      expect(count).toBe(1);
+      expect(helpMessages.get(0).getText()).toContain('Too long');
+    });
+  }},
   clearForm: { value: function(page, inputs) {
     var self = this;
     _.forEach(inputs, function(input) {
@@ -221,6 +229,9 @@ TestKit.prototype = Object.create({}, {
   clear: { value: function(elementId) {
     this.setValue(elementId, '');
   }},
+  clearContentEditable: { value: function(elementId) {
+    this.setContentEditableValue(elementId, '');
+  }},
   setValue: { value: function(elementId, value, blur) {
 
     // One of the aspects that makes this method efficient is we do not await for angular before setting each input. If
@@ -232,6 +243,28 @@ TestKit.prototype = Object.create({}, {
     value = value.replace(/\\/g, '\\\\').replace(/'/g, '\\\'').replace(/\n/g, '\\n');
 
     var changeValue = 'angular.element(document.getElementById(\'' + elementId + '\')).val(\'' + value + '\').trigger(\'change\')';
+    browser.controlFlow().execute(function() {
+      // console.log('SET ' + elementId + ' = ' + value);
+      // "Cannot read property '$digest' of undefined" is indicative of the element not existing on the page.
+      return browser.executeScript((blur ? changeValue + '.blur()' : changeValue) + '.scope().$digest()');
+    });
+  }},
+  setContentEditableValue: { value: function(elementId, value, blur) {
+
+    // One of the aspects that makes this method efficient is we do not await for angular before setting each input. If
+    // we did by enabling the following line, we would see waits between each input (similar to sendKeys, although still
+    // slightly faster). Therefore, we must intelligently use browser.waitForAngular when it is actually needed - i.e.
+    // after loading another page.
+    // browser.waitForAngular();
+
+    //element(by.id(elementId)).clear();
+    //element(by.id(elementId)).sendKeys(value);
+
+    if(value){
+      value = '<p>' + value.replace(/\\/g, '\\\\').replace(/'/g, '\\\'').replace(/\n/g, '\\n') + '</p>';
+    }
+
+    var changeValue = 'angular.element(document.getElementById(\'' + elementId + '\')).html(\'' + value + '\').trigger(\'keyup\').trigger(\'input\').trigger(\'blur\')';
     browser.controlFlow().execute(function() {
       // console.log('SET ' + elementId + ' = ' + value);
       // "Cannot read property '$digest' of undefined" is indicative of the element not existing on the page.

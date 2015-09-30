@@ -1,14 +1,17 @@
 angular.module('webApp').directive('fwFormDirtyConfirmation',
-  function ($state, $modal, uiRouterConstants) {
+  function ($state, $modal, uiRouterConstants, uiBootstrapConstants) {
     'use strict';
 
     return {
       restrict: 'E',
       scope: {
         form: '=',
-        formDirty: '=?'
+        formDirty: '=?',
+        isModal: '@?'
       },
       link: function(scope) {
+
+        scope.isModal = !!scope.isModal;
 
         if(!scope.form){
           return;
@@ -30,13 +33,12 @@ angular.module('webApp').directive('fwFormDirtyConfirmation',
 
         var currentStateName = $state.current.name;
 
-        scope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
-
+        var handleConfirmation = function(event, shouldDisplayCondition, continueMethod){
           var shouldDisplay = scope.enabled &&
             scope.formDirty() &&
             !scope.form.isSubmitting &&
             !scope.form.discardChanges &&
-            toState.name !== currentStateName;
+            shouldDisplayCondition();
 
           if(shouldDisplay){
             event.preventDefault();
@@ -53,7 +55,7 @@ angular.module('webApp').directive('fwFormDirtyConfirmation',
                 .then(function(result){
                   if(result){
                     scope.enabled = false;
-                    $state.go(toState.name, toParams);
+                    continueMethod();
                   }
                 })
                 .finally(function(){
@@ -61,7 +63,36 @@ angular.module('webApp').directive('fwFormDirtyConfirmation',
                 });
             }
           }
-        });
+        };
+
+        if(scope.isModal){
+          scope.$on(uiBootstrapConstants.modalClosingEvent, function(event) {
+
+            var shouldDisplayCondition = function(){
+              return true;
+            };
+
+            var continueMethod = function(){
+              event.targetScope.$close();
+            };
+
+            handleConfirmation(event, shouldDisplayCondition, continueMethod);
+          });
+        }
+        else{
+          scope.$on(uiRouterConstants.stateChangeStartEvent, function(event, toState, toParams) {
+
+            var shouldDisplayCondition = function(){
+              return toState.name !== currentStateName;
+            };
+
+            var continueMethod = function(){
+              $state.go(toState.name, toParams);
+            };
+
+            handleConfirmation(event, shouldDisplayCondition, continueMethod);
+          });
+        }
       }
     };
   });

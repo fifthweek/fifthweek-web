@@ -3,28 +3,9 @@
       role="form"
       name="submitFeedbackForm"
       ng-if="model.page === pages.form">
-  <fw-form-modal name="{{model.title}}">
+  <fw-form-dirty-confirmation form="submitFeedbackForm" is-modal="true"></fw-form-dirty-confirmation>
+  <fw-form-modal name="Send us feedback">
     <form-body>
-
-      <fw-form-group>
-        <div class="row">
-          <div class="col-md-12">
-            <div fw-form-input-glyphs>
-              <input
-                id="input-email"
-                ng-model="model.input.email"
-                type="email"
-                class="form-control"
-                name="email"
-                placeholder="Email address (optional)">
-            </div>
-          </div>
-          <div class="col-md-12">
-            <p fw-form-input-invalid-p>Email address is not valid.</p>
-          </div>
-        </div>
-      </fw-form-group>
-
       <fw-form-input-comment ng-model="model.input.message" placeholder="Your message" focus required></fw-form-input-comment>
 
       <fw-error-message value="submitFeedbackForm.message" id="register-message"></fw-error-message>
@@ -36,7 +17,7 @@
         id="register-button"
         data-event-title="{{model.trackingEventTitle}}"
         data-event-category="{{model.trackingEventCategory}}"
-        fw-form-submit="submitFeedback()">{{model.buttonText}}</button>
+        fw-form-submit="submitFeedback()">Send</button>
     </form-buttons>
   </fw-form-modal>
 </form>
@@ -45,7 +26,7 @@
       role="form"
       name="form"
       ng-if="model.page === pages.done">
-  <fw-form-modal-title name="{{model.title}}"></fw-form-modal-title>
+  <fw-form-modal-title name="Send us feedback"></fw-form-modal-title>
   <div class="modal-body">
     <p><strong>Thank you for your feedback!</strong> Someone from our team will be in touch shortly if a response is required.</p>
   </div>

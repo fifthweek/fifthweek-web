@@ -26,6 +26,7 @@ SidebarPage.prototype = Object.create({}, {
 
   accountLink: { get: function () { return element(by.id('sidebar-navigation-account')); }},
   signOutLink: { get: function () { return element(by.id('sidebar-navigation-sign-out')); }},
+  sendFeedbackLink: { get: function () { return element(by.id('sidebar-navigation-send-feedback')); }},
   helpLink: { get: function () { return element(by.id('sidebar-navigation-help')); }},
 
   includeEstablishedCreatorTests: { value: function(highlightedLink) {
@@ -33,7 +34,7 @@ SidebarPage.prototype = Object.create({}, {
 
     describe('creator sidebar', function() {
       it('should contain the correct number of links', function () {
-        expect(self.links.count()).toBe(12);
+        expect(self.links.count()).toBe(13);
       });
 
       it('should contain the expected links', function () {
@@ -48,6 +49,7 @@ SidebarPage.prototype = Object.create({}, {
         expect(self.guestListLink.isDisplayed()).toBe(true);
         expect(self.accountLink.isDisplayed()).toBe(true);
         expect(self.signOutLink.isDisplayed()).toBe(true);
+        expect(self.sendFeedbackLink.isDisplayed()).toBe(true);
         expect(self.helpLink.isDisplayed()).toBe(true);
       });
 
@@ -64,7 +66,7 @@ SidebarPage.prototype = Object.create({}, {
 
     describe('new creator sidebar', function() {
       it('should contain the correct number of links', function () {
-        expect(self.links.count()).toBe(6);
+        expect(self.links.count()).toBe(7);
       });
 
       it('should contain the expected links', function () {
@@ -73,6 +75,7 @@ SidebarPage.prototype = Object.create({}, {
         expect(self.createChannelLink.isDisplayed()).toBe(true);
         expect(self.accountLink.isDisplayed()).toBe(true);
         expect(self.signOutLink.isDisplayed()).toBe(true);
+        expect(self.sendFeedbackLink.isDisplayed()).toBe(true);
         expect(self.helpLink.isDisplayed()).toBe(true);
       });
 
@@ -89,7 +92,7 @@ SidebarPage.prototype = Object.create({}, {
 
     describe('consumer sidebar', function() {
       it('should contain the correct number of links', function () {
-        expect(self.links.count()).toBe(6);
+        expect(self.links.count()).toBe(7);
       });
 
       it('should contain the expected links', function () {
@@ -98,6 +101,7 @@ SidebarPage.prototype = Object.create({}, {
         expect(self.publishLink.isDisplayed()).toBe(true);
         expect(self.accountLink.isDisplayed()).toBe(true);
         expect(self.signOutLink.isDisplayed()).toBe(true);
+        expect(self.sendFeedbackLink.isDisplayed()).toBe(true);
         expect(self.helpLink.isDisplayed()).toBe(true);
       });
 

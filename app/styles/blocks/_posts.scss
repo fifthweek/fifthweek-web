@@ -168,6 +168,18 @@ $post-header-margin-bottom: 16px;
       display: none;
     }
   }
+  pre,code {
+    // https://css-tricks.com/snippets/css/make-pre-text-wrap/
+    white-space: pre-wrap;       /* CSS 3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  }
+}
+
+.angular-medium-editor {
+  @include post-text-style;
 }
 
 .post-list-information {

@@ -140,7 +140,7 @@
       it('should display full description when provided', function() {
         page.editDescriptionLink.click();
         testKit.waitForElementToDisplay(element(by.id(customizeLandingPage.descriptionTextBoxId)));
-        testKit.setValue(customizeLandingPage.descriptionTextBoxId, fullDescription);
+        testKit.setContentEditableValue(customizeLandingPage.descriptionTextBoxId, fullDescription);
         customizeLandingPage.submitButton.click();
         navigateToPage();
 
@@ -153,7 +153,7 @@
       it('should display video when provided', function() {
         page.editVideoLink.click();
         testKit.waitForElementToDisplay(element(by.id(customizeLandingPage.descriptionTextBoxId)));
-        testKit.clear(customizeLandingPage.descriptionTextBoxId);
+        testKit.clearContentEditable(customizeLandingPage.descriptionTextBoxId);
         testKit.setValue(customizeLandingPage.videoTextBoxId, 'https://' + videoUrlDomain + '/' + videoUrlId);
         customizeLandingPage.submitButton.click();
         navigateToPage();
@@ -168,7 +168,7 @@
       it('should display full description and video when both are provided', function() {
         page.editDescriptionLink.click();
         testKit.waitForElementToDisplay(element(by.id(customizeLandingPage.descriptionTextBoxId)));
-        testKit.setValue(customizeLandingPage.descriptionTextBoxId, fullDescription);
+        testKit.setContentEditableValue(customizeLandingPage.descriptionTextBoxId, fullDescription);
         customizeLandingPage.submitButton.click();
         navigateToPage();
 

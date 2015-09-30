@@ -40,6 +40,7 @@
     "ActiveXObject": false,
     "_": false,
     "Stripe": false,
-    "Taxamo": false
+    "Taxamo": false,
+    "toMarkdown": false
   }
 }

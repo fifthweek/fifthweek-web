@@ -126,7 +126,7 @@
           var comment = commentsAndLikesPage.postComment();
           expect(commentsAndLikesPage.helpMessages.count()).toBe(0);
 
-          expect(commentsAndLikesPage.commentTextBox.getAttribute('value')).toBe('');
+          expect(commentsAndLikesPage.commentTextBox.getText()).toBe('');
           expect(commentsAndLikesPage.allComments.count()).toBe(1);
 
           expect(commentsAndLikesPage.commentNumber.getText()).toBe('1');
@@ -208,7 +208,7 @@
 
           var comment = commentsAndLikesPage.postComment();
 
-          expect(commentsAndLikesPage.commentTextBox.getAttribute('value')).toBe('');
+          expect(commentsAndLikesPage.commentTextBox.getText()).toBe('');
           expect(commentsAndLikesPage.allComments.count()).toBe(2);
 
           expect(commentsAndLikesPage.commentNumber.getText()).toBe('2');

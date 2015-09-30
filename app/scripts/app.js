@@ -16,7 +16,8 @@ angular
     'angulartics.google.analytics',
     'angulartics.google.analytics.userid',
     'videosharing-embed',
-    'angularPayments'
+    'angularPayments',
+    'angular-medium-editor'
   ])
   .constant('fifthweekConstants', {
     apiBaseUri: window.configuredApiBaseUri,
@@ -35,6 +36,13 @@ angular
     // inspect *.js files.
     defaultHeaderImageUrl: '/static/images/header-default.png',
     defaultProfileImageUrl: '/static/images/avatar-default.jpg'
+  })
+  .constant('uiRouterConstants', {
+    stateChangeStartEvent: '$stateChangeStart',
+    stateChangeSuccessEvent: '$stateChangeSuccess'
+  })
+  .constant('uiBootstrapConstants', {
+    modalClosingEvent: 'modal.closing'
   })
   .config(function(snapRemoteProvider) {
     snapRemoteProvider. globalOptions = {

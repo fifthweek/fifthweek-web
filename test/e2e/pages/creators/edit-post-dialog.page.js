@@ -8,6 +8,8 @@
   var PostPage = require('../../pages/post.page.js');
   var DateTimePickerPage = require('../../pages/date-time-picker.page.js');
   var dateTimePickerPage = new DateTimePickerPage();
+  var DiscardChangesPage = require('../../pages/discard-changes.page.js');
+  var discardChanges = new DiscardChangesPage();
 
   var editedText = 'Edited';
 
@@ -27,6 +29,7 @@
       expect(self.title.getText()).toBe('Edit Post');
     });
 
+
     _.forEach([
     {
       name: 'cancel button',
@@ -45,6 +48,8 @@
         it('should cancel the operation', function () {
           editPost();
           cancelOperation.action();
+          testKit.waitForElementToDisplay(discardChanges.discardButton);
+          discardChanges.discardButton.click();
           browser.waitForAngular();
           expect(self.modals.count()).toBe(0);
           displayModalAndWait();
@@ -97,7 +102,7 @@
     commentTextBox: { get: function () { return element(by.id(this.commentTextBoxId)); }},
 
     editPostComment: { value: function(comment) {
-      testKit.setValue(this.commentTextBoxId, comment);
+      testKit.setContentEditableValue(this.commentTextBoxId, comment);
       browser.waitForAngular();
       this.saveButton.click();
       browser.waitForAngular();
@@ -247,7 +252,7 @@
       };
 
       var editPost = function(){
-        testKit.setValue(self.commentTextBoxId, editedText);
+        testKit.setContentEditableValue(self.commentTextBoxId, editedText);
         browser.waitForAngular();
 
         setFileInput('../../sample-image-tiny-edited.tif', self.fileUploadInput);

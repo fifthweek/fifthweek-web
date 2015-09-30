@@ -1,5 +1,5 @@
 angular.module('webApp')
-  .factory('navigationMap', function(aggregateUserStateUtilities, composeService, states) {
+  .factory('navigationMap', function(aggregateUserStateUtilities, composeService, submitFeedbackService, states) {
     'use strict';
 
     return [
@@ -127,6 +127,12 @@ angular.module('webApp')
         name: 'Sign Out',
         state: states.user.signOut.name,
         icon: 'fa fa-sign-out'
+      },
+      {
+        name: 'Send Feedback',
+        state: states.user.feedback.name,
+        action: submitFeedbackService.showDialog,
+        icon: 'fa fa-comment-o'
       },
       {
         name: 'Help',

@@ -24,6 +24,9 @@ angular.module('webApp').directive('fwFormGroup', function () {
             if (input.length === 0) {
               input = element.find('textarea');
             }
+            if (input.length === 0) {
+              input = element.find('fw-markdown-editor');
+            }
 
             inputName = input.attr('name');
           }

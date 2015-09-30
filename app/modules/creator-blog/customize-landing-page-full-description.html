@@ -25,15 +25,11 @@
     <label for="description">Full Description</label>
     <div class="row">
       <div class="col-xs-12">
-        <textarea msd-elastic id="description" name="description" class="form-control"
-                ng-model="model.settings.description"
-                ng-maxlength="2000"
-                maxlength="2000"
-                placeholder="This is where you can really sell your content... tell everyone why they need to subscribe."></textarea>
-        <p class="light-grey"><small>Syntax: <strong>&#42;&#42;bold&#42;&#42;</strong> &#124; <i>&#42;italic&#42;</i> &#124; ![alt text](image_url)</small></p>
-      </div>
-      <div class="col-xs-12">
-        <p fw-form-input-invalid-p="maxlength">Allowed 2000 characters at most.</p>
+        <fw-markdown-editor maxlength="50000"
+                            ng-model="model.settings.description"
+                            editor-id="description"
+                            name="description"
+                            placeholder="This is where you can really sell your content... tell everyone why they need to subscribe."></fw-markdown-editor>
       </div>
     </div>
   </fw-form-group>

@@ -1,10 +1,6 @@
 'use strict';
 
 angular.module('webApp')
-  .constant('uiRouterConstants', {
-    stateChangeStartEvent: '$stateChangeStart',
-    stateChangeSuccessEvent: '$stateChangeSuccess'
-  })
   .constant('states', {
     home: {
       name: 'home'
@@ -49,6 +45,9 @@ angular.module('webApp')
       },
       viewSubscriptions: {
         name: 'user.viewSubscriptions'
+      },
+      feedback: {
+        name: 'user.feedback'
       }
     },
     creator: {
@@ -295,6 +294,15 @@ angular.module('webApp')
           pageTitle: 'Account Settings',
           headTitle: ': ' + 'Account Settings',
           bodyClass: 'page-account-settings',
+          access: {
+            requireAuthenticated: true
+          }
+        }
+      })
+      .state(states.user.feedback.name, {
+        url: '',
+        templateUrl: 'modules/common/ui-view.html',
+        data : {
           access: {
             requireAuthenticated: true
           }

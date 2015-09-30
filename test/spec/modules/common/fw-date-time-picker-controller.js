@@ -75,6 +75,10 @@ describe('fw-date-time-picker-controller', function(){
         target.initialize(ngModelCtrl);
       });
 
+      it('should set $pristine to false', function(){
+        expect(ngModelCtrl.$pristine).toBe(false);
+      });
+
       it('should assign a render function', function(){
         expect(ngModelCtrl.$render).toBeDefined();
       });
@@ -88,7 +92,7 @@ describe('fw-date-time-picker-controller', function(){
       var ngModelCtrl;
 
       beforeEach(function() {
-        ngModelCtrl = jasmine.createSpyObj('ngModelCtrl', ['$setViewValue', '$setValidity']);
+        ngModelCtrl = jasmine.createSpyObj('ngModelCtrl', ['$setViewValue', '$setValidity', '$setPristine']);
         target.initialize(ngModelCtrl);
         $scope.$apply();
       });
@@ -144,7 +148,7 @@ describe('fw-date-time-picker-controller', function(){
       var ngModelCtrl;
 
       beforeEach(function(){
-        ngModelCtrl = jasmine.createSpyObj('ngModelCtrl', ['$setViewValue', '$setValidity']);
+        ngModelCtrl = jasmine.createSpyObj('ngModelCtrl', ['$setViewValue', '$setValidity', '$setPristine']);
         target.initialize(ngModelCtrl);
         $scope.$apply();
       });
@@ -159,12 +163,21 @@ describe('fw-date-time-picker-controller', function(){
         expect(ngModelCtrl.$setValidity.calls.count()).toBe(1);
       });
 
+      it('should call $setPristine on first call', function(){
+        expect(ngModelCtrl.$setPristine).toHaveBeenCalled();
+      });
+
       describe('when assigning a date', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
+          ngModelCtrl.$setPristine.calls.reset();
           $scope.date = utcDateAsLocal(new Date('2015-05-11T13:37:19Z'));
           $scope.$apply();
+        });
+
+        afterEach(function(){
+          expect(ngModelCtrl.$setPristine).not.toHaveBeenCalled();
         });
 
         it('should set the view value to undefined', function(){
@@ -200,8 +213,13 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
+          ngModelCtrl.$setPristine.calls.reset();
           $scope.time = utcTimeAsLocal(new Date('2015-05-11T13:37:19Z'));
           $scope.$apply();
+        });
+
+        afterEach(function(){
+          expect(ngModelCtrl.$setPristine).not.toHaveBeenCalled();
         });
 
         it('should set the view value to undefined', function(){
@@ -237,9 +255,14 @@ describe('fw-date-time-picker-controller', function(){
         beforeEach(function(){
           ngModelCtrl.$setViewValue.calls.reset();
           ngModelCtrl.$setValidity.calls.reset();
+          ngModelCtrl.$setPristine.calls.reset();
           $scope.date = utcDateAsLocal(new Date('2015-05-11T13:37:19Z'));
           $scope.time = utcTimeAsLocal(new Date('2016-06-12T14:36:20Z'));
           $scope.$apply();
+        });
+
+        afterEach(function(){
+          expect(ngModelCtrl.$setPristine).not.toHaveBeenCalled();
         });
 
         it('should set the view value to the UTC combination of date and time values', function(){

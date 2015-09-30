@@ -94,7 +94,8 @@ angular.module('webApp')
 
     var fileApiSupported = (window.File && window.FileReader && window.FileList && window.Blob);
     $scope.model = {
-      fileApiSupported: fileApiSupported
+      fileApiSupported: fileApiSupported,
+      progress: 0
     };
 
     $scope.upload = function(files) {

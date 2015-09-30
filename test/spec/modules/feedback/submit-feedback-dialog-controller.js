@@ -8,19 +8,13 @@ describe('submit-feedback-dialog-controller', function () {
 
   var identifiedUserNotifierConstants;
   var membershipStub;
-  var attributes;
 
   beforeEach(function() {
     membershipStub = jasmine.createSpyObj('membershipStub', ['postFeedback']);
-    attributes = {
-      title: 'title1',
-      buttonText: 'buttonText1'
-    };
 
     module('webApp');
     module(function($provide) {
       $provide.value('membershipStub', membershipStub);
-      $provide.value('attributes', attributes);
     });
 
     inject(function ($injector) {
@@ -47,17 +41,8 @@ describe('submit-feedback-dialog-controller', function () {
       expect($scope.model.page).toBe($scope.pages.form);
     });
 
-    it('should set the title', function() {
-      expect($scope.model.title).toBe(attributes.title);
-    });
-
-    it('should set the button text', function() {
-      expect($scope.model.buttonText).toBe(attributes.buttonText);
-    });
-
     it('should set the inputs to blank', function() {
       expect($scope.model.input.message).toBe('');
-      expect($scope.model.input.email).toBe('');
     });
   });
 
@@ -90,45 +75,17 @@ describe('submit-feedback-dialog-controller', function () {
       describe('when postFeedback succeeds', function(){
         beforeEach(function(){
           spyOn($scope, '$emit');
+          $scope.model.input = { message: 'message' };
+          deferredPostFeedback.resolve();
+          $scope.$apply();
         });
 
-        describe('when email is specified', function(){
-          beforeEach(function(){
-            $scope.model.input = { email: 'email', message: 'message' };
-            deferredPostFeedback.resolve();
-            $scope.$apply();
-          });
-
-          it('should emit the identified user event', function(){
-            expect($scope.$emit).toHaveBeenCalledWith(identifiedUserNotifierConstants.eventName, { email: 'email' });
-          });
-
-          it('should set the page to done', function(){
-            expect($scope.model.page).toBe($scope.pages.done);
-          });
-
-          it('should complete the call', function(){
-            expect(complete).toBe(true);
-          });
+        it('should set the page to done', function(){
+          expect($scope.model.page).toBe($scope.pages.done);
         });
 
-        describe('when email is not specified', function(){
-          beforeEach(function(){
-            deferredPostFeedback.resolve();
-            $scope.$apply();
-          });
-
-          it('should not emit the identified user event', function(){
-            expect($scope.$emit).not.toHaveBeenCalled();
-          });
-
-          it('should set the page to done', function(){
-            expect($scope.model.page).toBe($scope.pages.done);
-          });
-
-          it('should complete the call', function(){
-            expect(complete).toBe(true);
-          });
+        it('should complete the call', function(){
+          expect(complete).toBe(true);
         });
       });
 

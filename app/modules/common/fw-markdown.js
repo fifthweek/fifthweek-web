@@ -1,5 +1,5 @@
 'use strict';
-angular.module('webApp').directive('fwMarkdown', function () {
+angular.module('webApp').directive('fwMarkdown', function (markdownService) {
   return {
     restrict: 'EA',
     require: '?ngModel',
@@ -8,7 +8,7 @@ angular.module('webApp').directive('fwMarkdown', function () {
     },
     link: function ($scope, $elem, $attrs, ngModel) {
       if (!ngModel) {
-        var html = marked($elem.text());
+        var html = markdownService.renderMarkdown($elem.text());
         if($scope.replace){
           $elem.replaceWith(html);
         }
@@ -18,7 +18,7 @@ angular.module('webApp').directive('fwMarkdown', function () {
         return;
       }
       ngModel.$render = function () {
-        var html = marked(ngModel.$viewValue || '');
+        var html = markdownService.renderMarkdown(ngModel.$viewValue || '');
         if($scope.replace){
           $elem.replaceWith(html);
         }

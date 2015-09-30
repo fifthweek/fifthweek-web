@@ -51,6 +51,7 @@ angular.module('webApp').controller(
       if(model.settings.headerImage){
         fileId = model.settings.headerImage.fileId;
       }
+
       var blogData = {
         name: model.settings.name,
         introduction: model.settings.introduction,

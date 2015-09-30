@@ -63,7 +63,7 @@ describe('customize landing page form', function() {
     });
 
     it('should contain the description', function(){
-      expect(element(by.id(page.descriptionTextBoxId)).getAttribute('value')).toBe('');
+      expect(element(by.id(page.descriptionTextBoxId)).getText()).toBe('');
     });
 
     it('should contain the submit button', function(){
@@ -90,7 +90,7 @@ describe('customize landing page form', function() {
       testKit.waitForElementToDisplay(page.headerImage);
 
       testKit.setValue(page.videoTextBoxId, validVideo);
-      testKit.setValue(page.descriptionTextBoxId, validDescription);
+      testKit.setContentEditableValue(page.descriptionTextBoxId, validDescription);
     });
 
     return newValues;
@@ -157,7 +157,7 @@ describe('customize landing page form', function() {
         testKit.waitForElementToDisplay(page.headerImage);
 
         expect(element(by.id(page.videoTextBoxId)).getAttribute('value')).toBe(validVideo);
-        expect(element(by.id(page.descriptionTextBoxId)).getAttribute('value')).toBe(validDescription);
+        expect(element(by.id(page.descriptionTextBoxId)).getText()).toBe(validDescription);
       });
     });
   });
@@ -193,11 +193,11 @@ describe('customize landing page form', function() {
       testKit.includeHappyPaths(page, videoUrlInputPage, 'videoTextBox');
 
       it('should allow symbols in descriptions', function(){
-        testKit.setValue(page.descriptionTextBoxId, testKit.punctuation33);
+        testKit.setContentEditableValue(page.descriptionTextBoxId, testKit.punctuation33);
       });
 
       it('should allow empty descriptions', function(){
-        testKit.clear(page.descriptionTextBoxId);
+        testKit.clearContentEditable(page.descriptionTextBoxId);
       });
 
       it('should allow empty video urls', function(){
@@ -227,11 +227,11 @@ describe('customize landing page form', function() {
 
       testKit.includeSadPaths(page, page.submitButton, page.helpMessages, videoUrlInputPage, 'videoTextBox', null, true);
 
-      it('should not allow descriptions over 2000 characters', function(){
-        var overSizedValue = new Array(2002).join( 'a' );
-        testKit.setValue(page.descriptionTextBoxId, overSizedValue, true);
+      it('should not allow descriptions over 50000 characters', function(){
+        var overSizedValue = new Array(50002).join( 'a' );
+        testKit.setContentEditableValue(page.descriptionTextBoxId, overSizedValue, true);
 
-        testKit.assertMaxLength(page.helpMessages, page.descriptionTextBoxId, overSizedValue, 2000);
+        testKit.assertContentEditableMaxLength(page.helpMessages, page.descriptionTextBoxId, overSizedValue, 50000);
       });
     });
   });

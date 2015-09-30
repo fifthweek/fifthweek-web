@@ -60,7 +60,7 @@
       var email = registration.email;
 
       testKit.setValue(this.emailTextBoxId, email);
-      testKit.setValue(this.messageTextBoxId, message);
+      testKit.setContentEditableValue(this.messageTextBoxId, message);
       this.registerButton.click();
       browser.waitForAngular();
 
@@ -94,7 +94,7 @@
         });
 
         it('should allow feedback to be sent', function(){
-          testKit.setValue(page.messageTextBoxId, message);
+          testKit.setContentEditableValue(page.messageTextBoxId, message);
           testKit.setValue(page.emailTextBoxId, email);
         });
 

@@ -1,48 +1,79 @@
 <fw-form-modal-title name="New Post"></fw-form-modal-title>
 
 <div class="compose-upload-form">
-  <div ng-show="!model.postLater">
 
-    <div ng-if="!model.committedChannel">
-      <form novalidate name="channelForm" id="channel-form">
-        <div class="modal-body form-modal-body">
+  <div ng-if="!model.committedChannel">
+    <form novalidate name="channelForm" id="channel-form">
+      <div class="modal-body form-modal-body">
 
-          <div ng-if="model.channels.length === 0">
-            <p>You must create a channel before you can create a post.</p>
+        <div ng-if="model.channels.length === 0">
+          <p>You must create a channel before you can create a post.</p>
+        </div>
+
+        <div ng-if="model.channels.length !== 0">
+          <label class="select-channel-text">Which channel would you like to post to?</label>
+          <div ng-repeat="item in model.channels">
+            <button type="submit"
+                    id="select-channel-{{$index}}"
+                    class="btn btn-block btn-default channel-selection-button"
+                    fw-form-submit="commitChannel(item)"
+                    can-submit="true"
+                    ng-disabled="channelForm.isSubmitting"
+                    error-message="model.errorMessage">{{item.name}}</button>
           </div>
+        </div>
+        <fw-error-message value="model.errorMessages"></fw-error-message>
+      </div>
+    </form>
+  </div>
 
-          <div ng-if="model.channels.length !== 0">
-            <label class="select-channel-text">Which channel would you like to post to?</label>
-            <div ng-repeat="item in model.channels">
-              <button type="submit"
-                      id="select-channel-{{$index}}"
-                      class="btn btn-block btn-default channel-selection-button"
-                      fw-form-submit="commitChannel(item)"
-                      can-submit="true"
-                      ng-disabled="channelForm.isSubmitting"
-                      error-message="model.errorMessage">{{item.name}}</button>
+  <div ng-if="model.committedChannel">
+    <form novalidate name="contentForm" id="content-form">
+      <fw-form-dirty-confirmation form="contentForm" is-modal="true"></fw-form-dirty-confirmation>
+
+
+      <div class="modal-body form-modal-body">
+        <p ng-if="model.channels.length" id="posting-to-text">Posting to <strong>{{model.committedChannel.name}}</strong>.</p>
+
+        <div ng-include="'modules/creator-compose/compose-image.html'"></div>
+        <div ng-include="'modules/creator-compose/compose-file.html'"></div>
+
+        <fw-form-input-comment ng-model="model.input.comment" placeholder="Say something, if you like" focus></fw-form-input-comment>
+
+        <div ng-show="model.postLater" class="compose-upload-schedule">
+          <div ng-if="model.queues.length === 0">
+            <label>On specific date and time (UTC):</label>
+            <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>
+          </div>
+          <div class="form-group" ng-if="model.queues.length > 0">
+            <div class="radio bottom-buffer-l">
+              <label><input type="radio"
+                            ng-model="model.postToQueue"
+                            ng-value="true"/>
+                After other posts in queue
+                <span ng-if="!model.queuedLiveDate">(loading...)</span>
+                <span ng-if="model.queuedLiveDate">(will appear <strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
+                :
+              </label>
             </div>
+            <fw-form-input-select-queue id="queue-select" items="model.queues" selected-item="model.input.selectedQueue"></fw-form-input-select-queue>
+
+            <div class="radio bottom-buffer">
+              <label><input type="radio"
+                            ng-model="model.postToQueue"
+                            ng-value="false" /> On specific date and time (UTC):</label>
+            </div>
+
+            <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>
           </div>
-          <fw-error-message value="model.errorMessages"></fw-error-message>
-        </div>
-      </form>
-    </div>
-
-    <div ng-if="model.committedChannel">
-      <form novalidate name="contentForm" id="content-form">
-
-        <div class="modal-body form-modal-body">
-          <p ng-if="model.channels.length" id="posting-to-text">Posting to <strong>{{model.committedChannel.name}}</strong>.</p>
-
-          <div ng-include="'modules/creator-compose/compose-image.html'"></div>
-          <div ng-include="'modules/creator-compose/compose-file.html'"></div>
-
-          <fw-form-input-comment ng-model="model.input.comment" placeholder="Say something, if you like" focus></fw-form-input-comment>
-
-          <fw-error-message value="model.errorMessage"></fw-error-message>
         </div>
 
-        <div class="row-btn">
+        <fw-error-message value="model.errorMessage"></fw-error-message>
+      </div>
+
+      <div class="row-btn">
+
+        <div ng-show="!model.postLater">
           <button type="submit"
                   class="btn btn-block btn-success"
                   data-loading-text="Posting..."
@@ -58,58 +89,24 @@
                   fw-form-submit="postLater()"
                   error-message="model.errorMessage">Schedule</button>
         </div>
-      </form>
-    </div>
-  </div>
 
-  <div ng-show="model.postLater" class="compose-upload-schedule">
-    <form novalidate name="scheduleForm" id="schedule-form">
-      <div class="modal-body form-modal-body">
-        <div ng-if="model.queues.length === 0">
-          <label>On specific date and time (UTC):</label>
-          <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>
-        </div>
-        <div class="form-group" ng-if="model.queues.length > 0">
-          <div class="radio bottom-buffer-l">
-            <label><input type="radio"
-                          ng-model="model.postToQueue"
-                          ng-value="true"/>
-              After other posts in queue
-              <span ng-if="!model.queuedLiveDate">(loading...)</span>
-              <span ng-if="model.queuedLiveDate">(will appear <strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
-              :
-            </label>
-          </div>
-          <fw-form-input-select-queue id="queue-select" items="model.queues" selected-item="model.input.selectedQueue"></fw-form-input-select-queue>
+        <div ng-show="model.postLater">
+          <button type="submit"
+                  class="btn btn-block btn-success"
+                  data-loading-text="Scheduling..."
+                  data-event-title="{{postType}} scheduled"
+                  data-event-category="New post"
+                  can-submit="contentForm.$valid"
+                  fw-form-submit="postToBacklog()"
+                  error-message="model.errorMessage">Schedule</button>
 
-          <div class="radio bottom-buffer">
-            <label><input type="radio"
-                          ng-model="model.postToQueue"
-                          ng-value="false" /> On specific date and time (UTC):</label>
-          </div>
-
-          <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>
+          <!-- Note we do not use fw-form-submit here because we don't care about validity -->
+          <button class="btn btn-default btn-block"
+                  ng-disabled="contentForm.isSubmitting"
+                  ng-click="cancelPostLater()">Back</button>
         </div>
 
-        <fw-error-message value="model.errorMessage"></fw-error-message>
       </div>
-
-      <div class="row-btn">
-        <button type="submit"
-                class="btn btn-block btn-success"
-                data-loading-text="Scheduling..."
-                data-event-title="{{postType}} scheduled"
-                data-event-category="New post"
-                can-submit="scheduleForm.$valid"
-                fw-form-submit="postToBacklog()"
-                error-message="model.errorMessage">Schedule</button>
-
-        <!-- Note we do not use fw-form-submit here because we don't care about validity -->
-        <button class="btn btn-default btn-block"
-                ng-disabled="scheduleForm.isSubmitting"
-                ng-click="cancelPostLater()">Back</button>
-      </div>
-
     </form>
   </div>
 </div>

@@ -3,10 +3,13 @@ angular.module('webApp')
     'use strict';
 
     // Default to the next hour.
+    var isInitializing;
     var defaultValue = new Date();
     defaultValue.setUTCHours(defaultValue.getUTCHours() + 1, 0, 0, 0);
 
     var ngModelCtrl;
+
+
 
     var render = function(){
       var initial;
@@ -40,6 +43,11 @@ angular.module('webApp')
         ngModelCtrl.$setViewValue( undefined );
         ngModelCtrl.$setValidity('dateTime', false);
       }
+
+      if(isInitializing){
+        ngModelCtrl.$setPristine();
+        isInitializing = false;
+      }
     };
 
     $scope.dateOptions = {
@@ -58,6 +66,10 @@ angular.module('webApp')
 
     this.initialize = function(ngModelCtrl_){
       ngModelCtrl = ngModelCtrl_;
+
+      ngModelCtrl.$pristine = false; // Prevent form becoming dirty on initializing.
+      isInitializing = true;
+
       ngModelCtrl.$render = render;
 
       $scope.$watchGroup(['date', 'time'], setViewValue);

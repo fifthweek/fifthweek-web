@@ -45,7 +45,7 @@
     postComment: { value: function(){
       var date = new Date();
       var commentText = 'Comment on ' + date.toISOString();
-      testKit.setValue(this.commentTextBoxId, commentText);
+      testKit.setContentEditableValue(this.commentTextBoxId, commentText);
 
       this.addCommentButton.click();
 

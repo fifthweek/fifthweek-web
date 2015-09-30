@@ -28,7 +28,7 @@ describe('fw-file-upload directive', function(){
     scope.$digest();
 
     isolateScope = element.isolateScope();
-    isolateScope.model = {};
+    isolateScope.model = { progress: 0 };
   });
 
   describe('when the File API is not supported', function(){
@@ -150,7 +150,7 @@ describe('fw-file-upload directive', function(){
         expect(result.length).toBe(1);
 
         var progress = result[0];
-        expect(progress.style.cssText).toBe('');
+        expect(progress.style.cssText).toContain('width: 0%');
       });
 
       describe('when progress is specified', function(){
@@ -165,7 +165,7 @@ describe('fw-file-upload directive', function(){
           expect(result.length).toBe(1);
 
           var progress = result[0];
-          expect(progress.style.cssText).toBe('width: 33%;');
+          expect(progress.style.cssText).toContain('width: 33%;');
         });
       });
 

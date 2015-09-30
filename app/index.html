@@ -10,6 +10,8 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) static/styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/medium-editor/dist/css/medium-editor.css" />
+    <link rel="stylesheet" href="bower_components/medium-editor/dist/css/themes/default.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) static/styles/main.css -->
@@ -100,6 +102,9 @@
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/ng-videosharing-embed/build/ng-videosharing-embed.min.js"></script>
     <script src="bower_components/angular-payments/lib/angular-payments.js"></script>
+    <script src="bower_components/medium-editor/dist/js/medium-editor.js"></script>
+    <script src="bower_components/angular-medium-editor/dist/angular-medium-editor.js"></script>
+    <script src="bower_components/to-markdown/dist/to-markdown.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -126,6 +131,10 @@
     <script src="modules/common/fw-form-cancel-button.js"></script>
     <script src="modules/common/fw-form-dirty-confirmation.js"></script>
     <script src="modules/common/fw-price.js"></script>
+    <script src="modules/common/fw-markdown-editor.js"></script>
+    <script src="modules/common/fw-markdown-editor-controller.js"></script>
+    <script src="modules/common/fw-markdown.js"></script>
+    <script src="modules/common/markdown-service.js"></script>
 
     <script src="modules/comments/comments-dialog-controller.js"></script>
 
@@ -176,8 +185,9 @@
     <script src="modules/guest-list/guest-list-controller.js"></script>
 
     <script src="modules/information/information-header-controller.js"></script>
-    <script src="modules/information/submit-feedback-dialog-controller.js"></script>
-    <script src="modules/information/fw-submit-feedback-button.js"></script>
+
+    <script src="modules/feedback/submit-feedback-dialog-controller.js"></script>
+    <script src="modules/feedback/submit-feedback-service.js"></script>
 
     <script src="modules/posts/full-size-image-modal-controller.js"></script>
     <script src="modules/posts/post-utilities.js"></script>
@@ -240,10 +250,8 @@
     <script src="scripts/directives/fw-form-input-glyphs.js"></script>
     <script src="scripts/directives/fw-form-input-invalid.js"></script>
     <script src="scripts/directives/fw-form-input-invalid-p.js"></script>
-    <script src="scripts/directives/fw-form-input-note.js"></script>
     <script src="scripts/directives/fw-form-input-select.js"></script>
     <script src="scripts/directives/fw-form-input-valid.js"></script>
-    <script src="scripts/directives/fw-markdown.js"></script>
 
     <script src="scripts/directives/fw-form-input-password.js"></script>
     <script src="scripts/directives/fw-form-input-username.js"></script>

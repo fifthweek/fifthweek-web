@@ -8,6 +8,7 @@ describe('fw-form-dirty-confirmation directive', function(){
   var $state;
   var $modal;
   var uiRouterConstants;
+  var uiBootstrapConstants;
 
   beforeEach(function() {
     module('webApp', 'webApp.views');
@@ -27,14 +28,17 @@ describe('fw-form-dirty-confirmation directive', function(){
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       uiRouterConstants = $injector.get('uiRouterConstants');
+      uiBootstrapConstants = $injector.get('uiBootstrapConstants');
     });
   });
 
   describe('when creating', function(){
 
+    var testData;
     var toParams;
     beforeEach(function(){
       toParams = { name: 'params' };
+      testData = {};
     });
 
     describe('when form is specified', function(){
@@ -43,6 +47,17 @@ describe('fw-form-dirty-confirmation directive', function(){
       var isolateScope;
 
       var performStandardTests = function(){
+        var toState;
+
+        var raiseEvent = function(){
+          if(testData.isModal){
+            isolateScope.$close = jasmine.createSpy('$close');
+            return isolateScope.$broadcast(uiBootstrapConstants.modalClosingEvent);
+          }
+          else{
+            return isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+          }
+        };
 
         it('should be enabled', function(){
           expect(isolateScope.enabled).toBe(true);
@@ -71,7 +86,6 @@ describe('fw-form-dirty-confirmation directive', function(){
         });
 
         describe('when the dialog should be displayed', function(){
-          var toState;
           var dialogResult;
           beforeEach(function(){
             scope.someForm.$dirty = true;
@@ -81,10 +95,10 @@ describe('fw-form-dirty-confirmation directive', function(){
             $modal.open.and.returnValue({ result: dialogResult.promise });
           });
 
-          describe('when the stateChangeStart event is raised', function(){
+          describe('when the event is raised', function(){
             var event;
             beforeEach(function(){
-              event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+              event = raiseEvent();
               scope.$apply();
             });
 
@@ -147,15 +161,19 @@ describe('fw-form-dirty-confirmation directive', function(){
                 expect(isolateScope.enabled).toBe(false);
               });
 
-              it('should resume the state change', function(){
-                expect($state.go).toHaveBeenCalledWith('state2', toParams);
+              it('should resume the operation', function(){
+                if(testData.isModal){
+                  expect(isolateScope.$close).toHaveBeenCalled();
+                }
+                else{
+                  expect($state.go).toHaveBeenCalledWith('state2', toParams);
+                }
               });
             });
           });
         });
 
         describe('when the dialog should not be displayed because the dialog is already displayed', function(){
-          var toState;
           beforeEach(function(){
             scope.someForm.$dirty = true;
             toState = { name: 'state2' };
@@ -165,7 +183,7 @@ describe('fw-form-dirty-confirmation directive', function(){
           describe('when the stateChangeStart event is raised', function(){
             var event;
             beforeEach(function(){
-              event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+              event = raiseEvent();
               scope.$apply();
             });
 
@@ -180,7 +198,6 @@ describe('fw-form-dirty-confirmation directive', function(){
         });
 
         describe('when the dialog should not be displayed because the directive is not enabled', function(){
-          var toState;
           beforeEach(function(){
             scope.someForm.$dirty = true;
             toState = { name: 'state2' };
@@ -190,7 +207,7 @@ describe('fw-form-dirty-confirmation directive', function(){
           describe('when the stateChangeStart event is raised', function(){
             var event;
             beforeEach(function(){
-              event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+              event = raiseEvent();
               scope.$apply();
             });
 
@@ -205,7 +222,6 @@ describe('fw-form-dirty-confirmation directive', function(){
         });
 
         describe('when the dialog should not be displayed because discardChanges is set on the form', function(){
-          var toState;
           beforeEach(function(){
             scope.someForm.$dirty = true;
             toState = { name: 'state2' };
@@ -215,7 +231,7 @@ describe('fw-form-dirty-confirmation directive', function(){
           describe('when the stateChangeStart event is raised', function(){
             var event;
             beforeEach(function(){
-              event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+              event = raiseEvent();
               scope.$apply();
             });
 
@@ -230,7 +246,6 @@ describe('fw-form-dirty-confirmation directive', function(){
         });
 
         describe('when the dialog should not be displayed because the form is submitting', function(){
-          var toState;
           beforeEach(function(){
             scope.someForm.$dirty = true;
             toState = { name: 'state2' };
@@ -240,7 +255,7 @@ describe('fw-form-dirty-confirmation directive', function(){
           describe('when the stateChangeStart event is raised', function(){
             var event;
             beforeEach(function(){
-              event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+              event = raiseEvent();
               scope.$apply();
             });
 
@@ -255,31 +270,37 @@ describe('fw-form-dirty-confirmation directive', function(){
         });
 
         describe('when the dialog should not be displayed because state is the same as the initial state', function(){
-          var toState;
           beforeEach(function(){
-            scope.someForm.$dirty = true;
-            toState = { name: 'state1' };
+            if(!testData.isModal) {
+              scope.someForm.$dirty = true;
+              toState = {name: 'state1'};
+            }
           });
 
           describe('when the stateChangeStart event is raised', function(){
             var event;
             beforeEach(function(){
-              event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
-              scope.$apply();
+              if(!testData.isModal){
+                event = raiseEvent();
+                scope.$apply();
+              }
             });
 
             it('should should not prevent the default behaviour', function(){
-              expect(event.defaultPrevented).toBe(false);
+              if(!testData.isModal) {
+                expect(event.defaultPrevented).toBe(false);
+              }
             });
 
             it('should not open the dialog', function(){
-              expect($modal.open).not.toHaveBeenCalled();
+              if(!testData.isModal) {
+                expect($modal.open).not.toHaveBeenCalled();
+              }
             });
           });
         });
 
         describe('when the dialog should not be displayed because the form is not dirty', function(){
-          var toState;
           beforeEach(function(){
             scope.someForm.$dirty = false;
             toState = { name: 'state2' };
@@ -288,7 +309,7 @@ describe('fw-form-dirty-confirmation directive', function(){
           describe('when the stateChangeStart event is raised', function(){
             var event;
             beforeEach(function(){
-              event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+              event = raiseEvent();
               scope.$apply();
             });
 
@@ -303,62 +324,130 @@ describe('fw-form-dirty-confirmation directive', function(){
         });
       };
 
-      describe('when form-dirty method is specified', function(){
+      describe('when standard form', function(){
+        describe('when form-dirty method is specified', function(){
 
-        var isDirtyFlag;
-        beforeEach(function(){
-          isDirtyFlag = true;
-          scope = $rootScope.$new();
-          scope.someForm = { name: 'Some Form' };
-          scope.isDirtyFunction = function(){
-            return scope.someForm.$dirty && isDirtyFlag;
-          };
+          var isDirtyFlag;
+          beforeEach(function(){
+            isDirtyFlag = true;
+            scope = $rootScope.$new();
+            scope.someForm = { name: 'Some Form' };
+            scope.isDirtyFunction = function(){
+              return scope.someForm.$dirty && isDirtyFlag;
+            };
 
-          element = angular.element('<fw-form-dirty-confirmation form="someForm" form-dirty="isDirtyFunction" />');
-          $compile(element)(scope);
-          isolateScope = element.isolateScope();
-          scope.$digest();
+            element = angular.element('<fw-form-dirty-confirmation form="someForm" form-dirty="isDirtyFunction" />');
+            $compile(element)(scope);
+            isolateScope = element.isolateScope();
+            scope.$digest();
+          });
+
+          performStandardTests();
+
+          describe('when the dialog should not be displayed because the form-dirty function returns false', function(){
+            var toState;
+            beforeEach(function(){
+              scope.someForm.$dirty = true;
+              toState = { name: 'state2' };
+              isDirtyFlag = false;
+            });
+
+            describe('when the stateChangeStart event is raised', function(){
+              var event;
+              beforeEach(function(){
+                event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
+                scope.$apply();
+              });
+
+              it('should should not prevent the default behaviour', function(){
+                expect(event.defaultPrevented).toBe(false);
+              });
+
+              it('should not open the dialog', function(){
+                expect($modal.open).not.toHaveBeenCalled();
+              });
+            });
+          });
         });
 
-        performStandardTests();
-
-        describe('when the dialog should not be displayed because the form-dirty function returns false', function(){
-          var toState;
+        describe('when form-dirty method is not specified', function(){
           beforeEach(function(){
-            scope.someForm.$dirty = true;
-            toState = { name: 'state2' };
-            isDirtyFlag = false;
+            scope = $rootScope.$new();
+            scope.someForm = { name: 'Some Form' };
+            element = angular.element('<fw-form-dirty-confirmation form="someForm" />');
+            $compile(element)(scope);
+            isolateScope = element.isolateScope();
+            scope.$digest();
           });
 
-          describe('when the stateChangeStart event is raised', function(){
-            var event;
-            beforeEach(function(){
-              event = isolateScope.$broadcast(uiRouterConstants.stateChangeStartEvent, toState, toParams);
-              scope.$apply();
-            });
-
-            it('should should not prevent the default behaviour', function(){
-              expect(event.defaultPrevented).toBe(false);
-            });
-
-            it('should not open the dialog', function(){
-              expect($modal.open).not.toHaveBeenCalled();
-            });
-          });
+          performStandardTests();
         });
       });
 
-      describe('when form-dirty method is not specified', function(){
+      describe('when modal form', function(){
         beforeEach(function(){
-          scope = $rootScope.$new();
-          scope.someForm = { name: 'Some Form' };
-          element = angular.element('<fw-form-dirty-confirmation form="someForm" />');
-          $compile(element)(scope);
-          isolateScope = element.isolateScope();
-          scope.$digest();
+          testData.isModal = true;
         });
 
-        performStandardTests();
+        describe('when form-dirty method is specified', function(){
+
+          var isDirtyFlag;
+          beforeEach(function(){
+            isDirtyFlag = true;
+            scope = $rootScope.$new();
+            scope.someForm = { name: 'Some Form' };
+            scope.isDirtyFunction = function(){
+              return scope.someForm.$dirty && isDirtyFlag;
+            };
+
+            element = angular.element('<fw-form-dirty-confirmation is-modal="true" form="someForm" form-dirty="isDirtyFunction" />');
+            $compile(element)(scope);
+            isolateScope = element.isolateScope();
+            scope.$digest();
+          });
+
+          performStandardTests();
+
+          describe('when the dialog should not be displayed because the form-dirty function returns false', function(){
+            var toState;
+            beforeEach(function(){
+              scope.someForm.$dirty = true;
+              toState = { name: 'state2' };
+              isDirtyFlag = false;
+            });
+
+            describe('when the stateChangeStart event is raised', function(){
+              var event;
+              beforeEach(function(){
+                isolateScope.$close = jasmine.createSpy('$close');
+                event = isolateScope.$broadcast(uiBootstrapConstants.modalClosingEvent);
+                scope.$apply();
+              });
+
+              it('should should not prevent the default behaviour', function(){
+                expect(event.defaultPrevented).toBe(false);
+              });
+
+              it('should not open the dialog', function(){
+                expect($modal.open).not.toHaveBeenCalled();
+              });
+            });
+          });
+        });
+
+        describe('when form-dirty method is not specified', function(){
+          beforeEach(function(){
+            scope = $rootScope.$new();
+            scope.someForm = { name: 'Some Form' };
+            element = angular.element('<fw-form-dirty-confirmation is-modal="true" form="someForm" />');
+            $compile(element)(scope);
+            isolateScope = element.isolateScope();
+            scope.$digest();
+          });
+
+          performStandardTests();
+        });
+
       });
     });
 
