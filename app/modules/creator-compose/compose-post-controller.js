@@ -32,7 +32,7 @@ angular.module('webApp').controller('composePostCtrl',
 
     $scope.blobImage = blobImageControlFactory.createControl();
 
-    internal.onBlobImageUpdateComplete = function(data){
+    internal.onBlobImageUpdateComplete = function(){
       model.processingImage = false;
     };
 
