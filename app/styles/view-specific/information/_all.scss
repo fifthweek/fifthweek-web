@@ -502,8 +502,8 @@ $html-name-space:'.info-page';
         margin-bottom: 24px;
       }
     }
-    p, h2, ol {
-      max-width: 640px;
+    p, h2, ol, ul {
+      max-width: 700px;
       margin-left: auto;
       margin-right: auto;
       &.full-width {
@@ -549,8 +549,9 @@ $html-name-space:'.info-page';
     }
     h2.long, h2.long-2, h2.long-3 {
       font-size: 33px;
-      letter-spacing: -2px;
+      letter-spacing: -1px;
       font-weight: normal;
+      margin-top: 15px;
       margin-bottom: 15px;
 
       @media (min-width:$screen-ss-min) {
@@ -559,10 +560,9 @@ $html-name-space:'.info-page';
     }
     h2.long-2 {
       margin-bottom: 40px;
-
-      @media (min-width:$screen-ss-min) {
-        font-size: 35px;
-      }
+      margin-top: 40px;
+      line-height: 38px;
+      font-size: 28px;
     }
     h2.long-3 {
       letter-spacing: -1px;
@@ -588,6 +588,13 @@ $html-name-space:'.info-page';
     }
     ol li {
       padding-left: 25px;
+    }
+    ul li {
+      line-height: 28px;
+      font-size: 18px;
+    }
+    ul {
+      margin-bottom: 15px;
     }
   }
 
@@ -917,13 +924,6 @@ $html-name-space:'.info-page';
     }
     h2 {
       font-weight: normal;
-      padding-top: $info-box-padding;
-      padding-bottom: 15px;
-      margin-bottom: 30px;
-      border-bottom: 1px solid $grey-light-1;
-      &:first-child {
-        padding-top: 0;
-      }
     }
     h3 {
       font-size: 21px;
@@ -982,15 +982,15 @@ $html-name-space:'.info-page';
     }
     h2 {
       margin-bottom: 15px;
+      font-size: 24px;
       @media (min-width:$screen-sm-min) {
         font-size: 24px;
       }
       @media (min-width:$screen-md-min) {
-        font-size: 26px;
+        font-size: 24px;
       }
     }
     p {
-      max-width: 500px;
       margin-left: auto;
       margin-right: auto;
       @media (min-width:$screen-sm-min) {
@@ -999,6 +999,11 @@ $html-name-space:'.info-page';
       @media (min-width:$screen-md-min) {
         font-size: 17px;
       }
+    }
+    p.info-page-box-3-step-description {
+      max-width: inherit;
+      margin-top: 26px;
+      margin-bottom: 26px;
     }
     .container {
       padding: 0 30px;
@@ -1040,7 +1045,6 @@ $html-name-space:'.info-page';
   }
 
   .info-page-box-bottom-shadow {
-    box-shadow: inset 0 -500px 500px -130px rgba(0, 0, 0, 0.04);
     border-bottom: 1px solid $gray-lighter;
   }
 }

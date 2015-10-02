@@ -1,60 +1,63 @@
-﻿<form novalidate
-      autocomplete="off"
-      role="form"
-      name="form"
-      id="registrationForm">
-  <fw-panel12>
+﻿<div>
+  <form novalidate
+        autocomplete="off"
+        role="form"
+        name="form"
+        id="registrationForm">
+    <fw-panel12>
 
-    <div ng-show="!registrationSucceeded">
-      <div class="input-wrap">
+      <div ng-show="!registrationSucceeded">
+        <div class="input-wrap">
 
-        <fw-form-group>
-          <div class="row">
-            <div class="col-md-6">
-              <div fw-form-input-glyphs>
-                <input
-                  id="registrationData-email"
-                  ng-model="registrationData.email"
-                  type="email"
-                  class="form-control"
-                  name="email"
-                  placeholder="Email"
-                  required>
+          <fw-form-group>
+            <div class="row">
+              <div class="col-md-6">
+                <div fw-form-input-glyphs>
+                  <input
+                    id="registrationData-email"
+                    ng-model="registrationData.email"
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    placeholder="Email"
+                    required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <p fw-form-input-invalid-p>A valid email address is required.</p>
               </div>
             </div>
-            <div class="col-md-6">
-              <p fw-form-input-invalid-p>A valid email address is required.</p>
-            </div>
+          </fw-form-group>
+
+          <fw-form-input-username ng-model="registrationData.username" breakpoint="md" required></fw-form-input-username>
+
+          <fw-form-input-password ng-model="registrationData.password" placeholder="Password" breakpoint="md" required></fw-form-input-password>
+
+        </div>
+
+        <div class="row row-btn">
+          <div class="col-md-6">
+            <button
+              class="btn btn-success btn-block"
+              type="submit"
+              id="register-button"
+              data-loading-text="Registering..."
+              data-event-title="{{tracking.eventTitle}}"
+              data-event-category="{{tracking.eventCategory}}"
+              fw-form-submit="register()">Create my account</button>
           </div>
-        </fw-form-group>
-
-        <fw-form-input-username ng-model="registrationData.username" breakpoint="md" required></fw-form-input-username>
-
-        <fw-form-input-password ng-model="registrationData.password" placeholder="Password" breakpoint="md" required></fw-form-input-password>
-
-      </div>
-
-      <div class="row row-btn">
-        <div class="col-md-6">
-          <button
-            class="btn btn-success btn-block"
-            type="submit"
-            id="register-button"
-            data-loading-text="Registering..."
-            data-event-title="{{tracking.eventTitle}}"
-            data-event-category="{{tracking.eventCategory}}"
-            fw-form-submit="register()">Create my account</button>
         </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-xs-12">
-        <div id="messageBox" ng-show="form.message" ng-class="registrationSucceeded ? 'alert alert-success' : 'alert alert-danger sub-form-alert'">
-          <p>{{form.message}}</p>
+      <div class="row">
+        <div class="col-xs-12">
+          <div id="messageBox" ng-show="form.message" ng-class="registrationSucceeded ? 'alert alert-success' : 'alert alert-danger sub-form-alert'">
+            <p>{{form.message}}</p>
+          </div>
         </div>
       </div>
-    </div>
 
-  </fw-panel12>
-</form>
+    </fw-panel12>
+  </form>
+
+</div>
