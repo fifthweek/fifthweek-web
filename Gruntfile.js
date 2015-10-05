@@ -353,16 +353,6 @@ module.exports = function (grunt) {
       }
     },
 
-    cssmin: {
-       dist: {
-         files: {
-           '<%= yeoman.dist %>/static/styles/main.css': [
-             '.tmp/static/styles/**/*.css'
-           ]
-         }
-       }
-    },
-
     imagemin: {
       dist: {
         files: [{
@@ -486,11 +476,10 @@ module.exports = function (grunt) {
       ],
       buildPhase2: [
         'autoprefixer', // Apply cross-browser vendor prefixes to all CSS in `.tmp`.
-        'copy:nonConcatenatedFilesToDist', // Copy everything generated so far into dist.
+        'copy:nonConcatenatedFilesToDist' // Copy everything generated so far into dist.
       ],
       buildPhase3: [
-        'ngAnnotate', // Ensure JS minimisation does not break Angular DI.
-        'cssmin' // Minimise CSS. Creates file in `dist`.
+        'ngAnnotate' // Ensure JS minimisation does not break Angular DI.
       ]
     },
 
@@ -735,6 +724,9 @@ module.exports = function (grunt) {
 
     // Minimise JS. Creates files in `dist`.
     'uglify',
+
+    // Minimise CSS. Creates file in `dist`.
+    'cssmin',
 
     // Append hash to script file-names, and update references.
     'filerev:css',
