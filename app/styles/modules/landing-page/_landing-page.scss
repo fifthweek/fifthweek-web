@@ -10,9 +10,9 @@ $header-height-sm:70px;
 @mixin light-text {
   //-webkit-font-smoothing: subpixel-antialiased;
   //-moz-osx-font-smoothing: auto;
-  font-weight: 200;
+  font-weight: 300;
   //text-shadow: 0.5px 0.5px 0 #ddd;
-  color: $grey-dark-4;
+  color: black;
 }
 
 @mixin dark-button {
@@ -159,7 +159,14 @@ $header-height-sm:70px;
     }
   }
 */
-  #edit-channels-link, #edit-description-link,#edit-introduction-link{
+
+  #edit-introduction-link, #edit-description-link {
+    position: absolute;
+    top: 0;
+    right: $post-margin-sm;
+  }
+
+  #edit-channels-link{
     float: right;
   }
 
@@ -295,6 +302,12 @@ $header-height-sm:70px;
     margin-bottom: 48px;
     margin-left: -$main-cont-padding-small;
     margin-right: -$main-cont-padding-small;
+    padding-left: 0;
+    padding-right: 0;
+    @media (min-width:$screen-s-min) {
+      padding-left: $main-cont-padding-small;
+      padding-right: $main-cont-padding-small;
+    }
     .main-content {
       margin-top: 0;
       #video-area{
@@ -362,6 +375,15 @@ $header-height-sm:70px;
     &.main-content-empty{
       margin-top: 0;
       margin-bottom: -$post-margin-sm;
+    }
+
+    .content-padding {
+      padding-left: 0;
+      padding-right: 0;
+      @media (min-width:$screen-s-min) {
+        padding-left: $post-margin-sm;
+        padding-right: $post-margin-sm;
+      }
     }
 
     h4#blog-introduction {
@@ -443,16 +465,12 @@ $header-height-sm:70px;
             background: $landing-page-highlight-3;
             display: inline-block;
             font-size: $p-font-size - 1;
-
+            white-space: nowrap;
+            
             @media (max-width:$screen-price-break-point) {
               font-size: $p-font-size - 2;
-              margin-left: -5px;
-              margin-right: -15px;
               border-color: $brand-highlight-3;
               box-shadow: -1px 1px 0 0 rgba(0,0,0,0.15);
-              border-top-right-radius: 0;
-              border-bottom-right-radius: 0;
-              border-right: none;
             }
 
             &.unchecked {

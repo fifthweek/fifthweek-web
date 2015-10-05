@@ -1,7 +1,7 @@
 <div class="main-content" ng-class="{'main-content-introduction-empty': !model.blog.introduction}">
   <div class="row">
     <div class="col-xs-12">
-      <div class="posts landing-page">
+      <div class="content-padding">
         <fw-error-message value="model.errorMessage"></fw-error-message>
 
         <a ng-if="model.isOwner" id="edit-introduction-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
@@ -17,8 +17,7 @@
 <div class="main-content">
   <div class="row">
     <div class="col-xs-12">
-      <div class="posts landing-page">
-
+      <div class="posts content-padding">
         <a ng-if="model.isOwner" id="edit-channels-link" class="btn btn-edit btn-default" ui-sref="creator.channels.list">
           <span ng-if="!model.channels.length">add channels</span>
           <span ng-if="model.channels.length">edit channels</span>
@@ -109,18 +108,15 @@
   <div class="main-content">
     <div class="row">
       <div class="col-xs-12">
-        <div class="posts landing-page">
-
-          <div id="video-area">
-            <div id="edit-video-area">
-              <a ng-if="model.isOwner" id="edit-video-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
-                <span ng-if="!model.videoUrl">add video</span>
-                <span ng-if="model.videoUrl">edit video</span>
-              </a>
-            </div>
-            <div id="video" class="video" ng-if="model.videoUrl">
-              <embed-video data-ng-href="{{model.videoUrl}}" rel="0" autohide="1" frameborder="0" showinfo="0"></embed-video>
-            </div>
+        <div id="video-area" class="content-padding">
+          <div id="edit-video-area">
+            <a ng-if="model.isOwner" id="edit-video-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
+              <span ng-if="!model.videoUrl">add video</span>
+              <span ng-if="model.videoUrl">edit video</span>
+            </a>
+          </div>
+          <div id="video" class="video" ng-if="model.videoUrl">
+            <embed-video data-ng-href="{{model.videoUrl}}" rel="0" autohide="1" frameborder="0" showinfo="0"></embed-video>
           </div>
         </div>
       </div>
@@ -130,7 +126,7 @@
 <div class="main-content" ng-class="{'main-content-empty': !model.blog.description}">
   <div class="row">
     <div class="col-xs-12">
-      <div class="posts landing-page">
+      <div class="content-padding">
         <a ng-if="model.isOwner" id="edit-description-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
           <span ng-if="!model.blog.description">add full description</span>
           <span ng-if="model.blog.description">edit full description</span>
