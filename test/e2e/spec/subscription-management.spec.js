@@ -56,10 +56,10 @@
       browser.waitForAngular();
       var totalPrice = '$' +  (hasFreeAccess ? 0 : _.sum(prices)).toFixed(2) + '/week';
       if(count === 1){
-        expect(landingPage.buttonFooter.getText()).toBe(count + ' Channel - ' + totalPrice);
+        expect(landingPage.channelCountInformation.getText()).toBe('Subscribed to ' + count + ' channel - ' + totalPrice);
       }
       else{
-        expect(landingPage.buttonFooter.getText()).toBe(count + ' Channels - ' + totalPrice);
+        expect(landingPage.channelCountInformation.getText()).toBe('Subscribed to ' + count + ' channels - ' + totalPrice);
       }
     };
 
@@ -108,7 +108,7 @@
           afterEach(function() {
             // The timeline is tested as part of another spec. We just want to ensure that all routes to subscribe
             // take the user to the timeline.
-            expect(landingPage.manageSubscriptionButton.isPresent()).toBe(true);
+            expect(landingPage.subscribeBackButton.isPresent()).toBe(true);
           });
 
           it('should be possible via the "subscribe" button', function() {
@@ -123,28 +123,8 @@
         describe('unsubscribing', function(){
           it('should be possible to unsubscribe', function(){
             landingPage.subscribeButton.click();
-            landingPage.manageSubscriptionButton.click();
-            expect(landingPage.cancelChangesButton.isPresent()).toBe(true);
-            landingPage.unsubscribeButton.click();
+            landingPage.subscribeBackButton.click();
             expect(landingPage.subscribeButton.isPresent()).toBe(true);
-          });
-        });
-
-        describe('canceling changes', function(){
-          it('should be possible to cancel changes', function(){
-            landingPage.subscribeButton.click();
-            landingPage.manageSubscriptionButton.click();
-            landingPage.cancelChangesButton.click();
-            expect(landingPage.manageSubscriptionButton.isPresent()).toBe(true);
-          });
-        });
-
-        describe('accepting changes', function(){
-          it('should be possible to accept changes', function(){
-            landingPage.subscribeButton.click();
-            landingPage.manageSubscriptionButton.click();
-            landingPage.updateSubscriptionButton.click();
-            expect(landingPage.manageSubscriptionButton.isPresent()).toBe(true);
           });
         });
       });

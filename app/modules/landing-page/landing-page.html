@@ -9,7 +9,7 @@
       <div class="col-xs-12">
         <span>
           <p ng-if="!model.isOwner" class="channel-count-information">
-            {{model.subscribedChannelCount}} Channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
+            Subscribed to {{model.subscribedChannelCount}} channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
             - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
           </p>
           <p ng-if="model.isOwner" class="channel-count-information">Previewing all channels.</p>

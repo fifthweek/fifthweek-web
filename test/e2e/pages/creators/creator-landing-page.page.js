@@ -16,6 +16,7 @@ CreatorLandingPagePage.prototype = Object.create({}, {
   unsubscribeButton: { get: function() { return element(by.id('unsubscribe-button')); }},
   updateSubscriptionButton: { get: function() { return element(by.id('update-subscriptions-button')); }},
   manageSubscriptionButton: { get: function() { return element(by.id('manage-subscription-button')); }},
+  subscribeBackButton: { get: function() { return element(by.id('subscribe-back-button')); }},
   cancelChangesButton: { get: function() { return element(by.id('cancel-changes-button')); }},
   video: { get: function () { return element(by.css('#video iframe')); }},
   fullDescription: { get: function () { return element(by.id('description-area')); }},
@@ -26,7 +27,7 @@ CreatorLandingPagePage.prototype = Object.create({}, {
   channelListTotalPrice: { get: function() { return element(by.css('.subscribe-now-total')); }},
   guestListInformationPanel: { get: function() { return element(by.css('.guest-list-information')); }},
   guestListInformationPanelCount: { get: function() { return element.all(by.css('.guest-list-information')).count(); }},
-  buttonFooter: { get: function() { return element(by.css('.button-footer')); }},
+  channelCountInformation: { get: function() { return element(by.css('.channel-count-information')); }},
 
   expectSubscribedSuccessfully: { value: function(){
     expect(this.manageSubscriptionButton.isDisplayed()).toBe(true);
