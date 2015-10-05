@@ -62,18 +62,7 @@ angular.module('webApp').factory('postUtilities',
         };
       }
 
-      processPostDayGrouping(post, previousPost);
-
       updatePostUris(post, accessMap);
-    };
-
-    var processPostDayGrouping = function(post, previousPost){
-      if(!previousPost){
-        post.dayGrouping = true;
-      }
-      else{
-        post.dayGrouping = !post.moment.isSame(previousPost.moment, 'day');
-      }
     };
 
     var processPosts = function(posts, accessMap){
@@ -212,10 +201,6 @@ angular.module('webApp').factory('postUtilities',
         if (posts[i].postId === postId) {
           posts.splice(i, 1);
 
-          if (posts.length > i) {
-            processPostDayGrouping(posts[i], i === 0 ? undefined : posts[i - 1]);
-          }
-
           return $q.when();
         }
       }
@@ -245,7 +230,6 @@ angular.module('webApp').factory('postUtilities',
       if(posts.length === 1 || oldPostMoment.isSame(newPost.moment)){
         var index = _.findIndex(posts, { postId: newPost.postId });
         if(index !== -1){
-          newPost.dayGrouping = posts[index].dayGrouping;
           posts[index] = newPost;
         }
         return;
@@ -260,15 +244,11 @@ angular.module('webApp').factory('postUtilities',
       for(var i=0; i < posts.length; ++i){
         if(shouldInsert(newPost, posts[i])){
           posts.splice(i, 0, newPost);
-          processPostDayGrouping(posts[i], i === 0 ? undefined : posts[i - 1]);
-          processPostDayGrouping(posts[i + 1], posts[i]);
           return;
         }
       }
 
       posts.push(newPost);
-      // We know there are at least two posts in the list at this point.
-      processPostDayGrouping(posts[posts.length - 1], posts[posts.length - 2]);
     };
 
     return service;

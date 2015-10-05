@@ -872,14 +872,6 @@ describe('post-utilities', function(){
         });
       });
 
-      it('should add dayGrouping data if the day differs from the previous post', function(){
-        expect(posts[0].dayGrouping).toBe(true);
-        expect(posts[1].dayGrouping).toBe(true);
-        expect(posts[2].dayGrouping).toBe(false);
-        expect(posts[3].dayGrouping).toBe(true);
-        expect(posts[4].dayGrouping).toBe(false);
-      });
-
       it('should add profile image resolvedUri data', function(){
         expect(posts[0].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
         expect(posts[1].creator.profileImage.resolvedUri).toBe('uri2/creator2/footer?signature2');
@@ -932,83 +924,83 @@ describe('post-utilities', function(){
 
     it('should not modify the list if the post is not found', function(){
       var posts = [
-        { postId: 'a', moment: day1, dayGrouping: true },
-        { postId: 'b', moment: day1, dayGrouping: false },
-        { postId: 'c', moment: day1, dayGrouping: false }
+        { postId: 'a', moment: day1 },
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
       ];
 
       target.removePost(posts, 'd');
 
       expect(posts).toEqual([
-        { postId: 'a', moment: day1, dayGrouping: true },
-        { postId: 'b', moment: day1, dayGrouping: false },
-        { postId: 'c', moment: day1, dayGrouping: false }
+        { postId: 'a', moment: day1},
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
       ]);
     });
 
     it('should remove the post correctly re-group by day (1)', function(){
       var posts = [
-        { postId: 'a', moment: day1, dayGrouping: true },
-        { postId: 'b', moment: day1, dayGrouping: false },
-        { postId: 'c', moment: day1, dayGrouping: false }
+        { postId: 'a', moment: day1},
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
       ];
 
       target.removePost(posts, 'a');
 
       expect(posts).toEqual([
-        { postId: 'b', moment: day1, dayGrouping: true },
-        { postId: 'c', moment: day1, dayGrouping: false }
+        { postId: 'b', moment: day1},
+        { postId: 'c', moment: day1 }
       ]);
     });
 
     it('should remove the post correctly re-group by day (2)', function(){
       var posts = [
-        { postId: 'a', moment: day1, dayGrouping: true },
-        { postId: 'b', moment: day1, dayGrouping: false },
-        { postId: 'c', moment: day1, dayGrouping: false }
+        { postId: 'a', moment: day1},
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
       ];
 
       target.removePost(posts, 'b');
 
       expect(posts).toEqual([
-        { postId: 'a', moment: day1, dayGrouping: true },
-        { postId: 'c', moment: day1, dayGrouping: false }
+        { postId: 'a', moment: day1},
+        { postId: 'c', moment: day1 }
       ]);
     });
 
     it('should remove the post correctly re-group by day (3)', function(){
       var posts = [
-        { postId: 'a', moment: day1, dayGrouping: true },
-        { postId: 'b', moment: day1, dayGrouping: false },
-        { postId: 'c', moment: day1, dayGrouping: false }
+        { postId: 'a', moment: day1},
+        { postId: 'b', moment: day1 },
+        { postId: 'c', moment: day1 }
       ];
 
       target.removePost(posts, 'c');
 
       expect(posts).toEqual([
-        { postId: 'a', moment: day1, dayGrouping: true },
-        { postId: 'b', moment: day1, dayGrouping: false }
+        { postId: 'a', moment: day1},
+        { postId: 'b', moment: day1 }
       ]);
     });
 
     it('should remove the post correctly re-group by day (4)', function(){
       var posts = [
-        { postId: 'a', moment: day1, dayGrouping: true },
-        { postId: 'b', moment: day2, dayGrouping: true },
-        { postId: 'c', moment: day2, dayGrouping: false }
+        { postId: 'a', moment: day1},
+        { postId: 'b', moment: day2},
+        { postId: 'c', moment: day2 }
       ];
 
       target.removePost(posts, 'b');
 
       expect(posts).toEqual([
-        { postId: 'a', moment: day1, dayGrouping: true },
-        { postId: 'c', moment: day2, dayGrouping: true },
+        { postId: 'a', moment: day1 },
+        { postId: 'c', moment: day2 },
       ]);
     });
 
     it('should remove the post correctly re-group by day (5)', function(){
       var posts = [
-        { postId: 'a', moment: day1, dayGrouping: true }
+        { postId: 'a', moment: day1 }
       ];
 
       target.removePost(posts, 'a');
@@ -1148,19 +1140,6 @@ describe('post-utilities', function(){
         expect(posts).toEqual([post1, post2, post3]);
       });
 
-      it('should inherit dayGrouping if the post moment has not changed', function(){
-        var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
-        var post2 = { postId: '2', isScheduled: false, moment: moment(100), dayGrouping: false };
-        var post3 = { postId: '3', isScheduled: false, moment: moment(20) };
-        var posts = [post1, post2,  post3];
-        var newPost2 = _.cloneDeep(post2);
-        newPost2.dayGrouping = true;
-        newPost2.moment = post2.moment;
-        target.replacePostAndReorderIfRequired(false, posts, moment(post2.moment), newPost2);
-        expect(posts).toEqual([post1, post2, post3]);
-        expect(newPost2.dayGrouping).toBe(false);
-      });
-
       it('should replace the post if the order has not changed', function(){
         var post1 = { postId: '1', isScheduled: false, moment: moment(60) };
         var post2 = { postId: '2', isScheduled: false, moment: moment(100) };
@@ -1232,66 +1211,6 @@ describe('post-utilities', function(){
         var posts = [post1, post2,  post3];
         target.replacePostAndReorderIfRequired(false, posts, changedMoment, post3);
         expect(posts).toEqual([post1, post3, post2]);
-      });
-
-      it('should update day grouping 1', function(){
-        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true};
-        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-15T04'), dayGrouping: false };
-        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
-        var posts = [post1, post2,  post3];
-        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
-        expect(posts).toEqual([post1, post2, post3]);
-        expect(posts[0].dayGrouping).toBe(true);
-        expect(posts[1].dayGrouping).toBe(false);
-        expect(posts[2].dayGrouping).toBe(false);
-      });
-
-      it('should update day grouping 2', function(){
-        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true };
-        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-15T02'), dayGrouping: false };
-        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
-        var posts = [post1, post2,  post3];
-        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
-        expect(posts).toEqual([post1, post3, post2]);
-        expect(posts[0].dayGrouping).toBe(true);
-        expect(posts[1].dayGrouping).toBe(false);
-        expect(posts[2].dayGrouping).toBe(false);
-      });
-
-      it('should update day grouping 3', function(){
-        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true };
-        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-15T06'), dayGrouping: false };
-        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
-        var posts = [post1, post2,  post3];
-        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
-        expect(posts).toEqual([post2, post1, post3]);
-        expect(posts[0].dayGrouping).toBe(true);
-        expect(posts[1].dayGrouping).toBe(false);
-        expect(posts[2].dayGrouping).toBe(false);
-      });
-
-      it('should update day grouping 4', function(){
-        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true };
-        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-16T04'), dayGrouping: false };
-        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
-        var posts = [post1, post2,  post3];
-        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
-        expect(posts).toEqual([post2, post1, post3]);
-        expect(posts[0].dayGrouping).toBe(true);
-        expect(posts[1].dayGrouping).toBe(true);
-        expect(posts[2].dayGrouping).toBe(false);
-      });
-
-      it('should update day grouping 5', function(){
-        var post1 = { postId: '1', isScheduled: false, moment: moment('2015-01-15T05'), dayGrouping: true };
-        var post2 = { postId: '2', isScheduled: false, moment: moment('2015-01-14T04'), dayGrouping: false };
-        var post3 = { postId: '3', isScheduled: false, moment: moment('2015-01-15T03'), dayGrouping: false };
-        var posts = [post1, post2,  post3];
-        target.replacePostAndReorderIfRequired(false, posts, changedMoment, post2);
-        expect(posts).toEqual([post1, post3, post2]);
-        expect(posts[0].dayGrouping).toBe(true);
-        expect(posts[1].dayGrouping).toBe(false);
-        expect(posts[2].dayGrouping).toBe(true);
       });
     });
   });

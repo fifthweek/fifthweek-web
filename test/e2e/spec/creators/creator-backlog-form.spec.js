@@ -220,9 +220,6 @@
         expect(post1.comment.getText()).toBe('One');
         expect(post2.comment.getText()).toBe('Two');
         expect(post3.comment.getText()).toBe('Three');
-        expect(post1.dayGroupings.count()).toBe(0);
-        expect(post2.dayGroupings.count()).toBe(0);
-        expect(post3.dayGroupings.count()).toBe(0);
         expect(post1.scheduleTags.count()).toBe(1);
         expect(post2.scheduleTags.count()).toBe(1);
         expect(post3.scheduleTags.count()).toBe(1);
@@ -230,9 +227,6 @@
         expect(post1.comment.getText()).toBe('One');
         expect(post2.comment.getText()).toBe('Two');
         expect(post3.comment.getText()).toBe('Three');
-        expect(post1.dayGroupings.count()).toBe(0);
-        expect(post2.dayGroupings.count()).toBe(0);
-        expect(post3.dayGroupings.count()).toBe(0);
         expect(post1.scheduleTags.count()).toBe(1);
         expect(post2.scheduleTags.count()).toBe(1);
         expect(post3.scheduleTags.count()).toBe(1);
@@ -243,9 +237,6 @@
         expect(post1.comment.getText()).toBe('Two');
         expect(post2.comment.getText()).toBe('Three');
         expect(post3.comment.getText()).toBe('One');
-        expect(post1.dayGroupings.count()).toBe(0);
-        expect(post2.dayGroupings.count()).toBe(0);
-        expect(post3.dayGroupings.count()).toBe(0);
         expect(post1.scheduleTags.count()).toBe(1);
         expect(post2.scheduleTags.count()).toBe(1);
         expect(post3.scheduleTags.count()).toBe(1);
@@ -253,9 +244,6 @@
         expect(post1.comment.getText()).toBe('Two');
         expect(post2.comment.getText()).toBe('Three');
         expect(post3.comment.getText()).toBe('One');
-        expect(post1.dayGroupings.count()).toBe(0);
-        expect(post2.dayGroupings.count()).toBe(0);
-        expect(post3.dayGroupings.count()).toBe(0);
         expect(post1.scheduleTags.count()).toBe(1);
         expect(post2.scheduleTags.count()).toBe(1);
         expect(post3.scheduleTags.count()).toBe(1);
@@ -266,9 +254,6 @@
         expect(post1.comment.getText()).toBe('Two');
         expect(post2.comment.getText()).toBe('Three');
         expect(post3.comment.getText()).toBe('One');
-        expect(post1.dayGroupings.count()).toBe(0);
-        expect(post2.dayGroupings.count()).toBe(0);
-        expect(post3.dayGroupings.count()).toBe(0);
         expect(post1.scheduleTags.count()).toBe(1);
         expect(post2.scheduleTags.count()).toBe(1);
         expect(post3.scheduleTags.count()).toBe(1);
@@ -276,9 +261,6 @@
         expect(post1.comment.getText()).toBe('Two');
         expect(post2.comment.getText()).toBe('Three');
         expect(post3.comment.getText()).toBe('One');
-        expect(post1.dayGroupings.count()).toBe(0);
-        expect(post2.dayGroupings.count()).toBe(0);
-        expect(post3.dayGroupings.count()).toBe(0);
         expect(post1.scheduleTags.count()).toBe(1);
         expect(post2.scheduleTags.count()).toBe(1);
         expect(post3.scheduleTags.count()).toBe(1);
@@ -289,9 +271,6 @@
         expect(post1.comment.getText()).toBe('Two');
         expect(post2.comment.getText()).toBe('One');
         expect(post3.comment.getText()).toBe('Three');
-        expect(post1.dayGroupings.count()).toBe(0);
-        expect(post2.dayGroupings.count()).toBe(0);
-        expect(post3.dayGroupings.count()).toBe(0);
         expect(post1.scheduleTags.count()).toBe(1);
         expect(post2.scheduleTags.count()).toBe(1);
         expect(post3.scheduleTags.count()).toBe(1);
@@ -299,9 +278,6 @@
         expect(post1.comment.getText()).toBe('Two');
         expect(post2.comment.getText()).toBe('One');
         expect(post3.comment.getText()).toBe('Three');
-        expect(post1.dayGroupings.count()).toBe(0);
-        expect(post2.dayGroupings.count()).toBe(0);
-        expect(post3.dayGroupings.count()).toBe(0);
         expect(post1.scheduleTags.count()).toBe(1);
         expect(post2.scheduleTags.count()).toBe(1);
         expect(post3.scheduleTags.count()).toBe(1);

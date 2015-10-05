@@ -1,6 +1,3 @@
-<h5 ng-if="source !== sources.creatorBacklog && post.dayGrouping">
-  <span class="day-grouping">{{post.liveDate | date:fifthweekConstants.dayGroupingDateFormat:'UTC'}}</span>
-</h5>
 <div data-live-date="{{post.liveDate}}" class="post timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
 
   <div ng-if="post.image && post.renderSizeRatio" class="full-width-image-container" ng-style="post.renderSizeMaximumWidth ? { 'max-width': post.renderSizeMaximumWidth + 'px' } : {}">

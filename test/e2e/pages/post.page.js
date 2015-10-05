@@ -44,8 +44,6 @@
 
     image: { get: function() { return element(this.byCss('.full-width-image')); }},
     images: { get: function() { return element.all(this.byCss('.full-width-image')); }},
-    dayGrouping: { get: function() { return element(this.byCss('.day-grouping')); }},
-    dayGroupings: { get: function() { return element.all(this.byCss('.day-grouping')); }},
     scheduleTag: { get: function() { return element(this.byCss('.tag')); }},
     scheduleTags: { get: function() { return element.all(this.byCss('.tag')); }},
     comment: { get: function() { return element(this.byCss('#post-comment')); }},
@@ -71,10 +69,9 @@
 
     hasLikedCount: { get: function() { return element.all(this.byCss('.has-liked')).count(); }},
 
-    expectHeader: { value: function(postData, registration, postHasNoDayGrouping){
+    expectHeader: { value: function(postData){
       if(this.isBacklog){
         expect(this.scheduleTag.isDisplayed()).toBe(true);
-        expect(this.dayGroupings.count()).toBe(0);
 
         if(postData.isQueued){
           expect(this.scheduleTag.getText()).toContain('Queued');
@@ -86,10 +83,6 @@
       }
       else{
         expect(this.scheduleTags.count()).toBe(0);
-
-        if(!postHasNoDayGrouping){
-          expect(this.dayGrouping.isDisplayed()).toBe(true);
-        }
       }
     }},
 
@@ -120,8 +113,8 @@
       }
     }},
 
-    expectPost: { value: function(blogData, postData, registration, navigateToPage, postHasNoDayGrouping, isCustomer){
-      this.expectHeader(postData, registration, postHasNoDayGrouping);
+    expectPost: { value: function(blogData, postData, registration, navigateToPage, isCustomer){
+      this.expectHeader(postData);
 
       if(postData.imagePath){
         expect(this.image.isPresent()).toBe(true);
@@ -146,7 +139,7 @@
       expect(this.containerNameLink.getText()).toBe(postData.channelName || blogData.name);
 
       this.expectFooter(blogData, postData, registration, navigateToPage, isCustomer);
-    }},
+    }}
   });
 
   module.exports = PostPage;

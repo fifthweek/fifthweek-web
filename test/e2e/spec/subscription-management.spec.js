@@ -315,13 +315,13 @@
         it('should display posts on landing page', function(){
           navigateToLandingPagePosts();
           post.postIndex = 0;
-          post.expectPost(blog, notePost, creatorRegistration1, navigateToLandingPagePosts, false, false);
+          post.expectPost(blog, notePost, creatorRegistration1, navigateToLandingPagePosts, false);
           post.postIndex = 1;
-          post.expectPost(blog, filePost, creatorRegistration1, navigateToLandingPagePosts, true, false);
+          post.expectPost(blog, filePost, creatorRegistration1, navigateToLandingPagePosts, false);
           post.postIndex = 2;
-          post.expectPost(blog, imagePost, creatorRegistration1, navigateToLandingPagePosts, true, false);
+          post.expectPost(blog, imagePost, creatorRegistration1, navigateToLandingPagePosts, false);
           post.postIndex = 3;
-          post.expectPost(blog, nonViewableImagePost, creatorRegistration1, navigateToLandingPagePosts, true, false);
+          post.expectPost(blog, nonViewableImagePost, creatorRegistration1, navigateToLandingPagePosts, false);
         });
       });
 
@@ -338,26 +338,26 @@
 
         it('should display posts on landing page', function(){
           post.postIndex = 0;
-          post.expectPost(blog, notePost, creatorRegistration1, navigateToLandingPagePosts, false, true);
+          post.expectPost(blog, notePost, creatorRegistration1, navigateToLandingPagePosts, true);
           post.postIndex = 1;
-          post.expectPost(blog, filePost, creatorRegistration1, navigateToLandingPagePosts, true, true);
+          post.expectPost(blog, filePost, creatorRegistration1, navigateToLandingPagePosts, true);
           post.postIndex = 2;
-          post.expectPost(blog, imagePost, creatorRegistration1, navigateToLandingPagePosts, true, true);
+          post.expectPost(blog, imagePost, creatorRegistration1, navigateToLandingPagePosts, true);
           post.postIndex = 3;
-          post.expectPost(blog, nonViewableImagePost, creatorRegistration1, navigateToLandingPagePosts, true, true);
+          post.expectPost(blog, nonViewableImagePost, creatorRegistration1, navigateToLandingPagePosts, true);
         });
 
         it('should display posts on read now page', function(){
           navigateFromCreatorLandingPage();
           navigateToLatestPosts();
           post.postIndex = 0;
-          post.expectPost(blog, notePost, creatorRegistration1, navigateToLatestPosts, false, true);
+          post.expectPost(blog, notePost, creatorRegistration1, navigateToLatestPosts, true);
           post.postIndex = 1;
-          post.expectPost(blog, filePost, creatorRegistration1, navigateToLatestPosts, true, true);
+          post.expectPost(blog, filePost, creatorRegistration1, navigateToLatestPosts, true);
           post.postIndex = 2;
-          post.expectPost(blog, imagePost, creatorRegistration1, navigateToLatestPosts, true, true);
+          post.expectPost(blog, imagePost, creatorRegistration1, navigateToLatestPosts, true);
           post.postIndex = 3;
-          post.expectPost(blog, nonViewableImagePost, creatorRegistration1, navigateToLatestPosts, true, true);
+          post.expectPost(blog, nonViewableImagePost, creatorRegistration1, navigateToLatestPosts, true);
         });
       });
     });
