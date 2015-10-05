@@ -466,7 +466,7 @@ $header-height-sm:70px;
             display: inline-block;
             font-size: $p-font-size - 1;
             white-space: nowrap;
-            
+
             @media (max-width:$screen-price-break-point) {
               font-size: $p-font-size - 2;
               border-color: $brand-highlight-3;
