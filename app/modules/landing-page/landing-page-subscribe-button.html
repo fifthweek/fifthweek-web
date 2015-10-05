@@ -13,13 +13,21 @@
         Cancel Changes
       </button>
 
-      <button ng-if="model.currentView !== views.manage"
+      <button ng-if="model.currentView !== views.manage && !model.isOwner"
               id="manage-subscription-button"
               class="btn header-button"
               type="submit"
               can-submit="true"
               fw-form-submit="manageSubscription()"
               error-message="model.errorMessage">Manage Subscription</button>
+
+      <button ng-if="model.currentView !== views.manage && model.isOwner"
+              id="subscribe-back-button"
+              class="btn header-button"
+              type="submit"
+              can-submit="true"
+              fw-form-submit="unsubscribe()"
+              error-message="model.errorMessage">Back</button>
     </div>
 
     <div ng-if="!model.isSubscribed" class="subscribe subscribe-button-wrapper">

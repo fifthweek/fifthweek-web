@@ -8,11 +8,11 @@
     <div class="row">
       <div class="col-xs-12">
         <span>
-          <p ng-if="!model.isOwner" class="button-footer">
+          <p ng-if="!model.isOwner" class="channel-count-information">
             {{model.subscribedChannelCount}} Channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
             - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
           </p>
-          <p ng-if="model.isOwner" class="button-footer">Previewing all channels.</p>
+          <p ng-if="model.isOwner" class="channel-count-information">Previewing all channels.</p>
         </span>
 
         <fw-post-list source="timeline"
