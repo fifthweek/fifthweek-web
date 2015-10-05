@@ -243,7 +243,7 @@ TestKit.prototype = Object.create({}, {
     value = value.replace(/\\/g, '\\\\').replace(/'/g, '\\\'').replace(/\n/g, '\\n');
 
     var changeValue = 'angular.element(document.getElementById(\'' + elementId + '\')).val(\'' + value + '\').trigger(\'change\')';
-    browser.controlFlow().execute(function() {
+    return browser.controlFlow().execute(function() {
       // console.log('SET ' + elementId + ' = ' + value);
       // "Cannot read property '$digest' of undefined" is indicative of the element not existing on the page.
       return browser.executeScript((blur ? changeValue + '.blur()' : changeValue) + '.scope().$digest()');
@@ -265,7 +265,7 @@ TestKit.prototype = Object.create({}, {
     }
 
     var changeValue = 'angular.element(document.getElementById(\'' + elementId + '\')).html(\'' + value + '\').trigger(\'keyup\').trigger(\'input\').trigger(\'blur\')';
-    browser.controlFlow().execute(function() {
+    return browser.controlFlow().execute(function() {
       // console.log('SET ' + elementId + ' = ' + value);
       // "Cannot read property '$digest' of undefined" is indicative of the element not existing on the page.
       return browser.executeScript((blur ? changeValue + '.blur()' : changeValue) + '.scope().$digest()');
@@ -278,6 +278,7 @@ TestKit.prototype = Object.create({}, {
     browser.controlFlow().execute(function() {
       return browser.executeScript(scrollIntoViewInner, element.getWebElement());
     });
+    return browser.waitForAngular();
   }},
   waitForElementToDisplay: { value: function(element) {
     browser.wait(function() {

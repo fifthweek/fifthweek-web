@@ -46,9 +46,10 @@
     getPage: { value: function(url) {
       browser.get(url);
       browser.waitForAngular();
-      return browser.controlFlow().execute(function() {
+      browser.controlFlow().execute(function() {
         return browser.executeScript('angular.element(document.body).addClass("disable-animations")');
       });
+      return browser.waitForAngular();
     }},
     fastRefresh: { value: function() {
       browser.waitForAngular();
@@ -58,7 +59,7 @@
           'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
         return browser.executeScript(script);
       });
-      browser.waitForAngular();
+      return browser.waitForAngular();
     }},
     rebaseLinkAndClick: { value: function(linkElement) {
       var self = this;

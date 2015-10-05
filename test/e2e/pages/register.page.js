@@ -34,7 +34,7 @@ RegisterPage.prototype = Object.create({},
         'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
       return browser.executeScript(script);
     });
-    browser.waitForAngular();
+    return browser.waitForAngular();
   }},
   registerSuccessfully: { value: function() {
     var username = new UsernameInputPage().newUsername();
