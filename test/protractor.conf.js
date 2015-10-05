@@ -4,7 +4,7 @@ var minute = 60 * 1000;
 
 exports.config = {
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/comments-and-likes.spec.js'],
+  specs: ['e2e/spec/**/creator-backlog-form.spec.js'],
 
   allScriptsTimeout: minute,
   jasmineNodeOpts: {
