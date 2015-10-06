@@ -3,8 +3,10 @@
 var TestKit = require('../test-kit.js');
 var UsernameInputPage = require('./username-input.page');
 var CreateBlogPage = require('./creators/create-blog.page.js');
+var SignInPage = require('./sign-in.page.js');
 
 var testKit = new TestKit();
+var signInPage = new SignInPage();
 
 var RegisterPage = function() {};
 
@@ -27,13 +29,14 @@ RegisterPage.prototype = Object.create({},
         'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
       return browser.executeScript(script);
     });
-    browser.waitForAngular();
+    testKit.waitForElementToDisplay(signInPage.signInButton);
     browser.controlFlow().execute(function() {
       var script =
         'angular.element(document.body).injector().get(\'$state\').go(\'register\'); ' +
         'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
       return browser.executeScript(script);
     });
+    testKit.waitForElementToDisplay(this.registerButton);
     return browser.waitForAngular();
   }},
   registerSuccessfully: { value: function() {

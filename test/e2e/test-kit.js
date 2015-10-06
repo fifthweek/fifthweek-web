@@ -238,7 +238,7 @@ TestKit.prototype = Object.create({}, {
     // we did by enabling the following line, we would see waits between each input (similar to sendKeys, although still
     // slightly faster). Therefore, we must intelligently use browser.waitForAngular when it is actually needed - i.e.
     // after loading another page.
-    // browser.waitForAngular();
+    browser.waitForAngular();
 
     value = value.replace(/\\/g, '\\\\').replace(/'/g, '\\\'').replace(/\n/g, '\\n');
 
@@ -255,7 +255,7 @@ TestKit.prototype = Object.create({}, {
     // we did by enabling the following line, we would see waits between each input (similar to sendKeys, although still
     // slightly faster). Therefore, we must intelligently use browser.waitForAngular when it is actually needed - i.e.
     // after loading another page.
-    // browser.waitForAngular();
+    browser.waitForAngular();
 
     //element(by.id(elementId)).clear();
     //element(by.id(elementId)).sendKeys(value);

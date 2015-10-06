@@ -1,7 +1,6 @@
 'use strict';
 
 var TestKit = require('../test-kit.js');
-var CreateBlogPage = require('./creators/create-blog.page.js');
 
 var testKit = new TestKit();
 
