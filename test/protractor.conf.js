@@ -5,11 +5,11 @@ var minute = 60 * 1000;
 exports.config = {
   baseUrl: 'http://localhost:9001',
   specs: ['e2e/spec/**/*.spec.js'],
+  framework: 'jasmine2',
 
   allScriptsTimeout: minute,
   jasmineNodeOpts: {
-    defaultTimeoutInterval: 2 * minute,
-    includeStackTrace: true
+    defaultTimeoutInterval: 2 * minute
   },
 
   capabilities: {
@@ -21,7 +21,7 @@ exports.config = {
     maxInstances: 3
   },
   onPrepare: function () {
-
+/*
     var disableNgAnimate = function() {
       angular
         .module('disableNgAnimate', [])
@@ -66,7 +66,7 @@ exports.config = {
           descriptions.join(', ').substring(0, 250));
       }
     }));
-
+*/
     var window = browser.manage().window();
     window.setSize(1280, 850);
     return commonWorkflows.getRoot();

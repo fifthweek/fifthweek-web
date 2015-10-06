@@ -270,6 +270,7 @@
           displayEditModal(post3);
           editPostDialogPage.editPostComment('Three');
 
+          browser.waitForAngular();
           expect(post1.comment.getText()).toBe('One');
           expect(post2.comment.getText()).toBe('Two');
           expect(post3.comment.getText()).toBe('Three');
@@ -287,6 +288,7 @@
           displayEditModal(post1);
           editPostDialogPage.editPostDate(-3);
 
+          browser.waitForAngular();
           expect(post1.comment.getText()).toBe('Two');
           expect(post2.comment.getText()).toBe('Three');
           expect(post3.comment.getText()).toBe('One');
@@ -304,6 +306,7 @@
           displayEditModal(post2);
           editPostDialogPage.editPostDate(-2);
 
+          browser.waitForAngular();
           expect(post1.comment.getText()).toBe('Two');
           expect(post2.comment.getText()).toBe('Three');
           expect(post3.comment.getText()).toBe('One');
@@ -321,6 +324,7 @@
           displayEditModal(post3);
           editPostDialogPage.editPostDate(2);
 
+          browser.waitForAngular();
           expect(post1.comment.getText()).toBe('Two');
           expect(post2.comment.getText()).toBe('One');
           expect(post3.comment.getText()).toBe('Three');
@@ -340,6 +344,7 @@
           editPostDialogPage.editPostDate(-1);
 
           // Can't guarantee ordering here because of time rounding to nearest minute.
+          browser.waitForAngular();
           expect(post1.scheduleTags.count()).toBe(0);
           expect(post2.scheduleTags.count()).toBe(0);
           expect(post3.scheduleTags.count()).toBe(0);

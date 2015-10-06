@@ -5,12 +5,12 @@ var minute = 60 * 1000;
 exports.config = {
   baseUrl: 'http://localhost:9001',
   specs: ['e2e/spec/**/*.spec.js'],
+  framework: 'jasmine2',
 
   allScriptsTimeout: minute,
 
   jasmineNodeOpts: {
-    defaultTimeoutInterval: 2 * minute,
-    includeStackTrace: true
+    defaultTimeoutInterval: 2 * minute
   },
 
   capabilities: {
@@ -20,7 +20,37 @@ exports.config = {
     }
   },
 
+
   onPrepare: function () {
+/*
+    var disableNgAnimate = function() {
+      angular
+        .module('disableNgAnimate', [])
+        .run(['$animate', function($animate) {
+          $animate.enabled(false);
+        }]);
+    };
+
+    var disableCssAnimate = function() {
+      angular
+        .module('disableCssAnimate', [])
+        .run(function() {
+          var style = document.createElement('style');
+          style.type = 'text/css';
+          style.innerHTML = '* {' +
+            '-webkit-transition: none !important;' +
+            '-moz-transition: none !important' +
+            '-o-transition: none !important' +
+            '-ms-transition: none !important' +
+            'transition: none !important' +
+            '}';
+          document.getElementsByTagName('head')[0].appendChild(style);
+        });
+    };
+
+    browser.addMockModule('disableNgAnimate', disableNgAnimate);
+    browser.addMockModule('disableCssAnimate', disableCssAnimate);
+
     require('jasmine-reporters');
     var HtmlReporter = require('protractor-html-screenshot-reporter');
     var path = require('path');
@@ -40,6 +70,7 @@ exports.config = {
           descriptions.join(', ').substring(0, 250));
       }
     }));
+ */
 
     var window = browser.manage().window();
     window.setSize(1280, 850);
