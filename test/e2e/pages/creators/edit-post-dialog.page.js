@@ -105,7 +105,7 @@
       testKit.setContentEditableValue(this.commentTextBoxId, comment);
       browser.waitForAngular();
       this.saveButton.click();
-      browser.waitForAngular();
+      testKit.waitForElementToBeRemoved(this.saveButton);
     }},
 
     editPostDate: { value: function(monthCount) {
@@ -128,7 +128,7 @@
 
       dateTimePickerPage.datepicker15Button.click();
       this.saveButton.click();
-      browser.waitForAngular();
+      testKit.waitForElementToBeRemoved(this.saveButton);
     }},
 
     describeEditingPostToLive: { value: function(isBacklog, inputData, navigateToPage, displayModal, refresh) {

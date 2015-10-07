@@ -52,7 +52,7 @@
                             ng-value="true"/>
                 After other posts in queue
                 <span ng-if="!model.queuedLiveDate">(loading...)</span>
-                <span ng-if="model.queuedLiveDate">(will appear <strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
+                <span id="queued-live-date" ng-if="model.queuedLiveDate">(will appear <strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
                 :
               </label>
             </div>

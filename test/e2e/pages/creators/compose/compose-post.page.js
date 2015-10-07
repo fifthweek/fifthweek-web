@@ -40,7 +40,7 @@
     postToQueueRadio: { get: function() { return element(by.css('input[ng-value="true"]')); }},
     postOnDateRadio: { get: function() { return element(by.css('input[ng-value="false"]')); }},
 
-    postToQueueDate: { get: function() { return element(by.css('span[ng-if="model.queuedLiveDate"]')); }},
+    postToQueueDate: { get: function() { return element(by.id('queued-live-date')); }},
     postToQueueSelect: { get: function() { return element(by.id('queue-select')); }},
 
     successMessage: { get: function(){ return element(by.css('.alert-success')); }},
