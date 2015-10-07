@@ -1,9 +1,18 @@
 'use strict';
 
+var fs = require('fs');
+var path = require('path');
 var _ = require('lodash');
 var TestKit = function() {};
 
 TestKit.prototype = Object.create({}, {
+  screenshot: { value: function(pathname) {
+    browser.waitForAngular();
+    browser.takeScreenshot().then(function(png){
+      var file = path.resolve(pathname);
+      fs.writeFileSync(file, png, { encoding: 'base64' }, console.log);
+    });
+  }},
   punctuation33: { value: '!@£$%^&*()_+-={}[]:"|;\'\\`,./<>?±§'},
   assertSingleValidationMessage: { value: function(helpMessages, message) {
     expect(helpMessages.count()).toBe(1);

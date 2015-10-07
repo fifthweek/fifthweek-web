@@ -185,7 +185,6 @@ describe('blob image controller', function(){
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent);
       $scope.$apply();
-      $timeout.flush();
       expect(actualCancellationToken.isCancelled).toBe(true);
     });
 
@@ -214,7 +213,6 @@ describe('blob image controller', function(){
     it('should not start checking availability if the update event has no arguments', function(){
       $scope.$broadcast(blobImageCtrlConstants.updateEvent);
       $scope.$apply();
-      $timeout.flush();
       expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.errorMessage).toBeUndefined();
@@ -237,7 +235,6 @@ describe('blob image controller', function(){
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent);
       $scope.$apply();
-      $timeout.flush();
       expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.renderSize).toBe('renderSize');
@@ -260,7 +257,6 @@ describe('blob image controller', function(){
 
       $scope.$broadcast(blobImageCtrlConstants.updateEvent);
       $scope.$apply();
-      $timeout.flush();
       expect($scope.model.updating).toBe(false);
       expect($scope.model.imageUri).toBeUndefined();
       expect($scope.model.renderSize).toEqual(expectedRenderSize);

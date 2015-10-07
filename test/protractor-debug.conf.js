@@ -4,7 +4,7 @@ var minute = 60 * 1000;
 
 exports.config = {
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/*.spec.js'],
+  specs: ['e2e/spec/**/compose-post-form.spec.js'],
   framework: 'jasmine2',
 
   allScriptsTimeout: minute,

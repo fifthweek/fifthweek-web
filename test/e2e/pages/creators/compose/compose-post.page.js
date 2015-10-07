@@ -23,7 +23,7 @@
     fileUploadIndicator: { get: function(){ return element(by.css('.file-name')); }},
 
     postNowButton: { get: function() { return element(by.css('button[fw-form-submit="postNow()"]')); }},
-    postLaterButton: { get: function() { return element(by.css('button[fw-form-submit="postLater()"]')); }},
+    postLaterButton: { get: function() { return element(by.css('button[ng-click="postLater()"]')); }},
 
     postToBacklogButton: { get: function() { return element(by.css('button[fw-form-submit="postToBacklog()"]')); }},
     cancelButton: { get: function() { return element(by.css('button[ng-click="cancelPostLater()"]')); }},
@@ -247,8 +247,15 @@
           browser.waitForAngular();
         };
 
-        var leavePage = function(discardChanges) {
+        var leavePage = function() {
           modal.crossButton.click();
+          testKit.waitForElementToBeRemoved(modal.crossButton);
+        };
+
+        var leavePageAndDiscard = function() {
+          modal.crossButton.click();
+          testKit.waitForElementToDisplay(discardChanges.discardButton);
+          discardChanges.discardButton.click();
           testKit.waitForElementToBeRemoved(modal.crossButton);
         };
 
@@ -398,9 +405,7 @@
               dateTimePickerPage.includeSadPaths(page.postToBacklogButton, page.helpMessages, function() {});
 
               it('should run once after all', function(){
-                leavePage();
-                testKit.waitForElementToDisplay(discardChanges.discardButton);
-                discardChanges.discardButton.click();
+                leavePageAndDiscard();
               });
             });
 
@@ -448,9 +453,7 @@
               });
 
               it('should run once after all', function(){
-                leavePage();
-                testKit.waitForElementToDisplay(discardChanges.discardButton);
-                discardChanges.discardButton.click();
+                leavePageAndDiscard();
               });
             });
           });

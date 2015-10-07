@@ -89,9 +89,7 @@
 
           <button class="btn btn-default btn-block"
                   ng-disabled="contentForm.isSubmitting"
-                  can-submit="contentForm.$valid"
-                  fw-form-submit="postLater()"
-                  error-message="model.errorMessage">Schedule</button>
+                  ng-click="postLater()">Schedule</button>
         </div>
 
         <div ng-show="model.postLater">

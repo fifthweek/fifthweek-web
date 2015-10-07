@@ -2,11 +2,13 @@
 <div class="row">
   <div class="col-xs-12 col-ss-8 col-sm-6">
     <div class="input-group">
+      <!-- NOTE: Without init-date the date picker would sometimes open on current date in dist build -->
       <input type="text"
            class="form-control"
            datepicker-popup="{{format}}"
            ng-model="date"
            is-open="opened"
+           init-date="date"
            datepicker-options="dateOptions"
            ng-click="openDatePicker($event)"
            close-text="Close"

@@ -1,4 +1,4 @@
-describe('azure blob upload', function(){
+xdescribe('azure blob upload', function(){
   'use strict';
 
   var target;
