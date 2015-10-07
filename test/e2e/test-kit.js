@@ -303,6 +303,23 @@ TestKit.prototype = Object.create({}, {
 
     // Fail fast: ensures the above tricky-trick has actually worked.
     expect(element.isDisplayed()).toBe(true);
+  }},
+  waitForElementToBeRemoved: { value: function(element) {
+    browser.wait(function() {
+      var deferred = protractor.promise.defer();
+      element.isPresent().then(function(isPresent) {
+        if (isPresent) {
+          deferred.fulfill(false);
+        }
+        else {
+          deferred.fulfill(true);
+        }
+      });
+      return deferred.promise;
+    }, 60000);
+
+    // Fail fast: ensures the above tricky-trick has actually worked.
+    expect(element.isPresent()).toBe(false);
   }}
 });
 

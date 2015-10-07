@@ -249,6 +249,7 @@
 
         var leavePage = function(discardChanges) {
           modal.crossButton.click();
+          testKit.waitForElementToBeRemoved(modal.crossButton);
         };
 
         var expectSuccessfulFinalState = function() {

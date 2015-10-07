@@ -2,7 +2,7 @@
       role="form"
       name="verifiedDeleteForm"
       ng-if="model.item">
-  <fw-form-modal name="Delete {{model.itemType}}">
+  <fw-form-modal name="Delete {{model.itemType}}" id-prefix="delete-confirmation">
     <form-body>
       <h5>Are you ABSOLUTELY sure?</h5>
       <p>
@@ -39,7 +39,7 @@
       role="form"
       name="unverifiedDeleteForm"
       ng-if="!model.item">
-  <fw-form-modal name="Delete {{model.itemType}}">
+  <fw-form-modal name="Delete {{model.itemType}}" id-prefix="delete-confirmation">
     <form-body>
       <div class="form-group">
         <p>

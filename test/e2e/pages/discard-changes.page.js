@@ -2,8 +2,10 @@
 
 var _ = require('lodash');
 var TestKit = require('../test-kit.js');
+var ModalPage = require('./modal.page.js');
 
 var testKit = new TestKit();
+var modalPage = new ModalPage();
 
 var DiscardChangesPage = function() {};
 
@@ -11,8 +13,8 @@ DiscardChangesPage.prototype = Object.create({}, {
   modals: { get: function () { return element.all(by.css('.modal')); }},
   title: { get: function () { return element(by.id('modal-title')); }},
   discardButton: { get: function () { return element(by.id('discard-button')); }},
-  crossButton: { get: function () { return element(by.id('modal-cross-button')); }},
-  cancelButton: { get: function () { return element(by.id('modal-cancel-button')); }},
+  crossButton: { get: function () { return modalPage.getCrossButton('dirty-confirmation'); }},
+  cancelButton: { get: function () { return modalPage.getCancelButton('dirty-confirmation'); }},
   describeDiscardingChanges: { value: function(navigateToPage, navigateAwayFromPage, makeFormDirty, verifyFormDirty, verifyFormClean) {
     var self = this;
     var navigateAwayAndWait = function() {
@@ -60,8 +62,7 @@ DiscardChangesPage.prototype = Object.create({}, {
         describe('clicking the ' + cancelOperation.name, function() {
           it('should cancel the operation', function () {
             cancelOperation.action();
-            browser.waitForAngular();
-            //expect(self.modals.count()).toBe(0);
+            testKit.waitForElementToBeRemoved(self.crossButton);
             navigateAwayAndWait();
           });
         });
@@ -71,6 +72,7 @@ DiscardChangesPage.prototype = Object.create({}, {
         it('should be enabled', function() {
           expect(self.discardButton.isEnabled()).toBe(true);
           self.crossButton.click();
+          testKit.waitForElementToBeRemoved(self.crossButton);
         });
       });
 
@@ -81,7 +83,7 @@ DiscardChangesPage.prototype = Object.create({}, {
       it('should discard changes when discard button is clicked', function() {
         navigateAwayAndWait();
         self.discardButton.click();
-        browser.waitForAngular();
+        testKit.waitForElementToBeRemoved(self.discardButton);
         navigateToPage();
         verifyFormClean();
       });

@@ -14,6 +14,8 @@ DeleteConfirmationPage.prototype = Object.create({}, {
   confirmationTextBoxId: { value: 'deletion-confirmation-text' },
   deleteVerifiedButton: { get: function () { return element(by.id('delete-item-verified-button')); }},
   deleteUnverifiedButton: { get: function () { return element(by.id('delete-item-unverified-button')); }},
+  crossButton: { get: function () { return modalPage.getCrossButton('delete-confirmation'); }},
+  cancelButton: { get: function () { return modalPage.getCancelButton('delete-confirmation'); }},
   describeDeletingWithoutVerification: { value: function(itemType, displayModal, verifyItemNotDeleted, verifyItemDeleted) {
     var self = this;
     var itemTypeLower = itemType.toLowerCase();
@@ -35,21 +37,20 @@ DeleteConfirmationPage.prototype = Object.create({}, {
         {
           name: 'cancel button',
           action: function() {
-            modalPage.cancelButton.click();
+            self.cancelButton.click();
           }
         },
         {
           name: 'X button',
           action: function() {
-            modalPage.crossButton.click();
+            self.crossButton.click();
           }
         }
       ], function(cancelOperation) {
         describe('clicking the ' + cancelOperation.name, function() {
           it('should cancel the operation', function () {
             cancelOperation.action();
-            browser.waitForAngular();
-            expect(modalPage.modalCount).toBe(0);
+            testKit.waitForElementToBeRemoved(self.crossButton);
             displayModalAndWait();
           });
         });
@@ -58,7 +59,8 @@ DeleteConfirmationPage.prototype = Object.create({}, {
       describe('the delete button', function() {
         it('should be enabled', function() {
           expect(self.deleteUnverifiedButton.isEnabled()).toBe(true);
-          modalPage.crossButton.click();
+          self.crossButton.click();
+          testKit.waitForElementToBeRemoved(self.crossButton);
         });
       });
 
@@ -110,21 +112,20 @@ DeleteConfirmationPage.prototype = Object.create({}, {
         {
           name: 'cancel button',
           action: function() {
-            modalPage.cancelButton.click();
+            self.cancelButton.click();
           }
         },
         {
           name: 'X button',
           action: function() {
-            modalPage.crossButton.click();
+            self.crossButton.click();
           }
         }
       ], function(cancelOperation) {
         describe('clicking the ' + cancelOperation.name, function() {
           afterEach(function() {
             cancelOperation.action();
-            browser.waitForAngular();
-            expect(modalPage.modalCount).toBe(0);
+            testKit.waitForElementToBeRemoved(self.crossButton);
             displayModalAndWait();
             expectEmptyTextBox();
           });
@@ -170,7 +171,7 @@ DeleteConfirmationPage.prototype = Object.create({}, {
         it('should become enabled after entering the ' + itemTypeLower + '\'s name', function() {
           testKit.setValue(self.confirmationTextBoxId, itemName);
           expect(self.deleteVerifiedButton.isEnabled()).toBe(true);
-          modalPage.cancelButton.click();
+          self.cancelButton.click();
         });
       });
 

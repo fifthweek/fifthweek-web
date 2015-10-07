@@ -50,8 +50,7 @@
           cancelOperation.action();
           testKit.waitForElementToDisplay(discardChanges.discardButton);
           discardChanges.discardButton.click();
-          browser.waitForAngular();
-          expect(self.modals.count()).toBe(0);
+          testKit.waitForElementToBeRemoved(self.crossButton);
           displayModalAndWait();
         });
       });
@@ -61,6 +60,7 @@
       it('should be enabled', function() {
         expect(self.saveButton.isEnabled()).toBe(true);
         self.crossButton.click();
+        testKit.waitForElementToBeRemoved(self.crossButton);
       });
     });
 
@@ -73,7 +73,7 @@
     it('should edit the post', function() {
       editPost();
       self.saveButton.click();
-      browser.waitForAngular();
+      testKit.waitForElementToBeRemoved(self.saveButton);
       verifyItemEdited();
       refresh();
       verifyItemEdited();
