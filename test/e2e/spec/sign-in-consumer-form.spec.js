@@ -48,6 +48,7 @@ describe('sign-in form', function() {
       navigateToPage();
 
       page.forgotDetailsLink.click();
+      testKit.waitForElementToBeRemoved(page.forgotDetailsLink);
 
       page.expectNotDisplayed();
       expect(browser.getCurrentUrl()).toContain(signInForgotPage.pageUrl);
@@ -79,6 +80,7 @@ describe('sign-in form', function() {
       testKit.setValue(page.signInUsernameTextBoxId, username);
       testKit.setValue(page.signInPasswordTextBoxId, password);
       page.signInButton.click();
+      testKit.waitForElementToBeRemoved(page.signInButton);
 
       creatorLandingPage.expectSubscribedSuccessfully();
       //page.expectGuestListOnlyDisplayed();
@@ -93,6 +95,7 @@ describe('sign-in form', function() {
       testKit.setValue(page.signInUsernameTextBoxId, username2);
       testKit.setValue(page.signInPasswordTextBoxId, password);
       page.signInButton.click();
+      testKit.waitForElementToBeRemoved(page.signInButton);
 
       creatorLandingPage.expectSubscribedSuccessfully();
       //page.expectGuestListOnlyDisplayed();

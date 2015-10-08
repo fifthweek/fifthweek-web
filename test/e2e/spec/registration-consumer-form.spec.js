@@ -41,6 +41,7 @@ describe("registration form", function() {
 
     afterEach(function() {
       page.registerButton.click();
+      testKit.waitForElementToBeRemoved(page.registerButton);
 
       creatorLandingPage.expectSubscribedSuccessfully();
       //page.expectGuestListOnlyDisplayed();
