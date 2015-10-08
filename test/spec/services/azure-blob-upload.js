@@ -1,4 +1,4 @@
-/*describe('azure blob upload', function(){
+describe('azure blob upload', function(){
   'use strict';
 
   var target;
@@ -51,11 +51,17 @@
     };
   });
 
+  var onAzureCalled = function(){
+    if(!$rootScope.$$phase) {
+      $rootScope.$apply();
+    }
+  };
+
   describe('when the block size is an exact multiple of the file size', function(){
 
     beforeEach(function(){
       config.blockSize = 500;
-      config.azureCalled = function() { $rootScope.$apply(); };
+      config.azureCalled = onAzureCalled;
       azureBlobStub.putBlockBlob.and.returnValue($q.when());
       azureBlobStub.commitBlockList.and.returnValue($q.when());
     });
@@ -111,7 +117,7 @@
 
     beforeEach(function(){
       config.blockSize = 400;
-      config.azureCalled = function() { $rootScope.$apply(); };
+      config.azureCalled = onAzureCalled;
       azureBlobStub.putBlockBlob.and.returnValue($q.when());
       azureBlobStub.commitBlockList.and.returnValue($q.when());
     });
@@ -171,7 +177,7 @@
 
     beforeEach(function(){
       config.blockSize = 40000;
-      config.azureCalled = function() { $rootScope.$apply(); };
+      config.azureCalled = onAzureCalled;
       azureBlobStub.putBlockBlob.and.returnValue($q.when());
       azureBlobStub.commitBlockList.and.returnValue($q.when());
     });
@@ -223,7 +229,7 @@
 
     beforeEach(function(){
       config.blockSize = 400;
-      config.azureCalled = function() { $rootScope.$apply(); };
+      config.azureCalled = onAzureCalled;
 
       var i = 0;
       azureBlobStub.putBlockBlob.and.callFake(function(){
@@ -260,7 +266,7 @@
 
     beforeEach(function(){
       config.blockSize = 400;
-      config.azureCalled = function() { $rootScope.$apply(); };
+      config.azureCalled = onAzureCalled;
 
       azureBlobStub.putBlockBlob.and.returnValue($q.when());
       azureBlobStub.commitBlockList.and.returnValue($q.reject('commitFail'));
@@ -290,7 +296,7 @@
 
     beforeEach(function(){
       config.blockSize = 400;
-      config.azureCalled = function() { $rootScope.$apply(); };
+      config.azureCalled = onAzureCalled;
 
       config.progress = function(percentComplete){
         progressValues.push(percentComplete);
@@ -321,7 +327,7 @@
 
     beforeEach(function(){
       config.blockSize = 400;
-      config.azureCalled = function() { $rootScope.$apply(); };
+      config.azureCalled = onAzureCalled;
 
       var i = 0;
       config.progress = function(){
@@ -353,4 +359,4 @@
   });
 
 });
-*/
+
