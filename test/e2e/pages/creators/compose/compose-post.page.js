@@ -108,7 +108,7 @@
       var result = this.populateContent(hasComment, filePath, imagePath, channelIndex);
 
       this.postNowButton.click();
-      browser.waitForAngular();
+      testKit.waitForElementToBeRemoved(this.postNowButton);
 
       return result;
     }},
@@ -130,7 +130,7 @@
       result.timeOfDay = '13:17';
 
       this.postToBacklogButton.click();
-      browser.waitForAngular();
+      testKit.waitForElementToBeRemoved(this.postToBacklogButton);
 
       return result;
     }},
@@ -154,7 +154,7 @@
       result.timeOfDay = '13:17';
 
       this.postToBacklogButton.click();
-      browser.waitForAngular();
+      testKit.waitForElementToBeRemoved(this.postToBacklogButton);
 
       return result;
     }},
@@ -171,7 +171,7 @@
       }
 
       this.postToBacklogButton.click();
-      browser.waitForAngular();
+      testKit.waitForElementToBeRemoved(this.postToBacklogButton);
 
       return result;
     }},

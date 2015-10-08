@@ -134,8 +134,7 @@
           expect(commentsAndLikesPage.commentContent.getText()).toBe(comment.content);
 
           commentsAndLikesPage.crossButton.click();
-          browser.waitForAngular();
-          expect(commentsAndLikesPage.allComments.count()).toBe(0); // Check it closed.
+          testKit.waitForElementToBeRemoved(commentsAndLikesPage.crossButton);
 
           expect(post.likesLink.getText()).toBe('0');
           expect(post.commentsLink.getText()).toBe('1');
@@ -221,8 +220,7 @@
           expect(commentsAndLikesPage.commentUsername.getText()).toBe(creatorRegistration1.username);
 
           commentsAndLikesPage.crossButton.click();
-          browser.waitForAngular();
-          expect(commentsAndLikesPage.allComments.count()).toBe(0); // Check it closed.
+          testKit.waitForElementToBeRemoved(commentsAndLikesPage.crossButton);
 
           expect(post.likesLink.getText()).toBe('0');
           expect(post.commentsLink.getText()).toBe('2');
