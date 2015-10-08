@@ -6,7 +6,7 @@ angular.module('webApp').directive('fwFormInputSelectQueue', function () {
     scope: {
       items:'=',
       selectedItem:'=',
-      id:'@'
+      inputId:'@'
     },
     templateUrl:'modules/queues/directives/form-input-select-queue.html'
   };

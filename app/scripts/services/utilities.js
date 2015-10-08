@@ -123,12 +123,12 @@ angular.module('webApp')
 
         var isRequiredInternal = $parse(attrs.ngRequired);
         scope.isRequired = function(){
-          return attrs.ngRequired ? isRequiredInternal(scope) : scope.required;
+          return !!(attrs.ngRequired ? isRequiredInternal(scope) : scope.required);
         };
 
         var isDisabledInternal = $parse(attrs.ngDisabled);
         scope.isDisabled = function(){
-          return attrs.ngDisabled ? isDisabledInternal(scope) : false;
+          return !!(attrs.ngDisabled ? isDisabledInternal(scope) : false);
         };
       };
 

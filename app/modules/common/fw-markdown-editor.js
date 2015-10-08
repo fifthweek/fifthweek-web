@@ -11,7 +11,7 @@ angular.module('webApp')
         maxlength: '@?',
         placeholder: '@?',
         editorId: '@?',
-        ngRequired: '@?',
+        ngRequired: '=?',
         ngDisabled: '=?',
         ngFocus: '@?'
       },
