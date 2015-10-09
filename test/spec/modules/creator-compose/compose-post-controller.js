@@ -174,53 +174,93 @@ describe('compose post controller', function () {
     });
 
     describe('when calling post', function(){
-      var success;
-      var error;
-      var deferredPostPost;
-      beforeEach(function(){
-        success = undefined;
-        error = undefined;
 
-        deferredPostPost = $q.defer();
-        postStub.postPost.and.returnValue(deferredPostPost.promise);
+      var testCompleteData = function(data){
+        describe('when data is complete', function(){
+          var success;
+          var error;
+          var deferredPostPost;
+          beforeEach(function(){
+            success = undefined;
+            error = undefined;
 
-        $scope.$close = jasmine.createSpy('$close');
+            deferredPostPost = $q.defer();
+            postStub.postPost.and.returnValue(deferredPostPost.promise);
 
-        target.internal.post('data').then(function(){ success = true; }, function(e){ error = e; });
-        $scope.$apply();
-      });
+            $scope.$close = jasmine.createSpy('$close');
 
-      it('should call postPost', function(){
-        expect(postStub.postPost).toHaveBeenCalledWith('data');
-      });
+            target.internal.post(data).then(function(){ success = true; }, function(e){ error = e; });
+            $scope.$apply();
+          });
 
-      describe('when postPost succeeds', function(){
+          it('should call postPost', function(){
+            expect(postStub.postPost).toHaveBeenCalledWith(data);
+          });
+
+          describe('when postPost succeeds', function(){
+            beforeEach(function(){
+              deferredPostPost.resolve();
+              $scope.$apply();
+            });
+
+            it('should reload the state', function(){
+              expect($state.reload).toHaveBeenCalledWith();
+            });
+
+            it('should close the dialog', function(){
+              expect($scope.$close).toHaveBeenCalledWith();
+            });
+
+            it('should complete successfully', function(){
+              expect(success).toBe(true);
+            });
+          });
+
+          describe('when postPost fails', function(){
+            beforeEach(function(){
+              deferredPostPost.reject('error');
+              $scope.$apply();
+            });
+
+            it('should propagate the error', function(){
+              expect(error).toBe('error');
+            });
+          });
+        });
+      };
+
+      testCompleteData({ comment: 'comment' });
+      testCompleteData({ fileId: 'fileId' });
+      testCompleteData({ imageId: 'imageId' });
+      testCompleteData({ comment: 'comment', fileId: 'fileId', imageId: 'imageId' });
+
+      describe('when data is incomplete', function(){
+        var success;
+        var error;
+        var deferredPostPost;
         beforeEach(function(){
-          deferredPostPost.resolve();
+          success = undefined;
+          error = undefined;
+
+          deferredPostPost = $q.defer();
+          postStub.postPost.and.returnValue(deferredPostPost.promise);
+
+          $scope.$close = jasmine.createSpy('$close');
+
+          target.internal.post({comment: ''}).then(function(){ success = true; }, function(e){ error = e; });
           $scope.$apply();
         });
 
-        it('should reload the state', function(){
-          expect($state.reload).toHaveBeenCalledWith();
+        it('should not call postPost', function(){
+          expect(postStub.postPost).not.toHaveBeenCalled();
         });
 
-        it('should close the dialog', function(){
-          expect($scope.$close).toHaveBeenCalledWith();
+        it('should display an error message', function(){
+          expect($scope.model.errorMessage).toBe('Please provide some content.');
         });
 
         it('should complete successfully', function(){
           expect(success).toBe(true);
-        });
-      });
-
-      describe('when postPost fails', function(){
-        beforeEach(function(){
-          deferredPostPost.reject('error');
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
         });
       });
     });

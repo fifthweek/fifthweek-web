@@ -80,6 +80,11 @@ angular.module('webApp').controller('composePostCtrl',
     };
 
     internal.post = function(data){
+      if(!data.fileId && !data.imageId && !data.comment){
+        model.errorMessage = 'Please provide some content.';
+        return $q.when();
+      }
+
       return postStub.postPost(data)
         .then(function(){
           // Ensures post appears on current view (live posts / scheduled) if posted to current view.
