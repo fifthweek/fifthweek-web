@@ -241,6 +241,44 @@ describe('landing page controller', function () {
 
         var testSubscribe = function(){
           describe('when subscribeService succeeds indicating user subscribed', function(){
+            beforeEach(function(){
+              $scope.model.isOwner = false;
+            });
+
+            describe('when isOwner is false', function(){
+              beforeEach(function(){
+                spyOn(target.internal, 'redirectIfRequired').and.returnValue(true);
+                spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(true);
+                deferredResult.resolve(true);
+                $scope.$apply();
+              });
+
+              it('should not set isSubscribed to true', function(){
+                expect($scope.model.isSubscribed).toBe(false);
+              });
+            });
+
+            describe('when isOwner is true', function(){
+              beforeEach(function(){
+                $scope.model.isOwner = true;
+                spyOn(target.internal, 'redirectIfRequired').and.returnValue(true);
+                spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(true);
+                deferredResult.resolve(true);
+                $scope.$apply();
+              });
+
+              it('should set isSubscribed to true', function(){
+                expect($scope.model.isSubscribed).toBe(true);
+              });
+
+              it('should set channelId to undefined', function(){
+                expect($scope.model.channelId).toBeUndefined();
+              });
+
+              it('should set the current view to the blog', function(){
+                expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
+              });
+            });
 
             describe('when redirectIfRequired returns true', function(){
               beforeEach(function(){
@@ -459,6 +497,47 @@ describe('landing page controller', function () {
         it('should update the view', function(){
           expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
         });
+      });
+    });
+
+    describe('when preview is called', function(){
+      describe('when channelId is not specified', function(){
+        beforeEach(function(){
+          $state.current = { name: 'current-state' };
+          $scope.model.username = 'username';
+
+          $scope.preview();
+        });
+
+        it('should redirect to previewing all', function(){
+          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.previewAll, key: null });
+        });
+      });
+
+      describe('when channelId is specified', function(){
+        beforeEach(function(){
+          $state.current = { name: 'current-state' };
+          $scope.model.username = 'username';
+
+          $scope.preview('channelId');
+        });
+
+        it('should redirect to previewing the channel', function(){
+          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.previewChannel, key: 'channelId' });
+        });
+      });
+    });
+
+    describe('when cancelPreview is called', function(){
+      beforeEach(function(){
+        $state.current = { name: 'current-state' };
+        $scope.model.username = 'username';
+
+        $scope.cancelPreview();
+      });
+
+      it('should redirect to manage', function(){
+        expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.manage, key: null });
       });
     });
 
@@ -1260,10 +1339,16 @@ describe('landing page controller', function () {
           expect($scope.model.returnState).toBe('key');
         });
 
-        it('should return true if action is blog', function(){
+        it('should return true if action is all', function(){
           $stateParams.action = landingPageConstants.actions.all;
           expectResult(true);
           expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
+        });
+
+        it('should return true if action is previewAll', function(){
+          $stateParams.action = landingPageConstants.actions.previewAll;
+          expectResult(true);
+          expect($scope.model.currentView).toBe(landingPageConstants.views.previewBlog);
         });
 
         it('should return false if action is channel and key is undefined', function(){
@@ -1277,6 +1362,20 @@ describe('landing page controller', function () {
           $stateParams.key = 'key';
           expectResult(true);
           expect($scope.model.currentView).toBe(landingPageConstants.views.blog);
+          expect($scope.model.channelId).toBe('key');
+        });
+
+        it('should return false if action is previewChannel and key is undefined', function(){
+          $stateParams.action = landingPageConstants.actions.previewChannel;
+          $stateParams.key = undefined;
+          expectResult(false);
+        });
+
+        it('should return true if action is previewChannel and key is defined', function(){
+          $stateParams.action = landingPageConstants.actions.previewChannel;
+          $stateParams.key = 'key';
+          expectResult(true);
+          expect($scope.model.currentView).toBe(landingPageConstants.views.previewBlog);
           expect($scope.model.channelId).toBe('key');
         });
       });
@@ -1643,7 +1742,28 @@ describe('landing page controller', function () {
         });
       });
 
-      describe('when the action is set to blog', function(){
+      describe('when the action is set to previewChannel', function(){
+        var result;
+        beforeEach(function(){
+          $scope.model.returnState = undefined;
+          $stateParams.action = landingPageConstants.actions.previewChannel;
+
+          $state.current = { name: 'current-state' };
+          $scope.model.username = 'username';
+
+          result = target.internal.redirectToUnfilteredViewIfRequired();
+        });
+
+        it('should return true', function(){
+          expect(result).toBe(true);
+        });
+
+        it('should redirect to the landing page blog', function(){
+          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: landingPageConstants.actions.all, key: null });
+        });
+      });
+
+      describe('when the action is set to all', function(){
         var result;
         beforeEach(function(){
           $scope.model.returnState = undefined;

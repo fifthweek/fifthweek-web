@@ -20,7 +20,10 @@ angular.module('webApp').factory('postUtilities',
     };
 
     var updatePostUris = function(post, accessMap){
-      if(post.image){
+      if(post.imageAccessInformation){
+        post.imageAccessInformation.resolvedUri = post.imageAccessInformation.uri + post.imageAccessInformation.signature;
+      }
+      else if(post.image){
         post.image.resolvedUri = getImageUri(post.image, 'feed', accessMap);
       }
 
@@ -99,7 +102,9 @@ angular.module('webApp').factory('postUtilities',
               post.queue = blog.queues[post.queueId];
             }
 
-            post.blogName = blog.name;
+            post.blog = {
+              name: blog.name
+            };
 
             post.creator = {
               username: accountSettings.username,
@@ -112,24 +117,32 @@ angular.module('webApp').factory('postUtilities',
     service.internal.populateUnknownCreatorInformation = function(posts){
       _.forEach(posts, function (post) {
 
-        post.channel = {
-          channelId: post.channelId,
-          name: 'Unknown Channel'
-        };
+        if(!post.channel){
+          post.channel = {
+            channelId: post.channelId,
+            name: 'Unknown Channel'
+          };
+        }
 
-        if (post.queueId) {
+        if (!post.queue && post.queueId) {
           post.queue = {
             queueId: post.queueId,
             name: 'Unknown Queue'
           };
         }
 
-        post.blogName = 'Unknown Blog';
+        if(!post.blog){
+          post.blog = {
+            name: 'Unknown Blog'
+          };
+        }
 
-        post.creator = {
-          username: 'Unknown Creator',
-          profileImage: undefined
-        };
+        if(!post.creator){
+          post.creator = {
+            username: 'Unknown Creator',
+            profileImage: undefined
+          };
+        }
       });
     };
 
@@ -163,7 +176,9 @@ angular.module('webApp').factory('postUtilities',
                 }
               }
 
-              post.blogName = blog.name;
+              post.blog = {
+                name: blog.name
+              };
 
               post.creator = {
                 username: blog.username,

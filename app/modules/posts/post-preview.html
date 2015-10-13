@@ -1,0 +1,54 @@
+<div data-live-date="{{post.liveDate}}" class="preview-post" ng-click="managePostSubscription(post)">
+
+  <div class="full-width-image-container">
+    <div class="vertical-aspect-ratio"></div>
+    <div class="background-image"
+         ng-style="post.imageAccessInformation.resolvedUri ? {'background-image':'url(' + post.imageAccessInformation.resolvedUri + ')'} : {}"></div>
+
+    <div class="foreground-content">
+
+      <div class="foreground-content-header content-header-footer">
+        <div class="header-info">
+          <img class="author-image" ng-src="{{post.creator.profileImage ? post.creator.profileImage.resolvedUri : fifthweekConstants.defaultProfileImageUrl}}" />
+          <div class="lines">
+            {{ post.blog.name === post.channel.name ? post.blog.name : post.blog.name + ' - ' + post.channel.name }}
+          </div>
+        </div>
+      </div>
+
+      <div class="foreground-content-center text text-standard-border">
+        <div class="content">
+
+          <span fw-markdown id="post-comment" ng-model="post.comment" ng-if="post.comment"></span>
+
+          <p ng-if="!post.comment && post.imageSource">
+            <i class="fa fa-photo"></i> {{post.imageSource.renderSize.width}} x {{post.imageSource.renderSize.height}}
+          </p>
+          <p ng-if="!post.comment && post.fileSource">
+            <i class="fa fa-gift"></i> {{post.fileSource.fileName}}.{{post.fileSource.fileExtension}}
+          </p>
+
+        </div>
+      </div>
+
+      <div class="foreground-content-footer content-header-footer">
+        <div ng-if="post.fileSource" class="like-comment-counters extra-row">
+          <span class="post-link-size">
+            {{post.fileSource.readableSize}}
+          </span>
+        </div>
+        <span class="live-in-info ">Posted {{post.liveIn}}</span>
+        <span class="like-comment-counters">
+          <span class="likes-count" ng-class="{ 'has-liked': post.hasLiked, 'has-not-liked': !post.hasLiked }">
+            {{post.likesCount}}
+          </span>
+          <span class="comments-count">
+            {{post.commentsCount}}
+          </span>
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+</div>

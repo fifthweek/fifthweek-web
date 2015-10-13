@@ -178,6 +178,60 @@ $post-header-margin-bottom: 16px;
   }
 }
 
+@mixin comment-like-count-style {
+  color:$grey-light-4;
+  font-size: 13px;
+  font-weight: bold;
+  > span {
+    margin-right: 12px;
+    &:last-child{
+      margin-right: 0;
+    }
+    > a{
+      cursor: pointer;
+      color: $grey-light-4;
+      font-size: 13px;
+    }
+    &.likes-count{
+      &.has-liked{
+        &:before{
+          font-family:'FontAwesome';
+          margin-right: 4px;
+          content: '\f004';
+          color: #AA0000;
+        }
+      }
+      &.has-not-liked{
+        &:before{
+          font-family:'FontAwesome';
+          margin-right: 4px;
+          content: '\f08a';
+        }
+      }
+    }
+    &.comments-count{
+      &:before{
+        font-family:'FontAwesome';
+        margin-right: 4px;
+        content: '\f0e5';
+      }
+    }
+    &.post-link-size{
+      &:before{
+        font-family:'FontAwesome';
+        margin-right: 4px;
+        content: '\f06b';
+      }
+    }
+  }
+}
+
+@mixin author-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+}
+
 .angular-medium-editor {
   @include post-text-style;
 }
@@ -333,45 +387,8 @@ $post-header-margin-bottom: 16px;
 
         .like-comment-counters{
           > span {
+            @include comment-like-count-style;
             float:right;
-            color:$grey-light-4;
-            font-size: 13px;
-            font-weight: bold;
-            > span {
-              margin-right: 12px;
-              &:last-child{
-                margin-right: 0;
-              }
-              > a{
-                cursor: pointer;
-                color: $grey-light-4;
-                font-size: 13px;
-              }
-              &.likes-count{
-                &.has-liked{
-                  &:before{
-                    font-family:'FontAwesome';
-                    margin-right: 4px;
-                    content: '\f004';
-                    color: #AA0000;
-                  }
-                }
-                &.has-not-liked{
-                  &:before{
-                    font-family:'FontAwesome';
-                    margin-right: 4px;
-                    content: '\f08a';
-                  }
-                }
-              }
-              &.comments-count{
-                &:before{
-                  font-family:'FontAwesome';
-                  margin-right: 4px;
-                  content: '\f0e5';
-                }
-              }
-            }
           }
         }
       }
@@ -381,9 +398,7 @@ $post-header-margin-bottom: 16px;
           float:left;
           padding-top:4px;
           .author-image{
-            width: 32px;
-            height: 32px;
-            border-radius: 16px;
+            @include author-image;
           }
         }
 
@@ -473,6 +488,123 @@ $post-header-margin-bottom: 16px;
   >.updating-area{
     font-size: 18px;
     text-align: center;
+  }
+
+  .preview-post{
+    @include post-core;
+    cursor: pointer;
+
+    .content-header-footer{
+      padding-top: $post-margin-sm;
+      padding-bottom: $post-margin-sm;
+      padding-left: $post-margin-sm;
+      padding-right: $post-margin-sm;
+    }
+
+    .full-width-image-container{
+      .vertical-aspect-ratio{
+        padding-top: 100%;
+      }
+      .background-image{
+        background-color: #222;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+      }
+      .foreground-content{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+
+        .foreground-content-header{
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          background: rgba(0,0,0,0.5);
+
+          text-align: center;
+
+          color:$grey-light-4;
+          font-size: $post-font-size;
+          font-weight: bold;
+
+          .header-info{
+            display: inline;
+            margin-left: auto;
+            margin-right: auto;
+
+            .author-image{
+              @include author-image;
+              display: inline;
+            }
+            >div{
+              padding-left: 6px;
+              display: inline;
+              text-align: left;
+              vertical-align: middle;
+              color:$grey-light-4;
+              font-weight: bold;
+            }
+          }
+        }
+
+        .foreground-content-center{
+          position: absolute;
+          top: 100px;
+          bottom: 100px;
+          left: $post-margin-sm;
+          right: $post-margin-sm;
+
+          text-align: center;
+          overflow: hidden;
+
+          >.content{
+            @include post-text-style;
+            color:$grey-light-7;
+            h1,h2,h3,h4,h5,h6{
+              color:$grey-light-7;
+            }
+          }
+        }
+
+        .foreground-content-footer{
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: rgba(0,0,0,0.5);
+
+          text-align: center;
+
+          color:$grey-light-4;
+          font-size: $post-font-size - 2;
+          font-weight: bold;
+        }
+
+        .like-comment-counters{
+          @include comment-like-count-style;
+          font-size: $post-font-size - 2;
+          margin-left: 12px;
+          > span {
+            margin-right: 6px;
+            &:last-child{
+              margin-right: 0;
+            }
+          }
+        }
+        .like-comment-counters.extra-row{
+          margin-bottom: 4px;
+        }
+      }
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 angular.module('webApp')
   .controller('fwPostListCtrl',
-  function($scope, $q, fwPostListConstants, postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postStub, errorFacade, postUtilities) {
+  function($scope, $q, $state, states, landingPageConstants, fwPostListConstants, postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postStub, errorFacade, postUtilities) {
     'use strict';
 
     var model = {
@@ -23,7 +23,10 @@ angular.module('webApp')
     internal.timelineUserId = undefined;
 
     internal.populateCreatorInformation = function(posts){
-      if(internal.currentUserId === internal.timelineUserId){
+      if($scope.source === fwPostListConstants.sources.preview){
+        return $q.when();
+      }
+      else if(internal.currentUserId === internal.timelineUserId){
         return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository);
       }
       else{
@@ -35,7 +38,7 @@ angular.module('webApp')
       model.errorMessage = undefined;
       model.isLoading = true;
 
-      var getNextPosts = function() { return internal.loadNext(0, 1000); };
+      var getNextPosts = function() { return internal.loadNext(0, 24); };
 
       var posts;
       return fetchAggregateUserState.updateInParallel(internal.currentUserId, getNextPosts)
@@ -66,6 +69,11 @@ angular.module('webApp')
 
     $scope.openFile = function (file) {
       return postInteractions.openFile(file);
+    };
+
+    $scope.managePostSubscription = function(post){
+      var returnState = $state.current.name === states.landingPage.name ? undefined : $state.current.name;
+      $state.go(states.landingPage.name, { username: post.creator.username, action: landingPageConstants.actions.manage, key: returnState });
     };
 
     $scope.editPost = function(post) {
@@ -153,6 +161,14 @@ angular.module('webApp')
         };
       }
       else{
+        var fetchNewsfeedDelegate;
+        if($scope.source === fwPostListConstants.sources.preview){
+          fetchNewsfeedDelegate = postStub.getPreviewNewsfeed;
+        }
+        else{
+          fetchNewsfeedDelegate = postStub.getNewsfeed;
+        }
+
         if($scope.source === fwPostListConstants.sources.creatorTimeline) {
           internal.timelineUserId = internal.currentUserId;
         }
@@ -163,8 +179,7 @@ angular.module('webApp')
         var channelId = $scope.channelId;
 
         internal.loadNext = function(startIndex, count) {
-          return postStub
-            .getNewsfeed({
+          return fetchNewsfeedDelegate({
               creatorId: internal.timelineUserId,
               startIndex: startIndex,
               channelId: channelId,

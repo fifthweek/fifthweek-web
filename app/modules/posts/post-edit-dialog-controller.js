@@ -70,12 +70,14 @@ angular.module('webApp')
       model.input.imageSource = fileInformation.fileSource;
       model.processingImage = true;
       $scope.blobImage.update(data.containerName, data.fileId, false, internal.onBlobImageUpdateComplete);
+      $scope.editPostForm.$setDirty();
     };
 
     $scope.onFileUploadComplete = function(data) {
       var fileInformation = postEditDialogUtilities.getFileInformation(data);
       model.input.file = fileInformation.file;
       model.input.fileSource = fileInformation.fileSource;
+      $scope.editPostForm.$setDirty();
     };
 
     $scope.save = function(){

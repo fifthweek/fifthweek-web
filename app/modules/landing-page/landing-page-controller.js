@@ -2,12 +2,15 @@ angular.module('webApp')
   .constant('landingPageConstants', {
     views: {
       manage: 'manage',
-      blog: 'blog'
+      blog: 'blog',
+      previewBlog: 'preview-blog'
     },
     actions: {
       manage: 'manage',
       all: 'all',
-      channel: 'channel'
+      channel: 'channel',
+      previewAll: 'preview-all',
+      previewChannel: 'preview-channel'
     }
   })
   .controller('landingPageCtrl',
@@ -188,8 +191,20 @@ angular.module('webApp')
             $scope.model.currentView = landingPageConstants.views.blog;
             break;
 
+          case landingPageConstants.actions.previewAll:
+            $scope.model.currentView = landingPageConstants.views.previewBlog;
+            break;
+
           case landingPageConstants.actions.channel:
             $scope.model.currentView = landingPageConstants.views.blog;
+            if(!key){
+              return false;
+            }
+            $scope.model.channelId = key;
+            break;
+
+          case landingPageConstants.actions.previewChannel:
+            $scope.model.currentView = landingPageConstants.views.previewBlog;
             if(!key){
               return false;
             }
@@ -273,7 +288,8 @@ angular.module('webApp')
     };
 
     internal.redirectToUnfilteredViewIfRequired = function(){
-      if($stateParams.action === landingPageConstants.actions.channel){
+      if($stateParams.action === landingPageConstants.actions.channel ||
+          $stateParams.action === landingPageConstants.actions.previewChannel){
         $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.all, key: null });
         return true;
       }
@@ -291,6 +307,21 @@ angular.module('webApp')
       if(!internal.redirectIfRequired()){
         $scope.model.currentView = landingPageConstants.views.blog;
       }
+    };
+
+    $scope.preview = function(channelId){
+      if(channelId){
+        $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.previewChannel, key: channelId });
+      }
+      else{
+        $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.previewAll, key: null });
+      }
+      //$scope.model.currentView = landingPageConstants.views.previewBlog;
+      //$scope.model.channelId = channelId;
+    };
+
+    $scope.cancelPreview = function(){
+      $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.manage, key: null});
     };
 
     $scope.subscribe = function() {
@@ -313,7 +344,7 @@ angular.module('webApp')
       return subscribeService.subscribe($scope.model.blog.blogId, subscriptions)
         .then(function(result){
           if(result){
-            if(!internal.redirectIfRequired() && !internal.redirectToUnfilteredViewIfRequired()){
+            if($scope.model.isOwner || (!internal.redirectIfRequired() && !internal.redirectToUnfilteredViewIfRequired())){
               // Loading the blog will update user state, and then we
               // reload from user state when the user clicks 'manage'.
               $scope.model.isSubscribed = true;

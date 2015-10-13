@@ -37,7 +37,22 @@
       <p>If you have subscribed already, don't panic! You will only be billed for the weeks where you receive content.</p>
       <p>Hopefully something will come along shortly :)</p>
     </fw-panel12>
+
+    <fw-panel12 ng-if="source === sources.preview">
+      <h4>No posts found</h4>
+    </fw-panel12>
   </div>
 
-  <div ng-repeat="post in model.posts track by post.postId" ng-include="'modules/posts/post.html'" id="post-{{$index}}"></div>
+  <div ng-if="source !== sources.preview"
+       ng-repeat="post in model.posts track by post.postId"
+       ng-include="'modules/posts/post.html'"
+       id="post-{{$index}}"></div>
+
+
+  <div ng-if="source === sources.preview" class="row">
+    <div class="col-sm-6 col-md-4"
+         ng-repeat="post in model.posts track by post.postId"
+         ng-include="'modules/posts/post-preview.html'"
+         id="preview-post-{{$index}}"></div>
+  </div>
 </div>

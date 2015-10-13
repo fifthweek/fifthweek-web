@@ -193,7 +193,7 @@ describe('post-utilities', function(){
           name: 'blog',
           channels: {
             channelId1: {
-              channelId: 'channelId1',
+              channelId: 'channelId1'
             },
             channelId2: {
               channelId: 'channelId2'
@@ -230,7 +230,9 @@ describe('post-utilities', function(){
         expect(posts).toEqual([
           {
             isOwner: true,
-            blogName: 'blog',
+            blog: {
+              name: 'blog'
+            },
             channelId: 'channelId1',
             queueId: 'queueId1',
             channel: {
@@ -249,7 +251,9 @@ describe('post-utilities', function(){
           },
           {
             isOwner: true,
-            blogName: 'blog',
+            blog: {
+              name: 'blog'
+            },
             channelId: 'channelId2',
             channel: {
               channelId: 'channelId2'
@@ -428,7 +432,9 @@ describe('post-utilities', function(){
           {
             isOwner: false,
             blogId: 'blogId1',
-            blogName: 'blog',
+            blog: {
+              name: 'blog'
+            },
             channelId: 'channelId1',
             queueId: 'queueId1',
             channel: {
@@ -448,7 +454,9 @@ describe('post-utilities', function(){
           {
             isOwner: false,
             blogId: 'blogId1',
-            blogName: 'blog',
+            blog: {
+              name: 'blog'
+            },
             channelId: 'channelId2',
             channel: {
               channelId: 'channelId2'
@@ -540,7 +548,9 @@ describe('post-utilities', function(){
             queue: {
               queueId: 'queueId1'
             },
-            blogName: 'blog',
+            blog: {
+              name: 'blog'
+            },
             creator: {
               username: 'username',
               profileImage: {
@@ -561,7 +571,9 @@ describe('post-utilities', function(){
               queueId: 'queueId2',
               name: 'Unknown Queue'
             },
-            blogName: 'blog',
+            blog: {
+              name: 'blog'
+            },
             creator: {
               username: 'username',
               profileImage: {
@@ -583,7 +595,9 @@ describe('post-utilities', function(){
               queueId: 'queueId2',
               name: 'Unknown Queue'
             },
-            blogName: 'blog',
+            blog: {
+              name: 'blog'
+            },
             creator: {
               username: 'username',
               profileImage: {
@@ -605,7 +619,9 @@ describe('post-utilities', function(){
               queueId: 'queueId2',
               name: 'Unknown Queue'
             },
-            blogName: 'Unknown Blog',
+            blog: {
+              name: 'Unknown Blog'
+            },
             creator: {
               username: 'Unknown Creator',
               profileImage: undefined
@@ -812,6 +828,23 @@ describe('post-utilities', function(){
                 containerName: 'containerName1'
               }
             }
+          },
+          {
+            liveDate: new Date('2015-03-20T17:00:00Z'),
+            imageAccessInformation: {
+              uri: 'uri',
+              signature: '?signature'
+            },
+            image: {
+              fileId: 'fileId1',
+              containerName: 'containerName1'
+            },
+            creator: {
+              profileImage: {
+                fileId: 'creator1',
+                containerName: 'containerName1'
+              }
+            }
           }
         ];
 
@@ -833,12 +866,14 @@ describe('post-utilities', function(){
         expect(posts[2].liveIn).toBe('fromNow');
         expect(posts[3].liveIn).toBe('fromNow');
         expect(posts[4].liveIn).toBe('fromNow');
+        expect(posts[5].liveIn).toBe('fromNow');
       });
 
       it('should add file information if post is a non-viewable image', function(){
         expect(posts[2].fileSource).toBeUndefined();
         expect(posts[3].fileSource).toBeDefined();
         expect(posts[4].fileSource).toBeUndefined();
+        expect(posts[5].fileSource).toBeUndefined();
       });
 
       it('should add readableSize data', function(){
@@ -847,6 +882,7 @@ describe('post-utilities', function(){
         expect(posts[3].imageSource.readableSize).toBe('8 bytes');
         expect(posts[3].fileSource.readableSize).toBe('1 KB');
         expect(posts[4].imageSource.readableSize).toBe('1 MB');
+        expect(posts[5].imageSource).toBeUndefined();
       });
 
       it('should add isScheduled data', function(){
@@ -855,6 +891,7 @@ describe('post-utilities', function(){
         expect(posts[2].isScheduled).toBe(false);
         expect(posts[3].isScheduled).toBe(false);
         expect(posts[4].isScheduled).toBe(false);
+        expect(posts[5].isScheduled).toBe(false);
       });
 
       it('should add a reorder function if the post is scheduled', function(){
@@ -863,6 +900,7 @@ describe('post-utilities', function(){
         expect(posts[2].reorder).toBeUndefined();
         expect(posts[3].reorder).toBeUndefined();
         expect(posts[4].reorder).toBeUndefined();
+        expect(posts[5].reorder).toBeUndefined();
       });
 
       describe('when calling re-order', function(){
@@ -878,12 +916,15 @@ describe('post-utilities', function(){
         expect(posts[2].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
         expect(posts[3].creator.profileImage).toBeUndefined();
         expect(posts[4].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
+        expect(posts[5].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
       });
 
       it('should add image resolvedUri data', function(){
         expect(posts[2].image.resolvedUri).toBe('uri1/fileId1/feed?signature1');
         expect(posts[3].image.resolvedUri).toBe('uri2/fileId2/feed?signature2');
         expect(posts[4].image.resolvedUri).toBe('uri1/fileId1/feed?signature1');
+        expect(posts[5].imageAccessInformation.resolvedUri).toBe('uri?signature');
+        expect(posts[5].image.resolvedUri).toBeUndefined();
       });
 
       it('should add renderSizeRatio data when required', function(){
@@ -892,6 +933,7 @@ describe('post-utilities', function(){
         expect(posts[2].renderSizeRatio).toBe('75%');
         expect(posts[3].renderSizeRatio).toBeUndefined();
         expect(posts[4].renderSizeRatio).toBe('200%');
+        expect(posts[5].renderSizeRatio).toBeUndefined();
       });
 
       it('should add renderSizeMaximumWidth data when required', function(){
@@ -900,6 +942,7 @@ describe('post-utilities', function(){
         expect(posts[2].renderSizeMaximumWidth).toBeUndefined();
         expect(posts[3].renderSizeMaximumWidth).toBeUndefined();
         expect(posts[4].renderSizeMaximumWidth).toBe(360);
+        expect(posts[5].renderSizeMaximumWidth).toBeUndefined();
       });
     });
   });

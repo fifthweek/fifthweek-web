@@ -4,7 +4,8 @@ angular.module('webApp')
     sources: {
       creatorBacklog: 'creator-backlog',
       creatorTimeline: 'creator-timeline',
-      timeline: 'timeline'
+      timeline: 'timeline',
+      preview: 'preview'
     }
   })
   .directive('fwPostList', function (fwPostListConstants, fifthweekConstants, landingPageConstants) {

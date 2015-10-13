@@ -602,6 +602,20 @@ $html-name-space:'.info-page';
     background: #fff;
   }
 
+  .info-page-box-post-preview {
+    padding-top: $info-box-padding;
+    padding-bottom: 20px;
+
+    // We increase padding at S by default.
+    @media (min-width:$screen-s-min) {
+      padding-top: $info-box-padding;
+    }
+
+    h2 {
+      margin-bottom: $info-box-padding - 20px;
+    }
+  }
+
   .info-page-box-light {
     background: #f5f7f9;
     border-bottom: 1px solid #e9edf1;

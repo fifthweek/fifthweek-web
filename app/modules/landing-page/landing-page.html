@@ -12,10 +12,22 @@
             Subscribed to {{model.subscribedChannelCount}} channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
             - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
           </p>
-          <p ng-if="model.isOwner" class="channel-count-information">Previewing all channels.</p>
+          <p ng-if="model.isOwner" class="channel-count-information">Showing all channels.</p>
         </span>
 
         <fw-post-list source="timeline"
+                      user-id="{{model.userId}}"
+                      channel-id="{{model.channelId}}"></fw-post-list>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content" ng-if="model.currentView === views.previewBlog">
+    <div class="row">
+      <div class="col-xs-12">
+        <span><p class="channel-count-information">Previewing channels.</p></span>
+
+        <fw-post-list source="preview"
                       user-id="{{model.userId}}"
                       channel-id="{{model.channelId}}"></fw-post-list>
       </div>

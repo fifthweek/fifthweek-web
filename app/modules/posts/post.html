@@ -38,17 +38,15 @@
         </a>
         <ul>
           <li>
-            <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.creator.username}}</a>
-            to
-             <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
-               {{post.channel.isDefault ? 'Everyone' : post.channel.name}}
-             </a>
+            <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.blog.name}}</a>
           </li>
           <li>
-            <a ng-if="post.isOwner" ng-click="editPost(post)" class="live-in-info live-in-link">
-              <span ng-if="post.isScheduled">live </span>{{post.liveIn}}
+            <span ng-if="!post.isScheduled">Posted to </span>
+            <span ng-if="post.isScheduled">Live in </span>
+            <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
+              {{post.channel.name}}
             </a>
-
+            <a ng-if="post.isOwner" ng-click="editPost(post)" class="live-in-info live-in-link">{{post.liveIn}}</a>
             <span ng-if="!post.isOwner" class="live-in-info">{{post.liveIn}}</span>
           </li>
         </ul>

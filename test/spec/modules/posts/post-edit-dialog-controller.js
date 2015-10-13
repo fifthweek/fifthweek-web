@@ -220,6 +220,8 @@ describe('post-edit-dialog-controller', function() {
                 containerName: 'newContainerName'
               };
 
+              $scope.editPostForm = jasmine.createSpyObj('editPostForm', ['$setDirty']);
+
               $scope.onImageUploadComplete(data);
             });
 
@@ -238,6 +240,10 @@ describe('post-edit-dialog-controller', function() {
 
             it('should update the blob image', function(){
               expect($scope.blobImage.update).toHaveBeenCalledWith('newContainerName', 'newFileId', false, target.internal.onBlobImageUpdateComplete);
+            });
+
+            it('should set the form to dirty', function(){
+              expect($scope.editPostForm.$setDirty).toHaveBeenCalledWith();
             });
           });
 
@@ -271,6 +277,8 @@ describe('post-edit-dialog-controller', function() {
                 containerName: 'newContainerName'
               };
 
+              $scope.editPostForm = jasmine.createSpyObj('editPostForm', ['$setDirty']);
+
               $scope.onFileUploadComplete(data);
             });
 
@@ -281,6 +289,10 @@ describe('post-edit-dialog-controller', function() {
             it('should update the file model', function(){
               expect($scope.model.input.file).toBe('newFile');
               expect($scope.model.input.fileSource).toBe('newFileSource');
+            });
+
+            it('should set the form to dirty', function(){
+              expect($scope.editPostForm.$setDirty).toHaveBeenCalledWith();
             });
           });
 
