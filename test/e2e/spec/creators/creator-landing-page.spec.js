@@ -11,6 +11,7 @@
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
   var AccountSettingsPage = require('../../pages/account-settings.page.js');
   var ChannelListPage = require('../../pages/creators/channel-list.page.js');
+  var PostPage = require('../../pages/post-preview.page.js');
 
   describe('creator landing page', function() {
 
@@ -27,6 +28,7 @@
     var customizeLandingPage = new CustomizeLandingPagePage();
     var accountSettings = new AccountSettingsPage();
     var channelList = new ChannelListPage();
+    var post = new PostPage();
     var page = new CreatorLandingPagePage();
 
     var navigateToPage = function() {
@@ -101,7 +103,7 @@
 
       headerViewProfile.includeTests(function() { return blog; }, function() { return ''; });
     });
-
+/*
     it('should contain valid edit links', function() {
       page.editHeaderImageLink.click();
       expect(browser.getCurrentUrl()).toContain(customizeLandingPage.pageUrl);
@@ -180,7 +182,7 @@
         });
       });
     });
-
+*/
     describe('channel list', function() {
       it('should display the default channel', function() {
         visibleChannels.push({
@@ -249,6 +251,64 @@
           expect(page.subscribeButton.getText()).toContain('$' + price);
           expect(page.channelListTotalPrice.getText()).toContain('$' + price);
         }
+      });
+    });
+
+    describe('when testing peeking at post previews', function(){
+
+      it('should run once after all', function(){
+        commonWorkflows.reSignIn(creatorRegistration);
+      });
+
+      it('should navigate to and from the preview page', function(){
+        navigateToPage();
+        page.previewButton.click();
+        expect(browser.getCurrentUrl()).toContain('/' + creatorRegistration.username + '/preview-all');
+        page.cancelPreviewButton.click();
+        expect(browser.getCurrentUrl()).toContain('/' + creatorRegistration.username + '/manage');
+      });
+
+      it('should not show any post previews after posting note on date', function(){
+        page.fifthweekLink.click();
+        commonWorkflows.postNoteOnDate(0);
+
+        runForCreatorAndUserAndLoggedOutUser(function(){
+          page.previewButton.click();
+          expect(post.noPostsMessage.isDisplayed()).toBe(true);
+        });
+      });
+
+      it('should not show any post previews after posting note hidden channel', function(){
+        page.fifthweekLink.click();
+        commonWorkflows.postNoteNow(1);
+
+        runForCreatorAndUserAndLoggedOutUser(function(){
+          page.previewButton.click();
+          expect(post.noPostsMessage.isDisplayed()).toBe(true);
+        });
+      });
+
+      it('should show post previews after posting now', function(){
+        page.fifthweekLink.click();
+        var postData = commonWorkflows.postNoteNow(0);
+
+        runForCreatorAndUserAndLoggedOutUser(function(){
+          page.previewButton.click();
+          expect(post.allPosts.count()).toBe(1);
+          post.expectPost(blog, postData, creatorRegistration, function() { page.previewButton.click(); });
+        });
+      });
+
+      it('should show post previews after posting to other channel', function(){
+        page.fifthweekLink.click();
+        var postData = commonWorkflows.postNoteNow(3);
+        postData.channelName = visibleChannels[1].name;
+
+        runForCreatorAndUserAndLoggedOutUser(function(){
+          page.previewButton.click();
+          expect(post.allPosts.count()).toBe(2);
+          post.expectPost(blog, postData, creatorRegistration, function() { page.previewButton.click(); });
+        });
       });
     });
   });

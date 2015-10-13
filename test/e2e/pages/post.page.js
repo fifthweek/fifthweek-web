@@ -69,6 +69,8 @@
 
     hasLikedCount: { get: function() { return element.all(this.byCss('.has-liked')).count(); }},
 
+    noPostsMessage: { get: function() { return element(by.css('.no-posts-message')); }},
+
     expectHeader: { value: function(postData){
       if(this.isBacklog){
         expect(this.scheduleTag.isDisplayed()).toBe(true);

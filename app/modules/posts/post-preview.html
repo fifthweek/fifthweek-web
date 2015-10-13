@@ -10,7 +10,7 @@
       <div class="foreground-content-header content-header-footer">
         <div class="header-info">
           <img class="author-image" ng-src="{{post.creator.profileImage ? post.creator.profileImage.resolvedUri : fifthweekConstants.defaultProfileImageUrl}}" />
-          <div class="lines">
+          <div class="lines poster-name">
             {{ post.blog.name === post.channel.name ? post.blog.name : post.blog.name + ' - ' + post.channel.name }}
           </div>
         </div>
