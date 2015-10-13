@@ -42,7 +42,7 @@
       var price0 = parseInt(price0text);
       var price1 = parseInt(price1text);
 
-      return ((channelCount0*price0 + channelCount1*price1)*0.7/100).toFixed(2);
+      return ((channelCount0*price0 + channelCount1*price1)*0.8/100).toFixed(2);
     };
 
     var userRegistration1;
