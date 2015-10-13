@@ -137,7 +137,7 @@
         expect(this.comment.getText()).toBe(postData.commentText);
       }
 
-      expect(this.usernameLink.getText()).toBe(registration.username);
+      expect(this.usernameLink.getText()).toBe(blogData.name);
       expect(this.containerNameLink.getText()).toBe(postData.channelName || blogData.name);
 
       this.expectFooter(blogData, postData, registration, navigateToPage, isCustomer);
