@@ -267,6 +267,14 @@ describe('landing page controller', function () {
                 $scope.$apply();
               });
 
+              it('should not call redirectIfRequired ', function(){
+                expect(target.internal.redirectIfRequired).not.toHaveBeenCalledWith();
+              });
+
+              it('should not call redirectToUnfilteredViewIfRequired ', function(){
+                expect(target.internal.redirectToUnfilteredViewIfRequired).not.toHaveBeenCalledWith();
+              });
+
               it('should set isSubscribed to true', function(){
                 expect($scope.model.isSubscribed).toBe(true);
               });
@@ -288,6 +296,10 @@ describe('landing page controller', function () {
                 $scope.$apply();
               });
 
+              it('should call redirectIfRequired with true parameter', function(){
+                expect(target.internal.redirectIfRequired).toHaveBeenCalledWith(true);
+              });
+
               it('should not set isSubscribed to true', function(){
                 expect($scope.model.isSubscribed).toBe(false);
               });
@@ -301,6 +313,10 @@ describe('landing page controller', function () {
                 $scope.$apply();
               });
 
+              it('should call redirectIfRequired with true parameter', function(){
+                expect(target.internal.redirectIfRequired).toHaveBeenCalledWith(true);
+              });
+
               it('should not set isSubscribed to true', function(){
                 expect($scope.model.isSubscribed).toBe(false);
               });
@@ -312,6 +328,10 @@ describe('landing page controller', function () {
                 spyOn(target.internal, 'redirectToUnfilteredViewIfRequired').and.returnValue(false);
                 deferredResult.resolve(true);
                 $scope.$apply();
+              });
+
+              it('should call redirectIfRequired with true parameter', function(){
+                expect(target.internal.redirectIfRequired).toHaveBeenCalledWith(true);
               });
 
               it('should set isSubscribed to true', function(){
@@ -483,6 +503,10 @@ describe('landing page controller', function () {
           $scope.cancelManageSubscription();
         });
 
+        it('should call redirectIfRequired with no parameters', function(){
+          expect(target.internal.redirectIfRequired).toHaveBeenCalledWith();
+        });
+
         it('should not update the view', function(){
           expect($scope.model.currentView).toBe('view');
         });
@@ -492,6 +516,10 @@ describe('landing page controller', function () {
         beforeEach(function(){
           target.internal.redirectIfRequired.and.returnValue(false);
           $scope.cancelManageSubscription();
+        });
+
+        it('should call redirectIfRequired with no parameters', function(){
+          expect(target.internal.redirectIfRequired).toHaveBeenCalledWith();
         });
 
         it('should update the view', function(){
@@ -1699,6 +1727,23 @@ describe('landing page controller', function () {
 
         it('should redirect to the landing page blog', function(){
           expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: null, key: null });
+        });
+      });
+
+      describe('when subscribing and return state is defined and action is not manage', function(){
+        var result;
+        beforeEach(function(){
+          $scope.model.returnState = 'state';
+          $stateParams.action = landingPageConstants.actions.all;
+          result = target.internal.redirectIfRequired(true);
+        });
+
+        it('should return true', function(){
+          expect(result).toBe(false);
+        });
+
+        it('should not redirect', function(){
+          expect($state.go).not.toHaveBeenCalled();
         });
       });
 

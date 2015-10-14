@@ -183,6 +183,9 @@ angular.module('webApp').factory('subscribeService',
 
           return subscriptionStub.putBlogSubscriptions(blogId, { subscriptions: channelsAndPrices })
             .then(function(){
+              return fetchAggregateUserState.updateFromServer(userInformation.userId);
+            })
+            .then(function(){
               return $q.when(true);
             });
         });

@@ -51,6 +51,7 @@ describe('subscribe-service', function(){
       ];
       deferredUserInformation = $q.defer();
       spyOn(target.internal, 'getSignedInUserInformation').and.returnValue(deferredUserInformation.promise);
+      fetchAggregateUserState.updateFromServer.and.returnValue($q.when());
       result = undefined;
       target.subscribe('blogId', channelsAndPrices).then(function(r){ result = r; }, function(e){ error = e; });
       $rootScope.$apply();
@@ -78,6 +79,7 @@ describe('subscribe-service', function(){
     describe('when user is the blog owner', function(){
       beforeEach(function(){
         deferredUserInformation.resolve($q.when({
+          userId: 'userId',
           isOwner: true
         }));
         $rootScope.$apply();
@@ -96,6 +98,7 @@ describe('subscribe-service', function(){
       beforeEach(function(){
         subscriptionStub.putBlogSubscriptions.and.returnValue($q.when());
         deferredUserInformation.resolve($q.when({
+          userId: 'userId',
           isOwner: false,
           hasFreeAccess: true
         }));
@@ -122,6 +125,7 @@ describe('subscribe-service', function(){
         spyOn(target.internal, 'isGuestListOnly').and.returnValue(true);
         spyOn(target.internal, 'showGuestListOnlyDialog').and.returnValue($q.when());
         deferredUserInformation.resolve($q.when({
+          userId: 'userId',
           isOwner: false,
           hasFreeAccess: false
         }));
@@ -146,6 +150,7 @@ describe('subscribe-service', function(){
         spyOn(target.internal, 'isGuestListOnly').and.returnValue(false);
         subscriptionStub.putBlogSubscriptions.and.returnValue($q.when());
         deferredUserInformation.resolve($q.when({
+          userId: 'userId',
           isOwner: false,
           hasFreeAccess: false
         }));
@@ -160,6 +165,10 @@ describe('subscribe-service', function(){
             { channelId: 'channelId3', acceptedPrice: 30 }
           ] }
         );
+      });
+
+      it('should update the user state', function(){
+        expect(fetchAggregateUserState.updateFromServer).toHaveBeenCalledWith('userId');
       });
 
       it('should complete successfully indicating a subscription occurred', function(){
