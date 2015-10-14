@@ -8,6 +8,7 @@
   var HeaderPage = require('../pages/header-subscriptions.page.js');
   var GuestListPage = require('../pages/creators/guest-list.page.js');
   var PostPage = require('../pages/post.page.js');
+  var PostPreviewPage = require('../pages/post-preview.page.js');
   var CreatorLandingPagePage = require('../pages/creators/creator-landing-page.page.js');
   var SignInWorkflowPage = require('../pages/sign-in-workflow.page.js');
   var PostListInformationPage = require('../pages/post-list-information.page.js');
@@ -19,6 +20,7 @@
   var header = new HeaderPage();
   var guestListPage = new GuestListPage();
   var post = new PostPage();
+  var postPreview = new PostPreviewPage();
   var landingPage = new CreatorLandingPagePage();
   var signInWorkflow = new SignInWorkflowPage();
   var postListInformation = new PostListInformationPage();
@@ -94,6 +96,7 @@
         var context = commonWorkflows.createBlog();
         blog = context.blog;
         creatorRegistration1 = context.registration;
+        commonWorkflows.postNoteNow();
         sidebar.viewProfileLink.click();
       });
 
@@ -117,6 +120,11 @@
 
           it('should be possible via the "subscribe now" link', function() {
             landingPage.channelListSubscribeButton.click();
+          });
+
+          it('should be possible via the "subscribe" button from the manage page ', function() {
+            postPreview.usernameLink.click();
+            landingPage.subscribeButton.click();
           });
         });
 
@@ -149,6 +157,11 @@
           it('should be possible via the "subscribe now" link', function() {
             landingPage.channelListSubscribeButton.click();
           });
+
+          it('should be possible via the "subscribe" button from the manage page ', function() {
+            postPreview.usernameLink.click();
+            landingPage.subscribeButton.click();
+          });
         });
 
         describe('subscribing as signed-out user not on guest-list', function(){
@@ -168,6 +181,11 @@
 
           it('should be possible via the "subscribe now" link', function() {
             landingPage.channelListSubscribeButton.click();
+          });
+
+          it('should be possible via the "subscribe" button from the manage page ', function() {
+            postPreview.usernameLink.click();
+            landingPage.subscribeButton.click();
           });
         });
 
@@ -189,19 +207,26 @@
           it('should be possible via the "subscribe now" link', function() {
             landingPage.channelListSubscribeButton.click();
           });
+
+          it('should be possible via the "subscribe" button from the manage page ', function() {
+            postPreview.usernameLink.click();
+            landingPage.subscribeButton.click();
+          });
         });
       });
 
       describe('when on guest list', function(){
         var userRegistration2;
         var userRegistration3;
+        var userRegistration4;
         it('should run once before all', function(){
           userRegistration2 = signInWorkflow.newRegistrationData();
           userRegistration3 = signInWorkflow.newRegistrationData();
+          userRegistration4 = signInWorkflow.newRegistrationData();
 
           commonWorkflows.reSignIn(creatorRegistration1);
           sidebar.guestListLink.click();
-          guestListPage.setNewGuestList([userRegistration.email, userRegistration2.email, userRegistration3.email]);
+          guestListPage.setNewGuestList([userRegistration.email, userRegistration2.email, userRegistration3.email, userRegistration4.email]);
         });
 
         describe('when subscribing on guest list', function(){
@@ -228,6 +253,11 @@
             it('should be possible via the "subscribe now" link', function() {
               landingPage.channelListSubscribeButton.click();
             });
+
+            it('should be possible via the "subscribe" button from the manage page ', function() {
+              postPreview.usernameLink.click();
+              landingPage.subscribeButton.click();
+            });
           });
 
           describe('subscribing as signed-out user on guest-list', function(){
@@ -247,6 +277,11 @@
 
             it('should be possible via the "subscribe now" link', function() {
               landingPage.channelListSubscribeButton.click();
+            });
+
+            it('should be possible via the "subscribe" button from the manage page ', function() {
+              postPreview.usernameLink.click();
+              landingPage.subscribeButton.click();
             });
           });
 
@@ -269,6 +304,13 @@
               landingPage.channelListSubscribeButton.click();
               signInWorkflow.expectRegisterDisplayed();
               signInWorkflow.registerSuccessfullyWithData(userRegistration3);
+            });
+
+            it('should be possible via the "subscribe" button from the manage page ', function() {
+              postPreview.usernameLink.click();
+              landingPage.subscribeButton.click();
+              signInWorkflow.expectRegisterDisplayed();
+              signInWorkflow.registerSuccessfullyWithData(userRegistration4);
             });
           });
         });

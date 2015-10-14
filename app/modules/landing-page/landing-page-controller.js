@@ -274,8 +274,8 @@ angular.module('webApp')
       $scope.model.subscribedChannelCount = result.count;
     };
 
-    internal.redirectIfRequired = function(isSubscribing){
-      if(!isSubscribing && $scope.model.returnState){
+    internal.redirectIfRequired = function(isNewSubscription){
+      if(!isNewSubscription && $scope.model.returnState){
         $state.go($scope.model.returnState);
         return true;
       }
@@ -341,10 +341,12 @@ angular.module('webApp')
         return $scope.unsubscribe();
       }
 
+      var isNewSubscription = !$scope.model.isSubscribed;
+
       return subscribeService.subscribe($scope.model.blog.blogId, subscriptions)
         .then(function(result){
           if(result){
-            if($scope.model.isOwner || (!internal.redirectIfRequired(true) && !internal.redirectToUnfilteredViewIfRequired())){
+            if($scope.model.isOwner || (!internal.redirectIfRequired(isNewSubscription) && !internal.redirectToUnfilteredViewIfRequired())){
               // Loading the blog will update user state, and then we
               // reload from user state when the user clicks 'manage'.
               $scope.model.isSubscribed = true;

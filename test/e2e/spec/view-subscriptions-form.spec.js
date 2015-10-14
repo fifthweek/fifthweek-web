@@ -162,6 +162,7 @@
     it('should display subscribed guest list blog', function(){
       viewSubscriptionsPage.manageButton(0).click();
       landingPage.subscribeButton.click();
+      navigateFromCreatorLandingPage();
 
       expect(viewSubscriptionsPage.blogCount).toBe(1);
       expect(viewSubscriptionsPage.channelCount).toBe(1);
