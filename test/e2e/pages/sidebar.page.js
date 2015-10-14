@@ -6,6 +6,8 @@ SidebarPage.prototype = Object.create({}, {
   sidebar: { get: function () { return element(by.id('sidebar')); }},
   links: { get: function () { return element.all(by.css('#sidebar ul a')); }},
 
+  fifthweekLogoLink: { get: function () { return element(by.id('fifthweek-logo-link')); }},
+
   signInLink: { get: function () { return element(by.id('sidebar-navigation-sign-in')); }},
   registerLink: { get: function () { return element(by.id('sidebar-navigation-register')); }},
 

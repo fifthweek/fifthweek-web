@@ -266,11 +266,7 @@ $post-header-margin-bottom: 16px;
   }
 }
 
-.posts {
-  @import 'actions-drop-down';
-  margin: 0 auto;
-  //max-width: $post-max-width;
-
+.posts,.landing-page-posts {
   h5 {
     white-space: nowrap;
     text-transform: uppercase;
@@ -287,6 +283,12 @@ $post-header-margin-bottom: 16px;
       background: $grey-dark;
     }
   }
+}
+
+.posts {
+  @import 'actions-drop-down';
+  margin: 0 auto;
+  //max-width: $post-max-width;
 
   .post {
     @include post-core;

@@ -22,10 +22,17 @@
     </div>
   </div>
 
-  <div class="main-content" ng-if="model.currentView === views.previewBlog">
+  <div class="main-content" ng-class="{ 'landing-page-posts': model.currentView === views.manage }"
+       ng-if="model.currentView === views.manage || model.currentView === views.previewBlog">
+
     <div class="row">
       <div class="col-xs-12">
-        <span><p class="channel-count-information">Previewing channels.</p></span>
+        <span ng-if="model.currentView === views.previewBlog"><p class="channel-count-information">Previewing channels.</p></span>
+        <span ng-if="model.currentView === views.manage">
+          <h5>
+            <span>Previews of Latest Content</span>
+          </h5>
+        </span>
 
         <fw-post-list source="preview"
                       user-id="{{model.userId}}"
@@ -33,5 +40,7 @@
       </div>
     </div>
   </div>
+
+  <ng-include src="'modules/landing-page/landing-page-footer-information.html'" ng-if="model.currentView === views.manage"></ng-include>
 
 </div>

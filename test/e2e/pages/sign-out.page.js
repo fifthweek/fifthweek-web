@@ -5,6 +5,8 @@ var testKit = new TestKit();
 var SignInPage = require('./sign-in.page.js');
 var signInPage = new SignInPage();
 var HomePage = require('./home.page.js');
+var SidebarPage = require('./sidebar.page.js');
+var sidebarPage = new SidebarPage();
 var homePage = new HomePage();
 
 var SignOutPage = function() {};
@@ -20,12 +22,8 @@ SignOutPage.prototype = Object.create({},
       return browser.executeScript(script);
     });
     testKit.waitForElementToDisplay(signInPage.signInButton);
-    browser.controlFlow().execute(function() {
-      var script =
-        'angular.element(document.body).injector().get(\'$state\').go(\'home\'); ' +
-        'angular.element(document.body).injector().get(\'$rootScope\').$digest(); ';
-      return browser.executeScript(script);
-    });
+
+    sidebarPage.fifthweekLogoLink.click();
 
     testKit.waitForElementToDisplay(homePage.signInLink);
     return browser.waitForAngular();

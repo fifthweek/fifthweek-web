@@ -50,7 +50,7 @@
 
 
   <div ng-if="source === sources.preview" class="row">
-    <div class="col-sm-6 col-md-4"
+    <div class="col-sm-6"
          ng-repeat="post in model.posts track by post.postId"
          ng-include="'modules/posts/post-preview.html'"
          id="preview-post-{{$index}}"></div>
