@@ -42,6 +42,9 @@ describe('sign-in form', function() {
       page.signInButton.click();
 
       expect(page.signInFormMessage.getText()).toContain('Invalid username or password');
+
+      page.cancelButton.click();
+      testKit.waitForElementToBeRemoved(page.cancelButton);
     });
 
     it('should allow the user to navigate to the recover password page', function(){
@@ -106,6 +109,9 @@ describe('sign-in form', function() {
       testKit.setValue(page.signInPasswordTextBoxId, password + 'X');
       page.signInButton.click();
       expect(page.signInFormMessage.getText()).toContain('Invalid username or password');
+
+      page.cancelButton.click();
+      testKit.waitForElementToBeRemoved(page.cancelButton);
     });
 
     it('should require a valid username', function(){
@@ -113,6 +119,9 @@ describe('sign-in form', function() {
       testKit.setValue(page.signInPasswordTextBoxId, password);
       page.signInButton.click();
       expect(page.signInFormMessage.getText()).toContain('Invalid username or password');
+
+      page.cancelButton.click();
+      testKit.waitForElementToBeRemoved(page.cancelButton);
     });
 
     it('should case sensitive for the password', function(){
@@ -126,6 +135,9 @@ describe('sign-in form', function() {
       page.signInButton.click();
 
       expect(page.signInFormMessage.getText()).toContain('Invalid username or password');
+
+      page.cancelButton.click();
+      testKit.waitForElementToBeRemoved(page.cancelButton);
     });
   });
 });
