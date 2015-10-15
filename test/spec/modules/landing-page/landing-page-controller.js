@@ -569,6 +569,36 @@ describe('landing page controller', function () {
       });
     });
 
+    describe('when ownerReturnToLandingPage is called', function(){
+      describe('when on sub-page', function(){
+        beforeEach(function(){
+          $stateParams.action = 'an-action';
+          $state.current = { name: 'current-state' };
+          $scope.model.username = 'username';
+
+          $scope.ownerReturnToLandingPage();
+        });
+
+        it('should redirect to actionless page', function(){
+          expect($state.go).toHaveBeenCalledWith('current-state', { username: 'username', action: null, key: null });
+        });
+      });
+
+      describe('when not on sub-page', function(){
+        beforeEach(function(){
+          $stateParams.action = null;
+          $state.current = { name: 'current-state' };
+          $scope.model.username = 'username';
+
+          $scope.ownerReturnToLandingPage();
+        });
+
+        it('should refresh state', function(){
+          expect($state.reload).toHaveBeenCalledWith();
+        });
+      });
+    });
+
     describe('when currentUserUpdated is called', function(){
       describe('when isOwner changes', function(){
         beforeEach(function(){

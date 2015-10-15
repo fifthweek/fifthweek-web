@@ -309,6 +309,15 @@ angular.module('webApp')
       }
     };
 
+    $scope.ownerReturnToLandingPage = function(){
+      if(!$stateParams.action){
+        $state.reload();
+      }
+      else{
+        $state.go($state.current.name, { username: $scope.model.username, action: null, key: null});
+      }
+    };
+
     $scope.preview = function(channelId){
       if(channelId){
         $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.previewChannel, key: channelId });

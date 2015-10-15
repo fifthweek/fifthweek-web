@@ -494,6 +494,9 @@ $post-header-margin-bottom: 16px;
 
   .preview-post{
     @include post-core;
+    border-width: 0;
+    border-color: darken($body-bg, 20%);
+    border-bottom-color: $body-bg;
     cursor: pointer;
 
     .content-header-footer{
@@ -508,7 +511,7 @@ $post-header-margin-bottom: 16px;
         padding-top: 100%;
       }
       .background-image{
-        background-color: #222;
+        background-color: #DDD;
         background-size: cover;
         position: absolute;
         top: 0;
@@ -530,11 +533,11 @@ $post-header-margin-bottom: 16px;
           top: 0;
           left: 0;
           right: 0;
-          background: rgba(0,0,0,0.5);
+          background: rgba(255,255,255,0.5);
 
           text-align: center;
 
-          color:$grey-light-4;
+          color:$grey-dark;
           font-size: $post-font-size;
           font-weight: bold;
 
@@ -552,7 +555,7 @@ $post-header-margin-bottom: 16px;
               display: inline;
               text-align: left;
               vertical-align: middle;
-              color:$grey-light-4;
+              color:$grey-dark;
               font-weight: bold;
             }
           }
@@ -570,9 +573,9 @@ $post-header-margin-bottom: 16px;
 
           >.content{
             @include post-text-style;
-            color:$grey-light-7;
+            color:black;
             h1,h2,h3,h4,h5,h6{
-              color:$grey-light-7;
+              color:black;
             }
           }
         }
@@ -582,11 +585,11 @@ $post-header-margin-bottom: 16px;
           bottom: 0;
           left: 0;
           right: 0;
-          background: rgba(0,0,0,0.5);
+          background: rgba(255,255,255,0.5);
 
           text-align: center;
 
-          color:$grey-light-4;
+          color:$grey-dark;
           font-size: $post-font-size - 2;
           font-weight: bold;
         }
@@ -594,6 +597,7 @@ $post-header-margin-bottom: 16px;
         .like-comment-counters{
           @include comment-like-count-style;
           font-size: $post-font-size - 2;
+          color: $grey-dark;
           margin-left: 12px;
           > span {
             margin-right: 6px;

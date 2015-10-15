@@ -27,12 +27,17 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <span ng-if="model.currentView === views.previewBlog"><p class="channel-count-information">Previewing channels.</p></span>
         <span ng-if="model.currentView === views.manage">
+          <div class="content-padding">
+            <a ng-if="model.isOwner" id="edit-live-posts-link" class="btn btn-edit btn-default" ui-sref="creator.posts.live">
+              <span>edit live posts</span>
+            </a>
+          </div>
           <h5>
             <span>Previews of Latest Content</span>
           </h5>
         </span>
+        <span ng-if="model.currentView === views.previewBlog"><p class="channel-count-information">Previewing channels.</p></span>
 
         <fw-post-list source="preview"
                       user-id="{{model.userId}}"
