@@ -95,7 +95,7 @@ describe('compose post controller', function () {
 
     it('should set the inputs to empty', function(){
       expect($scope.model.input.fileId).toBeUndefined();
-      expect($scope.model.input.imageId).toBeUndefined();
+      expect($scope.model.input.fileId).toBeUndefined();
       expect($scope.model.input.comment).toBe('');
       expect($scope.model.input.date).toBe('');
       expect($scope.model.input.selectedQueue).toBeUndefined();
@@ -129,7 +129,7 @@ describe('compose post controller', function () {
       });
 
       it('should set the imageId', function(){
-        expect($scope.model.input.imageId).toBe('fileId');
+        expect($scope.model.input.fileId).toBe('fileId');
       });
 
       it('should set processingImage to true', function(){
@@ -231,8 +231,8 @@ describe('compose post controller', function () {
 
       testCompleteData({ comment: 'comment' });
       testCompleteData({ fileId: 'fileId' });
-      testCompleteData({ imageId: 'imageId' });
-      testCompleteData({ comment: 'comment', fileId: 'fileId', imageId: 'imageId' });
+      testCompleteData({ fileId: 'imageId' });
+      testCompleteData({ comment: 'comment', fileId: 'fileId', fileId: 'imageId' });
 
       describe('when data is incomplete', function(){
         var success;
@@ -286,7 +286,7 @@ describe('compose post controller', function () {
 
         $scope.model.committedChannel = { channelId: '5' };
         $scope.model.input.fileId = 'fileId';
-        $scope.model.input.imageId = 'imageId';
+        $scope.model.input.fileId = 'imageId';
         $scope.model.input.comment = 'comment';
 
         deferredPost = $q.defer();
@@ -300,7 +300,7 @@ describe('compose post controller', function () {
         expect(target.internal.post).toHaveBeenCalledWith({
           channelId: '5',
           fileId: 'fileId',
-          imageId: 'imageId',
+          fileId: 'imageId',
           comment: 'comment'
         });
       });
@@ -338,7 +338,7 @@ describe('compose post controller', function () {
 
         $scope.model.committedChannel = { channelId: '5' };
         $scope.model.input.fileId = 'fileId';
-        $scope.model.input.imageId = 'imageId';
+        $scope.model.input.fileId = 'imageId';
         $scope.model.input.comment = 'comment';
         $scope.model.input.date = 'date';
         $scope.model.input.selectedQueue = { queueId: 'queueId' };
@@ -359,7 +359,7 @@ describe('compose post controller', function () {
           expect(target.internal.post).toHaveBeenCalledWith({
             channelId: '5',
             fileId: 'fileId',
-            imageId: 'imageId',
+            fileId: 'imageId',
             comment: 'comment',
             scheduledPostTime: undefined,
             queueId: 'queueId'
@@ -401,7 +401,7 @@ describe('compose post controller', function () {
           expect(target.internal.post).toHaveBeenCalledWith({
             channelId: '5',
             fileId: 'fileId',
-            imageId: 'imageId',
+            fileId: 'imageId',
             comment: 'comment',
             scheduledPostTime: 'date',
             queueId: undefined

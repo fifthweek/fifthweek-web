@@ -9,14 +9,17 @@ $post-margin-lg:27px; /* Footer is too padded if we use the standard 30px */
 $footer-margin:10px;
 $queued-image-width-sm: 38.20%; /* Golden ratio, proven by W ~= (W*0.382) + ((W*0.382)*1.618) */
 $queued-image-width-lg: 27.66%; /* Golden ratio, proven by: W ~= (W*0.276) + ((W*0.276)*1.618*1.618) */
-$post-font-size: 14px;
-$post-line-height: 20px;
+$post-font-size: 16px;
+$post-line-height: 1.8em;
 $post-bottom-margin-sm: $main-cont-padding-small;
 $post-bottom-margin-lg: 45px;
 $reorder-menu-width: 29px;
 $line-height-compensation: -5px;
 $post-header-margin-top: 31px;
 $post-header-margin-bottom: 16px;
+$post-border-color: lighten($gray, 30%);
+
+$post-p-margin: 28px;
 
 @mixin post-top-bottom-padding {
   // Remains constant.
@@ -66,10 +69,11 @@ $post-header-margin-bottom: 16px;
   position: relative;
   border: $panel-border;
   border-radius: $post-border-radius;
+  border-color: $post-border-color;
   background: #fff;
   margin-bottom: $post-bottom-margin-sm;
-  margin-left: -16px;
-  margin-right: -16px;
+  margin-left: -($main-cont-padding-small + 1);
+  margin-right: -($main-cont-padding-small + 1);
   @media (min-width:$post-lg-min) {
     margin-bottom: $post-bottom-margin-lg;
     margin-left: 0;
@@ -93,7 +97,6 @@ $post-header-margin-bottom: 16px;
     }
   }
   > img:first-child, > .full-width-image-container, > .video:first-child iframe {
-    cursor: pointer;
     width: 100%;
   }
   > .video:first-child {
@@ -113,39 +116,37 @@ $post-header-margin-bottom: 16px;
 }
 
 @mixin post-text-style {
-  h1,h2,h3,h4,h5,h6{
-    color:$grey-dark;
-    margin: 10px 0 10px 0;
+  h1,h2{
+    font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+    margin-top:$post-p-margin;
+    margin-bottom:$post-p-margin;
     padding: 0;
     text-transform: none;
     font-weight: normal;
   }
   h1{
-    font-size: $post-font-size+5;
-    &:not(:first-child){
-      margin-top: 20px;
-    }
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color:lighten(black, 20%);
   }
   h2{
-    font-size: $post-font-size+4;
-    &:not(:first-child){
-      margin-top: 20px;
-    }
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1.22;
+    letter-spacing: -0.022em;
+    color:lighten(black, 50%);
   }
-  h3{
-    font-size: $post-font-size+3;
-  }
-  h4{
-    font-size: $post-font-size+2;
-  }
-  h5{
-    font-size: $post-font-size+1;
-  }
-  h6{
-    font-size: $post-font-size;
+  p {
+    line-height: $post-line-height;
+    margin-top:$post-p-margin;
+    margin-bottom:$post-p-margin;
   }
   li, p {
     font-size: $post-font-size;
+    color:lighten(black, 20%);
+    font-family: georgia,"times new roman",times,serif;
   }
   li {
     margin-bottom: 10px;
@@ -164,8 +165,21 @@ $post-header-margin-bottom: 16px;
       margin-right: $post-margin-lg * -1;
     }
 
+    color: $grey-light-1;
     &:first-child {
       display: none;
+    }
+  }
+  blockquote{
+    $blockquote-bar-width: 3px;
+    padding: $post-margin-sm 0 $post-margin-sm $post-margin-sm;
+    border-left-width: $blockquote-bar-width;
+    border-color: $brand-highlight;
+    p:first-child{
+      margin-top: 0;
+    }
+    p:last-child{
+      margin-bottom: 0;
     }
   }
   pre,code {
@@ -179,7 +193,7 @@ $post-header-margin-bottom: 16px;
 }
 
 @mixin comment-like-count-style {
-  color:$grey-light-4;
+  color:$grey-light-1;
   font-size: 13px;
   font-weight: bold;
   > span {
@@ -188,8 +202,9 @@ $post-header-margin-bottom: 16px;
       margin-right: 0;
     }
     > a{
+      @include thin-fonts;
       cursor: pointer;
-      color: $grey-light-4;
+      color: $grey-light-1;
       font-size: 13px;
     }
     &.likes-count{
@@ -230,6 +245,48 @@ $post-header-margin-bottom: 16px;
   width: 32px;
   height: 32px;
   border-radius: 16px;
+}
+
+@mixin post-info {
+  .author {
+    float:left;
+    padding-top:4px;
+    .author-image{
+      @include author-image;
+    }
+  }
+
+  > ul {
+    float:left;
+    padding-left: 10px;
+    margin-bottom: 0px;
+
+    @media (min-width:$post-lg-min) {
+      padding-left: 16px; /* 10 and 16 are golden rations from 27 - the border */
+    }
+    > li {
+      color:$grey-light-1;
+      font-weight: bold;
+      @include thin-fonts;
+      list-style-type:none;
+      margin-bottom:0;
+
+      .poster-name {
+        color:$gray-dark;
+      }
+
+      .container-name{
+        color:$grey-light-1;
+      }
+
+      .live-in-info{
+        color:$grey-light-1;
+      }
+      .live-in-link{
+        cursor:pointer;
+      }
+    }
+  }
 }
 
 .angular-medium-editor {
@@ -290,6 +347,8 @@ $post-header-margin-bottom: 16px;
   margin: 0 auto;
   //max-width: $post-max-width;
 
+  text-align: left;
+
   .post {
     @include post-core;
 
@@ -302,138 +361,24 @@ $post-header-margin-bottom: 16px;
       margin-right: 0;
     }
 
-    .text {
-      &.text-standard-border {
-        @include post-padding;
-      }
-      &.text-narrow-border {
-        @include post-padding-narrow;
-      }
-      &.text-no-border {
-        @include post-padding-none;
-      }
+    .post-section-standard-border {
+      @include post-padding;
+    }
+    .post-section-narrow-border {
+      @include post-padding-narrow;
+    }
+    .post-section-no-border {
+      @include post-padding-none;
+    }
 
-      .content {
-        @include clearfix;
-        @media (max-width:$post-sm-max) {
-          padding: ($post-margin-text-vertical-sm - $post-margin-sm) 0;
-        }
-
-        img {
-          margin: 12px 0;
-        }
-
-        p{
-          margin-bottom:$p-margin-bottom;
-        }
-
-        > span:first-of-type > p:first-child {
-          margin-top: $line-height-compensation;
-
-          img {
-            margin-top: $line-height-compensation * -1;
-          }
-        }
-        > span:last-of-type > p:last-child {
-          margin-bottom: $line-height-compensation;
-
-          img {
-            margin-bottom: ($line-height-compensation * -1) + 1;
-          }
-        }
-      }
-
-      @include post-text-style;
-
-      li i {
-        font-size: 18px;
-      }
-
-      .info-actions {
-        @include vcenter;
-        clear:both;
-        margin-top: $line-height-compensation;
-        margin-bottom: $line-height-compensation;
-      }
-
-      .like-comment-actions{
-        @include vcenter;
-
-        .like-comment-buttons{
-          > span {
-            font-size: $p-font-size;
-            color:$grey-light-4;
-
-            > a{
-              cursor: pointer;
-              font-size: $p-font-size;
-              color:$grey-light-4;
-              font-weight: bold;
-            }
-
-            margin-right: 12px;
-            &:after{
-              content: '·';
-              margin-left: 12px;
-            }
-
-            &:last-child{
-              margin-right: 0;
-              &:after{
-                content: '';
-                margin-left: 0px;
-              }
-            }
-          }
-        }
-
-        .like-comment-counters{
-          > span {
-            @include comment-like-count-style;
-            float:right;
-          }
-        }
-      }
+    .info-actions {
+      @include vcenter;
+      clear:both;
+      margin-top: $line-height-compensation;
+      margin-bottom: $line-height-compensation;
 
       .info {
-        .author {
-          float:left;
-          padding-top:4px;
-          .author-image{
-            @include author-image;
-          }
-        }
-
-        > ul {
-          float:left;
-          padding-left: 10px;
-          margin-bottom: 0px;
-
-          @media (min-width:$post-lg-min) {
-            padding-left: 16px; /* 10 and 16 are golden rations from 27 - the border */
-          }
-          > li {
-            color:$grey-light-4;
-            font-weight: bold;
-            list-style-type:none;
-            margin-bottom:0;
-
-            .poster-name {
-              color:$grey-light-1;
-            }
-
-            .container-name{
-              color:$grey-light-4;
-            }
-
-            .live-in-info{
-              color:$grey-light-4;
-            }
-            .live-in-link{
-              cursor:pointer;
-            }
-          }
-        }
+        @include post-info;
       }
 
       .actions > ul {
@@ -471,9 +416,89 @@ $post-header-margin-bottom: 16px;
         @include li-cancel-first-last-spacing;
       }
     }
+
+    .post-blocks{
+      >.post-block{
+        margin-top: $post-p-margin;
+        margin-bottom: $post-p-margin;
+
+        &:first-child{
+          margin-top: 0;
+        }
+        &:last-child{
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .text {
+      @include post-left-right-padding;
+      @include post-text-style;
+    }
+
+    .post-footer-actions{
+      .like-comment-buttons{
+        > span {
+          font-size: $p-font-size;
+          color:$grey-light-1;
+
+          > a{
+            cursor: pointer;
+            font-size: $p-font-size;
+            color:$grey-light-1;
+            font-weight: bold;
+            @include thin-fonts;
+          }
+
+          margin-right: 12px;
+          &:after{
+            content: '·';
+            margin-left: 12px;
+          }
+
+          &:last-child{
+            margin-right: 0;
+            &:after{
+              content: '';
+              margin-left: 0px;
+            }
+          }
+        }
+      }
+
+      .read-more-actions{
+        > span {
+          font-size: $p-font-size;
+          color:$grey-light-1;
+
+          > a{
+            cursor: pointer;
+            font-size: $p-font-size;
+            color:$gray-dark;
+            font-weight: bold;
+            @include thin-fonts;
+          }
+
+          margin-right: 12px;
+
+          &:last-child{
+            margin-right: 0;
+          }
+        }
+      }
+
+      .like-comment-counters{
+        @include comment-like-count-style;
+        float:right;
+      }
+    }
+
+    .read-access-image{
+      cursor: pointer;
+    }
   }
 
-  .image-post {
+  .post-visual {
     @include post-visual;
   }
 
@@ -491,242 +516,22 @@ $post-header-margin-bottom: 16px;
     font-size: 18px;
     text-align: center;
   }
-
-  .preview-post{
-    @include post-core;
-    border-width: 0;
-    border-color: darken($body-bg, 20%);
-    border-bottom-color: $body-bg;
-    cursor: pointer;
-
-    .content-header-footer{
-      padding-top: $post-margin-sm;
-      padding-bottom: $post-margin-sm;
-      padding-left: $post-margin-sm;
-      padding-right: $post-margin-sm;
-    }
-
-    .full-width-image-container{
-      .vertical-aspect-ratio{
-        padding-top: 100%;
-      }
-      .background-image{
-        background-color: #DDD;
-        background-size: cover;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-
-      }
-      .foreground-content{
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        overflow: hidden;
-
-        .foreground-content-header{
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          background: rgba(255,255,255,0.5);
-
-          text-align: center;
-
-          color:$grey-dark;
-          font-size: $post-font-size;
-          font-weight: bold;
-
-          .header-info{
-            display: inline;
-            margin-left: auto;
-            margin-right: auto;
-
-            .author-image{
-              @include author-image;
-              display: inline;
-            }
-            >div{
-              padding-left: 6px;
-              display: inline;
-              text-align: left;
-              vertical-align: middle;
-              color:$grey-dark;
-              font-weight: bold;
-            }
-          }
-        }
-
-        .foreground-content-center{
-          position: absolute;
-          top: 90px;
-          bottom: 90px;
-          left: $post-margin-sm;
-          right: $post-margin-sm;
-
-          text-align: center;
-          overflow: hidden;
-
-          >.content{
-            @include post-text-style;
-            color:black;
-            h1,h2,h3,h4,h5,h6{
-              color:black;
-            }
-          }
-        }
-
-        .foreground-content-footer{
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          background: rgba(255,255,255,0.5);
-
-          text-align: center;
-
-          color:$grey-dark;
-          font-size: $post-font-size - 2;
-          font-weight: bold;
-        }
-
-        .like-comment-counters{
-          @include comment-like-count-style;
-          font-size: $post-font-size - 2;
-          color: $grey-dark;
-          margin-left: 12px;
-          > span {
-            margin-right: 6px;
-            &:last-child{
-              margin-right: 0;
-            }
-          }
-        }
-        .like-comment-counters.extra-row{
-          margin-bottom: 4px;
-        }
-      }
-    }
-  }
 }
 
+.posts:not(.tagged-posts){
+  .tag{
+    display: none;
+  }
+}
 .tagged-posts {
-  .non-image-post {
-    padding-top: 32px;
-  }
-
   .tag {
-    box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.2);
+    border: 1px solid $post-border-color;
     font-size: 12px;
-    position: absolute;
-    top:8px;
-    left:-2px;
-    border-left: 2px solid #bdbdbd;
-    border-radius: 2px;
-    background: $gray-lighter;
-    padding: 3px 6px;
-  }
-
-  .image-post .tag {
     background: #fff;
-  }
-}
-
-.queue .post {
-  cursor: move;
-  margin-bottom: 20px;
-
-  .text {
-    padding-bottom: $post-margin-lg;
-    padding-right: $reorder-menu-width + $post-margin-sm;
-    @media (min-width:$post-lg-min) {
-      padding-right: $reorder-menu-width + $post-margin-lg;
-    }
-
-    .actions {
-      cursor: pointer;
-      border-top-right-radius: $post-border-radius;
-      border-bottom-right-radius: $post-border-radius;
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      padding: 15px;
-
-      &:hover {
-        i {
-          color: $link-color;
-        }
-      }
-
-      > ul {
-        margin-top:-10px;
-        position: absolute;
-        top:50%;
-        > li {
-          margin: 0;
-          padding: 0;
-        }
-      }
-    }
-  }
-
-  .content {
-    > * {
-      display: none;
-    }
-
-    p:first-child {
-
-      max-height: $post-line-height * 3; /* Fallback for non-webkit */
-      line-height: $post-line-height; /* Fallback for non-webkit */
-      display: block; /* Fallback for non-webkit */
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .content-file {
-      display: block;
-    }
-  }
-
-  /* Display only 2 lines of comment for files, to compensate for displaying the file itself */
-  .file-post .content p:first-child {
-    max-height: $post-line-height * 2; /* Fallback for non-webkit */
-    -webkit-line-clamp: 2;
-  }
-
-  .image-post {
-    > img:first-child {
-      cursor: pointer;
-      border-radius: 0;
-      border-top-left-radius: $post-border-radius;
-      border-bottom-left-radius: $post-border-radius;
-
-      width:$queued-image-width-lg;
-      @media (max-width:$screen-s-max) {
-        width:$queued-image-width-sm;
-      }
-    }
-
-    .text {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left:$queued-image-width-lg;
-      width:100% - $queued-image-width-lg;
-      @media (max-width:$screen-s-max) {
-        left:$queued-image-width-sm;
-        width:100% - $queued-image-width-sm;
-      }
-    }
+    padding: 3px 6px;
+    position: absolute;
+    top:-1px;
+    right:-1px;
   }
 }
 
@@ -805,6 +610,40 @@ $post-header-margin-bottom: 16px;
 
     .vertical-aspect-ratio{
       padding-top: 0;
+    }
+  }
+}
+
+.full-post-dialog {
+
+  #close-post-button {
+    margin: 15px auto;
+  }
+
+  .modal-title {
+    @include clearfix;
+
+    padding: 14px 18px;
+
+    .fa-close{
+      font-size: 24px;
+      margin-top: 8px;
+    }
+    .info {
+      @include post-info;
+    }
+  }
+
+  .full-post-container {
+    max-width:$content-max-width;
+    padding: 0;
+
+    .post {
+      margin: 0;
+      border: 0;
+    }
+    .post-buttons-container {
+      text-align: center;
     }
   }
 }

@@ -5,6 +5,7 @@
   font-weight:bold;
   height:$button-height-base;
   border-radius: $input-border-radius;
+  @include thin-fonts;
 }
 
 .btn-default {
@@ -217,6 +218,13 @@ input[type="button"].btn-block,
 }
 
 .btn-file-download {
+  &:hover {
+    color: $link-color;
+  }
+}
+
+.file-content {
+  color: $link-color;
   position: relative;
   display: block;
   float:left;
@@ -227,8 +235,5 @@ input[type="button"].btn-block,
     right: -21px;
     top:-2px;
     font-size:17px;
-  }
-  &:hover {
-    color: $link-color;
   }
 }

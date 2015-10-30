@@ -1,0 +1,102 @@
+<div class="full-post-dialog">
+  <div class="modal-title" id="modal-title">
+    <a id="post-cross-button" class="btn-close" href ng-click="$close()">
+      <i class="fa fa-close"></i>
+    </a>
+    <div class="info">
+      <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})">
+        <img class="author-image" ng-if="post.creator.profileImage" ng-src="{{post.creator.profileImage.resolvedUri}}" />
+        <img class="author-image" ng-if="!post.creator.profileImage" ng-src="{{fifthweekConstants.defaultProfileImageUrl}}" />
+      </a>
+      <ul ng-if="!post">
+        <li>Loading Post...</li>
+      </ul>
+      <ul ng-if="post">
+        <li>
+          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.blog.name}}</a>
+        </li>
+        <li>
+          <span ng-if="!post.isScheduled">Posted to </span>
+          <span ng-if="post.isScheduled">Live in </span>
+          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
+            {{post.channel.name}}
+          </a>
+          <a ng-if="post.isOwner" ng-click="editPost(post)" class="live-in-info live-in-link">{{post.liveIn}}</a>
+          <span ng-if="!post.isOwner" class="live-in-info">{{post.liveIn}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div ng-if="model.isLoading" class="updating-area">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+
+  <div class="posts full-post-container">
+    <div data-live-date="{{post.liveDate}}" class="post timeline-post" ng-if="post">
+
+      <div class="post-blocks">
+        <div ng-repeat="block in post.blocks" class="post-block">
+
+          <div ng-if="block.type === 'text'" class="text">
+            <span fw-markdown ng-model="block.data.text"></span>
+          </div>
+
+          <div ng-if="block.type === 'file'" class="text">
+            <p>
+              <span ng-if="!post.readAccess" class="file-content">{{block.source.fileName}}.{{block.source.fileExtension}}</span>
+              <a ng-if="post.readAccess" class="btn-file-download file-content" ng-click="openFile(post.file)">
+                {{block.source.fileName}}.{{block.source.fileExtension}}
+              </a>
+              <span class="file-size">{{block.source.readableSize}}</span>
+            </p>
+          </div>
+
+          <div ng-if="block.type === 'image'" class="post-visual">
+            <div class="full-width-image-container" ng-style="block.renderSizeMaximumWidth ? { 'max-width': block.renderSizeMaximumWidth + 'px' } : {}">
+              <div ng-style="{'padding-top': block.renderSizeRatio}"></div>
+              <img class="full-width-image" ng-class="{'read-access-image': post.readAccess}" ng-if="block.information" ng-src="{{block.information.resolvedUri}}" ng-click="post.readAccess && viewImage(block.information, block.source)" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="post-footer-actions post-section-narrow-border">
+        <span class="like-comment-buttons" ng-if="post.readAccess">
+          <span>
+            <a ng-click="toggleLikePost(post)">{{post.hasLiked ? 'Unlike' : 'Like'}}</a>
+          </span>
+          <span>
+            <a ng-click="commentOnPost(post)">Comment</a>
+          </span>
+        </span>
+        <span class="like-comment-buttons" ng-if="!post.readAccess">
+          <span>
+            <a ng-click="viewComments(post)">View Comments</a>
+          </span>
+        </span>
+        <span class="like-comment-counters">
+          <span class="likes-count" ng-class="{ 'has-liked': post.hasLiked, 'has-not-liked': !post.hasLiked }">
+            {{post.likesCount}}
+          </span>
+          <span class="comments-count">
+            {{post.commentsCount}}
+          </span>
+        </span>
+      </div>
+
+      <hr />
+
+    </div>
+
+    <fw-error-message value="model.errorMessage"></fw-error-message>
+
+    <div class="post-buttons-container">
+      <button id="close-post-button"
+              class="btn btn-block btn-success"
+              ng-click="$close()">Close</button>
+    </div>
+  </div>
+</div>

@@ -82,6 +82,7 @@ $html-name-space:'.info-page';
       margin-bottom: 0;
       text-align: left;
       font-weight: bold;
+      @include thin-fonts;
 
       &.active > a {
         color: $grey-dark;
@@ -106,6 +107,7 @@ $html-name-space:'.info-page';
 
       > .active > a {
         font-weight: bold;
+        @include thin-fonts;
         background: $white-1;
         color: $grey-dark;
       }
@@ -121,6 +123,7 @@ $html-name-space:'.info-page';
         margin-left: 5px;
         color:#fff;
         font-weight: bold;
+        @include thin-fonts;
       }
 
       &.btn-navbar-register {
@@ -284,6 +287,7 @@ $html-name-space:'.info-page';
     padding:18px 22px;
     border-radius: $border-radius;
     font-weight: bold;
+    @include thin-fonts;
     font-size: 18px;
     &:hover {
       text-decoration: none;
@@ -627,8 +631,10 @@ $html-name-space:'.info-page';
 
   .info-page-box-dark, .info-page-box-dark-2, .info-page-box-dark-3, .info-page-box-footer {
     color:#fff;
+    @include thin-fonts;
     h1, h2, h3, a {
       color:#fff;
+      @include thin-fonts;
     }
   }
 
@@ -942,6 +948,7 @@ $html-name-space:'.info-page';
     h3 {
       font-size: 21px;
       font-weight: bold;
+      @include thin-fonts;
       padding-top: 15px;
       margin-bottom: 20px;
     }
@@ -1060,5 +1067,20 @@ $html-name-space:'.info-page';
 
   .info-page-box-bottom-shadow {
     border-bottom: 1px solid $gray-lighter;
+  }
+
+  .info-page-posts {
+    background: white;
+    padding-bottom: 20px;
+    padding-left: $main-cont-padding-small;
+    padding-right: $main-cont-padding-small;
+
+    .info-page-posts-center{
+      >h2 {
+        padding: 30px 0;
+      }
+      max-width:$content-max-width;
+      margin: 0 auto;
+    }
   }
 }

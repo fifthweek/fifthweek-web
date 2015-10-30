@@ -8,6 +8,11 @@
     margin-bottom: 12px;
   }
 
+  .no-comments-message{
+    text-align: center;
+    padding: 20px;
+  }
+
   .comment{
     font-size: $p-font-size;
 
@@ -19,7 +24,6 @@
       margin-left: 0;
       margin-right: 0;
     }
-
     .comment-number{
       color: $grey-light-1;
     }

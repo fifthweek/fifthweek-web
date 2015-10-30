@@ -1,4 +1,4 @@
-<div class="posts" ng-class="{ 'tagged-posts': source ===  sources.creatorBacklog }">
+<div class="posts" ng-class="{ 'tagged-posts': source !== sources.timeline || userId }">
 
   <fw-post-list-information source="{{source}}" user-id="{{userId}}"></fw-post-list-information>
 
@@ -43,7 +43,12 @@
     </fw-panel12>
   </div>
 
-  <div ng-if="source !== sources.preview"
+
+  <div ng-repeat="post in model.posts track by post.postId"
+       ng-include="'modules/posts/post.html'"
+       id="post-{{$index}}"></div>
+
+  <!--div ng-if="source !== sources.preview"
        ng-repeat="post in model.posts track by post.postId"
        ng-include="'modules/posts/post.html'"
        id="post-{{$index}}"></div>
@@ -53,6 +58,6 @@
     <div class="col-sm-6"
          ng-repeat="post in model.posts track by post.postId"
          ng-include="'modules/posts/post-preview.html'"
-         id="preview-post-{{$index}}"></div>
+         id="preview-post-{{$index}}"></div-->
   </div>
 </div>

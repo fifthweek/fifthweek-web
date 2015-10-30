@@ -1,11 +1,12 @@
 angular.module('webApp')
   .controller('commentsDialogCtrl',
-  function($scope, postId, updateCommentsCount, postStub, initializer, errorFacade) {
+  function($scope, postId, isCommenting, updateCommentsCount, postStub, initializer, errorFacade) {
     'use strict';
 
     var model = {
       errorMessage: undefined,
       isLoading: false,
+      isCommenting: isCommenting,
       comments: [],
       input: {
         comment: ''
@@ -53,7 +54,7 @@ angular.module('webApp')
 
     $scope.saveComment = function(){
       model.errorMessage = undefined;
-      return postStub.postComment(postId, { content: model.input.comment })
+      return postStub.postComment(postId, { content: model.input.comment.previewText })
         .then(function(){
           model.input.comment = '';
           $scope.commentOnPostForm.$setPristine();

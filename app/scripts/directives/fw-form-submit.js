@@ -1,6 +1,10 @@
 // See: https://gist.github.com/thisboyiscrazy/5137781#comment-838257
-angular.module('webApp').directive('fwFormSubmit',
-  function ($q, wrapUserAction) {
+angular.module('webApp')
+  .constant('formConstants', {
+    formSubmittingEvent: 'formSubmitting'
+  })
+  .directive('fwFormSubmit',
+  function ($q, wrapUserAction, $rootScope, formConstants) {
   'use strict';
 
   return {
@@ -34,6 +38,8 @@ angular.module('webApp').directive('fwFormSubmit',
       element.bind('click', function() {
 
         form.hasAttemptedSubmit = true;
+
+        $rootScope.$broadcast(formConstants.formSubmittingEvent);
 
         if (!canSubmit()) {
           return $q.when();

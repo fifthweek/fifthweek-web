@@ -7,10 +7,10 @@
 .modal-content {
   //border-radius: $border-radius;
   //@include modal-box-shadow;
-  border: 0;
+  border: 1px solid black;
   border-radius: 0;
 
-  h4 {
+  h4,.modal-title {
     font-size:15px;
     background: $body-bg;
     border-bottom: 1px solid $grey-light-3;
@@ -82,10 +82,19 @@
     margin:10px auto;
   }
 }
+
+.modal-lg {
+  width: auto;
+  max-width: none;
+  @media (min-width:$screen-sm-min) {
+    margin: 10px;
+  }
+}
+
 .modal-backdrop.in {
   position:fixed;
   height:100%;
-  opacity:0.4;
+  opacity:0.75;
 }
 
 .modal.fade .modal-dialog {

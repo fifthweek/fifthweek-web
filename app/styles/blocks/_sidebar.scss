@@ -81,6 +81,7 @@ body:not(.navigation-hidden) {
         }
       }
       &.active {
+        @include thin-fonts;
         color:$white-1;
         background:$brand-highlight;
         i {

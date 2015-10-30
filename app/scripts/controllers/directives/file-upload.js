@@ -2,12 +2,11 @@ angular.module('webApp')
   .controller('fileUploadCtrl', function ($scope, $q, fileUploadStub, azureBlobUpload, utilities, logService) {
     'use strict';
 
-    var callUploadCompleteCallback = function(data){
+    var callCallback = function(callback, data){
       try
       {
-        var onUploadComplete = $scope.onUploadComplete;
-        if (_.isFunction(onUploadComplete)) {
-          onUploadComplete({
+        if (_.isFunction(callback)) {
+          callback({
             data: data
           });
         }
@@ -17,6 +16,13 @@ angular.module('webApp')
         logService.error(error);
         return $q.when();
       }
+    };
+    var callUploadCompleteCallback = function(data){
+      return callCallback($scope.onUploadComplete, data);
+    };
+
+    var callUploadStartedCallback = function(data){
+      return callCallback($scope.onUploadStarted, data);
     };
 
     var reportProgress = function(percentageComplete){
@@ -61,11 +67,13 @@ angular.module('webApp')
     var performUpload = function(file)
     {
       var fileData;
-      return fileUploadStub
-        .postUploadRequest({
-          filePath: file.name,
-          channelId: $scope.channelId,
-          purpose: $scope.filePurpose
+      return callUploadStartedCallback()
+        .then(function(){
+          return fileUploadStub.postUploadRequest({
+            filePath: file.name,
+            channelId: $scope.channelId,
+            purpose: $scope.filePurpose
+          });
         })
         .then(function(response){
           fileData = response.data;

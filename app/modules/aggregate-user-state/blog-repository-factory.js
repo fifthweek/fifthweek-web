@@ -95,6 +95,15 @@ angular.module('webApp')
           });
         };
 
+        service.tryGetBlogMap = function() {
+          if(!masterRepository.getUserId())
+          {
+            return $q.when();
+          }
+
+          return service.getBlogMap();
+        };
+
         service.updateChannels = function(applyChanges) {
           return masterRepository.update(channelsKey, applyChanges);
         };

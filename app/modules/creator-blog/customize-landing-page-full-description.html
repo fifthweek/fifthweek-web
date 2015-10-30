@@ -25,11 +25,14 @@
     <label for="description">Full Description</label>
     <div class="row">
       <div class="col-xs-12">
-        <fw-markdown-editor maxlength="50000"
-                            ng-model="model.settings.description"
-                            editor-id="description"
-                            name="description"
-                            placeholder="This is where you can really sell your content... tell everyone why they need to subscribe."></fw-markdown-editor>
+        <fw-form-input-comment
+          ng-model="model.settings.description"
+          placeholder="This is where you can really sell your content... tell everyone why they need to subscribe."
+          input-id="description"
+          name="description"
+          required
+          focus>
+        </fw-form-input-comment>
       </div>
     </div>
   </fw-form-group>

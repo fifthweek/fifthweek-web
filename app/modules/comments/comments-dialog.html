@@ -15,7 +15,7 @@
     </div>
 
     <div ng-if="!model.isLoading && !model.errorMessage">
-      <div class="modal-body">
+      <div class="modal-body" ng-if="model.isCommenting">
         <fw-form-input-comment
           ng-model="model.input.comment"
           placeholder="Add a comment, if you like"
@@ -33,6 +33,10 @@
                 fw-form-submit="saveComment()">
           Add Comment
         </button>
+      </div>
+
+      <div class="no-comments-message" ng-if="!model.comments || !model.comments.length">
+        <p>No comments yet.</p>
       </div>
 
       <div ng-repeat="comment in model.comments track by comment.commentId" class="comment" id="comment-{{$index}}">

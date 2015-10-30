@@ -40,15 +40,23 @@ angular.module('webApp')
       return accessSignaturesCache.getSignatures()
         .then(function(data){
 
-          var result = {};
-          result[data.publicSignature.containerName] = data.publicSignature;
+          var containerNameResult = {};
+          containerNameResult[data.publicSignature.containerName] = data.publicSignature;
 
-          result = _.reduce(data.privateSignatures, function(signatures, item){
+          containerNameResult = _.reduce(data.privateSignatures, function(signatures, item){
             signatures[item.information.containerName] = item.information;
             return signatures;
-          }, result);
+          }, containerNameResult);
 
-          return $q.when(result);
+          var channelIdResult = _.reduce(data.privateSignatures, function(signatures, item){
+            signatures[item.channelId] = item.information;
+            return signatures;
+          }, {});
+
+          return $q.when({
+            containerName: containerNameResult,
+            channelId: channelIdResult
+          });
         });
     };
 

@@ -81,7 +81,7 @@ describe('fw-markdown-editor-controller', function(){
         });
 
         it('should save rendered markdown to scope', function(){
-          expect($scope.htmlValue).toBe('');
+          expect($scope.stValue).toBe('');
         });
       });
 
@@ -100,7 +100,7 @@ describe('fw-markdown-editor-controller', function(){
         });
 
         it('should save rendered markdown to scope', function(){
-          expect($scope.htmlValue).toBe(undefined);
+          expect($scope.stValue).toBe(undefined);
         });
       });
 
@@ -120,7 +120,7 @@ describe('fw-markdown-editor-controller', function(){
         });
 
         it('should save rendered markdown to scope', function(){
-          expect($scope.htmlValue).toBe('html-value');
+          expect($scope.stValue).toBe('html-value');
         });
       });
     });
@@ -136,7 +136,7 @@ describe('fw-markdown-editor-controller', function(){
 
       describe('when htmlValue is empty', function(){
         beforeEach(function(){
-          $scope.htmlValue = '';
+          $scope.stValue = '';
           target.internal.setViewValue();
         });
 
@@ -155,7 +155,7 @@ describe('fw-markdown-editor-controller', function(){
 
       describe('when htmlValue is undefined', function(){
         beforeEach(function(){
-          $scope.htmlValue = undefined;
+          $scope.stValue = undefined;
           target.internal.setViewValue();
         });
 
@@ -174,7 +174,7 @@ describe('fw-markdown-editor-controller', function(){
 
       describe('when htmlValue has content', function(){
         beforeEach(function(){
-          $scope.htmlValue = 'html-value';
+          $scope.stValue = 'html-value';
           markdownService.createMarkdown.and.returnValue('markdown-value');
           target.internal.setViewValue();
         });

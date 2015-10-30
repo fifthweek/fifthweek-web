@@ -6,11 +6,12 @@ body {
   color:$grey-dark;
 }
 
-* {
+@mixin thin-fonts {
   /* Must be assign at element-level for Safari, otherwise it uses its own smoothing settings */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 
 h1, .h1,
 h2, .h2,
@@ -151,7 +152,7 @@ hr {
   margin:15px 0 20px 0;
   border:{
     width:1px;
-    color:$grey-light-3;
+    color:$gray-light;
   }
 }
 

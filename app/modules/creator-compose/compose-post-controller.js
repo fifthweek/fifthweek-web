@@ -1,5 +1,5 @@
 angular.module('webApp').controller('composePostCtrl',
-  function($q, $state, $scope, postStub, blobImageControlFactory, initializer, composeUtilities, blogRepositoryFactory, errorFacade) {
+  function($q, $state, $scope, postStub, initializer, composeUtilities, blogRepositoryFactory, errorFacade) {
     'use strict';
 
     var blogRepository = blogRepositoryFactory.forCurrentUser();
@@ -13,11 +13,9 @@ angular.module('webApp').controller('composePostCtrl',
       committedChannel: undefined,
       channels: [],
       queues: [],
-      processingImage: false,
+      isProcessing: false,
       input: {
-        fileId: undefined,
-        imageId: undefined,
-        comment: '',
+        content: '',
         selectedQueue: undefined,
         date: ''
       },
@@ -28,25 +26,6 @@ angular.module('webApp').controller('composePostCtrl',
 
     var internal = this.internal = {
       cancelWatch: undefined
-    };
-
-    $scope.blobImage = blobImageControlFactory.createControl();
-
-    internal.onBlobImageUpdateComplete = function(){
-      model.processingImage = false;
-    };
-
-    $scope.onImageUploadComplete = function(data) {
-      model.imageUploaded = true;
-      model.input.imageId = data.fileId;
-      model.processingImage = true;
-      $scope.blobImage.update(data.containerName, data.fileId, false, internal.onBlobImageUpdateComplete);
-    };
-
-    $scope.onFileUploadComplete = function(data) {
-      model.fileUploaded = true;
-      model.input.fileId = data.fileId;
-      $scope.fileName = data.file.name;
     };
 
     $scope.commitChannel = function(channel){
@@ -80,7 +59,7 @@ angular.module('webApp').controller('composePostCtrl',
     };
 
     internal.post = function(data){
-      if(!data.fileId && !data.imageId && !data.comment){
+      if(!data.content){
         model.errorMessage = 'Please provide some content.';
         return $q.when();
       }
@@ -94,31 +73,45 @@ angular.module('webApp').controller('composePostCtrl',
         });
     };
 
-    $scope.postNow = function() {
-      var data = {
+    internal.getPostData = function(){
+      var sourceData = model.input.content;
+      return {
         channelId: model.committedChannel.channelId,
-        fileId: model.input.fileId,
-        imageId: model.input.imageId,
-        comment: model.input.comment
+        content: sourceData.serializedBlocks,
+        fileIds: _.map(sourceData.files, 'fileId'),
+        imageCount: sourceData.imageCount,
+        fileCount: sourceData.fileCount,
+        previewWordCount: sourceData.previewWordCount,
+        wordCount: sourceData.wordCount,
+        previewText: sourceData.previewText,
+        previewImageId: sourceData.previewImageId
       };
+    };
+
+    $scope.postNow = function() {
+      var data = internal.getPostData();
 
       return internal.post(data);
     };
 
     $scope.postToBacklog = function() {
-      var data = {
-        channelId: model.committedChannel.channelId,
-        fileId: model.input.fileId,
-        imageId: model.input.imageId,
-        comment: model.input.comment,
-        scheduledPostTime: model.postToQueue ? undefined : model.input.date,
-        queueId: model.postToQueue ? model.input.selectedQueue.queueId : undefined
-      };
+      var data = internal.getPostData();
+
+      data.scheduledPostTime = model.postToQueue ? undefined : model.input.date;
+      data.queueId = model.postToQueue ? model.input.selectedQueue.queueId : undefined;
 
       return internal.post(data);
     };
 
+    internal.watchForBusyBlocks = function(){
+      $scope.$watch('model.input.content', function(){
+        model.isProcessing = model.input.content && !!model.input.content.busyBlockCount;
+      });
+    };
+
     internal.initialize = function(){
+      internal.watchForBusyBlocks();
+
       return blogRepository.getChannelsSorted()
         .then(function(channels){
           model.channels = channels;

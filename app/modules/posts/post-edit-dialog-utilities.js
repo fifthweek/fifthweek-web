@@ -36,12 +36,23 @@ angular.module('webApp').factory('postEditDialogUtilities',
       return false;
     };
 
+    service.internal.getPostData = function(model){
+      var sourceData = model.input.content;
+      return {
+        content: sourceData.serializedBlocks,
+        fileIds: _.map(sourceData.files, 'fileId'),
+        imageCount: sourceData.imageCount,
+        fileCount: sourceData.fileCount,
+        previewWordCount: sourceData.previewWordCount,
+        wordCount: sourceData.wordCount,
+        previewText: sourceData.previewText,
+        previewImageId: sourceData.previewImageId
+      };
+    };
+
     service.internal.saveContent = function(postId, model){
-      return postStub.putPost(postId, {
-        imageId: model.input.image ? model.input.image.fileId : undefined,
-        fileId: model.input.file ? model.input.file.fileId : undefined,
-        comment: model.input.comment
-      });
+      var postData = service.internal.getPostData(model);
+      return postStub.putPost(postId, postData);
     };
 
     service.internal.saveSchedule = function(postId, model){
@@ -85,14 +96,19 @@ angular.module('webApp').factory('postEditDialogUtilities',
         });
     };
 
-    service.applyChangesToPost = function(post, model){
-      post.comment = model.input.comment;
+    service.applyChangesToPost = function(post, model, accountSettingsRepository, blogRepository, subscriptionRepository){
+      post.previewText = model.input.content.previewText;
 
-      post.file = model.input.file;
-      post.fileSource = model.input.fileSource;
-
-      post.image = model.input.image;
-      post.imageSource = model.input.imageSource;
+      var previewImageId = model.input.content.previewImageId;
+      if(previewImageId){
+        var file = _.find(model.input.content.files, { fileId: previewImageId });
+        post.image = { fileId: file.fileId, containerName: file.containerName };
+        post.imageSource = { renderSize: file.renderSize };
+      }
+      else{
+        post.image = undefined;
+        post.imageSource = undefined;
+      }
 
       // When requesting posts from the API, backlog posts
       // have a queueId property where as timeline
@@ -122,7 +138,20 @@ angular.module('webApp').factory('postEditDialogUtilities',
         }
       }
 
-      return postUtilities.processPostForRendering(post);
+      return postUtilities.processPostForRendering(post, accountSettingsRepository, blogRepository, subscriptionRepository);
+    };
+
+    service.getFullPost = function(postId, accountSettingsRepository, blogRepository, subscriptionRepository){
+      var post;
+      return postStub.getPost(postId)
+        .then(function(result) {
+          post = result.data.post;
+          post.files = result.data.files;
+          return postUtilities.processPostForRendering(post, accountSettingsRepository, blogRepository, subscriptionRepository);
+        })
+        .then(function(){
+          return post;
+        });
     };
 
     return service;

@@ -1,7 +1,7 @@
 @import '_base';
 
 @mixin snap-includes {
-  html,
+  //html, // Removed HTML as it causes the body to scroll when modal is open.
   body {
     margin: 0;
     padding: 0;
@@ -90,7 +90,7 @@
   }
 }
 
-@media (max-width:$screen-sm-max) {
+@media (max-width: $screen-sm-max) {
   @include snap-includes;
 }
 

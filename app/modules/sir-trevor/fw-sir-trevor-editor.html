@@ -1,0 +1,12 @@
+<fw-error-message value="model.errorMessage"></fw-error-message>
+
+<div ng-if="isLoading" class="updating-area">
+  <i class="fa fa-refresh fa-spin"></i>
+</div>
+
+<div ng-if="!isLoading" id="{{editorId}}" ng-class="{'text-only-editor':textOnly}">
+  <textarea class="js-st-instance">{{sirTrevorValue}}</textarea>
+  <p class="light-grey" ng-if="!maxlength || remaining > 100">Select text for formatting options.</p>
+  <p class="light-grey" ng-if="maxlength && remaining >= 0 && remaining <= 100">{{remaining}} character{{remaining === 1 ? '' : 's'}} remaining</p>
+  <p class="help-block help-block" ng-if="maxlength && remaining < 0">Too long by {{-remaining}} character{{remaining === 1 ? '' : 's'}}</p>
+</div>

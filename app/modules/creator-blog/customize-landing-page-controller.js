@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'customizeLandingPageCtrl',
-  function($scope, $q, $state, states, blogRepositoryFactory, aggregateUserStateUtilities, blogStub, errorFacade, blobImageControlFactory) {
+  function($scope, $q, $state, states, blogRepositoryFactory, aggregateUserStateUtilities, jsonService, blogStub, errorFacade, blobImageControlFactory) {
     'use strict';
 
     var model = {
@@ -16,6 +16,8 @@ angular.module('webApp').controller(
       return blogRepository.getBlog()
         .then(function(data){
           model.settings = data;
+
+          model.settings.description = {serializedBlocks: jsonService.toJson([{type: 'text', data: {text: model.settings.description }}])};
 
           model.username = aggregateUserStateUtilities.getUsername();
           model.landingPageUrl = 'https://www.fifthweek.com/' + model.username;
@@ -57,12 +59,14 @@ angular.module('webApp').controller(
         introduction: model.settings.introduction,
         headerImageFileId: fileId,
         video: model.settings.video ? model.settings.video : undefined,
-        description: model.settings.description
+        description: model.settings.description.previewText
       };
 
       return blogStub.putBlog(model.settings.blogId, blogData)
         .then(function() {
-          return blogRepository.setBlog(model.settings);
+          var settingsCopy = _.cloneDeep(model.settings);
+          settingsCopy.description = blogData.description;
+          return blogRepository.setBlog(settingsCopy);
         })
         .then(function(){
           $scope.form.$setPristine();

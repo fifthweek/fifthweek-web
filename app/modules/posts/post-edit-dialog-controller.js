@@ -7,103 +7,108 @@ angular.module('webApp')
     }
   })
   .controller('postEditDialogCtrl',
-  function($scope, $q, post, postEditDialogConstants, composeUtilities, blobImageControlFactory, postEditDialogUtilities, errorFacade, initializer, blogRepositoryFactory) {
+  function($scope, $q, postId, postEditDialogConstants, composeUtilities, blobImageControlFactory, postEditDialogUtilities, errorFacade, initializer, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory) {
     'use strict';
 
     var blogRepository = blogRepositoryFactory.forCurrentUser();
+    var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
+    var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
     var areDatesEqual = function(a, b){
       // http://stackoverflow.com/a/15470800
       return a === b || a - b === 0;
     };
 
-    // Clone this immediately so we can't accidentally modify it.
-    post = _.cloneDeep(post);
-    delete post.moment; // The moment can't be used after cloning, and we don't need it.
+    var internal = this.internal = {};
+    var model = $scope.model = {};
 
     var scheduleModes = postEditDialogConstants.scheduleModes;
-
-    var scheduleMode = scheduleModes.now;
-    if(post.isScheduled){
-      if(post.queueId){
-        scheduleMode = scheduleModes.queued;
-      }
-      else{
-        scheduleMode = scheduleModes.scheduled;
-      }
-    }
-
-    var liveDate = new Date(post.liveDate);
-    var roundedLiveDate = new Date(post.liveDate);
-    roundedLiveDate.setUTCSeconds(0, 0);
-
-    var model = {
-      savedScheduleMode: scheduleMode,
-      savedDate: liveDate,
-      queuedLiveDate: undefined,
-      channelId: post.channelId,
-      processingImage: false,
-      input: {
-        comment: post.comment,
-        image: post.image,
-        imageSource: post.imageSource,
-        file: post.file,
-        fileSource: post.fileSource,
-        date: roundedLiveDate,
-        scheduleMode: scheduleMode
-      }
-    };
-
-    var internal = this.internal = {};
-    $scope.model = model;
     $scope.scheduleModes = scheduleModes;
-    $scope.blobImage = blobImageControlFactory.createControl();
-
-    internal.onBlobImageUpdateComplete = function(data){
-      model.processingImage = false;
-      model.input.imageSource.renderSize = data.renderSize;
-    };
-
-    $scope.onImageUploadComplete = function(data) {
-      var fileInformation = postEditDialogUtilities.getFileInformation(data);
-      model.input.image = fileInformation.file;
-      model.input.imageSource = fileInformation.fileSource;
-      model.processingImage = true;
-      $scope.blobImage.update(data.containerName, data.fileId, false, internal.onBlobImageUpdateComplete);
-      $scope.editPostForm.$setDirty();
-    };
-
-    $scope.onFileUploadComplete = function(data) {
-      var fileInformation = postEditDialogUtilities.getFileInformation(data);
-      model.input.file = fileInformation.file;
-      model.input.fileSource = fileInformation.fileSource;
-      $scope.editPostForm.$setDirty();
-    };
 
     $scope.save = function(){
-      return postEditDialogUtilities.performSave(post.postId, model)
+      return postEditDialogUtilities.performSave(postId, model)
         .then(function() {
-          return postEditDialogUtilities.applyChangesToPost(post, model);
+          return postEditDialogUtilities.applyChangesToPost(internal.post, model, accountSettingsRepository, blogRepository, subscriptionRepository);
         })
         .then(function(){
-          $scope.$close(post);
+          $scope.$close(internal.post);
         });
     };
 
-    this.initialize = function(){
-
-      $scope.$watch('model.input.date', function(newValue, oldValue){
-        if(!areDatesEqual(newValue, oldValue)){
-          model.input.scheduleMode = scheduleModes.scheduled;
+    internal.createModelFromPost = function(post){
+      var scheduleMode = scheduleModes.now;
+      if(post.isScheduled){
+        if(post.queueId){
+          scheduleMode = scheduleModes.queued;
         }
-      });
+        else{
+          scheduleMode = scheduleModes.scheduled;
+        }
+      }
 
-      return blogRepository.getQueuesSorted()
+      var liveDate = new Date(post.liveDate);
+      var roundedLiveDate = new Date(post.liveDate);
+      roundedLiveDate.setUTCSeconds(0, 0);
+
+      return {
+        savedScheduleMode: scheduleMode,
+        savedDate: liveDate,
+        queuedLiveDate: undefined,
+        channelId: post.channelId,
+        isProcessing: false,
+        input: {
+          comment: post.comment,
+          image: post.image,
+          imageSource: post.imageSource,
+          file: post.file,
+          fileSource: post.fileSource,
+          date: roundedLiveDate,
+          scheduleMode: scheduleMode
+        }
+      };
+    };
+
+    internal.watchForBusyBlocks = function(){
+      $scope.$watch('model.input.content', function(){
+        model.isProcessing = model.input.content && !!model.input.content.busyBlockCount;
+      });
+    };
+
+    this.initialize = function(){
+      model.isLoading = true;
+      return postEditDialogUtilities.getFullPost(postId, accountSettingsRepository, blogRepository, subscriptionRepository)
+        .then(function(post){
+          model = $scope.model = internal.createModelFromPost(post);
+          internal.post = post;
+
+          $scope.$watch('model.input.date', function(newValue, oldValue){
+            if(!areDatesEqual(newValue, oldValue)){
+              model.input.scheduleMode = scheduleModes.scheduled;
+            }
+          });
+
+          internal.watchForBusyBlocks();
+
+          model.input.content = {
+            serializedBlocks: post.content,
+            files: _.map(post.files, function(file){
+              return {
+                fileId: file.information.fileId,
+                containerName: file.information.containerName,
+                renderSize: file.source.renderSize,
+                fileName: file.source.fileName + '.' + file.source.fileExtension,
+                fileSize: file.source.size
+              };
+            })
+          };
+
+          return blogRepository.getQueuesSorted();
+        })
         .then(function(queues){
           model.queues = queues;
           if(queues.length > 0){
-            if(post.queueId){
-              model.input.selectedQueue = _.find(model.queues, {queueId: post.queueId});
+            if(internal.post.queueId){
+              model.input.selectedQueue = _.find(model.queues, {queueId: internal.post.queueId});
             }
             else{
               model.input.selectedQueue = queues[0];
@@ -119,10 +124,16 @@ angular.module('webApp')
             return composeUtilities.updateEstimatedLiveDate(model);
           }
         })
+        .then(function(){
+          model.showContent = true;
+        })
         .catch(function(error){
           return errorFacade.handleError(error, function(message) {
-            $scope.model.errorMessage = message;
+            model.errorMessage = message;
           });
+        })
+        .finally(function(){
+          model.isLoading = false;
         });
     };
 

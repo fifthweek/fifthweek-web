@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-xs-12" ng-show="model.fileUploaded">
+    <p class="file-name">{{model.fileData.fileName}}</p>
+  </div>
+  <div class="col-s-5 bottom-buffer">
+    <fw-file-upload id-prefix="file" channel-id="{{channelId}}" description="{{model.fileUploaded ? 'Change File' : 'Add File'}}"
+                    on-upload-started="onUploadStarted()"
+                    on-upload-complete="onUploadComplete(data)"
+                    file-purpose="post-file" accept=""></fw-file-upload>
+  </div>
+</div>

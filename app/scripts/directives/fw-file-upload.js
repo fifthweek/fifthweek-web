@@ -3,6 +3,7 @@ angular.module('webApp').directive('fwFileUpload', function () {
 
     return {
       scope: {
+        onUploadStarted: '&?',
         onUploadComplete: '&',
         description: '@',
         idPrefix: '@?',

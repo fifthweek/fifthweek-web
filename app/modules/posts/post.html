@@ -1,110 +1,107 @@
-<div data-live-date="{{post.liveDate}}" class="post timeline-post" ng-class="{'non-image-post': !post.image, 'image-post': post.image}">
-
-  <div ng-if="post.image && post.renderSizeRatio" class="full-width-image-container" ng-style="post.renderSizeMaximumWidth ? { 'max-width': post.renderSizeMaximumWidth + 'px' } : {}">
-    <div ng-style="{'padding-top': post.renderSizeRatio}"></div>
-    <img class="full-width-image" ng-if="post.image" ng-src="{{post.image.resolvedUri}}" ng-click="viewImage(post.image, post.imageSource)" />
+<div data-live-date="{{post.liveDate}}" class="post timeline-post">
+  <div class="row info-actions post-section-narrow-border">
+    <div class="col-xs-10 info">
+      <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})">
+        <img class="author-image" ng-src="{{post.creator.profileImage ? post.creator.profileImage.resolvedUri : fifthweekConstants.defaultProfileImageUrl}}" />
+      </a>
+      <ul>
+        <li>
+          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.blog.name}}</a>
+        </li>
+        <li>
+          <span ng-if="!post.isScheduled">Posted to </span>
+          <span ng-if="post.isScheduled">Live in </span>
+          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
+            {{post.channel.name}}
+          </a>
+          <a ng-if="post.isOwner" ng-click="editPost(post)" class="live-in-info live-in-link">{{post.liveIn}}</a>
+          <span ng-if="!post.isOwner" class="live-in-info">{{post.liveIn}}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-xs-2 actions" ng-if="post.isOwner">
+      <ul>
+        <li class="actions-more">
+          <span class="dropdown" dropdown on-toggle="toggled(open)">
+            <button class="dropdown-toggle" dropdown-toggle>
+              <i class="fa fa-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a ng-click="editPost(post)">Edit</a></li>
+              <li ng-if="post.isScheduled && post.scheduledByQueue"><a ng-click="post.reorder()">Reorder</a></li>
+              <li>
+                <fw-delete-link
+                  item-type="Post"
+                  event-title="Post deleted"
+                  event-category="{{sourceName}}"
+                  delete="deletePost(post.postId)">
+                  Delete
+                </fw-delete-link>
+              </li>
+            </ul>
+          </span>
+        </li>
+      </ul>
+    </div>
   </div>
-  <img ng-if="post.image && !post.renderSizeRatio" class="full-width-image" ng-src="{{post.image.resolvedUri}}" ng-click="post.fileSource ? openFile(post.image) : viewImage(post.image, post.imageSource)" />
 
   <div ng-if="post.isScheduled">
     <p class="tag" ng-if="!post.queueId">Scheduled, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
     <p class="tag" ng-if="post.queueId">Queued, {{post.liveDate | date:fifthweekConstants.newsfeedDateFormat:'UTC'}}</p>
   </div>
+  <div ng-if="!post.isScheduled">
+    <p class="tag" ng-if="!post.readAccess">Preview</p>
+    <p class="tag" ng-if="post.isSubscribed">Subscribed</p>
+    <p class="tag" ng-if="!post.isSubscribed && post.isGuestList">Guest List</p>
+  </div>
 
-  <div class="text text-standard-border" ng-if="post.comment || post.fileSource">
-    <div class="content">
+  <hr/>
 
-      <span fw-markdown id="post-comment" ng-model="post.comment" ng-if="post.comment"></span>
+  <div class="post-blocks">
+    <div class="post-block">
 
-      <span id="post-link" ng-if="post.fileSource">
-        <p>
-          <a class="btn-file-download file-content" ng-click="openFile(post.file)">
-            {{post.fileSource.fileName}}.{{post.fileSource.fileExtension}}
-          </a>
-          <span class="file-size">{{post.fileSource.readableSize}}</span>
+      <div ng-if="post.image" class="post-visual">
+        <div class="full-width-image-container" ng-style="post.renderSizeMaximumWidth ? { 'max-width': post.renderSizeMaximumWidth + 'px' } : {}">
+          <div ng-style="{'padding-top': post.renderSizeRatio}" ng-if="post.renderSizeRatio"></div>
+          <img class="full-width-image" ng-class="{'read-access-image': post.readAccess}" ng-src="{{post.image.resolvedUri}}" ng-click="post.readAccess && viewImage(post.image, post.imageSource)" />
+        </div>
+      </div>
+
+      <div ng-if="post.previewText" class="text">
+        <span fw-markdown id="post-comment" ng-model="post.previewText" ng-if="post.previewText"></span>
+        <p ng-if="post.readingTime">
+          <i>Continued…</i>
         </p>
+      </div>
+
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="post-footer-actions post-section-narrow-border">
+    <span class="read-more-actions">
+      <span>
+        <a ng-click="viewPost(post)">{{post.readingTime ? 'Read more' : 'Open post' }}</a>
       </span>
-    </div>
+      <span class="minutes-count" ng-if="post.readingTime">
+        {{post.readingTime}} min
+      </span>
+      <span class="image-count" ng-if="post.imageCount">
+        {{post.imageCount == 1 ? '1 image' : post.imageCount + ' images'}}
+      </span>
+      <span class="file-count" ng-if="post.fileCount">
+        {{post.fileCount == 1 ? '1 file' : post.fileCount + ' files'}}
+      </span>
+    </span>
+    <span class="like-comment-counters">
+      <span class="likes-count" ng-class="{ 'has-liked': post.hasLiked, 'has-not-liked': !post.hasLiked }">
+        {{post.likesCount}}
+      </span>
+      <span class="comments-count">
+        {{post.commentsCount}}
+      </span>
+    </span>
   </div>
 
-  <hr />
-
-  <div class="text text-narrow-border">
-
-    <div class="row info-actions">
-      <div class="col-xs-10 info">
-        <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})">
-          <img class="author-image" ng-src="{{post.creator.profileImage ? post.creator.profileImage.resolvedUri : fifthweekConstants.defaultProfileImageUrl}}" />
-        </a>
-        <ul>
-          <li>
-            <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.blog.name}}</a>
-          </li>
-          <li>
-            <span ng-if="!post.isScheduled">Posted to </span>
-            <span ng-if="post.isScheduled">Live in </span>
-            <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
-              {{post.channel.name}}
-            </a>
-            <a ng-if="post.isOwner" ng-click="editPost(post)" class="live-in-info live-in-link">{{post.liveIn}}</a>
-            <span ng-if="!post.isOwner" class="live-in-info">{{post.liveIn}}</span>
-          </li>
-        </ul>
-      </div>
-      <div class="col-xs-2 actions" ng-if="post.isOwner">
-        <ul>
-          <li class="actions-more">
-            <span class="dropdown" dropdown on-toggle="toggled(open)">
-              <button class="dropdown-toggle" dropdown-toggle>
-                <i class="fa fa-ellipsis-h"></i>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a ng-click="editPost(post)">Edit</a></li>
-                <li ng-if="post.isScheduled && post.scheduledByQueue"><a ng-click="post.reorder()">Reorder</a></li>
-                <li>
-                  <fw-delete-link
-                    item-type="Post"
-                    event-title="Post deleted"
-                    event-category="{{sourceName}}"
-                    delete="deletePost(post.postId)">
-                    Delete
-                  </fw-delete-link>
-                </li>
-              </ul>
-            </span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <hr />
-
-  <div class="text text-narrow-border">
-
-    <div class="row like-comment-actions">
-      <div class="col-xs-7 like-comment-buttons">
-        <span>
-          <a ng-click="toggleLikePost(post)">{{post.hasLiked ? 'Unlike' : 'Like'}}</a>
-        </span>
-        <span>
-          <a ng-click="commentOnPost(post)">Comment</a>
-        </span>
-      </div>
-      <div class="col-xs-5 like-comment-counters">
-        <span>
-          <span class="likes-count" ng-class="{ 'has-liked': post.hasLiked, 'has-not-liked': !post.hasLiked }">
-            <a ng-click="showComments(post)">
-              {{post.likesCount}}
-            </a>
-          </span>
-          <span class="comments-count">
-            <a ng-click="showComments(post)">
-              {{post.commentsCount}}
-            </a>
-          </span>
-        </span>
-      </div>
-    </div>
-  </div>
 </div>

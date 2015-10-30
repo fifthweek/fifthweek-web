@@ -1,7 +1,9 @@
 angular.module('webApp').factory('postInteractions', function($q, $modal, accessSignatures, postStub) {
     'use strict';
 
-    var service = {};
+    var service = {
+      internal: {}
+    };
 
     service.viewImage = function (image, imageSource) {
       $modal.open({
@@ -32,23 +34,77 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
         controller: 'postEditDialogCtrl',
         templateUrl: 'modules/posts/post-edit-dialog.html',
         resolve: {
-          post: function() {
-            return post;
+          postId: function() {
+            return post.postId;
           }
         }
       });
+    };
+
+    service.viewPost = function(post, postId) {
+      var updateLikeStatus = function(totalLikes, hasLiked){
+        post.likesCount = totalLikes;
+        post.hasLiked = hasLiked;
+      };
+      var updateCommentsCount = function(totalComments){
+        post.commentsCount = totalComments;
+      };
+      var modalResult = $modal.open({
+        controller: 'postDialogCtrl',
+        templateUrl: 'modules/posts/post-dialog.html',
+        size: 'lg',
+        resolve: {
+          post: function(){
+            return postId ? undefined : post;
+          },
+          postId: function() {
+            return postId;
+          },
+          updateLikeStatus: function(){
+            return updateLikeStatus;
+          },
+          updateCommentsCount: function(){
+            return updateCommentsCount;
+          }
+        }
+      });
+
+      return modalResult.result;
     };
 
     service.deletePost = function(postId) {
       return postStub.deletePost(postId);
     };
 
-    service.likePost = function(postId){
-      return postStub.postLike(postId);
+    service.internal.likePost = function(post){
+      post.hasLiked = true;
+      post.likesCount += 1;
+      return postStub.postLike(post.postId)
+        .catch(function(error){
+          post.hasLiked = false;
+          post.likesCount -= 1;
+          return $q.reject(error);
+        });
     };
 
-    service.unlikePost = function(postId){
-      return postStub.deleteLike(postId);
+    service.internal.unlikePost = function(post){
+      post.hasLiked = false;
+      post.likesCount -= 1;
+      return postStub.deleteLike(post.postId)
+        .catch(function(error){
+          post.hasLiked = true;
+          post.likesCount += 1;
+          return $q.reject(error);
+        });
+    };
+
+    service.toggleLikePost = function(post){
+      if(post.hasLiked){
+        return service.internal.unlikePost(post);
+      }
+      else{
+        return service.internal.likePost(post);
+      }
     };
 
     service.showComments = function(postId, isCommenting, updateCommentsCount){

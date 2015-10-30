@@ -22,18 +22,6 @@ angular.module('webApp')
     internal.currentUserId = authenticationService.currentUser.userId;
     internal.timelineUserId = undefined;
 
-    internal.populateCreatorInformation = function(posts){
-      if($scope.source === fwPostListConstants.sources.preview){
-        return $q.when();
-      }
-      else if(internal.currentUserId === internal.timelineUserId){
-        return postUtilities.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository);
-      }
-      else{
-        return postUtilities.populateCreatorInformation(posts, subscriptionRepository);
-      }
-    };
-
     internal.loadPosts = function(){
       model.errorMessage = undefined;
       model.isLoading = true;
@@ -44,10 +32,7 @@ angular.module('webApp')
       return fetchAggregateUserState.updateInParallel(internal.currentUserId, getNextPosts)
         .then(function(result) {
           posts = result.posts;
-          return internal.populateCreatorInformation(posts);
-        })
-        .then(function(){
-          return postUtilities.processPostsForRendering(posts);
+          return postUtilities.processPostsForRendering(posts, accountSettingsRepository, blogRepository, subscriptionRepository);
         })
         .then(function(){
           model.posts = posts;
@@ -61,14 +46,6 @@ angular.module('webApp')
         .finally(function(){
           model.isLoading = false;
         });
-    };
-
-    $scope.viewImage = function (image, imageSource) {
-      postInteractions.viewImage(image, imageSource);
-    };
-
-    $scope.openFile = function (file) {
-      return postInteractions.openFile(file);
     };
 
     $scope.managePostSubscription = function(post){
@@ -87,6 +64,10 @@ angular.module('webApp')
       });
     };
 
+    $scope.viewPost = function(post) {
+      return postInteractions.viewPost(post);
+    };
+
     $scope.deletePost = function(postId) {
       return postInteractions.deletePost(postId)
         .then(function(){
@@ -94,54 +75,8 @@ angular.module('webApp')
         });
     };
 
-    internal.likePost = function(post){
-      post.hasLiked = true;
-      post.likesCount += 1;
-      return postInteractions.likePost(post.postId)
-        .catch(function(error){
-          post.hasLiked = false;
-          post.likesCount -= 1;
-          return errorFacade.handleError(error, function(message) {
-            model.errorMessage = message;
-          });
-        });
-    };
-
-    internal.unlikePost = function(post){
-      post.hasLiked = false;
-      post.likesCount -= 1;
-      return postInteractions.unlikePost(post.postId)
-        .catch(function(error){
-          post.hasLiked = true;
-          post.likesCount += 1;
-          return errorFacade.handleError(error, function(message) {
-            model.errorMessage = message;
-          });
-        });
-    };
-
-    $scope.toggleLikePost = function(post){
-      if(post.hasLiked){
-        return internal.unlikePost(post);
-      }
-      else{
-        return internal.likePost(post);
-      }
-    };
-
-    internal.showComments = function(post, isCommenting){
-      var updateCommentsCount = function(totalComments){
-        post.commentsCount = totalComments;
-      };
-      return postInteractions.showComments(post.postId, isCommenting, updateCommentsCount);
-    };
-
-    $scope.commentOnPost = function(post){
-      return internal.showComments(post, true);
-    };
-
-    $scope.showComments = function(post){
-      return internal.showComments(post, false);
+    $scope.viewImage = function (image, imageSource) {
+      postInteractions.viewImage(image, imageSource);
     };
 
     internal.attachToReloadEvent = function(){

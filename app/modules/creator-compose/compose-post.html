@@ -35,10 +35,22 @@
       <div class="modal-body form-modal-body">
         <p ng-if="model.channels.length" id="posting-to-text">Posting to <strong>{{model.committedChannel.name}}</strong>.</p>
 
-        <div ng-include="'modules/creator-compose/compose-image.html'"></div>
-        <div ng-include="'modules/creator-compose/compose-file.html'"></div>
-
-        <fw-form-input-comment ng-model="model.input.comment" placeholder="Say something, if you like" focus></fw-form-input-comment>
+        <fw-form-group input-name="content">
+          <div class="row">
+            <div class="col-xs-12">
+              <fw-sir-trevor-editor
+                maxlength="50000"
+                ng-model="model.input.content"
+                editor-id="content"
+                channel-id="{{model.committedChannel.channelId}}"
+                name="content"
+                placeholder="Say something, if you like"></fw-sir-trevor-editor>
+            </div>
+            <div class="col-xs-12">
+              <p fw-form-input-invalid-p="required">Please write some content.</p>
+            </div>
+          </div>
+        </fw-form-group>
 
         <div ng-show="model.postLater" class="compose-upload-schedule">
           <div ng-if="model.queues.length === 0">
@@ -81,10 +93,10 @@
                   data-event-category="New post"
                   can-submit="contentForm.$valid"
                   fw-form-submit="postNow()"
-                  ng-disabled="model.processingImage"
+                  ng-disabled="model.isProcessing"
                   error-message="model.errorMessage">
-            <span ng-if="model.processingImage">Processing...</span>
-            <span ng-if="!model.processingImage">Post Now</span>
+            <span ng-if="model.isProcessing">Processing...</span>
+            <span ng-if="!model.isProcessing">Post Now</span>
           </button>
 
           <button class="btn btn-default btn-block"
@@ -100,10 +112,10 @@
                   data-event-category="New post"
                   can-submit="contentForm.$valid"
                   fw-form-submit="postToBacklog()"
-                  ng-disabled="model.processingImage"
+                  ng-disabled="model.isProcessing"
                   error-message="model.errorMessage">
-            <span ng-if="model.processingImage">Processing...</span>
-            <span ng-if="!model.processingImage">Schedule</span>
+            <span ng-if="model.isProcessing">Processing...</span>
+            <span ng-if="!model.isProcessing">Schedule</span>
           </button>
 
           <!-- Note we do not use fw-form-submit here because we don't care about validity -->

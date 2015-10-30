@@ -6,86 +6,81 @@
 
   <fw-form-modal name="Edit Post">
     <form-body>
-      <div class="form-group form-group-has-buffers">
-        <div class="row">
-          <div class="col-xs-12 bottom-buffer" ng-if="model.input.imageSource">
-            <fw-blob-image control="blobImage" file-id="{{model.input.image.fileId}}" container-name="{{model.input.image.containerName}}" thumbnail="preview"></fw-blob-image>
-          </div>
-          <div class="col-s-5 bottom-buffer">
-            <fw-file-upload id-prefix="image" channel-id="{{model.channelId}}" description="{{model.input.imageSource ? 'Change Image' : 'Add Image'}}" on-upload-complete="onImageUploadComplete(data)" file-purpose="post-image" accept="image/jpeg,image/gif,image/png"></fw-file-upload>
-          </div>
-        </div>
+      <div ng-if="model.isLoading" class="updating-area">
+        <i class="fa fa-refresh fa-spin"></i>
       </div>
 
-      <div class="form-group form-group-has-buffers">
-        <div class="row">
-          <div class="col-xs-12" ng-show="model.input.fileSource">
-            <p class="file-name">{{model.input.fileSource.fileName}}.{{model.input.fileSource.fileExtension}}</p>
-          </div>
-          <div class="col-s-5 bottom-buffer">
-            <fw-file-upload id-prefix="file" channel-id="{{model.channelId}}" description="{{model.input.fileSource ? 'Change File' : 'Add File'}}" on-upload-complete="onFileUploadComplete(data)" file-purpose="post-file"></fw-file-upload>
-          </div>
-        </div>
-      </div>
-
-      <fw-form-input-comment
-        ng-model="model.input.comment"
-        placeholder="Say something, if you like"
-        focus>
-      </fw-form-input-comment>
-
-      <div class="form-group">
-        <fw-form-subsection name="Release time">
-          <summary>
-            <p ng-if="model.savedScheduleMode === scheduleModes.now">This post has been released.</p>
-            <p ng-if="model.savedScheduleMode !== scheduleModes.now">Currently scheduled for <strong>{{model.savedDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>.</p>
-          </summary>
-          <section>
-            <div class="radio">
-              <label><input type="radio"
-                ng-model="model.input.scheduleMode"
-                ng-value="scheduleModes.now"/> {{model.savedScheduleMode === scheduleModes.now ? 'No change' : 'Post now'}}</label>
+      <div ng-if="model.showContent">
+        <fw-form-group input-name="content">
+          <div class="row">
+            <div class="col-xs-12">
+              <fw-sir-trevor-editor
+                maxlength="50000"
+                ng-model="model.input.content"
+                editor-id="content"
+                channel-id="{{model.channelId}}"
+                name="content"
+                placeholder="Say something, if you like"></fw-sir-trevor-editor>
             </div>
+            <div class="col-xs-12">
+              <p fw-form-input-invalid-p="required">Please write some content.</p>
+            </div>
+          </div>
+        </fw-form-group>
 
-            <div ng-if="model.queues.length">
+        <div class="form-group">
+          <fw-form-subsection name="Release time">
+            <summary>
+              <p ng-if="model.savedScheduleMode === scheduleModes.now">This post has been released.</p>
+              <p ng-if="model.savedScheduleMode !== scheduleModes.now">Currently scheduled for <strong>{{model.savedDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>.</p>
+            </summary>
+            <section>
               <div class="radio">
-                <label><input
-                  type="radio"
-                  ng-model="model.input.scheduleMode"
-                  ng-value="scheduleModes.queued" />
-                Schedule with queue
-                <span ng-if="model.savedScheduleMode !== scheduleModes.queued">(will appear <strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
-                :</label>
+                <label><input type="radio"
+                              ng-model="model.input.scheduleMode"
+                              ng-value="scheduleModes.now"/> {{model.savedScheduleMode === scheduleModes.now ? 'No change' : 'Post now'}}</label>
               </div>
-              <fw-form-input-select-queue items="model.queues" selected-item="model.input.selectedQueue"></fw-form-input-select-queue>
-            </div>
 
-            <div class="radio">
-              <label><input type="radio"
-                            ng-model="model.input.scheduleMode"
-                            ng-value="scheduleModes.scheduled" /> Schedule for specific time (UTC):</label>
-            </div>
+              <div ng-if="model.queues.length">
+                <div class="radio">
+                  <label><input
+                    type="radio"
+                    ng-model="model.input.scheduleMode"
+                    ng-value="scheduleModes.queued" />
+                    Schedule with queue
+                    <span ng-if="model.savedScheduleMode !== scheduleModes.queued">(will appear <strong>{{model.queuedLiveDate | date:fifthweekConstants.longDateTimeFormat:'UTC'}}</strong>)</span>
+                    :</label>
+                </div>
+                <fw-form-input-select-queue items="model.queues" selected-item="model.input.selectedQueue"></fw-form-input-select-queue>
+              </div>
 
-            <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>
-          </section>
-        </fw-form-subsection>
+              <div class="radio">
+                <label><input type="radio"
+                              ng-model="model.input.scheduleMode"
+                              ng-value="scheduleModes.scheduled" /> Schedule for specific time (UTC):</label>
+              </div>
+
+              <fw-form-input-date-time-picker ng-model="model.input.date"></fw-form-input-date-time-picker>
+            </section>
+          </fw-form-subsection>
+        </div>
       </div>
 
       <fw-error-message value="model.errorMessage"></fw-error-message>
     </form-body>
     <form-buttons>
-      <button
+      <button ng-if="model.showContent"
         id="save-post-button"
         class="btn btn-block btn-success"
         data-loading-text="Saving..."
         data-event-title="Backlog post edited"
         data-event-category="Edited post"
         fw-form-submit="save()"
-        ng-disabled="model.processingImage"
+        ng-disabled="model.isProcessing"
         error-message="model.errorMessage">
-        <span ng-if="model.processingImage">Processing...</span>
-        <span ng-if="!model.processingImage && model.savedScheduleMode === scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Save' : 'Schedule'}}</span>
-        <span ng-if="!model.processingImage && model.savedScheduleMode !== scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Post Now' : 'Save'}}</span>
+        <span ng-if="model.isProcessing">Processing...</span>
+        <span ng-if="!model.isProcessing && model.savedScheduleMode === scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Save' : 'Schedule'}}</span>
+        <span ng-if="!model.isProcessing && model.savedScheduleMode !== scheduleModes.now">{{model.input.scheduleMode === scheduleModes.now ? 'Post Now' : 'Save'}}</span>
       </button>
     </form-buttons>
   </fw-form-modal>

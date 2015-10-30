@@ -126,7 +126,7 @@ describe('post-edit-dialog-utilities', function() {
 
       it('should call putPost', function(){
         expect(postStub.putPost).toHaveBeenCalledWith('postId', {
-          imageId: undefined,
+          fileId: undefined,
           fileId: undefined,
           comment: 'comment'
         });
@@ -147,7 +147,7 @@ describe('post-edit-dialog-utilities', function() {
 
       it('should call putPost', function(){
         expect(postStub.putPost).toHaveBeenCalledWith('postId', {
-          imageId: undefined,
+          fileId: undefined,
           fileId: 'fileId',
           comment: undefined
         });
@@ -168,7 +168,7 @@ describe('post-edit-dialog-utilities', function() {
 
       it('should call putPost', function(){
         expect(postStub.putPost).toHaveBeenCalledWith('postId', {
-          imageId: 'imageId',
+          fileId: 'imageId',
           fileId: undefined,
           comment: undefined
         });
@@ -187,7 +187,7 @@ describe('post-edit-dialog-utilities', function() {
 
       it('should call putPost', function(){
         expect(postStub.putPost).toHaveBeenCalledWith('postId', {
-          imageId: 'imageId',
+          fileId: 'imageId',
           fileId: 'fileId',
           comment: 'comment'
         });

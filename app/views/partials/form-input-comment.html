@@ -1,15 +1,16 @@
 <fw-form-group input-name="comment">
   <div class="row">
     <div class="col-xs-12">
-      <fw-markdown-editor
+      <fw-sir-trevor-editor
         maxlength="50000"
         ng-model="ngModel[ngModelAccessor]"
         editor-id="{{inputId}}"
         name="comment"
         ng-required="isRequired()"
         ng-disabled="isDisabled()"
-        ng-focus="focus"
-        placeholder="{{placeholder}}"></fw-markdown-editor>
+        ng-focus="focus",
+        text-only="true"
+        placeholder="{{placeholder}}"></fw-sir-trevor-editor>
     </div>
     <div class="col-xs-12">
       <p fw-form-input-invalid-p="required">Please write some content.</p>

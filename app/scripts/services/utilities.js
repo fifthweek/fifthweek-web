@@ -64,7 +64,7 @@ angular.module('webApp')
     service.getFriendlyErrorMessage = function(error){
       if(error instanceof DisplayableError){
         // These error messages are fine to display.
-        return error.message;
+        return error.message || fifthweekConstants.unexpectedErrorText;
       }
       else if(error instanceof ConnectionError){
         return fifthweekConstants.connectionErrorText;
