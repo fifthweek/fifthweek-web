@@ -41,6 +41,9 @@
     "_": false,
     "Stripe": false,
     "Taxamo": false,
-    "toMarkdown": false
+    "toMarkdown": false,
+    "SirTrevor": false,
+    "i18n": false,
+    "$": false
   }
 }

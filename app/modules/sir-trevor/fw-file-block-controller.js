@@ -1,16 +1,13 @@
 angular.module('webApp').controller('fwFileBlockCtrl',
-  function($q, $scope, errorFacade) {
+  function($q, $scope) {
     'use strict';
 
     var model = {
       fileUploaded: false,
-      fileData: undefined,
-      errorMessage: undefined
+      fileData: undefined
     };
 
     $scope.model = model;
-
-    var internal = this.internal = {};
 
     $scope.onUploadStarted = function(){
       if($scope.onUploadStartedDelegate){

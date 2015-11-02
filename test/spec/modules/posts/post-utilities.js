@@ -10,6 +10,7 @@ describe('post-utilities', function(){
   var accountSettingsRepository;
   var blogRepository;
   var subscriptionRepository;
+  var jsonService;
 
   var states;
   var fifthweekConstants;
@@ -20,12 +21,14 @@ describe('post-utilities', function(){
     accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
     blogRepository = jasmine.createSpyObj('blogRepository', ['getBlogMap']);
     subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['getBlogMap']);
+    jsonService = jasmine.createSpyObj('jsonService', ['fromJson']);
 
     module('webApp');
 
     module(function($provide) {
       $provide.value('$state', $state);
       $provide.value('accessSignatures', accessSignatures);
+      $provide.value('jsonService', jsonService);
     });
 
     inject(function($injector) {
@@ -38,1018 +41,859 @@ describe('post-utilities', function(){
     });
   });
 
-  describe('when populating current creator information', function(){
+  describe('humanFileSize', function(){
+    it('should return humanized file sizes', function(){
+      expect(target.internal.humanFileSize(10)).toBe('10 bytes');
+      expect(target.internal.humanFileSize(10000)).toBe('9.77 KB');
+      expect(target.internal.humanFileSize(10000000)).toBe('9.54 MB');
+      expect(target.internal.humanFileSize(10000000000)).toBe('9.31 GB');
+      expect(target.internal.humanFileSize(10000000000000)).toBe('9.09 TB');
+    });
+  });
 
-    describe('when posts is undefined', function(){
-      var error;
-      var posts;
-      beforeEach(function(){
-        error = undefined;
-        posts = undefined;
-
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
-          .catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not get the channel map', function(){
-        expect(blogRepository.getBlogMap).not.toHaveBeenCalled();
-      });
-
-      it('should not get the account settings', function(){
-        expect(accountSettingsRepository.getAccountSettings).not.toHaveBeenCalled();
-      });
-
-      it('should not error', function(){
-        expect(error).toBeUndefined();
-      });
-
-      it('should not have modified posts', function(){
-        expect(posts).toBeUndefined();
-      });
+  describe('getImageUri', function(){
+    describe('when no accessInformation', function(){
+      it('should return undefined', function(){
+        var result = target.internal.getImageUri({ containerName: 'cn1' }, undefined, {accessMap:{containerName:{}}});
+        expect(result).toBeUndefined();
+      })
     });
 
-    describe('when posts is empty', function(){
-      var error;
-      var posts;
+    describe('when accessInformation', function(){
+      var caches;
+      var image;
       beforeEach(function(){
-        error = undefined;
-        posts = [];
-
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
-          .catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not get the channel map', function(){
-        expect(blogRepository.getBlogMap).not.toHaveBeenCalled();
-      });
-
-      it('should not get the account settings', function(){
-        expect(accountSettingsRepository.getAccountSettings).not.toHaveBeenCalled();
-      });
-
-      it('should not error', function(){
-        expect(error).toBeUndefined();
-      });
-
-      it('should not have modified posts', function(){
-        expect(posts).toEqual([]);
-      });
-    });
-
-    describe('when getBlogMap fails', function(){
-      var error;
-      var posts;
-      var postsCopy;
-      beforeEach(function(){
-
-        posts = [
-          {
-            channelId: 'channelId1',
-            queueId: 'queueId1'
-          },
-          {
-            channelId: 'channelId2'
-          }
-        ];
-
-        postsCopy = _.cloneDeep(posts);
-
-        blogRepository.getBlogMap.and.returnValue($q.reject('error'));
-
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
-          .catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not get the account settings', function(){
-        expect(accountSettingsRepository.getAccountSettings).not.toHaveBeenCalled();
-      });
-
-      it('should propagate the error', function(){
-        expect(error).toBe('error');
-      });
-
-      it('should not have modified posts', function(){
-        expect(posts).toEqual(postsCopy);
-      });
-    });
-
-    describe('when getAccountSettings fails', function(){
-      var error;
-      var posts;
-      var postsCopy;
-      beforeEach(function(){
-
-        posts = [
-          {
-            channelId: 'channelId1',
-            queueId: 'queueId1'
-          },
-          {
-            channelId: 'channelId2'
-          }
-        ];
-
-        postsCopy = _.cloneDeep(posts);
-
-        blogRepository.getBlogMap.and.returnValue($q.when());
-        accountSettingsRepository.getAccountSettings.and.returnValue($q.reject('error'));
-
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository)
-          .catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should get the channel map', function(){
-        expect(blogRepository.getBlogMap).toHaveBeenCalledWith();
-      });
-
-      it('should propagate the error', function(){
-        expect(error).toBe('error');
-      });
-
-      it('should not have modified posts', function(){
-        expect(posts).toEqual(postsCopy);
-      });
-    });
-
-    describe('when successful', function(){
-      var posts;
-      beforeEach(function(){
-
-        posts = [
-          {
-            channelId: 'channelId1',
-            queueId: 'queueId1'
-          },
-          {
-            channelId: 'channelId2'
-          }
-        ];
-
-        blogRepository.getBlogMap.and.returnValue($q.when({
-          name: 'blog',
-          channels: {
-            channelId1: {
-              channelId: 'channelId1'
-            },
-            channelId2: {
-              channelId: 'channelId2'
+        caches = {
+          accessMap: {
+            containerName: {
+              cn1: { uri: 'uri1', signature: '?sig1' }
             }
+          }
+        };
+        image = { containerName: 'cn1', fileId: 'fileId1' };
+      });
+
+      describe('when thumbnail exists', function(){
+        it('should return uri', function(){
+          var result = target.internal.getImageUri(image, 'thumb1', caches);
+          expect(result).toBe('uri1/fileId1/thumb1?sig1');
+        })
+      });
+
+      describe('when thumbnail does not exist', function(){
+        it('should return uri', function(){
+          var result = target.internal.getImageUri(image, undefined, caches);
+          expect(result).toBe('uri1/fileId1?sig1');
+        })
+      });
+    });
+  });
+
+  describe('processFileSource', function(){
+    var parent;
+    var source;
+    beforeEach(function(){
+      spyOn(target.internal, 'humanFileSize').and.returnValue('size');
+
+      parent = {};
+      source = { size: 's' };
+    });
+
+    var standardTests = function(){
+      it('should call humanFileSize', function(){
+        expect(target.internal.humanFileSize).toHaveBeenCalledWith('s');
+      });
+
+      it('should set the readable size', function(){
+        expect(source.readableSize).toBe('size');
+      });
+    };
+
+    describe('when no renderSize', function(){
+      beforeEach(function(){
+        target.internal.processFileSource(parent, source);
+      });
+
+      standardTests();
+
+      it('should not set renderSizeRatio', function(){
+        expect(parent.renderSizeRatio).toBeUndefined();
+      });
+
+      it('should not set renderSizeMaximumWidth', function(){
+        expect(parent.renderSizeMaximumWidth).toBeUndefined();
+      });
+    });
+
+    describe('when renderSize exists', function(){
+      describe('when image not taller than max height', function(){
+        beforeEach(function(){
+          source.renderSize = { width: 1000, height: 500 };
+          target.internal.processFileSource(parent, source);
+        });
+
+        standardTests();
+
+        it('should set the render size ratio', function(){
+          expect(parent.renderSizeRatio).toBe('50%');
+        });
+
+        it('should not set renderSizeMaximumWidth', function(){
+          expect(parent.renderSizeMaximumWidth).toBeUndefined();
+        });
+      });
+
+      describe('when image taller than max height', function(){
+        beforeEach(function(){
+          source.renderSize = { width: 1000, height: 2000 };
+          target.internal.processFileSource(parent, source);
+        });
+
+        standardTests();
+
+        it('should set the render size ratio', function(){
+          expect(parent.renderSizeRatio).toBe('200%');
+        });
+
+        it('should set renderSizeMaximumWidth', function(){
+          expect(parent.renderSizeMaximumWidth).toBe(360);
+        });
+      });
+    });
+  });
+
+  describe('processFileInformation', function(){
+    var parent;
+    var information;
+    beforeEach(function(){
+      spyOn(target.internal, 'getImageUri');
+
+      parent = {};
+      information = { };
+    });
+
+    describe('when uri is resolved', function(){
+      beforeEach(function(){
+        target.internal.getImageUri.and.returnValue('uri');
+        target.internal.processFileInformation(parent, information, undefined, 'caches');
+      });
+
+      it('should call getImageUri', function(){
+        expect(target.internal.getImageUri).toHaveBeenCalledWith(information, 'feed', 'caches');
+      });
+
+      it('should populate the resolved uri', function(){
+        expect(information.resolvedUri).toBe('uri');
+      });
+
+      it('should not be a preview', function(){
+        expect(information.isPreview).toBeUndefined();
+      });
+    });
+
+    describe('when uri is not resolved', function(){
+      beforeEach(function(){
+        target.internal.getImageUri.and.returnValue(undefined);
+      });
+
+      describe('when access information provided', function(){
+        beforeEach(function(){
+          target.internal.processFileInformation(parent, information, { uri: 'uri2', signature: '?sig'}, 'caches');
+        });
+
+        it('should call getImageUri', function(){
+          expect(target.internal.getImageUri).toHaveBeenCalledWith(information, 'feed', 'caches');
+        });
+
+        it('should populate the resolved uri', function(){
+          expect(information.resolvedUri).toBe('uri2?sig');
+        });
+
+        it('should be a preview', function(){
+          expect(information.isPreview).toBe(true);
+        });
+      });
+
+      describe('when no access information provided', function(){
+        beforeEach(function(){
+          target.internal.processFileInformation(parent, information, undefined, 'caches');
+        });
+
+        it('should call getImageUri', function(){
+          expect(target.internal.getImageUri).toHaveBeenCalledWith(information, 'feed', 'caches');
+        });
+
+        it('should not populate the resolved uri', function(){
+          expect(information.resolvedUri).toBeUndefined();
+        });
+
+        it('should not be a preview', function(){
+          expect(information.isPreview).toBeUndefined();
+        });
+      });
+    });
+  });
+
+  describe('processFile', function(){
+    var parent;
+    beforeEach(function(){
+      parent = {
+        renderSizeRatio: 'something',
+        renderSizeMaximumWidth: 'somethingElse'
+      };
+
+      spyOn(target.internal, 'processFileSource');
+
+      spyOn(target.internal, 'processFileInformation');
+    });
+
+    var standardTests = function(){
+      it('should remove renderSizeRatio', function(){
+        expect(parent.renderSizeRatio).toBeUndefined();
+      });
+
+      it('should remove renderSizeMaximumWidth', function(){
+        expect(parent.renderSizeMaximumWidth).toBeUndefined();
+      });
+    };
+
+    describe('when neither source nor information provided', function(){
+      beforeEach(function(){
+        target.internal.processFile(parent, undefined, undefined, 'accessInformation', 'caches');
+      });
+
+      standardTests();
+
+      it('should not call processFileSource', function(){
+        expect(target.internal.processFileSource).not.toHaveBeenCalled();
+      });
+
+      it('should not call processFileInformation', function(){
+        expect(target.internal.processFileInformation).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when source provided', function(){
+      beforeEach(function(){
+        target.internal.processFile(parent, undefined, 'source', 'accessInformation', 'caches');
+      });
+
+      standardTests();
+
+      it('should call processFileSource', function(){
+        expect(target.internal.processFileSource).toHaveBeenCalledWith(parent, 'source');
+      });
+
+      it('should not call processFileInformation', function(){
+        expect(target.internal.processFileInformation).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when information provided', function(){
+      beforeEach(function(){
+        target.internal.processFile(parent, 'information', undefined, 'accessInformation', 'caches');
+      });
+
+      standardTests();
+
+      it('should not call processFileSource', function(){
+        expect(target.internal.processFileSource).not.toHaveBeenCalled();
+      });
+
+      it('should call processFileInformation', function(){
+        expect(target.internal.processFileInformation).toHaveBeenCalledWith(parent, 'information', 'accessInformation', 'caches');
+      });
+    });
+
+    describe('when source and information provided', function(){
+      beforeEach(function(){
+        target.internal.processFile(parent, 'information', 'source', 'accessInformation', 'caches');
+      });
+
+      standardTests();
+
+      it('should call processFileSource', function(){
+        expect(target.internal.processFileSource).toHaveBeenCalledWith(parent, 'source');
+      });
+
+      it('should call processFileInformation', function(){
+        expect(target.internal.processFileInformation).toHaveBeenCalledWith(parent, 'information', 'accessInformation', 'caches');
+      });
+    });
+  });
+
+  describe('calculateReadingTime', function(){
+    var testNumber = 1;
+    var runTest = function(previewWordCount, wordCount, imageCount, fileCount, expectedReadingTime){
+      it('should populated expected reading times ' + testNumber, function(){
+        ++testNumber;
+        var post = {
+          previewWordCount: previewWordCount,
+          wordCount: wordCount,
+          imageCount: imageCount,
+          fileCount: fileCount
+        };
+
+        target.internal.calculateReadingTime(post);
+
+        expect(post.readingTime).toBe(expectedReadingTime);
+      });
+    };
+
+    runTest(0, 200, 0, 0, 1);
+    runTest(0, 400, 0, 0, 2);
+    runTest(0, 4000, 0, 0, 20);
+    runTest(2000, 4000, 0, 0, 10);
+    runTest(0, 0, 2, 0, 1);
+    runTest(0, 0, 20, 0, 10);
+    runTest(0, 0, 0, 2, 1);
+    runTest(0, 0, 0, 20, 10);
+    runTest(2000, 4000, 20, 20, 30);
+  });
+
+  describe('processPost', function(){
+
+  });
+
+  describe('processPosts', function(){
+    it('should process each post', function(){
+      spyOn(target.internal, 'processPost');
+      target.internal.processPosts([ 'post1', 'post2', 'post3' ], 'caches');
+
+      expect(target.internal.processPost.calls.count()).toBe(3);
+      expect(target.internal.processPost).toHaveBeenCalledWith('post1', undefined, 'caches');
+      expect(target.internal.processPost).toHaveBeenCalledWith('post2', 'post1', 'caches');
+      expect(target.internal.processPost).toHaveBeenCalledWith('post3', 'post2', 'caches');
+    });
+  });
+
+  describe('populateCreatorInformation', function(){
+    var post;
+    var caches;
+    beforeEach(function(){
+      post = {};
+      caches = {};
+
+      spyOn(target.internal, 'populateCurrentCreatorInformation');
+      spyOn(target.internal, 'populateCreatorInformationFromBlog');
+      spyOn(target.internal, 'populateUnknownCreatorInformation');
+    });
+
+    describe('when owner', function(){
+      beforeEach(function(){
+        post.creatorId = 'creatorId';
+        caches.userId = 'creatorId';
+
+        target.internal.populateCreatorInformation(post, caches);
+      });
+
+      it('should populate post correctly', function(){
+        expect(post.isOwner).toBe(true);
+        expect(post.isSubscribed).toBe(false);
+        expect(post.isGuestList).toBe(false);
+        expect(target.internal.populateCurrentCreatorInformation).toHaveBeenCalledWith(post, caches);
+      });
+    });
+
+    describe('when subscribed', function(){
+      beforeEach(function(){
+        post.creatorId = 'creatorId';
+        caches.userId = 'userId';
+
+        post.blogId = 'blogId1';
+        post.channelId = 'channelId1';
+
+        caches.subscriptionMap = {
+          blogId1: {
+            freeAccess: 'freeAccess',
+            channels: {
+              channelId1: 'channel1'
+            }
+          }
+        };
+
+        target.internal.populateCreatorInformation(post, caches);
+      });
+
+      it('should populate post correctly', function(){
+        expect(post.isOwner).toBe(false);
+        expect(post.isSubscribed).toBe(true);
+        expect(post.isGuestList).toBe(true);
+        expect(target.internal.populateCreatorInformationFromBlog).toHaveBeenCalledWith(post, caches.subscriptionMap.blogId1);
+      });
+    });
+
+    describe('when on guest list', function(){
+      beforeEach(function(){
+        post.creatorId = 'creatorId';
+        caches.userId = 'userId';
+
+        post.blogId = 'blogId1';
+        post.channelId = 'channelId1';
+
+        caches.subscriptionMap = {
+          blogId1: {
+            freeAccess: 'freeAccess',
+            channels: {}
+          }
+        };
+
+        target.internal.populateCreatorInformation(post, caches);
+      });
+
+      it('should populate post correctly', function(){
+        expect(post.isOwner).toBe(false);
+        expect(post.isSubscribed).toBe(false);
+        expect(post.isGuestList).toBe(true);
+        expect(target.internal.populateCreatorInformationFromBlog).toHaveBeenCalledWith(post, caches.subscriptionMap.blogId1);
+      });
+    });
+
+    describe('when unknown', function(){
+      beforeEach(function(){
+        post.creatorId = 'creatorId';
+        caches.userId = 'userId';
+
+        post.blogId = 'blogId2';
+        post.channelId = 'channelId1';
+
+        caches.subscriptionMap = {
+          blogId1: {
+            freeAccess: 'freeAccess',
+            channels: {}
+          }
+        };
+
+        target.internal.populateCreatorInformation(post, caches);
+      });
+
+      it('should populate post correctly', function(){
+        expect(post.isOwner).toBe(false);
+        expect(post.isSubscribed).toBe(false);
+        expect(post.isGuestList).toBe(false);
+        expect(target.internal.populateUnknownCreatorInformation).toHaveBeenCalledWith(post);
+      });
+    });
+  });
+
+  describe('populateCurrentCreatorInformation', function(){
+    var post;
+    var caches;
+    beforeEach(function(){
+      post = {
+        channelId: 'channelId1',
+        queueId: 'queueId1'
+      };
+      caches = {
+        blog: {
+          channels: {
+            channelId1: 'channel1'
           },
           queues: {
-            queueId1: {
-              queueId: 'queueId1'
-            }
-          }
-        }));
-
-        accountSettingsRepository.getAccountSettings.and.returnValue($q.when({
+            queueId1: 'queue1'
+          },
+          name: 'name'
+        },
+        accountSettings: {
           username: 'username',
-          profileImage: {
-            fileId: 'fileId',
-            containerName: 'containerName'
-          }
-        }));
+          profileImage: 'profileImage'
+        }
+      };
+    });
 
-        target.populateCurrentCreatorInformation(posts, accountSettingsRepository, blogRepository);
-        $rootScope.$apply();
+    describe('when queued', function(){
+      it('should populate correctly', function(){
+        target.internal.populateCurrentCreatorInformation(post, caches);
+
+        expect(post.channel).toBe('channel1');
+        expect(post.queue).toBe('queue1');
+        expect(post.blog).toEqual({ name: 'name' });
+        expect(post.creator).toEqual({ username: 'username', profileImage: 'profileImage' });
       });
+    });
 
-      it('should get the channel map', function(){
-        expect(blogRepository.getBlogMap).toHaveBeenCalledWith();
-      });
+    describe('when not queued', function(){
+      it('should populate correctly', function(){
+        post.queueId = undefined;
+        target.internal.populateCurrentCreatorInformation(post, caches);
 
-      it('should get the account settings', function(){
-        expect(accountSettingsRepository.getAccountSettings).toHaveBeenCalledWith();
-      });
-
-      it('should update the posts queue', function(){
-        expect(posts).toEqual([
-          {
-            isOwner: true,
-            blog: {
-              name: 'blog'
-            },
-            channelId: 'channelId1',
-            queueId: 'queueId1',
-            channel: {
-              channelId: 'channelId1'
-            },
-            queue: {
-              queueId: 'queueId1'
-            },
-            creator: {
-              username: 'username',
-              profileImage: {
-                fileId: 'fileId',
-                containerName: 'containerName'
-              }
-            }
-          },
-          {
-            isOwner: true,
-            blog: {
-              name: 'blog'
-            },
-            channelId: 'channelId2',
-            channel: {
-              channelId: 'channelId2'
-            },
-            creator: {
-              username: 'username',
-              profileImage: {
-                fileId: 'fileId',
-                containerName: 'containerName'
-              }
-            }
-          }
-        ]);
+        expect(post.channel).toBe('channel1');
+        expect(post.queue).toBeUndefined();
+        expect(post.blog).toEqual({ name: 'name' });
+        expect(post.creator).toEqual({ username: 'username', profileImage: 'profileImage' });
       });
     });
   });
 
-  describe('when populating post creator information', function(){
-
+  describe('populateCreatorInformationFromBlog', function(){
+    var post;
+    var blog;
     beforeEach(function(){
-      spyOn(target.internal, 'populateUnknownCreatorInformation').and.callThrough();
+      post = {
+        channelId: 'channelId1',
+        queueId: 'queueId1'
+      };
+      blog = {
+        channels: {
+          channelId1: 'channel1'
+        },
+        queues: {
+          queueId1: 'queue1'
+        },
+        name: 'name',
+        username: 'username',
+        profileImage: 'profileImage'
+      };
     });
 
-    describe('when posts is undefined', function(){
-      var error;
-      var posts;
-      beforeEach(function(){
-        error = undefined;
-        posts = undefined;
+    describe('when queued', function(){
+      it('should populate correctly', function(){
+        target.internal.populateCreatorInformationFromBlog(post, blog);
 
-        target.populateCreatorInformation(posts, subscriptionRepository)
-          .catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not get the blog map', function(){
-        expect(subscriptionRepository.getBlogMap).not.toHaveBeenCalled();
-      });
-
-      it('should not populate unknown creator information', function(){
-        expect(target.internal.populateUnknownCreatorInformation).not.toHaveBeenCalled();
-      });
-
-      it('should not error', function(){
-        expect(error).toBeUndefined();
-      });
-
-      it('should not have modified posts', function(){
-        expect(posts).toBeUndefined();
+        expect(post.channel).toBe('channel1');
+        expect(post.queue).toBe('queue1');
+        expect(post.blog).toEqual({ name: 'name' });
+        expect(post.creator).toEqual({ username: 'username', profileImage: 'profileImage' });
       });
     });
 
-    describe('when posts is empty', function(){
-      var error;
-      var posts;
-      beforeEach(function(){
-        error = undefined;
-        posts = [];
+    describe('when not queued', function(){
+      it('should populate correctly', function(){
+        post.queueId = undefined;
+        target.internal.populateCreatorInformationFromBlog(post, blog);
 
-        target.populateCreatorInformation(posts, subscriptionRepository)
-          .catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not get the blog map', function(){
-        expect(subscriptionRepository.getBlogMap).not.toHaveBeenCalled();
-      });
-
-      it('should not populate unknown creator information', function(){
-        expect(target.internal.populateUnknownCreatorInformation).not.toHaveBeenCalled();
-      });
-
-      it('should not error', function(){
-        expect(error).toBeUndefined();
-      });
-
-      it('should not have modified posts', function(){
-        expect(posts).toEqual([]);
-      });
-    });
-
-    describe('when getBlogMap fails', function(){
-      var error;
-      var posts;
-      var postsCopy;
-      beforeEach(function(){
-
-        posts = [
-          {
-            channelId: 'channelId1',
-            queueId: 'queueId1'
-          },
-          {
-            channelId: 'channelId2'
-          }
-        ];
-
-        postsCopy = _.cloneDeep(posts);
-
-        subscriptionRepository.getBlogMap.and.returnValue($q.reject('error'));
-
-        target.populateCreatorInformation(posts, subscriptionRepository)
-          .catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not populate unknown creator information', function(){
-        expect(target.internal.populateUnknownCreatorInformation).not.toHaveBeenCalled();
-      });
-
-      it('should propagate the error', function(){
-        expect(error).toBe('error');
-      });
-
-      it('should not have modified posts', function(){
-        expect(posts).toEqual(postsCopy);
-      });
-    });
-
-    describe('when successful', function(){
-      var posts;
-      beforeEach(function(){
-
-        posts = [
-          {
-            blogId: 'blogId1',
-            channelId: 'channelId1',
-            queueId: 'queueId1'
-          },
-          {
-            blogId: 'blogId1',
-            channelId: 'channelId2'
-          }
-        ];
-
-        subscriptionRepository.getBlogMap.and.returnValue($q.when(
-          {
-            blogId1: {
-              blogId: 'blogId1',
-              username: 'username',
-              name: 'blog',
-              profileImage: {
-                fileId: 'fileId',
-                containerName: 'containerName'
-              },
-              channels: {
-                channelId1: {
-                  channelId: 'channelId1'
-                },
-                channelId2: {
-                  channelId: 'channelId2'
-                }
-              },
-              queues: {
-                queueId1: {
-                  queueId: 'queueId1'
-                }
-              }
-            }
-          }));
-
-        target.populateCreatorInformation(posts, subscriptionRepository);
-        $rootScope.$apply();
-      });
-
-      it('should get the blog map', function(){
-        expect(subscriptionRepository.getBlogMap).toHaveBeenCalledWith();
-      });
-
-      it('should populate unknown creator information', function(){
-        expect(target.internal.populateUnknownCreatorInformation).toHaveBeenCalled();
-      });
-
-      it('should update the posts queue', function(){
-        expect(posts).toEqual([
-          {
-            isOwner: false,
-            blogId: 'blogId1',
-            blog: {
-              name: 'blog'
-            },
-            channelId: 'channelId1',
-            queueId: 'queueId1',
-            channel: {
-              channelId: 'channelId1'
-            },
-            queue: {
-              queueId: 'queueId1'
-            },
-            creator: {
-              username: 'username',
-              profileImage: {
-                fileId: 'fileId',
-                containerName: 'containerName'
-              }
-            }
-          },
-          {
-            isOwner: false,
-            blogId: 'blogId1',
-            blog: {
-              name: 'blog'
-            },
-            channelId: 'channelId2',
-            channel: {
-              channelId: 'channelId2'
-            },
-            creator: {
-              username: 'username',
-              profileImage: {
-                fileId: 'fileId',
-                containerName: 'containerName'
-              }
-            }
-          }
-        ]);
-      });
-    });
-
-    describe('when items not found', function(){
-      var posts;
-      beforeEach(function(){
-
-        posts = [
-          {
-            blogId: 'blogId1',
-            channelId: 'channelId1',
-            queueId: 'queueId1'
-          },
-          {
-            blogId: 'blogId1',
-            channelId: 'channelId1',
-            queueId: 'queueId2'
-          },
-          {
-            blogId: 'blogId1',
-            channelId: 'channelId2',
-            queueId: 'queueId2'
-          },
-          {
-            blogId: 'blogId2',
-            channelId: 'channelId2',
-            queueId: 'queueId2'
-          }
-        ];
-
-        subscriptionRepository.getBlogMap.and.returnValue($q.when(
-          {
-            blogId1: {
-              blogId: 'blogId1',
-              name: 'blog',
-              username: 'username',
-              profileImage: {
-                fileId: 'fileId',
-                containerName: 'containerName'
-              },
-              channels: {
-                channelId1: {
-                  channelId: 'channelId1'
-                }
-              },
-              queues: {
-                queueId1: {
-                  queueId: 'queueId1'
-                }
-              }
-            }
-          }));
-
-        target.populateCreatorInformation(posts, subscriptionRepository);
-        $rootScope.$apply();
-      });
-
-      it('should get the blog map', function(){
-        expect(subscriptionRepository.getBlogMap).toHaveBeenCalledWith();
-      });
-
-      it('should populate unknown creator information', function(){
-        expect(target.internal.populateUnknownCreatorInformation).toHaveBeenCalled();
-      });
-
-      it('should update the posts queue', function(){
-        expect(posts).toEqual([
-          {
-            isOwner: false,
-            blogId: 'blogId1',
-            channelId: 'channelId1',
-            queueId: 'queueId1',
-            channel: {
-              channelId: 'channelId1'
-            },
-            queue: {
-              queueId: 'queueId1'
-            },
-            blog: {
-              name: 'blog'
-            },
-            creator: {
-              username: 'username',
-              profileImage: {
-                fileId: 'fileId',
-                containerName: 'containerName'
-              }
-            }
-          },
-          {
-            isOwner: false,
-            blogId: 'blogId1',
-            channelId: 'channelId1',
-            queueId: 'queueId2',
-            channel: {
-              channelId: 'channelId1'
-            },
-            queue: {
-              queueId: 'queueId2',
-              name: 'Unknown Queue'
-            },
-            blog: {
-              name: 'blog'
-            },
-            creator: {
-              username: 'username',
-              profileImage: {
-                fileId: 'fileId',
-                containerName: 'containerName'
-              }
-            }
-          },
-          {
-            isOwner: false,
-            blogId: 'blogId1',
-            channelId: 'channelId2',
-            queueId: 'queueId2',
-            channel: {
-              channelId: 'channelId2',
-              name: 'Unknown Channel'
-            },
-            queue: {
-              queueId: 'queueId2',
-              name: 'Unknown Queue'
-            },
-            blog: {
-              name: 'blog'
-            },
-            creator: {
-              username: 'username',
-              profileImage: {
-                fileId: 'fileId',
-                containerName: 'containerName'
-              }
-            }
-          },
-          {
-            isOwner: false,
-            blogId: 'blogId2',
-            channelId: 'channelId2',
-            queueId: 'queueId2',
-            channel: {
-              channelId: 'channelId2',
-              name: 'Unknown Channel'
-            },
-            queue: {
-              queueId: 'queueId2',
-              name: 'Unknown Queue'
-            },
-            blog: {
-              name: 'Unknown Blog'
-            },
-            creator: {
-              username: 'Unknown Creator',
-              profileImage: undefined
-            }
-          }
-        ]);
+        expect(post.channel).toBe('channel1');
+        expect(post.queue).toBeUndefined();
+        expect(post.blog).toEqual({ name: 'name' });
+        expect(post.creator).toEqual({ username: 'username', profileImage: 'profileImage' });
       });
     });
   });
 
-  describe('when processing posts for rendering', function(){
+  describe('populateUnknownCreatorInformation', function(){
+    var post;
+    beforeEach(function(){
+      post = {
+        channelId: 'channelId1',
+        queueId: 'queueId1'
+      };
+    });
 
-    describe('when posts is undefined', function(){
-      var error;
-      var posts;
-      beforeEach(function(){
-        error = undefined;
-        posts = undefined;
-
-        target.processPostsForRendering(posts)
-          .catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not get the access signatures', function(){
-        expect(accessSignatures.getContainerAccessMap).not.toHaveBeenCalled();
-      });
-
-      it('should not error', function(){
-        expect(error).toBeUndefined();
-      });
-
-      it('should not have modified posts', function(){
-        expect(posts).toBeUndefined();
+    describe('when post is not already populated and has queueId', function(){
+      it('should populate correctly', function(){
+        target.internal.populateUnknownCreatorInformation(post);
+        expect(post.channel).toEqual({ channelId: 'channelId1', name: 'Unknown Channel' });
+        expect(post.queue).toEqual({ queueId: 'queueId1', name: 'Unknown Queue' });
+        expect(post.blog).toEqual({ name: 'Unknown Blog' });
+        expect(post.creator).toEqual({ username: 'Unknown Creator', profileImage: undefined });
       });
     });
 
-    describe('when posts is empty', function(){
-      var error;
-      var posts;
-      beforeEach(function(){
-        error = undefined;
-        posts = [];
-
-        target.processPostsForRendering(posts)
-          .catch(function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not get the access signatures', function(){
-        expect(accessSignatures.getContainerAccessMap).not.toHaveBeenCalled();
-      });
-
-      it('should not error', function(){
-        expect(error).toBeUndefined();
-      });
-
-      it('should not have modified posts', function(){
-        expect(posts).toEqual([]);
+    describe('when post is not already populated and has no queueId', function(){
+      it('should populate correctly', function(){
+        post.queueId = undefined;
+        target.internal.populateUnknownCreatorInformation(post);
+        expect(post.channel).toEqual({ channelId: 'channelId1', name: 'Unknown Channel' });
+        expect(post.queue).toBeUndefined();
+        expect(post.blog).toEqual({ name: 'Unknown Blog' });
+        expect(post.creator).toEqual({ username: 'Unknown Creator', profileImage: undefined });
       });
     });
 
-    describe('when getContainerAccessMap fails', function(){
-      var error;
-      var posts;
-      var postsCopy;
+    describe('when post is already populated', function(){
+      it('should populate correctly', function(){
+        post.channel = 'channel';
+        post.queue = 'queue';
+        post.blog = 'blog';
+        post.creator = 'creator';
+        target.internal.populateUnknownCreatorInformation(post);
+        expect(post.channel).toBe('channel');
+        expect(post.queue).toBe('queue');
+        expect(post.blog).toBe('blog');
+        expect(post.creator).toBe('creator');
+      });
+    });
+  });
+
+  describe('getPopulatedCaches', function(){
+    it('should populate the caches', function(){
+      accessSignatures.getContainerAccessMap.and.returnValue($q.when('accessMap'));
+
+      var accountSettingsRepository = jasmine.createSpyObj('asr', ['getAccountSettings']);
+      accountSettingsRepository.getAccountSettings.and.returnValue($q.when('accountSettings'));
+
+      var blogRepository = jasmine.createSpyObj('asr', ['tryGetBlogMap', 'getUserId']);
+      blogRepository.tryGetBlogMap.and.returnValue($q.when('blogMap'));
+      blogRepository.getUserId.and.returnValue('userId');
+
+      var subscriptionRepository = jasmine.createSpyObj('asr', ['getBlogMap']);
+      subscriptionRepository.getBlogMap.and.returnValue($q.when('subscriptionBlogMap'));
+
+      var result;
+      target.internal.getPopulatedCaches(accountSettingsRepository, blogRepository, subscriptionRepository)
+        .then(function(r){ result = r; });
+
+      $rootScope.$apply();
+
+      expect(result).toEqual({
+        userId: 'userId',
+        accessMap: 'accessMap',
+        subscriptionMap: 'subscriptionBlogMap',
+        blog: 'blogMap',
+        accountSettings: 'accountSettings'
+      });
+    });
+  });
+
+  describe('processPostsForRendering', function(){
+    var success;
+    var error;
+    var deferredGetPopulatedCaches;
+    beforeEach(function(){
+      success = undefined;
+      error = undefined;
+      deferredGetPopulatedCaches = $q.defer();
+      spyOn(target.internal, 'getPopulatedCaches').and.returnValue(deferredGetPopulatedCaches.promise);
+      spyOn(target.internal, 'processPosts');
+    });
+
+    describe('when no posts', function(){
       beforeEach(function(){
-        accessSignatures.getContainerAccessMap.and.returnValue($q.reject('error'));
-
-        posts = [
-          {
-            channelId: 'channelId1',
-            queueId: 'queueId1'
-          },
-          {
-            channelId: 'channelId2'
-          }
-        ];
-
-        postsCopy = _.cloneDeep(posts);
-
-        target.processPostsForRendering(posts).catch(function(e){ error = e; });
+        target.processPostsForRendering([], 'asr', 'br', 'sr')
+          .then(function(){ success = true; }, function(e) { error = e; });
         $rootScope.$apply();
       });
 
-      it('should propagate the error', function(){
-        expect(error).toBe('error');
+      it('should not call getPopulatedCaches', function(){
+        expect(target.internal.getPopulatedCaches).not.toHaveBeenCalled();
       });
 
-      it('should not have modified posts', function(){
-        expect(posts).toEqual(postsCopy);
+      it('should complete successfully', function(){
+        expect(success).toBe(true);
       });
     });
 
-    describe('when successful', function(){
+    describe('when undefined posts', function(){
+      beforeEach(function(){
+        target.processPostsForRendering(undefined, 'asr', 'br', 'sr')
+          .then(function(){ success = true; }, function(e) { error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should not call getPopulatedCaches', function(){
+        expect(target.internal.getPopulatedCaches).not.toHaveBeenCalled();
+      });
+
+      it('should complete successfully', function(){
+        expect(success).toBe(true);
+      });
+    });
+
+    describe('when posts exist', function(){
       var posts;
       beforeEach(function(){
+        posts = ['p1', 'p2'];
+        target.processPostsForRendering(posts, 'asr', 'br', 'sr')
+          .then(function(){ success = true; }, function(e) { error = e; });
+        $rootScope.$apply();
+      });
 
-        jasmine.clock().install();
-        jasmine.clock().mockDate(new Date('2015-03-19T17:00:00Z'));
+      it('should call getPopulatedCaches', function(){
+        expect(target.internal.getPopulatedCaches).toHaveBeenCalledWith('asr', 'br', 'sr');
+      });
 
-        accessSignatures.getContainerAccessMap.and.returnValue($q.when({
-          containerName1: {
-            signature: '?signature1',
-            uri: 'uri1'
-          },
-          containerName2: {
-            signature: '?signature2',
-            uri: 'uri2'
-          }
-        }));
-
-        spyOn(window, 'moment').and.callFake(function(date){
-          return {
-            date: date,
-            fromNow: function(){
-              return 'fromNow';
-            },
-            isSame: function(previous){
-              return date.getUTCDate() === previous.date.getUTCDate();
-            }
-          };
+      describe('when getPopulatedCaches succeeds', function(){
+        beforeEach(function(){
+          deferredGetPopulatedCaches.resolve('caches');
+          $rootScope.$apply();
         });
 
-        posts = [
-          {
-            liveDate: new Date('2015-03-18T17:00:00Z'),
-            creator: {
-              profileImage: {
-                fileId: 'creator1',
-                containerName: 'containerName1'
-              }
-            },
-            queueId: 'queueId1'
-          },
-          {
-            liveDate: new Date('2015-03-19T17:00:00Z'),
-            fileSource: {
-              size: 1024
-            },
-            creator: {
-              profileImage: {
-                fileId: 'creator2',
-                containerName: 'containerName2'
-              }
-            },
-            queueId: undefined
-          },
-          {
-            liveDate: new Date('2015-03-19T17:00:00Z'),
-            imageSource: {
-              size: 1048576,
-              contentType: 'image/jpeg',
-              renderSize: {
-                width: 800,
-                height: 600
-              }
-            },
-            image: {
-              fileId: 'fileId1',
-              containerName: 'containerName1'
-            },
-            creator: {
-              profileImage: {
-                fileId: 'creator1',
-                containerName: 'containerName1'
-              }
-            }
-          },
-          {
-            liveDate: new Date('2015-03-20T17:00:00Z'),
-            imageSource: {
-              size: 8,
-              contentType: 'image/png'
-            },
-            image: {
-              fileId: 'fileId2',
-              containerName: 'containerName2'
-            },
-            fileSource: {
-              size: 1024
-            },
-            creator: {
-              profileImage: undefined
-            }
-          },
-          {
-            liveDate: new Date('2015-03-20T17:00:00Z'),
-            imageSource: {
-              size: 1048576,
-              contentType: 'image/jpeg',
-              renderSize: {
-                width: 600,
-                height: 1200
-              }
-            },
-            image: {
-              fileId: 'fileId1',
-              containerName: 'containerName1'
-            },
-            creator: {
-              profileImage: {
-                fileId: 'creator1',
-                containerName: 'containerName1'
-              }
-            }
-          },
-          {
-            liveDate: new Date('2015-03-20T17:00:00Z'),
-            imageAccessInformation: {
-              uri: 'uri',
-              signature: '?signature'
-            },
-            image: {
-              fileId: 'fileId1',
-              containerName: 'containerName1'
-            },
-            creator: {
-              profileImage: {
-                fileId: 'creator1',
-                containerName: 'containerName1'
-              }
-            }
-          }
-        ];
+        it('should call processPosts', function(){
+          expect(target.internal.processPosts).toHaveBeenCalledWith(posts, 'caches');
+        });
 
-        target.processPostsForRendering(posts);
-        $rootScope.$apply();
-      });
-
-      afterEach(function(){
-        jasmine.clock().uninstall();
-      });
-
-      it('should get the access signatures', function(){
-        expect(accessSignatures.getContainerAccessMap).toHaveBeenCalled();
-      });
-
-      it('should add liveIn data', function(){
-        expect(posts[0].liveIn).toBe('fromNow');
-        expect(posts[1].liveIn).toBe('fromNow');
-        expect(posts[2].liveIn).toBe('fromNow');
-        expect(posts[3].liveIn).toBe('fromNow');
-        expect(posts[4].liveIn).toBe('fromNow');
-        expect(posts[5].liveIn).toBe('fromNow');
-      });
-
-      it('should add file information if post is a non-viewable image', function(){
-        expect(posts[2].fileSource).toBeUndefined();
-        expect(posts[3].fileSource).toBeDefined();
-        expect(posts[4].fileSource).toBeUndefined();
-        expect(posts[5].fileSource).toBeUndefined();
-      });
-
-      it('should add readableSize data', function(){
-        expect(posts[1].fileSource.readableSize).toBe('1 KB');
-        expect(posts[2].imageSource.readableSize).toBe('1 MB');
-        expect(posts[3].imageSource.readableSize).toBe('8 bytes');
-        expect(posts[3].fileSource.readableSize).toBe('1 KB');
-        expect(posts[4].imageSource.readableSize).toBe('1 MB');
-        expect(posts[5].imageSource).toBeUndefined();
-      });
-
-      it('should add isScheduled data', function(){
-        expect(posts[0].isScheduled).toBe(true);
-        expect(posts[1].isScheduled).toBe(true);
-        expect(posts[2].isScheduled).toBe(false);
-        expect(posts[3].isScheduled).toBe(false);
-        expect(posts[4].isScheduled).toBe(false);
-        expect(posts[5].isScheduled).toBe(false);
-      });
-
-      it('should add a reorder function if the post is scheduled', function(){
-        expect(posts[0].reorder).toBeDefined();
-        expect(posts[1].reorder).toBeUndefined();
-        expect(posts[2].reorder).toBeUndefined();
-        expect(posts[3].reorder).toBeUndefined();
-        expect(posts[4].reorder).toBeUndefined();
-        expect(posts[5].reorder).toBeUndefined();
-      });
-
-      describe('when calling re-order', function(){
-        it('should change state to the queue reorder page when reorder is called on post 1', function(){
-          posts[0].reorder();
-          expect($state.go).toHaveBeenCalledWith('creator.posts.scheduled.queues.reorder', { id: 'queueId1' });
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
         });
       });
 
-      it('should add profile image resolvedUri data', function(){
-        expect(posts[0].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
-        expect(posts[1].creator.profileImage.resolvedUri).toBe('uri2/creator2/footer?signature2');
-        expect(posts[2].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
-        expect(posts[3].creator.profileImage).toBeUndefined();
-        expect(posts[4].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
-        expect(posts[5].creator.profileImage.resolvedUri).toBe('uri1/creator1/footer?signature1');
-      });
+      describe('when getPopulatedCaches fails', function(){
+        beforeEach(function(){
+          deferredGetPopulatedCaches.reject('error');
+          $rootScope.$apply();
+        });
 
-      it('should add image resolvedUri data', function(){
-        expect(posts[2].image.resolvedUri).toBe('uri1/fileId1/feed?signature1');
-        expect(posts[3].image.resolvedUri).toBe('uri2/fileId2/feed?signature2');
-        expect(posts[4].image.resolvedUri).toBe('uri1/fileId1/feed?signature1');
-        expect(posts[5].imageAccessInformation.resolvedUri).toBe('uri?signature');
-        expect(posts[5].image.resolvedUri).toBeUndefined();
-      });
-
-      it('should add renderSizeRatio data when required', function(){
-        expect(posts[0].renderSizeRatio).toBeUndefined();
-        expect(posts[1].renderSizeRatio).toBeUndefined();
-        expect(posts[2].renderSizeRatio).toBe('75%');
-        expect(posts[3].renderSizeRatio).toBeUndefined();
-        expect(posts[4].renderSizeRatio).toBe('200%');
-        expect(posts[5].renderSizeRatio).toBeUndefined();
-      });
-
-      it('should add renderSizeMaximumWidth data when required', function(){
-        expect(posts[0].renderSizeMaximumWidth).toBeUndefined();
-        expect(posts[1].renderSizeMaximumWidth).toBeUndefined();
-        expect(posts[2].renderSizeMaximumWidth).toBeUndefined();
-        expect(posts[3].renderSizeMaximumWidth).toBeUndefined();
-        expect(posts[4].renderSizeMaximumWidth).toBe(360);
-        expect(posts[5].renderSizeMaximumWidth).toBeUndefined();
+        it('should propagate error', function(){
+          expect(error).toBe('error');
+        });
       });
     });
   });
 
-  describe('when removing a post', function(){
-
-    var day1;
-    var day2;
-
+  describe('processPostForRendering', function(){
+    var success;
+    var error;
+    var deferredGetPopulatedCaches;
     beforeEach(function(){
-      day1 = moment(new Date('2015-03-22T10:00:00Z'));
-      day2 = moment(new Date('2015-03-23T10:00:00Z'));
+      success = undefined;
+      error = undefined;
+      deferredGetPopulatedCaches = $q.defer();
+      spyOn(target.internal, 'getPopulatedCaches').and.returnValue(deferredGetPopulatedCaches.promise);
+      spyOn(target.internal, 'processPost');
+
+      target.processPostForRendering('post', 'asr', 'br', 'sr')
+        .then(function(){ success = true; }, function(e) { error = e; });
+      $rootScope.$apply();
     });
 
-    it('should do nothing if the post list is undefined', function(){
-      target.removePost(undefined, 'd');
+    it('should call getPopulatedCaches', function(){
+      expect(target.internal.getPopulatedCaches).toHaveBeenCalledWith('asr', 'br', 'sr');
     });
 
-    it('should do nothing if the post list is empty', function(){
-      target.removePost([], 'd');
+    describe('when getPopulatedCaches succeeds', function(){
+      beforeEach(function(){
+        deferredGetPopulatedCaches.resolve('caches');
+        $rootScope.$apply();
+      });
+
+      it('should call processPost', function(){
+        expect(target.internal.processPost).toHaveBeenCalledWith('post', undefined, 'caches');
+      });
+
+      it('should complete successfully', function(){
+        expect(success).toBe(true);
+      });
     });
 
-    it('should not modify the list if the post is not found', function(){
-      var posts = [
-        { postId: 'a', moment: day1 },
-        { postId: 'b', moment: day1 },
-        { postId: 'c', moment: day1 }
+    describe('when getPopulatedCaches fails', function(){
+      beforeEach(function(){
+        deferredGetPopulatedCaches.reject('error');
+        $rootScope.$apply();
+      });
+
+      it('should propagate error', function(){
+        expect(error).toBe('error');
+      });
+    });
+  });
+
+  describe('removePost', function(){
+    var posts;
+    beforeEach(function(){
+      posts = [
+        {
+          postId: 'p1',
+          name: 'n1'
+        },
+        {
+          postId: 'p2',
+          name: 'n2'
+        },
+        {
+          postId: 'p3',
+          name: 'n3'
+        }
       ];
+    });
 
-      target.removePost(posts, 'd');
+    it('should not error if no posts', function(){
+      target.removePost([], 'p1');
+    });
 
+    it('should not error if posts is undefined', function(){
+      target.removePost(undefined, 'p1');
+    });
+
+    it('should not error if post not found', function(){
+      var original = _.cloneDeep(posts);
+      target.removePost(posts, 'p5');
+      expect(posts).toEqual(original);
+    });
+
+    it('should remove posts from start of list', function(){
+      target.removePost(posts, 'p1');
       expect(posts).toEqual([
-        { postId: 'a', moment: day1},
-        { postId: 'b', moment: day1 },
-        { postId: 'c', moment: day1 }
+        {
+          postId: 'p2',
+          name: 'n2'
+        },
+        {
+          postId: 'p3',
+          name: 'n3'
+        }
       ]);
     });
 
-    it('should remove the post correctly re-group by day (1)', function(){
-      var posts = [
-        { postId: 'a', moment: day1},
-        { postId: 'b', moment: day1 },
-        { postId: 'c', moment: day1 }
-      ];
-
-      target.removePost(posts, 'a');
-
+    it('should remove posts from middle of list', function(){
+      target.removePost(posts, 'p2');
       expect(posts).toEqual([
-        { postId: 'b', moment: day1},
-        { postId: 'c', moment: day1 }
+        {
+          postId: 'p1',
+          name: 'n1'
+        },
+        {
+          postId: 'p3',
+          name: 'n3'
+        }
       ]);
     });
 
-    it('should remove the post correctly re-group by day (2)', function(){
-      var posts = [
-        { postId: 'a', moment: day1},
-        { postId: 'b', moment: day1 },
-        { postId: 'c', moment: day1 }
-      ];
-
-      target.removePost(posts, 'b');
-
+    it('should remove posts from end of list', function(){
+      target.removePost(posts, 'p3');
       expect(posts).toEqual([
-        { postId: 'a', moment: day1},
-        { postId: 'c', moment: day1 }
+        {
+          postId: 'p1',
+          name: 'n1'
+        },
+        {
+          postId: 'p2',
+          name: 'n2'
+        }
       ]);
     });
+  });
 
-    it('should remove the post correctly re-group by day (3)', function(){
-      var posts = [
-        { postId: 'a', moment: day1},
-        { postId: 'b', moment: day1 },
-        { postId: 'c', moment: day1 }
-      ];
-
-      target.removePost(posts, 'c');
-
-      expect(posts).toEqual([
-        { postId: 'a', moment: day1},
-        { postId: 'b', moment: day1 }
-      ]);
+  describe('backlogComparison', function(){
+    var t1;
+    var t2;
+    beforeEach(function(){
+      t1 = moment();
+      t2 = moment();
+      t2.add(1, 'd');
     });
 
-    it('should remove the post correctly re-group by day (4)', function(){
-      var posts = [
-        { postId: 'a', moment: day1},
-        { postId: 'b', moment: day2},
-        { postId: 'c', moment: day2 }
-      ];
-
-      target.removePost(posts, 'b');
-
-      expect(posts).toEqual([
-        { postId: 'a', moment: day1 },
-        { postId: 'c', moment: day2 },
-      ]);
+    it('should return true if first post is before second post', function(){
+      expect(target.internal.backlogComparison({ moment: t1 }, { moment: t2 })).toBe(true);
     });
 
-    it('should remove the post correctly re-group by day (5)', function(){
-      var posts = [
-        { postId: 'a', moment: day1 }
-      ];
+    it('should return false if first post is same time as second post', function(){
+      expect(target.internal.backlogComparison({ moment: t1 }, { moment: t1 })).toBe(false);
+    });
 
-      target.removePost(posts, 'a');
+    it('should return false if first post is after second post', function(){
+      expect(target.internal.backlogComparison({ moment: t2 }, { moment: t1 })).toBe(false);
+    });
+  });
 
-      expect(posts).toEqual([
-      ]);
+  describe('timelineComparison', function(){
+    var t1;
+    var t2;
+    beforeEach(function(){
+      t1 = moment();
+      t2 = moment();
+      t2.add(1, 'd');
+    });
+
+    it('should return false if first post is before second post', function(){
+      expect(target.internal.timelineComparison({ moment: t1 }, { moment: t2 })).toBe(false);
+    });
+
+    it('should return true if first post is same time as second post', function(){
+      expect(target.internal.timelineComparison({ moment: t1 }, { moment: t1 })).toBe(true);
+    });
+
+    it('should return true if first post is after second post', function(){
+      expect(target.internal.timelineComparison({ moment: t2 }, { moment: t1 })).toBe(true);
     });
   });
 

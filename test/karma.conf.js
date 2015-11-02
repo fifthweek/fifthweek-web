@@ -39,6 +39,7 @@ module.exports = function(config) {
       'bower_components/moment/moment.js',
       'bower_components/medium-editor/dist/js/medium-editor.js',
       'bower_components/angular-medium-editor/dist/angular-medium-editor.js',
+      'bower_components/sir-trevor-js/sir-trevor.debug.js',
       'app/scripts/app.js',
       'app/scripts/**/*.js',
       'app/modules/**/*.js',

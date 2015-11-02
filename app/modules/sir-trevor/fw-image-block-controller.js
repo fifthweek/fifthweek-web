@@ -1,12 +1,11 @@
 angular.module('webApp').controller('fwImageBlockCtrl',
-  function($q, $scope, blobImageControlFactory, errorFacade) {
+  function($q, $scope, blobImageControlFactory) {
     'use strict';
 
     var model = {
       imageUploaded: false,
       processingImage: false,
-      fileData: undefined,
-      errorMessage: undefined
+      fileData: undefined
     };
 
     $scope.model = model;
@@ -30,6 +29,7 @@ angular.module('webApp').controller('fwImageBlockCtrl',
         $scope.onUploadStartedDelegate();
       }
     };
+
     $scope.onUploadComplete = function(data) {
       model.imageUploaded = true;
       model.fileData = {

@@ -17,7 +17,13 @@ angular.module('webApp').controller(
         .then(function(data){
           model.settings = data;
 
-          model.settings.description = {serializedBlocks: jsonService.toJson([{type: 'text', data: {text: model.settings.description }}])};
+          model.settings.description = jsonService.toSirTrevor([{
+              type: 'text',
+              data: {
+                text: model.settings.description
+              }
+            }
+          ]);
 
           model.username = aggregateUserStateUtilities.getUsername();
           model.landingPageUrl = 'https://www.fifthweek.com/' + model.username;

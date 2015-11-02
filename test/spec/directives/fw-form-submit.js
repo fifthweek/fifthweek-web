@@ -11,6 +11,7 @@ describe('submit form directive', function(){
   var $q;
 
   var wrapUserAction;
+  var formConstants;
 
   beforeEach(function() {
     wrapUserAction = jasmine.createSpy('wrapUserAction');
@@ -24,6 +25,7 @@ describe('submit form directive', function(){
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $q = $injector.get('$q');
+      formConstants = $injector.get('formConstants');
     });
   });
 
@@ -58,12 +60,20 @@ describe('submit form directive', function(){
       deferred = $q.defer();
       wrapUserAction.and.returnValue(deferred.promise);
 
+      spyOn($rootScope, '$broadcast');
+
       element = angular.element(formHtml);
       $compile(element)(scope);
       element = element.find('button');
       scope.$digest();
       scope.form.$valid = true;
       scope.form.$dirty = true;
+    });
+
+    it('should broadcast a formSubmittingEvent', function(){
+      element.click();
+
+      expect($rootScope.$broadcast).toHaveBeenCalledWith(formConstants.formSubmittingEvent);
     });
 
     it('should call the specified delegate', function(){

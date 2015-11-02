@@ -568,4 +568,67 @@ describe('blog repository factory', function(){
       });
     });
   });
+
+  describe('when calling tryGetBlogMap', function(){
+    describe('when no user exist', function(){
+
+      var result;
+      var success;
+      beforeEach(function(){
+        masterRepository.getUserId.and.returnValue(undefined);
+
+        target.tryGetBlogMap().then(function(r){result = r; success = true;});
+        $rootScope.$apply();
+      });
+
+      it('should succeed with no result', function(){
+        expect(success).toBe(true);
+        expect(result).toBeUndefined();
+      });
+    });
+
+    describe('when channels exist', function(){
+
+      var result;
+      beforeEach(function(){
+        masterRepository.getUserId.and.returnValue('userId');
+        masterRepository.get.and.returnValue($q.when(
+          {
+            channels: [
+              {
+                channelId: 'a'
+              },
+              {
+                channelId: 'b'
+              }
+            ],
+            queues: [
+              { queueId: 'x' },
+              { queueId: 'y' }
+            ]
+
+          }));
+
+        target.tryGetBlogMap().then(function(r){result = r;});
+        $rootScope.$apply();
+      });
+
+      it('should return a map of channels and queues', function(){
+        expect(result).toEqual({
+          channels: {
+            a: {
+              channelId: 'a'
+            },
+            b: {
+              channelId: 'b'
+            }
+          },
+          queues: {
+            x: { queueId: 'x' },
+            y: { queueId: 'y' }
+          }
+        });
+      });
+    });
+  });
 });

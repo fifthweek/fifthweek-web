@@ -41,7 +41,7 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
       });
     };
 
-    service.viewPost = function(post, postId) {
+    service.viewPost = function(post) {
       var updateLikeStatus = function(totalLikes, hasLiked){
         post.likesCount = totalLikes;
         post.hasLiked = hasLiked;
@@ -55,10 +55,7 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
         size: 'lg',
         resolve: {
           post: function(){
-            return postId ? undefined : post;
-          },
-          postId: function() {
-            return postId;
+            return post;
           },
           updateLikeStatus: function(){
             return updateLikeStatus;

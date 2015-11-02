@@ -8,7 +8,7 @@ angular.module('webApp').factory('fwFileBlockFactory',
 
       return SirTrevor.Block.extend({
 
-        type: "file",
+        type: 'file',
         title: function() { return 'File'; },
         icon_name: 'link',
 

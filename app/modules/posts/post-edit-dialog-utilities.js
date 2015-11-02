@@ -96,7 +96,7 @@ angular.module('webApp').factory('postEditDialogUtilities',
         });
     };
 
-    service.applyChangesToPost = function(post, model, accountSettingsRepository, blogRepository, subscriptionRepository){
+    service.internal.applyContentChangesToPost = function(post, model){
       post.previewText = model.input.content.previewText;
 
       var previewImageId = model.input.content.previewImageId;
@@ -109,7 +109,9 @@ angular.module('webApp').factory('postEditDialogUtilities',
         post.image = undefined;
         post.imageSource = undefined;
       }
+    };
 
+    service.internal.applySchedulingChangesToPost = function(post, model){
       // When requesting posts from the API, backlog posts
       // have a queueId property where as timeline
       // posts do not.  Therefore the presence of this property
@@ -137,7 +139,11 @@ angular.module('webApp').factory('postEditDialogUtilities',
           post.liveDate = model.input.date.toISOString();
         }
       }
+    };
 
+    service.applyChangesToPost = function(post, model, accountSettingsRepository, blogRepository, subscriptionRepository){
+      service.internal.applyContentChangesToPost(post, model);
+      service.internal.applySchedulingChangesToPost(post, model);
       return postUtilities.processPostForRendering(post, accountSettingsRepository, blogRepository, subscriptionRepository);
     };
 

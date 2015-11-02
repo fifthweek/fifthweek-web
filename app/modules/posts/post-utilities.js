@@ -3,55 +3,64 @@ angular.module('webApp').factory('postUtilities',
     'use strict';
 
     var service = {};
+    service.internal = {};
 
-    var humanFileSize = function(size) {
+    service.internal.humanFileSize = function(size) {
       var i = Math.floor( Math.log(size) / Math.log(1024) );
       return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['bytes', 'KB', 'MB', 'GB', 'TB'][i];
     };
 
-    var getImageUri = function(image, thumbnail, caches){
-      var blob = image.fileId;
-      if (thumbnail) {
-        blob = blob + '/' + thumbnail;
-      }
-
+    service.internal.getImageUri = function(image, thumbnail, caches){
       var accessInformation = caches.accessMap.containerName[image.containerName];
       if(!accessInformation){
         return undefined;
       }
 
+      var blob = image.fileId;
+      if (thumbnail) {
+        blob = blob + '/' + thumbnail;
+      }
+
       return accessInformation.uri + '/' + blob + accessInformation.signature;
     };
 
-    var processFile = function(parent, information, source, accessInformation, caches) {
+    service.internal.processFileSource = function(parent, source){
+      source.readableSize = service.internal.humanFileSize(source.size);
+
+      if(source.renderSize){
+        parent.renderSizeRatio = ((source.renderSize.height / source.renderSize.width)*100) + '%';
+        var postMaximumWidth = 945;
+        var postMaximumHeight = 720;
+        var calculatedHeight = (postMaximumWidth / source.renderSize.width) * source.renderSize.height;
+
+        if(calculatedHeight > postMaximumHeight){
+          parent.renderSizeMaximumWidth = postMaximumWidth * (postMaximumHeight / calculatedHeight);
+        }
+      }
+    };
+
+    service.internal.processFileInformation = function(parent, information, accessInformation, caches){
+      information.resolvedUri = service.internal.getImageUri(information, 'feed', caches);
+      if(!information.resolvedUri && accessInformation){
+        information.isPreview = true;
+        information.resolvedUri = accessInformation.uri + accessInformation.signature;
+      }
+    };
+
+    service.internal.processFile = function(parent, information, source, accessInformation, caches) {
       delete parent.renderSizeRatio;
       delete parent.renderSizeMaximumWidth;
 
       if(source){
-        source.readableSize = humanFileSize(source.size);
-
-        if(source.renderSize){
-          parent.renderSizeRatio = ((source.renderSize.height / source.renderSize.width)*100) + '%';
-          var postMaximumWidth = 945;
-          var postMaximumHeight = 720;
-          var calculatedHeight = (postMaximumWidth / source.renderSize.width) * source.renderSize.height;
-
-          if(calculatedHeight > postMaximumHeight){
-            parent.renderSizeMaximumWidth = postMaximumWidth * (postMaximumHeight / calculatedHeight);
-          }
-        }
+        service.internal.processFileSource(parent, source);
       }
 
       if(information){
-        information.resolvedUri = getImageUri(information, 'feed', caches);
-        if(!information.resolvedUri && accessInformation){
-          information.isPreview = true;
-          information.resolvedUri = accessInformation.uri + accessInformation.signature;
-        }
+        service.internal.processFileInformation(parent, information, accessInformation, caches);
       }
     };
 
-    var calculateReadingTime = function(post){
+    service.internal.calculateReadingTime = function(post){
       var wordsPerMinute = 200;
       var imagesPerMinute = 2;
       var filesPerMinute = 2;
@@ -59,12 +68,10 @@ angular.module('webApp').factory('postUtilities',
       var imageCount = (post.imageCount - (post.image ? 1 : 0)) || 0;
       var fileCount = post.fileCount || 0;
 
-      var totalMinutes = Math.round((wordCount / wordsPerMinute) + (imageCount / imagesPerMinute) + (fileCount / filesPerMinute));
-
-      post.readingTime = totalMinutes;
+      post.readingTime = Math.round((wordCount / wordsPerMinute) + (imageCount / imagesPerMinute) + (fileCount / filesPerMinute));
     };
 
-    var processPost = function(post, previousPost, caches){
+    service.internal.processPost = function(post, previousPost, caches){
 
       service.internal.populateCreatorInformation(post, caches);
 
@@ -73,11 +80,11 @@ angular.module('webApp').factory('postUtilities',
       post.moment = moment(post.liveDate);
       post.liveIn = post.moment.fromNow();
 
-      processFile(post, post.image, post.imageSource, post.imageAccessInformation, caches);
+      service.internal.processFile(post, post.image, post.imageSource, post.imageAccessInformation, caches);
 
       if(post.files){
         _.forEach(post.files, function(file){
-          processFile(file, file.information, file.source, file.accessInformation, caches);
+          service.internal.processFile(file, file.information, file.source, file.accessInformation, caches);
         });
       }
 
@@ -90,7 +97,7 @@ angular.module('webApp').factory('postUtilities',
       }
 
       if(post.creator && post.creator.profileImage){
-        post.creator.profileImage.resolvedUri = getImageUri(post.creator.profileImage, 'footer', caches);
+        post.creator.profileImage.resolvedUri = service.internal.getImageUri(post.creator.profileImage, 'footer', caches);
       }
 
       if(post.content){
@@ -103,18 +110,16 @@ angular.module('webApp').factory('postUtilities',
         });
       }
 
-      calculateReadingTime(post);
+      service.internal.calculateReadingTime(post);
     };
 
-    var processPosts = function(posts, caches){
+    service.internal.processPosts = function(posts, caches){
       var previousPost;
       _.forEach(posts, function(post){
-        processPost(post, previousPost, caches);
+        service.internal.processPost(post, previousPost, caches);
         previousPost = post;
       });
     };
-
-    service.internal = {};
 
     service.internal.populateCreatorInformation = function(post, caches) {
       post.isOwner = false;
@@ -242,35 +247,35 @@ angular.module('webApp').factory('postUtilities',
 
       return service.internal.getPopulatedCaches(accountSettingsRepository, blogRepository, subscriptionRepository)
         .then(function(caches){
-          processPosts(posts, caches);
+          service.internal.processPosts(posts, caches);
         });
     };
 
     service.processPostForRendering = function(post, accountSettingsRepository, blogRepository, subscriptionRepository){
       return service.internal.getPopulatedCaches(accountSettingsRepository, blogRepository, subscriptionRepository)
         .then(function(caches){
-          processPost(post, undefined, caches);
+          service.internal.processPost(post, undefined, caches);
         });
     };
 
     service.removePost = function(posts, postId){
       if(!posts || posts.length === 0){
-        return $q.when();
+        return;
       }
 
       for(var i=0; i < posts.length; ++i) {
         if (posts[i].postId === postId) {
           posts.splice(i, 1);
-
-          return $q.when();
+          return;
         }
       }
     };
 
-    var backlogComparison = function(firstPost, secondPost){
+    service.internal.backlogComparison = function(firstPost, secondPost){
       return firstPost.moment.isBefore(secondPost.moment);
     };
-    var timelineComparison = function(firstPost, secondPost){
+
+    service.internal.timelineComparison = function(firstPost, secondPost){
       return firstPost.moment.isAfter(secondPost.moment) || firstPost.moment.isSame(secondPost.moment);
     };
 
@@ -296,9 +301,9 @@ angular.module('webApp').factory('postUtilities',
         return;
       }
 
-      var shouldInsert = timelineComparison;
+      var shouldInsert = service.internal.timelineComparison;
       if(isBacklog) {
-        shouldInsert = backlogComparison;
+        shouldInsert = service.internal.backlogComparison;
       }
 
       service.removePost(posts, newPost.postId);

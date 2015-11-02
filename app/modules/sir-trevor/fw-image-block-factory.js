@@ -8,7 +8,7 @@ angular.module('webApp').factory('fwImageBlockFactory',
 
       return SirTrevor.Block.extend({
 
-        type: "image",
+        type: 'image',
         title: function() { return i18n.t('blocks:image:title'); },
         icon_name: 'image',
 

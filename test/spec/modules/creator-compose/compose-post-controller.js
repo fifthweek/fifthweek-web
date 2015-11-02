@@ -7,39 +7,42 @@ describe('compose post controller', function () {
 
   var $state;
   var composeUtilities;
-  var blobImageControlFactory;
   var postStub;
   var initializer;
   var blogRepositoryFactory;
   var blogRepository;
+  var errorFacade;
 
   var control;
 
   beforeEach(function() {
 
     $state = jasmine.createSpyObj('$state', ['reload']);
-    blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
     postStub = jasmine.createSpyObj('postStub', ['postPost']);
     composeUtilities = jasmine.createSpyObj('composeUtilities', ['updateEstimatedLiveDate']);
     initializer = jasmine.createSpyObj('initializer', ['initialize']);
     blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
-    blogRepository = jasmine.createSpyObj('blogRepository', ['getQueuesSorted']);
+    blogRepository = jasmine.createSpyObj('blogRepository', ['getChannelsSorted', 'getQueuesSorted']);
     blogRepositoryFactory.forCurrentUser.and.returnValue(blogRepository);
+    errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
+
+    errorFacade.handleError.and.callFake(function(error, setMessage) {
+      setMessage('friendlyError');
+      return $q.when();
+    });
 
     control = {
       update: jasmine.createSpy('update')
     };
 
-    blobImageControlFactory.createControl.and.returnValue(control);
-
     module('webApp');
     module(function($provide) {
-      $provide.value('blobImageControlFactory', blobImageControlFactory);
       $provide.value('postStub', postStub);
       $provide.value('$state', $state);
       $provide.value('composeUtilities', composeUtilities);
       $provide.value('initializer', initializer);
       $provide.value('blogRepositoryFactory', blogRepositoryFactory);
+      $provide.value('errorFacade', errorFacade);
     });
 
     inject(function ($injector) {
@@ -64,19 +67,6 @@ describe('compose post controller', function () {
       expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
     });
 
-    it('should create the blob image control', function(){
-      expect(blobImageControlFactory.createControl).toHaveBeenCalled();
-      expect($scope.blobImage).toBe(control);
-    });
-
-    it('should set fileUploaded to false', function(){
-      expect($scope.model.fileUploaded).toBe(false);
-    });
-
-    it('should set imageUploaded to false', function(){
-      expect($scope.model.imageUploaded).toBe(false);
-    });
-
     it('should set postLater to false', function(){
       expect($scope.model.postLater).toBe(false);
     });
@@ -94,9 +84,7 @@ describe('compose post controller', function () {
     });
 
     it('should set the inputs to empty', function(){
-      expect($scope.model.input.fileId).toBeUndefined();
-      expect($scope.model.input.fileId).toBeUndefined();
-      expect($scope.model.input.comment).toBe('');
+      expect($scope.model.input.content).toBeUndefined();
       expect($scope.model.input.date).toBe('');
       expect($scope.model.input.selectedQueue).toBeUndefined();
     });
@@ -113,126 +101,219 @@ describe('compose post controller', function () {
     });
 
     describe('when calling initialize', function(){
-
-    });
-
-    describe('when calling onImageUploadComplete', function(){
-      var data;
+      var success;
+      var error;
+      var deferredGetChannelsSorted;
+      var deferredGetQueuesSorted;
       beforeEach(function(){
-        data = {fileId: 'fileId', containerName: 'containerName'};
-        $scope.model.imageUploaded = false;
-        $scope.onImageUploadComplete(data);
+        spyOn(target.internal, 'watchForBusyBlocks');
+
+        success = undefined;
+        error = undefined;
+
+        deferredGetChannelsSorted = $q.defer();
+        blogRepository.getChannelsSorted.and.returnValue(deferredGetChannelsSorted.promise);
+
+        deferredGetQueuesSorted = $q.defer();
+        blogRepository.getQueuesSorted.and.returnValue(deferredGetQueuesSorted.promise);
+
+        target.internal.initialize().then(function(){ success = true;}, function(e){ error = e; });
+        $scope.$apply();
       });
 
-      it('should set imageUploaded to true', function(){
-        expect($scope.model.imageUploaded).toBe(true);
+      it('should call watchForBusyBlocks', function(){
+        expect(target.internal.watchForBusyBlocks).toHaveBeenCalled();
       });
 
-      it('should set the imageId', function(){
-        expect($scope.model.input.fileId).toBe('fileId');
+      it('should call getChannelsSorted', function(){
+        expect(blogRepository.getChannelsSorted).toHaveBeenCalled();
       });
 
-      it('should set processingImage to true', function(){
-        expect($scope.model.processingImage).toBe(true);
+      var testGetQueuesSortedResult = function(){
+
+        describe('when getQueuesSorted succeeds with no queues', function(){
+          beforeEach(function(){
+            $scope.model.postToQueue = true;
+            deferredGetQueuesSorted.resolve([]);
+            $scope.$apply();
+          });
+
+          it('should set the queues', function(){
+            expect($scope.model.queues).toEqual([]);
+          });
+
+          it('should set postToQueue to be false', function(){
+            expect($scope.model.postToQueue).toBe(false);
+          });
+
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
+          });
+        });
+
+        describe('when getQueuesSorted succeeds with multiple queues', function(){
+          beforeEach(function(){
+            $scope.model.postToQueue = true;
+            deferredGetQueuesSorted.resolve(['a', 'b']);
+            $scope.$apply();
+          });
+
+          it('should set the queues', function(){
+            expect($scope.model.queues).toEqual(['a', 'b']);
+          });
+
+          it('should set the selected queue', function(){
+            expect($scope.model.input.selectedQueue).toEqual('a');
+          });
+
+          it('should not set postToQueue to be false', function(){
+            expect($scope.model.postToQueue).toBe(true);
+          });
+
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
+          });
+        });
+
+        describe('when getQueuesSorted fails', function(){
+          beforeEach(function(){
+            deferredGetQueuesSorted.reject('error');
+            $scope.$apply();
+          });
+
+          it('should set the error message', function(){
+            expect($scope.model.errorMessage).toBe('friendlyError');
+          });
+
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
+          });
+        });
+      };
+
+      describe('when getChannelsSorted succeeds with no channels', function(){
+        beforeEach(function(){
+          deferredGetChannelsSorted.resolve([]);
+          $scope.$apply();
+        });
+
+        it('should not set the committedChannel', function(){
+          expect($scope.model.committedChannel).toBeUndefined();
+        });
+
+        it('should call getQueuesSorted', function(){
+          expect(blogRepository.getQueuesSorted).toHaveBeenCalledWith();
+        });
+
+        testGetQueuesSortedResult();
       });
 
-      it('should update the blob image', function(){
-        expect(control.update).toHaveBeenCalledWith('containerName', 'fileId', false, target.internal.onBlobImageUpdateComplete);
-      });
-    });
+      describe('when getChannelsSorted succeeds with one channel', function(){
+        beforeEach(function(){
+          deferredGetChannelsSorted.resolve([{channelId: 'a'}]);
+          $scope.$apply();
+        });
 
-    describe('when calling internal.onBlobImageUpdateComplete', function(){
-      beforeEach(function(){
-        $scope.model.processingImage = true;
-        target.internal.onBlobImageUpdateComplete({ renderSize: 'renderSize' });
-      });
+        it('should set the committedChannel', function(){
+          expect($scope.model.committedChannel).toEqual({ channelId: 'a' });
+        });
 
-      it('should set processingImage to false', function(){
-        expect($scope.model.processingImage).toBe(false);
-      });
-    });
+        it('should call getQueuesSorted', function(){
+          expect(blogRepository.getQueuesSorted).toHaveBeenCalledWith();
+        });
 
-    describe('when calling onFileUploadComplete', function(){
-      var data;
-      beforeEach(function(){
-        data = {fileId: 'fileId', containerName: 'containerName', file: { name: 'fileName' }};
-        $scope.model.fileUploaded = false;
-        $scope.onFileUploadComplete(data);
+        testGetQueuesSortedResult();
       });
 
-      it('should set fileUploaded to true', function(){
-        expect($scope.model.fileUploaded).toBe(true);
+      describe('when getChannelsSorted succeeds with multiple channels', function(){
+        beforeEach(function(){
+          deferredGetChannelsSorted.resolve([{channelId: 'a'}, {channelId: 'b'}]);
+          $scope.$apply();
+        });
+
+        it('should not set the committedChannel', function(){
+          expect($scope.model.committedChannel).toBeUndefined();
+        });
+
+        it('should call getQueuesSorted', function(){
+          expect(blogRepository.getQueuesSorted).toHaveBeenCalledWith();
+        });
+
+        testGetQueuesSortedResult();
       });
 
-      it('should set the fileId', function(){
-        expect($scope.model.input.fileId).toBe('fileId');
-      });
+      describe('when getChannelsSorted fails', function(){
+        beforeEach(function(){
+          deferredGetChannelsSorted.reject('error');
+          $scope.$apply();
+        });
 
-      it('should set the file name', function(){
-        expect($scope.fileName).toBe('fileName');
+        it('should set the error message', function(){
+          expect($scope.model.errorMessage).toBe('friendlyError');
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
+        });
       });
     });
 
     describe('when calling post', function(){
 
-      var testCompleteData = function(data){
-        describe('when data is complete', function(){
-          var success;
-          var error;
-          var deferredPostPost;
+      describe('when data is complete', function(){
+        var success;
+        var error;
+        var deferredPostPost;
+        var data;
+        beforeEach(function(){
+          success = undefined;
+          error = undefined;
+
+          data = { content: 'content' };
+
+          deferredPostPost = $q.defer();
+          postStub.postPost.and.returnValue(deferredPostPost.promise);
+
+          $scope.$close = jasmine.createSpy('$close');
+
+          target.internal.post(data).then(function(){ success = true; }, function(e){ error = e; });
+          $scope.$apply();
+        });
+
+        it('should call postPost', function(){
+          expect(postStub.postPost).toHaveBeenCalledWith(data);
+        });
+
+        describe('when postPost succeeds', function(){
           beforeEach(function(){
-            success = undefined;
-            error = undefined;
-
-            deferredPostPost = $q.defer();
-            postStub.postPost.and.returnValue(deferredPostPost.promise);
-
-            $scope.$close = jasmine.createSpy('$close');
-
-            target.internal.post(data).then(function(){ success = true; }, function(e){ error = e; });
+            deferredPostPost.resolve();
             $scope.$apply();
           });
 
-          it('should call postPost', function(){
-            expect(postStub.postPost).toHaveBeenCalledWith(data);
+          it('should reload the state', function(){
+            expect($state.reload).toHaveBeenCalledWith();
           });
 
-          describe('when postPost succeeds', function(){
-            beforeEach(function(){
-              deferredPostPost.resolve();
-              $scope.$apply();
-            });
-
-            it('should reload the state', function(){
-              expect($state.reload).toHaveBeenCalledWith();
-            });
-
-            it('should close the dialog', function(){
-              expect($scope.$close).toHaveBeenCalledWith();
-            });
-
-            it('should complete successfully', function(){
-              expect(success).toBe(true);
-            });
+          it('should close the dialog', function(){
+            expect($scope.$close).toHaveBeenCalledWith();
           });
 
-          describe('when postPost fails', function(){
-            beforeEach(function(){
-              deferredPostPost.reject('error');
-              $scope.$apply();
-            });
-
-            it('should propagate the error', function(){
-              expect(error).toBe('error');
-            });
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
           });
         });
-      };
 
-      testCompleteData({ comment: 'comment' });
-      testCompleteData({ fileId: 'fileId' });
-      testCompleteData({ fileId: 'imageId' });
-      testCompleteData({ comment: 'comment', fileId: 'fileId', fileId: 'imageId' });
+        describe('when postPost fails', function(){
+          beforeEach(function(){
+            deferredPostPost.reject('error');
+            $scope.$apply();
+          });
+
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
+          });
+        });
+      });
 
       describe('when data is incomplete', function(){
         var success;
@@ -247,7 +328,7 @@ describe('compose post controller', function () {
 
           $scope.$close = jasmine.createSpy('$close');
 
-          target.internal.post({comment: ''}).then(function(){ success = true; }, function(e){ error = e; });
+          target.internal.post({content: undefined}).then(function(){ success = true; }, function(e){ error = e; });
           $scope.$apply();
         });
 
@@ -276,6 +357,36 @@ describe('compose post controller', function () {
       });
     });
 
+    describe('when calling getPostData', function(){
+      it('should return post data', function(){
+        $scope.model.input.content = {
+          serializedBlocks: 'serializedBlocks',
+          files: [{ fileId: 'fileId1', name: 'a' }, { fileId: 'fileId2', name: 'b'}],
+          imageCount: 'imageCount',
+          fileCount: 'fileCount',
+          previewWordCount: 'previewWordCount',
+          wordCount: 'wordCount',
+          previewText: 'previewText',
+          previewImageId: 'previewImageId'
+        };
+        $scope.model.committedChannel = {channelId: 'channelId'};
+
+        var data = target.internal.getPostData();
+
+        expect(data).toEqual({
+          channelId: 'channelId',
+          content: 'serializedBlocks',
+          fileIds: ['fileId1', 'fileId2'],
+          imageCount: 'imageCount',
+          fileCount: 'fileCount',
+          previewWordCount: 'previewWordCount',
+          wordCount: 'wordCount',
+          previewText: 'previewText',
+          previewImageId: 'previewImageId'
+        });
+      });
+    });
+
     describe('when calling postNow', function(){
       var success;
       var error;
@@ -284,10 +395,7 @@ describe('compose post controller', function () {
         success = undefined;
         error = undefined;
 
-        $scope.model.committedChannel = { channelId: '5' };
-        $scope.model.input.fileId = 'fileId';
-        $scope.model.input.fileId = 'imageId';
-        $scope.model.input.comment = 'comment';
+        spyOn(target.internal, 'getPostData').and.returnValue('postData');
 
         deferredPost = $q.defer();
         spyOn(target.internal, 'post').and.returnValue(deferredPost.promise);
@@ -297,12 +405,7 @@ describe('compose post controller', function () {
       });
 
       it('should call post', function(){
-        expect(target.internal.post).toHaveBeenCalledWith({
-          channelId: '5',
-          fileId: 'fileId',
-          fileId: 'imageId',
-          comment: 'comment'
-        });
+        expect(target.internal.post).toHaveBeenCalledWith('postData');
       });
 
       describe('when post succeeds', function(){
@@ -336,12 +439,10 @@ describe('compose post controller', function () {
         success = undefined;
         error = undefined;
 
-        $scope.model.committedChannel = { channelId: '5' };
-        $scope.model.input.fileId = 'fileId';
-        $scope.model.input.fileId = 'imageId';
-        $scope.model.input.comment = 'comment';
         $scope.model.input.date = 'date';
         $scope.model.input.selectedQueue = { queueId: 'queueId' };
+
+        spyOn(target.internal, 'getPostData').and.returnValue({ blah: 'blah' });
 
         deferredPost = $q.defer();
         spyOn(target.internal, 'post').and.returnValue(deferredPost.promise);
@@ -357,10 +458,7 @@ describe('compose post controller', function () {
 
         it('should call post', function(){
           expect(target.internal.post).toHaveBeenCalledWith({
-            channelId: '5',
-            fileId: 'fileId',
-            fileId: 'imageId',
-            comment: 'comment',
+            blah: 'blah',
             scheduledPostTime: undefined,
             queueId: 'queueId'
           });
@@ -399,10 +497,7 @@ describe('compose post controller', function () {
 
         it('should call post', function(){
           expect(target.internal.post).toHaveBeenCalledWith({
-            channelId: '5',
-            fileId: 'fileId',
-            fileId: 'imageId',
-            comment: 'comment',
+            blah: 'blah',
             scheduledPostTime: 'date',
             queueId: undefined
           });
@@ -429,6 +524,49 @@ describe('compose post controller', function () {
             expect(error).toBe('error');
           });
         });
+      });
+    });
+
+    describe('when watchForBusyBlocks is called', function(){
+      beforeEach(function(){
+        spyOn($scope, '$watch').and.callThrough();
+        target.internal.watchForBusyBlocks();
+      });
+
+      it('should configure the watch', function(){
+        expect($scope.$watch).toHaveBeenCalledWith('model.input.content', target.internal.updateIsProcessing);
+      });
+    });
+
+    describe('when updateIsProcessing is called', function(){
+      it('should set isProcessing to false if no content', function(){
+        $scope.model.input.content = undefined;
+        target.internal.updateIsProcessing();
+        expect($scope.model.isProcessing).toBe(false);
+      });
+
+      it('should set isProcessing to false if no content', function(){
+        $scope.model.input.content = undefined;
+        target.internal.updateIsProcessing();
+        expect($scope.model.isProcessing).toBe(false);
+      });
+
+      it('should set isProcessing to false if no busy blocks', function(){
+        $scope.model.input.content = { busyBlockCount: 0 };
+        target.internal.updateIsProcessing();
+        expect($scope.model.isProcessing).toBe(false);
+      });
+
+      it('should set isProcessing to false if one busy block', function(){
+        $scope.model.input.content = { busyBlockCount: 1 };
+        target.internal.updateIsProcessing();
+        expect($scope.model.isProcessing).toBe(true);
+      });
+
+      it('should set isProcessing to false if many busy block', function(){
+        $scope.model.input.content = { busyBlockCount: 4 };
+        target.internal.updateIsProcessing();
+        expect($scope.model.isProcessing).toBe(true);
       });
     });
 

@@ -20,5 +20,12 @@ angular.module('webApp').factory('jsonService',
       return JSON.parse(input);
     };
 
+    service.toSirTrevor = function(blocks, files){
+      return {
+        serializedBlocks: service.toJson(blocks),
+        files: files
+      };
+    };
+
     return service;
   });

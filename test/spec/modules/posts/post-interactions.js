@@ -74,7 +74,7 @@ describe('post-interactions', function(){
         modalParameter = data;
       });
 
-      target.editPost('post');
+      target.editPost({ postId: 'postId' });
     });
 
     it('should open a modal dialog', function(){
@@ -82,7 +82,57 @@ describe('post-interactions', function(){
     });
 
     it('should configure injection of post', function(){
-      expect(modalParameter.resolve.post()).toBe('post');
+      expect(modalParameter.resolve.postId()).toBe('postId');
+    });
+  });
+
+  describe('when viewPost is called', function(){
+    var modalParameter;
+    var post;
+    var result;
+    beforeEach(function(){
+      $modal.open.and.callFake(function(data){
+        modalParameter = data;
+        return { result: 'result' };
+      });
+      post = {
+        postId: 'postId'
+      };
+
+      result = target.viewPost(post);
+    });
+
+    it('should open a modal dialog', function(){
+      expect($modal.open).toHaveBeenCalled();
+    });
+
+    it('should configure injection of post', function(){
+      expect(modalParameter.resolve.post()).toEqual(post);
+    });
+
+    describe('when updateLikeStatus is called', function(){
+      it('should update the post', function(){
+        modalParameter.resolve.updateLikeStatus()('totalLikes', 'hasLiked');
+        expect(post).toEqual({
+          postId: 'postId',
+          likesCount: 'totalLikes',
+          hasLiked: 'hasLiked'
+        });
+      });
+    });
+
+    describe('when updateCommentsCount is called', function(){
+      it('should update the post', function(){
+        modalParameter.resolve.updateCommentsCount()('totalComments');
+        expect(post).toEqual({
+          postId: 'postId',
+          commentsCount: 'totalComments'
+        });
+      });
+    });
+
+    it('should return the modal result', function(){
+      expect(result).toBe('result');
     });
   });
 
@@ -118,66 +168,228 @@ describe('post-interactions', function(){
     });
   });
 
-  describe('when likePost is called', function(){
-    describe('when postLike succeeds', function(){
+  describe('when calling toggleLikePost', function(){
+    describe('when post is liked', function(){
       var success;
+      var error;
+      var deferredUnlikePost;
+      var post;
       beforeEach(function(){
-        postStub.postLike.and.returnValue($q.when());
-        target.likePost('postId').then(function() { success = true; });
+        success = undefined;
+        error = undefined;
+
+        deferredUnlikePost = $q.defer();
+        spyOn(target.internal, 'unlikePost').and.returnValue(deferredUnlikePost.promise);
+
+        post = { hasLiked: true };
+        target.toggleLikePost(post).then(function(){ success = true; }, function(e){ error = e; });
         $rootScope.$apply();
       });
 
-      it('should delete the post on the API', function(){
-        expect(postStub.postLike).toHaveBeenCalledWith('postId');
+      it('should call unlikePost', function(){
+        expect(target.internal.unlikePost).toHaveBeenCalledWith(post);
       });
 
-      it('should return a successful promise', function(){
-        expect(success).toBe(true);
+      describe('when unlikePost succeeds', function(){
+        beforeEach(function(){
+          deferredUnlikePost.resolve();
+          $rootScope.$apply();
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
+        });
+      });
+
+      describe('when unlikePost fails', function(){
+        beforeEach(function(){
+          deferredUnlikePost.reject('error');
+          $rootScope.$apply();
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
       });
     });
 
-    describe('when postLike fails', function(){
+    describe('when post is not liked', function(){
+      var success;
       var error;
+      var deferredLikePost;
+      var post;
       beforeEach(function(){
-        postStub.postLike.and.returnValue($q.reject('error'));
-        target.likePost('postId').catch(function(e) { error = e; });
+        success = undefined;
+        error = undefined;
+
+        deferredLikePost = $q.defer();
+        spyOn(target.internal, 'likePost').and.returnValue(deferredLikePost.promise);
+
+        post = { hasLiked: false };
+        target.toggleLikePost(post).then(function(){ success = true; }, function(e){ error = e; });
         $rootScope.$apply();
       });
 
-      it('should propagate the error', function(){
-        expect(error).toBe('error');
+      it('should call likePost', function(){
+        expect(target.internal.likePost).toHaveBeenCalledWith(post);
+      });
+
+      describe('when likePost succeeds', function(){
+        beforeEach(function(){
+          deferredLikePost.resolve();
+          $rootScope.$apply();
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
+        });
+      });
+
+      describe('when likePost fails', function(){
+        beforeEach(function(){
+          deferredLikePost.reject('error');
+          $rootScope.$apply();
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
       });
     });
   });
 
-  describe('when unlikePost is called', function(){
-    describe('when deleteLike succeeds', function(){
-      var success;
+  describe('when calling likePost', function(){
+    var success;
+    var error;
+    var deferredLikePost;
+    var post;
+    beforeEach(function(){
+      success = undefined;
+      error = undefined;
+
+      deferredLikePost = $q.defer();
+      postStub.postLike.and.returnValue(deferredLikePost.promise);
+
+      post = { postId: 'postId', hasLiked: false, likesCount: 10 };
+      target.internal.likePost(post).then(function(){ success = true; }, function(e){ error = e; });
+      $rootScope.$apply();
+    });
+
+    it('should set hasLiked to true', function(){
+      expect(post.hasLiked).toBe(true);
+    });
+
+    it('should increment likesCount', function(){
+      expect(post.likesCount).toBe(11);
+    });
+
+    it('should call postLike', function(){
+      expect(postStub.postLike).toHaveBeenCalledWith('postId');
+    });
+
+    describe('when likePost succeeds', function(){
       beforeEach(function(){
-        postStub.deleteLike.and.returnValue($q.when());
-        target.unlikePost('postId').then(function() { success = true; });
+        deferredLikePost.resolve();
         $rootScope.$apply();
       });
 
-      it('should delete the post on the API', function(){
-        expect(postStub.deleteLike).toHaveBeenCalledWith('postId');
+      it('should complete successfully', function(){
+        expect(success).toBe(true);
       });
 
-      it('should return a successful promise', function(){
-        expect(success).toBe(true);
+      it('should retain hasLiked state', function(){
+        expect(post.hasLiked).toBe(true);
+      });
+
+      it('should retain likesCount', function(){
+        expect(post.likesCount).toBe(11);
       });
     });
 
-    describe('when deleteLike fails', function(){
-      var error;
+    describe('when likePost fails', function(){
       beforeEach(function(){
-        postStub.deleteLike.and.returnValue($q.reject('error'));
-        target.unlikePost('postId').catch(function(e) { error = e; });
+        deferredLikePost.reject('error');
         $rootScope.$apply();
       });
 
       it('should propagate the error', function(){
         expect(error).toBe('error');
+      });
+
+      it('should revert hasLiked state', function(){
+        expect(post.hasLiked).toBe(false);
+      });
+
+      it('should revert likesCount', function(){
+        expect(post.likesCount).toBe(10);
+      });
+    });
+  });
+
+  describe('when calling unlikePost', function(){
+    var success;
+    var error;
+    var deferredUnlikePost;
+    var post;
+    beforeEach(function(){
+      success = undefined;
+      error = undefined;
+
+      deferredUnlikePost = $q.defer();
+      postStub.deleteLike.and.returnValue(deferredUnlikePost.promise);
+
+      post = { postId: 'postId', hasLiked: true, likesCount: 10 };
+      target.internal.unlikePost(post).then(function(){ success = true; }, function(e){ error = e; });
+      $rootScope.$apply();
+    });
+
+    it('should set hasLiked to false', function(){
+      expect(post.hasLiked).toBe(false);
+    });
+
+    it('should decrement likesCount', function(){
+      expect(post.likesCount).toBe(9);
+    });
+
+    it('should call unlikePost', function(){
+      expect(postStub.deleteLike).toHaveBeenCalledWith('postId');
+    });
+
+    describe('when unlikePost succeeds', function(){
+      beforeEach(function(){
+        deferredUnlikePost.resolve();
+        $rootScope.$apply();
+      });
+
+      it('should complete successfully', function(){
+        expect(success).toBe(true);
+      });
+
+      it('should retain hasLiked state', function(){
+        expect(post.hasLiked).toBe(false);
+      });
+
+      it('should retain likesCount', function(){
+        expect(post.likesCount).toBe(9);
+      });
+    });
+
+    describe('when unlikePost fails', function(){
+      beforeEach(function(){
+        deferredUnlikePost.reject('error');
+        $rootScope.$apply();
+      });
+
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
+      });
+
+      it('should revert hasLiked state', function(){
+        expect(post.hasLiked).toBe(true);
+      });
+
+      it('should revert likesCount', function(){
+        expect(post.likesCount).toBe(10);
       });
     });
   });

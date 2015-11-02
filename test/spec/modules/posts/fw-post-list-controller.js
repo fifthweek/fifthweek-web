@@ -24,7 +24,7 @@ describe('fw-post-list-controller', function(){
 
   beforeEach(function() {
 
-    postInteractions = jasmine.createSpyObj('postInteractions', ['viewImage', 'openFile', 'editPost', 'deletePost', 'showComments', 'likePost', 'unlikePost']);
+    postInteractions = jasmine.createSpyObj('postInteractions', ['viewImage', 'openFile', 'viewPost', 'editPost', 'deletePost', 'showComments', 'likePost', 'unlikePost']);
     authenticationService = { currentUser: { userId: 'currentUserId' }};
     blogRepositoryFactory = jasmine.createSpyObj('blogRepositoryFactory', ['forCurrentUser']);
     blogRepository = 'blogRepository';
@@ -119,166 +119,14 @@ describe('fw-post-list-controller', function(){
       createController();
     });
 
-    describe('when populateCreatorInformation is called', function(){
-      describe('when current user is creator', function(){
-        describe('when previewing', function(){
-          var success;
-          var error;
-          beforeEach(function(){
-            $scope.source = fwPostListConstants.sources.preview;
-            target.internal.timelineUserId = target.internal.currentUserId;
-
-            success = undefined;
-            error = undefined;
-
-            target.internal.populateCreatorInformation('posts').then(function(){ success = true; }, function(e) { error = e; });
-            $scope.$apply();
-          });
-
-          it('should not call populateCurrentCreatorInformation', function(){
-            expect(postUtilities.populateCurrentCreatorInformation).not.toHaveBeenCalled();
-          });
-
-          it('should not call populateCreatorInformation', function(){
-            expect(postUtilities.populateCreatorInformation).not.toHaveBeenCalled();
-          });
-
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
-          });
-        });
-
-        describe('when not previewing', function(){
-          var result;
-          var error;
-          var deferredPopulateCurrentCreatorInformation;
-          beforeEach(function(){
-            $scope.source = 'not-previewing';
-            target.internal.timelineUserId = target.internal.currentUserId;
-
-            result = undefined;
-            error = undefined;
-            deferredPopulateCurrentCreatorInformation = $q.defer();
-            postUtilities.populateCurrentCreatorInformation.and.returnValue(deferredPopulateCurrentCreatorInformation.promise);
-
-            target.internal.populateCreatorInformation('posts').then(function(r){ result = r; }, function(e) { error = e; });
-            $scope.$apply();
-          });
-
-          it('should call populateCurrentCreatorInformation', function(){
-            expect(postUtilities.populateCurrentCreatorInformation).toHaveBeenCalledWith('posts', accountSettingsRepository, blogRepository);
-          });
-
-          describe('when populateCurrentCreatorInformation succeeds', function(){
-            beforeEach(function(){
-              deferredPopulateCurrentCreatorInformation.resolve('result');
-              $scope.$apply();
-            });
-
-            it('should complete successfully', function(){
-              expect(result).toBe('result');
-            });
-          });
-
-          describe('when populateCurrentCreatorInformation fails', function(){
-            beforeEach(function(){
-              deferredPopulateCurrentCreatorInformation.reject('error');
-              $scope.$apply();
-            });
-
-            it('should propagate the error', function(){
-              expect(error).toBe('error');
-            });
-          });
-        });
-      });
-
-      describe('when current user is not creator', function(){
-        describe('when previewing', function(){
-          var success;
-          var error;
-          beforeEach(function(){
-            $scope.source = fwPostListConstants.sources.preview;
-            target.internal.timelineUserId = 'anotherUserId';
-
-            success = undefined;
-            error = undefined;
-
-            target.internal.populateCreatorInformation('posts').then(function(){ success = true; }, function(e) { error = e; });
-            $scope.$apply();
-          });
-
-          it('should not call populateCurrentCreatorInformation', function(){
-            expect(postUtilities.populateCurrentCreatorInformation).not.toHaveBeenCalled();
-          });
-
-          it('should not call populateCreatorInformation', function(){
-            expect(postUtilities.populateCreatorInformation).not.toHaveBeenCalled();
-          });
-
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
-          });
-        });
-
-        describe('when not previewing', function(){
-          var result;
-          var error;
-          var deferredPopulateCreatorInformation;
-          beforeEach(function(){
-            $scope.source = 'not-previewing';
-            target.internal.timelineUserId = 'anotherUserId';
-
-            result = undefined;
-            error = undefined;
-            deferredPopulateCreatorInformation = $q.defer();
-            postUtilities.populateCreatorInformation.and.returnValue(deferredPopulateCreatorInformation.promise);
-
-            target.internal.populateCreatorInformation('posts').then(function(r){ result = r; }, function(e) { error = e; });
-            $scope.$apply();
-          });
-
-          it('should call populateCreatorInformation', function(){
-            expect(postUtilities.populateCreatorInformation).toHaveBeenCalledWith('posts', subscriptionRepository);
-          });
-
-          describe('when populateCreatorInformation succeeds', function(){
-            beforeEach(function(){
-              deferredPopulateCreatorInformation.resolve('result');
-              $scope.$apply();
-            });
-
-            it('should complete successfully', function(){
-              expect(result).toBe('result');
-            });
-          });
-
-          describe('when populateCreatorInformation fails', function(){
-            beforeEach(function(){
-              deferredPopulateCreatorInformation.reject('error');
-              $scope.$apply();
-            });
-
-            it('should propagate the error', function(){
-              expect(error).toBe('error');
-            });
-          });
-        });
-      });
-    });
-
     describe('when loadPosts is called', function(){
       var success;
       var error;
-      var deferredPopulateCreatorInformation;
       var deferredProcessPostsForRendering;
       var deferredUpdateInParallel;
       beforeEach(function(){
         success = undefined;
         error = undefined;
-
-        deferredPopulateCreatorInformation = $q.defer();
-        spyOn(target.internal, 'populateCreatorInformation').and.returnValue(deferredPopulateCreatorInformation.promise);
 
         deferredProcessPostsForRendering = $q.defer();
         postUtilities.processPostsForRendering.and.returnValue(deferredProcessPostsForRendering.promise);
@@ -334,52 +182,33 @@ describe('fw-post-list-controller', function(){
           $scope.$apply();
         });
 
-        it('should call populateCreatorInformation', function(){
-          expect(target.internal.populateCreatorInformation).toHaveBeenCalledWith('posts');
+        it('should call processPostsForRendering', function(){
+          expect(postUtilities.processPostsForRendering).toHaveBeenCalledWith(
+            'posts', accountSettingsRepository, blogRepository, subscriptionRepository);
         });
 
-        describe('when populateCreatorInformation succeeds', function(){
+        describe('when processPostsForRendering succeeds', function(){
           beforeEach(function(){
-            deferredPopulateCreatorInformation.resolve();
+            deferredProcessPostsForRendering.resolve();
             $scope.$apply();
           });
 
-          it('should call processPostsForRendering', function(){
-            expect(postUtilities.processPostsForRendering).toHaveBeenCalledWith('posts');
+          it('should assign posts to the model', function(){
+            expect($scope.model.posts).toBe('posts');
           });
 
-          describe('when processPostsForRendering succeeds', function(){
-            beforeEach(function(){
-              deferredProcessPostsForRendering.resolve();
-              $scope.$apply();
-            });
-
-            it('should assign posts to the model', function(){
-              expect($scope.model.posts).toBe('posts');
-            });
-
-            it('should complete successfully', function(){
-              expect(success).toBe(true);
-            });
-
-            it('should set isLoading to false', function(){
-              expect($scope.model.isLoading).toBe(false);
-            });
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
           });
 
-          describe('when processPostsForRendering fails', function(){
-            beforeEach(function(){
-              deferredProcessPostsForRendering.reject('error');
-              $scope.$apply();
-            });
-
-            testFailure();
+          it('should set isLoading to false', function(){
+            expect($scope.model.isLoading).toBe(false);
           });
         });
 
-        describe('when populateCreatorInformation fails', function(){
+        describe('when processPostsForRendering fails', function(){
           beforeEach(function(){
-            deferredPopulateCreatorInformation.reject('error');
+            deferredProcessPostsForRendering.reject('error');
             $scope.$apply();
           });
 
@@ -599,10 +428,10 @@ describe('fw-post-list-controller', function(){
       });
     });
 
-    describe('when calling openFile', function(){
-      it('should forward the openFile function to postInteractions', function(){
-        $scope.openFile('a');
-        expect(postInteractions.openFile).toHaveBeenCalledWith('a');
+    describe('when calling viewPost', function(){
+      it('should forward the viewPost function to postInteractions', function(){
+        $scope.viewPost('a');
+        expect(postInteractions.viewPost).toHaveBeenCalledWith('a');
       });
     });
 
@@ -784,385 +613,6 @@ describe('fw-post-list-controller', function(){
 
         it('should propagate the error', function(){
           expect(error).toBe('error');
-        });
-      });
-    });
-
-    describe('when calling showComments', function(){
-      var success;
-      var error;
-      var updateCommentsCountDelegate;
-      var post;
-      var deferredShowComments;
-      beforeEach(function(){
-        success = undefined;
-        error = undefined;
-        updateCommentsCountDelegate = undefined;
-        post = { postId: 'postId' };
-
-        deferredShowComments = $q.defer();
-        postInteractions.showComments.and.callFake(function(postId, isCommenting, updateCommentsCount){
-          updateCommentsCountDelegate = updateCommentsCount;
-          return deferredShowComments.promise;
-        });
-
-        target.internal.showComments(post, 'isCommenting')
-          .then(function(){ success = true; }, function(e){ error = e; });
-        $scope.$apply();
-      });
-
-      it('should call showComments', function(){
-        expect(postInteractions.showComments).toHaveBeenCalledWith('postId', 'isCommenting', jasmine.any(Function));
-      });
-
-      it('should pass delegate to update comments count', function(){
-        expect(post.commentsCount).toBeUndefined();
-        updateCommentsCountDelegate('newCommentsCount');
-        expect(post.commentsCount).toBe('newCommentsCount');
-      });
-
-      describe('when showComments succeeds', function(){
-        beforeEach(function(){
-          deferredShowComments.resolve();
-          $scope.$apply();
-        });
-
-        it('should complete successfully', function(){
-          expect(success).toBe(true);
-        });
-      });
-
-      describe('when showComments fails', function(){
-        beforeEach(function(){
-          deferredShowComments.reject('error');
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
-        });
-      });
-    });
-
-    describe('when calling commentOnPost', function(){
-      var success;
-      var error;
-      var deferredShowComments;
-      beforeEach(function(){
-        success = undefined;
-        error = undefined;
-
-        deferredShowComments = $q.defer();
-        spyOn(target.internal, 'showComments').and.returnValue(deferredShowComments.promise);
-
-        $scope.commentOnPost('post').then(function(){ success = true; }, function(e){ error = e; });
-        $scope.$apply();
-      });
-
-      it('should call showComments', function(){
-        expect(target.internal.showComments).toHaveBeenCalledWith('post', true);
-      });
-
-      describe('when showComments succeeds', function(){
-        beforeEach(function(){
-          deferredShowComments.resolve();
-          $scope.$apply();
-        });
-
-        it('should complete successfully', function(){
-          expect(success).toBe(true);
-        });
-      });
-
-      describe('when showComments fails', function(){
-        beforeEach(function(){
-          deferredShowComments.reject('error');
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
-        });
-      });
-    });
-
-    describe('when calling showComments', function(){
-      var success;
-      var error;
-      var deferredShowComments;
-      beforeEach(function(){
-        success = undefined;
-        error = undefined;
-
-        deferredShowComments = $q.defer();
-        spyOn(target.internal, 'showComments').and.returnValue(deferredShowComments.promise);
-
-        $scope.showComments('post')
-          .then(function(){
-            success = true;
-          }, function(e){
-            error = e;
-          });
-        $scope.$apply();
-      });
-
-      it('should call showComments', function(){
-        expect(target.internal.showComments).toHaveBeenCalledWith('post', false);
-      });
-
-      describe('when showComments succeeds', function(){
-        beforeEach(function(){
-          deferredShowComments.resolve();
-          $scope.$apply();
-        });
-
-        it('should complete successfully', function(){
-          expect(success).toBe(true);
-        });
-      });
-
-      describe('when showComments fails', function(){
-        beforeEach(function(){
-          deferredShowComments.reject('error');
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
-        });
-      });
-    });
-
-    describe('when calling toggleLikePost', function(){
-      describe('when post is liked', function(){
-        var success;
-        var error;
-        var deferredUnlikePost;
-        var post;
-        beforeEach(function(){
-          success = undefined;
-          error = undefined;
-
-          deferredUnlikePost = $q.defer();
-          spyOn(target.internal, 'unlikePost').and.returnValue(deferredUnlikePost.promise);
-
-          post = { hasLiked: true };
-          $scope.toggleLikePost(post).then(function(){ success = true; }, function(e){ error = e; });
-          $scope.$apply();
-        });
-
-        it('should call unlikePost', function(){
-          expect(target.internal.unlikePost).toHaveBeenCalledWith(post);
-        });
-
-        describe('when unlikePost succeeds', function(){
-          beforeEach(function(){
-            deferredUnlikePost.resolve();
-            $scope.$apply();
-          });
-
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
-          });
-        });
-
-        describe('when unlikePost fails', function(){
-          beforeEach(function(){
-            deferredUnlikePost.reject('error');
-            $scope.$apply();
-          });
-
-          it('should propagate the error', function(){
-            expect(error).toBe('error');
-          });
-        });
-      });
-
-      describe('when post is not liked', function(){
-        var success;
-        var error;
-        var deferredLikePost;
-        var post;
-        beforeEach(function(){
-          success = undefined;
-          error = undefined;
-
-          deferredLikePost = $q.defer();
-          spyOn(target.internal, 'likePost').and.returnValue(deferredLikePost.promise);
-
-          post = { hasLiked: false };
-          $scope.toggleLikePost(post).then(function(){ success = true; }, function(e){ error = e; });
-          $scope.$apply();
-        });
-
-        it('should call likePost', function(){
-          expect(target.internal.likePost).toHaveBeenCalledWith(post);
-        });
-
-        describe('when likePost succeeds', function(){
-          beforeEach(function(){
-            deferredLikePost.resolve();
-            $scope.$apply();
-          });
-
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
-          });
-        });
-
-        describe('when likePost fails', function(){
-          beforeEach(function(){
-            deferredLikePost.reject('error');
-            $scope.$apply();
-          });
-
-          it('should propagate the error', function(){
-            expect(error).toBe('error');
-          });
-        });
-      });
-    });
-
-    describe('when calling likePost', function(){
-      var success;
-      var error;
-      var deferredLikePost;
-      var post;
-      beforeEach(function(){
-        success = undefined;
-        error = undefined;
-
-        deferredLikePost = $q.defer();
-        postInteractions.likePost.and.returnValue(deferredLikePost.promise);
-
-        post = { postId: 'postId', hasLiked: false, likesCount: 10 };
-        target.internal.likePost(post).then(function(){ success = true; }, function(e){ error = e; });
-        $scope.$apply();
-      });
-
-      it('should set hasLiked to true', function(){
-        expect(post.hasLiked).toBe(true);
-      });
-
-      it('should increment likesCount', function(){
-        expect(post.likesCount).toBe(11);
-      });
-
-      it('should call likePost', function(){
-        expect(postInteractions.likePost).toHaveBeenCalledWith('postId');
-      });
-
-      describe('when likePost succeeds', function(){
-        beforeEach(function(){
-          deferredLikePost.resolve();
-          $scope.$apply();
-        });
-
-        it('should complete successfully', function(){
-          expect(success).toBe(true);
-        });
-
-        it('should retain hasLiked state', function(){
-          expect(post.hasLiked).toBe(true);
-        });
-
-        it('should retain likesCount', function(){
-          expect(post.likesCount).toBe(11);
-        });
-      });
-
-      describe('when likePost fails', function(){
-        beforeEach(function(){
-          deferredLikePost.reject('error');
-          $scope.$apply();
-        });
-
-        it('should set the error message', function(){
-          expect($scope.model.errorMessage).toBe('friendlyError');
-        });
-
-        it('should complete successfully', function(){
-          expect(success).toBe(true);
-        });
-
-        it('should revert hasLiked state', function(){
-          expect(post.hasLiked).toBe(false);
-        });
-
-        it('should revert likesCount', function(){
-          expect(post.likesCount).toBe(10);
-        });
-      });
-    });
-
-    describe('when calling unlikePost', function(){
-      var success;
-      var error;
-      var deferredUnlikePost;
-      var post;
-      beforeEach(function(){
-        success = undefined;
-        error = undefined;
-
-        deferredUnlikePost = $q.defer();
-        postInteractions.unlikePost.and.returnValue(deferredUnlikePost.promise);
-
-        post = { postId: 'postId', hasLiked: true, likesCount: 10 };
-        target.internal.unlikePost(post).then(function(){ success = true; }, function(e){ error = e; });
-        $scope.$apply();
-      });
-
-      it('should set hasLiked to false', function(){
-        expect(post.hasLiked).toBe(false);
-      });
-
-      it('should decrement likesCount', function(){
-        expect(post.likesCount).toBe(9);
-      });
-
-      it('should call unlikePost', function(){
-        expect(postInteractions.unlikePost).toHaveBeenCalledWith('postId');
-      });
-
-      describe('when unlikePost succeeds', function(){
-        beforeEach(function(){
-          deferredUnlikePost.resolve();
-          $scope.$apply();
-        });
-
-        it('should complete successfully', function(){
-          expect(success).toBe(true);
-        });
-
-        it('should retain hasLiked state', function(){
-          expect(post.hasLiked).toBe(false);
-        });
-
-        it('should retain likesCount', function(){
-          expect(post.likesCount).toBe(9);
-        });
-      });
-
-      describe('when unlikePost fails', function(){
-        beforeEach(function(){
-          deferredUnlikePost.reject('error');
-          $scope.$apply();
-        });
-
-        it('should set the error message', function(){
-          expect($scope.model.errorMessage).toBe('friendlyError');
-        });
-
-        it('should complete successfully', function(){
-          expect(success).toBe(true);
-        });
-
-        it('should revert hasLiked state', function(){
-          expect(post.hasLiked).toBe(true);
-        });
-
-        it('should revert likesCount', function(){
-          expect(post.likesCount).toBe(10);
         });
       });
     });

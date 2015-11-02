@@ -27,6 +27,7 @@ describe('comments-dialog-controller', function(){
       $provide.value('errorFacade', errorFacade);
       $provide.value('postId', postId);
       $provide.value('updateCommentsCount', updateCommentsCount);
+      $provide.value('isCommenting', 'is-commenting');
     });
 
     inject(function ($injector) {
@@ -71,6 +72,10 @@ describe('comments-dialog-controller', function(){
       expect($scope.model.comments).toEqual([]);
     });
 
+    it('should set isCommenting to injected value', function(){
+      expect($scope.model.isCommenting).toBe('is-commenting');
+    });
+
     it('should set input comment to empty', function(){
       expect($scope.model.input.comment).toEqual('');
     });
@@ -111,7 +116,7 @@ describe('comments-dialog-controller', function(){
         spyOn(target.internal, 'loadForm').and.returnValue(deferredLoadForm.promise);
 
         $scope.model.errorMessage = 'bad';
-        $scope.model.input.comment = 'comment';
+        $scope.model.input.comment = { previewText: 'comment' };
         $scope.saveComment().then(function(){ success = true; }, function(e) { error = e; });
         $scope.$apply();
       });

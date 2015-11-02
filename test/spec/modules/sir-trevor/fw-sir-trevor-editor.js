@@ -1,16 +1,16 @@
-describe('fw-markdown-editor directive', function(){
+describe('fw-sir-trevor-editor', function(){
   'use strict';
 
   var $rootScope;
   var $compile;
 
-  var fwMarkdownEditorCtrl;
+  var fwSirTrevorEditorCtrl;
 
   beforeEach(function() {
     module('webApp', 'webApp.views');
 
     module(function($controllerProvider){
-      $controllerProvider.register('fwMarkdownEditorCtrl', function() { fwMarkdownEditorCtrl = this; this.initialize = jasmine.createSpy('initialize'); });
+      $controllerProvider.register('fwSirTrevorEditorCtrl', function() { fwSirTrevorEditorCtrl = this; this.initialize = jasmine.createSpy('initialize'); });
     });
 
     inject(function($injector) {
@@ -22,17 +22,18 @@ describe('fw-markdown-editor directive', function(){
   describe('when creating', function(){
 
     var scope;
+    var element;
 
     beforeEach(function(){
       scope = $rootScope.$new();
-      var element = angular.element('<fw-markdown-editor ng-model="value"/>');
+      element = angular.element('<fw-sir-trevor-editor ng-model="value"/>');
       scope.value = 'success';
       $compile(element)(scope);
       scope.$digest();
     });
 
-    it('should initialize the controller with the ngModel controller', function(){
-      expect(fwMarkdownEditorCtrl.initialize).toHaveBeenCalledWith(jasmine.objectContaining({
+    it('should initialize the controller', function(){
+      expect(fwSirTrevorEditorCtrl.initialize).toHaveBeenCalledWith(jasmine.objectContaining({
         $modelValue: 'success'
       }));
     });

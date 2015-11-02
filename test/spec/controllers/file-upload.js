@@ -219,6 +219,20 @@ describe('file upload controller', function(){
         expect($scope.model.isSubmitting).toBe(false);
       });
 
+      it('should call the upload started callback if specified', function(){
+
+        $scope.onUploadStarted = jasmine.createSpy('onUploadStarted');
+        fileUploadStub.postUploadRequest.and.returnValue($q.when({ data: uploadRequestData }));
+
+        $scope.upload([blob]);
+        $scope.$apply();
+
+        expect($scope.onUploadStarted).toHaveBeenCalledWith({ data: undefined });
+
+        expect($scope.model.errorMessage).toBe('');
+        expect($scope.model.isSubmitting).toBe(false);
+      });
+
       it('should call the upload complete callback if specified', function(){
 
         $scope.onUploadComplete = jasmine.createSpy('onUploadComplete');

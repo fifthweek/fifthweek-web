@@ -20,15 +20,15 @@ angular.module('webApp')
     };
 
     var internal = this.internal = {};
-    var model = $scope.model = {};
+    $scope.model = {};
 
     var scheduleModes = postEditDialogConstants.scheduleModes;
     $scope.scheduleModes = scheduleModes;
 
     $scope.save = function(){
-      return postEditDialogUtilities.performSave(postId, model)
+      return postEditDialogUtilities.performSave(postId, $scope.model)
         .then(function() {
-          return postEditDialogUtilities.applyChangesToPost(internal.post, model, accountSettingsRepository, blogRepository, subscriptionRepository);
+          return postEditDialogUtilities.applyChangesToPost(internal.post, $scope.model, accountSettingsRepository, blogRepository, subscriptionRepository);
         })
         .then(function(){
           $scope.$close(internal.post);
@@ -68,72 +68,82 @@ angular.module('webApp')
       };
     };
 
+    internal.updateIsProcessing = function(){
+      $scope.model.isProcessing = !!($scope.model.input.content && !!$scope.model.input.content.busyBlockCount);
+    };
+
     internal.watchForBusyBlocks = function(){
-      $scope.$watch('model.input.content', function(){
-        model.isProcessing = model.input.content && !!model.input.content.busyBlockCount;
-      });
+      $scope.$watch('model.input.content', internal.updateIsProcessing);
+    };
+
+    internal.onInputDateChanged = function(newValue, oldValue){
+      if(!areDatesEqual(newValue, oldValue)){
+        $scope.model.input.scheduleMode = scheduleModes.scheduled;
+      }
+    };
+
+    internal.onSelectedQueueChanged = function(newValue, oldValue){
+      if(newValue !== oldValue) {
+        $scope.model.input.scheduleMode = scheduleModes.queued;
+        return composeUtilities.updateEstimatedLiveDate($scope.model);
+      }
+    };
+
+    internal.updateContentFromPost = function(post){
+      $scope.model.input.content = {
+        serializedBlocks: post.content,
+        files: _.map(post.files, function(file){
+          return {
+            fileId: file.information.fileId,
+            containerName: file.information.containerName,
+            renderSize: file.source.renderSize,
+            fileName: file.source.fileName + '.' + file.source.fileExtension,
+            fileSize: file.source.size
+          };
+        })
+      };
     };
 
     this.initialize = function(){
-      model.isLoading = true;
+      $scope.model.isLoading = true;
       return postEditDialogUtilities.getFullPost(postId, accountSettingsRepository, blogRepository, subscriptionRepository)
         .then(function(post){
-          model = $scope.model = internal.createModelFromPost(post);
+          $scope.model = internal.createModelFromPost(post);
           internal.post = post;
 
-          $scope.$watch('model.input.date', function(newValue, oldValue){
-            if(!areDatesEqual(newValue, oldValue)){
-              model.input.scheduleMode = scheduleModes.scheduled;
-            }
-          });
+          $scope.$watch('model.input.date', internal.onInputDateChanged);
 
           internal.watchForBusyBlocks();
 
-          model.input.content = {
-            serializedBlocks: post.content,
-            files: _.map(post.files, function(file){
-              return {
-                fileId: file.information.fileId,
-                containerName: file.information.containerName,
-                renderSize: file.source.renderSize,
-                fileName: file.source.fileName + '.' + file.source.fileExtension,
-                fileSize: file.source.size
-              };
-            })
-          };
+          internal.updateContentFromPost(post);
 
           return blogRepository.getQueuesSorted();
         })
         .then(function(queues){
-          model.queues = queues;
+          $scope.model.queues = queues;
           if(queues.length > 0){
             if(internal.post.queueId){
-              model.input.selectedQueue = _.find(model.queues, {queueId: internal.post.queueId});
+              $scope.model.input.selectedQueue = _.find($scope.model.queues, {queueId: internal.post.queueId});
             }
             else{
-              model.input.selectedQueue = queues[0];
+              $scope.model.input.selectedQueue = queues[0];
             }
 
-            $scope.$watch('model.input.selectedQueue', function(newValue, oldValue){
-              if(newValue !== oldValue) {
-                model.input.scheduleMode = scheduleModes.queued;
-                return composeUtilities.updateEstimatedLiveDate(model);
-              }
-            });
+            $scope.$watch('model.input.selectedQueue', internal.onSelectedQueueChanged);
 
-            return composeUtilities.updateEstimatedLiveDate(model);
+            return composeUtilities.updateEstimatedLiveDate($scope.model);
           }
         })
         .then(function(){
-          model.showContent = true;
+          $scope.model.showContent = true;
         })
         .catch(function(error){
           return errorFacade.handleError(error, function(message) {
-            model.errorMessage = message;
+            $scope.model.errorMessage = message;
           });
         })
         .finally(function(){
-          model.isLoading = false;
+          $scope.model.isLoading = false;
         });
     };
 

@@ -39,22 +39,19 @@ angular.module('webApp')
             }
 
             var blogMap = _.reduce(blogs, function(blogResult, blog){
-              service.addBlogToBlogMap(blogResult, blog);
+
+              blog.channels = _.reduce(blog.channels, function(channelResult, channel){
+
+                channelResult[channel.channelId] = channel;
+                return channelResult;
+              }, {});
+
+              blogResult[blog.blogId] = blog;
               return blogResult;
             }, {});
 
             return $q.when(blogMap);
           });
-        };
-
-        service.addBlogToBlogMap = function(blogMap, blog){
-          blog.channels = _.reduce(blog.channels, function(channelResult, channel){
-
-            channelResult[channel.channelId] = channel;
-            return channelResult;
-          }, {});
-
-          blogMap[blog.blogId] = blog;
         };
 
         return service;

@@ -13,7 +13,7 @@ describe('post-edit-dialog-utilities', function() {
 
   beforeEach(function () {
     postUtilities = jasmine.createSpyObj('postUtilities', ['processPostForRendering']);
-    postStub = jasmine.createSpyObj('postStub', ['putPost', 'postToLive', 'putQueue', 'putLiveDate']);
+    postStub = jasmine.createSpyObj('postStub', ['getPost', 'putPost', 'postToLive', 'putQueue', 'putLiveDate']);
 
     module('webApp');
 
@@ -29,6 +29,47 @@ describe('post-edit-dialog-utilities', function() {
 
       postEditDialogConstants = $injector.get('postEditDialogConstants');
       scheduleModes = postEditDialogConstants.scheduleModes;
+    });
+  });
+
+  describe('when calling getPostData', function(){
+    it('should translate the data', function(){
+      var model = {
+        input: {
+          content: {
+            serializedBlocks: 'serializedBlocks',
+            files: [
+              {
+                name: 'name1',
+                fileId: 'fileId1'
+              },
+              {
+                name: 'name2',
+                fileId: 'fileId2'
+              }
+            ],
+            imageCount: 'imageCount',
+            fileCount: 'fileCount',
+            previewWordCount: 'previewWordCount',
+            wordCount: 'wordCount',
+            previewText: 'previewText',
+            previewImageId: 'previewImageId'
+          }
+        }
+      };
+
+      var result = target.internal.getPostData(model);
+
+      expect(result).toEqual({
+        content: 'serializedBlocks',
+        fileIds: ['fileId1', 'fileId2'],
+        imageCount: 'imageCount',
+        fileCount: 'fileCount',
+        previewWordCount: 'previewWordCount',
+        wordCount: 'wordCount',
+        previewText: 'previewText',
+        previewImageId: 'previewImageId'
+      });
     });
   });
 
@@ -94,108 +135,23 @@ describe('post-edit-dialog-utilities', function() {
   });
 
   describe('when calling saveContent', function(){
-    var model;
-    var postId;
+    var result;
     beforeEach(function(){
-      postId = 'postId';
-      model = {
-        input: {
-          selectedChannel: {
-            channelId: 'channelId'
-          },
-          comment: 'comment',
-          file: {
-            fileId: 'fileId'
-          },
-          image: {
-            fileId: 'imageId'
-          }
-        }
-      };
-
+      spyOn(target.internal, 'getPostData').and.returnValue('postData');
       postStub.putPost.and.returnValue('postResult');
+      result = target.internal.saveContent('postId', 'model');
     });
 
-    describe('when saving a comment', function(){
-      var result;
-      beforeEach(function(){
-        model.input.file = undefined;
-        model.input.image = undefined;
-        result = target.internal.saveContent(postId, model);
-      });
-
-      it('should call putPost', function(){
-        expect(postStub.putPost).toHaveBeenCalledWith('postId', {
-          fileId: undefined,
-          fileId: undefined,
-          comment: 'comment'
-        });
-      });
-
-      it('should return the result', function(){
-        expect(result).toBe('postResult');
-      });
+    it('should call getPostData', function(){
+      expect(target.internal.getPostData).toHaveBeenCalledWith('model');
     });
 
-    describe('when saving a file', function(){
-      var result;
-      beforeEach(function(){
-        model.input.comment = undefined;
-        model.input.image = undefined;
-        result = target.internal.saveContent(postId, model);
-      });
-
-      it('should call putPost', function(){
-        expect(postStub.putPost).toHaveBeenCalledWith('postId', {
-          fileId: undefined,
-          fileId: 'fileId',
-          comment: undefined
-        });
-      });
-
-      it('should return the result', function(){
-        expect(result).toBe('postResult');
-      });
+    it('should call putPost', function(){
+      expect(postStub.putPost).toHaveBeenCalledWith('postId', 'postData');
     });
 
-    describe('when saving a file', function(){
-      var result;
-      beforeEach(function(){
-        model.input.comment = undefined;
-        model.input.file = undefined;
-        result = target.internal.saveContent(postId, model);
-      });
-
-      it('should call putPost', function(){
-        expect(postStub.putPost).toHaveBeenCalledWith('postId', {
-          fileId: 'imageId',
-          fileId: undefined,
-          comment: undefined
-        });
-      });
-
-      it('should return the result', function(){
-        expect(result).toBe('postResult');
-      });
-    });
-
-    describe('when saving a complete post', function(){
-      var result;
-      beforeEach(function(){
-        result = target.internal.saveContent(postId, model);
-      });
-
-      it('should call putPost', function(){
-        expect(postStub.putPost).toHaveBeenCalledWith('postId', {
-          fileId: 'imageId',
-          fileId: 'fileId',
-          comment: 'comment'
-        });
-      });
-
-      it('should return the result', function(){
-        expect(result).toBe('postResult');
-      });
+    it('should return the result', function(){
+      expect(result).toBe('postResult');
     });
   });
 
@@ -426,10 +382,77 @@ describe('post-edit-dialog-utilities', function() {
     });
   });
 
-  describe('when calling applyChangesToPost', function(){
+  describe('when calling applyContentChangesToPost', function(){
     var post;
     var model;
-    var result;
+
+    beforeEach(function(){
+      post = {
+        channelId: 'channelId'
+      };
+      model = {
+        input: {
+          selectedQueue: {
+            image: 'image',
+            imageSource: 'imageSource'
+          },
+          content: {
+            previewText: 'previewText',
+            previewImageId: 'fileId2',
+            files: [
+              {
+                name: 'file1',
+                fileId: 'fileId1',
+                containerName: 'cn1',
+                renderSize: 's1'
+              },
+              {
+                name: 'file2',
+                fileId: 'fileId2',
+                containerName: 'cn2',
+                renderSize: 's2'
+              }
+            ]
+          }
+        }
+      };
+    });
+
+    describe('when preview image ID exists', function(){
+      beforeEach(function(){
+        target.internal.applyContentChangesToPost(post, model);
+      });
+
+      it('should apply changes to post', function(){
+        expect(post).toEqual({
+          channelId: 'channelId',
+          previewText: 'previewText',
+          image: {fileId: 'fileId2', containerName: 'cn2'},
+          imageSource: { renderSize: 's2'}
+        });
+      });
+    });
+
+    describe('when preview image ID does not exist', function(){
+      beforeEach(function(){
+        model.input.content.previewImageId = undefined;
+        target.internal.applyContentChangesToPost(post, model);
+      });
+
+      it('should apply changes to post', function(){
+        expect(post).toEqual({
+          channelId: 'channelId',
+          previewText: 'previewText',
+          image: undefined,
+          imageSource: undefined
+        });
+      });
+    });
+  });
+
+  describe('when calling applySchedulingChangesToPost', function(){
+    var post;
+    var model;
     var inputDate;
     var pastInputDate;
     var queuedLiveDate;
@@ -450,47 +473,24 @@ describe('post-edit-dialog-utilities', function() {
           selectedQueue: {
             queueId: 'queueId'
           },
-          comment: 'comment',
-          file: 'file',
-          fileSource: 'fileSource',
-          image: 'image',
-          imageSource: 'imageSource',
           scheduleMode: undefined,
           date: inputDate
         },
         queuedLiveDate: queuedLiveDate,
         postType: undefined
       };
-
-      postUtilities.processPostForRendering.and.returnValue('result');
     });
 
     afterEach(function(){
       jasmine.clock().uninstall();
     });
 
-    var runStandardExpectations = function(){
-      it('should apply standard changes to the post', function(){
-        expect(post.channelId).toBe('channelId');
-        expect(post.comment).toBe('comment');
-        expect(post.file).toBe('file');
-        expect(post.fileSource).toBe('fileSource');
-        expect(post.image).toBe('image');
-        expect(post.imageSource).toBe('imageSource');
+    describe('when the scheduleMode is now', function(){
+      beforeEach(function(){
+        model.input.scheduleMode = scheduleModes.now;
+        target.internal.applySchedulingChangesToPost(post, model);
       });
 
-      it('should have called processPostForRendering', function(){
-        expect(postUtilities.processPostForRendering).toHaveBeenCalledWith(post);
-      });
-    };
-
-    var runResultExpectations = function(){
-      it('should return the result', function(){
-        expect(result).toBe('result');
-      });
-    };
-
-    var runScheduleNowExpectations = function(){
       it('should not have a queueId property', function(){
         expect(_.has(post, 'queueId')).toBe(false);
       });
@@ -498,9 +498,14 @@ describe('post-edit-dialog-utilities', function() {
       it('should have a live date of now', function(){
         expect(post.liveDate).toBe(nowDate.toISOString());
       });
-    };
+    });
 
-    var runScheduleQueuedExpectations = function(){
+    describe('when the scheduleMode is queued', function(){
+      beforeEach(function(){
+        model.input.scheduleMode = scheduleModes.queued;
+        target.internal.applySchedulingChangesToPost(post, model);
+      });
+
       it('should set queueId', function(){
         expect(post.queueId).toBe('queueId');
       });
@@ -508,7 +513,7 @@ describe('post-edit-dialog-utilities', function() {
       it('should have a live date of the queue live date', function(){
         expect(post.liveDate).toBe(queuedLiveDate.toISOString());
       });
-    };
+    });
 
     var runScheduleDateExpectations = function(){
       it('should set queueId to be undefined', function(){
@@ -531,47 +536,135 @@ describe('post-edit-dialog-utilities', function() {
       });
     };
 
-    describe('when the scheduleMode is now', function(){
-      beforeEach(function(){
-        model.input.scheduleMode = scheduleModes.now;
-        result = target.applyChangesToPost(post, model);
-      });
-
-      runStandardExpectations();
-      runScheduleNowExpectations();
-      runResultExpectations();
-    });
-
-    describe('when the scheduleMode is queued', function(){
-      beforeEach(function(){
-        model.input.scheduleMode = scheduleModes.queued;
-        result = target.applyChangesToPost(post, model);
-      });
-
-      runStandardExpectations();
-      runScheduleQueuedExpectations();
-      runResultExpectations();
-    });
-
     describe('when the scheduleMode is scheduled', function(){
       beforeEach(function(){
         model.input.scheduleMode = scheduleModes.scheduled;
-        result = target.applyChangesToPost(post, model);
+        target.internal.applySchedulingChangesToPost(post, model);
       });
 
-      runStandardExpectations();
       runScheduleDateExpectations();
-      runResultExpectations();
     });
 
     describe('when the scheduleMode is scheduled in the past', function(){
       beforeEach(function(){
         model.input.scheduleMode = scheduleModes.scheduled;
         model.input.date = pastInputDate;
-        result = target.applyChangesToPost(post, model);
+        target.internal.applySchedulingChangesToPost(post, model);
       });
 
       runScheduleDateExpectations();
+    });
+  });
+
+  describe('when calling applyChangesToPost', function() {
+    var result;
+    beforeEach(function(){
+      spyOn(target.internal, 'applyContentChangesToPost');
+      spyOn(target.internal, 'applySchedulingChangesToPost');
+      postUtilities.processPostForRendering.and.returnValue('result');
+
+      result = target.applyChangesToPost('post', 'model', 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository');
+    });
+
+    it('should call applyContentChangesToPost', function(){
+      expect(target.internal.applyContentChangesToPost).toHaveBeenCalledWith('post', 'model');
+    });
+
+    it('should call applySchedulingChangesToPost', function(){
+      expect(target.internal.applySchedulingChangesToPost).toHaveBeenCalledWith('post', 'model');
+    });
+
+    it('should have called processPostForRendering', function(){
+      expect(postUtilities.processPostForRendering).toHaveBeenCalledWith('post', 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository');
+    });
+
+    it('should return the result', function(){
+      expect(result).toBe('result');
+    });
+  });
+
+  describe('when calling getFullPost', function(){
+    var result;
+    var error;
+    var deferredGetPost;
+    var deferredProcessPostForRendering;
+    beforeEach(function(){
+      result = undefined;
+      error = undefined;
+
+      deferredGetPost = $q.defer();
+      postStub.getPost.and.returnValue(deferredGetPost.promise);
+
+      deferredProcessPostForRendering = $q.defer();
+      postUtilities.processPostForRendering.and.returnValue(deferredProcessPostForRendering.promise);
+
+      target.getFullPost('postId', 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository')
+        .then(function(r){ result = r; }, function(e){ error = e; });
+      $rootScope.$apply();
+    });
+
+    it('should call getPost', function(){
+      expect(postStub.getPost).toHaveBeenCalledWith('postId');
+    });
+
+    describe('when getPost succeeds', function(){
+      var expectedPost;
+      beforeEach(function(){
+        deferredGetPost.resolve({
+          data: {
+            post: { name: 'post' },
+            files: 'files'
+          }
+        });
+
+        expectedPost = {
+          name: 'post',
+          files: 'files'
+        };
+
+        $rootScope.$apply();
+      });
+
+      it('should call processPostForRendering', function(){
+        expect(postUtilities.processPostForRendering).toHaveBeenCalledWith(
+          expectedPost,
+          'accountSettingsRepository',
+          'blogRepository',
+          'subscriptionRepository');
+      });
+
+      describe('when processPostForRendering succeeds', function(){
+        beforeEach(function(){
+          deferredProcessPostForRendering.resolve();
+          $rootScope.$apply();
+        });
+
+        it('should return the post', function(){
+          expect(result).toEqual(expectedPost);
+        });
+      });
+
+      describe('when processPostForRendering fails', function(){
+        beforeEach(function(){
+          deferredProcessPostForRendering.reject('error');
+          $rootScope.$apply();
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
+      });
+    });
+
+    describe('when getPost fails', function(){
+      beforeEach(function(){
+        deferredGetPost.reject('error');
+        $rootScope.$apply();
+      });
+
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
+      });
     });
   });
 });

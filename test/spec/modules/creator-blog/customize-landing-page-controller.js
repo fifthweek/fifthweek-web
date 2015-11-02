@@ -11,6 +11,7 @@ describe('customize landing page controller', function () {
   var blogStub;
   var blobImageControlFactory;
   var aggregateUserStateUtilities;
+  var jsonService;
   var errorFacade;
 
   var defaultBlobControl;
@@ -24,6 +25,7 @@ describe('customize landing page controller', function () {
     blobImageControlFactory = jasmine.createSpyObj('blobImageControlFactory', ['createControl']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
     aggregateUserStateUtilities = jasmine.createSpyObj('aggregateUserStateUtilities', ['getUsername']);
+    jsonService = jasmine.createSpyObj('jsonService', ['toSirTrevor']);
 
     defaultBlobControl = { control: true };
     blobImageControlFactory.createControl.and.returnValue(defaultBlobControl);
@@ -39,6 +41,7 @@ describe('customize landing page controller', function () {
       $provide.value('blogRepositoryFactory', blogRepositoryFactory);
       $provide.value('errorFacade', errorFacade);
       $provide.value('aggregateUserStateUtilities', aggregateUserStateUtilities);
+      $provide.value('jsonService', jsonService);
     });
 
     inject(function ($injector) {
@@ -101,8 +104,11 @@ describe('customize landing page controller', function () {
       beforeEach(function(){
         blogRepository.getBlog.and.returnValue($q.when({
           name: 'name',
-          headerImage: undefined
+          headerImage: undefined,
+          description: 'description'
         }));
+
+        jsonService.toSirTrevor.and.returnValue('sir-trevor');
 
         createController();
         $scope.$apply();
@@ -116,6 +122,17 @@ describe('customize landing page controller', function () {
         expect($scope.model.settings).toBeDefined();
         expect($scope.model.settings.name).toBe('name');
         expect($scope.model.settings.headerImage).toBeUndefined();
+      });
+
+      it('should convert the description into sir trevor data', function(){
+        expect(jsonService.toSirTrevor).toHaveBeenCalledWith([{
+          type: 'text',
+          data: {
+            text: 'description'
+          }
+        }]);
+
+        expect($scope.model.settings.description).toBe('sir-trevor');
       });
 
       it('should set the blob image to defaults', function(){
@@ -135,8 +152,11 @@ describe('customize landing page controller', function () {
           headerImage: {
             containerName: 'containerName',
             fileId: 'fileId'
-          }
+          },
+          description: 'description'
         }));
+
+        jsonService.toSirTrevor.and.returnValue('sir-trevor');
 
         createController();
         $scope.$apply();
@@ -151,6 +171,17 @@ describe('customize landing page controller', function () {
         expect($scope.model.settings.name).toBe('name');
         expect($scope.model.settings.headerImage.fileId).toBe('fileId');
         expect($scope.model.settings.headerImage.containerName).toBe('containerName');
+      });
+
+      it('should convert the description into sir trevor data', function(){
+        expect(jsonService.toSirTrevor).toHaveBeenCalledWith([{
+          type: 'text',
+          data: {
+            text: 'description'
+          }
+        }]);
+
+        expect($scope.model.settings.description).toBe('sir-trevor');
       });
 
       it('should set the blob image to defaults', function(){
@@ -192,13 +223,15 @@ describe('customize landing page controller', function () {
         name: 'name',
         introduction: 'introduction',
         video: 'video',
-        description: 'description',
+        description: { previewText: 'description' },
         headerImage: {
           uri: 'uri',
           containerName: 'containerName',
           fileId: 'fileId'
         }
       }));
+
+      jsonService.toSirTrevor.and.returnValue({ previewText: 'previewText' });
 
       createController();
 
@@ -247,7 +280,7 @@ describe('customize landing page controller', function () {
               introduction: 'introduction',
               headerImageFileId: undefined,
               video: 'video',
-              description: 'description'
+              description: 'previewText'
             }
           );
         });
@@ -259,7 +292,7 @@ describe('customize landing page controller', function () {
               name: 'name',
               introduction: 'introduction',
               video: 'video',
-              description: 'description',
+              description: 'previewText',
               headerImage: undefined
             }
           );
@@ -287,7 +320,7 @@ describe('customize landing page controller', function () {
               introduction: 'introduction',
               headerImageFileId: 'fileId',
               video: 'video',
-              description: 'description'
+              description: 'previewText'
             }
           );
         });
@@ -299,7 +332,7 @@ describe('customize landing page controller', function () {
               name: 'name',
               introduction: 'introduction',
               video: 'video',
-              description: 'description',
+              description: 'previewText',
               headerImage: {
                 fileId: 'fileId',
                 uri: 'uri',

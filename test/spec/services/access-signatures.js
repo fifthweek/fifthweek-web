@@ -11,7 +11,7 @@ describe('access signatures', function() {
     },
     privateSignatures: [
       {
-        creatorId: 'creator1',
+        channelId: 'channelId1',
         information: {
           containerName: 'container1',
           uri: 'https://files.fifthweek.com/creator1',
@@ -20,7 +20,7 @@ describe('access signatures', function() {
         }
       },
       {
-        creatorId: 'creator2',
+        channelId: 'channelId2',
         information: {
           containerName: 'container2',
           uri: 'https://files.fifthweek.com/creator2',
@@ -100,23 +100,39 @@ describe('access signatures', function() {
         it('should contain a map of all the signatures', function(){
           target.getContainerAccessMap().then(function(result){
             expect(result).toEqual({
-              public: {
-                containerName: 'public',
-                uri: 'https://files.fifthweek.com/public',
-                signature: '?abcd',
-                expiry: 1234
+              containerName: {
+                public: {
+                  containerName: 'public',
+                  uri: 'https://files.fifthweek.com/public',
+                  signature: '?abcd',
+                  expiry: 1234
+                },
+                container1: {
+                  containerName: 'container1',
+                  uri: 'https://files.fifthweek.com/creator1',
+                  signature: '?abcd',
+                  expiry: 1234
+                },
+                container2: {
+                  containerName: 'container2',
+                  uri: 'https://files.fifthweek.com/creator2',
+                  signature: '?efgh',
+                  expiry: 1234
+                }
               },
-              container1: {
-                containerName: 'container1',
-                uri: 'https://files.fifthweek.com/creator1',
-                signature: '?abcd',
-                expiry: 1234
-              },
-              container2: {
-                containerName: 'container2',
-                uri: 'https://files.fifthweek.com/creator2',
-                signature: '?efgh',
-                expiry: 1234
+              channelId: {
+                channelId1: {
+                  containerName: 'container1',
+                  uri: 'https://files.fifthweek.com/creator1',
+                  signature: '?abcd',
+                  expiry: 1234
+                },
+                channelId2: {
+                  containerName: 'container2',
+                  uri: 'https://files.fifthweek.com/creator2',
+                  signature: '?efgh',
+                  expiry: 1234
+                }
               }
             });
           });

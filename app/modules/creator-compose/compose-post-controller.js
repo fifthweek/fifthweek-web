@@ -5,8 +5,6 @@ angular.module('webApp').controller('composePostCtrl',
     var blogRepository = blogRepositoryFactory.forCurrentUser();
 
     var model = {
-      fileUploaded: false,
-      imageUploaded: false,
       postLater: false,
       postToQueue: true,
       queuedLiveDate: undefined,
@@ -15,7 +13,7 @@ angular.module('webApp').controller('composePostCtrl',
       queues: [],
       isProcessing: false,
       input: {
-        content: '',
+        content: undefined,
         selectedQueue: undefined,
         date: ''
       },
@@ -103,10 +101,12 @@ angular.module('webApp').controller('composePostCtrl',
       return internal.post(data);
     };
 
+    internal.updateIsProcessing = function(){
+      model.isProcessing = !!(model.input.content && !!model.input.content.busyBlockCount);
+    };
+
     internal.watchForBusyBlocks = function(){
-      $scope.$watch('model.input.content', function(){
-        model.isProcessing = model.input.content && !!model.input.content.busyBlockCount;
-      });
+      $scope.$watch('model.input.content', internal.updateIsProcessing);
     };
 
     internal.initialize = function(){

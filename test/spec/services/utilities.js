@@ -96,6 +96,11 @@ describe('utilities', function() {
       expect(result).toBe('test');
     });
 
+    it('should return a generic error message if it a displayable error with not message', function(){
+      var result = utilities.getFriendlyErrorMessage(new DisplayableError());
+      expect(result).toBe(fifthweekConstants.unexpectedErrorText);
+    });
+
     it('should return a connection error message if it is a connection error', function(){
       var result = utilities.getFriendlyErrorMessage(new ConnectionError('test'));
       expect(result).toBe(fifthweekConstants.connectionErrorText);

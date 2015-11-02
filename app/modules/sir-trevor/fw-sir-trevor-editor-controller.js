@@ -119,7 +119,7 @@ angular.module('webApp')
       var fileCount = 0;
       var wordCount = 0;
       var previewWordCount = 0;
-      var previewImageId = undefined;
+      var previewImageId;
       var previewText;
       _.forEach(populatedBlocks, function(block){
         if(internal.isTextBlock(block)){
