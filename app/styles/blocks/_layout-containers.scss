@@ -50,6 +50,7 @@ body:not(.navigation-hidden) {
 }
 
 .main-container {
+  position:relative;
   margin-top:81px;
   padding-bottom: 80px; /* Allow users to bring bottom of a scrolling page further into view */
   @media (min-width:$navbar-lg-min) {
@@ -77,3 +78,16 @@ body:not(.navigation-hidden) {
   }
 }
 
+
+.navigation-header-hidden {
+  .main-container {
+    max-width:100%;
+    margin-top:0;
+  }
+  .navbar-fixed-top {
+    display:none;
+  }
+  #{$right-container} {
+    padding:0;
+  }
+}

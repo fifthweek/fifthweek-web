@@ -75,7 +75,10 @@ angular.module('webApp').factory('postUtilities',
 
       service.internal.populateCreatorInformation(post, caches);
 
-      post.readAccess = post.isOwner || post.isSubscribed || post.isGuestList;
+      post.readAccess = post.isOwner || post.isGuestList ||
+        (post.isSubscribed && (caches.accountSettings.accountBalance > 0 || caches.accountSettings.isRetryingPayment));
+
+      post.readAccessIgnoringPayment = post.isOwner || post.isGuestList || post.isSubscribed;
 
       post.moment = moment(post.liveDate);
       post.liveIn = post.moment.fromNow();
@@ -154,14 +157,18 @@ angular.module('webApp').factory('postUtilities',
         post.queue = blog.queues[post.queueId];
       }
 
-      post.blog = {
-        name: blog.name
-      };
+      if(!post.blog){
+        post.blog = {
+          name: blog.name
+        };
+      }
 
-      post.creator = {
-        username: accountSettings.username,
-        profileImage: accountSettings.profileImage
-      };
+      if(!post.creator){
+        post.creator = {
+          username: accountSettings.username,
+          profileImage: accountSettings.profileImage
+        };
+      }
     };
 
     service.internal.populateCreatorInformationFromBlog = function(post, blog){
@@ -177,14 +184,18 @@ angular.module('webApp').factory('postUtilities',
         }
       }
 
-      post.blog = {
-        name: blog.name
-      };
+      if(!post.blog){
+        post.blog = {
+          name: blog.name,
+        };
+      }
 
-      post.creator = {
-        username: blog.username,
-        profileImage: blog.profileImage
-      };
+      if(!post.creator){
+        post.creator = {
+          username: blog.username,
+          profileImage: blog.profileImage
+        };
+      }
     };
 
     service.internal.populateUnknownCreatorInformation = function(post){

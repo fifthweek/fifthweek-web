@@ -1,7 +1,7 @@
 angular.module('webApp')
   .controller('fwFullPostCtrl',
-  function($scope, $q, errorFacade, initializer, postStub,
-           postUtilities, postInteractions, blogRepositoryFactory, accountSettingsRepositoryFactory,
+  function($scope, $q, errorFacade, initializer, postStub, aggregateUserStateConstants, uiRouterConstants,
+           fullPostLoader, postInteractions, blogRepositoryFactory, accountSettingsRepositoryFactory,
            subscriptionRepositoryFactory) {
     'use strict';
 
@@ -53,16 +53,7 @@ angular.module('webApp')
     };
 
     internal.getFullPost = function(postId){
-      var post;
-      return postStub.getPost(postId)
-        .then(function(result) {
-          post = result.data.post;
-          post.files = result.data.files;
-          return postUtilities.processPostForRendering(post, accountSettingsRepository, blogRepository, subscriptionRepository);
-        })
-        .then(function(){
-          return post;
-        });
+      return fullPostLoader.loadPost(postId, accountSettingsRepository, blogRepository, subscriptionRepository);
     };
 
     internal.replaceHiddenCharacters = function(post){
@@ -77,18 +68,29 @@ angular.module('webApp')
       }
     };
 
-    this.initialize = function(){
+    internal.reloadPost = function(){
+      accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
+      blogRepository = blogRepositoryFactory.forCurrentUser();
+      subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+
+      internal.loadPost(internal.loadFullPostFromApi);
+    };
+
+    internal.loadFullPostFromApi = function(){
+      return internal.getFullPost($scope.postId || $scope.post.postId);
+    };
+
+    internal.attachToEvents = function(){
+      $scope.$on(aggregateUserStateConstants.updatedEvent, internal.reloadPost);
+
+      if($scope.isDialog){
+        $scope.$on(uiRouterConstants.stateChangeStartEvent, $scope.closeDialog);
+      }
+    };
+
+    internal.loadPost = function(getFullPostFunction){
       model.isLoading = true;
       model.showContent = false;
-
-      var getFullPostFunction;
-      if($scope.post && $scope.post.content){
-        getFullPostFunction = function(){ return $q.when($scope.post); };
-      }
-      else{
-        getFullPostFunction = function(){ return internal.getFullPost($scope.postId || $scope.post.postId); };
-      }
-
       return getFullPostFunction()
         .then(function(post){
           internal.replaceHiddenCharacters(post);
@@ -105,5 +107,18 @@ angular.module('webApp')
         });
     };
 
-    initializer.initialize(this.initialize);
+    this.initialize = function(){
+
+      internal.attachToEvents();
+
+      var getFullPostFunction;
+      if($scope.post && $scope.post.content){
+        getFullPostFunction = function(){ return $q.when($scope.post); };
+      }
+      else{
+        getFullPostFunction = internal.loadFullPostFromApi;
+      }
+
+      internal.loadPost(getFullPostFunction);
+    };
   });

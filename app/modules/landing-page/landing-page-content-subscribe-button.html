@@ -6,7 +6,7 @@
     <div class="subscribe-button-wrapper">
 
       <span ng-if="model.currentView !== views.previewBlog">
-        <span ng-if="model.isSubscribed" class="subscribed">
+        <span ng-if="model.landingPage.isSubscribed" class="subscribed">
           <button ng-if="model.currentView === views.manage"
                   id="cancel-changes-button"
                   class="btn header-button"
@@ -17,7 +17,7 @@
             Cancel Changes
           </button>
 
-          <button ng-if="model.currentView !== views.manage && !model.isOwner"
+          <button ng-if="model.currentView !== views.manage && !model.landingPage.isOwner"
                   id="manage-subscription-button"
                   class="btn header-button"
                   type="submit"
@@ -25,7 +25,7 @@
                   fw-form-submit="manageSubscription()"
                   error-message="model.errorMessage">Manage Subscription</button>
 
-          <button ng-if="model.currentView !== views.manage && model.isOwner"
+          <button ng-if="model.currentView !== views.manage && model.landingPage.isOwner"
                   id="subscribe-back-button"
                   class="btn header-button"
                   type="submit"
@@ -34,7 +34,7 @@
                   error-message="model.errorMessage"><i class="fa fa-arrow-left"></i>Back</button>
         </span>
 
-        <span ng-if="!model.isSubscribed" class="subscribe">
+        <span ng-if="!model.landingPage.isSubscribed" class="subscribe">
           <button id="subscribe-button"
                   class="btn header-button"
                   type="submit"
@@ -43,11 +43,11 @@
                   data-loading-text="Subscribing..."
                   can-submit="true"
                   fw-form-submit="subscribe()"
-                  ng-disabled="model.subscribedChannelCount === 0"
+                  ng-disabled="model.landingPage.subscribedChannelCount === 0"
                   error-message="model.errorMessage">
             Subscribe
-            <span ng-if="!model.hasFreeAccess"><fw-price value="model.totalPrice"></fw-price></span>
-            <span ng-if="model.hasFreeAccess"><i class="fa fa-street-view"></i> FREE</span></button>
+            <span ng-if="!model.landingPage.hasFreeAccess"><fw-price value="model.totalPrice"></fw-price></span>
+            <span ng-if="model.landingPage.hasFreeAccess"><i class="fa fa-street-view"></i> FREE</span></button>
         </span>
 
         <!--button ng-if="model.currentView === views.manage"

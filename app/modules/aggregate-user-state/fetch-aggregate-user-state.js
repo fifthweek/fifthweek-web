@@ -1,5 +1,6 @@
 angular.module('webApp')
   .constant('fetchAggregateUserStateConstants', {
+    updateAccessSignaturesEvent: 'updateAccessSignatures',
     fetchedEvent: 'aggregateUserStateFetched',
     refreshIfStaleMilliseconds: 30 * 60 * 1000
   })
@@ -11,6 +12,9 @@ angular.module('webApp')
       // This is a basic way of dismissing replies that occur out of order when the user logs in or out.
       // If they occur out of order for the same user it isn't really important.
       if(userId === cache.lastUserId){
+        // We allow the access signatures cache to update before notifying everyone else, otherwise
+        // we can get in a loop of requesting a new user state because access signatures were stale.
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, userId, response.data);
         $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, response.data);
       }
 

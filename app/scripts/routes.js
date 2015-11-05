@@ -718,7 +718,7 @@ angular.module('webApp')
         data : {
           pageTitle: 'Landing Page',
           headTitle: ': ' + 'Landing Page',
-          navigationHidden: true,
+          navigationHidden: 'header',
           bodyClass: 'page-landing-page',
           access: {
             requireAuthenticated: false

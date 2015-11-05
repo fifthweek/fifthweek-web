@@ -1,10 +1,10 @@
-<div class="full-post-dialog">
+<div class="full-post-dialog" ng-class="{ 'modal-content': !isDialog }">
   <div class="modal-title" id="modal-title">
-    <a id="post-cross-button" class="btn-close" href ng-click="closeDialog()" ng-if="closeDialog">
+    <a id="post-cross-button" class="btn-close" href ng-click="closeDialog()" ng-if="isDialog">
       <i class="fa fa-close"></i>
     </a>
     <div class="info">
-      <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})">
+      <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.manage, key: null})">
         <img class="author-image" ng-if="post.creator.profileImage" ng-src="{{post.creator.profileImage.resolvedUri}}" />
         <img class="author-image" ng-if="!post.creator.profileImage" ng-src="{{fifthweekConstants.defaultProfileImageUrl}}" />
       </a>
@@ -13,7 +13,7 @@
       </ul>
       <ul ng-if="post">
         <li>
-          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.blog.name}}</a>
+          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.manage, key: null})" class="poster-name">{{post.blog.name}}</a>
         </li>
         <li>
           <span ng-if="!post.isScheduled">Posted to </span>
@@ -26,11 +26,32 @@
       </ul>
     </div>
   </div>
-  <div ng-if="model.isLoading" class="updating-area">
-    <i class="fa fa-refresh fa-spin"></i>
+
+  <div class="post-additional-content" ng-if="post.creator.username && !post.readAccessIgnoringPayment && isDialog">
+    <div class="row">
+      <div class="col-xs-12">
+        <p>
+          This post requires a subscription to <strong>{{post.channel.name}}</strong>.
+          <a ui-sref="landingPage({username: post.creator.username})">Find out more...</a>.
+        </p>
+        <fw-post-subscription-information
+          username="{{post.creator.username}}"
+          required-channel-id="{{post.channel.channelId}}"></fw-post-subscription-information>
+      </div>
+    </div>
   </div>
 
+  <div class="post-additional-content">
+    <fw-account-balance-warning displaying-account-balance-warning="model.displayingAccountBalanceWarning" ng-if="post"></fw-account-balance-warning>
+  </div>
+
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
   <div class="posts full-post-container">
+    <div ng-if="model.isLoading" class="updating-area">
+      <i class="fa fa-refresh fa-spin"></i>
+    </div>
+
     <div data-live-date="{{post.liveDate}}" class="post timeline-post" ng-if="post">
 
       <div class="post-blocks">
@@ -90,12 +111,18 @@
 
     </div>
 
-    <fw-error-message value="model.errorMessage"></fw-error-message>
-
-    <div class="post-buttons-container" ng-if="closeDialog">
-      <button id="close-post-button"
+    <div class="post-buttons-container">
+      <button id="close-post-button" ng-if="isDialog"
               class="btn btn-block btn-success"
               ng-click="closeDialog()">Close</button>
+
+      <button id="more-posts-button"
+              class="btn btn-block btn-success"
+              ui-sref="landingPage({username: post.creator.username})">More from this author</button>
     </div>
+
+    <p class="share-post-link">
+      Share this post: <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.post, key: post.postId})">{{fifthweekConstants.websiteRoot + post.creator.username + '/post/' + post.postId}}</a>
+    </p>
   </div>
 </div>

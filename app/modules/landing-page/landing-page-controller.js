@@ -1,20 +1,24 @@
 angular.module('webApp')
   .constant('landingPageConstants', {
     views: {
-      manage: 'manage',
-      blog: 'blog',
-      previewBlog: 'preview-blog'
+      timeline: 'timeline',
+      post: 'post'
     },
     actions: {
       manage: 'manage',
-      all: 'all',
       channel: 'channel',
-      previewAll: 'preview-all',
-      previewChannel: 'preview-channel'
+      post: 'post'
+    },
+    timelineTypes: {
+      all: 'all',
+      subscribed: 'subscribed',
+      channel: 'channel'
     }
   })
   .controller('landingPageCtrl',
-  function($scope, $q, $sce, landingPageConstants, authenticationServiceConstants, fetchAggregateUserState, blogStub, subscribeService, accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory, aggregateUserStateConstants, initializer, $stateParams, $state, states, errorFacade) {
+  function($scope, $q, landingPageConstants, fetchAggregateUserState, fwSubscriptionInformationConstants, fwPostListConstants,
+           accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory,
+           initializer, $stateParams, $state, states, errorFacade, landingPageInformationLoader, fullPostLoader) {
     'use strict';
 
     var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
@@ -22,154 +26,14 @@ angular.module('webApp')
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
     $scope.model = {
-      tracking: {
-        unsubscribedTitle: 'Unsubscribed',
-        updatedTitle: 'Subscription Updated',
-        subscribedTitle: 'Subscribed',
-        category: 'Timeline'
-      },
-      isSubscribed: false,
-      isLoaded: false,
-      isOwner: false,
-      hasFreeAccess: false,
-      subscribedChannels: {},
-      totalPrice: undefined,
-      subscribedChannelCount: undefined,
-      username: undefined,
       currentView: undefined,
       returnState: undefined,
-      channelId: undefined
+      channelId: undefined,
+      postId: undefined,
+      timelineType: undefined
     };
 
     var internal = this.internal = {};
-
-    internal.currentUserUpdated = function(event, user){
-      var isOwner = user.userId === $scope.model.userId;
-      if(isOwner !== $scope.model.isOwner) {
-        $state.reload();
-      }
-      else{
-        accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
-        blogRepository = blogRepositoryFactory.forCurrentUser();
-        subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
-      }
-    };
-
-    internal.populateSubscriptionFromUserState = function(blogId){
-      return subscribeService.getSubscriptionStatus(subscriptionRepository, blogId)
-        .then(function(subscriptionStatus){
-          $scope.model.hasFreeAccess = subscriptionStatus.hasFreeAccess;
-          $scope.model.isSubscribed = subscriptionStatus.isSubscribed;
-          $scope.model.subscribedChannels = subscriptionStatus.subscribedChannels;
-          $scope.model.hiddenChannels = subscriptionStatus.hiddenChannels;
-        });
-    };
-
-    internal.loadFromApi = function(username){
-      $scope.model.isOwner = false;
-      return blogStub.getLandingPage(username)
-        .then(function(response){
-          _.merge($scope.model, response.data);
-          return internal.populateSubscriptionFromUserState($scope.model.blog.blogId);
-        });
-    };
-
-    internal.loadFromLocal = function(accountSettings){
-      $scope.model.userId = blogRepository.getUserId();
-      $scope.model.isOwner = true;
-      $scope.model.hasFreeAccess = false;
-      $scope.model.isSubscribed = $scope.model.currentView === landingPageConstants.views.blog;
-      $scope.model.profileImage = accountSettings.profileImage;
-
-      return blogRepository.getBlog()
-        .then(function(blog) {
-          $scope.model.blog = blog;
-        });
-    };
-
-    internal.recalculateChannels = function(){
-      var subscribedChannelCount = _.keys($scope.model.subscribedChannels).length;
-      var returnedChannels = _.chain($scope.model.blog.channels)
-        .map(function(channel) {
-          var subscriptionInformation = $scope.model.subscribedChannels[channel.channelId];
-          return {
-            isVisibleToNonSubscribers: channel.isVisibleToNonSubscribers,
-            channelId: channel.channelId,
-            name: channel.name,
-            price: channel.price,
-            subscriptionInformation: subscriptionInformation,
-            checked: subscribedChannelCount === 0 || !!subscriptionInformation
-          };
-        });
-
-      var hiddenChannels = _.chain($scope.model.hiddenChannels)
-        .map(function(channel){
-          var subscriptionInformation = $scope.model.subscribedChannels[channel.channelId];
-          return {
-            isVisibleToNonSubscribers: false,
-            channelId: channel.channelId,
-            name: channel.name,
-            price: channel.price,
-            subscriptionInformation: subscriptionInformation,
-            checked: true
-          };
-        });
-
-      var allChannels = returnedChannels.concat(hiddenChannels.value());
-
-      $scope.model.channels = allChannels
-        .filter(function(channel){
-          // Return channels that are not visible to non-subscribers if user is a subscriber.
-          return channel.isVisibleToNonSubscribers || channel.subscriptionInformation;
-        })
-        .sortByOrder(['name'], [true])
-        .value();
-    };
-
-    internal.reloadFromUserState = function(){
-      if(!$scope.model.isLoaded || $scope.model.isOwner){
-        return $q.when();
-      }
-
-      return internal.populateSubscriptionFromUserState($scope.model.blog.blogId)
-        .then(function(){
-          internal.recalculateChannels();
-        });
-    };
-
-    internal.postProcessResults = function(){
-      if ($scope.model.blog.video) {
-        $scope.model.videoUrl = $sce.trustAsResourceUrl($scope.model.blog.video.replace('http://', '//').replace('https://', '//'));
-      }
-
-      internal.recalculateChannels();
-    };
-
-    internal.populateLandingPageData = function(){
-      return accountSettingsRepository.getAccountSettings()
-        .then(function(accountSettings) {
-          var username = $scope.model.username;
-          return accountSettings && accountSettings.username === username ?
-            internal.loadFromLocal(accountSettings) :
-            internal.loadFromApi(username);
-        })
-        .then(function(){
-          internal.postProcessResults();
-          $scope.$watch('model.channels', internal.updateTotalPrice, true);
-        });
-    };
-
-    internal.updateCurrentViewIfRequired = function(){
-      if(!$scope.model.currentView){
-        $scope.model.currentView = $scope.model.isSubscribed ?
-          landingPageConstants.views.blog :
-          landingPageConstants.views.manage;
-      }
-
-      if(!$scope.model.isSubscribed && $scope.model.currentView === landingPageConstants.views.blog){
-        $state.go($state.current.name, { username: $scope.model.username, action: null, key: null });
-      }
-    };
 
     internal.loadParameters = function(){
       if(!$stateParams.username){
@@ -177,38 +41,32 @@ angular.module('webApp')
       }
 
       $scope.model.username = $stateParams.username.toLowerCase();
+      $scope.model.timelineType = landingPageConstants.timelineTypes.all;
+      $scope.model.currentView = landingPageConstants.views.timeline;
 
       var action = $stateParams.action;
       var key = $stateParams.key;
       if(action){
+
         switch(action) {
           case landingPageConstants.actions.manage:
-            $scope.model.currentView = landingPageConstants.views.manage;
             $scope.model.returnState = key;
             break;
 
-          case landingPageConstants.actions.all:
-            $scope.model.currentView = landingPageConstants.views.blog;
-            break;
-
-          case landingPageConstants.actions.previewAll:
-            $scope.model.currentView = landingPageConstants.views.previewBlog;
-            break;
-
           case landingPageConstants.actions.channel:
-            $scope.model.currentView = landingPageConstants.views.blog;
             if(!key){
               return false;
             }
             $scope.model.channelId = key;
+            $scope.model.timelineType = landingPageConstants.timelineTypes.channel;
             break;
 
-          case landingPageConstants.actions.previewChannel:
-            $scope.model.currentView = landingPageConstants.views.previewBlog;
+          case landingPageConstants.actions.post:
             if(!key){
               return false;
             }
-            $scope.model.channelId = key;
+            $scope.model.currentView = landingPageConstants.views.post;
+            $scope.model.postId = key;
             break;
 
           default:
@@ -219,12 +77,36 @@ angular.module('webApp')
       return true;
     };
 
+    internal.onSubscriptionInformationChanged = function(){
+      $scope.$broadcast(fwPostListConstants.reloadEvent);
+    };
+
     internal.initialize = function(){
+      if(!internal.loadParameters()){
+        $state.go(states.notFound.name);
+        return $q.when();
+      }
+
+      $scope.$on(fwSubscriptionInformationConstants.subscriptionStatusChangedEvent, internal.onSubscriptionInformationChanged);
+
+      $scope.views = landingPageConstants.views;
+      $scope.timelineTypes = landingPageConstants.timelineTypes;
+
       return fetchAggregateUserState.waitForExistingUpdate()
         .then(function(){
-          return internal.loadLandingPage();
+          if($scope.model.currentView === landingPageConstants.views.post){
+            return internal.loadPost();
+          }
+          else{
+            return internal.loadLandingPage();
+          }
         })
         .catch(function(error){
+          if(error instanceof ApiError && error.response && error.response.status === 404) {
+            $state.go(states.notFound.name);
+            return $q.when();
+          }
+
           return errorFacade.handleError(error, function(message) {
             $scope.model.errorMessage = message;
           });
@@ -236,146 +118,59 @@ angular.module('webApp')
     };
 
     internal.loadLandingPage = function(){
-      if(!internal.loadParameters()){
-        $state.go(states.notFound.name);
-        return $q.when();
-      }
-
-      $scope.views = landingPageConstants.views;
-      $scope.$on(aggregateUserStateConstants.updatedEvent, internal.reloadFromUserState);
-      $scope.$on(authenticationServiceConstants.currentUserChangedEvent, internal.currentUserUpdated);
-
-      return internal.populateLandingPageData()
-        .then(function(){
-          internal.updateCurrentViewIfRequired();
-        })
-        .catch(function(error){
-          if(error instanceof ApiError && error.response && error.response.status === 404) {
-            $state.go(states.notFound.name);
-            return $q.when();
-          }
-
-          return $q.reject(error);
+      return landingPageInformationLoader.loadLandingPageData($scope.model.username, accountSettingsRepository, blogRepository, subscriptionRepository)
+        .then(function(landingPage){
+          $scope.model.landingPage = landingPage;
         });
     };
 
-    internal.updateTotalPrice = function(){
-      var result = _($scope.model.channels)
-        .filter({checked: true})
-        .reduce(
-        function(sum, channel) {
-          sum.totalPrice = sum.totalPrice + parseFloat(channel.price);
-          sum.count++;
-          return sum;
-        },
-        {totalPrice: 0, count: 0});
-
-      $scope.model.totalPrice = result.totalPrice;
-      $scope.model.subscribedChannelCount = result.count;
+    internal.getSummaryFromPost = function(post){
+      return {
+        username: post.creator.username,
+        userId: post.creatorId,
+        profileImage: post.creator.profileImage,
+        blog: {
+          blogId: post.blogId,
+          name: post.blog.name,
+          introduction: post.blog.introduction,
+          headerImage: post.blog.headerImage
+        }
+      };
     };
 
-    internal.redirectIfRequired = function(isNewSubscription){
-      if(!isNewSubscription && $scope.model.returnState){
-        $state.go($scope.model.returnState);
-        return true;
-      }
-      else if($stateParams.action === landingPageConstants.actions.manage){
-        $state.go($state.current.name, { username: $scope.model.username, action: null, key: null });
-        return true;
-      }
-
-      return false;
-    };
-
-    internal.redirectToUnfilteredViewIfRequired = function(){
-      if($stateParams.action === landingPageConstants.actions.channel ||
-          $stateParams.action === landingPageConstants.actions.previewChannel){
-        $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.all, key: null });
-        return true;
-      }
-
-      return false;
+    internal.loadPost = function(){
+      return fullPostLoader.loadPost($scope.model.postId, accountSettingsRepository, blogRepository, subscriptionRepository)
+        .then(function(post){
+          $scope.model.post = post;
+          $scope.model.landingPage = internal.getSummaryFromPost(post);
+        });
     };
 
     initializer.initialize(internal.initialize);
 
-    $scope.manageSubscription = function(){
-      $scope.model.currentView = landingPageConstants.views.manage;
-    };
-
-    $scope.cancelManageSubscription = function(){
-      if(!internal.redirectIfRequired()){
-        $scope.model.currentView = landingPageConstants.views.blog;
+    $scope.goBack = function(){
+      if($scope.model.returnState){
+        $state.go($scope.model.returnState);
       }
     };
 
-    $scope.ownerReturnToLandingPage = function(){
-      if(!$stateParams.action){
-        $state.reload();
-      }
-      else{
-        $state.go($state.current.name, { username: $scope.model.username, action: null, key: null});
-      }
+    $scope.showAllPosts = function(){
+      $scope.model.currentView = landingPageConstants.views.timeline;
+      $scope.model.timelineType = landingPageConstants.timelineTypes.all;
     };
 
-    $scope.preview = function(channelId){
-      if(channelId){
-        $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.previewChannel, key: channelId });
-      }
-      else{
-        $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.previewAll, key: null });
-      }
-      //$scope.model.currentView = landingPageConstants.views.previewBlog;
-      //$scope.model.channelId = channelId;
+    $scope.showSubscribedPosts = function(){
+      $scope.model.currentView = landingPageConstants.views.timeline;
+      $scope.model.timelineType = landingPageConstants.timelineTypes.subscribed;
     };
 
-    $scope.cancelPreview = function(){
-      $state.go($state.current.name, { username: $scope.model.username, action: landingPageConstants.actions.manage, key: null});
+    $scope.showChannel = function(){
+      $scope.model.currentView = landingPageConstants.views.timeline;
+      $scope.model.timelineType = landingPageConstants.timelineTypes.channel;
     };
 
-    $scope.subscribe = function() {
-      var hasFreeAccess = $scope.model.hasFreeAccess;
-
-      var subscriptions = _($scope.model.channels)
-        .filter({checked: true})
-        .map(function(v){
-          return {
-            channelId: v.channelId,
-            acceptedPrice: hasFreeAccess ? 0 : v.price
-          };
-        })
-        .value();
-
-      if(subscriptions.length === 0){
-        return $scope.unsubscribe();
-      }
-
-      var isNewSubscription = !$scope.model.isSubscribed;
-
-      return subscribeService.subscribe($scope.model.blog.blogId, subscriptions)
-        .then(function(result){
-          if(result){
-            if($scope.model.isOwner || (!internal.redirectIfRequired(isNewSubscription) && !internal.redirectToUnfilteredViewIfRequired())){
-              // Loading the blog will update user state, and then we
-              // reload from user state when the user clicks 'manage'.
-              $scope.model.isSubscribed = true;
-              $scope.model.channelId = undefined;
-              $scope.model.currentView = landingPageConstants.views.blog;
-            }
-          }
-        });
-    };
-
-    $scope.unsubscribe = function() {
-      if($scope.model.isOwner){
-        $state.reload();
-        return;
-      }
-
-      return subscribeService.unsubscribe($scope.model.blog.blogId)
-        .then(function(){
-          internal.redirectIfRequired();
-        });
+    $scope.showPost = function(){
+      $scope.model.currentView = landingPageConstants.views.post;
     };
   }
 );

@@ -22,6 +22,15 @@ angular.module('webApp')
           return masterRepository.get(accountSettingsKey);
         };
 
+        service.tryGetAccountSettings = function(){
+          if(!masterRepository.getUserId())
+          {
+            return $q.when();
+          }
+
+          return masterRepository.get(accountSettingsKey, true);
+        };
+
         service.setAccountSettings = function(newAccountSettings){
           return masterRepository.set(accountSettingsKey, newAccountSettings);
         };

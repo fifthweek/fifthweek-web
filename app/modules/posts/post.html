@@ -1,12 +1,12 @@
 <div data-live-date="{{post.liveDate}}" class="post timeline-post">
   <div class="row info-actions post-section-narrow-border">
     <div class="col-xs-10 info">
-      <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})">
+      <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.manage, key: null})">
         <img class="author-image" ng-src="{{post.creator.profileImage ? post.creator.profileImage.resolvedUri : fifthweekConstants.defaultProfileImageUrl}}" />
       </a>
       <ul>
         <li>
-          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.all, key: null})" class="poster-name">{{post.blog.name}}</a>
+          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.manage, key: null})" class="poster-name">{{post.blog.name}}</a>
         </li>
         <li>
           <span ng-if="!post.isScheduled">Posted to </span>

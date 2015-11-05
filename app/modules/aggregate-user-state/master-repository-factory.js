@@ -17,11 +17,14 @@ angular.module('webApp').factory('masterRepositoryFactory', function($q, aggrega
       };
 
       internal.ensureUserState = function(){
-        if (!aggregateUserState.currentValue) {
-          return fetchAggregateUserState.updateFromServer();
-        }
+        return fetchAggregateUserState.waitForExistingUpdate()
+          .then(function(){
+            if (!aggregateUserState.currentValue || aggregateUserState.isCurrentValueStale) {
+              return fetchAggregateUserState.updateFromServer();
+            }
 
-        return $q.when();
+            return $q.when();
+          });
       };
 
       service.getUserId = function(){
@@ -73,7 +76,7 @@ angular.module('webApp').factory('masterRepositoryFactory', function($q, aggrega
         });
       };
 
-      service.get = function(key){
+      service.get = function(key, allowUnmatched){
         if (userChanged()) {
           return $q.reject(new FifthweekError('Repository not valid for current user.'));
         }
@@ -83,6 +86,10 @@ angular.module('webApp').factory('masterRepositoryFactory', function($q, aggrega
             var directValue = utilities.getValue(aggregateUserState.currentValue, key);
 
             if (directValue === undefined) {
+              if(allowUnmatched){
+                return $q.when();
+              }
+
               return $q.reject(new FifthweekError('The key "' + key + '" does not match anything within the aggregate user state.'));
             }
 

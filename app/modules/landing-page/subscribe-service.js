@@ -5,12 +5,42 @@ angular.module('webApp').factory('subscribeService',
     var service = {};
     var internal = service.internal = {};
 
+    internal.getSubscribedChannels = function(blog){
+      var subscribedChannels = {};
+
+      _.forEach(blog.channels, function(channel){
+        var currentPrice = blog.freeAccess ? 0 : channel.price;
+        var channelInfo = {
+          acceptedPrice: channel.acceptedPrice,
+          currentPrice: currentPrice,
+          isIncrease: channel.acceptedPrice < currentPrice,
+          isDecrease: channel.acceptedPrice > currentPrice
+        };
+
+        subscribedChannels[channel.channelId] = channelInfo;
+      });
+
+      return subscribedChannels;
+    };
+
+    internal.getHiddenChannels = function(blog){
+      var hiddenChannels = [];
+
+      _.forEach(blog.channels, function(channel){
+        if(!channel.isVisibleToNonSubscribers){
+          hiddenChannels.push(channel);
+        }
+      });
+
+      return hiddenChannels;
+    };
+
     internal.getUserInformation = function(blogId){
       var blogRepository = blogRepositoryFactory.forCurrentUser();
       var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
       var result;
-      return service.getSubscriptionStatus(subscriptionRepository, blogId)
+      return service.getSubscriptionStatus(blogId, subscriptionRepository)
         .then(function(subscriptionStatus){
           result = subscriptionStatus;
           return blogRepository.tryGetBlog();
@@ -88,37 +118,7 @@ angular.module('webApp').factory('subscribeService',
       return false;
     };
 
-    internal.getSubscribedChannels = function(blog){
-      var subscribedChannels = {};
-
-      _.forEach(blog.channels, function(channel){
-        var currentPrice = blog.freeAccess ? 0 : channel.price;
-        var channelInfo = {
-          acceptedPrice: channel.acceptedPrice,
-          currentPrice: currentPrice,
-          isIncrease: channel.acceptedPrice < currentPrice,
-          isDecrease: channel.acceptedPrice > currentPrice
-        };
-
-        subscribedChannels[channel.channelId] = channelInfo;
-      });
-
-      return subscribedChannels;
-    };
-
-    internal.getHiddenChannels = function(blog){
-      var hiddenChannels = [];
-
-      _.forEach(blog.channels, function(channel){
-        if(!channel.isVisibleToNonSubscribers){
-          hiddenChannels.push(channel);
-        }
-      });
-
-      return hiddenChannels;
-    };
-
-    service.getSubscriptionStatus = function(subscriptionRepository, blogId){
+    service.getSubscriptionStatus = function(blogId, subscriptionRepository){
       var userId = subscriptionRepository.getUserId();
       return fetchAggregateUserState.updateIfStale(userId)
         .then(function(){
@@ -150,6 +150,52 @@ angular.module('webApp').factory('subscribeService',
         });
     };
 
+    service.subscribe = function(blogId, channelId, price){
+      return internal.getSignedInUserInformation(blogId)
+        .then(function(userInformation){
+          if(!userInformation) {
+            return $q.when(false);
+          }
+
+          if(userInformation.isOwner){
+            return $q.when(true);
+          }
+
+          if(userInformation.hasFreeAccess){
+            price = 0;
+          }
+          else if(internal.isGuestListOnly()){
+            return internal.showGuestListOnlyDialog()
+              .then(function(){
+                return $q.when(false);
+              });
+          }
+
+          return subscriptionStub.postChannelSubscription(channelId, { acceptedPrice: price })
+            .then(function(){
+              return fetchAggregateUserState.updateFromServer(userInformation.userId);
+            })
+            .then(function(){
+              return $q.when(true);
+            });
+        });
+    };
+
+    service.unsubscribe = function(blogId, channelId){
+      return internal.getUserInformation(blogId)
+        .then(function(userInformation){
+          if(userInformation.isOwner){
+            return $q.when();
+          }
+
+          return subscriptionStub.deleteChannelSubscription(channelId)
+            .then(function() {
+              return fetchAggregateUserState.updateFromServer(userInformation.userId);
+            });
+        });
+    };
+
+/*
     service.subscribe = function(blogId, channelsAndPrices){
       return internal.getSignedInUserInformation(blogId)
         .then(function(userInformation){
@@ -177,9 +223,6 @@ angular.module('webApp').factory('subscribeService',
                 return $q.when(false);
               });
           }
-          else{
-            // TODO: Payment
-          }
 
           return subscriptionStub.putBlogSubscriptions(blogId, { subscriptions: channelsAndPrices })
             .then(function(){
@@ -190,7 +233,6 @@ angular.module('webApp').factory('subscribeService',
             });
         });
     };
-
     service.unsubscribe = function(blogId){
       return internal.getUserInformation(blogId)
         .then(function(userInformation){
@@ -204,6 +246,7 @@ angular.module('webApp').factory('subscribeService',
             });
         });
     };
+    */
 
     return service;
   });

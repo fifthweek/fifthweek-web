@@ -1,0 +1,81 @@
+
+<div class="position-relative">
+  <div ng-if="model.isLoading && !model.errorMessage" class="updating-area inline-updating-area">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <div class="subscription-information" ng-if="model.landingPage">
+    <div class="main-content" ng-class="{'main-content-introduction-empty': !model.landingPage.blog.introduction}">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="content-padding">
+            <a ng-if="model.landingPage.isOwner" id="edit-introduction-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
+              <span ng-if="!model.landingPage.blog.introduction">add introduction</span>
+              <span ng-if="model.landingPage.blog.introduction">edit introduction</span>
+            </a>
+            <h4 id="blog-introduction">{{model.landingPage.blog.introduction}}</h4>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="landing-page-h1">Available Channels</h1>
+          <a ng-if="model.landingPage.isOwner" id="edit-channels-link" class="btn btn-edit btn-default" ui-sref="creator.channels.list">
+            <span ng-if="!model.landingPage.channels.length">add channels</span>
+            <span ng-if="model.landingPage.channels.length">edit channels</span>
+          </a>
+          <h2 ng-if="!model.landingPage.channels.length">No channels currently available.</h2>
+        </div>
+        <div class="col-xs-12" ng-if="model.landingPage.channels.length">
+          <p class="channel-count-information" ng-if="model.landingPage.subscribedChannelCount">
+            Subscribed to {{model.landingPage.subscribedChannelCount}} channel{{model.landingPage.subscribedChannelCount === 1 ? '' : 's'}}.
+          <span ng-if="!model.landingPage.hasFreeAccess">
+            Total price is <fw-price value="model.landingPage.totalPrice"></fw-price>.
+          </span>
+          <span ng-if="model.landingPage.hasFreeAccess">
+            This profile is currently free as you are on the guest list.
+          </span>
+          </p>
+          <ng-include src="'modules/landing-page/fw-subscription-information-channels.html'"></ng-include>
+        </div>
+      </div>
+    </div>
+    <div class="video-content" ng-class="{'video-content-empty':!model.landingPage.videoUrl}">
+      <div class="main-content">
+        <div class="row">
+          <div class="col-xs-12">
+            <div id="video-area" class="content-padding">
+              <div id="edit-video-area">
+                <a ng-if="model.landingPage.isOwner" id="edit-video-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
+                  <span ng-if="!model.landingPage.videoUrl">add video</span>
+                  <span ng-if="model.landingPage.videoUrl">edit video</span>
+                </a>
+              </div>
+              <div id="video" class="video" ng-if="model.landingPage.videoUrl">
+                <embed-video data-ng-href="{{model.landingPage.videoUrl}}" rel="0" autohide="1" frameborder="0" showinfo="0"></embed-video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-content" ng-class="{'main-content-empty': !model.landingPage.blog.description}">
+      <fw-panel12 ng-if="model.landingPage.blog.description" class="description-panel">
+        <div class="description-text">
+          <fw-markdown replace="true" ng-model="model.landingPage.blog.description"></fw-markdown>
+        </div>
+      </fw-panel12>
+      <div class="content-padding">
+        <a ng-if="model.landingPage.isOwner" id="edit-description-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
+          <span ng-if="!model.landingPage.blog.description">add full description</span>
+          <span ng-if="model.landingPage.blog.description">edit full description</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

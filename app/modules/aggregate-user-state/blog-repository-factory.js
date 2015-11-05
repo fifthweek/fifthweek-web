@@ -17,6 +17,7 @@ angular.module('webApp')
         var masterRepository = masterRepositoryFactory.forCurrentUser();
 
         var service = {};
+        service.internal = {};
 
         service.getUserId = function(){
           return masterRepository.getUserId();
@@ -28,7 +29,7 @@ angular.module('webApp')
             return $q.when();
           }
 
-          return masterRepository.get(blogKey);
+          return masterRepository.get(blogKey, true);
         };
 
         service.getBlog = function(){
@@ -74,9 +75,12 @@ angular.module('webApp')
           });
         };
 
-        service.getBlogMap = function() {
-          return masterRepository.get(blogKey).then(function(blog) {
+        service.internal.getBlogMap = function(allowNotFound) {
+          return masterRepository.get(blogKey, true).then(function(blog) {
             if (!blog) {
+              if(allowNotFound){
+                return $q.when();
+              }
               return $q.reject(new DisplayableError('You must create a blog.'));
             }
 
@@ -95,13 +99,17 @@ angular.module('webApp')
           });
         };
 
+        service.getBlogMap = function() {
+          return service.internal.getBlogMap(false);
+        };
+
         service.tryGetBlogMap = function() {
           if(!masterRepository.getUserId())
           {
             return $q.when();
           }
 
-          return service.getBlogMap();
+          return service.internal.getBlogMap(true);
         };
 
         service.updateChannels = function(applyChanges) {

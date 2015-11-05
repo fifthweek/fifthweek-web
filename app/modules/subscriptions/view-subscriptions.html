@@ -16,8 +16,7 @@
 <fw-post-list-information source="{{fwPostListConstants.sources.timeline}}"></fw-post-list-information>
 
 <fw-panel12 ng-repeat="blog in model.blogs" class="blog-panel" id="blog-panel-{{$index}}">
-  <h4 ng-if="blog.channels.length"><a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.all, key: null})" class="blog-link">{{blog.name}}</a></h4>
-  <h4 ng-if="!blog.channels.length"><a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.manage, key: $state.current.name})" class="blog-link">{{blog.name}}</a></h4>
+  <h4><a ui-sref="landingPage({username: blog.username, action: landingPageConstants.actions.manage, key: $state.current.name})" class="blog-link">{{blog.name}}</a></h4>
   <p ng-if="blog.freeAccess">You are on the guest list.</p>
   <table class="table" ng-if="blog.channels.length">
     <thead>

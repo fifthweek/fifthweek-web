@@ -35,7 +35,7 @@ $header-height-sm:70px;
   }
 }
 
-#{$html-name-space} {
+.page-landing-page, .subscription-information {
 
   .anchor-cursor{
     &:hover {
@@ -47,55 +47,84 @@ $header-height-sm:70px;
     text-decoration: line-through;
   }
 
-  #{$logo-sm} {
-    background-color: $black-off;
-    border-radius: 3px;
+  .main-content {
+    h1.landing-page-h1,h2.landing-page-h2{
+      font-family: $font-family-main;
+      margin-top:$post-p-margin;
+      margin-bottom:$post-p-margin;
+      padding: 0;
+      text-transform: none;
+      font-weight: normal;
+    }
+    h1.landing-page-h1{
+      &:first-child{
+        margin-top: 0;
+      }
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color:lighten(black, 20%);
+    }
+    h2.landing-page-h2{
+      font-weight: 300;
+      font-size: 20px;
+      line-height: 1.22;
+      letter-spacing: -0.022em;
+      color:lighten(black, 50%);
+    }
+  }
+
+  .header-image-control-overlay {
+    height: $header-control-overlay-height;
+    @include content-container;
+
+    padding-top: 10px;
+  }
+
+  .header-corner-button{
+    font-size:24px;
+    background-color: white;
+    border-radius: 20px;
     width:39px;
     height:39px;
     text-align: center;
-    padding-top: 7px;
+    padding-top: 6px;
     margin:0;
     float:left;
-    color: #fff;
+    color: black;
+    margin-left: 12px;
+    z-index: 10;
+    &:first-child{
+      margin-left: 0;
+    }
+    @media (min-width:$screen-md-min) {
+      visibility: collapse;
+    }
   }
 
-  #subscribe-button-area{
-    .subscribe-button-wrapper{
-      //float: left;
-      .header-button{
-        color:#fff;
-        font-size: $p-font-size - 1;
-        background-color: $subscribe-button-primary;
-        padding: 1px 12px;
-        height: 30px;
-        @media (min-width:$screen-s-min) {
-          font-size: $p-font-size;
-          padding: 1px 12px;
-          height: 34px;
-        }
-        >i{
-          margin-right: 6px;
-        }
-      }
-      .preview-button {
-        margin-left: 6px;
-        background-color: $subscribe-button-primary;
-      }
-      #subscribe-button {
-        padding-right: 10px;
+  .landing-page-content-buttons{
+    margin-top: 0;
+    margin-bottom: 30px;
 
-        >span {
-          @include dark-button;
-          margin-left:8px;
-          background: $subscribe-button-secondary;
-          padding: 2px 8px;
-          @media (min-width:$screen-s-min) {
-            margin-left:8px;
-            padding: 3px 8px;
-          }
-        }
+    .landing-page-content-button {
+      font-size: 16px;
+      background-color: transparent;
+      border-color: $gray-lighter;
+      border-width: 0 0 3px 0;
+      margin-left: 20px;
+      padding: 0 0 3px 0;
+      //text-transform:uppercase;
+
+      &:focus {
+        outline: 0 none;
       }
-      #cancel-changes-button, #manage-subscription-button {
+      &:first-child {
+        margin-left: 0px;
+      }
+      &.active-button{
+        border-color: $brand-highlight-2;
+        color: black;
       }
     }
   }
@@ -155,32 +184,17 @@ $header-height-sm:70px;
       top: $header-height - $btn-edit-height;
     }
   }
-/*
-  #edit-profile-image-link{
-    @include collapse-btn-edit;
-    position: absolute;
-    top: 47px;
-    left: 59px;
-    @media (min-width:$screen-s-min) {
-      top: 85px;
-      left: 73px;
-    }
-  }
-*/
 
-  #edit-introduction-link, #edit-description-link, #edit-live-posts-link {
+  #edit-introduction-link, #edit-live-posts-link, #edit-channels-link {
     position: absolute;
     top: 0;
     right: $post-margin-sm;
   }
 
-  #edit-channels-link{
-    float: right;
-  }
-
-  #edit-channels-link {
-    margin-top: $post-header-margin-top;
-    margin-right: -$post-margin-sm;
+  #edit-description-link {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   #edit-video-area{
@@ -201,13 +215,6 @@ $header-height-sm:70px;
     background-size: cover;
     background-position: center center;
     height:$header-image-height;
-  }
-
-  .header-image-control-overlay {
-    height: $header-control-overlay-height;
-    @include content-container;
-
-    padding-top: 10px;
   }
 
   .header-content {
@@ -329,32 +336,6 @@ $header-height-sm:70px;
     }
   }
 
-  .standard-blurb-area{
-    background-color: #F5F5F5;
-    margin-left: -$main-cont-padding-small;
-    margin-right: -$main-cont-padding-small;
-    min-height: 100px;
-
-    .standard-blurb-content{
-      text-align: center;
-      padding: 25px $main-cont-padding-small;
-
-      .intro{
-        font-weight: bold;
-      }
-
-      li{
-        margin-bottom: 5px;
-        list-style:none;
-        &:before {
-          content:"\f00c";
-          font-family:'FontAwesome';
-          margin-right: 4px;
-        }
-      }
-    }
-  }
-
   .footer-area{
     $gradient-color: #F5F5F5;
     background-image: -webkit-linear-gradient(top, $gradient-color, $body-bg); /* For Chrome 25 and Safari 6, iOS 6.1, Android 4.3 */
@@ -363,7 +344,7 @@ $header-height-sm:70px;
     background-image:         linear-gradient(to bottom, $gradient-color, $body-bg); /* Standard syntax; must be last */
     margin-left: -$main-cont-padding-small;
     margin-right: -$main-cont-padding-small;
-    min-height: 100px;
+    min-height: 600px;
 
     .footer-content{
       text-align: center;
@@ -384,9 +365,20 @@ $header-height-sm:70px;
     }
   }
 
+  .description-panel{
+    .panel-body{
+      padding-top: 0;
+      padding-bottom: 0;
+      .description-text {
+        @include post-text-style;
+      }
+    }
+  }
+
   .main-content {
     @include content-container;
     margin-top: $post-margin-sm * 2;
+    position:relative;
 
     &.main-content-introduction-empty{
       margin-top: $post-margin-sm;
@@ -422,133 +414,86 @@ $header-height-sm:70px;
         text-align: left;
       }
     }
+  }
 
-    .channels {
-      margin-bottom: 25px;
-      .subscribe-now {
-        text-align: right;
-        font-weight: bold;
-        #unsubscribe-button{
-          color: red;
-        }
-        a {
-          color: $landing-page-highlight;
-          font-size: $post-font-size + 1;
-        }
-      }
-      .subscribe-now-total {
-        position:absolute;
-        background: #fff;
-        padding:0 8px;
-        margin:0;
-        bottom:42px;
-        right:$post-margin-sm - 8px;
-        font-weight: bold;
-        font-size:$p-font-size;
-        color: $grey-light-4;
-        @media (min-width:$post-lg-min) {
-          right:$post-margin-lg - 8px;
-          bottom:66px;
-        }
+  .channels-and-blurb{
+    .panel-body{
+      padding-bottom: 20px;
 
-        span {
-          margin-right:3px;
+      .channels {
+        .channel {
+          margin-bottom: 20px;
+          @include clearfix;
+
+          .channel-name{
+            float:left;
+            font-size: 14px;
+            padding-top: 5px;
+            @media (min-width:$screen-s-min) {
+              padding-top: 7px;
+            }
+          }
+          .channel-price-column{
+            float: right;
+            .channel-button{
+              margin-left: 6px;
+              color:#fff;
+              font-size: $p-font-size - 1;
+              background-color: $subscribe-button-primary;
+              padding: 1px 12px;
+              height: 30px;
+              @media (min-width:$screen-s-min) {
+                font-size: $p-font-size;
+                padding: 1px 12px;
+                height: 34px;
+              }
+              >i{
+                margin-right: 6px;
+              }
+            }
+            .unsubscribe-button{
+              @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+            }
+            .subscribe-button {
+              padding-right: 10px;
+
+              >span {
+                @include dark-button;
+                margin-left:8px;
+                background: $subscribe-button-secondary;
+                padding: 2px 8px;
+                @media (min-width:$screen-s-min) {
+                  margin-left:8px;
+                  padding: 3px 8px;
+                }
+              }
+            }
+          }
         }
       }
-      .subscribe-now{
-        button {
-          font-size: $p-font-size;
-          color:#fff;
-          box-shadow: $post-shadow;
-          border:none;
-          height: auto;
-          padding: 10px 20px;
-          margin:0 auto;
-          display: block;
-          width:auto;
-        }
-      }
-      .row {
-        h6 {
-          font-size: $p-font-size + 1;
-          font-weight: bold;
-          //line-height: $p-line-height-hug + 1;
-          margin-bottom: 15px;
-          margin-top: 5px;
-        }
-        .channel-previous-price-column{
-          text-align: right;
-          margin-top: 2px;
+
+      .standard-blurb-area{
+        .standard-blurb-content{
+          text-align: center;
+
+          div{
+            margin-bottom: 8px;
+            &:last-child{
+              margin-bottom: 0;
+            }
+            @media (min-width:$screen-sm-min) {
+              margin-bottom: 0;
+            }
+          }
           p{
-            font-size: $p-font-size - 2;
-          }
-        }
-        .channel-price-column {
-          text-align: right;
-          line-height: $p-line-height-hug + 1;
-          >span {
-            @include dark-button;
-            background: $landing-page-highlight-3;
-            display: inline-block;
-            font-size: $p-font-size - 1;
-            white-space: nowrap;
-
-            @media (max-width:$screen-price-break-point) {
-              font-size: $p-font-size - 2;
-              border-color: $brand-highlight-3;
-              box-shadow: -1px 1px 0 0 rgba(0,0,0,0.15);
-            }
-
-            &.unchecked {
-              border-color:$landing-page-highlight;
-              color: $landing-page-highlight;
-              background: none;
-              @media (max-width:$screen-price-break-point) {
-                background: $white-3;
-              }
-              /*&:hover {
-                background:$landing-page-highlight-2;
-                border-color:transparent;
-                color:#fff;
-              }*/
-            }
-
-            &.channel-price {
-              &:before {
-                content:"+";
-                font-size:$p-font-size + 1;
-                line-height: 10px;
-                margin: 0 4px 0 2px;
-                @media (max-width:$screen-price-break-point) {
-                  margin: 0 2px 0 0;
-                }
-              }
-              &:hover {
-                cursor: pointer;
-              }
-            }
-
-            &.checked {
-              &:before {
-                content:"\f00c";
-                font-family:'FontAwesome';
-                line-height: 10px;
-                font-size:12px;
-                font-weight: normal;
-                margin: 0 3px 0 0px;
-                @media (max-width:$screen-price-break-point) {
-                  margin: 0 2px 0 0;
-                }
-              }
+            &:before {
+              content:"\f00c";
+              font-family:'FontAwesome';
+              margin-right: 4px;
             }
           }
         }
       }
-    }
-
-    #description-area{
-      @include post-text-style;
-      margin-bottom: 48px;
     }
   }
 

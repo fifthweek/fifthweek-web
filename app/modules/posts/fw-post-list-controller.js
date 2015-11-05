@@ -48,11 +48,6 @@ angular.module('webApp')
         });
     };
 
-    $scope.managePostSubscription = function(post){
-      var returnState = $state.current.name === states.landingPage.name ? undefined : $state.current.name;
-      $state.go(states.landingPage.name, { username: post.creator.username, action: landingPageConstants.actions.manage, key: returnState });
-    };
-
     $scope.editPost = function(post) {
       var modalResult = postInteractions.editPost(post);
 

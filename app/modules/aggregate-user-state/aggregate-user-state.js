@@ -20,6 +20,7 @@ angular.module('webApp')
 
     var setNewUserState = function(newUserState){
       service.currentValue = newUserState;
+      service.isCurrentValueStale = false;
       localStorageService.set(localStorageName, newUserState);
       broadcastUpdated();
     };
@@ -36,15 +37,16 @@ angular.module('webApp')
 
     var handleCurrentUserChanged = function(event, newUser){
       if(service.currentValue && newUser.userId !== service.currentValue.userId){
-        // The cache is stale, so clear it. New data will be fetched
+        // The cache is stale, so mark it as cleared. New data will be fetched
         // from the server automatically.
-        setNewUserState(undefined);
+        service.isCurrentValueStale = true;
       }
     };
 
     var service = {};
 
     service.currentValue = undefined;
+    service.isCurrentValueStale = true;
 
     service.initialize = function() {
       if (initialized) {
@@ -54,6 +56,7 @@ angular.module('webApp')
       initialized = true;
 
       service.currentValue = localStorageService.get(localStorageName);
+      service.isCurrentValueStale = true;
 
       $rootScope.$on(fetchAggregateUserStateConstants.fetchedEvent, handleAggregateUserStateFetched);
       $rootScope.$on(authenticationServiceConstants.currentUserChangedEvent, handleCurrentUserChanged);

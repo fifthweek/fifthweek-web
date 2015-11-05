@@ -317,28 +317,9 @@ $post-p-margin: 28px;
 }
 
 .posts-header{
-  h3 {
-    margin-top: 10px;
-    margin-bottom: 0;
-  }
-}
-
-.posts,.landing-page-posts {
-  h5 {
-    white-space: nowrap;
-    text-transform: uppercase;
-    font-size: $p-font-size;
-    font-weight: normal;
-    color:#fff;
-    padding: $post-header-margin-top 0 $post-header-margin-bottom;
-    span {
-      @include post-left-right-padding;
-      padding-top: 3px;
-      padding-bottom: 3px;
-      border-radius: $border-radius;
-      box-shadow: $post-shadow;
-      background: $grey-dark;
-    }
+  p {
+    margin-top: 0;
+    margin-bottom: 20px;
   }
 }
 
@@ -615,8 +596,7 @@ $post-p-margin: 28px;
 }
 
 .full-post-dialog {
-
-  #close-post-button {
+  .post-buttons-container {
     margin: 15px auto;
   }
 
@@ -635,6 +615,7 @@ $post-p-margin: 28px;
   }
 
   .full-post-container {
+    position: relative;
     max-width:$content-max-width;
     padding: 0;
 
@@ -646,4 +627,17 @@ $post-p-margin: 28px;
       text-align: center;
     }
   }
+
+  .share-post-link{
+    text-align: center;
+    color: $gray;
+    padding: 20px 0;
+  }
+}
+
+.post-additional-content{
+  margin:0 auto;
+  max-width:$content-max-width;
+  margin-top: $post-margin-sm * 2;
+  position:relative;
 }

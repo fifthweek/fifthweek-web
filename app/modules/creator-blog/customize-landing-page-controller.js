@@ -1,6 +1,6 @@
 angular.module('webApp').controller(
   'customizeLandingPageCtrl',
-  function($scope, $q, $state, states, blogRepositoryFactory, aggregateUserStateUtilities, jsonService, blogStub, errorFacade, blobImageControlFactory) {
+  function($scope, $q, $state, states, blogRepositoryFactory, aggregateUserStateUtilities, jsonService, blogStub, errorFacade, blobImageControlFactory, fifthweekConstants) {
     'use strict';
 
     var model = {
@@ -26,7 +26,7 @@ angular.module('webApp').controller(
           ]);
 
           model.username = aggregateUserStateUtilities.getUsername();
-          model.landingPageUrl = 'https://www.fifthweek.com/' + model.username;
+          model.landingPageUrl = fifthweekConstants.websiteRoot + model.username;
 
           if(data.headerImage){
             $scope.blobImage.update(data.headerImage.containerName, data.headerImage.fileId, true);

@@ -24,7 +24,7 @@ angular.module('webApp')
             return $q.when();
           }
 
-          return masterRepository.get(key);
+          return masterRepository.get(key, true);
         };
 
         service.getBlogs = function(){

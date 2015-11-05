@@ -1,0 +1,12 @@
+<div class="position-relative">
+
+  <div ng-if="!model.landingPage && !model.errorMessage" class="updating-area">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+
+  <fw-error-message value="model.errorMessage"></fw-error-message>
+
+  <div class="subscription-information" ng-if="model.landingPage.channels">
+    <ng-include src="'modules/landing-page/fw-subscription-information-channels.html'"></ng-include>
+  </div>
+</div>

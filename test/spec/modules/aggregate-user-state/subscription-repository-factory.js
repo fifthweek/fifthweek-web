@@ -102,7 +102,7 @@ describe('subscription repository factory', function(){
       });
 
       it('should call the master repository', function(){
-        expect(masterRepository.get).toHaveBeenCalledWith(subscriptionRepositoryFactory.key);
+        expect(masterRepository.get).toHaveBeenCalledWith(subscriptionRepositoryFactory.key, true);
       });
 
       it('should return the expected data', function(){

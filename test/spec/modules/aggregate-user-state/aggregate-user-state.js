@@ -82,11 +82,13 @@ describe('aggregate user state', function() {
   describe('pre initialization', function() {
     it('should contain undefined user state by default', function() {
       expect(target.currentValue).toBeUndefined();
+      expect(target.isCurrentValueStale).toEqual(true);
     });
 
     it('should perform no operation when setting deltas', function() {
       target.setDelta(userId, deltaKey, delta);
       expect(target.currentValue).toBeUndefined();
+      expect(target.isCurrentValueStale).toEqual(true);
     });
   });
 
@@ -98,6 +100,7 @@ describe('aggregate user state', function() {
 
       expect(localStorageService.get).toHaveBeenCalledWith(localStorageKey);
       expect(target.currentValue).toEqual(originalUserState);
+      expect(target.isCurrentValueStale).toEqual(true);
     });
   });
 
@@ -117,13 +120,19 @@ describe('aggregate user state', function() {
       target.setDelta(userId2, deltaKey, delta);
 
       expect(target.currentValue).toEqual(originalUserState);
+      expect(target.isCurrentValueStale).toEqual(true);
     });
 
     describe('when setting deltas for the current user', function() {
+      beforeEach(function(){
+        target.isCurrentValueStale = true;
+      });
+
       it('should update the state', function() {
         target.setDelta(userId, deltaKey, delta);
 
         expect(target.currentValue).toEqual(updatedUserState);
+        expect(target.isCurrentValueStale).toEqual(false);
       });
 
       it('should broadcast an event', function() {
@@ -136,19 +145,25 @@ describe('aggregate user state', function() {
     });
 
     describe('when handling a "current user changed" event', function() {
+      beforeEach(function(){
+        target.isCurrentValueStale = false;
+      });
+
       it('should perform no operation if user has not changed', function() {
         $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, {userId: userId});
         $rootScope.$apply();
 
         expect(target.currentValue).toEqual(originalUserState);
+        expect(target.isCurrentValueStale).toEqual(false);
       });
 
       describe('and user really has changed', function() {
-        it('should clear the state', function() {
+        it('should set the user state to stale', function() {
           $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, {userId: userId2});
           $rootScope.$apply();
 
-          expect(target.currentValue).toEqual(undefined);
+          expect(target.currentValue).toEqual(originalUserState);
+          expect(target.isCurrentValueStale).toEqual(true);
         });
 
         it('should broadcast an event', function() {
@@ -163,11 +178,16 @@ describe('aggregate user state', function() {
     });
 
     describe('when handling a "whole state fetched from server" event', function() {
+      beforeEach(function(){
+        target.isCurrentValueStale = true;
+      });
+
       it('should update the state', function() {
         $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId2, fetchedUserState);
         $rootScope.$apply();
 
         expect(target.currentValue).toEqual(fetchedUserStateMapped);
+        expect(target.isCurrentValueStale).toEqual(false);
       });
 
       it('should broadcast an event', function() {

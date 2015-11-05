@@ -50,6 +50,7 @@ describe('fetch aggregate user state', function(){
       target.updateFromServer(userId).then(function(r){ result = r; });
       $rootScope.$apply();
 
+      expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, userId, newUserState);
       expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
       expect(result).toEqual({ userId: userId, userState: newUserState});
       expect(target.internal.cache.lastUpdate).toBe(now.getTime());
@@ -120,14 +121,15 @@ describe('fetch aggregate user state', function(){
           expect(target.internal.cache.lastUpdate).toBe(now.getTime());
         });
 
-        it('should only call broadcast once', function(){
+        it('should only call broadcast once per event type', function(){
           target.updateFromServer(userId);
 
           deferred.resolve(successfulResponse);
           $rootScope.$apply();
 
+          expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, userId, newUserState);
           expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
-          expect($rootScope.$broadcast.calls.count()).toBe(1);
+          expect($rootScope.$broadcast.calls.count()).toBe(2);
         });
 
         it('should call the server for subsequent requests after the initial request completes', function(){
@@ -142,6 +144,7 @@ describe('fetch aggregate user state', function(){
           target.updateFromServer(userId);
           $rootScope.$apply();
 
+          expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, userId, newUserState);
           expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
           expect(userStateStub.getUserState).toHaveBeenCalledWith(userId);
         });
@@ -159,6 +162,7 @@ describe('fetch aggregate user state', function(){
         });
 
         it('should immediately service the new request', function() {
+          expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, userId2, newUserState);
           expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.fetchedEvent, userId2, newUserState);
           expect(result).toEqual({ userId: userId2, userState: newUserState});
           expect(target.internal.cache.lastUpdate).toBe(now.getTime() + 1000);
@@ -168,6 +172,7 @@ describe('fetch aggregate user state', function(){
         it('should not broadcast an update when the old request completes', function(){
           deferred.resolve(successfulResponse);
           $rootScope.$apply();
+          expect($rootScope.$broadcast).not.toHaveBeenCalledWith(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, userId, newUserState);
           expect($rootScope.$broadcast).not.toHaveBeenCalledWith(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
           expect($rootScope.$broadcast.calls.count()).toBe(1);
           expect(target.internal.cache.lastUserId).toBe(userId2);
@@ -186,6 +191,7 @@ describe('fetch aggregate user state', function(){
       target.updateFromServer();
       $rootScope.$apply();
 
+      expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, undefined, newUserState);
       expect($rootScope.$broadcast).toHaveBeenCalledWith(fetchAggregateUserStateConstants.fetchedEvent, undefined, newUserState);
       expect(target.internal.cache.lastUpdate).toBe(now.getTime());
       expect(target.internal.cache.lastUserId).toBe(undefined);

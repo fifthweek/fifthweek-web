@@ -81,7 +81,7 @@ angular.module('webApp')
     };
 
     service.initialize = function(){
-      $rootScope.$on(fetchAggregateUserStateConstants.fetchedEvent, handleAggregateUserStateFetched);
+      $rootScope.$on(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, handleAggregateUserStateFetched);
     };
 
     return service;

@@ -1,51 +1,87 @@
+
+<div ng-if="!model.isLoaded && !model.errorMessage" class="updating-area">
+  <i class="fa fa-refresh fa-spin"></i>
+</div>
+
+<fw-error-message value="model.errorMessage"></fw-error-message>
+
 <div ng-if="model.isLoaded">
 
-  <ng-include src="'modules/landing-page/landing-page-header-information.html'"></ng-include>
+  <ng-include src="'modules/landing-page/landing-page-content-header.html'"></ng-include>
 
-  <ng-include src="'modules/landing-page/landing-page-body-information.html'" ng-if="model.currentView === views.manage"></ng-include>
+  <fw-subscription-information username="{{model.username}}"
+                               landing-page-data="model.post ? undefined : model.landingPage"
+                               ng-if="model.landingPage && model.currentView !== views.post"></fw-subscription-information>
 
-  <div class="main-content" ng-if="model.currentView === views.blog">
+  <div class="main-content">
     <div class="row">
       <div class="col-xs-12">
-        <span>
-          <p ng-if="!model.isOwner" class="channel-count-information">
-            Subscribed to {{model.subscribedChannelCount}} channel{{model.subscribedChannelCount === 1 ? '' : 's'}}
-            - <fw-price value="model.hasFreeAccess ? 0 : model.totalPrice"></fw-price>
-          </p>
-          <p ng-if="model.isOwner" class="channel-count-information">Showing all channels.</p>
-        </span>
 
-        <fw-post-list source="timeline"
-                      user-id="{{model.userId}}"
-                      channel-id="{{model.channelId}}"></fw-post-list>
-      </div>
-    </div>
-  </div>
-
-  <div class="main-content" ng-class="{ 'landing-page-posts': model.currentView === views.manage }"
-       ng-if="model.currentView === views.manage || model.currentView === views.previewBlog">
-
-    <div class="row">
-      <div class="col-xs-12">
-        <span ng-if="model.currentView === views.manage">
+        <div ng-if="model.currentView === views.timeline">
+          <h1 class="landing-page-h1">Latest Content</h1>
           <div class="content-padding">
-            <a ng-if="model.isOwner" id="edit-live-posts-link" class="btn btn-edit btn-default" ui-sref="creator.posts.live">
+            <a ng-if="model.landingPage.isOwner" id="edit-live-posts-link" class="btn btn-edit btn-default" ui-sref="creator.posts.live">
               <span>edit live posts</span>
             </a>
           </div>
-          <h5>
-            <span>Previews of Latest Content</span>
-          </h5>
-        </span>
-        <span ng-if="model.currentView === views.previewBlog"><p class="channel-count-information">Previewing channels.</p></span>
 
-        <fw-post-list source="preview"
-                      user-id="{{model.userId}}"
-                      channel-id="{{model.channelId}}"></fw-post-list>
+          <div class="landing-page-content-buttons">
+
+            <button class="landing-page-content-button"
+                    ng-if="model.channelId"
+                    ng-class="{'active-button': model.currentView === views.timeline && model.timelineType === timelineTypes.channel }"
+                    ng-click="showChannel()">Channel</button>
+
+            <button class="landing-page-content-button"
+                    ng-if="model.postId"
+                    ng-class="{'active-button': model.currentView === views.post }"
+                    ng-click="showPost()">Post</button>
+
+            <button class="landing-page-content-button"
+                    ng-if="!model.landingPage.isOwner || model.channelId || model.postId"
+                    ng-class="{'active-button': model.currentView === views.timeline && model.timelineType === timelineTypes.all }"
+                    ng-click="showAllPosts()">All Posts</button>
+
+            <button class="landing-page-content-button"
+                    ng-if="!model.landingPage.isOwner"
+                    ng-class="{'active-button': model.currentView === views.timeline && model.timelineType === timelineTypes.subscribed }"
+                    ng-click="showSubscribedPosts()">Subscribed Posts</button>
+          </div>
+
+          <div  ng-if="model.timelineType === timelineTypes.all">
+            <fw-post-list source="preview"
+                          user-id="{{model.landingPage.userId}}"></fw-post-list>
+
+          </div>
+
+          <div  ng-if="model.timelineType === timelineTypes.channel">
+            <fw-post-list source="preview"
+                          user-id="{{model.landingPage.userId}}"
+                          channel-id="{{model.channelId}}"></fw-post-list>
+
+          </div>
+
+          <div ng-if="model.timelineType === timelineTypes.subscribed">
+            <fw-post-list source="timeline"
+                          user-id="{{model.landingPage.userId}}""></fw-post-list>
+          </div>
+        </div>
+
+        <div ng-if="model.currentView === views.post && model.post">
+          <p>
+            This post requires a subscription to <strong>{{model.post.channel.name}}</strong>.
+            <a href ng-click="showAllPosts()">Find out more...</a>.
+          </p>
+
+          <fw-post-subscription-information username="{{model.username}}"
+                                            required-channel-id="{{model.post.channel.channelId}}"></fw-post-subscription-information>
+
+          <fw-full-post post="model.post"></fw-full-post>
+        </div>
       </div>
     </div>
   </div>
 
-  <ng-include src="'modules/landing-page/landing-page-footer-information.html'" ng-if="model.currentView === views.manage"></ng-include>
+  <ng-include src="'modules/landing-page/landing-page-content-footer.html'"></ng-include>
 
 </div>

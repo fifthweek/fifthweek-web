@@ -12,7 +12,7 @@ describe('account settings repository factory', function(){
   beforeEach(function() {
     module('webApp');
 
-    masterRepository = jasmine.createSpyObj('masterRepository', ['get', 'set']);
+    masterRepository = jasmine.createSpyObj('masterRepository', ['get', 'getUserId', 'set']);
     masterRepositoryFactory = { forCurrentUser: function() { return masterRepository; } };
 
     module(function($provide) {
@@ -29,7 +29,7 @@ describe('account settings repository factory', function(){
     target = targetFactory.forCurrentUser();
   });
 
-  describe('when getting account settings', function() {
+  describe('getAccountSettings', function() {
     it('should get settings from the master repository at the correct location', function() {
       var expected = { username: 'phil' };
       var actual;
@@ -45,7 +45,41 @@ describe('account settings repository factory', function(){
     });
   });
 
-  describe('when setting account settings', function() {
+  describe('tryGetAccountSettings', function() {
+    describe('when logged out', function(){
+      it('should get settings from the master repository at the correct location', function() {
+        var actual;
+        masterRepository.getUserId.and.returnValue($q.when(undefined));
+
+        target.getAccountSettings().then(function(settings) {
+          actual = settings;
+        });
+        $rootScope.$apply();
+
+        expect(masterRepository.get).not.toHaveBeenCalled();
+        expect(actual).toBeUndefined();
+      });
+    });
+
+    describe('when logged in', function(){
+      it('should get settings from the master repository at the correct location', function() {
+        var expected = { username: 'phil' };
+        var actual;
+        masterRepository.getUserId.and.returnValue($q.when('userId'));
+        masterRepository.get.and.returnValue($q.when(expected));
+
+        target.getAccountSettings().then(function(settings) {
+          actual = settings;
+        });
+        $rootScope.$apply();
+
+        expect(masterRepository.get).toHaveBeenCalledWith(accountSettingsRepositoryFactoryConstants.accountSettingsKey, true);
+        expect(actual).toBe(expected);
+      });
+    });
+  });
+
+  describe('setAccountSettings', function() {
     it('should set settings into the master repository at the correct location', function() {
       var settings = { username: 'phil' };
 

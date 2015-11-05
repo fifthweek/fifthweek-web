@@ -91,7 +91,7 @@ describe('blog repository factory', function(){
       });
 
       it('should call the master repository', function(){
-        expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey);
+        expect(masterRepository.get).toHaveBeenCalledWith(blogRepositoryFactoryConstants.blogKey, true);
       });
 
       it('should return the expected data', function(){
@@ -509,19 +509,43 @@ describe('blog repository factory', function(){
     });
   });
 
-  describe('when getting a channel map', function(){
+  describe('internal.getBlogMap', function(){
     describe('when no channels exist', function(){
 
       var error;
+      var result;
       beforeEach(function(){
-        masterRepository.get.and.returnValue($q.when());
-        target.getBlogMap().catch(function(e){error = e;});
-        $rootScope.$apply();
+        error = undefined;
+        result = 'not-assigned';
       });
 
-      it('should fail with a displayable error', function(){
-        expect(error instanceof DisplayableError).toBe(true);
-        expect(error.message).toBe('You must create a blog.');
+      describe('when allowNotFound is false', function(){
+        beforeEach(function(){
+          masterRepository.get.and.returnValue($q.when());
+          target.internal.getBlogMap().then(function(r){ result = r; }, function(e){error = e;});
+          $rootScope.$apply();
+        });
+
+        it('should fail with a displayable error', function(){
+          expect(error instanceof DisplayableError).toBe(true);
+          expect(error.message).toBe('You must create a blog.');
+        });
+      });
+
+      describe('when allowNotFound is true', function(){
+        beforeEach(function(){
+          masterRepository.get.and.returnValue($q.when());
+          target.internal.getBlogMap(true).then(function(r){ result = r; }, function(e){error = e;});
+          $rootScope.$apply();
+        });
+
+        it('should return empty result', function(){
+          expect(result).toBeUndefined();
+        });
+
+        it('should not error', function(){
+          expect(error).toBeUndefined();
+        });
       });
     });
 
@@ -546,7 +570,7 @@ describe('blog repository factory', function(){
 
         }));
 
-        target.getBlogMap().then(function(r){result = r;});
+        target.internal.getBlogMap().then(function(r){result = r;});
         $rootScope.$apply();
       });
 
@@ -569,7 +593,23 @@ describe('blog repository factory', function(){
     });
   });
 
-  describe('when calling tryGetBlogMap', function(){
+  describe('getBlogMap', function(){
+    var result;
+    beforeEach(function(){
+      spyOn(target.internal, 'getBlogMap').and.returnValue('result');
+      result = target.getBlogMap();
+    });
+
+    it('should call internal.getBlogMap', function(){
+      expect(target.internal.getBlogMap).toHaveBeenCalledWith(false);
+    });
+
+    it('should return the result', function(){
+      expect(result).toBe('result');
+    });
+  });
+
+  describe('tryGetBlogMap', function(){
     describe('when no user exist', function(){
 
       var result;
@@ -592,7 +632,7 @@ describe('blog repository factory', function(){
       var result;
       beforeEach(function(){
         masterRepository.getUserId.and.returnValue('userId');
-        masterRepository.get.and.returnValue($q.when(
+        spyOn(target.internal, 'getBlogMap').and.returnValue($q.when(
           {
             channels: [
               {
@@ -611,6 +651,10 @@ describe('blog repository factory', function(){
 
         target.tryGetBlogMap().then(function(r){result = r;});
         $rootScope.$apply();
+      });
+
+      it('should call internal.getBlogMap', function(){
+        expect(target.internal.getBlogMap).toHaveBeenCalledWith(false);
       });
 
       it('should return a map of channels and queues', function(){

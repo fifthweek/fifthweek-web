@@ -10,7 +10,7 @@
   border: 1px solid black;
   border-radius: 0;
 
-  h4,.modal-title {
+  .modal-title {
     font-size:15px;
     background: $body-bg;
     border-bottom: 1px solid $grey-light-3;
@@ -36,7 +36,7 @@
     }
   }
 
-  .modal-body, h4 {
+  .modal-body, h4.modal-title {
     padding:($modal-padding - 1) $modal-padding;
   }
 

@@ -21,7 +21,7 @@ describe('master repository factory', function(){
     authenticationService = { currentUser: { userId: userId } };
     aggregateUserState = jasmine.createSpyObj('aggregateUserState', ['setDelta']);
     aggregateUserState.currentValue = { key: {} };
-    fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateFromServer']);
+    fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateFromServer', 'waitForExistingUpdate']);
 
     module(function($provide) {
       $provide.value('aggregateUserState', aggregateUserState);
@@ -287,6 +287,7 @@ describe('master repository factory', function(){
   });
 
   describe('when getting a value', function(){
+
     var deferredUserState;
     var result;
     var error;
@@ -296,91 +297,217 @@ describe('master repository factory', function(){
       error = undefined;
 
       spyOn(target.internal, 'ensureUserState').and.returnValue(deferredUserState.promise);
-
-      target.get(key).then(function(r){ result = r; }, function(e){ error = e; });
-      $rootScope.$apply();
     });
 
-    describe('when ensureUserState succeeds', function(){
+    describe('when allowing unmatched', function(){
       beforeEach(function(){
-        deferredUserState.resolve();
+        target.get(key, true).then(function(r){ result = r; }, function(e){ error = e; });
         $rootScope.$apply();
       });
 
-      it('should return a value', function(){
-        expect(result).toBeDefined();
-      });
+      describe('when ensureUserState succeeds', function(){
 
-      it('should return a clone', function() {
-        result.value = 'changed';
-        expect(initialState).toEqual(initialStateClone);
-      });
-    });
+        describe('when key matches', function(){
+          beforeEach(function(){
+            deferredUserState.resolve();
+            $rootScope.$apply();
+          });
 
-    describe('when ensureUserState fails', function(){
-      beforeEach(function(){
-        deferredUserState.reject('error');
-        $rootScope.$apply();
-      });
+          it('should return a value', function(){
+            expect(result).toBeDefined();
+          });
 
-      it('should propagate the error', function(){
-        expect(error).toBe('error');
-      });
-    });
-  });
-
-  describe('when calling ensureUserState', function(){
-    describe('when aggregate user state is set', function(){
-      var complete;
-      beforeEach(function(){
-        aggregateUserState.currentValue = 'value';
-        complete = false;
-        target.internal.ensureUserState().then(function(){ complete = true; });
-        $rootScope.$apply();
-      });
-
-      it('should complete successfully', function(){
-        expect(complete).toBe(true);
-      });
-    });
-
-    describe('when aggregate user state is not', function(){
-      var complete;
-      var error;
-      var deferredUpdateFromServer;
-      beforeEach(function(){
-        deferredUpdateFromServer = $q.defer();
-        fetchAggregateUserState.updateFromServer.and.returnValue(deferredUpdateFromServer.promise);
-        aggregateUserState.currentValue = undefined;
-        complete = false;
-        target.internal.ensureUserState().then(function(){ complete = true; }, function(e){ error = e; });
-        $rootScope.$apply();
-      });
-
-      it('should not have completed', function(){
-        expect(complete).toBe(false);
-      });
-
-      describe('when the update has completed successfully', function(){
-        beforeEach(function(){
-          deferredUpdateFromServer.resolve();
-          $rootScope.$apply();
+          it('should return a clone', function() {
+            result.value = 'changed';
+            expect(initialState).toEqual(initialStateClone);
+          });
         });
 
-        it('should complete successfully', function(){
-          expect(complete).toBe(true);
+        describe('when key does not match', function(){
+          beforeEach(function(){
+            aggregateUserState.currentValue = {};
+            deferredUserState.resolve();
+            $rootScope.$apply();
+          });
+
+          it('should return undefined', function(){
+            expect(result).toBeUndefined();
+          });
         });
       });
 
-      describe('when the update has failed', function(){
+      describe('when ensureUserState fails', function(){
         beforeEach(function(){
-          deferredUpdateFromServer.reject('error');
+          deferredUserState.reject('error');
           $rootScope.$apply();
         });
 
         it('should propagate the error', function(){
           expect(error).toBe('error');
         });
+      });
+    });
+
+    describe('when not allowing unmatched', function(){
+      beforeEach(function(){
+        target.get(key).then(function(r){ result = r; }, function(e){ error = e; });
+        $rootScope.$apply();
+      });
+
+      describe('when ensureUserState succeeds', function(){
+
+        describe('when key matches', function(){
+          beforeEach(function(){
+            deferredUserState.resolve();
+            $rootScope.$apply();
+          });
+
+          it('should return a value', function(){
+            expect(result).toBeDefined();
+          });
+
+          it('should return a clone', function() {
+            result.value = 'changed';
+            expect(initialState).toEqual(initialStateClone);
+          });
+        });
+
+        describe('when key does not match', function(){
+          beforeEach(function(){
+            aggregateUserState.currentValue = {};
+            deferredUserState.resolve();
+            $rootScope.$apply();
+          });
+
+          it('should error', function(){
+            expect(error).toBeDefined();
+          });
+        });
+      });
+
+      describe('when ensureUserState fails', function(){
+        beforeEach(function(){
+          deferredUserState.reject('error');
+          $rootScope.$apply();
+        });
+
+        it('should propagate the error', function(){
+          expect(error).toBe('error');
+        });
+      });
+    });
+  });
+
+  describe('when calling ensureUserState', function(){
+
+    var success;
+    var error;
+    var deferredWaitForExistingUpdate;
+    beforeEach(function(){
+      success = undefined;
+      error = undefined;
+
+      deferredWaitForExistingUpdate = $q.defer();
+      fetchAggregateUserState.waitForExistingUpdate.and.returnValue(deferredWaitForExistingUpdate.promise);
+
+      target.internal.ensureUserState().then(function(){ success = true; }, function(e){ error = e; });
+      $rootScope.$apply();
+    });
+
+    it('should call waitForExistingUpdate', function(){
+      expect(fetchAggregateUserState.waitForExistingUpdate).toHaveBeenCalledWith();
+    });
+
+    describe('when waitForExistingUpdate succeeds', function(){
+
+      describe('when aggregate user state is set and not stale', function(){
+        beforeEach(function(){
+          aggregateUserState.currentValue = 'value';
+          aggregateUserState.isCurrentValueStale = false;
+
+          deferredWaitForExistingUpdate.resolve();
+          $rootScope.$apply();
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
+        });
+      });
+
+      var newCurrentValue;
+      var newIsCurrentValueStale;
+      var testUpdate = function() {
+        describe('when aggregate user state is not set', function(){
+          var deferredUpdateFromServer;
+          beforeEach(function(){
+            deferredUpdateFromServer = $q.defer();
+            fetchAggregateUserState.updateFromServer.and.returnValue(deferredUpdateFromServer.promise);
+            aggregateUserState.currentValue = newCurrentValue;
+            aggregateUserState.isCurrentValueStale = newIsCurrentValueStale;
+
+            deferredWaitForExistingUpdate.resolve();
+            $rootScope.$apply();
+          });
+
+          it('should not have completed', function(){
+            expect(success).toBe(false);
+          });
+
+          it('should call updateFromServer', function(){
+            expect(fetchAggregateUserState.updateFromServer).toHaveBeenCalledWith();
+          });
+
+          describe('when the update has completed successfully', function(){
+            beforeEach(function(){
+              deferredUpdateFromServer.resolve();
+              $rootScope.$apply();
+            });
+
+            it('should complete successfully', function(){
+              expect(success).toBe(true);
+            });
+          });
+
+          describe('when the update has failed', function(){
+            beforeEach(function(){
+              deferredUpdateFromServer.reject('error');
+              $rootScope.$apply();
+            });
+
+            it('should propagate the error', function(){
+              expect(error).toBe('error');
+            });
+          });
+        });
+      };
+
+      describe('when current value is not set', function(){
+        beforeEach(function(){
+          newCurrentValue = undefined;
+          newIsCurrentValueStale = false;
+        });
+
+        testUpdate();
+      });
+
+      describe('when current value is not set', function(){
+        beforeEach(function(){
+          newCurrentValue = 'value';
+          newIsCurrentValueStale = true;
+        });
+
+        testUpdate();
+      });
+    });
+
+    describe('when waitForExistingUpdate fails', function(){
+      beforeEach(function(){
+        deferredWaitForExistingUpdate.reject('error');
+        $rootScope.$apply();
+      });
+
+      it('should propagate the error', function(){
+        expect(error).toBe('error');
       });
     });
   });

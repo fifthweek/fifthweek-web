@@ -1,0 +1,69 @@
+
+
+<fw-panel12 class="channels-and-blurb">
+  <div class="channels">
+    <div id="channel-{{$index}}" class="channel" ng-repeat="channel in model.landingPage.channels">
+      <form name="form">
+
+        <div class="channel-name">{{channel.name}} <span ng-if="item.isVisibleToNonSubscribers" class="tail">Hidden</span></div>
+
+        <div class="channel-price-column">
+          <button ng-if="!channel.subscriptionInformation"
+                  type="submit"
+                  id="subscribe-button-{{$index}}"
+                  class="btn channel-button subscribe-button"
+                  can-submit="true"
+                  ng-disabled="form.isSubmitting"
+                  error-message="model.errorMessage"
+                  data-loading-text="Subscribing..."
+                  fw-form-submit="subscribe(channel)">
+            Subscribe
+            <span ng-if="!model.landingPage.hasFreeAccess"><fw-price value="channel.price"></fw-price></span>
+            <span ng-if="model.landingPage.hasFreeAccess">FREE</span>
+          </button>
+
+          <button ng-if="channel.subscriptionInformation"
+                  type="submit"
+                  id="unsubscribe-button-{{$index}}"
+                  class="btn channel-button unsubscribe-button"
+                  can-submit="true"
+                  ng-disabled="form.isSubmitting"
+                  error-message="model.errorMessage"
+                  data-loading-text="Unsubscribing..."
+                  fw-form-submit="unsubscribe(channel)">
+            Unsubscribe
+          </button>
+
+          <button ng-if="channel.subscriptionInformation.isIncrease || channel.subscriptionInformation.isDecrease"
+                  type="submit"
+                  id="accept-button-{{$index}}"
+                  class="btn channel-button subscribe-button"
+                  can-submit="true"
+                  ng-disabled="form.isSubmitting"
+                  error-message="model.errorMessage"
+                  data-loading-text="Accepting..."
+                  fw-form-submit="subscribe(channel)">
+            Accept Price Change
+                  <span>
+                    <fw-price value="channel.subscriptionInformation.acceptedPrice"></fw-price>
+                    <i class="fa fa-arrow-right"></i>
+                    <span ng-if="!model.landingPage.hasFreeAccess"><fw-price value="channel.price"></fw-price></span>
+                    <span ng-if="model.landingPage.hasFreeAccess">FREE</span>
+                  </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr/>
+  <div class="standard-blurb-area">
+    <div class="standard-blurb-content row">
+      <div class="col-xs-12 col-sm-6">
+        <p>Cancel anytime.</p>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <p>Minimum billing period of just one week.</p>
+      </div>
+    </div>
+  </div>
+</fw-panel12>

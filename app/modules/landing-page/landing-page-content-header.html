@@ -1,0 +1,55 @@
+<fw-azure-image-loader output-url="model.landingPage.profileImageUrl"
+                       thumbnail="header" file-id="{{model.landingPage.profileImage.fileId}}"
+                       container-name="{{model.landingPage.profileImage.containerName}}"></fw-azure-image-loader>
+
+<fw-azure-image-loader output-url="model.landingPage.headerImageUrl"
+                       thumbnail="header" file-id="{{model.landingPage.blog.headerImage.fileId}}"
+                       container-name="{{model.landingPage.blog.headerImage.containerName}}"></fw-azure-image-loader>
+
+<div class="header-image" ng-style="{'background-image':'url(' + (model.landingPage.blog.headerImage.fileId ? model.landingPage.headerImageUrl : fifthweekConstants.defaultHeaderImageUrl) + ')'}" id="header-image">
+</div>
+
+<div class="header-image-control-overlay">
+  <div class="row">
+    <div class="col-xs-6">
+      <h1 class="header-corner-button anchor-cursor" snap-toggle="left">
+        <i class="fa fa-bars"></i>
+      </h1>
+      <h1 class="header-corner-button anchor-cursor" id="cancel-changes-button" ng-if="model.returnState" ng-click="goBack()">
+        <i class="fa fa-arrow-left "></i>
+      </h1>
+    </div>
+    <div class="col-xs-6">
+      <a ng-if="model.landingPage.isOwner" id="edit-header-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
+        <span ng-if="!model.landingPage.blog.headerImage.fileId">add header image</span>
+        <span ng-if="model.landingPage.blog.headerImage.fileId">edit header image</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="header-content">
+  <div class="header">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="creator">
+          <fw-image id="profile-image" src="{{model.landingPage.profileImage.fileId ? model.landingPage.profileImageUrl : fifthweekConstants.defaultProfileImageUrl}}"></fw-image>
+        </div>
+        <div class="header-text">
+          <h2>
+            <a ng-if="model.landingPage.isOwner" id="edit-title-link" class="btn btn-edit btn-default" ui-sref="creator.landingPage.edit">
+              <span class="edit-text">edit title</span>
+            </a>
+            <span id="blog-name">{{model.landingPage.blog.name}}</span>
+          </h2>
+          <a ng-if="model.landingPage.isOwner" id="edit-profile-image-link" class="btn btn-edit btn-default" ui-sref="user.account">
+            <span class="edit-text">edit avatar</span>
+          </a>
+          <!--ng-include src="'modules/landing-page/landing-page-content-subscribe-button.html'"></ng-include-->
+        </div>
+      </div>
+    </div>
+    <div class="row header-padding-row">
+    </div>
+  </div>
+</div>

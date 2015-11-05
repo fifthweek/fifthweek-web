@@ -32,6 +32,7 @@ angular
     longDateTimeFormat: 'EEEE, MMMM d \'at\' HH:mm \'UTC\'',
     newsfeedDateFormat: 'MMM d',
     dayGroupingDateFormat: 'EEEE, MMM d',
+    websiteRoot: 'https://www.fifthweek.com/',
     // These need to appear in a JS file, as the Grunt task for swapping file names that appear within JS will only
     // inspect *.js files.
     defaultHeaderImageUrl: '/static/images/header-default.png',

@@ -8,9 +8,16 @@ angular.module('webApp').directive('fwSetNavigationVisibilityFromState',
 
         var apply = function(state){
           if(state.data && state.data.navigationHidden){
-            element.addClass('navigation-hidden');
+            if(state.data.navigationHidden === 'header'){
+              element.addClass('navigation-header-hidden');
+              element.removeClass('navigation-hidden');
+            }else{
+              element.addClass('navigation-hidden');
+              element.removeClass('navigation-header-hidden');
+            }
           } else {
             element.removeClass('navigation-hidden');
+            element.removeClass('navigation-header-hidden');
           }
         };
 
