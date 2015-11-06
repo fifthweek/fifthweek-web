@@ -10,20 +10,25 @@ describe('fw-account-balance-warning-controller', function(){
   var accountSettingsRepositoryFactory;
   var accountSettingsRepository;
   var aggregateUserStateConstants;
+  var errorFacade;
 
   beforeEach(function() {
 
     subscriptionRepositoryFactory = jasmine.createSpyObj('subscriptionRepositoryFactory', ['forCurrentUser']);
-    subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['getBlogs']);
+    subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['getBlogs', 'tryGetBlogs']);
     subscriptionRepositoryFactory.forCurrentUser.and.returnValue(subscriptionRepository);
     accountSettingsRepositoryFactory = jasmine.createSpyObj('accountSettingsRepositoryFactory', ['forCurrentUser']);
-    accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings']);
+    accountSettingsRepository = jasmine.createSpyObj('accountSettingsRepository', ['getAccountSettings', 'tryGetAccountSettings']);
     accountSettingsRepositoryFactory.forCurrentUser.and.returnValue(accountSettingsRepository);
+    errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
+
+    errorFacade.handleError.and.callFake(function(error, delegate){ delegate('friendlyError'); });
 
     module('webApp');
     module(function($provide) {
       $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
       $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
+      $provide.value('errorFacade', errorFacade);
     });
 
     inject(function ($injector) {
@@ -71,6 +76,40 @@ describe('fw-account-balance-warning-controller', function(){
     });
 
     describe('when updateModel is called', function(){
+      describe('when no account settings and no blogs', function(){
+        beforeEach(function(){
+          target.internal.updateModel(undefined, undefined);
+        });
+
+        it('should set accountBalance', function(){
+          expect($scope.model.accountBalance).toBe(0);
+        });
+
+        it('should set isRetryingPayment', function(){
+          expect($scope.model.isRetryingPayment).toBe(false);
+        });
+
+        it('should set hasPaymentInformation', function(){
+          expect($scope.model.hasPaymentInformation).toBe(false);
+        });
+
+        it('should set paymentFailed to false', function(){
+          expect($scope.model.paymentFailed).toBe(false);
+        });
+
+        it('should set hasFreeAccessBlogs to false', function(){
+          expect($scope.model.hasFreeAccessBlogs).toBe(false);
+        });
+
+        it('should set hasPaidBlogs to false', function(){
+          expect($scope.model.hasPaidBlogs).toBe(false);
+        });
+
+        it('should set displayingAccountBalanceWarning to false', function(){
+          expect($scope.displayingAccountBalanceWarning).toBe(false);
+        });
+      });
+
       describe('when payment status is not failed and no blogs', function(){
         beforeEach(function(){
           target.internal.updateModel(
@@ -313,47 +352,80 @@ describe('fw-account-balance-warning-controller', function(){
       });
     });
 
+    describe('when reload is called', function(){
+      var result;
+      beforeEach(function(){
+        accountSettingsRepositoryFactory.forCurrentUser.calls.reset();
+        subscriptionRepositoryFactory.forCurrentUser.calls.reset();
+
+        spyOn(target.internal, 'load').and.returnValue('result');
+
+        result = target.internal.reload();
+      });
+
+      it('should update accountSettingsRepository', function(){
+        expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+      });
+
+      it('should update subscriptionRepository', function(){
+        expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+      });
+
+      it('should call load', function(){
+        expect(target.internal.load).toHaveBeenCalledWith();
+      });
+
+      it('should return the result', function(){
+        expect(result).toBe('result');
+      });
+    });
+
     describe('when load is called', function(){
       var success;
       var error;
-      var deferredGetAccountSettings;
-      var deferredGetBlogs;
+      var deferredTryGetAccountSettings;
+      var deferredTryGetBlogs;
       var deferredUpdateModel;
       beforeEach(function(){
         success = undefined;
         error = undefined;
 
-        deferredGetAccountSettings = $q.defer();
-        accountSettingsRepository.getAccountSettings.and.returnValue(deferredGetAccountSettings.promise);
+        deferredTryGetAccountSettings = $q.defer();
+        accountSettingsRepository.tryGetAccountSettings.and.returnValue(deferredTryGetAccountSettings.promise);
 
-        deferredGetBlogs = $q.defer();
-        subscriptionRepository.getBlogs.and.returnValue(deferredGetBlogs.promise);
+        deferredTryGetBlogs = $q.defer();
+        subscriptionRepository.tryGetBlogs.and.returnValue(deferredTryGetBlogs.promise);
 
         deferredUpdateModel = $q.defer();
         spyOn(target.internal, 'updateModel');
         target.internal.updateModel.and.returnValue(deferredUpdateModel.promise);
 
+        $scope.model.isLoaded = true;
         target.internal.load().then(function(){ success = true; }, function(e) { error = e; });
         $scope.$apply();
       });
 
-      it('should call getAccountSettings', function(){
-        expect(accountSettingsRepository.getAccountSettings).toHaveBeenCalledWith();
+      it('should set isLoaded to false', function(){
+        expect($scope.model.isLoaded).toBe(false);
       });
 
-      describe('when getAccountSettings succeeds', function(){
+      it('should call tryGetAccountSettings', function(){
+        expect(accountSettingsRepository.tryGetAccountSettings).toHaveBeenCalledWith();
+      });
+
+      describe('when tryGetAccountSettings succeeds', function(){
         beforeEach(function(){
-          deferredGetAccountSettings.resolve('accountSettings');
+          deferredTryGetAccountSettings.resolve('accountSettings');
           $scope.$apply();
         });
 
-        it('should call getBlogs', function(){
-          expect(subscriptionRepository.getBlogs).toHaveBeenCalledWith();
+        it('should call tryGetBlogs', function(){
+          expect(subscriptionRepository.tryGetBlogs).toHaveBeenCalledWith();
         });
 
-        describe('when getBlogsSucceeds', function(){
+        describe('when tryGetBlogsSucceeds', function(){
           beforeEach(function(){
-            deferredGetBlogs.resolve('blogs');
+            deferredTryGetBlogs.resolve('blogs');
             $scope.$apply();
           });
 
@@ -370,6 +442,10 @@ describe('fw-account-balance-warning-controller', function(){
             it('should complete successfully', function(){
               expect(success).toBe(true);
             });
+
+            it('should set isLoaded to true', function(){
+              expect($scope.model.isLoaded).toBe(true);
+            });
           });
 
           describe('when updateModel fails', function(){
@@ -378,32 +454,44 @@ describe('fw-account-balance-warning-controller', function(){
               $scope.$apply();
             });
 
-            it('should propagate the error', function(){
-              expect(error).toBe('error');
+            it('should set the error message', function(){
+              expect($scope.model.errorMessage).toBe('friendlyError');
+            });
+
+            it('should complete successfully', function(){
+              expect(success).toBe(true);
             });
           });
         });
 
-        describe('when getBlogs fails', function(){
+        describe('when tryGetBlogs fails', function(){
           beforeEach(function(){
-            deferredGetBlogs.reject('error');
+            deferredTryGetBlogs.reject('error');
             $scope.$apply();
           });
 
-          it('should propagate the error', function(){
-            expect(error).toBe('error');
+          it('should set the error message', function(){
+            expect($scope.model.errorMessage).toBe('friendlyError');
+          });
+
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
           });
         });
       });
 
-      describe('when getAccountSettings fails', function(){
+      describe('when tryGetAccountSettings fails', function(){
         beforeEach(function(){
-          deferredGetAccountSettings.reject('error');
+          deferredTryGetAccountSettings.reject('error');
           $scope.$apply();
         });
 
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
+        it('should set the error message', function(){
+          expect($scope.model.errorMessage).toBe('friendlyError');
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
         });
       });
     });
@@ -422,14 +510,12 @@ describe('fw-account-balance-warning-controller', function(){
 
         spyOn($scope, '$on');
 
-        $scope.model.isLoaded = false;
-
         target.initialize().then(function(){ success = true; }, function(e) { error = e; });
         $scope.$apply();
       });
 
       it('should attach to aggregate user state updated event', function(){
-        expect($scope.$on).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, target.internal.load);
+        expect($scope.$on).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, target.internal.reload);
       });
 
       it('should call load', function(){
@@ -442,10 +528,6 @@ describe('fw-account-balance-warning-controller', function(){
           $scope.$apply();
         });
 
-        it('should set isLoaded to true', function(){
-          expect($scope.model.isLoaded).toBe(true);
-        });
-
         it('should complete successfully', function(){
           expect(success).toBe(true);
         });
@@ -455,10 +537,6 @@ describe('fw-account-balance-warning-controller', function(){
         beforeEach(function(){
           deferredLoad.reject('error');
           $scope.$apply();
-        });
-
-        it('should set isLoaded to true', function(){
-          expect($scope.model.isLoaded).toBe(true);
         });
 
         it('should propagate error', function(){

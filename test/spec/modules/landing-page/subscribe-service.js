@@ -14,7 +14,7 @@ describe('subscribe-service', function(){
   var $modal;
 
   beforeEach(function() {
-    subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['putBlogSubscriptions']);
+    subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['postChannelSubscription', 'deleteChannelSubscription']);
     fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateIfStale', 'updateFromServer', 'waitForExistingUpdate']);
     blogRepository = jasmine.createSpyObj('blogRepository', ['tryGetBlog']);
     blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
@@ -45,15 +45,15 @@ describe('subscribe-service', function(){
     var result;
     var error;
     beforeEach(function(){
-      var channelsAndPrices = [
-        { channelId: 'channelId1', acceptedPrice: 10 },
-        { channelId: 'channelId3', acceptedPrice: 30 }
-      ];
+      result = undefined;
+      error = undefined;
+
       deferredUserInformation = $q.defer();
       spyOn(target.internal, 'getSignedInUserInformation').and.returnValue(deferredUserInformation.promise);
+
       fetchAggregateUserState.updateFromServer.and.returnValue($q.when());
-      result = undefined;
-      target.subscribe('blogId', channelsAndPrices).then(function(r){ result = r; }, function(e){ error = e; });
+
+      target.subscribe('blogId', 'channelId', 'price').then(function(r){ result = r; }, function(e){ error = e; });
       $rootScope.$apply();
     });
 
@@ -67,8 +67,8 @@ describe('subscribe-service', function(){
         $rootScope.$apply();
       });
 
-      it('should not call putBlogSubscriptions', function(){
-        expect(subscriptionStub.putBlogSubscriptions).not.toHaveBeenCalled();
+      it('should not call postChannelSubscription', function(){
+        expect(subscriptionStub.postChannelSubscription).not.toHaveBeenCalled();
       });
 
       it('should complete successfully indicating no subscription occurred', function(){
@@ -85,8 +85,8 @@ describe('subscribe-service', function(){
         $rootScope.$apply();
       });
 
-      it('should not call putBlogSubscriptions', function(){
-        expect(subscriptionStub.putBlogSubscriptions).not.toHaveBeenCalled();
+      it('should not call postChannelSubscription', function(){
+        expect(subscriptionStub.postChannelSubscription).not.toHaveBeenCalled();
       });
 
       it('should complete successfully indicating a subscription occurred', function(){
@@ -96,7 +96,7 @@ describe('subscribe-service', function(){
 
     describe('when user has free access', function(){
       beforeEach(function(){
-        subscriptionStub.putBlogSubscriptions.and.returnValue($q.when());
+        subscriptionStub.postChannelSubscription.and.returnValue($q.when());
         deferredUserInformation.resolve($q.when({
           userId: 'userId',
           isOwner: false,
@@ -105,13 +105,10 @@ describe('subscribe-service', function(){
         $rootScope.$apply();
       });
 
-      it('should call putBlogSubscriptions with accepted price of zero', function(){
-        expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith(
-          'blogId',
-          { subscriptions: [
-            { channelId: 'channelId1', acceptedPrice: 0 },
-            { channelId: 'channelId3', acceptedPrice: 0 }
-          ] }
+      it('should call postChannelSubscription with accepted price of zero', function(){
+        expect(subscriptionStub.postChannelSubscription).toHaveBeenCalledWith(
+          'channelId',
+          { acceptedPrice: 0 }
         );
       });
 
@@ -132,8 +129,8 @@ describe('subscribe-service', function(){
         $rootScope.$apply();
       });
 
-      it('should not call putBlogSubscriptions', function(){
-        expect(subscriptionStub.putBlogSubscriptions).not.toHaveBeenCalled();
+      it('should not call postChannelSubscription', function(){
+        expect(subscriptionStub.postChannelSubscription).not.toHaveBeenCalled();
       });
 
       it('should call showGuestListOnlyDialog', function(){
@@ -148,7 +145,7 @@ describe('subscribe-service', function(){
     describe('when user does not have free access', function(){
       beforeEach(function(){
         spyOn(target.internal, 'isGuestListOnly').and.returnValue(false);
-        subscriptionStub.putBlogSubscriptions.and.returnValue($q.when());
+        subscriptionStub.postChannelSubscription.and.returnValue($q.when());
         deferredUserInformation.resolve($q.when({
           userId: 'userId',
           isOwner: false,
@@ -157,13 +154,10 @@ describe('subscribe-service', function(){
         $rootScope.$apply();
       });
 
-      it('should call putBlogSubscriptions', function(){
-        expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith(
-          'blogId',
-          { subscriptions: [
-            { channelId: 'channelId1', acceptedPrice: 10 },
-            { channelId: 'channelId3', acceptedPrice: 30 }
-          ] }
+      it('should call postChannelSubscription', function(){
+        expect(subscriptionStub.postChannelSubscription).toHaveBeenCalledWith(
+          'channelId',
+          { acceptedPrice: 'price' }
         );
       });
 
@@ -182,8 +176,8 @@ describe('subscribe-service', function(){
         $rootScope.$apply();
       });
 
-      it('should not call putBlogSubscriptions', function(){
-        expect(subscriptionStub.putBlogSubscriptions).not.toHaveBeenCalled();
+      it('should not call postChannelSubscription', function(){
+        expect(subscriptionStub.postChannelSubscription).not.toHaveBeenCalled();
       });
 
       it('should not complete successfully', function(){
@@ -205,7 +199,7 @@ describe('subscribe-service', function(){
       deferredUserInformation = $q.defer();
       spyOn(target.internal, 'getUserInformation').and.returnValue(deferredUserInformation.promise);
       complete = false;
-      target.unsubscribe('blogId').then(function(){ complete = true; }, function(e){ error = e; });
+      target.unsubscribe('blogId', 'channelId').then(function(){ complete = true; }, function(e){ error = e; });
       $rootScope.$apply();
     });
 
@@ -221,8 +215,8 @@ describe('subscribe-service', function(){
         $rootScope.$apply();
       });
 
-      it('should not call putBlogSubscriptions', function(){
-        expect(subscriptionStub.putBlogSubscriptions).not.toHaveBeenCalled();
+      it('should not call deleteChannelSubscription', function(){
+        expect(subscriptionStub.deleteChannelSubscription).not.toHaveBeenCalled();
       });
 
       it('should complete successfully', function(){
@@ -232,7 +226,7 @@ describe('subscribe-service', function(){
 
     describe('when user is not the owner', function(){
       beforeEach(function(){
-        subscriptionStub.putBlogSubscriptions.and.returnValue($q.when());
+        subscriptionStub.deleteChannelSubscription.and.returnValue($q.when());
         deferredUserInformation.resolve($q.when({
           isOwner: false,
           userId: 'userId'
@@ -240,8 +234,8 @@ describe('subscribe-service', function(){
         $rootScope.$apply();
       });
 
-      it('should call putBlogSubscriptions', function(){
-        expect(subscriptionStub.putBlogSubscriptions).toHaveBeenCalledWith('blogId', { subscriptions: [] });
+      it('should call deleteChannelSubscription', function(){
+        expect(subscriptionStub.deleteChannelSubscription).toHaveBeenCalledWith('channelId');
       });
 
       it('should update the user state', function(){
@@ -259,8 +253,8 @@ describe('subscribe-service', function(){
         $rootScope.$apply();
       });
 
-      it('should not call putBlogSubscriptions', function(){
-        expect(subscriptionStub.putBlogSubscriptions).not.toHaveBeenCalled();
+      it('should not call deleteChannelSubscription', function(){
+        expect(subscriptionStub.deleteChannelSubscription).not.toHaveBeenCalled();
       });
 
       it('should not update the user state', function(){
@@ -414,7 +408,7 @@ describe('subscribe-service', function(){
       deferredUserState = $q.defer();
       fetchAggregateUserState.updateIfStale.and.returnValue(deferredUserState.promise);
       subscriptionRepository.tryGetBlogs.and.returnValue(deferredSubscription.promise);
-      target.getSubscriptionStatus(subscriptionRepository, 'blogId')
+      target.getSubscriptionStatus('blogId', subscriptionRepository)
         .then(function(r){ result = r; }, function(e) { error = e; });
       $rootScope.$apply();
     });
@@ -587,7 +581,7 @@ describe('subscribe-service', function(){
     });
 
     it('should call getSubscriptionStatus', function(){
-      expect(target.getSubscriptionStatus).toHaveBeenCalledWith(subscriptionRepository, 'blogId');
+      expect(target.getSubscriptionStatus).toHaveBeenCalledWith('blogId', subscriptionRepository);
     });
 
     describe('when getSubscriptionStatus succeeds', function(){

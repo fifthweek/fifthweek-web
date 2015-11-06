@@ -49,9 +49,10 @@ describe('account settings repository factory', function(){
     describe('when logged out', function(){
       it('should get settings from the master repository at the correct location', function() {
         var actual;
-        masterRepository.getUserId.and.returnValue($q.when(undefined));
+        masterRepository.getUserId.and.returnValue(undefined);
+        masterRepository.get.and.returnValue($q.when(undefined));
 
-        target.getAccountSettings().then(function(settings) {
+        target.tryGetAccountSettings().then(function(settings) {
           actual = settings;
         });
         $rootScope.$apply();
@@ -65,10 +66,10 @@ describe('account settings repository factory', function(){
       it('should get settings from the master repository at the correct location', function() {
         var expected = { username: 'phil' };
         var actual;
-        masterRepository.getUserId.and.returnValue($q.when('userId'));
+        masterRepository.getUserId.and.returnValue('userId');
         masterRepository.get.and.returnValue($q.when(expected));
 
-        target.getAccountSettings().then(function(settings) {
+        target.tryGetAccountSettings().then(function(settings) {
           actual = settings;
         });
         $rootScope.$apply();

@@ -73,11 +73,15 @@ angular.module('webApp')
       blogRepository = blogRepositoryFactory.forCurrentUser();
       subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
-      internal.loadPost(internal.loadFullPostFromApi);
+      return internal.loadPost(internal.loadFullPostFromApi);
     };
 
     internal.loadFullPostFromApi = function(){
       return internal.getFullPost($scope.postId || $scope.post.postId);
+    };
+
+    internal.getFullPostFromScope = function(){
+      return $q.when($scope.post);
     };
 
     internal.attachToEvents = function(){
@@ -113,12 +117,12 @@ angular.module('webApp')
 
       var getFullPostFunction;
       if($scope.post && $scope.post.content){
-        getFullPostFunction = function(){ return $q.when($scope.post); };
+        getFullPostFunction = internal.getFullPostFromScope;
       }
       else{
         getFullPostFunction = internal.loadFullPostFromApi;
       }
 
-      internal.loadPost(getFullPostFunction);
+      return internal.loadPost(getFullPostFunction);
     };
   });

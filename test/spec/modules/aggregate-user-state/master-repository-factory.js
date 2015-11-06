@@ -155,33 +155,6 @@ describe('master repository factory', function(){
     });
   });
 
-  describe('when the provided key is invalid', function() {
-
-    it('should not update state', function() {
-      target.update('invalid', function(value) { value.change = 'applied'; });
-      $rootScope.$apply();
-
-      expect(initialState).toEqual(initialStateClone);
-      expect(aggregateUserState.setDelta).not.toHaveBeenCalled();
-    });
-
-    it('should throw an error when updating state', function() {
-      target.update('invalid', function(value) { value.change = 'applied'; }).catch(function(error){
-        expect(error instanceof FifthweekError).toBeTruthy();
-        expect(error.message).toBe('The key "invalid" does not match anything within the aggregate user state.');
-      });
-      $rootScope.$apply();
-    });
-
-    it('should throw an error when reading state', function() {
-      target.get('invalid').catch(function(error){
-        expect(error instanceof FifthweekError).toBeTruthy();
-        expect(error.message).toBe('The key "invalid" does not match anything within the aggregate user state.');
-      });
-      $rootScope.$apply();
-    });
-  });
-
   describe('when updating a value', function(){
 
     describe('when apply method fails synchronously', function(){
@@ -450,7 +423,7 @@ describe('master repository factory', function(){
           });
 
           it('should not have completed', function(){
-            expect(success).toBe(false);
+            expect(success).toBeUndefined();
           });
 
           it('should call updateFromServer', function(){

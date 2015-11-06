@@ -71,18 +71,12 @@ angular.module('webApp').factory('postUtilities',
       post.readingTime = Math.round((wordCount / wordsPerMinute) + (imageCount / imagesPerMinute) + (fileCount / filesPerMinute));
     };
 
-    service.internal.processPost = function(post, previousPost, caches){
-
-      service.internal.populateCreatorInformation(post, caches);
-
-      post.readAccess = post.isOwner || post.isGuestList ||
-        (post.isSubscribed && (caches.accountSettings.accountBalance > 0 || caches.accountSettings.isRetryingPayment));
-
-      post.readAccessIgnoringPayment = post.isOwner || post.isGuestList || post.isSubscribed;
-
+    service.internal.processTimestamps = function(post){
       post.moment = moment(post.liveDate);
       post.liveIn = post.moment.fromNow();
+    };
 
+    service.internal.processFiles = function(post, caches){
       service.internal.processFile(post, post.image, post.imageSource, post.imageAccessInformation, caches);
 
       if(post.files){
@@ -91,6 +85,19 @@ angular.module('webApp').factory('postUtilities',
         });
       }
 
+      if(post.creator && post.creator.profileImage){
+        post.creator.profileImage.resolvedUri = service.internal.getImageUri(post.creator.profileImage, 'footer', caches);
+      }
+    };
+
+    service.internal.processAccess = function(post, caches){
+      post.readAccess = !!(post.isOwner || post.isGuestList ||
+        (post.isSubscribed && (caches.accountSettings.accountBalance > 0 || caches.accountSettings.isRetryingPayment)));
+
+      post.readAccessIgnoringPayment = !!(post.isOwner || post.isGuestList || post.isSubscribed);
+    };
+
+    service.internal.processScheduledPost = function(post) {
       // Only backlog posts contain a queueId field.
       post.isScheduled = _.has(post, 'queueId');
       if(post.isScheduled && post.queueId){
@@ -98,11 +105,9 @@ angular.module('webApp').factory('postUtilities',
           $state.go(states.creator.posts.scheduled.queues.reorder.name, {id: post.queueId});
         };
       }
+    };
 
-      if(post.creator && post.creator.profileImage){
-        post.creator.profileImage.resolvedUri = service.internal.getImageUri(post.creator.profileImage, 'footer', caches);
-      }
-
+    service.internal.processContent = function(post) {
       if(post.content){
         post.blocks = jsonService.fromJson(post.content);
         _.forEach(post.blocks, function(block){
@@ -112,7 +117,15 @@ angular.module('webApp').factory('postUtilities',
           }
         });
       }
+    };
 
+    service.internal.processPost = function(post, previousPost, caches){
+      service.internal.populateCreatorInformation(post, caches);
+      service.internal.processAccess(post, caches);
+      service.internal.processTimestamps(post);
+      service.internal.processFiles(post, caches);
+      service.internal.processScheduledPost(post);
+      service.internal.processContent(post);
       service.internal.calculateReadingTime(post);
     };
 

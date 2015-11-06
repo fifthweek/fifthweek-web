@@ -36,7 +36,7 @@ angular.module('webApp')
       var newUserId = accountSettingsRepository.getUserId();
       var isOwner = newUserId === $scope.model.userId;
 
-      if(isOwner !== $scope.model.isOwner) {
+      if(isOwner !== $scope.model.landingPage.isOwner) {
         return internal.reload();
       }
 

@@ -195,58 +195,5 @@ angular.module('webApp').factory('subscribeService',
         });
     };
 
-/*
-    service.subscribe = function(blogId, channelsAndPrices){
-      return internal.getSignedInUserInformation(blogId)
-        .then(function(userInformation){
-          if(!userInformation) {
-            return $q.when(false);
-          }
-
-          if(userInformation.isOwner){
-            return $q.when(true);
-          }
-
-          if(userInformation.hasFreeAccess){
-            channelsAndPrices = _(channelsAndPrices)
-              .map(function(v){
-                return {
-                  channelId: v.channelId,
-                  acceptedPrice: 0
-                };
-              })
-              .value();
-          }
-          else if(internal.isGuestListOnly()){
-            return internal.showGuestListOnlyDialog()
-              .then(function(){
-                return $q.when(false);
-              });
-          }
-
-          return subscriptionStub.putBlogSubscriptions(blogId, { subscriptions: channelsAndPrices })
-            .then(function(){
-              return fetchAggregateUserState.updateFromServer(userInformation.userId);
-            })
-            .then(function(){
-              return $q.when(true);
-            });
-        });
-    };
-    service.unsubscribe = function(blogId){
-      return internal.getUserInformation(blogId)
-        .then(function(userInformation){
-          if(userInformation.isOwner){
-            return $q.when();
-          }
-
-          return subscriptionStub.putBlogSubscriptions(blogId, { subscriptions: [] })
-            .then(function() {
-              return fetchAggregateUserState.updateFromServer(userInformation.userId);
-            });
-        });
-    };
-    */
-
     return service;
   });

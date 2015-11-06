@@ -435,42 +435,6 @@ describe('fw-post-list-controller', function(){
       });
     });
 
-    describe('when calling managePostSubscription', function(){
-      describe('when current page is landing page', function(){
-        beforeEach(function(){
-          $state.current = { name: states.landingPage.name };
-          $scope.managePostSubscription({ creator: { username: 'username' }});
-        });
-
-        it('should naviagate to the manage subscription page', function(){
-          expect($state.go).toHaveBeenCalledWith(
-            states.landingPage.name,
-            {
-              username: 'username',
-              action: landingPageConstants.actions.manage,
-              key: undefined
-            });
-        });
-      });
-
-      describe('when current page is not landing page', function(){
-        beforeEach(function(){
-          $state.current = { name: 'some-state' };
-          $scope.managePostSubscription({ creator: { username: 'username' }});
-        });
-
-        it('should naviagate to the manage subscription page', function(){
-          expect($state.go).toHaveBeenCalledWith(
-            states.landingPage.name,
-            {
-              username: 'username',
-              action: landingPageConstants.actions.manage,
-              key: 'some-state'
-            });
-        });
-      });
-    });
-
     describe('when calling editPost', function(){
       var post1;
       var post2;

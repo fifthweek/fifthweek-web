@@ -56,7 +56,7 @@ describe('post-utilities', function(){
       it('should return undefined', function(){
         var result = target.internal.getImageUri({ containerName: 'cn1' }, undefined, {accessMap:{containerName:{}}});
         expect(result).toBeUndefined();
-      })
+      });
     });
 
     describe('when accessInformation', function(){
@@ -77,14 +77,14 @@ describe('post-utilities', function(){
         it('should return uri', function(){
           var result = target.internal.getImageUri(image, 'thumb1', caches);
           expect(result).toBe('uri1/fileId1/thumb1?sig1');
-        })
+        });
       });
 
       describe('when thumbnail does not exist', function(){
         it('should return uri', function(){
           var result = target.internal.getImageUri(image, undefined, caches);
           expect(result).toBe('uri1/fileId1?sig1');
-        })
+        });
       });
     });
   });
@@ -351,8 +351,337 @@ describe('post-utilities', function(){
     runTest(2000, 4000, 20, 20, 30);
   });
 
-  describe('processPost', function(){
+  describe('processTimestamps', function(){
+    it('should set moment and liveIn date', function(){
+      var moment = { fromNow: function(){ return 'fromNow'; }};
+      spyOn(window, 'moment').and.returnValue(moment);
+      var post = {
+        liveDate: 'liveDate'
+      };
 
+      target.internal.processTimestamps(post);
+
+      expect(post).toEqual({
+        liveDate: 'liveDate',
+        moment: moment,
+        liveIn: 'fromNow'
+      });
+    });
+  });
+
+  describe('processFiles', function(){
+    describe('while post contains files', function(){
+      var post;
+      beforeEach(function(){
+        post = {
+          image: 'image',
+          imageSource: 'imageSource',
+          imageAccessInformation: 'imageAccessInformation',
+          files: [
+            {
+              information: 'information1',
+              source: 'source1',
+              accessInformation: 'accessInformation1'
+            },
+            {
+              information: 'information2',
+              source: 'source2',
+              accessInformation: 'accessInformation2'
+            }
+          ],
+          creator: {
+            profileImage: {
+              content: 'content'
+            }
+          }
+        };
+
+        spyOn(target.internal, 'processFile');
+        spyOn(target.internal, 'getImageUri').and.returnValue('imageUri');
+
+        target.internal.processFiles(post, 'caches');
+      });
+
+      it('should call processFile for each file', function(){
+        expect(target.internal.processFile).toHaveBeenCalledWith(post, 'image', 'imageSource', 'imageAccessInformation', 'caches');
+        expect(target.internal.processFile).toHaveBeenCalledWith(post.files[0], 'information1', 'source1', 'accessInformation1', 'caches');
+        expect(target.internal.processFile).toHaveBeenCalledWith(post.files[1], 'information2', 'source2', 'accessInformation2', 'caches');
+      });
+
+      it('should call getImageUri for the profile image', function(){
+        expect(target.internal.getImageUri).toHaveBeenCalledWith(post.creator.profileImage, 'footer', 'caches');
+        expect(post.creator.profileImage.resolvedUri).toBe('imageUri');
+      });
+    });
+
+    describe('while post does not contain files', function(){
+      var post;
+      beforeEach(function(){
+        post = {
+        };
+
+        spyOn(target.internal, 'processFile');
+        spyOn(target.internal, 'getImageUri').and.returnValue('imageUri');
+
+        target.internal.processFiles(post, 'caches');
+      });
+
+      it('should call processFile only once', function(){
+        expect(target.internal.processFile).toHaveBeenCalledWith(post, undefined, undefined, undefined, 'caches');
+        expect(target.internal.processFile.calls.count()).toBe(1);
+      });
+
+      it('should call getImageUri for the profile image', function(){
+        expect(target.internal.getImageUri).not.toHaveBeenCalledWith();
+      });
+    });
+  });
+
+  describe('processAccess', function(){
+    describe('when owner', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isOwner: true
+        };
+        var caches = {
+          accountSettings: {}
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(true);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+      });
+    });
+
+    describe('when on guest list', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isGuestList: true
+        };
+        var caches = {
+          accountSettings: {}
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(true);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+      });
+    });
+
+    describe('when subscriber', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isSubscribed: true
+        };
+        var caches = {
+          accountSettings: {}
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(false);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+      });
+    });
+
+    describe('when subscriber with account balance', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isSubscribed: true
+        };
+        var caches = {
+          accountSettings: { accountBalance: 1 }
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(true);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+      });
+    });
+
+    describe('when subscriber with payment retrying', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isOwner: true
+        };
+        var caches = {
+          accountSettings: { isRetryingPayment: true }
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(true);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+      });
+    });
+
+    describe('when not owner guest list or subscriber', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+        };
+        var caches = {
+          accountSettings: { accountBalance: 1 }
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(false);
+        expect(post.readAccessIgnoringPayment).toBe(false);
+      });
+    });
+  });
+
+  describe('processScheduledPost', function(){
+    describe('when post is scheduled', function(){
+      it('should set scheduled information', function(){
+        var post = {
+          queueId: undefined
+        };
+
+        target.internal.processScheduledPost(post);
+
+        expect(post.isScheduled).toBe(true);
+        expect(post.reorder).toBeUndefined();
+      });
+    });
+
+    describe('when post is queued', function(){
+      it('should set scheduled information', function(){
+        var post = {
+          queueId: 'queueId'
+        };
+
+        target.internal.processScheduledPost(post);
+
+        expect(post.isScheduled).toBe(true);
+        expect(post.reorder).toBeDefined();
+      });
+    });
+
+    describe('when post not scheduled or queued', function(){
+      it('should set scheduled information', function(){
+        var post = {
+        };
+
+        target.internal.processScheduledPost(post);
+
+        expect(post.isScheduled).toBe(false);
+        expect(post.reorder).toBeUndefined();
+      });
+    });
+  });
+
+  describe('processContent', function(){
+    describe('when post has no content', function(){
+      it('should not do anything', function(){
+        var post = {
+        };
+
+        target.internal.processContent(post);
+
+        expect(post).toEqual({});
+      });
+    });
+
+    describe('when post has content', function(){
+      it('should process blocks', function(){
+        var blocks = [
+          {
+            type: 'text',
+            data: { text: 'blah' }
+          },
+          {
+            type: 'something-with-file',
+            data: { fileId: 'a' }
+          },
+          {
+            type: 'something-with-file',
+            data: { fileId: 'b' }
+          }
+        ];
+
+        var post = {
+          content: 'serializedContent',
+          files: [
+            {
+              information: {
+                fileId: 'a'
+              },
+              blah: 'blah1'
+            },
+            {
+              information: {
+                fileId: 'b'
+              },
+              blah: 'blah2'
+            }
+          ]
+        };
+
+        jsonService.fromJson.and.returnValue(_.cloneDeep(blocks));
+
+        target.internal.processContent(post);
+
+        expect(post).toEqual({
+          content: 'serializedContent',
+          files: [
+            {
+              information: {
+                fileId: 'a'
+              },
+              blah: 'blah1'
+            },
+            {
+              information: {
+                fileId: 'b'
+              },
+              blah: 'blah2'
+            }
+          ],
+          blocks: [
+            {
+              type: 'text',
+              data: { text: 'blah' }
+            },
+            {
+              type: 'something-with-file',
+              data: { fileId: 'a' },
+              information: {
+                fileId: 'a'
+              },
+              blah: 'blah1'
+            },
+            {
+              type: 'something-with-file',
+              data: { fileId: 'b' },
+              information: {
+                fileId: 'b'
+              },
+              blah: 'blah2'
+            }
+          ]
+        });
+      });
+    });
+  });
+
+  describe('processPost', function(){
+    it('should call delegates', function(){
+      spyOn(target.internal, 'populateCreatorInformation');
+      spyOn(target.internal, 'processAccess');
+      spyOn(target.internal, 'processTimestamps');
+      spyOn(target.internal, 'processFiles');
+      spyOn(target.internal, 'processScheduledPost');
+      spyOn(target.internal, 'processContent');
+      spyOn(target.internal, 'calculateReadingTime');
+
+      target.internal.processPost('post', 'previousPost', 'caches');
+
+      expect(target.internal.populateCreatorInformation).toHaveBeenCalledWith('post', 'caches');
+      expect(target.internal.processAccess).toHaveBeenCalledWith('post', 'caches');
+      expect(target.internal.processTimestamps).toHaveBeenCalledWith('post');
+      expect(target.internal.processFiles).toHaveBeenCalledWith('post', 'caches');
+      expect(target.internal.processScheduledPost).toHaveBeenCalledWith('post');
+      expect(target.internal.processContent).toHaveBeenCalledWith('post');
+      expect(target.internal.calculateReadingTime).toHaveBeenCalledWith('post');
+    });
   });
 
   describe('processPosts', function(){

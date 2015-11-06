@@ -165,15 +165,6 @@ describe('aggregate user state', function() {
           expect(target.currentValue).toEqual(originalUserState);
           expect(target.isCurrentValueStale).toEqual(true);
         });
-
-        it('should broadcast an event', function() {
-          spyOn($rootScope, '$broadcast').and.callThrough();
-
-          $rootScope.$broadcast(authenticationServiceConstants.currentUserChangedEvent, {userId: userId2});
-          $rootScope.$apply();
-
-          expect($rootScope.$broadcast).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, undefined);
-        });
       });
     });
 

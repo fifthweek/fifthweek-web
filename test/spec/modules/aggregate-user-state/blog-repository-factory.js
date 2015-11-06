@@ -632,46 +632,18 @@ describe('blog repository factory', function(){
       var result;
       beforeEach(function(){
         masterRepository.getUserId.and.returnValue('userId');
-        spyOn(target.internal, 'getBlogMap').and.returnValue($q.when(
-          {
-            channels: [
-              {
-                channelId: 'a'
-              },
-              {
-                channelId: 'b'
-              }
-            ],
-            queues: [
-              { queueId: 'x' },
-              { queueId: 'y' }
-            ]
-
-          }));
+        spyOn(target.internal, 'getBlogMap').and.returnValue($q.when('getBlogMapResult'));
 
         target.tryGetBlogMap().then(function(r){result = r;});
         $rootScope.$apply();
       });
 
       it('should call internal.getBlogMap', function(){
-        expect(target.internal.getBlogMap).toHaveBeenCalledWith(false);
+        expect(target.internal.getBlogMap).toHaveBeenCalledWith(true);
       });
 
       it('should return a map of channels and queues', function(){
-        expect(result).toEqual({
-          channels: {
-            a: {
-              channelId: 'a'
-            },
-            b: {
-              channelId: 'b'
-            }
-          },
-          queues: {
-            x: { queueId: 'x' },
-            y: { queueId: 'y' }
-          }
-        });
+        expect(result).toEqual('getBlogMapResult');
       });
     });
   });

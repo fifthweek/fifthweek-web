@@ -174,7 +174,7 @@ describe('fetch aggregate user state', function(){
           $rootScope.$apply();
           expect($rootScope.$broadcast).not.toHaveBeenCalledWith(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, userId, newUserState);
           expect($rootScope.$broadcast).not.toHaveBeenCalledWith(fetchAggregateUserStateConstants.fetchedEvent, userId, newUserState);
-          expect($rootScope.$broadcast.calls.count()).toBe(1);
+          expect($rootScope.$broadcast.calls.count()).toBe(2);
           expect(target.internal.cache.lastUserId).toBe(userId2);
         });
       });

@@ -30,7 +30,11 @@ angular.module('webApp')
       returnState: undefined,
       channelId: undefined,
       postId: undefined,
-      timelineType: undefined
+      timelineType: undefined,
+      landingPage: undefined,
+      post: undefined,
+      username: undefined,
+      isLoaded: false
     };
 
     var internal = this.internal = {};
@@ -81,6 +85,15 @@ angular.module('webApp')
       $scope.$broadcast(fwPostListConstants.reloadEvent);
     };
 
+    internal.loadContent = function(){
+      if($scope.model.currentView === landingPageConstants.views.post){
+        return internal.loadPost();
+      }
+      else{
+        return internal.loadLandingPage();
+      }
+    };
+
     internal.initialize = function(){
       if(!internal.loadParameters()){
         $state.go(states.notFound.name);
@@ -94,12 +107,7 @@ angular.module('webApp')
 
       return fetchAggregateUserState.waitForExistingUpdate()
         .then(function(){
-          if($scope.model.currentView === landingPageConstants.views.post){
-            return internal.loadPost();
-          }
-          else{
-            return internal.loadLandingPage();
-          }
+          return internal.loadContent();
         })
         .catch(function(error){
           if(error instanceof ApiError && error.response && error.response.status === 404) {

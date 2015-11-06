@@ -13,9 +13,12 @@ describe('fw-full-post-controller', function(){
   var accountSettingsRepositoryFactory;
   var accountSettingsRepository;
   var postStub;
+  var fullPostLoader;
   var errorFacade;
-  var postUtilities;
   var initializer;
+
+  var aggregateUserStateConstants;
+  var uiRouterConstants;
 
   beforeEach(function() {
 
@@ -30,8 +33,8 @@ describe('fw-full-post-controller', function(){
     accountSettingsRepository = 'accountSettingsRepository';
     accountSettingsRepositoryFactory.forCurrentUser.and.returnValue(accountSettingsRepository);
     postStub = jasmine.createSpyObj('postStub', ['getPost']);
+    fullPostLoader = jasmine.createSpyObj('fullPostLoader', ['loadPost']);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
-    postUtilities = jasmine.createSpyObj('postUtilities', ['processPostForRendering']);
     initializer = jasmine.createSpyObj('initializer', ['initialize']);
 
     module('webApp');
@@ -41,14 +44,16 @@ describe('fw-full-post-controller', function(){
       $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
       $provide.value('accountSettingsRepositoryFactory', accountSettingsRepositoryFactory);
       $provide.value('postStub', postStub);
+      $provide.value('fullPostLoader', fullPostLoader);
       $provide.value('errorFacade', errorFacade);
-      $provide.value('postUtilities', postUtilities);
       $provide.value('initializer', initializer);
     });
 
     inject(function ($injector) {
       $q = $injector.get('$q');
       $scope = $injector.get('$rootScope').$new();
+      aggregateUserStateConstants = $injector.get('aggregateUserStateConstants');
+      uiRouterConstants = $injector.get('uiRouterConstants');
     });
 
     errorFacade.handleError.and.callFake(function(error, setMessage) {
@@ -87,10 +92,6 @@ describe('fw-full-post-controller', function(){
     it('should get a subscription repository', function(){
       expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
     });
-
-    it('should call the initializer', function(){
-      expect(initializer.initialize).toHaveBeenCalledWith(target.initialize);
-    });
   });
 
   describe('when created', function(){
@@ -99,74 +100,21 @@ describe('fw-full-post-controller', function(){
     });
 
     describe('when calling initialize', function(){
-      var success;
-      var error;
-      var deferredGetFullPost;
+      var result;
       beforeEach(function(){
-        deferredGetFullPost = $q.defer();
-        spyOn(target.internal, 'getFullPost').and.returnValue(deferredGetFullPost.promise);
-
-        spyOn(target.internal, 'replaceHiddenCharacters');
+        result = undefined;
+        spyOn(target.internal, 'attachToEvents');
+        spyOn(target.internal, 'loadPost').and.returnValue('result');
       });
 
-      var testGetFullPostPath = function(){
+      var standardTests = function(){
 
-        it('should set isLoading to true', function(){
-          expect($scope.model.isLoading).toBe(true);
+        it('should call attachToEvents', function(){
+          expect(target.internal.attachToEvents).toHaveBeenCalledWith();
         });
 
-        it('should not set showContent to false', function(){
-          expect($scope.model.showContent).toBe(false);
-        });
-
-        it('should call getFullPost', function(){
-          expect(target.internal.getFullPost).toHaveBeenCalledWith('postId');
-        });
-
-        describe('when getFullPost succeeds', function(){
-          beforeEach(function(){
-            deferredGetFullPost.resolve('post');
-            $scope.$apply();
-          });
-
-          it('should call replaceHiddenCharacters', function(){
-            expect(target.internal.replaceHiddenCharacters).toHaveBeenCalledWith('post');
-          });
-
-          it('should set the post to the scope', function(){
-            expect($scope.post).toBe('post');
-          });
-
-          it('should set showContent to true', function(){
-            expect($scope.model.showContent).toBe(true);
-          });
-
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
-          });
-        });
-
-        describe('when getFullPost fails', function(){
-          beforeEach(function(){
-            deferredGetFullPost.reject('error');
-            $scope.$apply();
-          });
-
-          it('should set the error message', function(){
-            expect($scope.model.errorMessage).toBe('friendlyError');
-          });
-
-          it('should set isLoading to false', function(){
-            expect($scope.model.isLoading).toBe(false);
-          });
-
-          it('should not set showContent to true', function(){
-            expect($scope.model.showContent).toBe(false);
-          });
-
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
-          });
+        it('should return the result', function(){
+          expect(result).toBe('result');
         });
       };
 
@@ -175,11 +123,14 @@ describe('fw-full-post-controller', function(){
           $scope.post = undefined;
           $scope.postId = 'postId';
 
-          target.initialize().then(function(){ success = true; }, function(e) { error = e; });
-          $scope.$apply();
+          result = target.initialize();
         });
 
-        testGetFullPostPath();
+        standardTests();
+
+        it('should call loadPost with loadFullPostFromApi', function(){
+          expect(target.internal.loadPost).toHaveBeenCalledWith(target.internal.loadFullPostFromApi);
+        });
       });
 
       describe('when post exists without content', function(){
@@ -187,11 +138,14 @@ describe('fw-full-post-controller', function(){
           $scope.post = { postId: 'postId' };
           $scope.postId = undefined;
 
-          target.initialize().then(function(){ success = true; }, function(e) { error = e; });
-          $scope.$apply();
+          result = target.initialize();
         });
 
-        testGetFullPostPath();
+        standardTests();
+
+        it('should call loadPost with loadFullPostFromApi', function(){
+          expect(target.internal.loadPost).toHaveBeenCalledWith(target.internal.loadFullPostFromApi);
+        });
       });
 
       describe('when post exists with content', function(){
@@ -200,41 +154,13 @@ describe('fw-full-post-controller', function(){
           $scope.post = post = { postId: 'postId', content: 'content' };
           $scope.postId = undefined;
 
-          target.initialize().then(function(){ success = true; }, function(e) { error = e; });
+          result = target.initialize();
         });
 
-        it('should set isLoading to true', function(){
-          expect($scope.model.isLoading).toBe(true);
-        });
+        standardTests();
 
-        it('should not set showContent to false', function(){
-          expect($scope.model.showContent).toBe(false);
-        });
-
-        it('should not call getFullPost', function(){
-          expect(target.internal.getFullPost).not.toHaveBeenCalled();
-        });
-
-        describe('when post is returned', function(){
-          beforeEach(function(){
-            $scope.$apply();
-          });
-
-          it('should call replaceHiddenCharacters', function(){
-            expect(target.internal.replaceHiddenCharacters).toHaveBeenCalledWith(post);
-          });
-
-          it('should set the post to the scope', function(){
-            expect($scope.post).toBe(post);
-          });
-
-          it('should set showContent to true', function(){
-            expect($scope.model.showContent).toBe(true);
-          });
-
-          it('should complete successfully', function(){
-            expect(success).toBe(true);
-          });
+        it('should call loadPost with getFullPostFromScope', function(){
+          expect(target.internal.loadPost).toHaveBeenCalledWith(target.internal.getFullPostFromScope);
         });
       });
     });
@@ -465,77 +391,11 @@ describe('fw-full-post-controller', function(){
     });
 
     describe('when calling getFullPost', function(){
-      var result;
-      var error;
-      var deferredGetPost;
-      var deferredProcessPostForRendering;
-      var post;
-      beforeEach(function(){
-        result = undefined;
-        error = undefined;
-
-        deferredGetPost = $q.defer();
-        postStub.getPost.and.returnValue(deferredGetPost.promise);
-
-        deferredProcessPostForRendering = $q.defer();
-        postUtilities.processPostForRendering.and.returnValue(deferredProcessPostForRendering.promise);
-
-        post = { postId: 'postId' };
-
-        target.internal.getFullPost(post.postId).then(function(r){ result = r; }, function(e) { error = e; });
-        $scope.$apply();
-      });
-
-      it('should call getPost', function(){
-        expect(postStub.getPost).toHaveBeenCalledWith('postId');
-      });
-
-      describe('when getPost succeeds', function(){
-        beforeEach(function(){
-          deferredGetPost.resolve({ data: { post: post, files: 'files' } });
-          $scope.$apply();
-        });
-
-        it('should set files into the post', function(){
-          expect(post.files).toBe('files');
-        });
-
-        it('should call processPostForRendering', function(){
-          expect(postUtilities.processPostForRendering).toHaveBeenCalledWith(post, accountSettingsRepository, blogRepository, subscriptionRepository);
-        });
-
-        describe('when processPostForRendering succeeds', function(){
-          beforeEach(function(){
-            deferredProcessPostForRendering.resolve();
-            $scope.$apply();
-          });
-
-          it('should complete successfully with the post', function(){
-            expect(result).toBe(post);
-          });
-        });
-
-        describe('when processPostForRendering fails', function(){
-          beforeEach(function(){
-            deferredProcessPostForRendering.reject('error');
-            $scope.$apply();
-          });
-
-          it('should propagate the error', function(){
-            expect(error).toBe('error');
-          });
-        });
-      });
-
-      describe('when getPost fails', function(){
-        beforeEach(function(){
-          deferredGetPost.reject('error');
-          $scope.$apply();
-        });
-
-        it('should propagate the error', function(){
-          expect(error).toBe('error');
-        });
+      it('should call loadPost', function(){
+        fullPostLoader.loadPost.and.returnValue('result');
+        var result = target.internal.getFullPost('postId');
+        expect(fullPostLoader.loadPost).toHaveBeenCalledWith('postId', accountSettingsRepository, blogRepository, subscriptionRepository);
+        expect(result).toBe('result');
       });
     });
 
@@ -647,6 +507,208 @@ describe('fw-full-post-controller', function(){
               }
             ]
           });
+        });
+      });
+    });
+
+    describe('reloadPost', function(){
+      var result;
+      beforeEach(function(){
+        accountSettingsRepositoryFactory.forCurrentUser.calls.reset();
+        blogRepositoryFactory.forCurrentUser.calls.reset();
+        subscriptionRepositoryFactory.forCurrentUser.calls.reset();
+
+        spyOn(target.internal, 'loadPost').and.returnValue('result');
+
+        result = target.internal.reloadPost();
+      });
+
+      it('should get a new accountSettingsRespository', function(){
+        expect(accountSettingsRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+      });
+
+      it('should get a new blogRespository', function(){
+        expect(blogRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+      });
+
+      it('should get a new subscriptionRespository', function(){
+        expect(subscriptionRepositoryFactory.forCurrentUser).toHaveBeenCalledWith();
+      });
+
+      it('should call loadPost with loadFullPostFromApi', function(){
+        expect(target.internal.loadPost).toHaveBeenCalledWith(target.internal.loadFullPostFromApi);
+      });
+
+      it('should return the result', function(){
+        expect(result).toBe('result');
+      });
+    });
+
+    describe('loadFullPostFromApi', function(){
+      var result;
+      beforeEach(function(){
+        spyOn(target.internal, 'getFullPost').and.returnValue('result');
+      });
+
+      describe('when scope contains postId', function(){
+        beforeEach(function(){
+          $scope.postId = 'postId';
+          $scope.post = { postId: 'postId2' };
+
+          result = target.internal.loadFullPostFromApi();
+        });
+
+        it('should call loadPost with postId', function(){
+          expect(target.internal.getFullPost).toHaveBeenCalledWith('postId');
+        });
+
+        it('should return the result', function(){
+          expect(result).toBe('result');
+        });
+      });
+
+      describe('when scope contains post but no postId', function(){
+        beforeEach(function(){
+          $scope.postId = undefined;
+          $scope.post = { postId: 'postId2' };
+
+          result = target.internal.loadFullPostFromApi();
+        });
+
+        it('should call loadPost with postId', function(){
+          expect(target.internal.getFullPost).toHaveBeenCalledWith('postId2');
+        });
+
+        it('should return the result', function(){
+          expect(result).toBe('result');
+        });
+      });
+    });
+
+    describe('getFullPostFromScope', function(){
+      it('should return the post on the scope', function(){
+        $scope.post = 'post';
+
+        var result;
+        target.internal.getFullPostFromScope().then(function(r){ result = r; });
+        $scope.$apply();
+
+        expect(result).toBe('post');
+      });
+    });
+
+    describe('attachToEvents', function(){
+      beforeEach(function(){
+        spyOn($scope, '$on');
+      });
+
+      describe('when dialog', function(){
+        beforeEach(function(){
+          $scope.isDialog = true;
+          $scope.closeDialog = 'closeDialog';
+          target.internal.attachToEvents();
+        });
+
+        it('should attach to user state updated event', function(){
+          expect($scope.$on).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, target.internal.reloadPost);
+        });
+
+        it('should attach to state change start event', function(){
+          expect($scope.$on).toHaveBeenCalledWith(uiRouterConstants.stateChangeStartEvent, 'closeDialog');
+        });
+      });
+
+      describe('when not dialog', function(){
+        beforeEach(function(){
+          $scope.isDialog = false;
+          $scope.closeDialog = 'closeDialog';
+          target.internal.attachToEvents();
+        });
+
+        it('should attach to user state updated event', function(){
+          expect($scope.$on).toHaveBeenCalledWith(aggregateUserStateConstants.updatedEvent, target.internal.reloadPost);
+        });
+
+        it('should not attach to state change start event', function(){
+          expect($scope.$on).not.toHaveBeenCalledWith(uiRouterConstants.stateChangeStartEvent, 'closeDialog');
+        });
+      });
+    });
+
+    describe('loadPost', function(){
+      var success;
+      var deferredGetFullPost;
+      var getFullPost;
+      beforeEach(function(){
+        deferredGetFullPost = $q.defer();
+
+        spyOn(target.internal, 'replaceHiddenCharacters');
+
+        getFullPost = jasmine.createSpy('getFullPost');
+        getFullPost.and.returnValue(deferredGetFullPost.promise);
+
+        target.internal.loadPost(getFullPost).then(function(){ success = true; });
+      });
+
+      it('should set isLoading to true', function(){
+        expect($scope.model.isLoading).toBe(true);
+      });
+
+      it('should set showContent to false', function(){
+        expect($scope.model.showContent).toBe(false);
+      });
+
+      it('should call getFullPost', function(){
+        expect(getFullPost).toHaveBeenCalledWith();
+      });
+
+      describe('when getFullPost succeeds', function(){
+        beforeEach(function(){
+          deferredGetFullPost.resolve('post');
+          $scope.$apply();
+        });
+
+        it('should call replaceHiddenCharacters', function(){
+          expect(target.internal.replaceHiddenCharacters).toHaveBeenCalledWith('post');
+        });
+
+        it('should set the post to the scope', function(){
+          expect($scope.post).toBe('post');
+        });
+
+        it('should set showContent to true', function(){
+          expect($scope.model.showContent).toBe(true);
+        });
+
+        it('should set isLoading to false', function(){
+          expect($scope.model.isLoading).toBe(false);
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
+        });
+      });
+
+      describe('when getFullPost fails', function(){
+        beforeEach(function(){
+          deferredGetFullPost.reject('error');
+          $scope.$apply();
+        });
+
+        it('should set the error message', function(){
+          expect($scope.model.errorMessage).toBe('friendlyError');
+        });
+
+        it('should set isLoading to false', function(){
+          expect($scope.model.isLoading).toBe(false);
+        });
+
+        it('should not set showContent to true', function(){
+          expect($scope.model.showContent).toBe(false);
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
         });
       });
     });

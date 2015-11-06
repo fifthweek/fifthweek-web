@@ -151,7 +151,7 @@ describe('access signatures cache', function() {
       target.initialize();
 
       expect($rootScope.$on.calls.count()).toBe(1);
-      expect($rootScope.$on.calls.argsFor(0)[0]).toBe(fetchAggregateUserStateConstants.fetchedEvent);
+      expect($rootScope.$on.calls.argsFor(0)[0]).toBe(fetchAggregateUserStateConstants.updateAccessSignaturesEvent);
     });
   });
 
@@ -219,7 +219,7 @@ describe('access signatures cache', function() {
 
         fetchAggregateUserState.updateFromServer.and.returnValue($q.when(response));
 
-        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, response.userState);
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, undefined, response.userState);
         $rootScope.$apply();
 
         var result1;
@@ -241,7 +241,7 @@ describe('access signatures cache', function() {
 
         fetchAggregateUserState.updateFromServer.and.returnValue($q.when(response));
 
-        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, response.userState);
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, undefined, response.userState);
         $rootScope.$apply();
 
         jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesCacheConstants.refreshMinimumExpiry);
@@ -263,7 +263,7 @@ describe('access signatures cache', function() {
 
         jasmine.clock().mockDate();
 
-        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, response.userState);
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, undefined, response.userState);
         $rootScope.$apply();
 
         jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesCacheConstants.refreshMinimumExpiry + 1);
@@ -287,7 +287,7 @@ describe('access signatures cache', function() {
 
         jasmine.clock().mockDate();
 
-        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, response.userState);
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, undefined, response.userState);
         $rootScope.$apply();
 
         jasmine.clock().tick(defaultTimeToLiveSeconds * 1000);
@@ -311,7 +311,7 @@ describe('access signatures cache', function() {
 
         jasmine.clock().mockDate();
 
-        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, response.userState);
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, undefined, response.userState);
         $rootScope.$apply();
 
         authenticationService.currentUser.userId = 'user1';
@@ -335,7 +335,7 @@ describe('access signatures cache', function() {
 
         jasmine.clock().mockDate();
 
-        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, 'user1', response.userState);
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, 'user1', response.userState);
         $rootScope.$apply();
 
         authenticationService.currentUser.userId = undefined;
@@ -359,7 +359,7 @@ describe('access signatures cache', function() {
 
         jasmine.clock().mockDate();
 
-        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, 'user1', response.userState);
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, 'user1', response.userState);
         $rootScope.$apply();
 
         authenticationService.currentUser.userId = 'user2';
@@ -385,7 +385,7 @@ describe('access signatures cache', function() {
 
           jasmine.clock().mockDate();
 
-          $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, response.userState);
+          $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, undefined, response.userState);
           $rootScope.$apply();
 
           jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesCacheConstants.failMinimumExpiry);
@@ -409,7 +409,7 @@ describe('access signatures cache', function() {
 
           jasmine.clock().mockDate();
 
-          $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, undefined, response.userState);
+          $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, undefined, response.userState);
           $rootScope.$apply();
 
           jasmine.clock().tick(defaultTimeToLiveSeconds * 1000 - accessSignaturesCacheConstants.failMinimumExpiry + 1);
@@ -440,7 +440,7 @@ describe('access signatures cache', function() {
 
         jasmine.clock().mockDate();
 
-        $rootScope.$broadcast(fetchAggregateUserStateConstants.fetchedEvent, userId, response.userState);
+        $rootScope.$broadcast(fetchAggregateUserStateConstants.updateAccessSignaturesEvent, userId, response.userState);
         $rootScope.$apply();
       });
 
