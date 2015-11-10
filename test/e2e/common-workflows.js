@@ -111,7 +111,7 @@
       this.signOut();
       this.getPage('/' + creatorRegistration.username);
 
-      creatorLandingPage.subscribeButton.click();
+      creatorLandingPage.getSubscribeButton(0).click();
       var registration = signInWorkflowPage.registerSuccessfully();
 
       this.getPage('/user');

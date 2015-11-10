@@ -8,6 +8,7 @@ describe('post-edit-dialog-controller', function() {
   var postEditDialogConstants;
   var scheduleModes;
 
+  var initialPost;
   var post;
   var postId;
   var composeUtilities;
@@ -30,6 +31,10 @@ describe('post-edit-dialog-controller', function() {
     liveDateString = '2015-06-01T05:05:05Z';
     roundedDateString = '2015-06-01T05:05:00Z';
     postId = 'postId';
+    initialPost = {
+      postId: postId
+    };
+
     post = {
       postId: postId,
       liveDate: liveDateString,
@@ -63,7 +68,7 @@ describe('post-edit-dialog-controller', function() {
 
     module('webApp');
     module(function ($provide) {
-      $provide.value('postId', postId);
+      $provide.value('initialPost', initialPost);
       $provide.value('composeUtilities', composeUtilities);
       $provide.value('blobImageControlFactory', blobImageControlFactory);
       $provide.value('postEditDialogUtilities', postEditDialogUtilities);
@@ -235,6 +240,7 @@ describe('post-edit-dialog-controller', function() {
 
     describe('when save is called', function(){
       beforeEach(function(){
+        target.internal.postId = postId;
         target.internal.post = post;
         $scope.model = 'model';
         $scope.$close = jasmine.createSpy('$close');
@@ -459,9 +465,13 @@ describe('post-edit-dialog-controller', function() {
         expect($scope.model.isLoading).toBe(true);
       });
 
+      it('should set postId', function(){
+        expect(target.internal.postId).toBe(postId);
+      });
+
       it('should call getFullPost', function(){
         expect(postEditDialogUtilities.getFullPost).toHaveBeenCalledWith(
-          'postId', accountSettingsRepository, blogRepository, subscriptionRepository);
+          initialPost, accountSettingsRepository, blogRepository, subscriptionRepository);
       });
 
       describe('when getFullPost succeeds', function(){

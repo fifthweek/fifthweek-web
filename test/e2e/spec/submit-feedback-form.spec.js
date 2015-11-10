@@ -37,10 +37,10 @@
       });
 
       it('should allow feedback to be sent', function(){
-        testKit.setContentEditableValue(page.messageTextBoxId, 'message');
+        testKit.setContentEditableValue(page.messageTextBoxSelector, 'message');
       });
 
-      commentInputPage.includeHappyPaths(page.messageTextBoxId, function() {});
+      commentInputPage.includeHappyPaths(page.messageTextBoxSelector, function() {});
     });
 
     describe('when validating against bad input', function() {
@@ -52,14 +52,15 @@
       describe('bad input', function(){
         afterEach(function() {
           // Reset form state.
-          testKit.setContentEditableValue(page.messageTextBoxId, 'message'); // Ensure we're dirty.
+          testKit.setContentEditableValue(page.messageTextBoxSelector, 'message'); // Ensure we're dirty.
+          browser.sleep(1000); // This is to ensure the dirtyness takes effect, as we don't force the Sir Trevor instance to update when cancelling.
           page.cancelButton.click();
           testKit.waitForElementToDisplay(discardChanges.discardButton);
           discardChanges.discardButton.click();
           navigateToPage();
         });
 
-        commentInputPage.includeSadPaths(page.messageTextBoxId, page.registerButton, page.helpMessages, function() {});
+        commentInputPage.includeSadPaths(page.messageTextBoxSelector, page.registerButton, page.helpMessages, function() {});
       });
     });
   });

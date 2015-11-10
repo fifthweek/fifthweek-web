@@ -5,7 +5,7 @@
 
   signInWorkflowPage.prototype = Object.create({}, {
 
-    messageTextBoxId: { get: function () { return 'model-input-message'; }},
+    messageTextBoxSelector: { get: function () { return '#model-input-content .st-text-block'; }},
     registerButton: { get: function(){ return element(by.id('register-button')); }},
 
     cancelButton: { get: function(){ return element(by.id('modal-cross-button')); }},

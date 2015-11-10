@@ -6,7 +6,7 @@
 
   <fw-error-message value="model.errorMessage"></fw-error-message>
 
-  <div ng-if="source === sources.timeline">
+  <div ng-if="source === sources.timeline || source === sources.preview">
     <fw-account-balance-warning displaying-account-balance-warning="model.displayingAccountBalanceWarning"></fw-account-balance-warning>
   </div>
 

@@ -93,6 +93,8 @@ angular.module('webApp')
         })
         .sortByOrder(['name'], [true])
         .value();
+
+      internal.updateTotalPrice(landingPage);
     };
 
     internal.postProcessResults = function(landingPage){
@@ -101,7 +103,6 @@ angular.module('webApp')
       }
 
       internal.recalculateChannels(landingPage);
-      internal.updateTotalPrice(landingPage);
     };
 
     internal.updateTotalPrice = function(landingPage){

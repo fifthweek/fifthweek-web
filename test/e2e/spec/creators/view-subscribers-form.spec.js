@@ -30,8 +30,6 @@
     };
 
     var navigateFromCreatorLandingPage = function () {
-      testKit.scrollIntoView(landingPage.fifthweekLink);
-      landingPage.fifthweekLink.click();
       sidebar.subscriptionsLink.click();
     };
 
@@ -76,8 +74,7 @@
     it('should not display a subscriber when no payment information', function(){
       commonWorkflows.reSignIn(userRegistration1);
       navigateToCreatorLandingPage(creatorRegistration);
-      landingPage.getChannelPrice(1).click(); // Unsubscribe from channel 2
-      landingPage.subscribeButton.click();
+      landingPage.getSubscribeButton(0).click();
       navigateFromCreatorLandingPage();
 
       commonWorkflows.reSignIn(creatorRegistration);
@@ -108,9 +105,7 @@
     it('should display multiple channels', function(){
       commonWorkflows.reSignIn(userRegistration1);
       navigateToCreatorLandingPage(creatorRegistration);
-      landingPage.manageSubscriptionButton.click();
-      landingPage.getChannelPrice(1).click();
-      landingPage.updateSubscriptionButton.click();
+      landingPage.getSubscribeButton(1).click();
       navigateFromCreatorLandingPage();
 
       commonWorkflows.reSignIn(creatorRegistration);
@@ -137,8 +132,7 @@
     it('should display subscribed users on guest list', function(){
       commonWorkflows.reSignIn(userRegistration2);
       navigateToCreatorLandingPage(creatorRegistration);
-      landingPage.getChannelPrice(1).click();
-      landingPage.subscribeButton.click();
+      landingPage.getSubscribeButton(0).click();
       navigateFromCreatorLandingPage();
 
       commonWorkflows.reSignIn(creatorRegistration);

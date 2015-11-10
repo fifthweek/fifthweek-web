@@ -152,7 +152,7 @@
         6);
     };
 
-    describe('when posting single posts', function(){
+    fdescribe('when posting single posts', function(){
       var inputData = {};
       it('should run once before all', function() {
         var context = commonWorkflows.createBlog();

@@ -41,8 +41,8 @@ describe('submit-feedback-dialog-controller', function () {
       expect($scope.model.page).toBe($scope.pages.form);
     });
 
-    it('should set the inputs to blank', function() {
-      expect($scope.model.input.message).toBe('');
+    it('should set the inputs to undefined', function() {
+      expect($scope.model.input.content).toBeUndefined();
     });
   });
 
@@ -62,20 +62,18 @@ describe('submit-feedback-dialog-controller', function () {
         deferredPostFeedback = $q.defer();
 
         membershipStub.postFeedback.and.returnValue(deferredPostFeedback.promise);
-        $scope.model.input = 'input';
+        $scope.model.input.content = { previewText: 'input' };
 
         $scope.submitFeedback().then(function(){ complete = true; }, function(e){ error = e; });
         $scope.$apply();
       });
 
       it('should call postFeedback', function(){
-        expect(membershipStub.postFeedback).toHaveBeenCalledWith('input');
+        expect(membershipStub.postFeedback).toHaveBeenCalledWith({ message: 'input' });
       });
 
       describe('when postFeedback succeeds', function(){
         beforeEach(function(){
-          spyOn($scope, '$emit');
-          $scope.model.input = { message: 'message' };
           deferredPostFeedback.resolve();
           $scope.$apply();
         });

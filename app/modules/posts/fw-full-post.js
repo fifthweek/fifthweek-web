@@ -20,6 +20,11 @@ angular.module('webApp')
         scope.landingPageConstants = landingPageConstants;
 
         scope.isDialog = !!scope.closeDialog;
+        scope.closeIfDialog = function(){
+          if(scope.isDialog){
+            scope.closeDialog();
+          }
+        };
 
         var controller = ctrls[0];
         controller.initialize();

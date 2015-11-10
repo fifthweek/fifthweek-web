@@ -1,6 +1,9 @@
 angular.module('webApp')
   .controller('fwPostListCtrl',
-  function($scope, $q, $state, states, landingPageConstants, fwPostListConstants, postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory, fetchAggregateUserState, postStub, errorFacade, postUtilities) {
+  function($scope, $rootScope, $q, $state, states, landingPageConstants, fwPostListConstants,
+           postInteractions, authenticationService, blogRepositoryFactory, accountSettingsRepositoryFactory,
+           subscriptionRepositoryFactory, fetchAggregateUserState, postStub, errorFacade, postUtilities,
+           fwSubscriptionInformationConstants) {
     'use strict';
 
     var model = {
@@ -76,6 +79,7 @@ angular.module('webApp')
 
     internal.attachToReloadEvent = function(){
       $scope.$on(fwPostListConstants.reloadEvent, internal.loadPosts);
+      $rootScope.$on(fwSubscriptionInformationConstants.subscriptionStatusChangedEvent, internal.loadPosts);
     };
 
     this.initialize = function(){
@@ -84,8 +88,12 @@ angular.module('webApp')
         internal.loadNext = function() {
           return postStub.getCreatorBacklog(internal.timelineUserId)
             .then(function(response){
+              var posts = response.data;
+              _.forEach(posts, function(post){
+                post.creatorId = internal.currentUserId;
+              });
               return $q.when({
-                posts: response.data
+                posts: posts
               });
             });
         };

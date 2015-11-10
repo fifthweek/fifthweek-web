@@ -3,6 +3,7 @@ describe('fw-post-list-controller', function(){
 
   var $q;
   var $scope;
+  var $rootScope;
   var target;
 
   var postInteractions;
@@ -21,6 +22,7 @@ describe('fw-post-list-controller', function(){
   var $state;
   var states;
   var landingPageConstants;
+  var fwSubscriptionInformationConstants;
 
   beforeEach(function() {
 
@@ -57,10 +59,12 @@ describe('fw-post-list-controller', function(){
 
     inject(function ($injector) {
       $q = $injector.get('$q');
-      $scope = $injector.get('$rootScope').$new();
+      $rootScope = $injector.get('$rootScope');
+      $scope = $rootScope.$new();
       fwPostListConstants = $injector.get('fwPostListConstants');
       states = $injector.get('states');
       landingPageConstants = $injector.get('landingPageConstants');
+      fwSubscriptionInformationConstants = $injector.get('fwSubscriptionInformationConstants');
     });
 
     errorFacade.handleError.and.callFake(function(error, setMessage) {
@@ -229,11 +233,16 @@ describe('fw-post-list-controller', function(){
     describe('when attachToReloadEvent is called', function(){
       beforeEach(function(){
         spyOn($scope, '$on');
+        spyOn($rootScope, '$on');
         target.internal.attachToReloadEvent();
       });
 
       it('should attach to the reload event', function(){
         expect($scope.$on).toHaveBeenCalledWith(fwPostListConstants.reloadEvent, target.internal.loadPosts);
+      });
+
+      it('should attach to the root subscriptionStatusChangedEvent event', function(){
+        expect($rootScope.$on).toHaveBeenCalledWith(fwSubscriptionInformationConstants.subscriptionStatusChangedEvent, target.internal.loadPosts);
       });
     });
 
@@ -248,6 +257,7 @@ describe('fw-post-list-controller', function(){
 
         beforeEach(function(){
           $scope.source = fwPostListConstants.sources.creatorBacklog;
+          target.internal.currentUserId = 'currentUserId';
           target.initialize();
           $scope.$apply();
         });
@@ -268,7 +278,7 @@ describe('fw-post-list-controller', function(){
           var result;
           beforeEach(function(){
             result = undefined;
-            postStub.getCreatorBacklog.and.returnValue($q.when({ data: 'data' }));
+            postStub.getCreatorBacklog.and.returnValue($q.when({ data: [{ something: 'something' }] }));
             target.internal.loadNext().then(function(r){ result = r; });
             $scope.$apply();
           });
@@ -278,7 +288,7 @@ describe('fw-post-list-controller', function(){
           });
 
           it('should return the result', function(){
-            expect(result).toEqual({posts: 'data'});
+            expect(result).toEqual({posts: [{ something: 'something', creatorId: 'currentUserId' }] });
           });
         });
       });

@@ -450,6 +450,7 @@ describe('post-utilities', function(){
 
         expect(post.readAccess).toBe(true);
         expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(true);
       });
     });
 
@@ -465,13 +466,15 @@ describe('post-utilities', function(){
 
         expect(post.readAccess).toBe(true);
         expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(true);
       });
     });
 
-    describe('when subscriber', function(){
+    describe('when subscriber with no account balance', function(){
       it('should specify correct access to post', function(){
         var post = {
-          isSubscribed: true
+          isSubscribed: true,
+          channel: { price: 10, acceptedPrice: 10 }
         };
         var caches = {
           accountSettings: {}
@@ -480,13 +483,32 @@ describe('post-utilities', function(){
 
         expect(post.readAccess).toBe(false);
         expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(true);
       });
     });
 
-    describe('when subscriber with account balance', function(){
+    describe('when subscriber with low accepted price', function(){
       it('should specify correct access to post', function(){
         var post = {
-          isSubscribed: true
+          isSubscribed: true,
+          channel: { price: 10, acceptedPrice: 9 }
+        };
+        var caches = {
+          accountSettings: { accountBalance: 1 }
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(false);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(false);
+      });
+    });
+
+    describe('when subscriber with high accepted price', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isSubscribed: true,
+          channel: { price: 10, acceptedPrice: 11 }
         };
         var caches = {
           accountSettings: { accountBalance: 1 }
@@ -495,13 +517,51 @@ describe('post-utilities', function(){
 
         expect(post.readAccess).toBe(true);
         expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(false);
+      });
+    });
+
+    describe('when subscriber and guest list with accepted price', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isSubscribed: true,
+          isGuestList: true,
+          channel: { price: 10, acceptedPrice: 10 }
+        };
+        var caches = {
+          accountSettings: { accountBalance: 1 }
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(true);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(false);
+      });
+    });
+
+    describe('when subscriber and guest list with zero accepted price', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isSubscribed: true,
+          isGuestList: true,
+          channel: { price: 10, acceptedPrice: 0 }
+        };
+        var caches = {
+          accountSettings: { accountBalance: 1 }
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(true);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(true);
       });
     });
 
     describe('when subscriber with payment retrying', function(){
       it('should specify correct access to post', function(){
         var post = {
-          isOwner: true
+          isSubscribed: true,
+          channel: { price: 10, acceptedPrice: 10 }
         };
         var caches = {
           accountSettings: { isRetryingPayment: true }
@@ -510,6 +570,24 @@ describe('post-utilities', function(){
 
         expect(post.readAccess).toBe(true);
         expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(true);
+      });
+    });
+
+    describe('when subscriber with account balance and accepted price', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isSubscribed: true,
+          channel: { price: 10, acceptedPrice: 10 }
+        };
+        var caches = {
+          accountSettings: { accountBalance: 1 }
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(true);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(true);
       });
     });
 
@@ -524,6 +602,7 @@ describe('post-utilities', function(){
 
         expect(post.readAccess).toBe(false);
         expect(post.readAccessIgnoringPayment).toBe(false);
+        expect(post.priceAccepted).toBe(true);
       });
     });
   });

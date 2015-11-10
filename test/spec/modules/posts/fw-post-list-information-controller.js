@@ -14,15 +14,17 @@ describe('fw-post-list-information-controller', function() {
   var $state;
   var states;
   var landingPageConstants;
+  var fetchAggregateUserState;
 
   beforeEach(function () {
 
     subscriptionRepositoryFactory = jasmine.createSpyObj('subscriptionRepositoryFactory', ['forCurrentUser']);
-    subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['tryGetBlogs']);
+    subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['tryGetBlogs', 'getUserId']);
     subscriptionRepositoryFactory.forCurrentUser.and.returnValue(subscriptionRepository);
     errorFacade = jasmine.createSpyObj('errorFacade', ['handleError']);
     subscriptionStub = jasmine.createSpyObj('subscriptionStub', ['putChannelSubscription']);
     $state = jasmine.createSpyObj('$state', ['go']);
+    fetchAggregateUserState = jasmine.createSpyObj('fetchAggregateUserState', ['updateFromServer']);
 
     module('webApp');
     module(function ($provide) {
@@ -30,6 +32,7 @@ describe('fw-post-list-information-controller', function() {
       $provide.value('errorFacade', errorFacade);
       $provide.value('subscriptionStub', subscriptionStub);
       $provide.value('$state', $state);
+      $provide.value('fetchAggregateUserState', fetchAggregateUserState);
     });
 
     inject(function ($injector) {
@@ -97,12 +100,17 @@ describe('fw-post-list-information-controller', function() {
       var success;
       var error;
       var deferredPutChannelSubscription;
+      var deferredUpdateFromServer;
       var updatedPrice;
       beforeEach(function(){
         success = undefined;
         error = undefined;
+
         deferredPutChannelSubscription = $q.defer();
         subscriptionStub.putChannelSubscription.and.returnValue(deferredPutChannelSubscription.promise);
+
+        deferredUpdateFromServer = $q.defer();
+        fetchAggregateUserState.updateFromServer.and.returnValue(deferredUpdateFromServer.promise);
 
         updatedPrice = {
           channel: {
@@ -118,6 +126,8 @@ describe('fw-post-list-information-controller', function() {
         ];
 
         spyOn($scope, '$emit');
+
+        subscriptionRepository.getUserId.and.returnValue('userId');
 
         $scope.acceptPrice(updatedPrice).then(function(){ success = true; }, function(e){ error = e; });
         $scope.$apply();
@@ -143,6 +153,14 @@ describe('fw-post-list-information-controller', function() {
           it('should emit the reload event', function(){
             expect($scope.$emit).toHaveBeenCalledWith(fwPostListConstants.reloadEvent);
           });
+
+          it('should not update user state', function(){
+            expect(fetchAggregateUserState.updateFromServer).not.toHaveBeenCalled();
+          });
+
+          it('should complete successfully', function(){
+            expect(success).toBe(true);
+          });
         });
 
         describe('when price was a decrease', function(){
@@ -158,6 +176,44 @@ describe('fw-post-list-information-controller', function() {
 
           it('should not emit the reload event', function(){
             expect($scope.$emit).not.toHaveBeenCalled();
+          });
+
+          it('should update user state', function(){
+            expect(fetchAggregateUserState.updateFromServer).toHaveBeenCalledWith('userId');
+          });
+
+          describe('when updateFromServer succeeds', function(){
+            beforeEach(function(){
+              deferredUpdateFromServer.resolve();
+              $scope.$apply();
+            });
+
+            it('should complete successfully', function(){
+              expect(success).toBe(true);
+            });
+          });
+
+          describe('when updateFromServer fails', function(){
+            beforeEach(function(){
+              deferredUpdateFromServer.reject('error');
+              $scope.$apply();
+            });
+
+            it('should call handleError', function(){
+              expect(errorFacade.handleError).toHaveBeenCalledWith('error', jasmine.any(Function));
+            });
+
+            it('should set the error message', function(){
+              expect($scope.model.errorMessage).toBe('friendlyError');
+            });
+
+            it('should not propagate the error', function(){
+              expect(error).toBeUndefined();
+            });
+
+            it('should complete successfully', function(){
+              expect(success).toBe(true);
+            });
           });
         });
       });

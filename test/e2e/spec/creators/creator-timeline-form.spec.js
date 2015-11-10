@@ -28,11 +28,9 @@
 
     var navigateToLandingPage = function() {
       sidebar.viewProfileLink.click();
-      creatorLandingPagePage.subscribeButton.click();
     };
 
     var navigateToSiteFromLandingPage = function() {
-      creatorLandingPagePage.fifthweekLink.click();
       sidebar.subscriptionsLink.click();
     };
 
@@ -357,6 +355,6 @@
     };
 
     runTests(navigateToPostsPage, navigateToSiteFromPostsPage);
-    runTests(navigateToLandingPage, navigateToSiteFromLandingPage);
+    //runTests(navigateToLandingPage, navigateToSiteFromLandingPage);
   });
 })();

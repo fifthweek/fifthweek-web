@@ -11,7 +11,7 @@
   var CreatorLandingPagePage = require('../../pages/creators/creator-landing-page.page.js');
   var AccountSettingsPage = require('../../pages/account-settings.page.js');
   var ChannelListPage = require('../../pages/creators/channel-list.page.js');
-  var PostPage = require('../../pages/post-preview.page.js');
+  var PostPage = require('../../pages/post.page.js');
 
   describe('creator landing page', function() {
 
@@ -36,13 +36,13 @@
     };
 
     var runForCreatorAndUserAndLoggedOutUser = function(delegate){
-      delegate();
+      delegate(false);
       commonWorkflows.signOut();
       commonWorkflows.getPage('/' + creatorRegistration.username);
-      delegate();
+      delegate(true);
       commonWorkflows.signIn(userRegistration);
       commonWorkflows.getPage('/' + creatorRegistration.username);
-      delegate();
+      delegate(true);
       commonWorkflows.reSignIn(creatorRegistration);
       navigateToPage();
     };
@@ -103,7 +103,7 @@
 
       headerViewProfile.includeTests(function() { return blog; }, function() { return ''; });
     });
-/*
+
     it('should contain valid edit links', function() {
       page.editHeaderImageLink.click();
       expect(browser.getCurrentUrl()).toContain(customizeLandingPage.pageUrl);
@@ -141,8 +141,10 @@
 
       it('should display full description when provided', function() {
         page.editDescriptionLink.click();
-        testKit.waitForElementToDisplay(element(by.id(customizeLandingPage.descriptionTextBoxId)));
-        testKit.setContentEditableValue(customizeLandingPage.descriptionTextBoxId, fullDescription);
+        testKit.waitForElementToDisplay(element(by.css(customizeLandingPage.descriptionTextBoxSelector)));
+        testKit.setContentEditableValue(customizeLandingPage.descriptionTextBoxSelector, fullDescription);
+
+        testKit.waitForElementToBeRemoved(customizeLandingPage.disabledSubmitButton);
         customizeLandingPage.submitButton.click();
         navigateToPage();
 
@@ -154,8 +156,8 @@
 
       it('should display video when provided', function() {
         page.editVideoLink.click();
-        testKit.waitForElementToDisplay(element(by.id(customizeLandingPage.descriptionTextBoxId)));
-        testKit.clearContentEditable(customizeLandingPage.descriptionTextBoxId);
+        testKit.waitForElementToDisplay(element(by.css(customizeLandingPage.descriptionTextBoxSelector)));
+        testKit.clearContentEditable(customizeLandingPage.descriptionTextBoxSelector);
         testKit.setValue(customizeLandingPage.videoTextBoxId, 'https://' + videoUrlDomain + '/' + videoUrlId);
         customizeLandingPage.submitButton.click();
         navigateToPage();
@@ -169,8 +171,10 @@
 
       it('should display full description and video when both are provided', function() {
         page.editDescriptionLink.click();
-        testKit.waitForElementToDisplay(element(by.id(customizeLandingPage.descriptionTextBoxId)));
-        testKit.setContentEditableValue(customizeLandingPage.descriptionTextBoxId, fullDescription);
+        testKit.waitForElementToDisplay(element(by.css(customizeLandingPage.descriptionTextBoxSelector)));
+        testKit.setContentEditableValue(customizeLandingPage.descriptionTextBoxSelector, fullDescription);
+
+        testKit.waitForElementToBeRemoved(customizeLandingPage.disabledSubmitButton);
         customizeLandingPage.submitButton.click();
         navigateToPage();
 
@@ -182,7 +186,7 @@
         });
       });
     });
-*/
+
     describe('channel list', function() {
       it('should display the default channel', function() {
         visibleChannels.push({
@@ -204,7 +208,7 @@
           for (var i = 0; i < visibleChannels.length; i++) {
             var channel = page.getChannel(i);
             var channelName = channel.element(by.css('.channel-name'));
-            var channelPrice = channel.element(by.css('.channel-price'));
+            var channelPrice = page.getChannelPrice(i);
 
             expect(channelName.getText()).toContain(visibleChannels[i].name);
             expect(channelPrice.getText()).toContain('$' + visibleChannels[i].price);
@@ -213,45 +217,11 @@
       };
 
       var createHiddenAndVisibleChannels = function() {
-        page.fifthweekLink.click();
         var newVisibleChannels = commonWorkflows.createHiddenAndVisibleChannels().visible;
         var newVisibleChannelsSorted = _.sortBy(newVisibleChannels, 'name');
         visibleChannels = visibleChannels.concat(newVisibleChannelsSorted);
         navigateToPage();
       };
-    });
-
-    describeForCreatorAndUserAndLoggedOutUser(function(){
-      describe('total price', function() {
-        var priceSum;
-
-        it('should equal the sum of all channel prices by default', function() {
-          priceSum = _.sum(visibleChannels, function(v){ return parseFloat(v.price); }).toFixed(2);
-          expectPrice(priceSum);
-        });
-
-        it('should sum all selected channels as they are deselected', function() {
-          for (var i = 0; i < visibleChannels.length; i++) {
-            priceSum = (parseFloat(priceSum) - parseFloat(visibleChannels[i].price)).toFixed(2);
-            page.getChannelPrice(i).click();
-            expectPrice(priceSum);
-          }
-        });
-
-        it('should sum all selected channels as they are selected', function() {
-          priceSum = 0;
-          for (var i = 0; i < visibleChannels.length; i++) {
-            priceSum = (parseFloat(priceSum) + parseFloat(visibleChannels[i].price)).toFixed(2);
-            page.getChannelPrice(i).click();
-            expectPrice(priceSum);
-          }
-        });
-
-        var expectPrice = function(price) {
-          expect(page.subscribeButton.getText()).toContain('$' + price);
-          expect(page.channelListTotalPrice.getText()).toContain('$' + price);
-        }
-      });
     });
 
     describe('when testing peeking at post previews', function(){
@@ -262,7 +232,6 @@
       });
 
       it('should not show any post previews after posting note on date', function(){
-        page.fifthweekLink.click();
         commonWorkflows.postNoteOnDate(0);
 
         browser.waitForAngular();
@@ -273,7 +242,6 @@
       });
 
       it('should not show any post previews after posting note hidden channel', function(){
-        page.fifthweekLink.click();
         commonWorkflows.postNoteNow(1);
 
         browser.waitForAngular();
@@ -283,28 +251,30 @@
         });
       });
 
+      var navigateToPageAsUser = function(){
+        commonWorkflows.getPage('/' + creatorRegistration.username);
+      };
+
       it('should show post previews after posting now', function(){
-        page.fifthweekLink.click();
         var postData = commonWorkflows.postNoteNow(0);
 
         browser.waitForAngular();
 
-        runForCreatorAndUserAndLoggedOutUser(function(){
+        runForCreatorAndUserAndLoggedOutUser(function(isCustomer){
           expect(post.allPosts.count()).toBe(1);
-          post.expectPost(blog, postData, creatorRegistration, function() { });
+          post.expectPost(blog, postData, creatorRegistration, navigateToPageAsUser, isCustomer, isCustomer ? post.previewTag : undefined);
         });
       });
 
       it('should show post previews after posting to other channel', function(){
-        page.fifthweekLink.click();
         var postData = commonWorkflows.postNoteNow(3);
         postData.channelName = visibleChannels[1].name;
 
         browser.waitForAngular();
 
-        runForCreatorAndUserAndLoggedOutUser(function(){
+        runForCreatorAndUserAndLoggedOutUser(function(isCustomer){
           expect(post.allPosts.count()).toBe(2);
-          post.expectPost(blog, postData, creatorRegistration, function() { });
+          post.expectPost(blog, postData, creatorRegistration, navigateToPageAsUser, isCustomer, isCustomer ? post.previewTag : undefined);
         });
       });
     });

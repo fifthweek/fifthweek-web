@@ -18,12 +18,11 @@
     var headerViewProfile = new HeaderViewProfilePage();
     var creatorLandingPagePage = new CreatorLandingPagePage();
 
-    it('should not contain a sidebar or header', function() {
+    it('should not contain header', function() {
       var context = commonWorkflows.createBlog();
       registration = context.registration;
       blog = context.blog;
       sidebar.viewProfileLink.click();
-      creatorLandingPagePage.subscribeButton.click();
       //expect(sidebar.sidebar.isDisplayed()).toBe(false);
       expect(headerStandard.navbar.isDisplayed()).toBe(false);
     });

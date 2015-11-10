@@ -147,12 +147,19 @@ angular.module('webApp').factory('postEditDialogUtilities',
       return postUtilities.processPostForRendering(post, accountSettingsRepository, blogRepository, subscriptionRepository);
     };
 
-    service.getFullPost = function(postId, accountSettingsRepository, blogRepository, subscriptionRepository){
+    service.internal.assignQueueIdIfRequired = function(initialPost, fullPost){
+      if(initialPost.isScheduled){
+        fullPost.queueId = initialPost.queueId;
+      }
+    };
+
+    service.getFullPost = function(initialPost, accountSettingsRepository, blogRepository, subscriptionRepository){
       var post;
-      return postStub.getPost(postId)
+      return postStub.getPost(initialPost.postId)
         .then(function(result) {
           post = result.data.post;
           post.files = result.data.files;
+          service.internal.assignQueueIdIfRequired(initialPost, post);
           return postUtilities.processPostForRendering(post, accountSettingsRepository, blogRepository, subscriptionRepository);
         })
         .then(function(){

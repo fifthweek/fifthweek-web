@@ -31,6 +31,10 @@ describe('fw-post-subscription-information', function(){
       scope.$digest();
     });
 
+    it('should set isPost to true', function(){
+      expect(element.isolateScope().isPost).toBe(true);
+    });
+
     it('should initialize the controller', function(){
       expect(fwSubscriptionInformationCtrl.initialize).toHaveBeenCalledWith();
     });

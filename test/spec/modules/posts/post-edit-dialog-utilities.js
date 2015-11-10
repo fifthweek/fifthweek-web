@@ -583,11 +583,67 @@ describe('post-edit-dialog-utilities', function() {
     });
   });
 
+  describe('assignQueueIdIfRequired', function(){
+    it('should not add a queueId field if not scheduled', function(){
+      var initial = {
+        isScheduled: false,
+        queueId: 'queueId'
+      };
+
+      var post = {
+        postId: 'postId'
+      };
+
+      target.internal.assignQueueIdIfRequired(initial, post);
+
+      expect(post).toEqual({
+        postId: 'postId'
+      });
+    });
+
+    it('should not add queueId field if scheduled', function(){
+      var initial = {
+        isScheduled: true,
+        queueId: undefined
+      };
+
+      var post = {
+        postId: 'postId'
+      };
+
+      target.internal.assignQueueIdIfRequired(initial, post);
+
+      expect(post).toEqual({
+        postId: 'postId',
+        queueId: undefined
+      });
+    });
+
+    it('should not add queueId field if scheduled on queue', function(){
+      var initial = {
+        isScheduled: true,
+        queueId: 'queueId'
+      };
+
+      var post = {
+        postId: 'postId'
+      };
+
+      target.internal.assignQueueIdIfRequired(initial, post);
+
+      expect(post).toEqual({
+        postId: 'postId',
+        queueId: 'queueId'
+      });
+    });
+  });
+
   describe('when calling getFullPost', function(){
     var result;
     var error;
     var deferredGetPost;
     var deferredProcessPostForRendering;
+    var initialPost;
     beforeEach(function(){
       result = undefined;
       error = undefined;
@@ -598,7 +654,13 @@ describe('post-edit-dialog-utilities', function() {
       deferredProcessPostForRendering = $q.defer();
       postUtilities.processPostForRendering.and.returnValue(deferredProcessPostForRendering.promise);
 
-      target.getFullPost('postId', 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository')
+      spyOn(target.internal, 'assignQueueIdIfRequired');
+
+      initialPost = {
+        postId: 'postId'
+      };
+
+      target.getFullPost(initialPost, 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository')
         .then(function(r){ result = r; }, function(e){ error = e; });
       $rootScope.$apply();
     });
@@ -623,6 +685,10 @@ describe('post-edit-dialog-utilities', function() {
         };
 
         $rootScope.$apply();
+      });
+
+      it('should call assignQueueIdIfRequired', function(){
+        expect(target.internal.assignQueueIdIfRequired).toHaveBeenCalledWith(initialPost, expectedPost);
       });
 
       it('should call processPostForRendering', function(){

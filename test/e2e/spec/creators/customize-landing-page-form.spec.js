@@ -63,7 +63,7 @@ describe('customize landing page form', function() {
     });
 
     it('should contain the description', function(){
-      expect(element(by.id(page.descriptionTextBoxId)).getText()).toBe('');
+      expect(element(by.css(page.descriptionTextBoxSelector)).getText()).toBe('');
     });
 
     it('should contain the submit button', function(){
@@ -90,7 +90,8 @@ describe('customize landing page form', function() {
       testKit.waitForElementToDisplay(page.headerImage);
 
       testKit.setValue(page.videoTextBoxId, validVideo);
-      testKit.setContentEditableValue(page.descriptionTextBoxId, validDescription);
+      testKit.setContentEditableValue(page.descriptionTextBoxSelector, validDescription);
+      testKit.waitForElementToBeRemoved(page.disabledSubmitButton);
     });
 
     return newValues;
@@ -157,7 +158,7 @@ describe('customize landing page form', function() {
         testKit.waitForElementToDisplay(page.headerImage);
 
         expect(element(by.id(page.videoTextBoxId)).getAttribute('value')).toBe(validVideo);
-        expect(element(by.id(page.descriptionTextBoxId)).getText()).toBe(validDescription);
+        expect(element(by.css(page.descriptionTextBoxSelector)).getText()).toBe(validDescription);
       });
     });
   });
@@ -193,11 +194,13 @@ describe('customize landing page form', function() {
       testKit.includeHappyPaths(page, videoUrlInputPage, 'videoTextBox');
 
       it('should allow symbols in descriptions', function(){
-        testKit.setContentEditableValue(page.descriptionTextBoxId, testKit.punctuation33);
+        testKit.setContentEditableValue(page.descriptionTextBoxSelector, testKit.punctuation33);
+        testKit.waitForElementToBeRemoved(page.disabledSubmitButton);
       });
 
       it('should allow empty descriptions', function(){
-        testKit.clearContentEditable(page.descriptionTextBoxId);
+        testKit.clearContentEditable(page.descriptionTextBoxSelector);
+        testKit.waitForElementToBeRemoved(page.disabledSubmitButton);
       });
 
       it('should allow empty video urls', function(){
@@ -229,9 +232,10 @@ describe('customize landing page form', function() {
 
       it('should not allow descriptions over 50000 characters', function(){
         var overSizedValue = new Array(50002).join( 'a' );
-        testKit.setContentEditableValue(page.descriptionTextBoxId, overSizedValue, true);
+        testKit.setContentEditableValue(page.descriptionTextBoxSelector, overSizedValue, true);
+        testKit.waitForElementToBeRemoved(page.disabledSubmitButton);
 
-        testKit.assertContentEditableMaxLength(page.helpMessages, page.descriptionTextBoxId, overSizedValue, 50000);
+        testKit.assertContentEditableMaxLength(page.helpMessages, page.descriptionTextBoxSelector, overSizedValue, 50000);
       });
     });
   });

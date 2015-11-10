@@ -7,7 +7,7 @@ angular.module('webApp')
     }
   })
   .controller('postEditDialogCtrl',
-  function($scope, $q, postId, postEditDialogConstants, composeUtilities, blobImageControlFactory, postEditDialogUtilities, errorFacade, initializer, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory) {
+  function($scope, $q, initialPost, postEditDialogConstants, composeUtilities, blobImageControlFactory, postEditDialogUtilities, errorFacade, initializer, blogRepositoryFactory, accountSettingsRepositoryFactory, subscriptionRepositoryFactory) {
     'use strict';
 
     var blogRepository = blogRepositoryFactory.forCurrentUser();
@@ -26,7 +26,7 @@ angular.module('webApp')
     $scope.scheduleModes = scheduleModes;
 
     $scope.save = function(){
-      return postEditDialogUtilities.performSave(postId, $scope.model)
+      return postEditDialogUtilities.performSave(internal.postId, $scope.model)
         .then(function() {
           return postEditDialogUtilities.applyChangesToPost(internal.post, $scope.model, accountSettingsRepository, blogRepository, subscriptionRepository);
         })
@@ -105,8 +105,9 @@ angular.module('webApp')
     };
 
     this.initialize = function(){
+      internal.postId = initialPost.postId;
       $scope.model.isLoading = true;
-      return postEditDialogUtilities.getFullPost(postId, accountSettingsRepository, blogRepository, subscriptionRepository)
+      return postEditDialogUtilities.getFullPost(initialPost, accountSettingsRepository, blogRepository, subscriptionRepository)
         .then(function(post){
           $scope.model = internal.createModelFromPost(post);
           internal.post = post;

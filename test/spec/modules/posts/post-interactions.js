@@ -82,7 +82,7 @@ describe('post-interactions', function(){
     });
 
     it('should configure injection of post', function(){
-      expect(modalParameter.resolve.postId()).toBe('postId');
+      expect(modalParameter.resolve.initialPost()).toEqual({ postId: 'postId' });
     });
   });
 

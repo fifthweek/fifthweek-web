@@ -1,5 +1,6 @@
 angular.module('webApp').controller('fwPostListInformationCtrl',
-  function($scope, $q, fwPostListConstants, subscriptionRepositoryFactory, aggregateUserStateConstants, subscriptionStub, $state, states, errorFacade, landingPageConstants) {
+  function($scope, $q, fwPostListConstants, subscriptionRepositoryFactory, aggregateUserStateConstants, subscriptionStub,
+           fetchAggregateUserState, $state, states, errorFacade, landingPageConstants) {
     'use strict';
 
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
@@ -45,7 +46,7 @@ angular.module('webApp').controller('fwPostListInformationCtrl',
     };
 
     internal.load = function(){
-      if($scope.source === fwPostListConstants.sources.timeline) {
+      if($scope.source === fwPostListConstants.sources.timeline || $scope.source === fwPostListConstants.sources.preview) {
         return internal.loadForCreator($scope.userId)
           .catch(function(error){
             return errorFacade.handleError(error, function(message) {
@@ -76,6 +77,10 @@ angular.module('webApp').controller('fwPostListInformationCtrl',
 
           if(updatedPrice.isIncrease){
             $scope.$emit(fwPostListConstants.reloadEvent);
+          }
+          else {
+            var userId = subscriptionRepository.getUserId();
+            return fetchAggregateUserState.updateFromServer(userId);
           }
         })
         .catch(function(error){

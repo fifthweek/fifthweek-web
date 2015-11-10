@@ -10,7 +10,7 @@
         <div class="channel-price-column">
           <button ng-if="!channel.subscriptionInformation"
                   type="submit"
-                  id="subscribe-button-{{$index}}"
+                  id="{{isPost ? 'post-' : ''}}subscribe-button-{{$index}}"
                   class="btn channel-button subscribe-button"
                   can-submit="true"
                   ng-disabled="form.isSubmitting"
@@ -18,13 +18,13 @@
                   data-loading-text="Subscribing..."
                   fw-form-submit="subscribe(channel)">
             Subscribe
-            <span ng-if="!model.landingPage.hasFreeAccess"><fw-price value="channel.price"></fw-price></span>
-            <span ng-if="model.landingPage.hasFreeAccess">FREE</span>
+            <span ng-if="!model.landingPage.hasFreeAccess"><fw-price price-id="channel-price-{{$index}}" value="channel.price"></fw-price></span>
+            <span ng-if="model.landingPage.hasFreeAccess" id="channel-price-{{$index}}">FREE</span>
           </button>
 
           <button ng-if="channel.subscriptionInformation"
                   type="submit"
-                  id="unsubscribe-button-{{$index}}"
+                  id="{{isPost ? 'post-' : ''}}unsubscribe-button-{{$index}}"
                   class="btn channel-button unsubscribe-button"
                   can-submit="true"
                   ng-disabled="form.isSubmitting"
@@ -32,11 +32,13 @@
                   data-loading-text="Unsubscribing..."
                   fw-form-submit="unsubscribe(channel)">
             Unsubscribe
+            <span ng-if="!model.landingPage.hasFreeAccess"><fw-price price-id="channel-price-{{$index}}" value="channel.price"></fw-price></span>
+            <span ng-if="model.landingPage.hasFreeAccess" id="channel-price-{{$index}}">FREE</span>
           </button>
 
           <button ng-if="channel.subscriptionInformation.isIncrease || channel.subscriptionInformation.isDecrease"
                   type="submit"
-                  id="accept-button-{{$index}}"
+                  id="{{isPost ? 'post-' : ''}}accept-button-{{$index}}"
                   class="btn channel-button subscribe-button"
                   can-submit="true"
                   ng-disabled="form.isSubmitting"
@@ -45,10 +47,10 @@
                   fw-form-submit="subscribe(channel)">
             Accept Price Change
                   <span>
-                    <fw-price value="channel.subscriptionInformation.acceptedPrice"></fw-price>
+                    <fw-price price-id="channel-previous-price-{{$index}}" value="channel.subscriptionInformation.acceptedPrice"></fw-price>
                     <i class="fa fa-arrow-right"></i>
-                    <span ng-if="!model.landingPage.hasFreeAccess"><fw-price value="channel.price"></fw-price></span>
-                    <span ng-if="model.landingPage.hasFreeAccess">FREE</span>
+                    <span ng-if="!model.landingPage.hasFreeAccess"><fw-price price-id="channel-new-price-{{$index}}" value="channel.price"></fw-price></span>
+                    <span ng-if="model.landingPage.hasFreeAccess" id="channel-new-price-{{$index}}">FREE</span>
                   </span>
           </button>
         </div>

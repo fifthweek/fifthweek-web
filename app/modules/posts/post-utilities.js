@@ -91,10 +91,13 @@ angular.module('webApp').factory('postUtilities',
     };
 
     service.internal.processAccess = function(post, caches){
-      post.readAccess = !!(post.isOwner || post.isGuestList ||
-        (post.isSubscribed && (caches.accountSettings.accountBalance > 0 || caches.accountSettings.isRetryingPayment)));
+      var canAffordPost = caches.accountSettings && (caches.accountSettings.accountBalance > 0 || caches.accountSettings.isRetryingPayment);
+      var channelPrice = !post.isSubscribed || post.isGuestList ? 0 : post.channel.price;
+      var hasAcceptedHigherPrice = post.isSubscribed && channelPrice <= post.channel.acceptedPrice;
 
+      post.readAccess = !!(post.isOwner || post.isGuestList || (post.isSubscribed && canAffordPost && hasAcceptedHigherPrice));
       post.readAccessIgnoringPayment = !!(post.isOwner || post.isGuestList || post.isSubscribed);
+      post.priceAccepted = !post.isSubscribed || channelPrice === post.channel.acceptedPrice;
     };
 
     service.internal.processScheduledPost = function(post) {

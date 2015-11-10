@@ -19,30 +19,29 @@
 
         <div ng-if="model.currentView === views.timeline">
           <h1 class="landing-page-h1">Latest Content</h1>
-          <div class="content-padding">
-            <a ng-if="model.landingPage.isOwner" id="edit-live-posts-link" class="btn btn-edit btn-default" ui-sref="creator.posts.live">
-              <span>edit live posts</span>
-            </a>
-          </div>
 
           <div class="landing-page-content-buttons">
 
             <button class="landing-page-content-button"
+                    id="show-channel-posts-button"
                     ng-if="model.channelId"
                     ng-class="{'active-button': model.currentView === views.timeline && model.timelineType === timelineTypes.channel }"
                     ng-click="showChannel()">Channel</button>
 
             <button class="landing-page-content-button"
+                    id="show-post-button"
                     ng-if="model.postId"
                     ng-class="{'active-button': model.currentView === views.post }"
                     ng-click="showPost()">Post</button>
 
             <button class="landing-page-content-button"
+                    id="show-all-posts-button"
                     ng-if="!model.landingPage.isOwner || model.channelId || model.postId"
                     ng-class="{'active-button': model.currentView === views.timeline && model.timelineType === timelineTypes.all }"
                     ng-click="showAllPosts()">All Posts</button>
 
             <button class="landing-page-content-button"
+                    id="show-subscribed-posts-button"
                     ng-if="!model.landingPage.isOwner"
                     ng-class="{'active-button': model.currentView === views.timeline && model.timelineType === timelineTypes.subscribed }"
                     ng-click="showSubscribedPosts()">Subscribed Posts</button>
@@ -68,13 +67,13 @@
         </div>
 
         <div ng-if="model.currentView === views.post && model.post">
-          <p>
+          <!--p>
             This post requires a subscription to <strong>{{model.post.channel.name}}</strong>.
             <a href ng-click="showAllPosts()">Find out more...</a>.
           </p>
 
           <fw-post-subscription-information username="{{model.username}}"
-                                            required-channel-id="{{model.post.channel.channelId}}"></fw-post-subscription-information>
+                                            required-channel-id="{{model.post.channel.channelId}}"></fw-post-subscription-information-->
 
           <fw-full-post post="model.post"></fw-full-post>
         </div>

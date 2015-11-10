@@ -128,11 +128,50 @@ describe('customize landing page controller', function () {
         expect(jsonService.toSirTrevor).toHaveBeenCalledWith([{
           type: 'text',
           data: {
+            format: 'md',
             text: 'description'
           }
         }]);
 
         expect($scope.model.settings.description).toBe('sir-trevor');
+      });
+
+      it('should set the blob image to defaults', function(){
+        expect($scope.blobImage.update).toHaveBeenCalledWith();
+      });
+
+      it('should set the landing page URL', function(){
+        expect($scope.model.landingPageUrl).toBe('https://www.fifthweek.com/username');
+      });
+    });
+
+    describe('when the user does not have a description', function(){
+
+      beforeEach(function(){
+        blogRepository.getBlog.and.returnValue($q.when({
+          name: 'name',
+          headerImage: undefined,
+          description: ''
+        }));
+
+        createController();
+        $scope.$apply();
+      });
+
+      it('should get the current username', function(){
+        expect(aggregateUserStateUtilities.getUsername).toHaveBeenCalled();
+      });
+
+      it('should set the settings', function(){
+        expect($scope.model.settings).toBeDefined();
+        expect($scope.model.settings.name).toBe('name');
+        expect($scope.model.settings.headerImage).toBeUndefined();
+      });
+
+      it('should not convert the description into sir trevor data', function(){
+        expect(jsonService.toSirTrevor).not.toHaveBeenCalled();
+
+        expect($scope.model.settings.description).toBe('');
       });
 
       it('should set the blob image to defaults', function(){
@@ -177,6 +216,7 @@ describe('customize landing page controller', function () {
         expect(jsonService.toSirTrevor).toHaveBeenCalledWith([{
           type: 'text',
           data: {
+            format: 'md',
             text: 'description'
           }
         }]);

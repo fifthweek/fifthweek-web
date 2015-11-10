@@ -29,8 +29,8 @@
       return by.cssContainingText(createCommentSelector(this.commentIndex) + ' ' + css, text);
     }},
 
-    commentTextBoxId: { value: 'model-input-comment' },
-    commentTextBox: { get: function() { return element(by.id('model-input-comment')); }},
+    commentTextBoxSelector: { value: '#model-input-comment .st-text-block' },
+    commentTextBox: { get: function() { return element(by.css(this.commentTextBoxSelector)); }},
     addCommentButton: { get: function() { return element(by.id('save-comment-button')); }},
     crossButton: { get: function () { return element(by.id('modal-cross-button')); }},
     helpMessages: { get: function () { return element.all(by.css('.comments-dialog .help-block')); }},
@@ -45,7 +45,7 @@
     postComment: { value: function(){
       var date = new Date();
       var commentText = 'Comment on ' + date.toISOString();
-      testKit.setContentEditableValue(this.commentTextBoxId, commentText);
+      testKit.setContentEditableValue(this.commentTextBoxSelector, commentText);
 
       this.addCommentButton.click();
 

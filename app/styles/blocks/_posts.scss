@@ -298,10 +298,6 @@ $post-p-margin: 28px;
     font-weight: bold;
   }
 
-  .guest-list-information{
-    text-align: center;
-  }
-
   .price-information{
     .price-row{
       margin-top: 20px;
@@ -499,12 +495,12 @@ $post-p-margin: 28px;
   }
 }
 
-.posts:not(.tagged-posts){
+/*.posts:not(.tagged-posts){
   .tag{
     display: none;
   }
-}
-.tagged-posts {
+}*/
+.posts,.tagged-posts {
   .tag {
     border: 1px solid $post-border-color;
     font-size: 12px;
@@ -636,6 +632,7 @@ $post-p-margin: 28px;
 }
 
 .post-additional-content{
+  @include post-left-right-padding;
   margin:0 auto;
   max-width:$content-max-width;
   margin-top: $post-margin-sm * 2;

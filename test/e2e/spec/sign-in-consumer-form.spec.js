@@ -20,7 +20,7 @@ describe('sign-in form', function() {
   var navigateToPage = function() {
     commonWorkflows.signOut();
     commonWorkflows.getPage('/' + creatorRegistration.username);
-    creatorLandingPage.subscribeButton.click();
+    creatorLandingPage.getSubscribeButton(0).click();
     page.showSignInLink.click();
   };
 

@@ -27,8 +27,6 @@
   };
 
   var navigateFromCreatorLandingPage = function () {
-    testKit.scrollIntoView(landingPage.fifthweekLink);
-    landingPage.fifthweekLink.click();
     sidebar.subscriptionsLink.click();
   };
 
@@ -87,8 +85,7 @@
 
       commonWorkflows.reSignIn(userRegistration);
       navigateToCreatorLandingPage(creatorRegistration1);
-      landingPage.getChannelPrice(1).click(); // Unsubscribe from second channel.
-      landingPage.subscribeButton.click();
+      landingPage.getSubscribeButton(0).click();
 
       navigateFromCreatorLandingPage();
       navigateToPage();
@@ -102,8 +99,8 @@
 
     it('should display second subscribed channel', function(){
       viewSubscriptionsPage.manageButton(0).click();
-      landingPage.getChannelPrice(1).click();
-      landingPage.updateSubscriptionButton.click();
+      landingPage.getSubscribeButton(1).click();
+      landingPage.cancelChangesButton.click();
 
       viewSubscriptionsPage.expectZeroAccountBalance();
       viewSubscriptionsPage.expectNonZeroSubscriptionsCost();
@@ -114,22 +111,22 @@
 
     it('should link to blogs', function(){
       viewSubscriptionsPage.firstBlogLink.click();
-      expect(browser.getCurrentUrl()).toContain('/' + creatorRegistration1.username + '/all/');
-      landingPage.fifthweekLink.click();
+      expect(browser.getCurrentUrl()).toContain('/' + creatorRegistration1.username + '/manage/');
       navigateToPage();
     });
 
     it('should link to channels', function(){
       viewSubscriptionsPage.firstChannelLink.click();
       expect(browser.getCurrentUrl()).toContain('/' + creatorRegistration1.username + '/channel/');
-      expect(postListInformationPage.postsHeader.isDisplayed()).toBe(true);
-      landingPage.fifthweekLink.click();
+      //expect(postListInformationPage.postsHeader.isDisplayed()).toBe(true);
       navigateToPage();
     });
 
     it('should unsubscribe', function(){
       viewSubscriptionsPage.manageButton(0).click();
-      landingPage.unsubscribeButton.click();
+      landingPage.getUnsubscribeButton(0).click();
+      landingPage.getUnsubscribeButton(1).click();
+      landingPage.cancelChangesButton.click();
 
       viewSubscriptionsPage.expectZeroAccountBalance();
       viewSubscriptionsPage.expectZeroSubscriptionsCost();
@@ -155,13 +152,12 @@
     it('should link to blog manage page', function(){
       viewSubscriptionsPage.firstBlogLink.click();
       expect(browser.getCurrentUrl()).toContain('/' + creatorRegistration2.username + '/manage/');
-      landingPage.fifthweekLink.click();
       navigateToPage();
     });
 
     it('should display subscribed guest list blog', function(){
       viewSubscriptionsPage.manageButton(0).click();
-      landingPage.subscribeButton.click();
+      landingPage.getSubscribeButton(0).click();
       navigateFromCreatorLandingPage();
 
       expect(viewSubscriptionsPage.blogCount).toBe(1);
@@ -205,7 +201,8 @@
 
     it('should display multiple subscribed blogs', function(){
       navigateToCreatorLandingPage(creatorRegistration1);
-      landingPage.subscribeButton.click();
+      landingPage.getSubscribeButton(0).click();
+      landingPage.getSubscribeButton(1).click();
 
       navigateFromCreatorLandingPage();
       navigateToPage();

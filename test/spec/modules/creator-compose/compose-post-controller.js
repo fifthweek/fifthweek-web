@@ -344,6 +344,36 @@ describe('compose post controller', function () {
           expect(success).toBe(true);
         });
       });
+
+      describe('when data is undefined', function(){
+        var success;
+        var error;
+        var deferredPostPost;
+        beforeEach(function(){
+          success = undefined;
+          error = undefined;
+
+          deferredPostPost = $q.defer();
+          postStub.postPost.and.returnValue(deferredPostPost.promise);
+
+          $scope.$close = jasmine.createSpy('$close');
+
+          target.internal.post(undefined).then(function(){ success = true; }, function(e){ error = e; });
+          $scope.$apply();
+        });
+
+        it('should not call postPost', function(){
+          expect(postStub.postPost).not.toHaveBeenCalled();
+        });
+
+        it('should display an error message', function(){
+          expect($scope.model.errorMessage).toBe('Please provide some content.');
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
+        });
+      });
     });
 
     describe('when calling commitChannel', function(){
@@ -358,6 +388,15 @@ describe('compose post controller', function () {
     });
 
     describe('when calling getPostData', function(){
+      it('should return undefined if no content', function(){
+        $scope.model.input.content = undefined;
+        $scope.model.committedChannel = {channelId: 'channelId'};
+
+        var data = target.internal.getPostData();
+
+        expect(data).toBeUndefined();
+      });
+
       it('should return post data', function(){
         $scope.model.input.content = {
           serializedBlocks: 'serializedBlocks',

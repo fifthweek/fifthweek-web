@@ -1,10 +1,10 @@
-<div class="full-post-dialog" ng-class="{ 'modal-content': !isDialog }">
+<div class="full-post-dialog" ng-class="{ 'modal-content': !isDialog }" id="full-post">
   <div class="modal-title" id="modal-title">
     <a id="post-cross-button" class="btn-close" href ng-click="closeDialog()" ng-if="isDialog">
       <i class="fa fa-close"></i>
     </a>
     <div class="info">
-      <a class="author" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.manage, key: null})">
+      <a ng-click="closeIfDialog()" class="author" ui-sref="landingPage({username: post.creator.username, action: null, key: null})">
         <img class="author-image" ng-if="post.creator.profileImage" ng-src="{{post.creator.profileImage.resolvedUri}}" />
         <img class="author-image" ng-if="!post.creator.profileImage" ng-src="{{fifthweekConstants.defaultProfileImageUrl}}" />
       </a>
@@ -13,12 +13,12 @@
       </ul>
       <ul ng-if="post">
         <li>
-          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.manage, key: null})" class="poster-name">{{post.blog.name}}</a>
+          <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: null, key: null})" class="poster-name">{{post.blog.name}}</a>
         </li>
         <li>
           <span ng-if="!post.isScheduled">Posted to </span>
           <span ng-if="post.isScheduled">Live in </span>
-          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
+          <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
             {{post.channel.name}}
           </a>
           <span class="live-in-info">{{post.liveIn}}</span>
@@ -27,16 +27,17 @@
     </div>
   </div>
 
-  <div class="post-additional-content" ng-if="post.creator.username && !post.readAccessIgnoringPayment && isDialog">
+  <div class="post-additional-content"
+       ng-if="post.creator.username && (!post.readAccessIgnoringPayment || !post.priceAccepted)">
     <div class="row">
       <div class="col-xs-12">
         <p>
           This post requires a subscription to <strong>{{post.channel.name}}</strong>.
-          <a ui-sref="landingPage({username: post.creator.username})">Find out more...</a>.
+          <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: null, key: null})">Find out more...</a>.
         </p>
         <fw-post-subscription-information
           username="{{post.creator.username}}"
-          required-channel-id="{{post.channel.channelId}}"></fw-post-subscription-information>
+          required-channel-id="{{post.channelId}}"></fw-post-subscription-information>
       </div>
     </div>
   </div>
@@ -118,11 +119,15 @@
 
       <button id="more-posts-button"
               class="btn btn-block btn-success"
-              ui-sref="landingPage({username: post.creator.username})">More from this author</button>
+              ng-click="closeIfDialog()"
+              ui-sref="landingPage({username: post.creator.username, action: null, key: null})">More from this author</button>
     </div>
 
     <p class="share-post-link">
-      Share this post: <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.post, key: post.postId})">{{fifthweekConstants.websiteRoot + post.creator.username + '/post/' + post.postId}}</a>
+      Share this post:
+      <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.post, key: post.postId})">
+        {{fifthweekConstants.websiteRoot + post.creator.username + '/post/' + post.postId}}
+      </a>
     </p>
   </div>
 </div>

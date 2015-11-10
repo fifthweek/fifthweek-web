@@ -1,5 +1,5 @@
 angular.module('webApp')
-  .controller('fwSirTrevorEditorCtrl', function ($scope, $element, $timeout, $interval, formConstants, markdownService, jsonService, fwImageBlockFactory, fwFileBlockFactory) {
+  .controller('fwSirTrevorEditorCtrl', function ($scope, $element, $timeout, $interval, formConstants, markdownService, jsonService, fwImageBlockFactory, fwFileBlockFactory, fwTextBlockFactory) {
     'use strict';
 
     var fileBlockExternalData = ['containerName', 'renderSize', 'fileSize', 'fileName'];
@@ -13,7 +13,7 @@ angular.module('webApp')
       $scope.sirTrevorValue = internal.fifthweekToSirTrevor(internal.ngModelCtrl.$viewValue);
     };
 
-    internal.setViewValue = function(){
+    internal.setViewValue = function(force){
       var fifthweekValue = internal.sirTrevorToFifthweek($scope.sirTrevorValue);
 
       var shouldUpdate = false;
@@ -28,7 +28,7 @@ angular.module('webApp')
         shouldUpdate = !!fifthweekValue;
       }
 
-      if(shouldUpdate){
+      if(shouldUpdate || force){
         internal.ngModelCtrl.$setViewValue(fifthweekValue);
       }
 
@@ -42,7 +42,7 @@ angular.module('webApp')
       }
 
       if($scope.ngRequired){
-        internal.ngModelCtrl.$setValidity('required', fifthweekValue && fifthweekValue.blockCount > 0);
+        internal.ngModelCtrl.$setValidity('required', !!(fifthweekValue && fifthweekValue.blockCount > 0));
       }
     };
 
@@ -222,6 +222,7 @@ angular.module('webApp')
       SirTrevor.config.skipValidation = true;
       SirTrevor.Blocks.Image = fwImageBlockFactory.createBlock();
       SirTrevor.Blocks.File = fwFileBlockFactory.createBlock();
+      SirTrevor.Blocks.Text = fwTextBlockFactory.createBlock();
       internal.editor = new SirTrevor.Editor({
         el: $('.js-st-instance'),
         blockTypes: [
@@ -244,6 +245,7 @@ angular.module('webApp')
           blockquote: true
         },
         custom: {
+          noFocus: !!$scope.noFocus,
           createScope: function(){
             var newScope = $scope.$new();
             newScope.channelId = $scope.channelId;
@@ -256,7 +258,7 @@ angular.module('webApp')
     };
 
     internal.attachToSirTrevor = function(){
-      internal.timer = $interval(internal.performRead, 1000);
+      internal.timer = $interval(internal.performTimerRead, 1000);
       //$(".st-blocks").on("keyup", internal.onSirTrevorChanged);
       //SirTrevor.EventBus.on("block:reorder:dropped", internal.onSirTrevorChanged);
       //SirTrevor.EventBus.on("block:create:new", internal.onSirTrevorChanged);
@@ -273,13 +275,21 @@ angular.module('webApp')
       //SirTrevor.EventBus.off("block:remove", internal.onSirTrevorChanged);
     };
 
-    internal.performRead = function(){
+    internal.performTimerRead = function(){
+      internal.performRead();
+    };
+
+    internal.performSubmitRead = function(){
+      internal.performRead(true);
+    };
+
+    internal.performRead = function(force){
       //internal.onSirTrevorChanged.cancel();
       if(internal.editor){
         var errors = internal.editor.onFormSubmit(false);
         if(!errors){
           $scope.sirTrevorValue = internal.editor.store.retrieve();
-          internal.setViewValue();
+          internal.setViewValue(force);
         }
       }
     };
@@ -297,7 +307,7 @@ angular.module('webApp')
         internal.dispose();
       });
 
-      //internal.onSirTrevorChanged = _.throttle(internal.performRead, 1000);
+      //internal.onSirTrevorChanged = _.throttle(internal.performTimerRead, 1000);
 
       internal.ngModelCtrl = ngModelCtrl_;
       internal.ngModelCtrl.$render = internal.render;
@@ -306,7 +316,7 @@ angular.module('webApp')
       delete internal.ngModelCtrl.$validators.required;
       delete internal.ngModelCtrl.$validators.maxlength;
 
-      $scope.$on(formConstants.formSubmittingEvent, internal.performRead);
+      $scope.$on(formConstants.formSubmittingEvent, internal.performSubmitRead);
       return internal.load();
     };
   });

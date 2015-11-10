@@ -7,6 +7,10 @@ $header-control-overlay-height:60px;
 $header-height:108px;
 $header-height-sm:70px;
 
+$subscribe-button-primary: #2a9f6b;
+$subscribe-button-secondary: darken($subscribe-button-primary, 6%);
+$unsubscribe-button-secondary: darken($btn-danger-bg, 15%);
+
 @mixin light-text {
   //-webkit-font-smoothing: subpixel-antialiased;
   //-moz-osx-font-smoothing: auto;
@@ -98,8 +102,14 @@ $header-height-sm:70px;
     &:first-child{
       margin-left: 0;
     }
+  }
+
+  .header-corner-menu-button{
     @media (min-width:$screen-md-min) {
       visibility: collapse;
+      width:0;
+      height:0;
+      margin:0;
     }
   }
 
@@ -202,7 +212,7 @@ $header-height-sm:70px;
     #edit-video-link{
       position: absolute;
       top: -$btn-edit-height;
-      right: $post-margin-sm;
+      right: 0;
     }
   }
 
@@ -386,8 +396,9 @@ $header-height-sm:70px;
     }
 
     &.main-content-empty{
+      @include clearfix;
       margin-top: 0;
-      margin-bottom: -$post-margin-sm;
+      //margin-bottom: -$post-margin-sm;
     }
 
     .channel-count-information{
@@ -450,22 +461,28 @@ $header-height-sm:70px;
               >i{
                 margin-right: 6px;
               }
-            }
-            .unsubscribe-button{
-              @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
-            }
-            .subscribe-button {
-              padding-right: 10px;
-
               >span {
                 @include dark-button;
                 margin-left:8px;
-                background: $subscribe-button-secondary;
                 padding: 2px 8px;
                 @media (min-width:$screen-s-min) {
                   margin-left:8px;
                   padding: 3px 8px;
                 }
+              }
+            }
+            .unsubscribe-button{
+              @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+
+              >span {
+                background: $unsubscribe-button-secondary;
+              }
+            }
+            .subscribe-button {
+              padding-right: 10px;
+
+              >span {
+                background: $subscribe-button-secondary;
               }
             }
           }

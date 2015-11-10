@@ -6,7 +6,7 @@ var testKit = new TestKit();
 var CommentInputPage = function() {};
 
 var waitForElementToDisplay = function(inputId){
-  testKit.waitForElementToDisplay(element(by.id(inputId)));
+  testKit.waitForElementToDisplay(element(by.css(inputId)));
 };
 
 CommentInputPage.prototype = Object.create({},
@@ -35,6 +35,7 @@ CommentInputPage.prototype = Object.create({},
     }},
     includeSadPaths: { value: function(inputId, button, helpMessages, populateOtherInputsWithValidData) {
       var self = this;
+
 
       it('requires name', function(){
         waitForElementToDisplay(inputId);

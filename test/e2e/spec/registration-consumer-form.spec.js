@@ -25,9 +25,8 @@ describe("registration form", function() {
     var userRegistration = page.newRegistrationData();
     email = userRegistration.email;
     username = userRegistration.username;
-    creatorLandingPage.subscribeButton.click();
+    creatorLandingPage.getSubscribeButton(0).click();
     testKit.waitForElementToDisplay(page.registrationUsernameTextBox);
-
   };
 
   it('should run once before all', function() {
@@ -73,7 +72,7 @@ describe("registration form", function() {
     afterEach(function() {
       // Reset form state.
       page.cancelButton.click();
-      creatorLandingPage.subscribeButton.click();
+      creatorLandingPage.getSubscribeButton(0).click();
     });
 
     it('requires email address', function(){

@@ -27,8 +27,6 @@
   };
 
   var navigateFromCreatorLandingPage = function () {
-    testKit.scrollIntoView(landingPage.fifthweekLink);
-    landingPage.fifthweekLink.click();
     sidebar.subscriptionsLink.click();
   };
 
@@ -162,7 +160,7 @@
 
     it('should display payment information on creator timeline', function(){
       navigateToCreatorLandingPage(creatorRegistration1);
-      landingPage.subscribeButton.click();
+      landingPage.getSubscribeButton(0).click();
       paymentInformationPage.expectPaymentInformationFormToBeDisplayed();
     });
 

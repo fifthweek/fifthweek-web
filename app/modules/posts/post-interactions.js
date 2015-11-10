@@ -34,8 +34,8 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
         controller: 'postEditDialogCtrl',
         templateUrl: 'modules/posts/post-edit-dialog.html',
         resolve: {
-          postId: function() {
-            return post.postId;
+          initialPost: function() {
+            return post;
           }
         }
       });

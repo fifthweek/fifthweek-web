@@ -57,7 +57,7 @@ angular.module('webApp').controller('composePostCtrl',
     };
 
     internal.post = function(data){
-      if(!data.content){
+      if(!data || !data.content){
         model.errorMessage = 'Please provide some content.';
         return $q.when();
       }
@@ -73,6 +73,10 @@ angular.module('webApp').controller('composePostCtrl',
 
     internal.getPostData = function(){
       var sourceData = model.input.content;
+      if(!sourceData){
+        return undefined;
+      }
+
       return {
         channelId: model.committedChannel.channelId,
         content: sourceData.serializedBlocks,

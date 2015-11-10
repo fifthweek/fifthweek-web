@@ -13,12 +13,15 @@ angular.module('webApp').controller(
       trackingEventTitle: 'Send Feedback',
       trackingEventCategory: 'Feedback',
       input: {
-        message: ''
+        content: undefined
       }
     };
 
     $scope.submitFeedback = function() {
-      return membershipStub.postFeedback($scope.model.input)
+      var data = {
+        message: $scope.model.input.content.previewText
+      };
+      return membershipStub.postFeedback(data)
         .then(function() {
           $scope.model.page = pages.done;
         });

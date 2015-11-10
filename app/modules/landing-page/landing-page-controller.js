@@ -16,7 +16,7 @@ angular.module('webApp')
     }
   })
   .controller('landingPageCtrl',
-  function($scope, $q, landingPageConstants, fetchAggregateUserState, fwSubscriptionInformationConstants, fwPostListConstants,
+  function($scope, $q, landingPageConstants, fetchAggregateUserState, fwPostListConstants,
            accountSettingsRepositoryFactory, blogRepositoryFactory, subscriptionRepositoryFactory,
            initializer, $stateParams, $state, states, errorFacade, landingPageInformationLoader, fullPostLoader) {
     'use strict';
@@ -81,10 +81,6 @@ angular.module('webApp')
       return true;
     };
 
-    internal.onSubscriptionInformationChanged = function(){
-      $scope.$broadcast(fwPostListConstants.reloadEvent);
-    };
-
     internal.loadContent = function(){
       if($scope.model.currentView === landingPageConstants.views.post){
         return internal.loadPost();
@@ -99,8 +95,6 @@ angular.module('webApp')
         $state.go(states.notFound.name);
         return $q.when();
       }
-
-      $scope.$on(fwSubscriptionInformationConstants.subscriptionStatusChangedEvent, internal.onSubscriptionInformationChanged);
 
       $scope.views = landingPageConstants.views;
       $scope.timelineTypes = landingPageConstants.timelineTypes;

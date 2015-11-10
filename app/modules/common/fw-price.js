@@ -6,9 +6,10 @@ angular.module('webApp')
       restrict: 'E',
       scope: {
         value: '=',
-        showInterval: '=?'
+        showInterval: '=?',
+        priceId: '@?'
       },
-      template: '<span ng-class="{\'price-negative\': isNegative}" class="price">${{formattedPrice}}{{showInterval ? \'/week\' : \'\'}}</span>',
+      template: '<span id="{{priceId}}" ng-class="{\'price-negative\': isNegative}" class="price">${{formattedPrice}}{{showInterval ? \'/week\' : \'\'}}</span>',
       link: function(scope) {
 
         var updatePrice = function(){

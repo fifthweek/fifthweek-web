@@ -10,7 +10,6 @@ describe('landing page controller', function () {
 
   var landingPageConstants;
   var aggregateUserStateConstants;
-  var fwSubscriptionInformationConstants;
   var fwPostListConstants;
 
   var accountSettingsRepositoryFactory;
@@ -71,7 +70,6 @@ describe('landing page controller', function () {
       states = $injector.get('states');
       landingPageConstants = $injector.get('landingPageConstants');
       aggregateUserStateConstants = $injector.get('aggregateUserStateConstants');
-      fwSubscriptionInformationConstants = $injector.get('fwSubscriptionInformationConstants');
       fwPostListConstants = $injector.get('fwPostListConstants');
     });
 
@@ -427,14 +425,6 @@ describe('landing page controller', function () {
         it('should propagate the error', function(){
           expect(error).toBe('error');
         });
-      });
-    });
-
-    describe('onSubscriptionInformationChanged', function(){
-      it('should broadcast a reload event', function(){
-        spyOn($scope, '$broadcast');
-        target.internal.onSubscriptionInformationChanged();
-        expect($scope.$broadcast).toHaveBeenCalledWith(fwPostListConstants.reloadEvent);
       });
     });
 

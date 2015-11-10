@@ -24,9 +24,10 @@ CustomizeLandingPagePage.prototype = Object.create({}, {
   fileUploadButton: { get: function() { return element(by.css('#file-upload-button-area .btn')); }},
 
   videoTextBoxId: { value: 'video' },
-  descriptionTextBoxId: { value: 'description' },
+  descriptionTextBoxSelector: { value: '#description .st-text-block' },
 
   submitButton: { get: function () { return element(by.css('.save-changes-button')); }},
+  disabledSubmitButton: { get: function () { return element(by.css('.save-changes-button[disabled="disabled"]')); }},
   cancelButton: { get: function () { return element(by.css('.form-cancel-button')); }},
   successMessage: { get: function () { return element(by.css('.alert-success')); }},
   invalidMessage: { get: function () { return element(by.css('.form-invalid-message')); }},

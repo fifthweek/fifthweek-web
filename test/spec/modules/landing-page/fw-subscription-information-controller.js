@@ -328,6 +328,8 @@ describe('fw-subscription-information-controller', function () {
           blog: { channels: channels },
           hiddenChannels: hiddenChannels
         };
+
+        spyOn(target.internal, 'updateTotalPrice');
       });
 
       describe('when no subscribed channels', function() {
@@ -360,6 +362,10 @@ describe('fw-subscription-information-controller', function () {
               subscriptionInformation: undefined
             }
           ]);
+        });
+
+        it('should call updateTotalPrice', function(){
+          expect(target.internal.updateTotalPrice).toHaveBeenCalledWith(landingPage);
         });
       });
 
@@ -405,6 +411,10 @@ describe('fw-subscription-information-controller', function () {
             }
           ]);
         });
+
+        it('should call updateTotalPrice', function(){
+          expect(target.internal.updateTotalPrice).toHaveBeenCalledWith(landingPage);
+        });
       });
 
       describe('when requiredChannelId is set', function() {
@@ -429,6 +439,10 @@ describe('fw-subscription-information-controller', function () {
             }
           ]);
         });
+
+        it('should call updateTotalPrice', function(){
+          expect(target.internal.updateTotalPrice).toHaveBeenCalledWith(landingPage);
+        });
       });
     });
 
@@ -438,7 +452,6 @@ describe('fw-subscription-information-controller', function () {
         landingPage = { blog: {} };
 
         spyOn(target.internal, 'recalculateChannels');
-        spyOn(target.internal, 'updateTotalPrice');
       });
 
       var testVideoUrl = function(){
@@ -460,10 +473,6 @@ describe('fw-subscription-information-controller', function () {
           expect(target.internal.recalculateChannels).toHaveBeenCalledWith(landingPage);
         });
 
-        it('should call updateTotalPrice', function(){
-          expect(target.internal.updateTotalPrice).toHaveBeenCalledWith(landingPage);
-        });
-
         it('should not expose a video url', function(){
           expect(landingPage.videoUrl).toBeUndefined();
         });
@@ -480,10 +489,6 @@ describe('fw-subscription-information-controller', function () {
           expect(target.internal.recalculateChannels).toHaveBeenCalledWith(landingPage);
         });
 
-        it('should call updateTotalPrice', function(){
-          expect(target.internal.updateTotalPrice).toHaveBeenCalledWith(landingPage);
-        });
-
         testVideoUrl();
       });
 
@@ -496,10 +501,6 @@ describe('fw-subscription-information-controller', function () {
 
         it('should call recalculateChannels', function(){
           expect(target.internal.recalculateChannels).toHaveBeenCalledWith(landingPage);
-        });
-
-        it('should call updateTotalPrice', function(){
-          expect(target.internal.updateTotalPrice).toHaveBeenCalledWith(landingPage);
         });
 
         testVideoUrl();

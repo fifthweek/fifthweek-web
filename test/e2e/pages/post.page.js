@@ -1,11 +1,14 @@
 (function(){
   'use strict';
 
+  var _ = require('lodash');
   var TestKit = require('../test-kit.js');
+  var ModalPage = require('./modal.page.js');
   var CreatorLandingPagePage = require('./creators/creator-landing-page.page.js');
   var PostListInformation = require('./post-list-information.page.js');
 
   var testKit = new TestKit();
+  var modalPage = new ModalPage();
   var landingPage = new CreatorLandingPagePage();
   var postListInformation = new PostListInformation();
 
@@ -20,6 +23,10 @@
   };
 
   var createPostSelector = function(postIndex){
+    if(postIndex === 'full'){
+      return '#full-post';
+    }
+
     return '#post-' + postIndex;
   };
 
@@ -37,6 +44,11 @@
     byCssContainingText: { value: function(css, text){
       return by.cssContainingText(createPostSelector(this.postIndex) + ' ' + css, text);
     }},
+
+    ownerTag: { value: undefined, writable: false },
+    previewTag: { value: 'Preview', writable: false },
+    guestListTag: { value: 'Guest List', writable: false },
+    subscribedTag: { value: 'Subscribed', writable: false },
 
     postsArea: { get: function() { return element(by.css('.posts')); }},
     taggedPostsArea: { get: function() { return element(by.css('.tagged-posts')); }},
@@ -61,17 +73,45 @@
     editPostLinks: { get: function() { return element.all(this.byCssContainingText('.dropdown-menu a', 'Edit')); }},
     deletePostLink: { get: function() { return element(this.byCssContainingText('.dropdown-menu a', 'Delete')); }},
 
-    likePostLink: { get: function() { return element(this.byCssContainingText('.like-comment-buttons a', 'Like')); }},
-    unlikePostLink: { get: function() { return element(this.byCssContainingText('.like-comment-buttons a', 'Unlike')); }},
-    commentOnPostLink: { get: function() { return element(this.byCssContainingText('.like-comment-buttons a', 'Comment')); }},
-    likesLink: { get: function() { return element(this.byCss('.likes-count a')); }},
-    commentsLink: { get: function() { return element(this.byCss('.comments-count a')); }},
+    openPostLink: { get: function() { return element(this.byCss('#open-post-link')); }},
+    tag: { get: function() { return element(this.byCss('.tag')); }},
+
+    likesLink: { get: function() { return element(this.byCss('.likes-count')); }},
+    commentsLink: { get: function() { return element(this.byCss('.comments-count')); }},
 
     hasLikedCount: { get: function() { return element.all(this.byCss('.has-liked')).count(); }},
 
     noPostsMessage: { get: function() { return element(by.css('.no-posts-message')); }},
 
-    expectHeader: { value: function(postData){
+    // Full Post
+    likePostLink: { get: function() { return element(by.cssContainingText('.like-comment-buttons a', 'Like')); }},
+    unlikePostLink: { get: function() { return element(by.cssContainingText('.like-comment-buttons a', 'Unlike')); }},
+    commentOnPostLink: { get: function() { return element(by.cssContainingText('.like-comment-buttons a', 'Comment')); }},
+
+    sharePostLink: { get: function() { return element(by.css('.share-post-link a')); }},
+    morePostsLink: { get: function() { return element(by.id('more-posts-button')); }},
+
+    crossButton: { get: function () { return modalPage.getCrossButton('post'); }},
+    closePost: { value: function(){
+      this.crossButton.click();
+      testKit.waitForElementToBeRemoved(this.crossButton);
+    }},
+    // ---------
+
+    expectTag: { value: function(expectedTag, index){
+      var originalIndex = this.postIndex;
+      if(!_.isUndefined(index)){
+        this.postIndex = index;
+      }
+
+      expect(this.tag.getText()).toContain(expectedTag);
+
+      if(index){
+        this.postIndex = originalIndex;
+      }
+    }},
+
+    expectHeader: { value: function(postData, expectedTag){
       if(this.isBacklog){
         expect(this.scheduleTag.isDisplayed()).toBe(true);
 
@@ -84,7 +124,12 @@
         }
       }
       else{
-        expect(this.scheduleTags.count()).toBe(0);
+        if(expectedTag){
+          expect(this.tag.getText()).toContain(expectedTag);
+        }
+        else{
+          expect(this.scheduleTags.count()).toBe(0);
+        }
       }
     }},
 
@@ -93,14 +138,12 @@
       //testKit.scrollIntoView(this.usernameLink);
 
       this.usernameLink.click();
-      expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/all');
-      landingPage.fifthweekLink.click();
+      expect(browser.getCurrentUrl()).toContain('/' + registration.username);
       navigateToPage();
 
       this.containerNameLink.click();
       expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/channel/');
-      expect(postListInformation.postsHeader.getText()).toBe(postData.channelName || blogData.name);
-      landingPage.fifthweekLink.click();
+      //expect(postListInformation.postsHeader.getText()).toBe(postData.channelName || blogData.name);
       navigateToPage();
 
       if(isCustomer){
@@ -115,8 +158,8 @@
       }
     }},
 
-    expectPost: { value: function(blogData, postData, registration, navigateToPage, isCustomer){
-      this.expectHeader(postData);
+    expectPost: { value: function(blogData, postData, registration, navigateToPage, isCustomer, expectedTag){
+      this.expectHeader(postData, expectedTag);
 
       if(postData.imagePath){
         expect(this.image.isPresent()).toBe(true);
@@ -125,13 +168,13 @@
         expect(this.images.count()).toBe(0);
       }
 
-      if(postData.filePath){
-        expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
-        expect(this.fileSizeText.getText()).toContain('KB');
-      }
-      else{
-        expect(this.fileDownloadLinks.count()).toBe(0);
-      }
+      //if(postData.filePath){
+      //  expect(this.fileDownloadLink.getText()).toBe(getFileName(postData.filePath));
+      //  expect(this.fileSizeText.getText()).toContain('KB');
+      //}
+      //else{
+      //  expect(this.fileDownloadLinks.count()).toBe(0);
+      //}
 
       if(postData.commentText){
         expect(this.comment.getText()).toBe(postData.commentText);

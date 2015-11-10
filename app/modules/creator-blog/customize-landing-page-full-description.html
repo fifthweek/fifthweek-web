@@ -21,18 +21,19 @@
     </div>
   </fw-form-group>
 
+  <label for="description">Full Description</label>
   <fw-form-group>
-    <label for="description">Full Description</label>
     <div class="row">
       <div class="col-xs-12">
-        <fw-form-input-comment
+        <fw-sir-trevor-editor
+          maxlength="50000"
           ng-model="model.settings.description"
-          placeholder="This is where you can really sell your content... tell everyone why they need to subscribe."
-          input-id="description"
+          editor-id="description"
           name="description"
-          required
-          focus>
-        </fw-form-input-comment>
+          text-only="true"
+          no-focus="true"
+          placeholder="This is where you can really sell your content... tell everyone why they need to subscribe.">
+        </fw-sir-trevor-editor>
       </div>
     </div>
   </fw-form-group>

@@ -51,8 +51,8 @@
   </div>
   <div ng-if="!post.isScheduled">
     <p class="tag" ng-if="!post.readAccess">Preview</p>
-    <p class="tag" ng-if="post.isSubscribed">Subscribed</p>
-    <p class="tag" ng-if="!post.isSubscribed && post.isGuestList">Guest List</p>
+    <p class="tag" ng-if="post.readAccess && post.isSubscribed">Subscribed</p>
+    <p class="tag" ng-if="post.readAccess && !post.isSubscribed && post.isGuestList">Guest List</p>
   </div>
 
   <hr/>
@@ -82,7 +82,7 @@
   <div class="post-footer-actions post-section-narrow-border">
     <span class="read-more-actions">
       <span>
-        <a ng-click="viewPost(post)">{{post.readingTime ? 'Read more' : 'Open post' }}</a>
+        <a id="open-post-link" ng-click="viewPost(post)">{{post.readingTime ? 'Read more' : 'Open post' }}</a>
       </span>
       <span class="minutes-count" ng-if="post.readingTime">
         {{post.readingTime}} min

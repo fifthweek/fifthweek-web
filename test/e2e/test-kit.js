@@ -258,7 +258,7 @@ TestKit.prototype = Object.create({}, {
       return browser.executeScript((blur ? changeValue + '.blur()' : changeValue) + '.scope().$digest()');
     });
   }},
-  setContentEditableValue: { value: function(elementId, value, blur) {
+  setContentEditableValue: { value: function(elementSelector, value, blur) {
 
     // One of the aspects that makes this method efficient is we do not await for angular before setting each input. If
     // we did by enabling the following line, we would see waits between each input (similar to sendKeys, although still
@@ -273,7 +273,7 @@ TestKit.prototype = Object.create({}, {
       value = '<p>' + value.replace(/\\/g, '\\\\').replace(/'/g, '\\\'').replace(/\n/g, '\\n') + '</p>';
     }
 
-    var changeValue = 'angular.element(document.getElementById(\'' + elementId + '\')).html(\'' + value + '\').trigger(\'keyup\').trigger(\'input\').trigger(\'blur\')';
+    var changeValue = 'angular.element(\'' + elementSelector + '\').html(\'' + value + '\').trigger(\'keyup\').trigger(\'input\').trigger(\'blur\')';
     return browser.controlFlow().execute(function() {
       // console.log('SET ' + elementId + ' = ' + value);
       // "Cannot read property '$digest' of undefined" is indicative of the element not existing on the page.

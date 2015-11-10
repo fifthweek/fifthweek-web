@@ -12,6 +12,9 @@ angular.module('webApp')
       templateUrl: 'modules/landing-page/fw-post-subscription-information.html',
       controller: 'fwSubscriptionInformationCtrl',
       link: function(scope, element, attrs, ctrls) {
+
+        scope.isPost = true;
+
         var controller = ctrls[0];
         controller.initialize();
       }

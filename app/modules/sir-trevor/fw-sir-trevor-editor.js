@@ -13,7 +13,7 @@ angular.module('webApp')
         editorId: '@?',
         ngRequired: '=?',
         ngDisabled: '=?',
-        ngFocus: '@?',
+        noFocus: '@?',
         channelId: '@',
         textOnly: '@'
       },

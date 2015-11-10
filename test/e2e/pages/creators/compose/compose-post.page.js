@@ -23,6 +23,7 @@
     fileUploadIndicator: { get: function(){ return element(by.css('.file-name')); }},
 
     postNowButton: { get: function() { return element(by.css('button[fw-form-submit="postNow()"]')); }},
+    disabledPostNowButton: { get: function() { return element(by.css('button[fw-form-submit="postNow()"][disabled="disabled"]')); }},
     postLaterButton: { get: function() { return element(by.css('button[ng-click="postLater()"]')); }},
 
     postToBacklogButton: { get: function() { return element(by.css('button[fw-form-submit="postToBacklog()"]')); }},
@@ -35,7 +36,7 @@
     imageUploadInput: { get: function() { return element(by.id('image-upload-button-input')); }},
     imageUploadButton: { get: function() { return element(by.css('#image-upload-button-area .btn')); }},
 
-    commentTextBoxId: { value: 'model-input-comment' },
+    commentTextBoxSelector: { value: '#content .st-text-block' },
 
     postToQueueRadio: { get: function() { return element(by.css('input[ng-value="true"]')); }},
     postOnDateRadio: { get: function() { return element(by.css('input[ng-value="false"]')); }},
@@ -50,6 +51,9 @@
     helpMessages: { get: function () { return element.all(by.css('.help-block')); }},
 
     populateFileUpload: { value: function(filePath, waitFormUploadedIndicator){
+      element(by.css('.st-block-controls__top')).click();
+      element(by.css('.st-block-control[data-type="file"]')).click();
+
       this.setFileInput(filePath);
 
       if(waitFormUploadedIndicator){
@@ -61,6 +65,9 @@
     }},
 
     populateImageUpload: { value: function(filePath, waitFormUploadedIndicator){
+      element(by.css('.st-block-controls__top')).click();
+      element(by.css('.st-block-control[data-type="image"]')).click();
+
       this.setImageInput(filePath);
 
       if(waitFormUploadedIndicator){
@@ -87,11 +94,13 @@
         this.populateImageUpload(imagePath, true);
       }
 
+      testKit.waitForElementToBeRemoved(this.disabledPostNowButton);
+
       var commentText = undefined;
       if(hasComment){
         var date = new Date();
         commentText = 'Comment on ' + date.toISOString();
-        testKit.setContentEditableValue(this.commentTextBoxId, commentText);
+        testKit.setContentEditableValue(this.commentTextBoxSelector, commentText);
       }
 
       browser.waitForAngular();
@@ -376,7 +385,7 @@
             describe('when testing date time picker', function(){
               beforeEach(function(){
                 navigateToPage();
-                testKit.setContentEditableValue(page.commentTextBoxId, 'Comment');
+                testKit.setContentEditableValue(page.commentTextBoxSelector, 'Comment');
                 page.postLaterButton.click();
                 //page.postOnDateRadio.click();
               });
@@ -447,9 +456,9 @@
 
               it('should not allow a comment more than 50000 characters', function(){
                 var overSizedValue = new Array(50002).join( 'a' );
-                testKit.setContentEditableValue(page.commentTextBoxId, overSizedValue, true);
+                testKit.setContentEditableValue(page.commentTextBoxSelector, overSizedValue, true);
 
-                testKit.assertContentEditableMaxLength(page.helpMessages, page.commentTextBoxId, overSizedValue, 50000);
+                testKit.assertContentEditableMaxLength(page.helpMessages, page.commentTextBoxSelector, overSizedValue, 50000);
               });
 
               it('should run once after all', function(){
