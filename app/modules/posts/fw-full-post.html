@@ -1,5 +1,5 @@
-<div class="full-post-dialog" ng-class="{ 'modal-content': !isDialog }" id="full-post">
-  <div class="modal-title" id="modal-title">
+<div class="full-post-dialog"  id="full-post">
+  <div class="modal-title" id="modal-title" ng-if="isDialog">
     <a id="post-cross-button" class="btn-close" href ng-click="closeDialog()" ng-if="isDialog">
       <i class="fa fa-close"></i>
     </a>
@@ -24,6 +24,20 @@
           <span class="live-in-info">{{post.liveIn}}</span>
         </li>
       </ul>
+    </div>
+  </div>
+  <div ng-if="!isDialog">
+    <div class="row">
+      <div class="col-xs-12">
+        <p class="live-date-information">
+          <span ng-if="!post.isScheduled">Posted to </span>
+          <span ng-if="post.isScheduled">Live in </span>
+          <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
+            {{post.channel.name}}
+          </a>
+          <span class="live-in-info">{{post.liveIn}}</span>
+        </p>
+      </div>
     </div>
   </div>
 

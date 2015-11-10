@@ -610,6 +610,11 @@ $post-p-margin: 28px;
     }
   }
 
+  .live-date-information{
+    @include post-left-right-padding;
+    font-style: italic;
+  }
+
   .full-post-container {
     position: relative;
     max-width:$content-max-width;

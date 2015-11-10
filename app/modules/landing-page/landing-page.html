@@ -5,7 +5,7 @@
 
 <fw-error-message value="model.errorMessage"></fw-error-message>
 
-<div ng-if="model.isLoaded">
+<div ng-if="model.isLoaded" ng-class="{ 'main-post-content': model.currentView === views.post }">
 
   <ng-include src="'modules/landing-page/landing-page-content-header.html'"></ng-include>
 

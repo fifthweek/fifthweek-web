@@ -79,6 +79,10 @@ $unsubscribe-button-secondary: darken($btn-danger-bg, 15%);
     }
   }
 
+  .main-post-content{
+    background-color: white;
+  }
+
   .header-image-control-overlay {
     height: $header-control-overlay-height;
     @include content-container;
