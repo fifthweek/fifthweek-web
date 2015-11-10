@@ -17,7 +17,6 @@ angular
     'angulartics.google.analytics.userid',
     'videosharing-embed',
     'angularPayments',
-    'angular-medium-editor'
   ])
   .constant('fifthweekConstants', {
     apiBaseUri: window.configuredApiBaseUri,
