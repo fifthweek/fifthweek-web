@@ -53,6 +53,6 @@
     "angular": "^1.4.7",
     "marked": "~0.3.3",
     "angular-mocks": "^1.4.7",
-    "medium-editor": "~5.8.2"
+    "jquery": "~2.1.3"
   }
 }
