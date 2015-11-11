@@ -4,6 +4,46 @@ angular.module('webApp')
 
     return [
       {
+        name: 'Home',
+        hidden: true,
+        state: states.home.name,
+        secondary:
+          [
+            {
+              name: 'Explore',
+              state: states.home.name
+            },
+            {
+              name: 'Pricing',
+              state: states.pricing.name
+            },
+            {
+              name: 'Getting Started',
+              state: states.gettingStarted.name
+            },
+            {
+              name: 'Contact',
+              state: states.contact.name
+            }
+          ]
+      },
+      {
+        name: 'Legal',
+        hidden: true,
+        state: states.legal.name,
+        secondary:
+          [
+            {
+              name: 'Terms of Service',
+              state: states.legal.termsOfService.name
+            },
+            {
+              name: 'Privacy Policy',
+              state: states.legal.privacyPolicy.name
+            }
+          ]
+      },
+      {
         name: 'Sign In',
         state: states.signIn.signIn.name,
         icon: 'fa fa-sign-in'
@@ -129,15 +169,15 @@ angular.module('webApp')
         icon: 'fa fa-sign-out'
       },
       {
+        name: 'Help',
+        state: states.help.name,
+        icon: 'fa fa-question-circle'
+      },
+      {
         name: 'Send Feedback',
         state: states.user.feedback.name,
         action: submitFeedbackService.showDialog,
         icon: 'fa fa-comment-o'
-      },
-      {
-        name: 'Help',
-        state: states.support.help.name,
-        icon: 'fa fa-question-circle'
       },
       {
         name: 'Admin',

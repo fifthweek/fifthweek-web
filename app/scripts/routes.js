@@ -5,6 +5,24 @@ angular.module('webApp')
     home: {
       name: 'home'
     },
+    pricing: {
+      name: 'pricing'
+    },
+    gettingStarted: {
+      name: 'gettingStarted'
+    },
+    contact: {
+      name: 'contact'
+    },
+    legal: {
+      name: 'legal',
+      termsOfService: {
+        name: 'legal.termsOfService'
+      },
+      privacyPolicy: {
+        name: 'legal.privacyPolicy'
+      }
+    },
     register: {
       name: 'register'
     },
@@ -122,35 +140,8 @@ angular.module('webApp')
         }
       }
     },
-    about: {
-      name: 'about',
-      about: {
-        name: 'about.about'
-      },
-      team: {
-        name: 'about.team'
-      }
-    },
-    pricing: {
-      name: 'pricing'
-    },
-    termsOfService: {
-      name: 'termsOfService'
-    },
-    privacyPolicy: {
-      name: 'privacyPolicy'
-    },
-    gettingStarted: {
-      name: 'gettingStarted'
-    },
-    support: {
-      name: 'support',
-      help: {
-        name: 'support.help'
-      },
-      contact: {
-        name: 'support.contact'
-      }
+    help: {
+      name: 'help'
     },
     notAuthorized: {
       name: 'notAuthorized'
@@ -188,7 +179,68 @@ angular.module('webApp')
         data: {
           pageTitle: 'Home',
           headDescription: 'Fifthweek lets you effortlessly share anything with paying subscribers, so you can make a living doing what you love.',
-          navigationHidden: true,
+          navigationHidden: false,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.pricing.name, {
+        url: '/pricing',
+        templateUrl: 'modules/information/pages/pricing.html',
+        data : {
+          headTitle: ': ' + 'Pricing',
+          navigationHidden: false,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.legal.name, {
+        url: '/legal',
+        templateUrl: 'modules/common/ui-view.html',
+        redirectTo: states.legal.termsOfService.name,
+        data : {
+        }
+      })
+      .state(states.legal.termsOfService.name, {
+        url: '/terms',
+        templateUrl: 'modules/information/pages/terms-and-conditions.html',
+        data : {
+          headTitle: ': ' + 'Terms and Conditions',
+          navigationHidden: false,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.legal.privacyPolicy.name, {
+        url: '/privacy',
+        templateUrl: 'modules/information/pages/privacy-policy.html',
+        data : {
+          headTitle: ': ' + 'Privacy Policy',
+          navigationHidden: false,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.gettingStarted.name, {
+        url: '/go',
+        templateUrl: 'modules/information/pages/getting-started.html',
+        data : {
+          headTitle: ': ' + 'Getting Started',
+          navigationHidden: false,
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.help.name, {
+        url: '/help',
+        templateUrl: 'modules/information/pages/help.html',
+        data : {
+          headTitle: ': ' + 'Help',
+          navigationHidden: 'header',
+          bodyClass: 'info-page'
+        }
+      })
+      .state(states.contact.name, {
+        url: '/contact',
+        templateUrl: 'modules/information/pages/contact.html',
+        data : {
+          headTitle: ': ' + 'Contact Us',
+          navigationHidden: false,
           bodyClass: 'info-page'
         }
       })
@@ -553,80 +605,6 @@ angular.module('webApp')
           headTitle: ': ' + 'Guest List'
         }
       })
-      .state(states.about.name, {
-        url: '/about',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.about.about.name
-      })
-      .state(states.about.about.name, {
-        url: '',
-        templateUrl: 'modules/information/pages/about.html',
-        data : {
-          headTitle: ': ' + 'About',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.about.team.name, {
-        url: '/team',
-        templateUrl: 'modules/information/pages/team.html',
-        data : {
-          headTitle: ': ' + 'Meet the Team',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.pricing.name, {
-        url: '/pricing',
-        templateUrl: 'modules/information/pages/pricing.html',
-        data : {
-          headTitle: ': ' + 'Pricing',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.termsOfService.name, {
-        url: '/terms',
-        templateUrl: 'modules/information/pages/terms-and-conditions.html',
-        data : {
-          headTitle: ': ' + 'Terms and Conditions',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.privacyPolicy.name, {
-        url: '/privacy',
-        templateUrl: 'modules/information/pages/privacy-policy.html',
-        data : {
-          headTitle: ': ' + 'Privacy Policy',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.gettingStarted.name, {
-        url: '/getting-started',
-        templateUrl: 'modules/information/pages/getting-started.html',
-        data : {
-          headTitle: ': ' + 'Getting Started',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
-      .state(states.support.name, {
-        abstract: false,
-        url: '/support',
-        templateUrl: 'modules/common/ui-view.html',
-        redirectTo: states.support.contact.name
-      })
-      .state(states.support.help.name, {
-        url: '/help',
-        templateUrl: 'modules/information/pages/help.html',
-        data : {
-          headTitle: ': ' + 'Help',
-          navigationHidden: true,
-          bodyClass: 'info-page'
-        }
-      })
       .state(states.admin.name, {
         url: '/admin',
         templateUrl: 'modules/common/ui-view.html',
@@ -666,15 +644,6 @@ angular.module('webApp')
           bodyClass: 'page-creator-revenues',
           pageTitle: 'Creator Revenues',
           headTitle: ': ' + 'Creator Revenues'
-        }
-      })
-      .state(states.support.contact.name, {
-        url: '/contact',
-        templateUrl: 'modules/information/pages/contact.html',
-        data : {
-          headTitle: ': ' + 'Contact Us',
-          navigationHidden: true,
-          bodyClass: 'info-page'
         }
       })
       .state(states.notAuthorized.name, {

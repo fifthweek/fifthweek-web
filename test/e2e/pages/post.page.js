@@ -141,10 +141,12 @@
       expect(browser.getCurrentUrl()).toContain('/' + registration.username);
       navigateToPage();
 
-      this.containerNameLink.click();
-      expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/channel/');
-      //expect(postListInformation.postsHeader.getText()).toBe(postData.channelName || blogData.name);
-      navigateToPage();
+      if(postData.channelName && postData.channelName !== blogData.name) {
+        this.containerNameLink.click();
+        expect(browser.getCurrentUrl()).toContain('/' + registration.username + '/channel/');
+        //expect(postListInformation.postsHeader.getText()).toBe(postData.channelName || blogData.name);
+        navigateToPage();
+      }
 
       if(isCustomer){
         expect(this.liveInInfos.count()).toBe(1);
@@ -181,7 +183,9 @@
       }
 
       expect(this.usernameLink.getText()).toBe(blogData.name);
-      expect(this.containerNameLink.getText()).toBe(postData.channelName || blogData.name);
+      if(postData.channelName && postData.channelName !== blogData.name){
+        expect(this.containerNameLink.getText()).toBe(postData.channelName);
+      }
 
       this.expectFooter(blogData, postData, registration, navigateToPage, isCustomer);
     }}

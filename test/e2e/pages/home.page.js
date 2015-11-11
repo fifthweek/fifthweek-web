@@ -3,7 +3,7 @@
 var HomePage = function() {};
 
 HomePage.prototype = Object.create({}, {
-  signInLink: { get: function () { return element(by.id('sign-in-link')); }},
+  signInLink: { get: function () { return element(by.id('sidebar-navigation-sign-in')); }},
   getStartedLink: { get: function(){ return element(by.id('get-started'))}},
   getStartedBottomLink: { get: function(){ return element(by.id('get-started-bottom'))}},
   introHeading: { get: function () { return element(by.id('intro-heading')); }},

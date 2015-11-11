@@ -2,7 +2,7 @@
 
 #{$logo}, #{$logo-sm} {
   font:{
-    family: 'Merriweather', serif;
+    family: $font-family-logo;
     size:24px;
     weight:900;
   }

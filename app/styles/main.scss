@@ -33,8 +33,6 @@
 @import 'view-specific/account/_account';
 @import 'view-specific/creator/_creator';
 @import 'view-specific/empty/_empty';
-@import 'view-specific/faq/_faq';
-@import 'view-specific/home/_home';
 @import 'view-specific/notifications/_notifications';
 @import 'view-specific/information/_all';
 
@@ -46,6 +44,7 @@
 @import 'modules/subscribers/_subscribers';
 @import 'modules/admin/_admin';
 @import 'modules/comments/_comments';
+@import 'modules/information/_information';
 
 @import '_misc';
 @import '_shame';

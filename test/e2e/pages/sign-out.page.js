@@ -25,7 +25,7 @@ SignOutPage.prototype = Object.create({},
 
     sidebarPage.fifthweekLogoLink.click();
 
-    testKit.waitForElementToDisplay(homePage.signInLink);
+    testKit.waitForElementToDisplay(homePage.getStartedLink);
     return browser.waitForAngular();
   }}
 });

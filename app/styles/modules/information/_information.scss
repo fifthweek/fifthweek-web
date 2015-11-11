@@ -1,0 +1,492 @@
+@import '_base';
+
+$html-name-space:'.info-page';
+
+.navigation-header-hidden {
+  #{$html-name-space} {
+    .right-container{
+      .main-container {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+#{$html-name-space} {
+  .container {
+    min-width: 0;
+    width: auto;
+    text-align: center;
+  }
+
+  $mobile-navbar-link-margin: 14px;
+  $info-box-padding: 70px;
+  $color-header: #293f54;
+  $color-dark: #4d394b;
+
+  .snap-content {
+    background-color: white;
+  }
+  .right-container{
+    padding: 0;
+    .main-container {
+      padding: 0;
+      margin-top: $navbar-height-sm;
+      @media (min-width:$navbar-lg-min) {
+        margin-top: $navbar-height-lg;
+      }
+
+      max-width: none;
+      > div {
+        padding: 0;
+      }
+    }
+  }
+
+  .info-page-button, .info-page-button-dark {
+    display:inline-block;
+    margin: 20px auto 0 auto;
+    padding:18px 22px;
+    border-radius: $border-radius;
+    font-weight: bold;
+    @include thin-fonts;
+    font-size: 18px;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .info-page-button {
+    cursor: pointer;
+    background: $green-light-1;
+    color:#fff;
+    &:hover {
+      background-color: lighten($green-light-1, 4%);
+    }
+  }
+
+  .info-page-button-dark {
+    background: $brand-highlight-2;
+    color:#fff;
+    &:hover {
+      background: $brand-highlight-2;
+      opacity: 0.8;
+    }
+  }
+
+  .info-page-box {
+    padding-top: $info-box-padding;
+    padding-bottom: $info-box-padding;
+
+    // We increase padding at S by default.
+    @media (min-width:$screen-s-min) {
+      padding-top: $info-box-padding;
+      padding-bottom: $info-box-padding;
+    }
+
+    .col-image-bottom img {
+      margin-bottom: 0;
+    }
+
+    h1, h2 {
+      color: $color-header;
+    }
+    h1 {
+      font-weight: 900;
+      font-size: 40px;
+      letter-spacing: -0.5px;
+      margin:0;
+      padding: 0 0 16px 0; /* Compensate for implicit top padding introduced by line height */
+
+      @media (min-width:$screen-ss-min) {
+        font-size: 46px;
+      }
+
+      &.large, &.large-2 {
+        font-size: 42px;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        letter-spacing: -2px;
+        padding-bottom: 23px;
+
+        @media (min-width:$screen-ss-min) {
+          font-size: 52px;
+        }
+      }
+      &.large-2 {
+        padding-bottom: 12px;
+        @media (min-width:$screen-ss-min) {
+          padding-bottom: 6px;
+        }
+      }
+      &.long {
+        margin: 0 0 7px 0;
+        font-size: 54px;
+        letter-spacing: -1px;
+        font-weight: normal;
+        @media (min-width:$screen-ss-min) {
+          font-size: 70px;
+        }
+      }
+      &.light {
+        font-size: 54px;
+        letter-spacing: -2px;
+        font-weight: normal;
+      }
+      &.hug-subheading {
+        margin-bottom: 0;
+      }
+      &.combined-with-section {
+        margin-bottom: 24px;
+      }
+    }
+    p, h2, ol, ul {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      &.full-width {
+        max-width: none;
+      }
+    }
+    h2 {
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-weight: 900;
+      font-size: 28px;
+      .heading-number {
+        margin-right: 10px;
+      }
+      .heading-number-in-margin {
+        margin-left: -20px;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    h2.sub-heading, h2.sub-heading-long {
+      font-size: 22px;
+      font-weight: normal;
+      margin-top: 0;
+      padding-top: 0;
+      @media (min-width:$screen-ss-min) {
+        font-size: 24px;
+      }
+    }
+    h2.sub-heading {
+      margin-bottom: 20px;
+      margin-top: 0px;
+    }
+    h2.sub-heading-long {
+      margin-bottom: 10px;
+      margin-top: 10px;
+      max-width: none;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    h2.long, h2.long-2, h2.long-3 {
+      font-size: 33px;
+      letter-spacing: -1px;
+      font-weight: normal;
+      margin-top: 15px;
+      margin-bottom: 15px;
+
+      @media (min-width:$screen-ss-min) {
+        font-size: 40px;
+      }
+    }
+    h2.long-2 {
+      margin-bottom: 40px;
+      margin-top: 40px;
+      line-height: 38px;
+      font-size: 28px;
+    }
+    h2.long-3 {
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+
+      font-size: 28px;
+
+      @media (min-width:$screen-ss-min) {
+        font-size: 30px;
+      }
+
+    }
+    h2.faded {
+      opacity: 0.7;
+    }
+    p, ol li {
+      line-height: 28px;
+      font-size: 18px;
+    }
+    ol {
+      padding-left: 23px;
+      margin-bottom: 15px;
+    }
+    ol li {
+      padding-left: 25px;
+    }
+    ul li {
+      line-height: 28px;
+      font-size: 18px;
+    }
+    ul {
+      margin-bottom: 15px;
+    }
+  }
+
+  .info-page-box {
+    background: #fff;
+  }
+
+  .info-page-box-post-preview {
+    padding-top: $info-box-padding;
+    padding-bottom: 20px;
+
+    // We increase padding at S by default.
+    @media (min-width:$screen-s-min) {
+      padding-top: $info-box-padding;
+    }
+
+    h2 {
+      margin-bottom: $info-box-padding - 20px;
+    }
+  }
+
+  .info-page-box-light {
+    background: $body-bg;
+    border-bottom: 1px solid darken($body-bg, 7%);
+    border-top: 1px solid darken($body-bg, 7%);
+    &:first-child {
+      border-top: none;
+    }
+  }
+
+  .info-page-box-dark {
+    background: $color-dark;
+    box-shadow: inset 0 0 100px 34px rgba(0,0,0,0.15), 0 2px 3px 0 rgba(0,0,0,0.23);
+    color:#fff;
+    @include thin-fonts;
+    h1, h2, h3, a {
+      color:#fff;
+      @include thin-fonts;
+    }
+  }
+
+  .info-page-box-extra-padding {
+    padding-top: 10px;
+    padding-bottom: 35px;
+  }
+
+  .contact-page-links {
+    list-style: none;
+    padding: 25px 0 0 0;
+    li {
+      margin-bottom: 25px;
+      display: block;
+
+      @media (min-width:$screen-ss-min) {
+        display: inline-block;
+        margin-right: 55px;
+        margin-bottom: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+
+      color: lighten(#241c22, 16%);
+      a:hover{
+        text-decoration: none;
+        color: lighten(#241c22, 30%);
+      }
+
+      .contact-icon{
+        margin-right: 6px;
+        font-size: 32px;
+        vertical-align: middle;
+      }
+      .contact-text{
+        vertical-align: middle;
+        font-size: 18px;
+      }
+    }
+  }
+
+  .info-page-box-long-form {
+    text-align: left;
+    .container {
+      max-width: 800px;
+    }
+    p, h2, ol {
+      max-width: none;
+    }
+    h2 {
+      font-weight: normal;
+    }
+    h3 {
+      font-size: 21px;
+      font-weight: bold;
+      @include thin-fonts;
+      padding-top: 15px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .info-page-box-long-form-double-col {
+    $row-bottom-padding: 50px;
+    $row-bottom-padding-sm: 30px;
+    h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    p {
+      font-size: 16px;
+    }
+    .container {
+      padding: 0 30px;
+    }
+    .row {
+      margin: 0 -30px;
+      > div {
+        padding: 0 30px $row-bottom-padding 30px;
+      }
+    }
+    .container {
+      margin-bottom: -1 * $row-bottom-padding;
+    }
+
+    @media (min-width:$screen-ss-min) {
+      text-align: left;
+    }
+
+    @media (max-width:$screen-sm-max) {
+
+      .row > div {
+        padding-bottom: $row-bottom-padding-sm;
+      }
+      .container {
+        margin-bottom: -1 * $row-bottom-padding-sm;
+      }
+    }
+  }
+
+
+  .info-page-box-3-step {
+    .image-max-width {
+      max-width: 220px;
+      margin-bottom: 30px;
+    }
+    h2 {
+      margin-bottom: 15px;
+      font-size: 24px;
+      @media (min-width:$screen-sm-min) {
+        font-size: 24px;
+      }
+      @media (min-width:$screen-md-min) {
+        font-size: 24px;
+      }
+    }
+    p {
+      margin-left: auto;
+      margin-right: auto;
+      @media (min-width:$screen-sm-min) {
+        font-size: 16px;
+      }
+      @media (min-width:$screen-md-min) {
+        font-size: 17px;
+      }
+    }
+    p.info-page-box-3-step-description {
+      max-width: inherit;
+      margin-top: 26px;
+      margin-bottom: 26px;
+    }
+    .container {
+      padding: 0 30px;
+    }
+    .row {
+      margin: 0 -30px;
+      > div {
+        padding: 0 30px;
+
+        @media (max-width:$screen-s-max) {
+          padding-bottom: 60px;
+          &:last-child {
+            padding-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .info-page-box-bottom-shadow {
+    border-bottom: 1px solid $gray-lighter;
+  }
+
+  .info-page-box-aspiration{
+    $box-font-color: #777;
+    background-image: url('/static/images/aspiration.jpg');
+    background-size: cover;
+    background-position: center center;
+    color:$gray-dark;
+    padding: 15px 0;
+    h1,h2,h3,.info-page-button{
+      margin: 30px auto;
+    }
+
+    h1 {
+      color:white;
+      font-family: $font-family-logo;
+      font-size: 52px;
+      padding: 0;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: normal;
+      color:$box-font-color;
+      line-height: 38px;
+      @include thin-fonts;
+      @media (min-width:$screen-ss-min) {
+        font-size: 28px;
+      }
+    }
+    h3 {
+      color:$box-font-color;
+      font-size: 20px;
+
+      @include thin-fonts;
+      @media (min-width:$screen-ss-min) {
+        font-size: 18px;
+      }
+    }
+    a {
+      color:white;
+      @include thin-fonts;
+    }
+    .info-page-button {
+      margin-top: 0;
+    }
+  }
+
+  .info-page-posts {
+    background: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: $main-cont-padding-small;
+    padding-right: $main-cont-padding-small;
+
+    .info-page-posts-center{
+      >h2 {
+        display: inline-block;
+        margin: 30px 0;
+        padding: 0;
+        font-size: 18px;
+        padding-bottom: 5px;
+        border-bottom: 3px solid $brand-highlight-2;
+      }
+      max-width:$content-max-width;
+      margin: 0 auto;
+    }
+  }
+}

@@ -40,13 +40,15 @@ angular.module('webApp')
     };
 
     var shouldShow = function(item){
-      var show = true;
-
       if(item.state !== undefined){
         return stateChangeService.isPermitted($state.get(item.state));
       }
 
-      return show;
+      return true;
+    };
+
+    var isHidden = function(item){
+      return item.hidden;
     };
 
     var createOutputNavigationItem = function(inputItem, isActive){
@@ -100,7 +102,7 @@ angular.module('webApp')
               newPrimaryNavigation.push(output);
             }
           }
-          else {
+          else if(!isHidden(item)) {
             newPrimaryNavigation.push(output);
           }
 
