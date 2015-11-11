@@ -295,10 +295,10 @@ $html-name-space:'.info-page';
         margin-right: 0;
       }
 
-      color: lighten(#241c22, 16%);
+      color: $brand-highlight-2;
       a:hover{
         text-decoration: none;
-        color: lighten(#241c22, 30%);
+        color: $brand-highlight;
       }
 
       .contact-icon{
