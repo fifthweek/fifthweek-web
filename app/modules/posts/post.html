@@ -8,12 +8,13 @@
         <li>
           <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.manage, key: null})" class="poster-name">{{post.blog.name}}</a>
         </li>
-        <li>
-          <span ng-if="!post.isScheduled">Posted to </span>
-          <span ng-if="post.isScheduled">Live in </span>
-          <a ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
+        <li ng-if="post.blog.name !== post.channel.name">
+          <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
             {{post.channel.name}}
           </a>
+        </li>
+        <li>
+          <span ng-if="post.isScheduled">Live in </span>
           <a ng-if="post.isOwner" ng-click="editPost(post)" class="live-in-info live-in-link">{{post.liveIn}}</a>
           <span ng-if="!post.isOwner" class="live-in-info">{{post.liveIn}}</span>
         </li>

@@ -159,6 +159,23 @@ describe('fw-subscription-information-controller', function () {
         $scope.model.userId = 'creatorId';
       });
 
+      describe('when landing page not loaded', function(){
+        beforeEach(function(){
+          $scope.model.landingPage = undefined;
+          target.internal.onAggregateStateUpdated();
+        });
+
+        standardTests();
+
+        it('should not call reload', function(){
+          expect(target.internal.reload).not.toHaveBeenCalled();
+        });
+
+        it('should not call reloadFromUserState', function(){
+          expect(target.internal.reloadFromUserState).not.toHaveBeenCalled();
+        });
+      });
+
       describe('when previously owner', function(){
         beforeEach(function(){
           $scope.model.landingPage = { isOwner: true };
@@ -173,6 +190,7 @@ describe('fw-subscription-information-controller', function () {
           standardTests();
           expectReloadFromUserState();
         });
+
         describe('when now not owner', function(){
           beforeEach(function(){
             accountSettingsRepository.getUserId.and.returnValue('userId');

@@ -62,7 +62,7 @@ describe('submit-feedback-dialog-controller', function () {
         deferredPostFeedback = $q.defer();
 
         membershipStub.postFeedback.and.returnValue(deferredPostFeedback.promise);
-        $scope.model.input.content = { previewText: 'input' };
+        $scope.model.input.content = { firstText: 'input' };
 
         $scope.submitFeedback().then(function(){ complete = true; }, function(e){ error = e; });
         $scope.$apply();

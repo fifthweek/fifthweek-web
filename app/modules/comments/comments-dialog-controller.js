@@ -54,7 +54,7 @@ angular.module('webApp')
 
     $scope.saveComment = function(){
       model.errorMessage = undefined;
-      return postStub.postComment(postId, { content: model.input.comment.previewText })
+      return postStub.postComment(postId, { content: model.input.comment ? model.input.comment.firstText : '' })
         .then(function(){
           model.input.comment = '';
           $scope.commentOnPostForm.$setPristine();

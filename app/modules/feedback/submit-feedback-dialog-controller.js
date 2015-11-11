@@ -19,7 +19,7 @@ angular.module('webApp').controller(
 
     $scope.submitFeedback = function() {
       var data = {
-        message: $scope.model.input.content.previewText
+        message: $scope.model.input.content ? $scope.model.input.content.firstText : ''
       };
       return membershipStub.postFeedback(data)
         .then(function() {

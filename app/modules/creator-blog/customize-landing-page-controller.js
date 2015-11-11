@@ -68,7 +68,7 @@ angular.module('webApp').controller(
         introduction: model.settings.introduction,
         headerImageFileId: fileId,
         video: model.settings.video ? model.settings.video : undefined,
-        description: model.settings.description ? model.settings.description.previewText : ''
+        description: model.settings.description ? model.settings.description.firstText : ''
       };
 
       return blogStub.putBlog(model.settings.blogId, blogData)

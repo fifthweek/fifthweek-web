@@ -87,7 +87,7 @@
       navigateFromCreatorLandingPage();
     };
 
-    describe('when testing subscription buttons', function(){
+    fdescribe('when testing subscription buttons', function(){
 
       var blog;
       var creatorRegistration1;
@@ -153,6 +153,7 @@
 
         describe('subscribing as signed-out user not on guest-list', function(){
           beforeEach(function(){
+            browser.sleep(2000);
             commonWorkflows.signOut();
             commonWorkflows.getPage('/' + creatorRegistration1.username);
           });
@@ -190,6 +191,7 @@
 
         describe('subscribing as new user not on guest-list', function(){
           beforeEach(function(){
+            browser.sleep(2000);
             commonWorkflows.signOut();
             commonWorkflows.getPage('/' + creatorRegistration1.username);
           });
@@ -265,6 +267,7 @@
 
           describe('subscribing as signed-out user on guest-list', function(){
             beforeEach(function(){
+              browser.sleep(2000);
               commonWorkflows.signOut();
               commonWorkflows.getPage('/' + creatorRegistration1.username);
             });
@@ -292,6 +295,7 @@
 
           describe('subscribing as new user on guest-list', function(){
             beforeEach(function(){
+              browser.sleep(2000);
               commonWorkflows.signOut();
               commonWorkflows.getPage('/' + creatorRegistration1.username);
             });

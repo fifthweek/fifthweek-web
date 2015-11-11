@@ -121,10 +121,12 @@ angular.module('webApp')
       var previewWordCount = 0;
       var previewImageId;
       var previewText;
+      var firstText;
       _.forEach(populatedBlocks, function(block){
         if(internal.isTextBlock(block)){
-          if(!previewText){
-            previewText = block.data.text.substring(0, 1000);
+          if(!firstText){
+            firstText = block.data.text;
+            previewText = firstText.substring(0, 1500);
             previewWordCount = internal.getWordCount(previewText);
           }
 
@@ -144,6 +146,9 @@ angular.module('webApp')
       if(!previewText){
         previewText = undefined;
       }
+      if(!firstText){
+        firstText = undefined;
+      }
 
       var serializedBlocks = jsonService.toJson(populatedBlocks);
 
@@ -156,7 +161,8 @@ angular.module('webApp')
         previewWordCount: previewWordCount,
         wordCount: wordCount,
         previewImageId: previewImageId,
-        previewText: previewText
+        previewText: previewText,
+        firstText: firstText
       };
 
       if(busyBlockCount){

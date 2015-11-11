@@ -15,12 +15,13 @@
         <li>
           <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: null, key: null})" class="poster-name">{{post.blog.name}}</a>
         </li>
-        <li>
-          <span ng-if="!post.isScheduled">Posted to </span>
-          <span ng-if="post.isScheduled">Live in </span>
+        <li ng-if="post.blog.name !== post.channel.name">
           <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: landingPageConstants.actions.channel, key: post.channelId })" class="container-name">
             {{post.channel.name}}
           </a>
+        </li>
+        <li>
+          <span ng-if="post.isScheduled">Live in </span>
           <span class="live-in-info">{{post.liveIn}}</span>
         </li>
       </ul>
@@ -45,9 +46,12 @@
        ng-if="post.creator.username && (!post.readAccessIgnoringPayment || !post.priceAccepted)">
     <div class="row">
       <div class="col-xs-12">
-        <p>
+        <p ng-if="!post.readAccessIgnoringPayment">
           This post requires a subscription to <strong>{{post.channel.name}}</strong>.
           <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: null, key: null})">Find out more...</a>.
+        </p>
+        <p ng-if="post.readAccessIgnoringPayment && !post.readAccess && !post.priceAccepted">
+          The price of <strong>{{post.channel.name}}</strong> has increased. You must accept the new price to continue accessing this channel.
         </p>
         <fw-post-subscription-information
           username="{{post.creator.username}}"

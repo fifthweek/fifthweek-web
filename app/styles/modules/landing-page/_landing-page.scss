@@ -449,15 +449,21 @@ $unsubscribe-button-secondary: darken($btn-danger-bg, 15%);
             }
           }
           .channel-price-column{
-            float: right;
+            @media (min-width:$screen-s-min) {
+              float: right;
+            }
+
             .channel-button{
-              margin-left: 6px;
+              margin-top: 6px;
+              margin-left: 0;
               color:#fff;
               font-size: $p-font-size - 1;
               background-color: $subscribe-button-primary;
               padding: 1px 12px;
               height: 30px;
               @media (min-width:$screen-s-min) {
+                margin-top: 0;
+                margin-left: 6px;
                 font-size: $p-font-size;
                 padding: 1px 12px;
                 height: 34px;

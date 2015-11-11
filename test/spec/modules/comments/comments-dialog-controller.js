@@ -116,7 +116,7 @@ describe('comments-dialog-controller', function(){
         spyOn(target.internal, 'loadForm').and.returnValue(deferredLoadForm.promise);
 
         $scope.model.errorMessage = 'bad';
-        $scope.model.input.comment = { previewText: 'comment' };
+        $scope.model.input.comment = { firstText: 'comment' };
         $scope.saveComment().then(function(){ success = true; }, function(e) { error = e; });
         $scope.$apply();
       });

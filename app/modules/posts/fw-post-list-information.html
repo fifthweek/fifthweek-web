@@ -29,11 +29,11 @@
         <div class="col-xs-12 col-ss-5 text-right">
           <div ng-if="updatedPrice.isIncrease">
             <button class="btn btn-success btn-block" ng-click="acceptPrice(updatedPrice)">Accept</button>
-            <button class="btn btn-default btn-block" ng-click="manageSubscription(updatedPrice)">Manage</button>
+            <button class="btn btn-default btn-block" ng-click="manageSubscription(updatedPrice)" ng-if="!userId">Manage</button>
           </div>
           <div ng-if="!updatedPrice.isIncrease">
             <button class="btn btn-success btn-block" ng-click="acceptPrice(updatedPrice)">Okay</button>
-            <button class="btn btn-default btn-block" ng-click="manageSubscription(updatedPrice)">Manage</button>
+            <button class="btn btn-default btn-block" ng-click="manageSubscription(updatedPrice)" ng-if="!userId">Manage</button>
           </div>
         </div>
       </div>

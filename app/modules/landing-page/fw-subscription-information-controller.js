@@ -33,6 +33,10 @@ angular.module('webApp')
       blogRepository = blogRepositoryFactory.forCurrentUser();
       subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
+      if(!$scope.model.landingPage){
+        return $q.when();
+      }
+
       var newUserId = accountSettingsRepository.getUserId();
       var isOwner = newUserId === $scope.model.userId;
 

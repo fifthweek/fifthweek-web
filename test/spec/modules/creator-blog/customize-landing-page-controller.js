@@ -263,7 +263,7 @@ describe('customize landing page controller', function () {
         name: 'name',
         introduction: 'introduction',
         video: 'video',
-        description: { previewText: 'description' },
+        description: { firstText: 'description' },
         headerImage: {
           uri: 'uri',
           containerName: 'containerName',
@@ -271,7 +271,7 @@ describe('customize landing page controller', function () {
         }
       }));
 
-      jsonService.toSirTrevor.and.returnValue({ previewText: 'previewText' });
+      jsonService.toSirTrevor.and.returnValue({ firstText: 'firstText' });
 
       createController();
 
@@ -320,7 +320,7 @@ describe('customize landing page controller', function () {
               introduction: 'introduction',
               headerImageFileId: undefined,
               video: 'video',
-              description: 'previewText'
+              description: 'firstText'
             }
           );
         });
@@ -332,7 +332,7 @@ describe('customize landing page controller', function () {
               name: 'name',
               introduction: 'introduction',
               video: 'video',
-              description: 'previewText',
+              description: 'firstText',
               headerImage: undefined
             }
           );
@@ -360,7 +360,7 @@ describe('customize landing page controller', function () {
               introduction: 'introduction',
               headerImageFileId: 'fileId',
               video: 'video',
-              description: 'previewText'
+              description: 'firstText'
             }
           );
         });
@@ -372,7 +372,7 @@ describe('customize landing page controller', function () {
               name: 'name',
               introduction: 'introduction',
               video: 'video',
-              description: 'previewText',
+              description: 'firstText',
               headerImage: {
                 fileId: 'fileId',
                 uri: 'uri',

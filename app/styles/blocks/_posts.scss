@@ -270,6 +270,7 @@ $post-p-margin: 28px;
       @include thin-fonts;
       list-style-type:none;
       margin-bottom:0;
+      //font-size: 12px;
 
       .poster-name {
         color:$gray-dark;
@@ -592,10 +593,6 @@ $post-p-margin: 28px;
 }
 
 .full-post-dialog {
-  .post-buttons-container {
-    margin: 15px auto;
-  }
-
   .modal-title {
     @include clearfix;
 
@@ -629,10 +626,17 @@ $post-p-margin: 28px;
     }
   }
 
+  .post-buttons-container {
+    margin: $post-bottom-margin-lg auto 15px auto;
+    padding: 0 $post-margin-sm;
+  }
+
   .share-post-link{
     text-align: center;
     color: $gray;
-    padding: 20px 0;
+    margin: $post-bottom-margin-lg $post-margin-sm;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
