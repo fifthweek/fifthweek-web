@@ -38,12 +38,13 @@ body:not(.navigation-hidden) {
     font-size:24px;
     padding:0;
     margin:14px 0 18px 0;
+    @include thin-fonts;
     a {
       display:inline-block;
       vertical-align:top;
       width:100%;
       padding:4px $item-padding-lr + $item-margin-lr;
-      color:$grey-dark-4;
+      color: $brand-highlight-2;
     }
   }
   ul {
