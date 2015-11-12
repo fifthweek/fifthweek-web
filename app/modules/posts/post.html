@@ -94,6 +94,9 @@
       <span class="file-count" ng-if="post.fileCount">
         {{post.fileCount == 1 ? '1 file' : post.fileCount + ' files'}}
       </span>
+      <span class="video-count" ng-if="post.videoCount">
+        {{post.videoCount == 1 ? '1 video' : post.videoCount + ' videos'}}
+      </span>
     </span>
     <span class="like-comment-counters">
       <span class="likes-count" ng-class="{ 'has-liked': post.hasLiked, 'has-not-liked': !post.hasLiked }">

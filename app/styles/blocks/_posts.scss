@@ -18,6 +18,7 @@ $line-height-compensation: -5px;
 $post-header-margin-top: 31px;
 $post-header-margin-bottom: 16px;
 $post-border-color: lighten($gray, 45%);
+$post-text-font: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
 
 $post-p-margin: 28px;
 
@@ -117,7 +118,7 @@ $post-p-margin: 28px;
 
 @mixin post-text-style {
   h1,h2{
-    font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+    font-family: $post-text-font;
     margin-top:$post-p-margin;
     margin-bottom:$post-p-margin;
     padding: 0;
@@ -651,4 +652,11 @@ $post-p-margin: 28px;
   max-width:$content-max-width;
   margin-top: $post-margin-sm * 2;
   position:relative;
+}
+
+.post-break-line {
+  text-align: center;
+  font-size: 20px;
+  margin: 6px 0;
+  font-family: $post-text-font;
 }

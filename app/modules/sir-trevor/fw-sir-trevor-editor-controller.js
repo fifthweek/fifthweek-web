@@ -1,5 +1,8 @@
 angular.module('webApp')
-  .controller('fwSirTrevorEditorCtrl', function ($scope, $element, $timeout, $interval, formConstants, markdownService, jsonService, fwImageBlockFactory, fwFileBlockFactory, fwTextBlockFactory) {
+  .controller(
+    'fwSirTrevorEditorCtrl',
+    function ($scope, $element, $timeout, $interval, formConstants, markdownService, jsonService,
+              fwImageBlockFactory, fwFileBlockFactory, fwTextBlockFactory, fwBreakBlockFactory) {
     'use strict';
 
     var fileBlockExternalData = ['containerName', 'renderSize', 'fileSize', 'fileName'];
@@ -62,6 +65,14 @@ angular.module('webApp')
       return block.type === 'text';
     };
 
+      internal.isVideoBlock = function(block){
+        return block.type === 'video';
+      };
+
+      internal.isBreakBlock = function(block){
+        return block.type === 'break';
+      };
+
     internal.getWordCount = function(text){
       // http://stackoverflow.com/a/30335883/37725
       var result = text.replace(/[^\w\s]|_/g, '')
@@ -117,6 +128,7 @@ angular.module('webApp')
 
       var imageCount = 0;
       var fileCount = 0;
+      var videoCount = 0;
       var wordCount = 0;
       var previewWordCount = 0;
       var previewImageId;
@@ -134,6 +146,9 @@ angular.module('webApp')
         }
         else if(internal.isFileBlock(block)) {
           fileCount++;
+        }
+        else if(internal.isVideoBlock(block)) {
+          videoCount++;
         }
         else if(internal.isImageBlock(block)) {
           imageCount++;
@@ -157,6 +172,7 @@ angular.module('webApp')
         files: files,
         blockCount: populatedBlocks.length,
         imageCount: imageCount,
+        videoCount: videoCount,
         fileCount: fileCount,
         previewWordCount: previewWordCount,
         wordCount: wordCount,
@@ -206,6 +222,13 @@ angular.module('webApp')
         else if(internal.isFileOrImageBlock(block)) {
           return block.data && block.data.fileId;
         }
+        else if(internal.isVideoBlock(block)){
+          return block.data && block.data.remote_id;
+        }
+        else if(internal.isBreakBlock(block)){
+          return true;
+        }
+
         return false;
       });
     };
@@ -229,12 +252,15 @@ angular.module('webApp')
       SirTrevor.Blocks.Image = fwImageBlockFactory.createBlock();
       SirTrevor.Blocks.File = fwFileBlockFactory.createBlock();
       SirTrevor.Blocks.Text = fwTextBlockFactory.createBlock();
+      SirTrevor.Blocks.Break = fwBreakBlockFactory.createBlock();
       internal.editor = new SirTrevor.Editor({
         el: $('.js-st-instance'),
         blockTypes: [
           'Text',
           'Image',
-          'File'
+          'File',
+          'Video',
+          'Break'
         ],
         defaultType: 'Text',
         ignoreFormEvents: true,

@@ -97,6 +97,16 @@
             </div>
           </div>
 
+          <div ng-if="block.type === 'video'" class="post-visual">
+            <div ng-if="block.data.source === 'vimeo' || block.data.source === 'youtube'" class="video">
+              <embed-video data-ng-href="{{block.data.source === 'vimeo' ? 'https://vimeo.com/' : 'https://youtube.com/watch?v='}}{{block.data.remote_id}}" rel="0" autohide="1" frameborder="0" showinfo="0"></embed-video>
+            </div>
+          </div>
+
+          <div ng-if="block.type === 'break'">
+            <p class="post-break-line">⁂</p>
+          </div>
+
         </div>
       </div>
 
