@@ -63,7 +63,7 @@ angular.module('webApp')
     };
 
     $scope.viewPost = function(post) {
-      return postInteractions.viewPost(post);
+      return postInteractions.viewPost(post, true);
     };
 
     $scope.deletePost = function(postId) {

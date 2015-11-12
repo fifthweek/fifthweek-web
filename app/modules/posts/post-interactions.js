@@ -42,7 +42,12 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
       });
     };
 
-    service.viewPost = function(post) {
+    service.viewPost = function(post, reload) {
+
+      if(reload){
+        post.content = undefined;
+      }
+
       var updateLikeStatus = function(totalLikes, hasLiked){
         post.likesCount = totalLikes;
         post.hasLiked = hasLiked;

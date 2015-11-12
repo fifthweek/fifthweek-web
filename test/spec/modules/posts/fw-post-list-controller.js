@@ -441,7 +441,7 @@ describe('fw-post-list-controller', function(){
     describe('when calling viewPost', function(){
       it('should forward the viewPost function to postInteractions', function(){
         $scope.viewPost('a');
-        expect(postInteractions.viewPost).toHaveBeenCalledWith('a');
+        expect(postInteractions.viewPost).toHaveBeenCalledWith('a', true);
       });
     });
 

@@ -87,52 +87,88 @@ describe('post-interactions', function(){
   });
 
   describe('when viewPost is called', function(){
-    var modalParameter;
-    var post;
-    var result;
-    beforeEach(function(){
-      $modal.open.and.callFake(function(data){
-        modalParameter = data;
-        return { result: 'result' };
-      });
-      post = {
-        postId: 'postId'
-      };
 
-      result = target.viewPost(post);
-    });
-
-    it('should open a modal dialog', function(){
-      expect($modal.open).toHaveBeenCalled();
-    });
-
-    it('should configure injection of post', function(){
-      expect(modalParameter.resolve.post()).toEqual(post);
-    });
-
-    describe('when updateLikeStatus is called', function(){
-      it('should update the post', function(){
-        modalParameter.resolve.updateLikeStatus()('totalLikes', 'hasLiked');
-        expect(post).toEqual({
+    describe('when reload is not specified', function(){
+      var modalParameter;
+      var post;
+      var result;
+      beforeEach(function(){
+        $modal.open.and.callFake(function(data){
+          modalParameter = data;
+          return { result: 'result' };
+        });
+        post = {
           postId: 'postId',
-          likesCount: 'totalLikes',
-          hasLiked: 'hasLiked'
+          content: 'content'
+        };
+
+        result = target.viewPost(post);
+      });
+
+      it('should open a modal dialog', function(){
+        expect($modal.open).toHaveBeenCalled();
+      });
+
+      it('should configure injection of post', function(){
+        expect(modalParameter.resolve.post()).toEqual(post);
+      });
+
+      describe('when updateLikeStatus is called', function(){
+        it('should update the post', function(){
+          modalParameter.resolve.updateLikeStatus()('totalLikes', 'hasLiked');
+          expect(post).toEqual({
+            postId: 'postId',
+            content: 'content',
+            likesCount: 'totalLikes',
+            hasLiked: 'hasLiked'
+          });
         });
       });
-    });
 
-    describe('when updateCommentsCount is called', function(){
-      it('should update the post', function(){
-        modalParameter.resolve.updateCommentsCount()('totalComments');
-        expect(post).toEqual({
-          postId: 'postId',
-          commentsCount: 'totalComments'
+      describe('when updateCommentsCount is called', function(){
+        it('should update the post', function(){
+          modalParameter.resolve.updateCommentsCount()('totalComments');
+          expect(post).toEqual({
+            postId: 'postId',
+            content: 'content',
+            commentsCount: 'totalComments'
+          });
         });
+      });
+
+      it('should return the modal result', function(){
+        expect(result).toBe('result');
       });
     });
 
-    it('should return the modal result', function(){
-      expect(result).toBe('result');
+    describe('when reload is specified', function(){
+      var modalParameter;
+      var post;
+      var result;
+      beforeEach(function(){
+        $modal.open.and.callFake(function(data){
+          modalParameter = data;
+          return { result: 'result' };
+        });
+        post = {
+          postId: 'postId',
+          content: 'content'
+        };
+
+        result = target.viewPost(post, true);
+      });
+
+      it('should open a modal dialog', function(){
+        expect($modal.open).toHaveBeenCalled();
+      });
+
+      it('should configure injection of post', function(){
+        expect(modalParameter.resolve.post()).toEqual({ postId: 'postId', content: undefined });
+      });
+
+      it('should return the modal result', function(){
+        expect(result).toBe('result');
+      });
     });
   });
 
