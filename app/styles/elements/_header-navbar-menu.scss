@@ -62,6 +62,10 @@ ul.header-navbar-menu {
   }
 }
 
+.info-page {
+  @include mobile-nav-scroll(510px);
+}
+
 //mobile navbar scrolling page specifics
 .page-customize-landing, .page-creator-channels {
   @include mobile-nav-scroll(380px);
