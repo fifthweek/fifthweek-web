@@ -88,6 +88,12 @@
   .snapjs-expand-right .snap-drawer-right {
     width: 100%;
   }
+
+  .fw-menu-closed{
+    #sidebar{
+      visibility: collapse;
+    }
+  }
 }
 
 @media (max-width: $screen-sm-max) {
