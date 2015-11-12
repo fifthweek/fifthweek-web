@@ -73,6 +73,10 @@ body:not(.navigation-hidden) {
       font-size:$p-font-size;
       padding:$item-padding;
 
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
       color:$grey-dark;
       &:hover {
         text-decoration: none;
