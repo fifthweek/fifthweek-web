@@ -63,6 +63,8 @@ body:not(.navigation-hidden) {
     padding-left: $main-cont-padding-small;
     padding-right: $main-cont-padding-small;
   }
+
+  overflow-x: hidden;
 }
 
 .navigation-hidden {
