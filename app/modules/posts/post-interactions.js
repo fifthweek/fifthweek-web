@@ -33,6 +33,7 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
       return $modal.open({
         controller: 'postEditDialogCtrl',
         templateUrl: 'modules/posts/post-edit-dialog.html',
+        size: 'lg',
         resolve: {
           initialPost: function() {
             return post;

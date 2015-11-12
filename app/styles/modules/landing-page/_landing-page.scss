@@ -28,16 +28,6 @@ $unsubscribe-button-secondary: darken($btn-danger-bg, 15%);
   font-weight: bold;
 }
 
-@mixin content-container{
-  margin:0 auto;
-  max-width:$content-max-width;
-  .col-s-4:first-child { /* must make up normal width of 33.3333333333% */
-    @media (min-width:$screen-sm-min) {
-      margin-left: 3.66666666666%;
-      width: 29.66666666666%;
-    }
-  }
-}
 
 .page-landing-page, .subscription-information {
 

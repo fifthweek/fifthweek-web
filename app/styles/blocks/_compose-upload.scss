@@ -5,6 +5,12 @@
  */
 .compose-upload-form {
 
+  @include content-container;
+
+  .select-channels-area{
+    text-align: center;
+  }
+  
   .select-channel-text {
     margin-bottom: $post-margin-sm;
   }

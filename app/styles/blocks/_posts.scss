@@ -563,9 +563,14 @@ $post-p-margin: 28px;
 
 .edit-post-form {
 
+  .modal-body, .row-btn{
+    @include content-container;
+  }
+
   .btn-file{
     min-width: 100px;
   }
+
   .file-name {
     font-weight: bold;
     margin-bottom: 5px;
