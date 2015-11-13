@@ -1,13 +1,6 @@
 @import '_base';
 
-.header-wrapper {
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:1030;
-}
-
-.navigation-hidden .header-wrapper {
+.navigation-hidden {
   @media (min-width:$navbar-lg-min) {
     &:after {
       display: none;
@@ -16,6 +9,7 @@
 }
 
 .navbar {
+  margin-bottom: 0;
   min-height: $navbar-height-sm;
   @media (min-width:$navbar-lg-min) {
     min-height: $navbar-height-lg;
@@ -55,6 +49,27 @@
     }
   }
 }
+
+@media (max-width:$screen-sm-max) {
+  .navbar-fixed-top {
+    position: relative;
+    top: auto;
+    width: 100%;
+  }
+
+  .main-container {
+    margin-top: 81px - $navbar-height-sm;
+  }
+
+  .info-page {
+    .right-container{
+      .main-container {
+        margin-top: 0 !important;
+      }
+    }
+  }
+}
+
 
 //@import '../elements/_header-navbar-brand';
 @import '../elements/_header-navbar-toggle';

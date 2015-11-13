@@ -20,14 +20,14 @@
 
 @mixin mobile-nav-scroll ($width){
   .header-navbar-menu-wrap {
-    @media (max-width:$width + 10px) {
+    @media (max-width:$width + 90px) {
       overflow-y:hidden;
       overflow-x:visible;
       height:50px;
     }
   }
   ul.header-navbar-menu {
-    @media (max-width:$width + 10px) {
+    @media (max-width:$width + 90px) {
       width:$width;
       //height:100%;
       height:35px;
