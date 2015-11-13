@@ -4,7 +4,7 @@ var minute = 60 * 1000;
 
 exports.config = {
   baseUrl: 'http://localhost:9001',
-  specs: ['e2e/spec/**/sign-in-page.spec.js'],
+  specs: ['e2e/spec/**/*.spec.js'],
   framework: 'jasmine2',
 
   allScriptsTimeout: minute,

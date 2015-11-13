@@ -74,7 +74,7 @@ angular.module('webApp').controller('composePostCtrl',
     internal.getPostData = function(){
       var sourceData = model.input.content;
       if(!sourceData){
-        return undefined;
+        return {};
       }
 
       return {

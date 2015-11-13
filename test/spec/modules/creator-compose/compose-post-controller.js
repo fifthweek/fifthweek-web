@@ -388,13 +388,13 @@ describe('compose post controller', function () {
     });
 
     describe('when calling getPostData', function(){
-      it('should return undefined if no content', function(){
+      it('should return empty object if no content', function(){
         $scope.model.input.content = undefined;
         $scope.model.committedChannel = {channelId: 'channelId'};
 
         var data = target.internal.getPostData();
 
-        expect(data).toBeUndefined();
+        expect(data).toEqual({});
       });
 
       it('should return post data', function(){

@@ -14,50 +14,41 @@
     <i class="fa fa-refresh fa-spin"></i>
   </div>
 
-  <div ng-if="model.posts.length === 0">
-    <fw-panel12 ng-if="source === sources.creatorBacklog" class="no-posts-message">
-      <h4>Nothing scheduled</h4>
-      <p>The schedule makes it easy for you to provide a steady flow of posts to your subscribers.</p>
-      <p>Use this feature by clicking 'Schedule' when creating a post.</p>
-    </fw-panel12>
+  <div ng-if="!model.isLoading">
+    <div ng-if="model.posts.length === 0">
+      <fw-panel12 ng-if="source === sources.creatorBacklog" class="no-posts-message">
+        <h4>Nothing scheduled</h4>
+        <p>The schedule makes it easy for you to provide a steady flow of posts to your subscribers.</p>
+        <p>Use this feature by clicking 'Schedule' when creating a post.</p>
+      </fw-panel12>
 
-    <fw-panel12 ng-if="source === sources.creatorTimeline" class="no-posts-message">
-      <div ng-include="'modules/posts/creator-welcome-message.html'"></div>
-    </fw-panel12>
+      <fw-panel12 ng-if="source === sources.creatorTimeline" class="no-posts-message">
+        <div ng-include="'modules/posts/creator-welcome-message.html'"></div>
+      </fw-panel12>
 
-    <fw-panel12 ng-if="source === sources.timeline && userId && !model.displayingAccountBalanceWarning" class="no-posts-message">
-      <h4>This creator has not released any posts</h4>
-      <p>Don't panic! You will only be billed for the weeks where you receive content.</p>
-      <p>Hopefully something will come along shortly :)</p>
-    </fw-panel12>
+      <fw-panel12 ng-if="source === sources.timeline && userId && !model.displayingAccountBalanceWarning" class="no-posts-message">
+        <h4>This creator has not released any posts</h4>
+        <p>Don't panic! You will only be billed for the weeks where you receive content.</p>
+        <p>Hopefully something will come along shortly :)</p>
+      </fw-panel12>
 
-    <fw-panel12 ng-if="source === sources.timeline && !userId && !model.displayingAccountBalanceWarning" class="no-posts-message">
-      <h4>There are no posts to display.</h4>
-      <p>Once you have subscribed to some creators, their posts will appear on this page.</p>
-      <p>If you have subscribed already, don't panic! You will only be billed for the weeks where you receive content.</p>
-      <p>Hopefully something will come along shortly :)</p>
-    </fw-panel12>
+      <fw-panel12 ng-if="source === sources.timeline && !userId && !model.displayingAccountBalanceWarning" class="no-posts-message">
+        <h4>There are no posts to display.</h4>
+        <p>Once you have subscribed to some creators, their posts will appear on this page.</p>
+        <p>If you have subscribed already, don't panic! You will only be billed for the weeks where you receive content.</p>
+        <p>Hopefully something will come along shortly :)</p>
+      </fw-panel12>
 
-    <fw-panel12 ng-if="source === sources.preview" class="no-posts-message">
-      <h4>No posts available.</h4>
-    </fw-panel12>
-  </div>
-
-
-  <div ng-repeat="post in model.posts track by post.postId"
-       ng-include="'modules/posts/post.html'"
-       id="post-{{$index}}"></div>
-
-  <!--div ng-if="source !== sources.preview"
-       ng-repeat="post in model.posts track by post.postId"
-       ng-include="'modules/posts/post.html'"
-       id="post-{{$index}}"></div>
+      <fw-panel12 ng-if="source === sources.preview" class="no-posts-message">
+        <h4>No posts available.</h4>
+      </fw-panel12>
+    </div>
 
 
-  <div ng-if="source === sources.preview" class="row">
-    <div class="col-sm-6"
-         ng-repeat="post in model.posts track by post.postId"
-         ng-include="'modules/posts/post-preview.html'"
-         id="preview-post-{{$index}}"></div-->
+    <div ng-repeat="post in model.posts track by post.postId"
+         ng-include="'modules/posts/post.html'"
+         id="post-{{$index}}"></div>
+
+    </div>
   </div>
 </div>

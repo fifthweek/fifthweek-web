@@ -18,36 +18,17 @@ angular.module('webApp')
 
     internal.loadNext = function(){ return $q.reject(new DisplayableError('Unknown fw-post-list source.')); };
 
-    var accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
-    var blogRepository = blogRepositoryFactory.forCurrentUser();
-    var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
-
-    internal.currentUserId = authenticationService.currentUser.userId;
-    internal.timelineUserId = undefined;
-
     internal.loadPosts = function(){
-      model.errorMessage = undefined;
-      model.isLoading = true;
-
       var getNextPosts = function() { return internal.loadNext(0, 24); };
 
       var posts;
       return fetchAggregateUserState.updateInParallel(internal.currentUserId, getNextPosts)
         .then(function(result) {
           posts = result.posts;
-          return postUtilities.processPostsForRendering(posts, accountSettingsRepository, blogRepository, subscriptionRepository);
+          return postUtilities.processPostsForRendering(posts, internal.accountSettingsRepository, internal.blogRepository, internal.subscriptionRepository);
         })
         .then(function(){
           model.posts = posts;
-        })
-        .catch(function(error){
-          model.posts = undefined;
-          return errorFacade.handleError(error, function(message) {
-            model.errorMessage = message;
-          });
-        })
-        .finally(function(){
-          model.isLoading = false;
         });
     };
 
@@ -77,12 +58,20 @@ angular.module('webApp')
       postInteractions.viewImage(image, imageSource);
     };
 
-    internal.attachToReloadEvent = function(){
-      $scope.$on(fwPostListConstants.reloadEvent, internal.loadPosts);
-      $rootScope.$on(fwSubscriptionInformationConstants.subscriptionStatusChangedEvent, internal.loadPosts);
+    internal.attachToReloadEvents = function(){
+      $scope.$on(fwPostListConstants.reloadEvent, internal.reload);
+      $rootScope.$on(fwSubscriptionInformationConstants.subscriptionStatusChangedEvent, internal.reload);
     };
 
-    this.initialize = function(){
+    internal.loadSettings = function(){
+
+      internal.accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
+      internal.blogRepository = blogRepositoryFactory.forCurrentUser();
+      internal.subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+
+      internal.currentUserId = authenticationService.currentUser.userId;
+      internal.timelineUserId = undefined;
+
       if($scope.source === fwPostListConstants.sources.creatorBacklog){
         internal.timelineUserId = internal.currentUserId;
         internal.loadNext = function() {
@@ -118,19 +107,46 @@ angular.module('webApp')
 
         internal.loadNext = function(startIndex, count) {
           return fetchNewsfeedDelegate({
-              creatorId: internal.timelineUserId,
-              startIndex: startIndex,
-              channelId: channelId,
-              count: count
-            })
+            creatorId: internal.timelineUserId,
+            startIndex: startIndex,
+            channelId: channelId,
+            count: count
+          })
             .then(function(response){
               return $q.when(response.data);
             });
         };
       }
 
-      internal.attachToReloadEvent();
-      internal.loadPosts();
+      return $q.when();
+    };
+
+    internal.reload = function(){
+      if(model.isLoading){
+        return $q.when();
+      }
+
+      model.errorMessage = undefined;
+      model.isLoading = true;
+      model.posts = undefined;
+
+      return internal.loadSettings()
+        .then(function(){
+          return internal.loadPosts();
+        })
+        .finally(function(){
+          model.isLoading = false;
+        })
+        .catch(function(error){
+          return errorFacade.handleError(error, function(message) {
+            model.errorMessage = message;
+          });
+        });
+    };
+
+    this.initialize = function(){
+      internal.attachToReloadEvents();
+      return internal.reload();
     };
   }
 );
