@@ -2,7 +2,7 @@ angular.module('webApp')
   .controller(
     'fwSirTrevorEditorCtrl',
     function ($scope, $element, $timeout, $interval, formConstants, markdownService, jsonService,
-              fwImageBlockFactory, fwFileBlockFactory, fwTextBlockFactory, fwBreakBlockFactory) {
+              fwImageBlockFactory, fwFileBlockFactory, fwTextBlockFactory, fwBreakBlockFactory, fwVideoBlockFactory) {
     'use strict';
 
     var fileBlockExternalData = ['containerName', 'renderSize', 'fileSize', 'fileName'];
@@ -253,6 +253,7 @@ angular.module('webApp')
       SirTrevor.Blocks.File = fwFileBlockFactory.createBlock();
       SirTrevor.Blocks.Text = fwTextBlockFactory.createBlock();
       SirTrevor.Blocks.Break = fwBreakBlockFactory.createBlock();
+      SirTrevor.Blocks.Video = fwVideoBlockFactory.createBlock();
       internal.editor = new SirTrevor.Editor({
         el: $('.js-st-instance'),
         blockTypes: [

@@ -3,7 +3,7 @@
     <fw-blob-image control="blobImage" file-id="{{fileId}}" container-name="{{containerName}}"
                    render-size="renderSize" thumbnail="preview"></fw-blob-image>
   </div>
-  <div class="col-s-5 bottom-buffer">
+  <div class="col-s-6 col-s-offset-3 bottom-buffer">
     <fw-file-upload id-prefix="image" channel-id="{{channelId}}" description="{{model.imageUploaded ? 'Change Image' : 'Add Image'}}"
                     on-upload-started="onUploadStarted()"
                     on-upload-complete="onUploadComplete(data)"

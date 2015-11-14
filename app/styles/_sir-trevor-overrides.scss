@@ -183,3 +183,18 @@ $default-border: $border-size $border-style $accent-color;
     }
   }
 }
+
+.st-block__editor{
+  text-align: center;
+  .btn-file-container{
+    width: 100%;
+  }
+
+  .file-name{
+    margin-bottom: 12px;
+  }
+  .image-area{
+    border: 1px solid $gray-dark;
+    margin-bottom: 6px;
+  }
+}
