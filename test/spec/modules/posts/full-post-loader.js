@@ -45,38 +45,45 @@ describe('full-post-loader', function(){
 
       initialPost = { postId: 'postId' };
       expectedPost = { postId: 'postId', files: 'files' };
-      target.loadPost('postId', 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository').then(function(r){ result = r; }, function(e) { error = e; });
-      $rootScope.$apply();
     });
 
-    it('should call getPost', function(){
-      expect(postStub.getPost).toHaveBeenCalledWith('postId');
-    });
-
-    describe('when getPost succeeds', function(){
-      beforeEach(function(){
-        deferredGetPost.resolve({ data: { post: initialPost, files: 'files' } });
-        $rootScope.$apply();
-      });
-
-      it('should call processPostForRendering', function(){
-        expect(postUtilities.processPostForRendering).toHaveBeenCalledWith(expectedPost, 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository');
-      });
-
-      describe('when processPostForRendering succeeds', function(){
+    var runTests = function(){
+      describe('when getPost succeeds', function(){
         beforeEach(function(){
-          deferredProcessPostForRendering.resolve();
+          deferredGetPost.resolve({ data: { post: initialPost, files: 'files' } });
           $rootScope.$apply();
         });
 
-        it('should complete successfully with the post', function(){
-          expect(result).toEqual(expectedPost);
+        it('should call processPostForRendering', function(){
+          expect(postUtilities.processPostForRendering).toHaveBeenCalledWith(expectedPost, 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository');
+        });
+
+        describe('when processPostForRendering succeeds', function(){
+          beforeEach(function(){
+            deferredProcessPostForRendering.resolve();
+            $rootScope.$apply();
+          });
+
+          it('should complete successfully with the post', function(){
+            expect(result).toEqual(expectedPost);
+          });
+        });
+
+        describe('when processPostForRendering fails', function(){
+          beforeEach(function(){
+            deferredProcessPostForRendering.reject('error');
+            $rootScope.$apply();
+          });
+
+          it('should propagate the error', function(){
+            expect(error).toBe('error');
+          });
         });
       });
 
-      describe('when processPostForRendering fails', function(){
+      describe('when getPost fails', function(){
         beforeEach(function(){
-          deferredProcessPostForRendering.reject('error');
+          deferredGetPost.reject('error');
           $rootScope.$apply();
         });
 
@@ -84,18 +91,32 @@ describe('full-post-loader', function(){
           expect(error).toBe('error');
         });
       });
-    });
+    };
 
-    describe('when getPost fails', function(){
+    describe('when not requesting free post', function(){
       beforeEach(function(){
-        deferredGetPost.reject('error');
+        target.loadPost('postId', 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository').then(function(r){ result = r; }, function(e) { error = e; });
         $rootScope.$apply();
       });
 
-      it('should propagate the error', function(){
-        expect(error).toBe('error');
+      it('should call getPost', function(){
+        expect(postStub.getPost).toHaveBeenCalledWith('postId', false);
       });
+
+      runTests();
+    });
+
+    describe('when requesting free post', function(){
+      beforeEach(function(){
+        target.loadPost('postId', 'accountSettingsRepository', 'blogRepository', 'subscriptionRepository', true).then(function(r){ result = r; }, function(e) { error = e; });
+        $rootScope.$apply();
+      });
+
+      it('should call getPost', function(){
+        expect(postStub.getPost).toHaveBeenCalledWith('postId', true);
+      });
+
+      runTests();
     });
   });
-
 });

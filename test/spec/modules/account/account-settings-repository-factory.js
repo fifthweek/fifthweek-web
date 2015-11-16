@@ -89,4 +89,17 @@ describe('account settings repository factory', function(){
       expect(masterRepository.set).toHaveBeenCalledWith(accountSettingsRepositoryFactoryConstants.accountSettingsKey, settings);
     });
   });
+
+  describe('decrementFreePostsRemaining', function() {
+    beforeEach(function(){
+      spyOn(target, 'getAccountSettings').and.returnValue($q.when({freePostsRemaining: 2, blah: 'blah'}));
+      spyOn(target, 'setAccountSettings').and.returnValue($q.when());
+    });
+    it('should set settings into the master repository at the correct location', function() {
+      target.decrementFreePostsRemaining();
+      $rootScope.$apply();
+
+      expect(target.setAccountSettings).toHaveBeenCalledWith({ freePostsRemaining: 1, blah: 'blah' });
+    });
+  });
 });

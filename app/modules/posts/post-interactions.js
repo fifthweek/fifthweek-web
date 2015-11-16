@@ -22,6 +22,11 @@ angular.module('webApp').factory('postInteractions', function($q, $modal, access
     };
 
     service.openFile = function (file) {
+      if(file.resolvedUri){
+        window.open(file.resolvedUri, '_blank');
+        return;
+      }
+
       return accessSignatures.getContainerAccessInformation(file.containerName)
         .then(function(data) {
           var uriWithSignature = data.uri + '/' + file.fileId + data.signature;

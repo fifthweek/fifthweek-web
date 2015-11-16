@@ -11,6 +11,7 @@ describe('subscribe-service', function(){
   var subscriptionRepository;
   var blogRepositoryFactory;
   var blogRepository;
+  var signInWorkflowService;
   var $modal;
 
   beforeEach(function() {
@@ -20,6 +21,7 @@ describe('subscribe-service', function(){
     blogRepositoryFactory = { forCurrentUser: function() { return blogRepository; }};
     subscriptionRepository = jasmine.createSpyObj('subscriptionRepository', ['tryGetBlogs', 'getUserId']);
     subscriptionRepositoryFactory = { forCurrentUser: function() { return subscriptionRepository; }};
+    signInWorkflowService = jasmine.createSpyObj('signInWorkflowService', ['beginSignInWorkflow']);
     $modal = jasmine.createSpyObj('$modal', ['open']);
 
     module('webApp');
@@ -29,6 +31,7 @@ describe('subscribe-service', function(){
       $provide.value('fetchAggregateUserState', fetchAggregateUserState);
       $provide.value('blogRepositoryFactory', blogRepositoryFactory);
       $provide.value('subscriptionRepositoryFactory', subscriptionRepositoryFactory);
+      $provide.value('signInWorkflowService', signInWorkflowService);
       $provide.value('$modal', $modal);
     });
 
@@ -722,53 +725,6 @@ describe('subscribe-service', function(){
     });
   });
 
-  describe('when beginSignInWorkflow is called', function(){
-    var deferredResult;
-    var error;
-    var result;
-    beforeEach(function(){
-      deferredResult = $q.defer();
-      $modal.open.and.returnValue({ result: deferredResult.promise });
-      spyOn(target.internal, 'handleDialogError').and.returnValue($q.reject('handledError'));
-      target.internal.beginSignInWorkflow().then(function(r){ result = r; }, function(e){ error = e; });
-      $rootScope.$apply();
-    });
-
-    it('should call $modal.open', function(){
-      expect($modal.open).toHaveBeenCalledWith({
-        controller: 'signInWorkflowDialogCtrl',
-        templateUrl: 'modules/landing-page/sign-in-workflow-dialog.html',
-        size: 'sm'
-      });
-    });
-
-    describe('when modal succeeds', function(){
-      beforeEach(function(){
-        deferredResult.resolve($q.when('result'));
-        $rootScope.$apply();
-      });
-
-      it('should propagate the result', function(){
-        expect(result).toBe('result');
-      });
-    });
-
-    describe('when modal fails', function(){
-      beforeEach(function(){
-        deferredResult.reject('error');
-        $rootScope.$apply();
-      });
-
-      it('should call handleDialogError', function(){
-        expect(target.internal.handleDialogError).toHaveBeenCalledWith('error');
-      });
-
-      it('should propagate the error', function(){
-        expect(error).toBe('handledError');
-      });
-    });
-  });
-
   describe('when showGuestListOnlyDialog is called', function(){
     var deferredResult;
     var error;
@@ -826,7 +782,7 @@ describe('subscribe-service', function(){
       deferredUserInformation = $q.defer();
       deferredSignInWorkflow = $q.defer();
       spyOn(target.internal, 'getUserInformation').and.returnValue(deferredUserInformation.promise);
-      spyOn(target.internal, 'beginSignInWorkflow').and.returnValue(deferredSignInWorkflow.promise);
+      signInWorkflowService.beginSignInWorkflow.and.returnValue(deferredSignInWorkflow.promise);
 
       target.internal.ensureSignedIn('blogId').then(function(r){ result = r; }, function(e){ error = e; });
       $rootScope.$apply();
@@ -845,7 +801,7 @@ describe('subscribe-service', function(){
       });
 
       it('should not call beginSignInWorkflow', function(){
-        expect(target.internal.beginSignInWorkflow).not.toHaveBeenCalled();
+        expect(signInWorkflowService.beginSignInWorkflow).not.toHaveBeenCalled();
       });
 
       it('should return true to indicate the user is signed in', function(){
@@ -862,7 +818,7 @@ describe('subscribe-service', function(){
       });
 
       it('should call beginSignInWorkflow', function(){
-        expect(target.internal.beginSignInWorkflow).toHaveBeenCalledWith();
+        expect(signInWorkflowService.beginSignInWorkflow).toHaveBeenCalledWith();
       });
 
       describe('when beginSignInWorkflow succeeds', function(){
@@ -895,7 +851,7 @@ describe('subscribe-service', function(){
       });
 
       it('should not call beginSignInWorkflow', function(){
-        expect(target.internal.beginSignInWorkflow).not.toHaveBeenCalled();
+        expect(signInWorkflowService.beginSignInWorkflow).not.toHaveBeenCalled();
       });
 
       it('should propagate the error', function(){

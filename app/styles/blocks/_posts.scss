@@ -616,6 +616,10 @@ $post-p-margin: 28px;
   .live-date-information{
     @include post-left-right-padding;
     font-style: italic;
+    color: #aaa;
+    a{
+      color: #888;
+    }
   }
 
   .full-post-container {
@@ -643,6 +647,38 @@ $post-p-margin: 28px;
     margin: $post-bottom-margin-lg $post-margin-sm;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .requires-subscription-description{
+    //border: $panel-border;
+    //border-bottom-color: white;
+    //@include post-left-right-padding;
+    //@include post-narrow-top-bottom-padding;
+    //margin-bottom: -1px;
+    //margin-left: auto;
+    //margin-right: auto;
+    //float: right;
+    padding-bottom: 6px;
+  }
+
+  .request-free-post-content{
+    margin-top: 0;
+    .free-post-description{
+      float: left;
+      padding-top: 5px;
+      @media (min-width:$screen-s-min) {
+        padding-top: 7px;
+      }
+    }
+    .free-post-button-container{
+      @media (min-width:$screen-s-min) {
+        float: right;
+      }
+    }
+  }
+
+  .free-post-content{
+    text-align: center;
   }
 }
 

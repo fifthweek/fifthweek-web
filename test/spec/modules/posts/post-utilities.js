@@ -454,6 +454,38 @@ describe('post-utilities', function(){
       });
     });
 
+    describe('when free post', function(){
+      it('should specify correct access to post', function(){
+        var post = {
+          isFreePost: true
+        };
+        var caches = {
+          accountSettings: {}
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(true);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(true);
+        expect(post.freePostsRemaining).toBeUndefined();
+      });
+
+      it('should specify correct access to post with free posts remaining', function(){
+        var post = {
+          isFreePost: true
+        };
+        var caches = {
+          accountSettings: { freePostsRemaining: 99 }
+        };
+        target.internal.processAccess(post, caches);
+
+        expect(post.readAccess).toBe(true);
+        expect(post.readAccessIgnoringPayment).toBe(true);
+        expect(post.priceAccepted).toBe(true);
+        expect(post.freePostsRemaining).toBe(99);
+      });
+    });
+
     describe('when on guest list', function(){
       it('should specify correct access to post', function(){
         var post = {

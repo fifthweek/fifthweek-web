@@ -2,7 +2,7 @@ angular.module('webApp')
   .controller('fwFullPostCtrl',
   function($scope, $q, errorFacade, initializer, postStub, aggregateUserStateConstants, uiRouterConstants,
            fullPostLoader, postInteractions, blogRepositoryFactory, accountSettingsRepositoryFactory,
-           subscriptionRepositoryFactory) {
+           subscriptionRepositoryFactory, signInWorkflowService) {
     'use strict';
 
     var blogRepository = blogRepositoryFactory.forCurrentUser();
@@ -10,7 +10,9 @@ angular.module('webApp')
     var subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
 
     var internal = this.internal = {};
-    var model = $scope.model = {};
+    var model = $scope.model = {
+      userId: blogRepository.getUserId()
+    };
 
     internal.showComments = function(post, isCommenting){
       var newUpdateCommentsCount = function(totalComments){
@@ -52,8 +54,15 @@ angular.module('webApp')
         });
     };
 
-    internal.getFullPost = function(postId){
-      return fullPostLoader.loadPost(postId, accountSettingsRepository, blogRepository, subscriptionRepository);
+    $scope.requestFreePost = function(){
+      return internal.reloadPost(true)
+        .then(function(){
+          return accountSettingsRepository.decrementFreePostsRemaining();
+        });
+    };
+
+    internal.getFullPost = function(postId, requestFreePost){
+      return fullPostLoader.loadPost(postId, accountSettingsRepository, blogRepository, subscriptionRepository, requestFreePost);
     };
 
     internal.replaceHiddenCharacters = function(post){
@@ -68,16 +77,40 @@ angular.module('webApp')
       }
     };
 
-    internal.reloadPost = function(){
+    internal.ensureSignedIn = function(){
+      if(!model.userId){
+        return signInWorkflowService.beginSignInWorkflow();
+      }
+
+      return $q.when(true);
+    };
+
+    internal.reloadPost = function(requestFreePost){
       accountSettingsRepository = accountSettingsRepositoryFactory.forCurrentUser();
       blogRepository = blogRepositoryFactory.forCurrentUser();
       subscriptionRepository = subscriptionRepositoryFactory.forCurrentUser();
+      model.userId = blogRepository.getUserId();
+
+      if(requestFreePost){
+        return internal.ensureSignedIn()
+          .then(function(result){
+            if(!result){
+              return $q.when(false);
+            }
+
+            return internal.loadPost(internal.requestFreePostFromApi);
+          });
+      }
 
       return internal.loadPost(internal.loadFullPostFromApi);
     };
 
     internal.loadFullPostFromApi = function(){
-      return internal.getFullPost($scope.postId || $scope.post.postId);
+      return internal.getFullPost($scope.postId || $scope.post.postId, false);
+    };
+
+    internal.requestFreePostFromApi = function(){
+      return internal.getFullPost($scope.postId || $scope.post.postId, true);
     };
 
     internal.getFullPostFromScope = function(){

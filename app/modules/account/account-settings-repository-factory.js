@@ -35,6 +35,14 @@ angular.module('webApp')
           return masterRepository.set(accountSettingsKey, newAccountSettings);
         };
 
+        service.decrementFreePostsRemaining = function(){
+          return service.getAccountSettings()
+            .then(function(accountSettings){
+              accountSettings.freePostsRemaining = accountSettings.freePostsRemaining - 1;
+              return service.setAccountSettings(accountSettings);
+            });
+        };
+
         return service;
       }
     };

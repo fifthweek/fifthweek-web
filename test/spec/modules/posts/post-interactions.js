@@ -51,19 +51,37 @@ describe('post-interactions', function(){
 
   describe('when openFile is called', function(){
 
-    beforeEach(function(){
-      spyOn(window, 'open');
-      accessSignatures.getContainerAccessInformation.and.returnValue($q.when({ uri: 'uri', signature: '?signature' }));
-      target.openFile({ containerName: 'containerName', fileId: 'fileId' });
-      $rootScope.$apply();
+    describe('when resolved uri exists', function(){
+      beforeEach(function(){
+        spyOn(window, 'open');
+        target.openFile({ containerName: 'containerName', fileId: 'fileId', resolvedUri: 'resolvedUri' });
+        $rootScope.$apply();
+      });
+
+      it('should not get the access information', function(){
+        expect(accessSignatures.getContainerAccessInformation).not.toHaveBeenCalled();
+      });
+
+      it('should open a new browser window with the correct uri', function(){
+        expect(window.open).toHaveBeenCalledWith('resolvedUri', '_blank');
+      });
     });
 
-    it('should get the access information', function(){
-      expect(accessSignatures.getContainerAccessInformation).toHaveBeenCalledWith('containerName');
-    });
+    describe('when resolved uri does not exist', function(){
+      beforeEach(function(){
+        spyOn(window, 'open');
+        accessSignatures.getContainerAccessInformation.and.returnValue($q.when({ uri: 'uri', signature: '?signature' }));
+        target.openFile({ containerName: 'containerName', fileId: 'fileId' });
+        $rootScope.$apply();
+      });
 
-    it('should open a new browser window with the correct uri', function(){
-      expect(window.open).toHaveBeenCalledWith('uri/fileId?signature', '_blank');
+      it('should get the access information', function(){
+        expect(accessSignatures.getContainerAccessInformation).toHaveBeenCalledWith('containerName');
+      });
+
+      it('should open a new browser window with the correct uri', function(){
+        expect(window.open).toHaveBeenCalledWith('uri/fileId?signature', '_blank');
+      });
     });
   });
 

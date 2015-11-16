@@ -1,5 +1,5 @@
 angular.module('webApp').factory('subscribeService',
-  function($q, subscriptionStub, fetchAggregateUserState, subscriptionRepositoryFactory, blogRepositoryFactory, $modal) {
+  function($q, subscriptionStub, signInWorkflowService, fetchAggregateUserState, subscriptionRepositoryFactory, blogRepositoryFactory, $modal) {
     'use strict';
 
     var service = {};
@@ -67,18 +67,6 @@ angular.module('webApp').factory('subscribeService',
       return $q.when();
     };
 
-    internal.beginSignInWorkflow = function(){
-      return $modal
-        .open({
-          controller: 'signInWorkflowDialogCtrl',
-          templateUrl: 'modules/landing-page/sign-in-workflow-dialog.html',
-          size: 'sm'
-        }).result
-        .catch(function(error){
-          return internal.handleDialogError(error);
-        });
-    };
-
     internal.showGuestListOnlyDialog = function(){
       return $modal
         .open({
@@ -96,7 +84,7 @@ angular.module('webApp').factory('subscribeService',
           if (userInformation.userId) {
             return $q.when(true);
           }
-          return internal.beginSignInWorkflow();
+          return signInWorkflowService.beginSignInWorkflow();
         });
     };
 

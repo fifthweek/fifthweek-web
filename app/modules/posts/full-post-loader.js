@@ -5,9 +5,9 @@ angular.module('webApp')
 
     var service = {};
 
-    service.loadPost = function(postId, accountSettingsRepository, blogRepository, subscriptionRepository){
+    service.loadPost = function(postId, accountSettingsRepository, blogRepository, subscriptionRepository, requestFreePost){
       var post;
-      return postStub.getPost(postId)
+      return postStub.getPost(postId, !!requestFreePost)
         .then(function(result) {
           post = result.data.post;
           post.files = result.data.files;

@@ -46,13 +46,15 @@
        ng-if="post.creator.username && (!post.readAccessIgnoringPayment || !post.priceAccepted)">
     <div class="row">
       <div class="col-xs-12">
-        <p ng-if="!post.readAccessIgnoringPayment">
-          This post requires a subscription to <strong>{{post.channel.name}}</strong>.
-          <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: null, key: null})">Find out more...</a>.
-        </p>
-        <p ng-if="post.readAccessIgnoringPayment && !post.readAccess && !post.priceAccepted">
-          The price of <strong>{{post.channel.name}}</strong> has increased. You must accept the new price to continue accessing this channel.
-        </p>
+        <div class="requires-subscription-description">
+          <p ng-if="!post.readAccessIgnoringPayment">
+            This post requires a subscription to
+            <a ng-click="closeIfDialog()" ui-sref="landingPage({username: post.creator.username, action: null, key: null})">{{post.channel.name}}</a>.
+          </p>
+          <p ng-if="post.readAccessIgnoringPayment && !post.readAccess && !post.priceAccepted">
+            The price of <strong>{{post.channel.name}}</strong> has increased. You must accept the new price to continue accessing this channel.
+          </p>
+        </div>
         <fw-post-subscription-information
           username="{{post.creator.username}}"
           required-channel-id="{{post.channelId}}"></fw-post-subscription-information>
@@ -60,11 +62,49 @@
     </div>
   </div>
 
+  <div ng-if="post.isPreview" class="post-additional-content request-free-post-content">
+    <fw-panel12>
+      <div class="free-post-description">
+        <div ng-if="!model.userId">
+          <p>Sign in and get two free posts every week.</p>
+        </div>
+        <div ng-if="model.userId && !post.freePostsRemaining">
+          <p>You have used all your free posts for this week.</p>
+        </div>
+        <div ng-if="model.userId && post.freePostsRemaining">
+          <p>You have {{post.freePostsRemaining === 1 ? 'one free post' : post.freePostsRemaining + ' free posts'}} remaining this week.</p>
+        </div>
+      </div>
+      <div class="free-post-button-container">
+        <form name="form">
+          <button type="submit"
+                  id="request-free-post-button"
+                  class="btn btn-block btn-success"
+                  can-submit="true"
+                  ng-disabled="(model.userId && !post.freePostsRemaining) || form.isSubmitting"
+                  error-message="model.errorMessage"
+                  data-loading-text="Requesting..."
+                  fw-form-submit="requestFreePost()">
+            Read for Free
+          </button>
+        </form>
+      </div>
+    </fw-panel12>
+  </div>
+
+  <div ng-if="post.isFreePost" class="post-additional-content free-post-content">
+    <fw-panel12>
+      <p>This is one of your free posts.</p>
+    </fw-panel12>
+  </div>
+
   <div class="post-additional-content">
     <fw-account-balance-warning displaying-account-balance-warning="model.displayingAccountBalanceWarning" ng-if="post"></fw-account-balance-warning>
   </div>
 
-  <fw-error-message value="model.errorMessage"></fw-error-message>
+  <div class="post-additional-content">
+    <fw-error-message value="model.errorMessage"></fw-error-message>
+  </div>
 
   <div class="posts full-post-container">
     <div ng-if="model.isLoading" class="updating-area">
@@ -83,7 +123,7 @@
           <div ng-if="block.type === 'file'" class="text">
             <p>
               <span ng-if="!post.readAccess" class="file-content">{{block.source.fileName}}.{{block.source.fileExtension}}</span>
-              <a ng-if="post.readAccess" class="btn-file-download file-content" ng-click="openFile(post.file)">
+              <a ng-if="post.readAccess" class="btn-file-download file-content" ng-click="openFile(block.information)">
                 {{block.source.fileName}}.{{block.source.fileExtension}}
               </a>
               <span class="file-size">{{block.source.readableSize}}</span>
@@ -93,7 +133,7 @@
           <div ng-if="block.type === 'image'" class="post-visual">
             <div class="full-width-image-container" ng-style="block.renderSizeMaximumWidth ? { 'max-width': block.renderSizeMaximumWidth + 'px' } : {}">
               <div ng-style="{'padding-top': block.renderSizeRatio}"></div>
-              <img class="full-width-image" ng-class="{'read-access-image': post.readAccess}" ng-if="block.information" ng-src="{{block.information.resolvedUri}}" ng-click="post.readAccess && viewImage(block.information, block.source)" />
+              <img class="full-width-image" ng-class="{'read-access-image': post.readAccess && !post.isFreePost}" ng-if="block.information" ng-src="{{block.information.resolvedUri}}" ng-click="post.readAccess && !post.isFreePost && viewImage(block.information, block.source)" />
             </div>
           </div>
 
@@ -117,8 +157,11 @@
           <span>
             <a ng-click="toggleLikePost(post)">{{post.hasLiked ? 'Unlike' : 'Like'}}</a>
           </span>
-          <span>
+          <span ng-if="!post.isFreePost">
             <a ng-click="commentOnPost(post)">Comment</a>
+          </span>
+          <span ng-if="post.isFreePost">
+            <a ng-click="viewComments(post)">View Comments</a>
           </span>
         </span>
         <span class="like-comment-buttons" ng-if="!post.readAccess">

@@ -5,8 +5,8 @@
 
 @import 'sir-trevor-js/src/sass/_icons';
 
-$accent-color: #401a38;
-$accent-color-light: #9e7da6;
+$accent-color: #a6b3e8;
+$accent-color-light: #a6b3e8;
 
 $border-size: 1px;
 
@@ -184,8 +184,13 @@ $default-border: $border-size $border-style $accent-color;
   }
 }
 
+.st-block__inner--fw-image-block,.st-block__inner--fw-file-block {
+  .st-block__editor {
+    text-align: center;
+  }
+}
+
 .st-block__editor{
-  text-align: center;
   .btn-file-container{
     width: 100%;
   }
