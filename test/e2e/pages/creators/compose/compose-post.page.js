@@ -103,6 +103,7 @@
         testKit.setContentEditableValue(this.commentTextBoxSelector, commentText);
       }
 
+      browser.sleep(1000); // Attempt to improve test reliability "element would not receive click" errors.
       browser.waitForAngular();
 
       return {
