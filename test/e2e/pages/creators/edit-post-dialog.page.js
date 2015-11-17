@@ -190,10 +190,13 @@
         self.expandButton.click();
         testKit.waitForElementToDisplay(self.postToDateRadio);
         self.postToDateRadio.click();
+        browser.waitForAngular();
         dateTimePickerPage.datepickerButton.click();
         for(var i=0;i<monthCount;++i){
+          browser.waitForAngular();
           dateTimePickerPage.datepickerNextMonthButton.click();
         }
+        browser.waitForAngular();
         dateTimePickerPage.datepicker15Button.click();
 
         dateTimePickerPage.timeHoursTextBox.clear();
@@ -224,10 +227,13 @@
         self.expandButton.click();
         testKit.waitForElementToDisplay(self.postToDateRadio);
         self.postToDateRadio.click();
+        browser.waitForAngular();
         dateTimePickerPage.datepickerButton.click();
         for(var i=0;i<monthCount;++i){
+          browser.waitForAngular();
           dateTimePickerPage.datepickerPreviousMonthButton.click();
         }
+        browser.waitForAngular();
         dateTimePickerPage.datepicker15Button.click();
 
         dateTimePickerPage.timeHoursTextBox.clear();
