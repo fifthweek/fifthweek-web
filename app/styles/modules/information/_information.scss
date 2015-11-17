@@ -439,25 +439,31 @@ $html-name-space:'.info-page';
     h1 {
       color:white;
       font-family: $font-family-logo;
-      font-size: 52px;
+      font-size: 40px;
       padding: 0;
+      @media (min-width:$screen-ss-min) {
+        font-size: 52px;
+      }
     }
     h2 {
-      font-size: 20px;
       font-weight: normal;
       color:$box-font-color;
-      line-height: 38px;
+      line-height: 28px;
+      font-size: 20px;
       @include thin-fonts;
       @media (min-width:$screen-ss-min) {
+        line-height: 38px;
         font-size: 28px;
       }
     }
     h3 {
       color:$box-font-color;
-      font-size: 20px;
+      line-height: 22px;
+      font-size: 17px;
 
       @include thin-fonts;
       @media (min-width:$screen-ss-min) {
+        line-height: 28px;
         font-size: 18px;
       }
     }
