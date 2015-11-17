@@ -450,7 +450,7 @@ $unsubscribe-button-secondary: darken($btn-danger-bg, 15%);
               font-size: $p-font-size - 1;
               background-color: $subscribe-button-primary;
               padding: 1px 12px;
-              height: 30px;
+              height: 42px;
               @media (min-width:$screen-s-min) {
                 margin-top: 0;
                 margin-left: 6px;
@@ -464,7 +464,7 @@ $unsubscribe-button-secondary: darken($btn-danger-bg, 15%);
               >span {
                 @include dark-button;
                 margin-left:8px;
-                padding: 2px 8px;
+                padding: 4px 8px;
                 @media (min-width:$screen-s-min) {
                   margin-left:8px;
                   padding: 3px 8px;
