@@ -252,6 +252,7 @@
         };
 
         var navigateToPage = function() {
+          browser.waitForAngular();
           sidebar.livePostsLink.click();
           sidebar.newPostLink.click();
           browser.waitForAngular();

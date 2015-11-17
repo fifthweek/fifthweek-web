@@ -112,6 +112,7 @@
 
     editPostDate: { value: function(monthCount) {
       this.expandButton.click();
+      testKit.waitForElementToDisplay(self.postToDateRadio);
       this.postToDateRadio.click();
       testKit.screenshot('before-edit.png');
       dateTimePickerPage.datepickerButton.click();
@@ -140,6 +141,7 @@
 
       var editPost = function(){
         self.expandButton.click();
+        testKit.waitForElementToDisplay(self.postToLiveRadio);
         self.postToLiveRadio.click();
       };
 
@@ -162,6 +164,7 @@
 
       var editPost = function(){
         self.expandButton.click();
+        testKit.waitForElementToDisplay(self.postToQueueRadio);
         self.postToQueueRadio.click();
       };
 
@@ -185,6 +188,7 @@
 
       var editPost = function(){
         self.expandButton.click();
+        testKit.waitForElementToDisplay(self.postToDateRadio);
         self.postToDateRadio.click();
         dateTimePickerPage.datepickerButton.click();
         for(var i=0;i<monthCount;++i){
@@ -218,6 +222,7 @@
 
       var editPost = function(){
         self.expandButton.click();
+        testKit.waitForElementToDisplay(self.postToDateRadio);
         self.postToDateRadio.click();
         dateTimePickerPage.datepickerButton.click();
         for(var i=0;i<monthCount;++i){
