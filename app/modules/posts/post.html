@@ -54,6 +54,7 @@
     <p class="tag" ng-if="!post.readAccess">Preview</p>
     <p class="tag" ng-if="post.readAccess && post.isSubscribed">Subscribed</p>
     <p class="tag" ng-if="post.readAccess && !post.isSubscribed && post.isGuestList">Guest List</p>
+    <p class="tag" ng-if="post.readAccess && !post.isSubscribed && !post.isGuestList && post.isFreePost">Free Post</p>
   </div>
 
   <hr/>
@@ -64,7 +65,7 @@
       <div ng-if="post.image" class="post-visual">
         <div class="full-width-image-container" ng-style="post.renderSizeMaximumWidth ? { 'max-width': post.renderSizeMaximumWidth + 'px' } : {}">
           <div ng-style="{'padding-top': post.renderSizeRatio}" ng-if="post.renderSizeRatio"></div>
-          <img class="full-width-image" ng-class="{'read-access-image': post.readAccess}" ng-src="{{post.image.resolvedUri}}" ng-click="post.readAccess && viewImage(post.image, post.imageSource)" />
+          <img class="full-width-image" ng-class="{'read-access-image': post.readAccess && !post.isFreePost}" ng-src="{{post.image.resolvedUri}}" ng-click="post.readAccess && !post.isFreePost && viewImage(post.image, post.imageSource)" />
         </div>
       </div>
 
