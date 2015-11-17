@@ -112,7 +112,7 @@
 
     editPostDate: { value: function(monthCount) {
       this.expandButton.click();
-      testKit.waitForElementToDisplay(self.postToDateRadio);
+      testKit.waitForElementToDisplay(this.postToDateRadio);
       this.postToDateRadio.click();
       testKit.screenshot('before-edit.png');
       dateTimePickerPage.datepickerButton.click();
