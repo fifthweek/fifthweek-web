@@ -451,6 +451,21 @@ describe('fw-full-post-controller', function(){
         });
       });
 
+      describe('when reloadPost succeeds with false result', function(){
+        beforeEach(function(){
+          deferredReloadPost.resolve(false);
+          $scope.$apply();
+        });
+
+        it('should not call decrementFreePostsRemaining', function(){
+          expect(accountSettingsRepository.decrementFreePostsRemaining).not.toHaveBeenCalled();
+        });
+
+        it('should complete successfully', function(){
+          expect(success).toBe(true);
+        });
+      });
+
       describe('when reloadPost fails', function(){
         beforeEach(function(){
           deferredReloadPost.reject('error');

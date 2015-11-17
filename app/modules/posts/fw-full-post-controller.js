@@ -56,8 +56,10 @@ angular.module('webApp')
 
     $scope.requestFreePost = function(){
       return internal.reloadPost(true)
-        .then(function(){
-          return accountSettingsRepository.decrementFreePostsRemaining();
+        .then(function(result){
+          if(result !== false){
+            return accountSettingsRepository.decrementFreePostsRemaining();
+          }
         });
     };
 
