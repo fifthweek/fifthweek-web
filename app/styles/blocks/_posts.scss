@@ -127,17 +127,23 @@ $post-p-margin: 28px;
   }
   h1{
     font-weight: 700;
-    font-size: 36px;
+    font-size: 28px;
     line-height: 1.15;
     letter-spacing: -0.02em;
     color:lighten(black, 20%);
+    @media (min-width:$post-lg-min) {
+      font-size: 36px;
+    }
   }
   h2{
     font-weight: 300;
-    font-size: 28px;
+    font-size: 22px;
     line-height: 1.22;
     letter-spacing: -0.022em;
     color:lighten(black, 50%);
+    @media (min-width:$post-lg-min) {
+      font-size: 28px;
+    }
   }
   p {
     line-height: $post-line-height;
@@ -145,9 +151,12 @@ $post-p-margin: 28px;
     margin-bottom:$post-p-margin;
   }
   li, p {
-    font-size: $post-font-size;
+    font-size: $post-font-size - 1;
     color:lighten(black, 20%);
     font-family: georgia,"times new roman",times,serif;
+    @media (min-width:$post-lg-min) {
+      font-size: $post-font-size;
+    }
   }
   li {
     margin-bottom: 10px;
