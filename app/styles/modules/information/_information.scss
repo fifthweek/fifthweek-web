@@ -20,7 +20,7 @@ $html-name-space:'.info-page';
   }
 
   $mobile-navbar-link-margin: 14px;
-  $info-box-padding: 70px;
+  $info-box-padding: 60px;
   $color-header: #293f54;
   $color-dark: $brand-highlight-2;
 
@@ -309,6 +309,24 @@ $html-name-space:'.info-page';
       .contact-text{
         vertical-align: middle;
         font-size: 18px;
+      }
+    }
+  }
+
+  .info-page-box-getting-started{
+    margin: 0;
+    padding: 0 12px;
+    p {
+      margin: 14px auto;
+      font-size: 17px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    h3 {
+      margin: $info-box-padding auto 14px auto;
+      &:first-child {
+        margin-top: 0;
       }
     }
   }
