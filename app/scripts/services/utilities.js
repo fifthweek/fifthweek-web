@@ -40,11 +40,11 @@ angular.module('webApp')
         return new UnauthorizedError('Not authorized.');
       }
       else{
-        if(response.data !== undefined) {
-          if (response.data.message !== undefined) {
+        if(response.data) {
+          if (response.data.message) {
             return new ApiError(response.data.message, response);
           }
-          if(response.data.error_description !== undefined){
+          if(response.data.error_description){
             return new ApiError(response.data.error_description, response);
           }
         }
